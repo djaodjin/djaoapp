@@ -1,0 +1,25 @@
+{% extends "saas/legal/base.html" %}
+
+{% block content %}
+<section class="light-background">
+    <div class="container container-margered">
+        <p>
+            <strong> Please sign:</strong>
+        </p>
+        {{page|safe}}
+        <div class="col-lg-8">
+            <form class="form-horizontal" method="post" action=".{% if next %}?next={{ next }}{% endif %}">
+                <div class="form-group">
+                    <div class="">
+                        {{ form.read_terms }} <label class="control-label">I have read and accept these terms and conditions</label>
+                    </div>
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="I Agree" />
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

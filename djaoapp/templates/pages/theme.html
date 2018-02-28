@@ -1,0 +1,93 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block localheader %}
+<script type="text/javascript">
+$(document).ready(function() {
+  Dropzone.autoDiscover = false;
+});
+</script>
+{% endblock %}
+
+{% block saas_title %}Themes{% endblock %}
+
+{% block saas_lead_help %}Please select a theme or upload/edit yours.{% endblock %}
+
+{% block saas_content %}
+<div ng-app="UploaderApp" ng-controller="UploaderCtrl" ng-cloak>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th class="text-center">Id</th>
+        <th class="text-center">Is active?</th>
+        <th class="text-center">Created at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="djaodjin-theme-upload-container text-center" dropzone="dropzoneConfig" success-fn="applyTheme(id)" colspan="4">
+          <i class="fa fa-cloud-upload fa-2x"></i>
+          <br>
+          <h4>Drag and drop here or click to upload theme package</h4>
+        </td>
+      </tr>
+      <tr ng-repeat="template in themeList.results|orderBy: '-created_at'" id="theme-[[template.name]]">
+        <td>[[ template.name ]]
+          <a ng-hide="[[activeTheme == template.slug ]]" ng-click="getTemplateDetail(template.id)" href>
+            <small>Activate</small>
+          </a>
+          {% if FEATURES_DEBUG %}
+          <a ng-hide="!template.account" href="{{ urls.pages.theme_base }}[[template.slug]]/">
+            <small>Edit</small>
+          </a>
+          <a ng-hide="!template.account" href="{{ urls.pages.theme_base }}[[template.slug]]/download/">
+            <small>Downlad</small>
+          </a>
+          {% endif %}
+          <form method="post" action="." id="form-theme-[[template.id]]" test-id="form-theme-[[template.name]]">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            <input type='hidden' name='theme' value="[[ template.slug  || 'balme' ]]"/>
+          </form>
+        </td>
+        <td class="text-center">[[ (template.slug.replace(template.name + '-', '') || '-')|limitTo:10]]</td>
+        <td class="text-center"><span ng-show="[[activeTheme == template.slug]]"><i class="fa fa-check-circle text-success"></i></span></td>
+        <td class="text-center" title="[[template.created_at|date:'yyyy-MM-dd HH:mm:ss']]">[[template.created_at|date]]</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+/* Implementation Note: Not including a list of dependent modules
+   (2nd parameter to `module`) "re-opens" the module for additional
+   configuration. */
+var app = angular.module('UploaderApp');
+app.config(['$interpolateProvider', '$httpProvider',
+           function($interpolateProvider, $httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token }}';
+    /* Makes it easier to separate between django and angularjs templates */
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+}]);
+app.constant('urls', {
+    url_base_theme: "{{ urls.pages.api_themes }}",
+    active_theme: "{{request.site.theme}}"
+});
+app.constant('csrf', {
+    csrf_token: "{{ csrf_token }}",
+});
+app.constant('s3', {
+    mediaPrefix: "{% if media_prefix %}{{media_prefix}}{% else %}{% endif %}",
+{% if access_key %}
+    accessKey: "{{access_key}}",
+    policy: "{{aws_policy}}",
+    signature: "{{aws_policy_signature}}",
+    securityToken: "{{security_token}}",
+    amzCredential: "{{x_amz_credential}}",
+    amzDate: "{{x_amz_date}}",
+{% endif %}
+});
+</script>
+{% endblock %}

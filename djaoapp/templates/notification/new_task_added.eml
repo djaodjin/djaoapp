@@ -1,0 +1,17 @@
+{% load i18n %}
+
+{% block subject %}
+{{new_task.organization.printable_name}}:{% trans "A new task has been added " %}
+{% endblock %}
+
+{% block plain_content %}
+New task for {{new_task.organization.printable_name}}:
+#{{new_task.task_number}}: {{new_task.description}}
+{% endblock %}
+
+{% block html_content %}
+<p>
+New task for {{new_task.organization.printable_name}}:<br>
+#{{new_task.task_number}}: {{new_task.description}}
+</p>
+{% endblock %}

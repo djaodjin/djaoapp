@@ -1,0 +1,13 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{{instance.printable_name}} Updated
+{% endblock %}
+
+{% block plain_content %}
+{{instance.printable_name}} Updated
+{% endblock %}
+
+{% block html_content %}
+<h3>{{instance.printable_name}} Updated</h3>
+{% endblock %}

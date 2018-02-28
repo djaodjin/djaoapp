@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block localheader %}
+{% block accounts_localheader %}{% endblock %}
+{% endblock %}
+
+{% block bodyscripts %}
+{% assets "js_auth" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
+{% block accounts_scripts %}{% endblock %}
+{% endblock %}

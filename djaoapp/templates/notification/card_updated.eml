@@ -1,0 +1,18 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+Credit card updated.
+{% endblock %}
+
+{% block html_content %}
+<h3>Credit card updated</h3>
+<p>
+The {{organization.printable_name}} credit card has been successfully updated.
+<br>
+<br>
+Old : <em>****-{{old_card.last4}}</em>, exp: {{old_card.exp_date}}
+<br>
+<b>New : <em>****-{{new_card.last4}}</em>, exp: {{new_card.exp_date}}</b>
+</p>
+
+{% endblock %}

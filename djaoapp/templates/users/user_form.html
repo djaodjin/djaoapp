@@ -1,0 +1,35 @@
+{% extends "users/base.html" %}
+
+{% block saas_title %}{{user.full_name}}'s Profile{% endblock %}
+
+{% block saas_lead_help %}Information on a registered user.{% endblock %}
+
+{% block saas_help %}
+<p>
+You can update a user contact information, as well as login credentials here.
+</p>
+{% endblock %}
+
+{% block saas_content %}
+<section id="personal">
+  {% include "_form.html" %}
+  <hr />
+  <div class="panel panel-danger" style="margin:50px auto;">
+    <div class="panel-heading">
+        Danger Zone
+    </div>
+    <div class="panel-body" style="padding: 15px;">
+        {% if urls.user.password_change %}
+        <div class="row">
+            <div class="col-sm-5">
+                <a class="btn btn-danger" href="{{urls.user.password_change}}" style="width:100%;">Change Password</a>
+            </div>
+            <div class="col-sm-7">
+<span class="btn">Use a new password to login.</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</section>
+{% endblock %}

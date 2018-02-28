@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{% block subject %}Djaodjin Notification{% endblock %}</title>
+{% assets "css_email" %}
+<link rel="stylesheet" media="screen" href="{{ ASSET_URL|no_cache }}" />
+{% endassets %}
+</head>
+<body>
+    <table class="body-wrap">
+        <tr>
+            <td></td>
+            <td class="container">
+                <!-- content -->
+                <div class="content">
+                    <table>
+                        <tr style="width:100%">
+                            <td class="page-header">
+                                <h3>{% block title %}{{broker.printable_name}}{% endblock %}</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="content">
+                                {% block html_content %}{% endblock %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    <table class="footer-wrap">
+        <tr>
+            <td></td>
+            <td class="container">
+                <div class="content">
+                    <table>
+                        <tr>
+                            <td class="page-footer">
+                                <p>Powered by <img class="poweredby-logo" src="https://djaodjin.com/static/img/logo-djaodjin-128.png"> <a href="https://djaodjin.com/">djaodjin.com</a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>

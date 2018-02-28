@@ -1,0 +1,107 @@
+{% extends "_form.html" %}
+
+{% block form_block %}
+<div id="card-use">
+    <div class="row">
+        <fieldset class="col-lg-5 col-md-5">
+            <legend>
+Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{ urls.organization.update_card }}">Update</a>{% endif %}
+            </legend>
+            {% if last4 %}
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>card</dt>
+                    <dd>{{last4}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>expires</dt>
+                    <dd>{{exp_date}}</dd>
+                </dl>
+            </div>
+            {% endif %}
+            {% if not last4 or force_update %}
+            <div class="form-group">
+                <div class="card-icons text-center">
+                    <img id="amex" src="{{'static/img/american-express-curved-32px.png'|djasset}}">
+                    <img id="mastercard" src="{{'static/img/mastercard-curved-32px.png'|djasset}}">
+                    <img id="discover" src="{{'static/img/discover-curved-32px.png'|djasset}}">
+                    <img id="visa" src="{{'static/img/visa-curved-32px.png'|djasset}}">
+                </div>
+            </div>
+           <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
+                values will hit the server and break PCI compliance. -->
+            <div id="row-number" class="form-group">
+                <label class="control-label" for="card-number">Card Number</label>
+                <div class="controls">
+                    <input id="card-number"
+                           class="form-control" type="text" size="16" placeholder="Card number" autocomplete="off" />
+                </div>
+            </div>
+            <div class="row">
+                <div id="row-exp" class="col-sm-6 col-md-6 col-lg-6 form-group">
+                    <label class="control-label">Expiration</label>
+                    <div class="controls">
+                        <div class="input-group">
+                            <input id="card-exp-month"
+                                   class="form-control" type="text" maxlength="2" size="2" placeholder="MM" />
+                            <input id="card-exp-year"
+                                   class="form-control" type="text" maxlength="4" size="4" placeholder="YYYY" />
+                        </div>
+                    </div>
+                </div>
+                <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
+                    <label class="control-label">Security Code</label>
+                    <div id="cvc-detail" style="display: none;">
+                        <h3>What is CVV/CVC ?</h3>
+                        <p>
+Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure
+established by credit card companies to reduce fraud for internet transactions.
+On a Visa, MasterCard and Discover, this 3 digit code is located on the back of
+the card. American Express, however, displays a 4 digit code on the front of
+the card. Both 3 or 4 digit codes are verification numbers used in the
+authentication process.
+                        </p>
+                        <h4>MasterCard, Visa &amp; Discover</h4>
+                        <p>
+The CVV/CVC code is the last 3 digits printed in the signature area on the
+back of the card.
+                        </p>
+                        <h4>American Express</h4>
+                        <p>
+The CVV/CVC code is the last 4 digits on the front of your card right above
+your credit card number.
+                        </p>
+                    </div>
+                    <div class="controls">
+                        <input id="card-cvc"
+                        class="form-control" type="text" maxlength="4" size="3" placeholder="CVC" autocomplete="off" />
+                    </div>
+                </div>
+            </div>
+            <p class="form-group" style="font-size:0.8em;">
+We keep on top of all best practices to secure the information you
+provide us.
+See the <a href="/legal/security/" target="_blank">security policy</a>
+for details.
+            </p>
+        </fieldset>
+        <fieldset class="col-lg-5 col-md-5 col-lg-offset-1 col-md-offset-1">
+            <legend>Billing Address</legend>
+            {{ input_field(form['card_name'], form.hide_labels) }}
+            {{ input_field(form['card_address_line1'], form.hide_labels) }}
+            {{ input_field(form['country'], form.hide_labels) }}
+            {{ input_field(form['region'], form.hide_labels) }}
+            {{ input_field(form['card_city'], form.hide_labels) }}
+            {{ input_field(form['card_address_zip'], form.hide_labels) }}
+            {% endif %}
+{##
+Previous endif before fieldset closing tag so the "Credit Card Information"
+fieldset is closed correctly both ways.
+##}
+        </fieldset>
+    </div>
+</div> <!-- #card-use -->
+<div class="form-group text-center">
+    <button type="submit" class="btn btn-primary btn-lg payment-submit">{% if submit_title %}{{submit_title}}{% else %}{% if force_update %}Update{% else %}Submit{% endif %}{% endif %}</button>
+</div>
+{% endblock %}

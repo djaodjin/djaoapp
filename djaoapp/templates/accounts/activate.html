@@ -1,0 +1,20 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container">
+
+{% if account %}
+
+<p>Account successfully activated</p>
+<p><a href="{{request|url_login}}{% if next %}?next={{ next }}{% endif %}">Sign in</a></p>
+
+{% else %}
+
+<p>Account activation failed</p>
+<p>Please try again to <a href="{{request|url_register}}{% if next %}?next={{ next }}{% endif %}">Sign up</a></p>
+{% endif %}
+
+<p>For any questions, please, feel free to <a href="{{request|url_contact}}">contact us</a></p>
+
+</div>
+{% endblock %}

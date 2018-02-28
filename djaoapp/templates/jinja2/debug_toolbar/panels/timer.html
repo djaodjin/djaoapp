@@ -1,0 +1,43 @@
+<h4>"Resource usage"</h4>
+<table>
+	<colgroup>
+		<col class="djdt-width-20"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Resource</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for key, value in rows %}
+			<tr class="{% cycle('djDebugOdd' 'djDebugEven') %}">
+				<td>{{ key|escape }}</td>
+				<td>{{ value|escape }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<!-- This hidden div is populated and displayed by code in toolbar.timer.js -->
+<div id="djDebugBrowserTiming" hidden="hidden">
+	<h4>Browser timing</h4>
+	<table>
+		<colgroup>
+			<col class="djdt-width-20"/>
+			<col class="djdt-width-60"/>
+			<col class="djdt-width-20"/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Timing attribute</th>
+				<th class="timeline">Timeline</th>
+				<th class="djdt-time">Milliseconds since navigation start (+length)</th>
+			</tr>
+		</thead>
+		<tbody id="djDebugBrowserTimingTableBody">
+		</tbody>
+	</table>
+</div>
+<script src="{% static 'debug_toolbar/js/toolbar.timer.js' %}"></script>

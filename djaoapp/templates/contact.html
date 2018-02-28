@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="margin-bottom: 50px;">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="page-header">
+            <h1 class="text-center"><i class="fa fa-envelope"></i> Contact us</h1>
+        </div>
+        <p>
+Please leave your name and email address.
+We do our best to answer each request individually within 24 hours.
+        </p>
+        {% if form %}
+        {# Some bots will try to access /contact which would crash. #}
+        {% include "_form.html" %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

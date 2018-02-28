@@ -1,0 +1,12 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}New custom theme{% endblock %}
+
+{% block saas_content %}
+    <p>Do you want to create a new theme package from default template</p>
+    <form action="" method="POST">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <button type="submit" class="btn btn-primary">Yes, I do</button>
+        <a href="{{redirect_url}}" class="btn btn-default">No, I don't</a>
+    </form>
+{% endblock saas_content %}

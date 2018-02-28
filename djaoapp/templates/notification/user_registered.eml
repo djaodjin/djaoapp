@@ -1,0 +1,21 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{# ``|safe`` here because an e-mail's subject line shouldn't be HTML encoded. #}
+A user has registered for {{broker.printable_name|safe}}
+{% endblock %}
+
+{% block plain_content %}
+New registered user {{user.printable_name}} with email {{user.email}}.
+{% endblock %}
+
+{% block html_content %}
+<h3>Awesome, a new user signed up on your {{broker.printable_name}} site!</h3>
+<p>
+Full name: <b>{{user.printable_name}}</b>
+<br>
+Username: <b>{{user.username}}</b>
+<br>
+Email: {{user.email}}
+</p>
+{% endblock %}

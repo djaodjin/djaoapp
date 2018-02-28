@@ -1,0 +1,30 @@
+// Visual appearance of dashboard sidebar
+
+@dashboard-sidebar-bg:       @brand-primary;
+@dashboard-sidebar-color:    white;
+
+.dashboard-nav-color-theme {
+    background-color: @dashboard-sidebar-bg;
+    color: @dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > hr {
+  border-top: 1px solid @dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav > li > a {
+   background-color:transparent;
+   color: @dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav > li.active > a {
+  background-color: @dashboard-sidebar-color;
+  color: @dashboard-sidebar-bg;
+  border-radius: 0px;
+  text-decoration: underline;
+}
+
+.dashboard-nav-menu > .nav > li:not(.active) > a:hover{
+   color: @dashboard-sidebar-color;
+   text-decoration: underline;
+}

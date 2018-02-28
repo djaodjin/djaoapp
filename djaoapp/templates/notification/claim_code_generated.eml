@@ -1,0 +1,33 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{{provider.printable_name}} Subscription
+{% endblock %}
+
+{% block html_content %}
+<p>
+Hello {{subscriber.printable_name}},
+</p>
+<p>
+I generated a one-time code for you to access:
+<ul>
+ {% for item in cart_items %}
+    <li>{{item.plan.title}}</li>
+ {% endfor %}
+</ul>
+</p>
+<p>
+Sail through the payment page by clicking on the following link:
+</p>
+<p>
+<a href="{{urls.cart}}?code={{claim_code}}">{{urls.cart}}?code={{claim_code}}</a>
+</p>
+<p>
+Thank you,<br />
+{{user.printable_name}}<br />
+{{user.email}}<br />
+</p>
+<p>
+Any questions or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+</p>
+{% endblock %}

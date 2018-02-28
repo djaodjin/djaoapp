@@ -1,0 +1,46 @@
+<h4>{{template_dirs|length}} Template path(s)</h4>
+{% if template_dirs %}
+	<ol>
+	{% for template in template_dirs %}
+		<li>{{ template }}</li>
+	{% endfor %}
+	</ol>
+{% else %}
+	<p>None</p>
+{% endif %}
+
+<h4>{{templates|length}} Template(s)</h4>
+{% if templates %}
+<dl>
+{% for template in templates %}
+	<dt><strong><a class="remoteCall toggleTemplate" href="{{ url('djdt:template_source') }}?template={{ template.template.name }}">{{ template.template.name|addslashes }}</a></strong></dt>
+	<dd><samp>{{ template.template.origin_name|addslashes }}</samp></dd>
+	{% if template.context %}
+	<dd>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span> Toggle context</a></div>
+		<div class="djTemplateHideContextDiv" hidden="hidden"><code>{{ template.context }}</code></div>
+	</dd>
+	{% endif %}
+{% endfor %}
+</dl>
+{% else %}
+	<p>None</p>
+{% endif %}
+
+{% if context_processors %}
+<h4>{{context_processors|length}}Context processor(s)</h4>
+<dl>
+{% for key, value in context_processors.items %}
+	<dt><strong>{{ key|escape }}</strong></dt>
+	<dd>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span> Toggle context</a></div>
+		<div class="djTemplateHideContextDiv" hidden="hidden"><code>{{ value|escape }}</code></div>
+	</dd>
+{% endfor %}
+</dl>
+{% else %}
+<h4>No Context processor</h4>
+	<p>None</p>
+{% endif %}
+
+<script src="{{'/static/debug_toolbar/js/toolbar.template.js'|djasset}}"></script>

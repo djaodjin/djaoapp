@@ -1,0 +1,95 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Billing for {{organization.printable_name}}{% endblock %}
+
+{% block saas_lead_help %}Payments made on the platform.{% endblock %}
+
+{% block saas_help %}
+<p>
+You can manage the Credit Card on file for your subscription.
+You can also see the list of all payments made here.
+</p>
+{% endblock %}
+
+{% block saas_page_layout %}
+<div class="col-md-12" ng-app="saasApp">
+  <div class="row" ng-controller="billingStatementCtrl">
+    <div ng-controller="billingSummaryCtrl"
+         data-api-url="{{urls.organization.api_card}}"
+         data-trip data-trip-index="1"
+         data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+      <section id="balance" class="col-md-6">
+        <h1 class="text-primary">Balance{% if urls.organization.api_cancel_balance_due %} <button ng-if="items.balance > 0" id="cancel-balance-btn" class="btn btn-danger" data-toggle="modal" data-target="#cancel-balance" ng-cloak>cancel balance due</button>{% endif %}</h1>
+        <dl class="dl-horizontal">
+          <dt data-trip data-trip-index="2" data-trip-content="<p>The amount you owe.</p>" data-trip-position="s">
+            <i class="fa fa-refresh fa-spin" ng-if="!items.$resolved"></i>
+            <span ng-if="items.$resolved" ng-cloak>
+              [[items.balance|humanizeCell : items.unit : 0.01]]</span>
+          </dt>
+          <dd>
+            Balance
+            <span ng-if="!items.$resolved || items.balance == 0">due</span>
+            <span ng-if="items.balance > 0" ng-cloak>due (<a href="{{urls.organization.balance}}">pay now</a>)
+            </span>
+            <span ng-if="items.balance < 0" ng-cloak>credit</span>
+          </dd>
+        </dl>
+        {% if urls.organization.vtcharge %}
+        <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
+        {% endif %}
+      </section>
+      <section id="payment-form" class="col-md-6">
+        <h1 class="text-primary">Credit Card
+        <a class="btn" href="{{urls.organization.update_card}}"
+           data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
+        <dl class="dl-horizontal">
+          <dt>card</dt>
+          <dd class="last4">
+            <i class="fa fa-refresh fa-spin" ng-if="!$resolved"></i>
+            <span ng-if="$resolved" ng-cloak>[[last4]]</span>
+          </dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>expires</dt>
+          <dd class="exp_date">
+            <i class="fa fa-refresh fa-spin" ng-if="!$resolved"></i>
+            <span ng-if="$resolved" ng-cloak>[[exp_date]]</span>
+          </dd>
+        </dl>
+      </section>
+      {% if urls.organization.api_cancel_balance_due %}
+      <!-- modal dialog for cancelling balance due -->
+      <form id="cancel-balance" class="modal fade"
+            tabindex="-1" role="dialog" aria-labelledby="Cancel balance due"
+            aria-hidden="true" method="post" action="."
+            >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close"
+                      data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Cancel balance due</h4>
+            </div>
+            <div class="modal-body">
+              <div>
+                <p>
+Are you sure you would like to cancel the whole balance of [[items.balance|humanizeCell : items.unit : 0.01]] ?
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default"
+                      data-dismiss="modal">Cancel</button>
+              <button type="submit" class="submit btn btn-primary"
+                      data-dismiss="modal" ng-click="cancelBalance($event)">OK</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- end of modal dialog -->
+      {% endif %}
+    </div>
+    {% include "saas/_transactions.html" %}
+  </div>
+</div>
+{% endblock %}

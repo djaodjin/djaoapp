@@ -1,0 +1,8 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}{{template}} Notification{% endblock %}
+
+{% block saas_page_layout %}
+<iframe src="{{iframe_url}}" frameborder="0" style="height:100vh;width:80%">
+</iframe>
+{% endblock %}

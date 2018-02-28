@@ -1,0 +1,118 @@
+{% extends "notification/base.eml" %}
+
+{#
+Implementation Note:
+    Here a copy/paste of the charge_detail.html.
+    This might not be the best idea but it is necessary to produce
+    consistent HTML emails through various email clients.
+#}
+
+{% block subject %}
+{# ``|safe`` here because an e-mail's subject line shouldn't be HTML encoded. #}
+Receipt from {{provider.printable_name|safe}}
+{% endblock %}
+
+{% block html_content %}
+<h3>{{provider.printable_name}} Charge Receipt</h3>
+<div id="status">
+    {% if charge.is_paid %}
+    <p>
+      On {{charge.created_at|short_date}}, the credit card has been charged
+      for an amount of {{charge.price|humanize_money}}.
+      Payment Information:
+    </p>
+    {% elif charge.is_failed %}
+    <p>
+    On {{charge.created_at|short_date}}, we attempted to charge your card for
+    {{charge.price|humanize_money}}. The charge failed.
+    </p>
+    {% elif charge.is_disputed %}
+    <p>
+    On {{charge.created_at|short_date}}, we attempted to charge your card for
+    {{charge.price|humanize_money}}. The charge was disputed.
+    </p>
+    {% elif charge.is_progress %}
+    <p>
+    On {{charge.created_at|short_date}}, we attempted to charge your card for
+    {{charge.price|humanize_money}}. The charge is in progress...
+    </p>
+    {% endif %}
+</div>
+<div class="info">
+  <table>
+    <thead>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="info-row-header">REFERENCE&nbsp;&nbsp;</th>
+        <td>#{{charge.processor_key}}</td>
+      </tr>
+      <tr>
+        <th class="info-row-header">AMOUNT&nbsp;&nbsp;</th>
+        <td>{{charge.price|humanize_money}}</td>
+      </tr>
+      {% if charge.card_name %}
+      <tr>
+        <th class="info-row-header">NAME&nbsp;&nbsp;</th>
+        <td>{{charge.card_name}}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <th class="info-row-header">CARD&nbsp;&nbsp;</th>
+        <td>**** - {{charge.last4}}</td>
+      </tr>
+      <tr>
+        <th class="info-row-header">EXPIRES&nbsp;&nbsp;</th>
+        <td>{{charge.exp_date}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<hr class="horizontal-divide">
+<div id="invoiced_items">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="amount-header">Amount</th>
+          <th class="description-header">Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in charge_items %}
+        <tr>
+          <td>{{line.invoiced.dest_price|humanize_money}}</td>
+          <td>{{line.invoiced|describe}}</td>
+          <td></td>
+        </tr>
+        {% for refund in line.refunded %}
+        <tr>
+          <td>-{{refund.orig_price|humanize_money}}</td>
+          <td>{{refund|describe}}</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+<hr />
+<div>
+{% if charge.created_by %}
+<p>
+This charge was initiated by <a href="{{urls.charge.created_by}}">{{charge.created_by.get_full_name()}}.</a>
+</p>
+{% endif %}
+{% if email_by %}
+<p>
+This email was triggered by {{email_by.printable_name}}.
+</p>
+{% endif %}
+</div>
+<div id="support">
+<p>
+Thank you for your continued business. If you have any questions or comments,
+email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+</p>
+</div>
+{% endblock %}

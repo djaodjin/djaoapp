@@ -1,0 +1,90 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Coupons{% endblock %}
+
+{% block saas_content %}
+<div ng-app="saasApp" ng-cloak>
+<div ng-controller="CouponListCtrl" data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+    <div class="pull-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
+<a id="download" href="{{ urls.provider.download_coupons }}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+    </div>
+    <table id="coupon-list" class="table table-condensed table-striped" >
+        <thead>
+        <tr>
+            <th>Code<button class="btn-link btn-sort" ng-click="sortBy('code')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupons by ascending and descending order.</p>" data-trip-position="s"><i class="fa fa-sort[[dir.code ? ('-' + dir.code) : '']]"></i></button></th>
+            <th>Percent<button class="btn-link btn-sort" ng-click="sortBy('percent')"><i class="fa fa-sort[[dir.percent ? ('-' + dir.percent) : '']]"></i></button></th>
+            <th>Expires At<button class="btn-link btn-sort" ng-click="sortBy('ends_at')"><i class="fa fa-sort[[dir.ends_at ? ('-' + dir.ends_at) : '']]"></i></button></th>
+            <th>Description<button class="btn-link btn-sort" ng-click="sortBy('description')"><i class="fa fa-sort[[dir.description ? ('-' + dir.description) : '']]"></i></button></th>
+            <th>Created At<button class="btn-link btn-sort" ng-click="sortBy('created_at')"><i class="fa fa-sort[[dir.created_at ? ('-' + dir.created_at) : '']]"></i></button></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tr>
+            <td>
+                <input type="text" class="form-control input-sm" ng-model="newCoupon.code" placeholder="Code">
+            </td>
+            <td>
+                <input type="text" class="form-control input-sm" ng-model="newCoupon.percent" placeholder="Percent">
+            </td>
+            <td>
+                <button class="btn btn-primary btn-sm" ng-click="save()" data-trip data-trip-index="2" data-trip-content="<p>Add a coupon by entering a code, percentage and click &quot;Create Coupon&quot;.</p>" data-trip-position="s">Create Coupon</button>
+            </td>
+            <td>
+            </td>
+            <td colspan="2" data-trip data-trip-index="6" data-trip-content="<p>Filter the list of coupon displayed.</p>" data-trip-position="s">
+                <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
+            </td>
+        </tr>
+        <tr ng-hide="coupons.$resolved">
+            <td colspan="5">
+                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </td>
+        </tr>
+        <tr ng-show="coupons.$resolved && coupons.results.length == 0">
+            <td colspan="5">
+                <h4 class="text-center"><em>No Coupons<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+            </td>
+        </tr>
+        <tr ng-repeat="coupon in coupons.results" ng-cloak ng-show="coupons.$resolved && coupons.results.length > 0">
+            <td><a id="[[coupon.code]]" href="{{urls.provider.metrics_coupons}}[[coupon.code]]/">[[coupon.code]]</a></td>
+            <td>[[coupon.percent]]</td>
+            <td>
+                <span>
+                    <button type="button" class="btn btn-default" ng-click="open($event, coupon)"><i class="fa fa-calendar"></i></button>
+                </span>
+                <span class="date" uib-datepicker-popup="[[format]]" ng-model="coupon.ends_at" is-open="coupon.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close">
+            [[coupon.ends_at ? (coupon.ends_at | date : mediumDate) : "Never"]]
+                </span>
+            </td>
+            <td class="description">
+                <span ng-hide="edit_description[$index]" ng-click="editDescription($index)">[[coupon.description]] <i class="fa fa-pencil"></i></span>
+                <input ng-show="edit_description[$index]" type="text" class="form-control" ng-keydown="saveDescription($event, coupon, $index)" ng-blur="saveDescription($event, coupon, $index)" ng-model="coupon.description" uib-tooltip="Edit description and press 'Enter'" uib-tooltip-trigger="focus" uib-tooltip-placement="top" id="input_description">
+            </td>
+            <td class="date">[[coupon.created_at | date : mediumDate]]</td>
+            <td><button class="btn btn-danger btn-sm" ng-click="remove($index)"><i class="fa fa-trash-o"></i></button></td>
+        </tr>
+        <tr>
+            <td data-trip data-trip-index="8" data-trip-content="<p>Click on a coupon code to see who has redeem it.</p>" data-trip-position="s"></td>
+            <td></td>
+            <td class="date" data-trip data-trip-index="3" data-trip-content="<p>Set the expiration date on a coupon.</p>" data-trip-position="s"></td>
+            <td class="description" data-trip data-trip-index="4" data-trip-content="<p>Add a description for you to easily remember.</p>" data-trip-position="s"></td>
+            <td class="date"></td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="text-center">
+        <ul uib-pagination ng-model="currentPage"
+                    total-items="totalItems"
+                    items-per-page="itemsPerPage"
+                    boundary-links="true"
+                    num-pages="maxSize"
+                    previous-text="&lsaquo;"
+                    next-text="&rsaquo;"
+                    first-text="&laquo;"
+                    last-text="&raquo;"
+                    ng-change="pageChanged()"
+                 ng-show="coupons.$resolved && coupons.results.length > 0"></ul>
+    </div>
+</div>
+</div>
+{% endblock %}

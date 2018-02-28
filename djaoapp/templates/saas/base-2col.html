@@ -1,0 +1,20 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_page_layout %}
+<div class="col-md-12" style="margin-bottom: 50px;">
+    <div class="row">
+        <div class="col-md-6">
+            {% block saas_content %}
+            {% endblock %}
+        </div>
+        <div class="col-md-6">
+            <p class="lead">
+                {% block saas_lead_help %}{% endblock %}
+            </p>
+            <p>
+                {% block saas_help %}{% endblock %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

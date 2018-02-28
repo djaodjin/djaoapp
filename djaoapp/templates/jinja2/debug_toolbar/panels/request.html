@@ -1,0 +1,122 @@
+<h4>View information</h4>
+<table>
+	<thead>
+		<tr>
+			<th>View function</th>
+			<th>Arguments</th>
+			<th>Keyword arguments</th>
+			<th>URL name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="djDebugOdd"><code>{{ view_func }}</code></td>
+			<td class="djDebugEven"><code>{{ view_args|pprint }}</code></td>
+			<td class="djDebugOdd"><code>{{ view_kwargs|pprint }}</code></td>
+			<td class="djDebugEven"><code>{{ view_urlname }}</code></td>
+		</tr>
+	</tbody>
+</table>
+
+{% if cookies %}
+	<h4>Cookies</h4>
+	<table>
+		<colgroup>
+			<col class="djdt-width-20"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in cookies %}
+				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+					<td><code>{{ key|pprint }}</code></td>
+					<td><code>{{ value|pprint }}</code></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h4>No cookies</h4>
+{% endif %}
+
+{% if session %}
+	<h4>Session data</h4>
+	<table>
+		<colgroup>
+			<col class="djdt-width-20"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in session %}
+				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+					<td><code>{{ key|pprint }}</code></td>
+					<td><code>{{ value|pprint }}</code></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h4>No session data</h4>
+{% endif %}
+
+{% if get %}
+	<h4>GET data</h4>
+	<table>
+		<colgroup>
+			<col class="djdt-width-20"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in get %}
+				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+					<td><code>{{ key|pprint }}</code></td>
+					<td><code>{{ value|pprint }}</code></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h4>No GET data</h4>
+{% endif %}
+
+{% if post %}
+	<h4>POST data</h4>
+	<table>
+		<colgroup>
+			<col class="djdt-width-20"/>
+			<col/>
+		</colgroup>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in post %}
+				<tr class="{% cycle('row1', 'row2') %}">
+					<td><code>{{ key|pprint }}</code></td>
+					<td><code>{{ value|pprint }}</code></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h4>No POST data</h4>
+{% endif %}

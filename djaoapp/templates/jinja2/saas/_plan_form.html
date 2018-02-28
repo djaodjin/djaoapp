@@ -1,0 +1,28 @@
+{% extends "_form.html" %}
+
+{% block form_block %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
+    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {{ input_field(form['title'], form.hide_labels) }}
+    {{ input_field(form['description'], form.hide_labels) }}
+    <fieldset>
+        <legend>Pricing</legend>
+        <div class="row">
+            {{ input_field(form['unit'], form.hide_labels, "col-md-4") }}
+            {{ input_field(form['period_amount'], form.hide_labels, "col-md-4") }}
+            {{ input_field(form['interval'], form.hide_labels, "col-md-4") }}
+        </div>
+        {{ input_field(form['period_length'], form.hide_labels) }}
+        {{ input_field(form['advance_discount'], form.hide_labels) }}
+    </fieldset>
+    <fieldset>
+        <legend>Extra Options</legend>
+        {{ input_field(form['auto_renew'], form.hide_labels) }}
+        {{ input_field(form['is_not_priced'], form.hide_labels) }}
+    </fieldset>
+    <div class="form-action text-center">
+        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+    </div>
+</form>
+{% endblock %}

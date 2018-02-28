@@ -1,0 +1,69 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+{{title}} for {{organization.printable_name}}
+{% endblock %}
+
+{% block saas_content %}
+<section id="metrics_table" ng-app="saasApp" ng-cloak>
+  <style>
+    .chart-area{
+      height: 400px !important;
+      width: 100%;
+    }
+  </style>
+
+  <div ng-controller="metricsCtrl" data-trip data-trip data-trip-index="1" data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+    <ul class="nav nav-tabs dashboard-tab table-chooser">
+      <li ng-class="{active: tab == activeTab}" ng-repeat="tab in tabs" ng-click="tabClicked($event)">
+        <a href="#[[tab]]" data-toggle="tab">
+          [[getTable(tab).title]] <span ng-if="getTable(tab).unit" href="#[[tab]]">([[getTable(tab).unit]])</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div id="metrics-table" class="tab-pane active">
+        <div class="date-chooser pull-right">
+          <span>To</span>
+          <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
+          <span>
+            <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+        <div id="metrics-chart">
+        </div>
+        <!-- Display as a table -->
+        <table class="table" style="font-size:0.7em;">
+          <tr>
+            <td></td>
+            <td ng-repeat="col in getTable(activeTab).data[0].values">[[col[0] | monthHeading]]</td>
+          </tr>
+          <tr ng-repeat="row in getTable(activeTab).data">
+            <td ng-if="row.location"><span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a id="[[row.key]]" href="[[row.location]]">[[row.key]]</a></td>
+            <td ng-if="!row.location">[[row.key]]</td>
+            <td ng-repeat="col in row.values" title="[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale : false]]">[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale]]</td>
+          </tr>
+          {% block metrics_extra_data %}
+          {% endblock %}
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    // Copy/Paste from vendor/js/bootstrap.js and inserted
+    // a forced trigger of 'resize' for NVD3 to redraw the chart
+    // using correct dimensions.
+    $(document).on('shown.bs.tab', '[data-toggle="tab"], [data-toggle="pill"]',
+        function (e) {
+        window.dispatchEvent(new Event('resize'));
+    });
+});
+</script>
+{% endblock %}

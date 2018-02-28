@@ -1,0 +1,22 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{# We are putting |safe here because an e-mail's subject line shouldn't be
+HTML encoded. #}
+{{user.printable_name|safe}} granted {{organization.printable_name|safe}} a subscription to {{plan.title}}
+{% endblock %}
+
+{% block html_content %}
+<h3>{{user.printable_name}} granted {{organization.printable_name|safe}} a subscription to {{plan.title}}</h3>
+{% if reason %}
+<p>
+{{reason|md}}
+</p>
+{%endif %}
+<p>
+You can <a href="{{back_url}}">accept the subscription</a>
+by clicking on the previous link or copy/pasting the following link
+in your browser:
+{{back_url}}
+</p>
+{% endblock %}

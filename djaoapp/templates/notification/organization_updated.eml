@@ -1,0 +1,40 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{{organization.printable_name|safe}} was updated
+{% endblock %}
+
+{% block html_content %}
+<h3>{{organization.printable_name}} was updated</h3>
+<div class="info">
+  <p>
+<a href="{{urls.user.profile}}">{{user.username}}</a> modified
+the following fields in <a href="{{urls.organization.profile}}">{{organization.printable_name}}</a>:
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th class="table-header">PREVIOUSLY</th>
+        <th class="table-header">CURRENT</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for field_name, change in changes.items() %}
+      <tr>
+        <th class="table-header">{{field_name}}</th>
+        <td>{{change.pre}}</td>
+        <td>{{change.post}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<hr />
+<div id="support">
+<p>
+If you those changes look suspicious to you, please email us
+at <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
+</p>
+</div>
+{% endblock %}

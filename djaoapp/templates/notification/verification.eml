@@ -1,0 +1,32 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+Email address verification
+{% endblock %}
+
+{% block html_content %}
+<h3>Verify your email address</h3>
+
+<p>Welcome {{user.first_name}},</p>
+<p>
+You have registered an account with {{provider.printable_name}}.
+</p>
+<p>
+Please verify your email address and activate your account by clicking
+<a href="{{back_url}}{% if next %}?next={{next}}{% endif %}">here</a>.
+</p>
+<p>
+You can also visit the following URL is your favorite browser:<br />
+{{back_url}}{% if next %}?next={{next}}{% endif %}
+</p>
+<p>
+The link is valid for {{expiration_days}} days.
+</p>
+</div>
+<div id="support">
+<p>
+Thank you for your continuous business. Any questions
+or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+</p>
+
+{% endblock %}

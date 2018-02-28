@@ -1,0 +1,13 @@
+<li {% if request|url_pricing in request.path %}class="active"{% endif %}>
+    <a href="{{request|url_pricing}}" data-intro="Add pricing plans" data-position="bottom">Pricing</a>
+</li>
+{% if request|is_authenticated %}
+{% if urls and urls.provider and urls.provider.dashboard %}
+<li>
+    <a href="{{urls.provider.dashboard}}" data-intro="Manager console" data-position="bottom">Dashboard</a>
+</li>
+{% endif %}
+<li>
+    <a href="{{request|url_app}}">App</a>
+</li>
+{% endif %}

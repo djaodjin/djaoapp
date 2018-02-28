@@ -1,0 +1,63 @@
+{% extends "saas/base-2col.html" %}
+
+{% block saas_title %}
+<i class="fa fa-money"></i> Update {{organization.printable_name}} Deposit Information
+{% endblock %}
+
+{% block saas_content %}
+{% if organization.processor_deposit_key %}
+  {% if organization.processor_pub_key %}
+  <!-- We have a ``standalone`` account. -->
+  <p>
+  Connected to a Stripe account.
+  <dl class="dl-horizontal">
+    <dt>Institution</dt>
+    <dd ng-cloak>[[bank_name]]</dd>
+  </dl>
+  <dl class="dl-horizontal">
+    <dt>Account Number</dt>
+    <dd ng-cloak>[[last4]]</dd>
+  </dl>
+  </p>
+  <p>
+      <button id="de-authorize-btn" class="btn btn-danger" data-toggle="modal" data-target="#de-authorize">De-authorize</button>
+  </p>
+  {% else %}
+  <!-- We have a ``managed`` account. -->
+  {% include "saas/_bank_use.html" %}
+  {% endif %}
+{% else %}
+<p>
+<a class="text-center img-responsive" href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{STRIPE_CLIENT_ID}}&scope=read_write&state={{site}}"><img src="{{'static/img/stripe-connect.png'|djasset}}" /></a>
+</p>
+{% endif %}
+<div id="de-authorize" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="de-authorize" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                De-authorize ...
+            </div>
+            <div class="modal-body">
+                Please confirm you want to de-authorize access
+                to your Stripe account.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Cancel</button>
+                <form style="display:inline-block;" method="post" action="{{ urls.provider.deauthorize_bank }}">
+                  <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                  <input type="hidden" name="stripeToken" value="OOPS" />
+                  <button id="de-authorize-action-btn" type="submit"
+                          class="btn btn-danger btn-ok">De-authorize</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block saas_lead_help %}
+Please provide the information to deposit funds
+to the bank account of {{organization.printable_name}}.
+{% endblock %}

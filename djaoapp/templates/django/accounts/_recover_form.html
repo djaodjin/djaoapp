@@ -1,0 +1,12 @@
+{% extends "_form.html" %}
+
+{% block form_block %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal"
+    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {% include "_field.html" with bound_field=form|get_bounded_field:'email' hide_labels=form.hide_labels %}
+    <div class="form-action text-center">
+        <button type="submit" class="btn btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+    </div>
+</form>
+{% endblock %}

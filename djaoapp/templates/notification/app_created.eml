@@ -1,0 +1,19 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+Site for {{instance.printable_name}} created on DjaoDjin
+{% endblock %}
+
+{% block html_content %}
+<h3>{{instance.printable_name}} Updated</h3>
+<p>Hi {{user.first_name}},</p>
+<p>
+Edit the <a href="{{back_url}}">settings for this site</a> and continue the journey to operate your own Software-as-a-Service.
+</p>
+<p>
+The DjaoDjin team welcomes you. Please reach out with any questions you may have.
+</p>
+<p>
+— Sebastien Mirolo, CEO
+</p>
+{% endblock %}

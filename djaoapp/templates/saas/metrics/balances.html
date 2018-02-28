@@ -1,0 +1,73 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}<i class="fa fa-dollar"></i> Balances{% endblock %}
+
+{% block saas_content %}
+<div ng-app="saasApp" ng-cloak>
+    <div ng-controller="BalanceListCtrl">
+        <div class="date-chooser pull-right">
+          <a id="download" class="btn btn-default" href="{{urls.download_balances}}?start_at=[[params.start_at]]&ends_at=[[params.ends_at]]" role="button"><i class="fa fa-cloud-download"></i> Download</a>
+          <span>To</span>
+          <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened.ends_at" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[params.ends_at | date : mediumDate]]</span>
+          <span>
+            <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Delete</th>
+                    <th>Title</th>
+                    <td style="text-align:right;" ng-repeat="col in balances.table[0].values" ng-cloak>
+                        [[col[0] | monthHeading]]
+                    </td>
+                </tr>
+            </thead>
+          <tbody ng-hide="balances.$resolved">
+            <tr>
+              <td colspan="16">
+                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+              </td>
+            </tr>
+          </tbody>
+          <tbody ng-show="balances.$resolved && balances.table.length == 0">
+            <tr>
+              <td colspan="16">
+                <h4 class="text-center"><em>No aggregated balances defined for this report. Add the first one with the form below.</em></h4>
+              </td>
+            </tr>
+          </tbody>
+            <tbody saas-dnd-list="balances" ng-cloak ng-show="balances.$resolved && balances.table.length > 0">
+                <tr id="balance-[[row.rank]]" ng-repeat="row in balances.table" ng-cloak>
+                    <td>
+                        <div class="btn btn-default btn-sm">
+                            <i class="fa fa-bars"></i></div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" ng-click="remove($index)">
+                            <i class="fa fa-trash-o"></i></button>
+                    </td>
+                    <td>[[row.key]]</td>
+                    <td style="text-align:right;" ng-repeat="col in row.values">
+                        <a target="_blank" href="{{urls.broker_transactions}}[[row.selector]]/?start_at=[[startPeriod]]&ends_at=[[col[0] ]]">
+                        [[col[1]|humanizeCell : balances.unit : balances.scale]]
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="text" class="form-control input-sm" ng-model="newBalanceLine.title" placeholder="Title">
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control input-sm" ng-model="newBalanceLine.selector" placeholder="Selector">
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-sm" ng-click="create()"><i class="fa fa-plus"></i> Add Line</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

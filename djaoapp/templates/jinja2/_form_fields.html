@@ -1,0 +1,121 @@
+{% macro input_field(bound_field, hide_labels, extra_label_classes="", extra_control_classes="") -%}
+{% if bound_field.field.widget.recaptcha_challenge_name %}
+<div>
+<div class="form-group{% if bound_field.errors %} has-error{% endif %}" style="float: right;margin-right: 5px;">
+        {{bound_field.as_widget()}}
+</div>
+<div style="clear: both;"></div>
+</div>
+{% elif bound_field.field.widget.input_type == 'hidden' %}
+<input name="{{bound_field.name}}" type="{{bound_field.field.widget.input_type}}" {% if bound_field.value() is not none %}value="{{bound_field.value()}}"{% endif %} />
+{% else %}
+<div class="form-group{% if bound_field.errors %} has-error{% endif %}">
+    {% if bound_field.field|is_checkbox %}
+    {% if not hide_labels and extra_label_classes %}
+    <div class="{{extra_label_classes}}"></div>
+    {% endif %}
+    <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
+      <div class="checkbox">
+        <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
+          <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value() %}checked="checked"{% endif %}>
+          {{ bound_field.label|safe }}
+        </label>
+      </div>
+      {% for error in bound_field.errors %}
+        <span class="help-block"><strong>{{error}}</strong></span>
+      {% endfor %}
+      {% if bound_field.help_text %}
+        <span class="help-block">{{bound_field.help_text}}</span>
+      {% endif %}
+    </div>
+    {% else %}
+    {% if not hide_labels %}
+    <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}control-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
+    {% endif %}
+    <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+      {% if bound_field.field|is_textarea %}
+        <textarea class="textarea form-control" name="{{bound_field.name}}"
+          cols="40" rows="10"
+          {% if bound_field.field.widget.attrs.get('placeholder','') %}
+          placeholder="{{bound_field.field.widget.attrs.get('placeholder','')}}"
+          {% endif %}>{% if bound_field.value() %}{{bound_field.value()}}{% endif %}</textarea>
+      {% elif bound_field.field|is_radio %}
+          {% for choice in bound_field.field.widget.choices %}
+          <div class="radio">
+            <label>
+              <input type="radio" name="{{bound_field.name}}"{% if bound_field.value() == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}
+            </label>
+          </div>
+          {% endfor %}
+      {% elif bound_field.field.widget.input_type %}
+        <input class="form-control" name="{{bound_field.name}}"
+          {% if bound_field.value() is not none %}
+          value="{{bound_field.value()}}"
+          {% endif %}
+          {% if bound_field.field.widget.attrs.get('placeholder','') %}
+          placeholder="{{bound_field.field.widget.attrs.get('placeholder','')}}"
+          {% endif %}
+          type="{{bound_field.field.widget.input_type}}"
+          {% if bound_field.field.max_length %}
+          maxlength="{{bound_field.field.max_length}}"
+          {% endif %}
+          {% if bound_field.field.min_value %}
+          min="{{bound_field.field.min_value}}"
+          {% endif %}
+          {% if bound_field.field.max_value %}
+          max="{{bound_field.field.max_value}}"
+          {% endif %}
+          {% if bound_field.field.widget.attrs.step %}
+          step="{{bound_field.field.widget.attrs.step}}"
+          {% endif %}
+        />
+      {% else %}
+      {## XXX Everything else Select... ##}
+        <select class="form-control" name="{{bound_field.name}}">
+          {% for choice in bound_field.field.widget.choices %}
+          <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
+          {% endfor %}
+        </select>
+      {% endif %}
+      {% for error in bound_field.errors %}
+        <span class="help-block"><strong>{{error}}</strong></span>
+      {% endfor %}
+      {% if bound_field.help_text %}
+        <span class="help-block">{{bound_field.help_text}}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro select_field(bound_field, hide_labels, choices=[], extra_label_classes="", extra_control_classes="") -%}
+<div class="form-group{% if bound_field.errors %} has-error{% endif %}">
+  {% if not hide_labels %}
+  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}control-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
+  {% endif %}
+  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+      <select class="form-control" name="{{bound_field.name}}">
+        {% if not bound_field.value() %}
+        <option value="" disabled selected>Please choose one ...</option>
+        {% endif %}
+        {% for choice in choices %}
+        <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
+        {% endfor %}
+      </select>
+      {% for error in bound_field.errors %}
+      <span class="help-block"><strong>{{error}}</strong></span>
+      {% endfor %}
+      {% if bound_field.help_text %}
+      <span class="help-block">{{bound_field.help_text}}</span>
+      {% endif %}
+  </div>
+</div>
+{%- endmacro %}
+
+{% block form_block %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {% for name, field in form.fields.items() %}
+      {{ input_field(form[name], form.hide_labels) }} {## creates a BoundField ##}
+    {% endfor %}
+{% endblock %}

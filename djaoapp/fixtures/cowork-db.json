@@ -1,0 +1,613 @@
+[
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "slug": "manager",
+      "title": "Managers"
+    },
+    "model": "saas.RoleDescription", "pk": 1
+},
+{
+    "fields":{
+        "name": "balme",
+        "slug":"balme",
+        "created_at": "2012-09-14T14:16:55-09:00",
+        "updated_at": "2012-09-14T14:16:55-09:00"
+    },
+    "model" : "pages.ThemePackage", "pk":1
+},
+{
+    "fields": {
+      "slug": "cowork",
+      "account": 3,
+      "entry_point": "http://localhost:8024",
+      "registration": 1
+    },
+    "model": "rules.App", "pk": 3
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 1,
+        "path": "/api/billing/charges/:organization/email/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 1
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 2,
+        "path": "/api/billing/:organization/history",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 2
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 3,
+        "path": "/api/billing/:organization/card",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 3
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 4,
+        "path": "/api/profile/:organization/subscribers/",
+        "rule_op": 3,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 4
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 5,
+        "path": "/api/profile/:organization/subscriptions/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 5
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 6,
+        "path": "/billing/:organization/history/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 6
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 7,
+        "path": "/billing/:organization/receipt/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 7
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 8,
+        "path": "/billing/:organization/balance/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 8
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 9,
+        "path": "/metrics/:organization/dashboard/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 9
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 10,
+        "path": "/profile/:organization/contact/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 10
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 11,
+        "path": "/profile/:organization/subscribers/",
+        "rule_op": 3,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 11
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 12,
+        "path": "/profile/:organization/subscriptions/",
+        "rule_op": 6,
+        "kwargs": "{\"organization\": null, \"roledescription\": \"support\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 12
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 13,
+        "path": "/app/:organization/",
+        "rule_op": 15,
+        "kwargs": "{\"organization\": null, \"plan\": \"basic\"}",
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 13
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 14,
+        "path": "/app",
+        "rule_op": 1,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 14
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 15,
+        "path": "/forward/",
+        "rule_op": 1,
+        "is_forward": true
+    },
+    "model": "rules.Rule", "pk": 15
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 16,
+        "path": "/",
+        "rule_op": 0,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 16
+},
+{
+    "fields": {
+      "slug": "stripe",
+      "full_name": "Stripe",
+      "created_at": "2012-08-14T14:16:55-09:00",
+      "email": "support@djaoapp.com",
+      "phone": "555-555-5555",
+      "street_address": "185 Berry St #550",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94107",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 1
+},
+{
+    "fields": {
+      "slug": "terms-of-use",
+      "title": "Terms Of Use",
+      "modified": "2012-08-14T00:00:00-09:00"
+    },
+    "model": "saas.agreement", "pk": 1
+},
+{
+    "fields": {
+      "slug": "security",
+      "title": "Security Policy",
+      "modified": "2012-08-14T00:00:00-09:00"
+    },
+    "model": "saas.agreement", "pk": 2
+},
+{
+    "fields": {
+      "slug": "cowork",
+      "full_name": "Chamoix Coworking",
+      "created_at": "2012-08-14T14:16:55-09:00",
+      "email": "support@djaoapp.com",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "organization": 3,
+      "slug": "contributor",
+      "title": "Contributors"
+    },
+    "model": "saas.RoleDescription", "pk": 2
+},
+{
+    "fields": {
+      "created_at": "2017-01-01T00:00:00+00:00",
+      "organization": 3,
+      "slug": "support",
+      "title": "Support"
+    },
+    "model": "saas.RoleDescription", "pk": 3
+},
+{
+    "fields":{
+        "slug":"basic",
+        "title": "Open Space",
+        "created_at":"2013-08-30T14:16:55-09:00",
+        "unit": "cad",
+        "setup_amount":0,
+        "period_amount":17999,
+        "interval": 4,
+        "description":"open space desk, High speed internet – Ethernet or WiFi, Unlimited printing, Unlimited scanning, Unlimited fax service (send and receive)",
+        "is_active": true,
+        "organization" : 3
+    },
+    "model" : "saas.Plan", "pk": 1
+},
+{
+    "fields":{
+        "slug":"premium",
+        "title": "Open Plus",
+        "created_at":"2013-08-30T14:16:55-09:00",
+        "unit": "cad",
+        "setup_amount":0,
+        "period_amount":38500,
+        "interval": 4,
+        "description":"OPEN SPACE + Your own permanent desk, 24/7 access, 23″ or 24″ monitor",
+        "is_active": true,
+        "organization" : 3,
+        "optin_on_request": 1
+    },
+    "model" : "saas.Plan", "pk": 2
+},
+{
+    "fields":{
+        "slug":"private",
+        "title": "Private",
+        "created_at":"2013-08-30T14:16:55-09:00",
+        "unit": "cad",
+        "setup_amount":0,
+        "period_amount":139500,
+        "interval": 4,
+        "description":"OPEN PLUS + Fully furnished private office fits up to 3",
+        "is_active": true,
+        "is_not_priced": true,
+        "organization" : 3
+    },
+    "model" : "saas.Plan", "pk": 3
+},
+{
+    "fields":{
+        "code": "DIS100",
+        "created_at":"2014-01-01T00:00:00-09:00",
+        "percent": 100,
+        "organization": 3
+    },
+    "model" : "saas.Coupon", "pk": 1
+},
+{
+    "fields":{
+        "code": "DIS50",
+        "created_at":"2014-01-01T00:00:00-09:00",
+        "percent": 50,
+        "organization": 3
+    },
+    "model" : "saas.Coupon", "pk": 2
+},
+{
+    "fields":{
+        "code": "HALLOWEEN",
+        "created_at":"2014-01-01T00:00:00-09:00",
+        "percent": 75,
+        "organization": 3
+    },
+    "model" : "saas.Coupon", "pk": 3
+},
+{
+    "fields": {
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Alice",
+      "last_name": "Cooper",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "alice"
+    },
+    "model": "auth.User", "pk": 1
+},
+{
+    "fields": {
+      "last_signed": "2014-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 1
+    },
+    "model": "saas.signature", "pk": 1
+},
+{
+    "fields": {
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Xia",
+      "last_name": "Lee",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia"
+    },
+    "model": "auth.User", "pk": 2
+},
+{
+    "fields": {
+      "last_signed": "2014-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 2
+    },
+    "model": "saas.signature", "pk": 2
+},
+{
+    "fields": {
+      "date_joined": "2017-01-01T00:00:00-00:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Kenneth",
+      "last_name": "Contributor",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2017-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "kenneth"
+    },
+    "model": "auth.User", "pk": 3
+},
+{
+    "fields": {
+      "date_joined": "2017-01-01T00:00:00-00:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Tom",
+      "last_name": "Support",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2017-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "tom"
+    },
+    "model": "auth.User", "pk": 4
+},
+{
+    "fields": {
+      "last_signed": "2017-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 3
+    },
+    "model": "saas.signature", "pk": 3
+},
+{
+    "fields": {
+      "last_signed": "2017-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 4
+    },
+    "model": "saas.signature", "pk": 4
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "role_description": 1,
+      "organization": 3,
+      "user": 1
+    },
+    "model": "saas.Role", "pk": 1
+},
+{
+    "fields": {
+      "created_at": "2017-01-01T00:00:00-00:00",
+      "role_description": 2,
+      "organization": 3,
+      "user": 3
+    },
+    "model": "saas.Role", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2017-01-01T00:00:00-00:00",
+      "role_description": 3,
+      "organization": 3,
+      "user": 4
+    },
+    "model": "saas.Role", "pk": 4
+},
+{
+    "fields": {
+      "slug": "xia",
+      "full_name": "Xia Lee",
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "email": "support@djaoapp.com",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 2
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "role_description": 1,
+      "organization": 2,
+      "user": 2
+    },
+    "model": "saas.Role", "pk": 2
+},
+{
+    "fields": {
+      "created_at": "2017-09-01T00:00:00-09:00",
+      "ends_at": "2019-01-01T00:00:00-09:00",
+      "organization": 2,
+      "plan": 1
+    },
+    "model": "saas.subscription", "pk": 1
+},
+{
+    "fields": {
+      "slug": "to-be-deleted-1",
+      "full_name": "Subscriber ToBeDeleted",
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "email": "support@djaoapp.com",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 8
+},
+{
+    "fields": {
+      "username": "to-be-deleted-2",
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Xia",
+      "last_name": "ToBeDeleted2",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc="
+    },
+    "model": "auth.User", "pk": 9
+},
+{
+    "fields": {
+      "slug": "to-be-deleted-2",
+      "full_name": "Subscriber ToBeDeleted",
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "email": "support@djaoapp.com",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 9
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "role_description": 1,
+      "organization": 9,
+      "user": 9
+    },
+    "model": "saas.Role", "pk": 9
+},
+{
+    "fields": {
+      "date_joined": "2016-03-18T00:00:00-09:00",
+      "email": "support@djaoapp.com",
+      "first_name": "Melissa",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_name": "NoOrg",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "melissa"
+    },
+    "model": "auth.User", "pk": 10
+},
+{
+    "fields": {
+      "last_signed": "2014-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 10
+    },
+    "model": "saas.signature", "pk": 10
+},
+{
+    "fields":{
+        "created_at":"2014-01-01T00:00:00-09:00",
+        "user": 2,
+        "plan": 1,
+        "coupon": 3,
+        "recorded": 1
+    },
+    "model" : "saas.CartItem", "pk": 1
+},
+{
+    "fields":{
+        "created_at":"2017-01-23T19:21:59-00:00",
+        "amount": 17999,
+        "unit": "cad",
+        "description": "Charge ch_19fDO72fIune2L0qZ1zuIil8 on credit card of Xia Lee (xia)",
+        "last4": 4242,
+        "exp_date": "2018-12-01",
+        "card_name": "Xia Lee",
+        "processor_key": "ch_19fDO72fIune2L0qZ1zuIil8",
+        "customer_id": 2,
+        "processor_id": 1,
+        "state": 1
+    },
+    "model" : "saas.Charge", "pk": 1
+},
+{
+    "fields": {
+        "report": "all",
+        "title": "Cash Assets",
+        "selector": "Assets:Cash",
+        "rank": 1
+    },
+    "model": "saas.BalanceLine", "pk": 1
+}]

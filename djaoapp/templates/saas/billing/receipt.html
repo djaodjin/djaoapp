@@ -1,0 +1,133 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Charge Receipt{% endblock %}
+
+{% block saas_content %}
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-sm-10">
+        <div class="btn-group pull-right">
+            <a id="email-charge-receipt" class="btn btn-default" href="">Email Again</a>
+            <a id="charge-printable" class="btn btn-default" target="_blank"
+   href="{{urls.charge.printable_receipt}}">Printable</a>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+  <div id="{{charge}}">
+    <section id="status">
+      <p>
+        On {{charge.created_at}}, we attempted to charge your card for
+        the amount of {{charge.price|humanize_money}}.
+      </p>
+      <p class="charge-status"
+         data-charge-done="The charge succeeded."
+         data-charge-failed="The charge failed."
+         data-charge-disputed="The charge was disputed."
+         data-charge-created="The charge is in progress...">
+        {% if charge.is_paid %}
+        The charge succeeded.
+        {% elif charge.is_failed %}
+        The charge failed.
+        {% elif charge.is_disputed %}
+        The charge was disputed.
+        {% elif charge.is_progress %}
+        The charge is in progress... <i class="fa fa-spin"></i>
+        {% endif %}
+      </p>
+    </section>
+    <section class="info">
+    <dl class="dl-horizontal">
+      <dt>REFERENCE</dt>
+      <dd>#{{charge.processor_key}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>amount</dt>
+      <dd id="amount-info">{{charge.price|humanize_money}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>card</dt>
+      <dd>**** - {{charge.last4}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>expires</dt>
+      <dd>{{charge.exp_date}}</dd>
+    </dl>
+    </section>
+  </div>
+  <section id="invoiced_items">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in charge_items %}
+        <tr>
+          <td>{{line.invoiced.dest_price|humanize_money}}</td>
+          <td>{{line.invoiced|describe}}</td>
+          <td>
+            {% if line.refundable %}
+            <button class="charge-refund btn btn-default"
+                    data-toggle="modal" data-target="#charge-refund"
+                    data-available-amount="{{line.invoiced.dest_amount}}"
+                    data-linenum="{{line.rank}}">Refund</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% for refund in line.refunded %}
+        <tr>
+          <td>-{{refund.orig_price|humanize_money}}</td>
+          <td>{{refund|describe}}</td>
+          <td>
+          </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% if next_url %}
+<div>
+    <a class="pull-right" href="{{next_url}}">Next &gt;</a>
+</div>
+{% endif %}
+<!-- modal dialog for Refunds -->
+<form id="charge-refund" class="modal fade"
+     tabindex="-1" role="dialog" aria-labelledby="Refund" aria-hidden="true"
+     method="post" action=".">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Refund</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="controls">
+                        <input class="form-control form-control"
+                               type="number" name="amount" maxlength="32"
+                               min="0" value="0" />
+                    </div>
+                </div>
+                <div>
+                    <p>
+Please specify the amount you would like refunded (in {{charge.unit}}).
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Cancel</button>
+                <button type="submit" class="submit-refund btn btn-primary"
+                        data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- end of modal dialog for Refunds -->
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="product">
+  <div class="jumbotron" style="margin-top: 20px;">
+    <div class="jumbotron-text">
+      <div class="center" style="display:block;">
+        <h1 id="app-title" class="editable text-center" data-intro="Editable title" data-position="bottom">Welcome to {{provider.printable_name}}!</h1>
+        <p id="app-jumbotron" class="text-center editable edit-markdown">
+
+        </p>
+      </div>
+    </div>
+    <div class="text-center">
+      <p>
+      Any questions?
+      </p>
+      {% if provider.email %}
+      <span class="email"><a href="mailto:{{provider.email}}">{{provider.email}}</a></span>
+      {% endif %}
+      {% if provider.phone %}
+      -
+      <span class="tel">{{provider.phone}}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="text-center" style="margin-bottom:25px;">
+Quick links:
+<a href="{{request|url_profile}}">My profile</a>
+<a href="{{urls.organization.subscriptions}}" style="padding-left:5px;border-left:1px solid #000">My subscriptions</a>
+<a href="{{urls.organization.billing}}" style="padding-left:5px;border-left:1px solid #000">My billing</a>
+  </div>
+  {% block help_content %}
+  {% endblock %}
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+It is impossible to add comments into a json file and the yaml parser
+used by Django is broken for utc dates. We resort to put the description
+of fixtures here - less than ideal.
+
+default-db.json
+    Donny (username: donny, password: yoyo) is a manager for the broker (i.e.
+    hosting site).
+    Alice (username: alice, password: yoyo) is a manager for a provider.
+    Xia (username: xia, password: yoyo) has one subscription to a plan.
+
+cowork-db.json
+    Separate database to test multitier databases.
+
+- test coupons:
+    DIS100: 100% discount

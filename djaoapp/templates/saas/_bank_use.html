@@ -1,0 +1,44 @@
+<form method="post" id="bank-form" class="form-horizontal" action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    <fieldset>
+        <h1 class="text-center">Bank Information {% if last4 and not force_update %}<a class="btn" href="{{urls.provider.bank}}">Update</a>{% endif %}</h1>
+        {% if last4 %}
+        <div>
+            <dl class="dl-horizontal">
+                <dt>Bank</dt>
+                <dd>{{bank_name}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Account Number</dt>
+                <dd>{{last4}}</dd>
+            </dl>
+        </div>
+        {% endif %}
+        {% if not last4 or force_update %}
+        <!-- BE CAREFULL: Do not add name="" to the account-number
+             and routing-number input nodes, else values will hit
+             the server and break PCI compliance. -->
+        <div id="row-account-number" class="form-group">
+            <label class="control-label col-lg-4" for="account-number">Account Number</label>
+            <div class="col-lg-8">
+                <input id="account-number" class="form-control input-sm" type="text" size="16" autocomplete="off" />
+            </div>
+        </div>
+        <div id="row-routing-number" class="form-group">
+            <label class="control-label col-lg-4" for="routing-number">Routing Number</label>
+            <div class="col-lg-8">
+                <input id="routing-number" class="form-control input-sm" type="text" size="16" autocomplete="off" />
+            </div>
+        </div>
+        <div id="row-country" class="form-group">
+            <label class="control-label col-lg-4" for="country">Country</label>
+            <div class="col-lg-8">
+                <input id="country" class="form-control input-sm" type="text" size="16" name="country" autocomplete="off" />
+            </div>
+        </div>
+        {% endif %}
+    </fieldset>
+    <div class="form-action text-center">
+        <button type="submit" class="btn btn-primary">{% if force_update %}Update{% else %}Withdraw{% endif %}</button>
+    </div>
+</form>

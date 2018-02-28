@@ -1,0 +1,9 @@
+*.pyc
+*~
+*.xcodeproj
+.DS_Store
+.timestamp
+htdocs
+htdocs/media/
+htdocs/static/.webassets-cache/
+themes/

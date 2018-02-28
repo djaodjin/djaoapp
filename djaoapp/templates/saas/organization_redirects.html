@@ -1,0 +1,20 @@
+{% extends "saas/base.html" %}
+
+{% block content %}
+<section id="redirects">
+  <div class="col-md-offset-4 col-md-4 form-container">
+    <div class="page-header">
+          <h1 class="text-center"><i class="fa fa-users fa-lg"></i> Please choose an organization ...</h1>
+
+    </div>
+    {% for redirect in redirects %}
+    <div class="center" style="padding-top: 20px;">
+      <a id="{{redirect.2}}" class="btn btn-default btn-redirect" style="width: 100%;" href="{{redirect.0}}">{{redirect.1}}</a>
+    </div>
+    {% endfor %}
+    <div style="padding-top: 10px;">
+      <a id="saas_organization_create" class="btn btn-primary" style="width: 100%;" href="{{urls.organization_create}}">New ...</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

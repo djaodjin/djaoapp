@@ -1,0 +1,40 @@
+{% extends "accounts/base.html" %}
+
+{% block header_navbar_large %}
+{% endblock %}
+
+{% block header_navbar_small %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-offset-3 col-md-6">
+        {% if validlink %}
+        <div class="page-header">
+            <h1><i class="fa fa-pencil"></i> Set/Reset Password</h1>
+        </div>
+        <p>
+You are about to activate your account and need to enter a password to secure
+it, or you have an account already and requested to change your password.
+        </p>
+        <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
+                method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+            {% include "_form_fields.html" %}
+            <p>
+By clicking on the &quot;Submit&quot; button below,
+<b>I signify that I have read and accept the
+<a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.
+            </p>
+            <div class="form-action">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </form>
+        <p>
+            <span class="text-danger pull-right">* required fields</span>
+        </p>
+      {% else %}
+      <p>Password reset failed</p>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+<!-- We assume that either the monthly recuring amount will
+be positive and/or the setup fee will. -->
+<div id="{{plan.slug}}" class="col-sm-4 plan" data-slug="{{plan.slug}}">
+<div class="plan-short">
+    <div class="plan-main">
+        <div class="text-center">
+            {% if plan.created_at|date_in_future %}
+                <p>Avalaible soon!</p>
+            {% endif %}
+            <div class="page-header">
+                <h2 class="editable-plan" data-key="title" data-slug="{{plan.slug}}">
+                    {{plan.title}}
+                </h2>
+            </div>
+        </div>
+        <div class="plan-test">
+            <div class="plan-pricing">
+                <h2 class="text-center editable-plan edit-currency" data-key="period_amount" data-slug="{{plan.slug}}">
+                {% if not plan or plan.is_not_priced %}
+{# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
+                Contact Us
+                {% else %}
+                  {% if plan.discounted_period_price %}
+                    {{plan.discounted_period_price|humanize_money}}
+                    <span class="text-danger" style="font-size:0.33em;">(was {{plan.period_price|humanize_money}})</span>
+                  {% else %}
+                    {{plan.period_price|humanize_money}}
+                  {% endif %}
+                {% endif %}
+                </h2>
+                <p class="text-center">
+                  {% if plan.is_not_priced %}
+                    &nbsp;
+                  {% else %}
+                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}" data-slug="{{plan.slug}}">{{plan.interval|humanize_period}}</span>
+                  {% endif %}
+                </p>
+                <p class="text-center">
+                {% if plan.setup_price.amount > 0 %}
+                    {{plan.setup_price|humanize_money}} one-time setup
+                {% else %}
+                    &nbsp;
+                {% endif %}
+                {% if plan.transaction_fee > 0 %}
+                    {# XXX hard-coded here #}
+                    (+Stripe per transaction costs)
+                {% else %}
+                    &nbsp;
+                {% endif %}
+                </p>
+            </div>
+        <div class="plan-desc editable-plan edit-markdown" data-key="description" data-slug="{{plan.slug}}">{{plan.description|md}}</div>
+        </div>
+    </div>
+    <footer class="plan-footer">
+        <div style="margin:5px;">
+            {% if plan.is_not_priced %}
+            <a class="btn btn-primary" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
+            {% else %}
+            <button class="btn btn-primary"
+                    type="submit" name="submit" value="{{plan.slug}}">Subscribe</button>
+            {% endif %}
+        </div>
+    </footer>
+</div>
+</div>

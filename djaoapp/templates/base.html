@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="DjaoDjin inc.">
+    <meta name="copyright" content="Copyright (c) 2018 DjaoDjin inc.">
+    <title>{% block title %}{% if site %}{{request.site.printable_name}}{% else %}Bootstrap a Subscription Business Today{% endif %} | DjaoDjin{% endblock %}</title>
+    <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
+    <meta property="og:site_name" content="DjaoDjin" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:account_id" content="1551213320" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@djaodjin" />
+    <meta name="twitter:domain" content="https://djaodjin.com" />
+    <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
+    <meta name="twitter:site" content="@djaodjin" />
+    {% assets "css_base" %}
+    <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
+    {% endassets %}
+    <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
+    {% if csrf_token %}
+    <meta name="csrf-token" content="{{csrf_token}}">
+    {% endif %}
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    {% block localheader %}{% endblock %}
+    {% if 'djaodjin.com' in request|host %}
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-41399084-1', 'auto');
+  ga('send', 'pageview');
+    </script>
+    {% endif %}
+</head>
+<body>
+    <div id="wrap">
+        <div id="main">
+            <header>
+                <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+                    <div class="navbar-header" style="width: 100%;">
+                        <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                        {% block header_navbar_large %}
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <i class="fa fa-chevron-down"></i>
+                        </button>
+                        <div style="float:right;margin-right: 15px;">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% if request|is_authenticated %}
+                                <li>
+                                    <a id="authenticated-user" href="{{request|url_profile}}">{{request.user.username}}</a>
+                                </li>
+                                <li class="hidden-xs">
+                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out <i class="fa fa-sign-out fa-lg"></i></a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+                                {% endif %}
+                            </ul>
+                            <ul class="hidden-xs nav navbar-nav navbar-right">
+                                {% include "generic_navbar.html" %}
+                            </ul>
+                        </div>
+                        {% endblock %}
+                    </div>
+                    {% block header_navbar_small %}
+                    <div class="hidden-sm hidden-md hidden-lg">
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% include "generic_navbar.html" %}
+                                {% if request|is_authenticated %}
+                                <li>
+                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out <i class="fa fa-sign-out fa-lg"></i></a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endblock %}
+                </nav>
+                {% block fullviewport %}
+                {% endblock %}
+            </header>
+            <div>
+                <div class="dashboard-container">
+                    <div class="dashboard-inner-container">
+                        {% block dashboard_nav %}
+                        <!-- <div class="dashboard-nav"></div> -->
+                        {% endblock %}
+                        <div class="dashboard-content">
+                            <div>
+                                <div id="messages">
+                                    <div id="messages-content">
+                                        {% for message in request|messages %}
+                                        <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            <div>{{message|safe}}</div>
+                                        </div>
+                                        {% endfor %}
+                                        {% if form %}
+                                        {% for message in form|messages %}
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            <div>{{message}}</div>
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% block content %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+    <footer class="footer">
+        <div class="copyr">Powered by &copy; 2018 DjaoDjin. All rights reserved. - <a href="/legal/" target="_blank">Legal</a>
+            &nbsp;&nbsp;
+            <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+            <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+            <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+        </div>
+    </footer>
+    {% endblock %}
+    {% block _bodyscripts %}
+    {% assets "js_base" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <script type="text/javascript">
+jQuery(document).ready(function($) {
+    {% if csrf_token %}
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            // these HTTP methods do not require CSRF protection
+            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
+                xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+            }
+        }
+    });
+    {% endif %}
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-full-width",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": 200,
+        "hideDuration": 200,
+        "timeOut": "0",
+        "extendedTimeOut": "0",
+        "showEasing": "linear",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp",
+        containerId: "messages-content",
+        toastClass: "alert",
+        iconClasses: {
+            error: "alert-danger",
+            info: "alert-info",
+            success: "alert-success",
+            warning: "alert-warning"
+        },
+    };
+});
+    </script>
+    {% block bodyscripts %}{% endblock %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends "_form_fields.html" %}
+
+{% block form_block %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
+    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    {{super()}}
+    <div class="form-action text-center">
+        <button type="submit" class="btn btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+    </div>
+</form>
+{% endblock %}

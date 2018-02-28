@@ -1,0 +1,71 @@
+{% extends "saas/base.html" %}
+
+{% block content %}
+<div class="container">
+<div class="page-header">
+    <h1>{% block order_title %}Place Order{% endblock %}</h1>
+</div>
+{% block order_head %}
+<div class="row">
+    <div class="col-sm-offset-9 col-lg-offset-9 col-sm-3 col-lg-3">
+        <form method="post" id="redeem-form" class="form-inline" style="margin-bottom: 10px;">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            <div class="form-group">
+                <label class="control-label" style="font-weight: normal;">If you received a registration code, please enter it here.</label>
+                <div class="controls">
+                    <div class="input-group">
+                        <input id="id_code" class="form-control" name="code"
+                               type="text" placeholder="Code">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" id="payment-form" class="form-horizontal"
+              action=".{% if next %}/?next={{ next }}{% endif %}">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            {% if invoicables %}
+            {% include "saas/_invoiceables.html" %}
+            {% elif is_extra_charge %}
+            <fieldset id="extra-charge">
+                <legend>Extra Charge</legend>
+                <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
+                    <label class="control-label" for="descr">Description</label>
+                    <div class="controls">
+                        <input id="descr" class="form-control" name="descr"
+                         type="text" placeholder="Description for the charge" />
+                    </div>
+                    {% for error in form.descr.errors %}
+                    <span class="help-block"><strong>{{error}}</strong></span>
+                    {% endfor %}
+                </div>
+                <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
+                    <label class="control-label" for="amount">Amount</label>
+                    <div class="controls">
+                    <input id="amount"  class="form-control"
+                           type="number" min="0" step="any" placeholder="0"
+                           name="amount" autocomplete="off" />
+                    </div>
+                    {% for error in form.amount.errors %}
+                    <span class="help-block"><strong>{{error}}</strong></span>
+                    {% endfor %}
+                </div>
+            </fieldset>
+            {% else %}
+            <p class="text-center">Your subscription cart is empty.</p>
+            {% endif %}
+            {% block order_card %}
+            {% include "saas/_card_use.html" %}
+            {% endblock %}
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
