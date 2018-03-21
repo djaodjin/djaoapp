@@ -425,11 +425,23 @@ def subscribe_grant_accepted_notice(sender, subscription, grant_key,
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(subscription_grant_created, dispatch_uid="subscription_grant_created")
 def subscribe_grant_created_notice(sender, subscription, reason=None,
-                                      request=None, **kwargs):
+                                   invite=False, request=None, **kwargs):
     if subscription.grant_key:
         user_context = get_user_context(request.user if request else None)
         organization = subscription.organization
         if organization.email:
+            back_url = site.as_absolute_uri(reverse('subscription_grant_accept',
+                args=(organization, subscription.grant_key,)))
+            manager = organization.with_role(saas_settings.MANAGER).first()
+            # The following line could as well be `if invite:`
+            if has_invalid_password(manager):
+                # The User is already in the system but the account
+                # has never been activated.
+                contact, _ = EmailContact.objects.get_or_create_token(manager,
+                    verification_key=organization.generate_role_key(manager))
+                manager.save()
+                back_url = "%s?next=%s" % (reverse('registration_activate',
+                    args=(contact.verification_key,)), back_url)
             site = get_current_site()
             app = get_current_app()
             get_email_backend(connection=app.get_connection()).send(
@@ -439,12 +451,11 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 template='notification/subscription_grant_created.eml',
                 context={
                     'broker': get_broker(), 'app': app,
-                    'back_url': site.as_absolute_uri(reverse(
-                        'subscription_grant_accept', args=(
-                        organization, subscription.grant_key,))),
+                    'back_url': back_url,
                     'organization': organization,
                     'plan': subscription.plan,
                     'reason': reason if reason is not None else "",
+                    'invite': invite,
                     'user': user_context})
         else:
             LOGGER.warning(
