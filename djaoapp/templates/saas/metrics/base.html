@@ -32,8 +32,12 @@
             <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div id="metrics-chart">
-        </div>
+      </div>
+      <div id="metrics-chart" class="chart-content">
+            <div id="hideMe" class="fa fa-circle-o-notch fa-spin fa-5x" style="margin-left: 45%; margin-top: 100px; margin-bottom: 100px; color: #337AB7"></div>
+            <span id="container" style="font-size: 24px; color: #337AB7">Loading...</span>
+      </div>
+
         <!-- Display as a table -->
         <table class="table" style="font-size:0.7em;">
           <tr>
