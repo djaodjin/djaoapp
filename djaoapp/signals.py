@@ -430,6 +430,8 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
         user_context = get_user_context(request.user if request else None)
         organization = subscription.organization
         if organization.email:
+            site = get_current_site()
+            app = get_current_app()
             back_url = site.as_absolute_uri(reverse('subscription_grant_accept',
                 args=(organization, subscription.grant_key,)))
             manager = organization.with_role(saas_settings.MANAGER).first()
@@ -442,8 +444,6 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 manager.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url)
-            site = get_current_site()
-            app = get_current_app()
             get_email_backend(connection=app.get_connection()).send(
                 from_email=app.get_from_email(),
                 recipients=[organization.email],
