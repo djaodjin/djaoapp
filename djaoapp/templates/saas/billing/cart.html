@@ -7,26 +7,6 @@
 </div>
 {% block order_head %}
 <div class="row">
-    <div class="col-sm-offset-9 col-lg-offset-9 col-sm-3 col-lg-3">
-        <form method="post" id="redeem-form" class="form-inline" style="margin-bottom: 10px;">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="form-group">
-                <label class="control-label" style="font-weight: normal;">If you received a registration code, please enter it here.</label>
-                <div class="controls">
-                    <div class="input-group">
-                        <input id="id_code" class="form-control" name="code"
-                               type="text" placeholder="Code">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{% endblock %}
-<div class="row">
     <div class="col-md-12">
         <form method="post" id="payment-form" class="form-horizontal"
               action=".{% if next %}/?next={{ next }}{% endif %}">
@@ -61,6 +41,26 @@
             {% else %}
             <p class="text-center">Your subscription cart is empty.</p>
             {% endif %}
+<div class="row">
+    <div class="col-sm-offset-9 col-lg-offset-0 col-sm-3 col-lg-3">
+        <form method="post" id="redeem-form" class="form-inline" style="margin-bottom: 10px;">
+            <div class="form-group">
+                <label class="collapsible" style="padding-left: 18px;">Add a registration code here!</label>
+                    <div class="content">
+                    <div class="controls">
+                    <div class="input-group">
+                        <input id="id_code" class="form-control" name="code" type="text" placeholder="Enter Code">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </span>
+                    </div>
+                    </div>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
             {% block order_card %}
             {% include "saas/_card_use.html" %}
             {% endblock %}
@@ -68,4 +68,40 @@
     </div>
 </div>
 </div>
+<style>
+.collapsible {
+
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+</style>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+</script>
 {% endblock %}
