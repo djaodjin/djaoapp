@@ -52,9 +52,10 @@ function updateChart(container, data, unit, dataScale, extra) {
     nv.addGraph(function() {
         // clear any previous chart elements before adding new ones
         // remove svg and append it again to remove all previous attached events
-        d3.select(container + " svg").remove();
+        d3.select(container).selectAll("*").remove();
         d3.select(container).append("svg").attr("class", "chart-area");
         var maxY = 0;
+        var dateTicks = [];
         var values = data[0].values;
         var j = 0;
         var i = 0;
@@ -64,6 +65,9 @@ function updateChart(container, data, unit, dataScale, extra) {
                 values[i][0] = new Date(values[i][0]);
                 if( values[i][1] > maxY ) { maxY = values[i][1]; }
             }
+        }
+        for( i = 0; i < data[0].values.length; ++i ) {
+            dateTicks.push(data[0].values[i][0]);
         }
 
         var marginLeft = maxY * dataScale;
@@ -133,11 +137,19 @@ function updateChart(container, data, unit, dataScale, extra) {
         chart.useVoronoi(false);
 
         chart.xAxis
-            .showMaxMin(false)  //remove max and min in x axe
             .axisLabel("Date")
+            .showMaxMin(false)     // removes max and min as ticks in x-axis
+            .tickValues(dateTicks) // forces ticks to match dates in tooltip
             .tickFormat(function(d) {
-                return d3.time.format("%b'%y")(new Date(d));
+                if(d.getHours() !== 0 || d.getMinutes() !== 0
+                   || d.getSeconds() !== 0 ) {
+                    // XXX cannot add '*' suffix for incomplete months unless
+                    // we can reliably get dates at midnight with/out timeoffset
+                    return d3.time.format("%b'%y")(d);
+                }
+                return d3.time.format("%b'%y")(d);
             });
+        chart.xScale(d3.time.scale());
 
         chart.yAxis
             .showMaxMin(false);  //remove max and min in x axe
@@ -155,7 +167,6 @@ function updateChart(container, data, unit, dataScale, extra) {
                 });
         }
         chart.forceY(0); // Force only 0 but allow resize if unchecked chart
-        chart.xScale(d3.time.scale()); // Force date on axis to correspond to hover datas
 
         d3.select(container + " svg")
             .datum(data)

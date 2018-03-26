@@ -2,32 +2,11 @@
 
 {% block content %}
 <div class="container">
-<div class="page-header">
-    <h1>{% block order_title %}Place Order{% endblock %}</h1>
-</div>
-{% block order_head %}
-<div class="row">
-    <div class="col-sm-offset-9 col-lg-offset-9 col-sm-3 col-lg-3">
-        <form method="post" id="redeem-form" class="form-inline" style="margin-bottom: 10px;">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="form-group">
-                <label class="control-label" style="font-weight: normal;">If you received a registration code, please enter it here.</label>
-                <div class="controls">
-                    <div class="input-group">
-                        <input id="id_code" class="form-control" name="code"
-                               type="text" placeholder="Code">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
+    <div class="page-header">
+        <h1>{% block order_title %}Place Order{% endblock %}</h1>
     </div>
-</div>
-{% endblock %}
-<div class="row">
-    <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
         <form method="post" id="payment-form" class="form-horizontal"
               action=".{% if next %}/?next={{ next }}{% endif %}">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
@@ -61,11 +40,37 @@
             {% else %}
             <p class="text-center">Your subscription cart is empty.</p>
             {% endif %}
+            <div id="redeem-code" class="text-right">
+                <a href="" class="collapsible">registration code</a>
+                <div style="display:none;">
+                    <div style="display:inline-block;width:25%;">
+                    <label class="control-label" style="text-align:left;font-weight:normal;">If you received a registration code, please enter it here.</label>
+                    <div class="input-group">
+                        <input class="form-control" name="code" type="text" placeholder="Enter Code">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary submit-code">Apply</button>
+                        </span>
+                    </div>
+                    </div>
+                </div>
+            </div>
             {% block order_card %}
             {% include "saas/_card_use.html" %}
             {% endblock %}
         </form>
+      </div>
     </div>
 </div>
-</div>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $(".collapsible").click(function(event) {
+        var self = this;
+        event.preventDefault();
+        $(self).next().toggle();
+    });
+});
+</script>
 {% endblock %}
