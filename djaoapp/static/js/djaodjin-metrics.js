@@ -45,6 +45,7 @@ function drawChartBackground(chart){
 // This function should be called with all parameters
 // updateChart('#example', data, null, 1, [])
 // Container should be a div, a svg element is automaticaly added
+// dates must be moment objects in order to compute ticks accurately.
 function updateChart(container, data, unit, dataScale, extra) {
     "use strict";
 
@@ -62,7 +63,6 @@ function updateChart(container, data, unit, dataScale, extra) {
         for( j = 0; j < data.length; ++j ) {
             values = data[j].values;
             for( i = 0; i < values.length; ++i ) {
-                values[i][0] = new Date(values[i][0]);
                 if( values[i][1] > maxY ) { maxY = values[i][1]; }
             }
         }
@@ -114,7 +114,7 @@ function updateChart(container, data, unit, dataScale, extra) {
               $.each(extra, function(index, element){
                 var extraKey = element.key;
                 var extraValue = $.grep(element.values, function(v){
-                  return hoverDate === d3.time.format("%x")(new Date(v[0]));
+                  return hoverDate === d3.time.format("%x")(v[0]);
                 })[0];
                 if (extraValue){
                   var style = null;
@@ -141,13 +141,11 @@ function updateChart(container, data, unit, dataScale, extra) {
             .showMaxMin(false)     // removes max and min as ticks in x-axis
             .tickValues(dateTicks) // forces ticks to match dates in tooltip
             .tickFormat(function(d) {
-                if(d.getHours() !== 0 || d.getMinutes() !== 0
-                   || d.getSeconds() !== 0 ) {
-                    // XXX cannot add '*' suffix for incomplete months unless
-                    // we can reliably get dates at midnight with/out timeoffset
-                    return d3.time.format("%b'%y")(d);
+                if(d.date() !== 1 || d.hour() !== 0
+                   || d.minute() !== 0 || d.second() !== 0 ) {
+                    return d.format("MMM'YY*");
                 }
-                return d3.time.format("%b'%y")(d);
+                return d.clone().subtract(1, 'months').format("MMM'YY");
             });
         chart.xScale(d3.time.scale());
 
@@ -265,10 +263,10 @@ function updateBarChart(container, data, unit, dataScale, extra) {
             .groupSpacing(0.1);   // Distance between each group of bars.
         chart.xAxis
             .tickFormat(function(d) {
-                return d3.time.format("%x")(new Date(d)); });
+                return d3.time.format("%x")(d); });
         chart.yAxis
             .tickFormat(d3.format(",.2f"));
-        chart.x(function(d) { return new Date(d[0]); })
+        chart.x(function(d) { return d[0]; })
             .y(function(d) { return d[1] / 100; });
 
         d3.select(container + " svg")

@@ -27,6 +27,10 @@
       <div id="metrics-table" class="tab-pane active">
         <div class="date-chooser pull-right">
           <span>To</span>
+          <select  class="form-control" ng-model="timezone" style="display:inline-block; width:80px;">
+            <option value="local">Local</option>
+            <option value="utc">UTC</option>
+          </select>
           <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
           <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
         </div>

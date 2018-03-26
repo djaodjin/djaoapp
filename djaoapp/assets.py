@@ -71,6 +71,7 @@ register('css_dashboard', css_dashboard)
 
 js_angular = Bundle(
     'vendor/moment.js',
+    'vendor/moment-timezone-with-data.js',
     'vendor/angular.min.js',
     'vendor/angular-touch.min.js',
     'vendor/angular-animate.min.js',
