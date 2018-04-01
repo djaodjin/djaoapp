@@ -45,17 +45,9 @@ if os.getenv('DJANGO_COVERAGE'):
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djaoapp.settings")
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MEDIA_ROOT = os.path.join(BASE_DIR, 'htdocs', 'media')
-
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
 application = DjangoWhiteNoise(get_wsgi_application())
-application.add_files(MEDIA_ROOT, prefix="/%s/" % os.path.basename(MEDIA_ROOT))
-
-# Apply WSGI middleware here.
-#from whitenoise import WhiteNoise
-#application = WhiteNoise(get_wsgi_application(), root="path to static files")

@@ -45,12 +45,7 @@ if settings.DEBUG:
             {'path': 'favicon.ico'})
     ]
 else:
-    urlpatterns = [
-        url(r'^static/(?P<path>.*)$', django_static_serve,
-            {'document_root': settings.STATIC_ROOT, 'show_indexes':True}),
-        url(r'^media/(?P<path>.*)$', django_static_serve,
-            {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
-    ]
+    urlpatterns = []
 
 urlpatterns += [
     url(r'^', include('saas.backends.urls')),
