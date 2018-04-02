@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES += (
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'signup.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -501,7 +501,6 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-# XXX not yet committed:        'signup.auth.TokenAuthentication'
     )
 }
 if not DEBUG:
