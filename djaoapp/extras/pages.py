@@ -3,11 +3,12 @@
 
 from __future__ import absolute_import
 
-from django.core.urlresolvers import reverse
 from django.http import Http404
 from rules.extras import AppMixinBase
 from saas.extras import OrganizationMixinBase
 from saas.utils import get_organization_model
+
+from ..compat import reverse
 
 
 class ExtraMixin(OrganizationMixinBase, AppMixinBase):

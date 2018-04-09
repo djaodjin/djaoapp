@@ -8,14 +8,13 @@ import logging
 
 from django.conf import settings
 from django.core.files.storage import get_storage_class
-from django.core.urlresolvers import reverse
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from pages.views.pages import inject_edition_tools as pages_inject_edition_tools
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
 
-from .compat import csrf
+from .compat import csrf, reverse
 from .locals import is_streetside, is_testing
 
 
@@ -48,7 +47,7 @@ def fail_edit_perm(request, account=None):
     if request is not None:
         if account is None:
             account = get_current_app().account
-        result = not bool(_valid_manager(request.user, [account]))
+        result = not bool(_valid_manager(request, [account]))
     return result
 
 

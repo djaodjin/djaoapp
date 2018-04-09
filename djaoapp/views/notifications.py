@@ -2,12 +2,11 @@
 # see LICENSE
 
 from django.views.generic import TemplateView
-from django.core.urlresolvers import reverse
-
 from rules.mixins import AppMixin
 from saas.models import get_broker
 
 from ..api.notifications import get_test_email_context
+from ..compat import reverse
 
 
 class NotificationInnerFrameView(AppMixin, TemplateView):

@@ -11,14 +11,13 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin, UserMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.views import (
+from signup.views.users import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
@@ -29,8 +28,9 @@ from signup.views import (
     UserProfileView as UserProfileBaseView)
 from rules.mixins import AppMixin
 
-from djaoapp.locals import get_current_broker
-from djaoapp.forms.custom_signup import (PersonalRegistrationForm,
+from ..compat import reverse
+from ..locals import get_current_broker
+from ..forms.custom_signup import (PersonalRegistrationForm,
     SigninForm, TogetherRegistrationForm)
 
 

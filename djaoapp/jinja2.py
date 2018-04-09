@@ -4,7 +4,6 @@
 from __future__ import absolute_import
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 import django.template.defaulttags
 from django_assets.env import get_env
 from deployutils.apps.django.management.commands import get_template_search_path
@@ -15,9 +14,10 @@ from pages import signals as pages_signals
 import saas.templatetags.saas_tags
 from webassets.ext.jinja2 import AssetsExtension
 
+from .compat import import_string, reverse
 import djaoapp.assets
-from djaoapp.compat import import_string
 import djaoapp.templatetags.djaoapp_tags
+
 
 class DjaoappEnvironment(Jinja2Environment):
 
