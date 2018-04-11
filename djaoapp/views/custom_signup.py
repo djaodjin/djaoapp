@@ -135,17 +135,18 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
 
     def form_invalid(self, form):
         #pylint:disable=protected-access
-        if len(form._errors) == 1 and 'organization_name' in form._errors:
-            for err in form._errors['organization_name']:
+        organization_selector = 'full_name'
+        if len(form._errors) == 1 and organization_selector in form._errors:
+            for err in form._errors[organization_selector]:
                 if err.startswith(
                         "Your organization might already be registered."):
                     user_model = get_user_model()
                     user = user_model(email=form.cleaned_data['email'])
                     # Use ``form.data`` because Django will have removed
-                    # the 'organization_name' key from ``form.cleaned_data``
+                    # the `organization_selector` key from ``form.cleaned_data``
                     # at this point.
                     organization_name = form.data.get(
-                        'organization_name', None)
+                        organization_selector, None)
                     self.already_present_candidate = \
                         Organization.objects.find_candidates(
                             organization_name, user=user).first()
@@ -272,6 +273,7 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
         """
         Registers both a User and an Organization at the same time.
         """
+        organization_selector = 'full_name'
         user_first_name, user_last_name = self.first_and_last_names(
             **cleaned_data)
         role_extra = {}
@@ -290,7 +292,7 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             user_first_name=user_first_name,
             user_last_name=user_last_name,
             email=cleaned_data['email'],
-            organization_full_name=cleaned_data['organization_name'],
+            organization_full_name=cleaned_data[organization_selector],
             phone=cleaned_data.get('phone', ""),
             street_address=cleaned_data.get('street_address', ""),
             locality=cleaned_data.get('locality', ""),
