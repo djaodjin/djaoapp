@@ -469,7 +469,9 @@ LOGGING = {
 
 # Authentication
 # --------------
-SIGNUP = {}
+SIGNUP = {
+    'ACCOUNT_MODEL': 'saas.Organization',
+}
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
     if hasattr(sys.modules[__name__], config_param):
