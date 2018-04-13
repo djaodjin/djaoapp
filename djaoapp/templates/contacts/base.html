@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% endblock %}
+
+{% block bodyscripts %}
+{% assets "js_angular" %}
+<script type="text/javascript" src="{{ASSET_URL}}"></script>
+{% endassets %}
+{% assets "js_dashboard" %}
+<script type="text/javascript" src="{{ASSET_URL}}"></script>
+{% endassets %}
+<script type="text/javascript">
+/* Implementation Note: Not including a list of dependent modules
+   (2nd parameter to `module`) "re-opens" the module for additional
+   configuration.
+   - We add the CSRF token for as an HTTP header on API calls.
+   - We make it easier to separate between django and angularjs templates
+     by changing Angular defaults to [[ and ]] characters. */
+var reopenSignupApp = angular.module('signupApp');
+reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
+           function($interpolateProvider, $httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+}]);
+reopenSignupApp.constant('settings', {
+urls: {
+    api_activities: "{{urls.api_activities}}",
+    api_contact: "{{urls.api_contact}}",
+    api_contacts: "{{urls.api_contacts}}",
+    api_candidates: "{{'/api/profile/'|site_prefixed}}",
+    contacts: "{{urls.contacts}}",
+},
+itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+});
+</script>
+{% block contacts_scripts %}{% endblock %}
+{% endblock %}
