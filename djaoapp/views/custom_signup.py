@@ -128,7 +128,7 @@ class SignoutView(SignoutBaseView):
 class SignupView(AuthMixin, AppMixin, SignupBaseView):
 
     user_model = get_user_model()
-    role_extra_fields = (('function', 'Function', True),)
+    role_extra_fields = (('function', 'Function', False),)
     organization_extra_fields = (
         ('parent_corporation', 'Parent corporation', False),
     )

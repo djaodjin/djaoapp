@@ -7,10 +7,11 @@
     {% if form.user_full_name %}
     <fieldset>
         <legend>Login Credentials</legend>
-        {{ input_field(form['user_full_name'], form.hide_labels) }}
-        {{ input_field(form['email'], form.hide_labels) }}
+        {{ input_field(form['username'], form.hide_labels) }}
         {{ input_field(form['new_password1'], form.hide_labels) }}
         {{ input_field(form['new_password2'], form.hide_labels) }}
+        {{ input_field(form['user_full_name'], form.hide_labels) }}
+        {{ input_field(form['email'], form.hide_labels) }}
     </fieldset>
     <fieldset>
         <legend>Organization Information</legend>
