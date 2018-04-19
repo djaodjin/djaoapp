@@ -52,7 +52,7 @@ function updateChart(container, data, unit, dataScale, extra) {
     nv.addGraph(function() {
         // clear any previous chart elements before adding new ones
         // remove svg and append it again to remove all previous attached events
-        d3.select(container + " svg").remove();
+        d3.select(container).selectAll("*").remove();
         d3.select(container).append("svg").attr("class", "chart-area");
         var maxY = 0;
         var values = data[0].values;
@@ -243,7 +243,7 @@ function updateBarChart(container, data, unit, dataScale, extra) {
 
         // clear any previous chart elements before adding new ones
         // remove svg and append it again to remove all previous attached events
-        d3.select(container + " svg").remove();
+        d3.select(container + "svg").remove();
         d3.select(container).append("svg").attr("class", "chart-area");
         var chart = nv.models.multiBarChart()
             .reduceXTicks(true)   // If 'false', every single x-axis tick
