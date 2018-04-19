@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
     });
 {% endif %}
 {% if urls and urls.api_redeem %}
-    $("#redeem-form").redeem(
+    $("#redeem-code").redeem(
         {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
 {% endif %}
     var cardForm = $("#payment-form");

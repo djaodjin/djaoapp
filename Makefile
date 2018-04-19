@@ -164,6 +164,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/jquery.selection/dist/jquery.selection.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/MathJax/MathJax.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/MathJax/config/*.js $(ASSETS_DIR)/vendor/config
 	$(installFiles) $(installTop)/node_modules/MathJax/extensions/*.js $(ASSETS_DIR)/vendor/extensions

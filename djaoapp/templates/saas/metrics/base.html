@@ -27,17 +27,16 @@
       <div id="metrics-table" class="tab-pane active">
         <div class="date-chooser pull-right">
           <span>To</span>
+          <select  class="form-control" ng-model="timezone" style="display:inline-block; width:80px;">
+            <option value="local">Local</option>
+            <option value="utc">UTC</option>
+          </select>
+          <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
           <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
-          <span>
-            <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
-          </span>
         </div>
-      </div>
-      <div id="metrics-chart" class="chart-content">
-            <div id="hideMe" class="fa fa-circle-o-notch fa-spin fa-5x" style="margin-left: 45%; margin-top: 100px; margin-bottom: 100px; color: #337AB7"></div>
-            <span id="container" style="font-size: 24px; color: #337AB7">Loading...</span>
-      </div>
-
+        <div id="metrics-chart" class="chart-content">
+          <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
         <!-- Display as a table -->
         <table class="table" style="font-size:0.7em;">
           <tr>

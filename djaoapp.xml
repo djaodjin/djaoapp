@@ -23,7 +23,7 @@
       <dep name="django-urldecorators" target="python">
         <lib>.*/(urldecorators)/__init__.py</lib>
       </dep>
-      <dep name="djangorestframework" target="python">
+      <dep name="djangorestframework" target="python" includes="3.7.0">
         <lib>.*/(rest_framework)/__init__.py</lib>
       </dep>
       <dep name="whitenoise" target="python">
