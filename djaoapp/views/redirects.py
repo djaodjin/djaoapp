@@ -14,6 +14,6 @@ class OrganizationRedirectView(AppMixin, BaseOrganizationRedirectView):
     implicit_create_on_none = False
 
     def get_implicit_create_on_none(self):
-        if self.app and self.app.registration == self.app.PERSONAL_REGISTRATION:
+        if self.app and self.app.get_implicit_create_on_none():
             return True
         return self.implicit_create_on_none

@@ -342,7 +342,8 @@
 {
     "fields": {
       "slug": "djaoapp",
-      "account": 2
+      "account": 2,
+      "registration": 3
     },
     "model": "rules.App", "pk": 1
 },
