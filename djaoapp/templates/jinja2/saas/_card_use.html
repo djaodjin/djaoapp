@@ -3,7 +3,7 @@
 {% block form_block %}
 <div id="card-use">
     <div class="row">
-        <fieldset class="col-lg-5 col-md-5">
+        <fieldset class="col-xs-6" style="padding-right: 15%">
             <legend>
 Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{ urls.organization.update_card }}">Update</a>{% endif %}
             </legend>
@@ -140,7 +140,7 @@ See the <a href="/legal/security/" target="_blank">security policy</a>
 for details.
             </p>
         </fieldset>
-        <fieldset class="col-lg-5 col-md-5 col-lg-offset-1 col-md-offset-1">
+        <fieldset class="col-sm-9" style="padding-right: 35%">
             <legend>Billing Address</legend>
             {{ input_field(form['card_name'], form.hide_labels) }}
             {{ input_field(form['card_address_line1'], form.hide_labels) }}
