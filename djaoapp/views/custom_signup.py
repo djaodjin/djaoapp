@@ -18,7 +18,7 @@ from saas import settings as saas_settings
 from saas.mixins import ProviderMixin, UserMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.views import (
+from signup.views.users import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,

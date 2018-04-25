@@ -16,7 +16,7 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     user_relation_added, user_relation_requested, role_grant_accepted,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created)
-from signup.models import EmailContact
+from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
 from signup.utils import (has_invalid_password,
