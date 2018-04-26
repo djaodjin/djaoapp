@@ -16,6 +16,7 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created)
 from signup.models import Contact
+from signup.compat import User
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
 from signup.utils import (has_invalid_password,
@@ -34,19 +35,30 @@ contact_requested = Signal( #pylint:disable=invalid-name
     providing_args=["provider", "user", "reason"])
 
 
-def _notified_recipients(organization):
+def _notified_recipients(organization, notification_slug):
     """
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
     """
-    managers = [notified.email
-        for notified in organization.with_role(saas_settings.MANAGER)]
+    def _get_optedin_users(managers, notification_slug):
+        # checking whether those users are subscribed to the notification
+        managers_ids = [manager.id for manager in managers]
+        return User.objects \
+            .filter(pk__in=managers_ids) \
+            .filter(notifications__slug=notification_slug) \
+            .all()
+
+    managers = organization.with_role(saas_settings.MANAGER)
+    filtered = _get_optedin_users(managers, notification_slug)
+
+    managers_emails = [notified.email
+        for notified in filtered]
     if organization.email:
         recipients = [organization.email]
         bcc = [email
-            for email in managers if email != organization.email]
+            for email in managers_emails if email != organization.email]
     else:
-        recipients = managers
+        recipients = managers_emails
         bcc = []
     if not recipients:
         # XXX Avoids 500 errors when no email and no managers
@@ -78,7 +90,7 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
     if user.pk is not None:
         context.update({'urls': {'user': {'profile':
             reverse('users_profile', args=(user,))}}})
-    recipients, bcc = _notified_recipients(provider)
+    recipients, bcc = _notified_recipients(provider, "contact_requested_notice")
     LOGGER.debug("[signal] contact_requested_notice(provider=%s, user=%s)",
         provider, user)
     if SEND_EMAIL:
@@ -98,7 +110,7 @@ def user_registered_notice(sender, user, **kwargs):
     A new user has registered (frictionless or completely)
     """
     broker = get_broker()
-    recipients, bcc = _notified_recipients(broker)
+    recipients, bcc = _notified_recipients(broker, "user_registered_notice")
     app = get_current_app()
     LOGGER.debug("[signal] user_registered_notice(user=%s)", user)
     if SEND_EMAIL:
@@ -124,7 +136,7 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
 
     broker = get_broker()
     site = get_current_site()
-    recipients, bcc = _notified_recipients(broker)
+    recipients, bcc = _notified_recipients(broker, "user_activated_notice")
     app = get_current_app()
     LOGGER.debug("[signal] user_activated_notice(user=%s, verification_key=%s)",
         user, verification_key)
@@ -193,8 +205,8 @@ def user_reset_password_notice(
 def charge_updated_notice(sender, charge, user, **kwargs):
     from saas.mixins import get_charge_context # Avoid import loop
     broker = charge.broker
-    recipients, bcc = _notified_recipients(charge.customer)
-    broker_recipients, broker_bcc = _notified_recipients(broker)
+    recipients, bcc = _notified_recipients(charge.customer, "charge_updated")
+    broker_recipients, broker_bcc = _notified_recipients(broker, "charge_updated")
     context = get_charge_context(charge)
     if user and charge.created_by != user:
         context.update({'email_by': get_user_context(user)})
@@ -218,7 +230,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
 @receiver(card_updated, dispatch_uid="card_updated")
 def card_updated_notice(sender, organization, user,
                         old_card, new_card, **kwargs):
-    recipients, bcc = _notified_recipients(organization)
+    recipients, bcc = _notified_recipients(organization, "card_updated")
     app = get_current_app()
     LOGGER.debug("[signal] card_updated_notice(organization=%s, user=%s,"\
         "old_card=%s, new_card=%s)", organization, user, old_card, new_card)
@@ -241,8 +253,8 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     invoiced_items = Transaction.objects.filter(id__in=invoiced_items)
     broker = get_broker()
     recipients, bcc = _notified_recipients(
-        invoiced_items.first().dest_organization)
-    broker_recipients, broker_bcc = _notified_recipients(broker)
+        invoiced_items.first().dest_organization, "order_executed")
+    broker_recipients, broker_bcc = _notified_recipients(broker, "order_executed")
     app = get_current_app()
     LOGGER.debug("[signal] order_executed_notice(invoiced_items=%s, user=%s)",
         invoiced_items, user)
@@ -282,8 +294,8 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
     if not changes:
         return
     broker = get_broker()
-    recipients, _ = _notified_recipients(organization)
-    broker_recipients, broker_bcc = _notified_recipients(broker)
+    recipients, _ = _notified_recipients(organization, "organization_updated")
+    broker_recipients, broker_bcc = _notified_recipients(broker, "organization_updated")
     LOGGER.info("%s updated", organization,
         extra={'event': 'update-fields', 'organization': str(organization),
                'changes': changes})
@@ -589,7 +601,7 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
 @receiver(expires_soon, dispatch_uid="expires_soon")
 def expires_soon_notice(sender, subscription, nb_days, **kwargs):
     broker = get_broker()
-    broker_recipients, broker_bcc = _notified_recipients(broker)
+    broker_recipients, broker_bcc = _notified_recipients(broker, "expires_soon")
     if subscription.organization.email:
         site = get_current_site()
         app = get_current_app()
