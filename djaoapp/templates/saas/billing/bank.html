@@ -6,18 +6,20 @@
 
 {% block saas_content %}
 {% if organization.processor_deposit_key %}
+  <div style="display:inline-block;">
+    <dl class="dl-horizontal">
+      <dt>Institution</dt>
+      <dd ng-cloak>[[bank_name]]</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Account Number</dt>
+      <dd ng-cloak>[[last4]]</dd>
+    </dl>
+  </div>
   {% if organization.processor_pub_key %}
   <!-- We have a ``standalone`` account. -->
   <p>
   Connected to a Stripe account.
-  <dl class="dl-horizontal">
-    <dt>Institution</dt>
-    <dd ng-cloak>[[bank_name]]</dd>
-  </dl>
-  <dl class="dl-horizontal">
-    <dt>Account Number</dt>
-    <dd ng-cloak>[[last4]]</dd>
-  </dl>
   </p>
   <p>
       <button id="de-authorize-btn" class="btn btn-danger" data-toggle="modal" data-target="#de-authorize">De-authorize</button>
@@ -28,7 +30,7 @@
   {% endif %}
 {% else %}
 <p>
-<a class="text-center img-responsive" href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{STRIPE_CLIENT_ID}}&scope=read_write&state={{site}}"><img src="{{'static/img/stripe-connect.png'|djasset}}" /></a>
+<a class="text-center img-responsive" href="{{urls.authorize_processor}}"><img src="{{'static/img/stripe-connect.png'|djasset}}" /></a>
 </p>
 {% endif %}
 <div id="de-authorize" class="modal fade" tabindex="-1" role="dialog"

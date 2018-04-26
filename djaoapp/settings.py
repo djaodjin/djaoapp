@@ -551,13 +551,14 @@ SAAS = {
     'BROKER': {
         'GET_INSTANCE': 'djaoapp.locals.get_current_broker',
         'IS_INSTANCE_CALLABLE': 'djaoapp.locals.is_current_broker',
-        'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
+        'BUILD_ABSOLUTE_URI_CALLABLE': 'djaoapp.locals.provider_absolute_url',
     },
     'PROCESSOR': {
         'PUB_KEY': STRIPE_PUB_KEY,
         'PRIV_KEY': STRIPE_PRIV_KEY,
-        'MODE': 1, # Default: Mallspace, i.e. ``FORWARD``.
+        'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
         'CLIENT_ID': STRIPE_CLIENT_ID,
+        'AUTHORIZE_CALLABLE': 'djaoapp.locals.get_authorize_processor_url',
         'REDIRECT_CALLABLE': 'djaoapp.locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },

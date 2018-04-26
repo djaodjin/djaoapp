@@ -15,7 +15,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
         # XXX might be overkill to always add ``site`` even though
-        # it is only necessary in ``bank.html`` for Stripe callback.
+        # it is only used in ``templates/saas/users/roles.html`` at this point.
         context.update({'site': get_current_site()})
         urls = {
             'user': {'profile_redirect': reverse('accounts_profile')},
