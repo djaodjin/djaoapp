@@ -24,6 +24,7 @@
     "jquery.payment": "3.0.0",
     "jquery.selection": "0.1.2",
     "jquery-ui-touch-punch": "0.2.3",
+    "jwt-decode": "2.2.0",
     "less": "2.7.2",
     "markdown": "v0.5.0",
     "mathjax": "2.6.1",

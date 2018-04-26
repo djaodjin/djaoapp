@@ -1,0 +1,43 @@
+{% extends "contacts/base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row" ng-app="signupApp">
+    <div ng-controller="contactsCtrl">
+      <div class="page-header">
+        <h2>Contacts</h2>
+      </div>
+      <div class="col-sm-6">
+        <div ng-hide="items.$resolved">
+          <h3>Loading ...</h3>
+        </div>
+        <div ng-cloak ng-show="items.$resolved && items.results.length == 0">
+          <h4><em>No contacts<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+        </div>
+        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+          <div ng-repeat="entry in items.results">
+            <p><a href="{{urls.contacts}}[[entry.slug]]/">[[entry.full_name]]</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <form class="form" ng-submit="createContact()">
+          <div class="form-group">
+            <label>Full name</label>
+            <input class="form-control" type="text" name="full_name" ng-model="contact.full_name">
+          </div>
+          <div class="form-group">
+            <label>Nick name</label>
+            <input class="form-control" type="text" name="nick_name" ng-model="contact.nick_name">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-control" type="text" name="email" ng-model="contact.email">
+          </div>
+          <button class="btn btn-primary" type="submit" value="submit">Create Contact</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "contacts/base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row" ng-app="signupApp">
+    <div ng-controller="contactCtrl">
+      <div class="page-header">
+        <h2>Contact profile</h2>
+      </div>
+      <div class="col-sm-6">
+        <h3>Activities</h3>
+        <form class="form" ng-submit="createActivity()">
+         <div class="form-group">
+            <label>Account</label>
+              <script type="text/ng-template" id="customTemplate.html">
+                <a><span bind-html-unsafe="match.model.email | uibTypeaheadHighlight:query"></span>
+                </a>
+              </script>
+              <input name="user" type="text" placeholder="Username or Email"
+                     autocomplete="off"
+                     ng-model="activity.account"
+                     uib-typeahead="item.slug for item in getCandidates($viewValue)"
+                     uib-typeahead-loading="loadingUsers"
+                     uib-typeahead-template-url="customTemplate.html"
+                     class="form-control input-sm" style="width: 100%;">
+         </div>
+         <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" name="text" ng-model="activity.text"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit" value="submit">Create activity</button>
+        </form>
+        <div ng-hide="items.$resolved">
+          <h3>Loading ...</h3>
+        </div>
+        <div ng-cloak ng-show="items.$resolved && items.results.length == 0">
+          <h4><em>No activity<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+        </div>
+        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+          <div ng-repeat="entry in items.results">
+            <p>[[entry.created_at | date : mediumDate]] <a href="{{'/profile/'|site_prefixed}}[[entry.account]]/">[[entry.account]]</a> by [[entry.created_by]]:</p>
+            <div>[[entry.text]]</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <dl>
+          <dt>Nick name</dt>
+          <dd>{{contact.nick_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Full name</dt>
+          <dd>{{contact.full_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Email</dt>
+          <dd>{{contact.email}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

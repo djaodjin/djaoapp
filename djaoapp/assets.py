@@ -95,6 +95,7 @@ js_dashboard = Bundle(
     'vendor/chardinjs.js',
     'js/djaodjin-upload.js',
     'js/djaodjin-dashboard.js',
+    'js/djaodjin-signup-angular.js',
     'js/djaodjin-saas-angular.js',
     'js/djaodjin-proxy-angular.js',
     'js/djaodjin-metrics.js',

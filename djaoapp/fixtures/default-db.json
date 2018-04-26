@@ -342,7 +342,8 @@
 {
     "fields": {
       "slug": "djaoapp",
-      "account": 2
+      "account": 2,
+      "registration": 3
     },
     "model": "rules.App", "pk": 1
 },
@@ -697,7 +698,7 @@
       "user": 9,
       "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
     },
-    "model": "signup.EmailContact", "pk": 1
+    "model": "signup.Contact", "pk": 1
 },
 {
     "fields": {

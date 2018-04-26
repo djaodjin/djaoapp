@@ -1,13 +1,13 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
 
-from django.core.urlresolvers import reverse
 from django.utils import six
 from pages.locals import get_edition_tools_context_data
 from rules.utils import get_current_app
 from saas.decorators import fail_direct
 from saas.models import Plan
 
+from .compat import reverse
 from .edition_tools import fail_edit_perm, inject_edition_tools
 
 

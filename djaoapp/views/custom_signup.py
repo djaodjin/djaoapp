@@ -11,14 +11,13 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin, UserMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.views import (
+from signup.views.users import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
@@ -29,8 +28,9 @@ from signup.views import (
     UserProfileView as UserProfileBaseView)
 from rules.mixins import AppMixin
 
-from djaoapp.locals import get_current_broker
-from djaoapp.forms.custom_signup import (PersonalRegistrationForm,
+from ..compat import reverse
+from ..locals import get_current_broker
+from ..forms.custom_signup import (PersonalRegistrationForm,
     SigninForm, TogetherRegistrationForm)
 
 
@@ -128,24 +128,25 @@ class SignoutView(SignoutBaseView):
 class SignupView(AuthMixin, AppMixin, SignupBaseView):
 
     user_model = get_user_model()
-    role_extra_fields = (('function', 'Function', True),)
+    role_extra_fields = (('function', 'Function', False),)
     organization_extra_fields = (
         ('parent_corporation', 'Parent corporation', False),
     )
 
     def form_invalid(self, form):
         #pylint:disable=protected-access
-        if len(form._errors) == 1 and 'organization_name' in form._errors:
-            for err in form._errors['organization_name']:
+        organization_selector = 'full_name'
+        if len(form._errors) == 1 and organization_selector in form._errors:
+            for err in form._errors[organization_selector]:
                 if err.startswith(
                         "Your organization might already be registered."):
                     user_model = get_user_model()
                     user = user_model(email=form.cleaned_data['email'])
                     # Use ``form.data`` because Django will have removed
-                    # the 'organization_name' key from ``form.cleaned_data``
+                    # the `organization_selector` key from ``form.cleaned_data``
                     # at this point.
                     organization_name = form.data.get(
-                        'organization_name', None)
+                        organization_selector, None)
                     self.already_present_candidate = \
                         Organization.objects.find_candidates(
                             organization_name, user=user).first()
@@ -272,6 +273,7 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
         """
         Registers both a User and an Organization at the same time.
         """
+        organization_selector = 'full_name'
         user_first_name, user_last_name = self.first_and_last_names(
             **cleaned_data)
         role_extra = {}
@@ -290,7 +292,7 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             user_first_name=user_first_name,
             user_last_name=user_last_name,
             email=cleaned_data['email'],
-            organization_full_name=cleaned_data['organization_name'],
+            organization_full_name=cleaned_data[organization_selector],
             phone=cleaned_data.get('phone', ""),
             street_address=cleaned_data.get('street_address', ""),
             locality=cleaned_data.get('locality', ""),

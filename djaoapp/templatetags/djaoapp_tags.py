@@ -2,7 +2,6 @@
 # see LICENSE
 
 from django import template
-from django.core.urlresolvers import reverse
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
@@ -13,6 +12,7 @@ from saas.templatetags.saas_tags import attached_organization
 #pylint:disable=no-name-in-module,import-error
 from django.utils.six.moves.urllib.parse import urljoin
 
+from ..compat import reverse
 from ..locals import is_streetside
 
 

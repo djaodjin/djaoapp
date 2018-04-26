@@ -351,6 +351,9 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       <dep name="boto3" target="python">
         <lib>.*/(boto3)/__init__.py</lib>
       </dep>
+      <dep name="PyJWT" target="python">
+        <lib>.*/(jwt)/__init__.py</lib>
+      </dep>
       <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>

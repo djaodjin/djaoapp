@@ -1,7 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
 
-from django.core.urlresolvers import reverse
 from django.template import TemplateDoesNotExist
 from extended_templates.backends import get_email_backend
 from rest_framework import status
@@ -11,6 +10,7 @@ from rest_framework.views import APIView
 from rules.mixins import AppMixin
 from saas.models import Price, get_broker
 
+from ..compat import reverse
 from ..locals import get_current_site, get_current_app
 
 
