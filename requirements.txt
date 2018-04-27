@@ -13,8 +13,8 @@ djaodjin-extended-templates==0.2.2
 djaodjin-multitier==0.1.2
 djaodjin-pages==0.1.3
 djaodjin-rules==0.1.1
-djaodjin-saas==0.3.1
-djaodjin-signup==0.1.8
+djaodjin-saas==0.3.2
+djaodjin-signup==0.1.9
 djaodjin-survey==0.1.7
 jinja2==2.8.1
 # gunicorn 19.0 is broken (see issue 787)
