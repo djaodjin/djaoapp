@@ -1,8 +1,15 @@
 DjaoDjin website
 ================
 
-This Django project contains the code for the reverse proxy serving
-sites on djaoapp.com.
+This Django project contains the code for DjaoDjin subscription-based session
+manager. To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
+
+It integrates
+- [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
+- [djaodjin-saas](https://github.com/djaodjin/djaodjin-saas/) for subscription-based payment pages and APIs
+- [djaodjin-rules](https://github.com/djaodjin/djaodjin-rules/) for role-based access control and HTTP request forwarding
+- [djaodjin-pages](https://github.com/djaodjin/djaodjin-pages/) for live editingof self-hosted HTML pages
+
 
 Templates Search Path
 ---------------------

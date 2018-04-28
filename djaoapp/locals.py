@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import Http404
 from django.utils import six
 from multitier.thread_locals import get_current_site
-from multitier.mixins import  build_absolute_uri
+from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from rules.utils import get_app_model
 from saas.models import Subscription
@@ -149,6 +149,36 @@ def is_current_broker(organization_slug):
             and not is_testing(get_current_site()))
 
 
+def _provider_as_site(provider):
+    site = None
+    if not provider or is_current_broker(str(provider)):
+        site = get_current_site()
+    else:
+        site_model = get_site_model()
+        candidates = list(site_model.objects.filter(
+            account=provider, domain__isnull=False))
+        if candidates:
+            site = candidates[0] # XXX works as long as domain
+                                 #     is explicitely set.
+        else:
+            candidates = list(site_model.objects.filter(account=provider))
+            if candidates:
+                site = candidates[0] # XXX Testing on local systems
+            else:
+                raise Http404("No %s for account '%s' can be found." % (
+                  site_model._meta.object_name, #pylint:disable=protected-access
+                  provider))
+    return site
+
+
+def get_authorize_processor_url(processor, provider):
+    #pylint:disable=line-too-long
+    return "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=%(client_id)s&scope=read_write&state=%(site)s" % {
+        'client_id': processor.client_id,
+        'site': str(_provider_as_site(provider))
+    }
+
+
 def processor_redirect(request, site=None):
     """
     Full URL redirect after the processor connected the organization
@@ -166,3 +196,9 @@ def processor_redirect(request, site=None):
                 % (site_model._meta.object_name, site))
     return build_absolute_uri(request, location=reverse('saas_update_bank',
         kwargs={'organization': site.account}), site=site)
+
+
+def provider_absolute_url(request,
+                          provider=None, location='/', with_scheme=True):
+    return build_absolute_uri(request, site=_provider_as_site(provider),
+        location=location, with_scheme=with_scheme)
