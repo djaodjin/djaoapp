@@ -165,9 +165,12 @@ def _provider_as_site(provider):
             if candidates:
                 site = candidates[0] # XXX Testing on local systems
             else:
-                raise Http404("No %s for account '%s' can be found." % (
+                err_msg = "No %s for account '%s' can be found." % (
                   site_model._meta.object_name, #pylint:disable=protected-access
-                  provider))
+                  provider)
+                LOGGER.error(err_msg)
+                raise Http404(err_msg)
+    LOGGER.debug("_provider_as_site(%s): %s", provider, site)
     return site
 
 
