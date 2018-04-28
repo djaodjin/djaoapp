@@ -40,16 +40,10 @@ def _notified_recipients(organization, notification_slug):
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
     """
-    def _get_optedin_users(managers, notification_slug):
-        # checking whether those users are subscribed to the notification
-        managers_ids = [manager.id for manager in managers]
-        return User.objects \
-            .filter(pk__in=managers_ids) \
-            .filter(notifications__slug=notification_slug) \
-            .all()
 
     managers = organization.with_role(saas_settings.MANAGER)
-    filtered = _get_optedin_users(managers, notification_slug)
+    # checking whether those users are subscribed to the notification
+    filtered = managers.filter(notifications__slug=notification_slug)
 
     managers_emails = [notified.email
         for notified in filtered]
