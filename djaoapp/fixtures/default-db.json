@@ -883,4 +883,52 @@
       "user": 11
     },
     "model": "saas.signature", "pk": 11
+},
+{
+    "fields": {
+      "slug": "contact_requested_notice"
+    },
+    "model": "signup.Notification", "pk": 1
+},
+{
+    "fields": {
+      "slug": "user_registered_notice"
+    },
+    "model": "signup.Notification", "pk": 2
+},
+{
+    "fields": {
+      "slug": "user_activated_notice"
+    },
+    "model": "signup.Notification", "pk": 3
+},
+{
+    "fields": {
+      "slug": "charge_updated"
+    },
+    "model": "signup.Notification", "pk": 4
+},
+{
+    "fields": {
+      "slug": "card_updated"
+    },
+    "model": "signup.Notification", "pk": 5
+},
+{
+    "fields": {
+      "slug": "order_executed"
+    },
+    "model": "signup.Notification", "pk": 6
+},
+{
+    "fields": {
+      "slug": "organization_updated"
+    },
+    "model": "signup.Notification", "pk": 7
+},
+{
+    "fields": {
+      "slug": "expires_soon"
+    },
+    "model": "signup.Notification", "pk": 8
 }]
