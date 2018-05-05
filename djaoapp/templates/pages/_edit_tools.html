@@ -8,7 +8,7 @@
   <div class="col-md-12">
     <hr>
     <div class="form-group">
-        <input placeholder="Search..." class="dj-gallery-filter form-control" type="text" >
+        <input placeholder="Search..." class="dj-gallery-filter dj-input" type="text" >
         <div class="progress gallery-upload-progress" style="display:none;">
           <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
             <span class="progress-bar-info"></span>
@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
         }, 2000);
       }
     },
-    galleryItemOptionsTemplate: "<div class=\"input-group\"><input type=\"text\" class=\"form-control\" readonly data-dj-gallery-media-url><span class=\"input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input form-control\" placeholder=\"tags...\" aria-describedby=\"basic-addon1\"><span class=\"input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">Tag</button></span></div><span class=\"help-block\">Tags must be separated by a comma. ex: video, title</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> Delete</button>\n",
+    galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"tags...\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">Tag</button></span></div><span class=\"dj-help-block\">Tags must be separated by a comma. ex: video, title</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> Delete</button>\n",
     galleryMessage: function(message, type){
       if (!type){
         type = "success";
@@ -116,7 +116,7 @@ jQuery(document).ready(function($) {
         <div class="modal-body">
           <div class="form-group">
             <div class="controls">
-              <input class="form-control" maxlength="255" type="text"
+              <input class="dj-input" maxlength="255" type="text"
                      name="name">
             </div>
           </div>
@@ -162,12 +162,12 @@ jQuery(document).ready(function($) {
       {% for attribute in section_attributes %}
       <div class="row">
         <label for="style_attribute_{{section_name}}_{{loop.index}}"
-               class="col-xs-3 control-label">{{attribute.property}}</label>
-        <div class="col-xs-7">
+               class="dj-style-label">{{attribute.property}}</label>
+        <div class="dj-style-input-wrap">
           <input id="style_attribute_{{section_name}}_{{loop.index}}"
                  name="{{attribute.property}}"
                  type="text"
-                 class="form-control"
+                 class="dj-input"
                  {% if attribute.editor %}
                  data-dj-style-variable-editor="{{attribute.editor}}"
                  {% else %}
@@ -175,7 +175,7 @@ jQuery(document).ready(function($) {
                  {% endif %}
                  value="{{ attribute.value }}" />
         </div>
-        <div class="col-xs-2">
+        <div class="dj-style-button-wrap">
           <button class="btn btn-default style-reset-button"
                   title="reset to default"
                   data-target="style_attribute_{{section_name}}_{{loop.index}}"
@@ -202,15 +202,33 @@ jQuery(document).ready(function($) {
 
 {# sliding buttons #}
 {# --------------- #}
-<div style="top:200px;position:fixed;right:-1px;z-index:10000" class="btn-group-vertical btn-group-sm btn-tools" role="group" aria-label="...">
-  <button class="btn btn-primary" style="opacity:0.9;" id="toggle-media-gallery" data-target="#media-gallery" data-default-width="300" data-intro="Image gallery" data-position="left"><i class="fa fa-picture-o fa-lg"></i></button>
+{# These page context menu buttons are injected into the HTML code of pages   #}
+{# that transit through the proxy. The CSS must thus be self-contained.       #}
+{# Classes are solely used by the Javascript code to pick HTML nodes to layer #}
+{# UI functionality, and not for layout purposes.                             #}
+<div style="display:inline-block;vertical-align:middle;position:fixed;top:200px;right:-1px;z-index:10000;color: #fff;background-color: #337ab7;" class="btn-group-vertical btn-group-sm btn-tools" role="group" aria-label="...">
+  <a id="toggle-media-gallery" class="btn btn-primary"
+          style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: 0;border-top-right-radius:4px;border-top-left-radius:4px;border-bottom-right-radius:0;border-bottom-left-radius:0;"
+          data-target="#media-gallery" data-default-width="300" data-intro="Image gallery" data-position="left">
+    <img src="{{'/static/img/fa-picture.png'|djasset}}" width="22" height="22" />
+  </a>
   {% if ENABLE_CODE_EDITOR %}
-  <button class="btn btn-primary" style="opacity:0.9;" id="toggle-code-editor" data-target="#code-editor" data-default-width="800" data-intro="Code Editor" data-position="left"><i class="fa fa-code fa-lg"></i></button>
-  <button class="btn btn-primary" style="opacity:0.9;" id="toggle-style-editor" data-target="#style-editor" data-default-width="800" data-intro="Style Editor" data-position="left" title="Styles"><i class="glyphicon glyphicon-italic"></i></button>
+  <a id="toggle-code-editor" class="btn btn-primary"
+          style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
+          data-target="#code-editor" data-default-width="800" data-intro="Code Editor" data-position="left">
+    <img src="{{'/static/img/fa-code.png'|djasset}}" width="22" height="22" />
+  </a>
+  <a id="toggle-style-editor" class="btn btn-primary"
+          style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
+          data-target="#style-editor" data-default-width="800" data-intro="Style Editor" data-position="left" title="Styles">
+    <img src="{{'/static/img/fa-italic.png'|djasset}}" width="22" height="22" />
+  </a>
   {% endif %}
   {% if FEATURES_DEBUG %}
-  <a href="" class="btn btn-primary screenshot" style="opacity:0.9;" id="take_screenshot" title="Report todo...">
-    <i class="fa fa-ambulance fa-lg"></i>
+  <a id="take_screenshot" href="" class="btn btn-primary screenshot"
+     style="border-radius: 0;margin: -1px 0 0 0;display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;white-space: nowrap;text-decoration: none;box-sizing: border-box;"
+     title="Report todo...">
+    <img src="{{'/static/img/fa-ambulance.png'|djasset}}" width="22" height="22" />
   </a>
   {% endif %}
   <script type="text/javascript">
@@ -219,9 +237,6 @@ jQuery(document).ready(function($) {
         $(".btn-tools").hide();
     } else {
         $(".btn-tools .btn").panelButton();
-        $(".btn-tools .btn").click(function(){
-            $(this).blur();
-        });
     }
 });
   </script>
