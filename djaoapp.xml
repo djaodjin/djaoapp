@@ -441,6 +441,9 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <email>support@djaodjin.com</email>
     </maintainer>
     <repository>
+      <dep name="djangorestframework" target="python" includes="3.7.0">
+        <lib>.*/(rest_framework)/__init__.py</lib>
+      </dep>
       <dep name="django-extra-views" target="python">
         <lib>.*/(extra_views)/__init__.py</lib>
       </dep>
@@ -487,15 +490,21 @@ Flexible framework to validate access to URIs and forward HTTP requests
         <share>(dws)/prefix.mk</share>
       </dep>
       <alternates>
-        <!-- instead of pip pycrypto because there is a C module -->
+        <!-- instead of pip install cryptography because there is a C module -->
         <alternate name="Darwin">
-          <dep name="py36-crypto">
-            <lib>.*/(Crypto)/__init__.py</lib>
+          <dep name="py36-cryptography">
+            <lib>.*/(cryptography)/__init__.py</lib>
+          </dep>
+          <dep name="py36-cffi">
+            <lib>.*/_cffi_backend.*.so</lib>
           </dep>
         </alternate>
         <alternate name="Fedora">
-          <dep name="python3-crypto">
-            <lib>.*/(Crypto)/__init__.py</lib>
+          <dep name="python3-cryptography">
+            <lib>.*/(cryptography)/__init__.py</lib>
+          </dep>
+          <dep name="python3-cffi">
+            <lib>.*/_cffi_backend.*.so</lib>
           </dep>
         </alternate>
       </alternates>
