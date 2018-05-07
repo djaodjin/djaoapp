@@ -11,25 +11,92 @@ You can update a user contact information, as well as login credentials here.
 {% endblock %}
 
 {% block saas_content %}
-<section id="personal">
-  {% include "_form.html" %}
-  <hr />
-  <div class="panel panel-danger" style="margin:50px auto;">
-    <div class="panel-heading">
+<section id="personal" ng-app="signupApp">
+  <div ng-controller="userProfileCtrl">
+    {% include "_form.html" %}
+    <hr />
+    <div class="panel panel-danger" style="margin:50px auto;">
+      <div class="panel-heading">
         Danger Zone
-    </div>
-    <div class="panel-body" style="padding: 15px;">
+      </div>
+      <div class="panel-body" style="padding: 15px;">
         {% if urls.user.password_change %}
         <div class="row">
-            <div class="col-sm-5">
-                <a class="btn btn-danger" href="{{urls.user.password_change}}" style="width:100%;">Change Password</a>
-            </div>
-            <div class="col-sm-7">
-<span class="btn">Use a new password to login.</span>
-            </div>
+          <div class="col-sm-5">
+            <a class="btn btn-danger" href="{{urls.user.password_change}}" style="width:100%;">Change Password</a>
+          </div>
+          <div class="col-sm-7">
+            <span class="btn">Use a new password to login.</span>
+          </div>
         </div>
         {% endif %}
+        <div class="row" style="margin-top: 15px;">
+          <div class="col-sm-5">
+            <button id="delete-action-open" class="btn btn-danger" style="width:100%;" data-toggle="modal" data-target="#delete-action">Delete user</button>
+          </div>
+          <div class="col-sm-7">
+            <span class="btn">This operation cannot be reversed.</span>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    <!-- modal dialog to delete user. -->
+    <div class="modal fade"
+         id="delete-action" tabindex="-1" role="dialog"
+         aria-labelledby="Delete user" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Delete user ...</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+You are about to delete the profile and account
+for <em>{{user.full_name}}</em>.
+This operation cannot be reversed.
+            </p>
+            <p>
+Are you sure you want to continue?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button id="cancel-delete"
+                    data-dismiss="modal"
+                    class="btn btn-default">Cancel</button>
+            <button type="button" id="delete-user-btn"
+                    data-dismiss="modal"
+                    class="btn btn-danger"
+                    ng-click="deleteProfile($event)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal to confirm deletion of user -->
+  </div> <!-- userProfileCtrl -->
 </section>
+{% endblock %}
+
+{% block users_bodyscripts %}
+<script type="text/javascript">
+/* Implementation Note: Not including a list of dependent modules
+   (2nd parameter to `module`) "re-opens" the module for additional
+   configuration.
+   - We add the CSRF token for as an HTTP header on API calls.
+   - We make it easier to separate between django and angularjs templates
+     by changing Angular defaults to [[ and ]] characters. */
+var reopenSignupApp = angular.module('signupApp');
+reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
+           function($interpolateProvider, $httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+}]);
+reopenSignupApp.constant('settings', {
+urls: {
+    api_user_profile: "{{urls.user.api_profile}}",
+    user_profile_redirect: "{{urls.user.profile_redirect}}",
+}});
+</script>
 {% endblock %}

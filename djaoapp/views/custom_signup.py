@@ -239,10 +239,10 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
                     'postal_code': account.postal_code,
                     'country': account.country})
 
-            # Sign-in the newly registered user
-            user = authenticate(username=username, password=password)
-            auth_login(self.request, user)
-            return user
+        # Sign-in the newly registered user
+        user = authenticate(username=username, password=password)
+        auth_login(self.request, user)
+        return user
 
     def register_personal(self, **cleaned_data):
         """
