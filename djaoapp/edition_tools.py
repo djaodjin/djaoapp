@@ -93,7 +93,18 @@ def inject_edition_tools(response, request, context=None,
             'saas_plan_base', args=(provider,))}
 
     if not fail_edit_perm(request, account=provider):
-        body_bottom_template_name = "pages/_body_bottom.html"
+        if is_testing(site):
+            if has_bank_account(provider):
+                body_top_template_name = "pages/_body_top_testing_manager.html"
+            else:
+                provider_urls = {
+                    'bank': reverse('saas_update_bank', args=(provider,))}
+                body_top_template_name = "pages/_body_top_testing_no_processor_manager.html"
+        elif not has_bank_account(provider) and (
+                request and request.path.endswith('/cart/')):
+                provider_urls = {
+                    'bank': reverse('saas_update_bank', args=(provider,))}
+                body_top_template_name = "pages/_body_top_no_processor_manager.html"
         try:
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
@@ -101,25 +112,25 @@ def inject_edition_tools(response, request, context=None,
             edit_urls.update({'media_upload': reverse('api_credentials')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-
-        enable_code_editor = is_streetside(site)
-        if not has_bank_account(provider):
-            provider_urls = {
-                'bank': reverse('saas_update_bank', args=(provider,))}
-            body_top_template_name = "pages/_body_top_connect_processor.html"
-        elif is_testing(site):
-            if enable_code_editor:
-                dj_urls = djaoapp_urls(
-                    request, account=provider, base=site.as_base())
-                body_top_template_name = "pages/_body_top_streetside_cart.html"
-            else:
-                dj_urls = djaoapp_urls(request, account=provider)
-                body_top_template_name = "pages/_body_top_mallspace_cart.html"
         # XXX ``is_streetside(site)`` shouldn't disable all edit functionality.
         # Just the edition of templates.
-        body_bottom_template_name = "pages/_body_bottom_edit_tools.html"
-    elif not has_bank_account(provider) or is_testing(site):
-        body_top_template_name = "pages/_body_top.html"
+        enable_code_editor = is_streetside(site)
+        if enable_code_editor:
+            dj_urls = djaoapp_urls(
+                request, account=provider, base=site.as_base())
+            body_bottom_template_name = "pages/_body_bottom_edit_tools.html"
+        else:
+            dj_urls = djaoapp_urls(request, account=provider)
+            body_bottom_template_name = "pages/_body_bottom.html"
+    else:
+        if is_testing(site):
+            if has_bank_account(provider):
+                body_top_template_name = "pages/_body_top_testing.html"
+            else:
+                body_top_template_name = "pages/_body_top_testing_no_processor.html"
+        elif not has_bank_account(provider) and (
+                request and request.path.endswith('/cart/')):
+            body_top_template_name = "pages/_body_top_no_processor.html"
     if not (body_top_template_name or body_bottom_template_name):
         return None
     context.update({
