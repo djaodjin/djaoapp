@@ -526,8 +526,9 @@ MULTITIER = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_URL_KWARG': 'organization',
 #    'DEFAULT_URLS': ['login'], # XXX can't do reverse in multitier middleware.
-    'ROUTER_APPS': RULES_APPS + ('signup', 'saas', 'pages', 'rules', 'survey'),
-    'ROUTER_TABLES': ('django_session', 'auth_user'),
+    'ROUTER_APPS': RULES_APPS + (
+        'social_django', 'signup', 'saas', 'pages', 'rules', 'survey'),
+    'ROUTER_TABLES': ('django_admin_log', 'django_session', 'auth_user'),
     'THEMES_DIRS': [
         os.path.join(BASE_DIR, 'themes'),
     ],

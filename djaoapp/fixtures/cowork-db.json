@@ -610,4 +610,68 @@
         "rank": 1
     },
     "model": "saas.BalanceLine", "pk": 1
+},
+{
+    "fields": {
+      "slug": "contact_requested_notice",
+      "title": "Messages through the website contact page",
+      "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."
+    },
+    "model": "signup.Notification", "pk": 1
+},
+{
+    "fields": {
+      "slug": "user_registered_notice",
+      "title": "A new user has registered",
+      "description": "By enabling this notification, you will receive e-mails when a new user has registered to the website."
+    },
+    "model": "signup.Notification", "pk": 2
+},
+{
+    "fields": {
+      "slug": "user_activated_notice",
+      "title": "A user has activated his/her account",
+      "description": "By enabling this notification, you will receive e-mails when a user has activated their account on the website and are now able to login."
+    },
+    "model": "signup.Notification", "pk": 3
+},
+{
+    "fields": {
+      "slug": "charge_updated",
+      "title": "A charge has been created or updated",
+      "description": "By enabling this notification, you will receive e-mails when a charge has been created or a refund on a previously given charge given."
+    },
+    "model": "signup.Notification", "pk": 4
+},
+{
+    "fields": {
+      "slug": "card_updated",
+      "title": "A credit card on file has been updated",
+      "description": "By enabling this notification, you will receive e-mails when a credit card on file has been updated."
+    },
+    "model": "signup.Notification", "pk": 5
+},
+{
+    "fields": {
+      "slug": "order_executed",
+      "title": "A order has been placed",
+      "description": "By enabling this notification, you will receive e-mails when an order has been placed. It is sent regardless of the charge being successful or not."
+    },
+    "model": "signup.Notification", "pk": 6
+},
+{
+    "fields": {
+      "slug": "organization_updated",
+      "title": "A billing profile has been updated",
+      "description": "By enabling this notification, you will receive e-mails when fields such as name, address, etc. have been updated."
+    },
+    "model": "signup.Notification", "pk": 7
+},
+{
+    "fields": {
+      "slug": "expires_soon",
+      "title": "A subscription is about to expires",
+      "description": "By enabling this notification, you will receive e-mails when a subscription is about to expire."
+    },
+    "model": "signup.Notification", "pk": 8
 }]

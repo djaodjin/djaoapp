@@ -327,14 +327,13 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
             back_url = reverse('organization_app', args=(organization,))
             if has_invalid_password(user):
                 if role.grant_key:
-                    contact, _ = Contact.objects.get_or_create_token(
-                        user, verification_key=role.grant_key)
+                    verification_key = role.grant_key
                 else:
                     # The User is already in the system but the account
                     # has never been activated.
-                    contact, _ = Contact.objects.get_or_create_token(user,
-                        verification_key=organization.generate_role_key(user))
-                user.save()
+                    verification_key = organization.generate_role_key(user)
+                contact, _ = Contact.objects.get_or_create_token(
+                        user, verification_key=verification_key)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url)
             elif role.grant_key:
@@ -491,7 +490,6 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 # has never been activated.
                 contact, _ = Contact.objects.get_or_create_token(manager,
                     verification_key=organization.generate_role_key(manager))
-                manager.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url)
             LOGGER.debug("[signal] subscribe_grant_created_notice("\
