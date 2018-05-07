@@ -99,12 +99,13 @@ def inject_edition_tools(response, request, context=None,
             else:
                 provider_urls = {
                     'bank': reverse('saas_update_bank', args=(provider,))}
-                body_top_template_name = "pages/_body_top_testing_no_processor_manager.html"
+                body_top_template_name = \
+                    "pages/_body_top_testing_no_processor_manager.html"
         elif not has_bank_account(provider) and (
                 request and request.path.endswith('/cart/')):
-                provider_urls = {
-                    'bank': reverse('saas_update_bank', args=(provider,))}
-                body_top_template_name = "pages/_body_top_no_processor_manager.html"
+            provider_urls = {
+                'bank': reverse('saas_update_bank', args=(provider,))}
+            body_top_template_name = "pages/_body_top_no_processor_manager.html"
         try:
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
@@ -127,7 +128,8 @@ def inject_edition_tools(response, request, context=None,
             if has_bank_account(provider):
                 body_top_template_name = "pages/_body_top_testing.html"
             else:
-                body_top_template_name = "pages/_body_top_testing_no_processor.html"
+                body_top_template_name \
+                    = "pages/_body_top_testing_no_processor.html"
         elif not has_bank_account(provider) and (
                 request and request.path.endswith('/cart/')):
             body_top_template_name = "pages/_body_top_no_processor.html"

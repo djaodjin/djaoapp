@@ -16,7 +16,6 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created)
 from signup.models import Contact
-from signup.compat import User
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
 from signup.utils import (has_invalid_password,
@@ -200,7 +199,8 @@ def charge_updated_notice(sender, charge, user, **kwargs):
     from saas.mixins import get_charge_context # Avoid import loop
     broker = charge.broker
     recipients, bcc = _notified_recipients(charge.customer, "charge_updated")
-    broker_recipients, broker_bcc = _notified_recipients(broker, "charge_updated")
+    broker_recipients, broker_bcc = _notified_recipients(
+        broker, "charge_updated")
     context = get_charge_context(charge)
     if user and charge.created_by != user:
         context.update({'email_by': get_user_context(user)})
@@ -248,7 +248,8 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     broker = get_broker()
     recipients, bcc = _notified_recipients(
         invoiced_items.first().dest_organization, "order_executed")
-    broker_recipients, broker_bcc = _notified_recipients(broker, "order_executed")
+    broker_recipients, broker_bcc = _notified_recipients(
+        broker, "order_executed")
     app = get_current_app()
     LOGGER.debug("[signal] order_executed_notice(invoiced_items=%s, user=%s)",
         invoiced_items, user)
@@ -289,7 +290,8 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
         return
     broker = get_broker()
     recipients, _ = _notified_recipients(organization, "organization_updated")
-    broker_recipients, broker_bcc = _notified_recipients(broker, "organization_updated")
+    broker_recipients, broker_bcc = _notified_recipients(
+        broker, "organization_updated")
     LOGGER.info("%s updated", organization,
         extra={'event': 'update-fields', 'organization': str(organization),
                'changes': changes})
