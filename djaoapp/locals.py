@@ -10,8 +10,6 @@ from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from rules.utils import get_app_model
-from saas.models import Subscription
-from saas.utils import datetime_or_now
 
 from .compat import reverse
 
@@ -30,18 +28,6 @@ def is_testing(site):
         return False
     if site.db_name == settings.DB_TEST:
         return True
-    # We only want to automatically switch to testing if a subscription isn't
-    # paid for mallspace. It is necessary for the on-boarding business logic.
-    # In streetside, we prefer to avoid an extra query.
-    # Implementation note:
-    # We use ``organization_id=site.account_id`` such that Django does not
-    # start generating queries with our djaodjin-master organization ids
-    # into the streetside database.
-    if not is_streetside(site):
-        subscriptions = Subscription.objects.db_manager(using='default').filter(
-            organization_id=site.account_id,
-            ends_at__gt=datetime_or_now()).exclude(plan__slug='streetside')
-        return not subscriptions.exists()
     return False
 
 
