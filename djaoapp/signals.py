@@ -28,6 +28,7 @@ from .locals import get_current_app
 #pylint: disable=protected-access
 
 LOGGER = logging.getLogger(__name__)
+OPT_OUT = True
 SEND_EMAIL = True
 
 contact_requested = Signal( #pylint:disable=invalid-name
@@ -42,10 +43,12 @@ def _notified_recipients(organization, notification_slug):
 
     managers = organization.with_role(saas_settings.MANAGER)
     # checking whether those users are subscribed to the notification
-    filtered = managers.filter(notifications__slug=notification_slug)
+    if OPT_OUT:
+        filtered = managers.exclude(notifications__slug=notification_slug)
+    else:
+        filtered = managers.filter(notifications__slug=notification_slug)
 
-    managers_emails = [notified.email
-        for notified in filtered]
+    managers_emails = [notified.email for notified in filtered]
     if organization.email:
         recipients = [organization.email]
         bcc = [email
