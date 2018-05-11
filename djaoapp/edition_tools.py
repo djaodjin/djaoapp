@@ -33,7 +33,7 @@ def djaoapp_urls(request, account=None, base=None):
     if base:
         urls.update({'app':
             build_absolute_uri(request, location='/app/%s/' % base,
-            site=settings.APP_NAME)})
+            site=settings.DB_NAME)}) # XXX Hack to get correct domain
     return urls
 
 
