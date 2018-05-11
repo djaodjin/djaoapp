@@ -137,7 +137,11 @@ def is_current_broker(organization_slug):
 
 def _provider_as_site(provider):
     site = None
-    if not provider or is_current_broker(str(provider)):
+    if not provider or get_current_broker().slug == str(provider):
+        # We compare the slugs directly here instead of using
+        # `is_current_broker` because the call there to `is_testing`
+        # (aka shared database) interfers with finding the site matching
+        # the domain.
         site = get_current_site()
     else:
         site_model = get_site_model()
