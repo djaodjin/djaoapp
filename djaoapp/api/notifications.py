@@ -42,6 +42,9 @@ def get_test_email_context():
         'new_card': {
             'last4': "{{new_card.last4}}",
             'exp_date': "{{new_card.exp_date}}"},
+        # specific to weekly_report
+        'table': {},
+        'date': '',
         # app_created/app_updated
         'instance': {
             'printable_name': "{{instance.printable_name}}"},

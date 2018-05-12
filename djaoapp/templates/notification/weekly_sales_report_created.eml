@@ -1,0 +1,60 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+Weekly sales report
+{% endblock %}
+
+{% block html_content %}
+<h4 id="sales-title">Sales report for the week ending {{date}}</h4>
+
+<style>
+    #sales-title
+    {
+        text-align: center;
+    }
+
+    #sales-data
+    {
+        border-collapse: collapse; 
+        border: 1px solid #ccc;
+        margin: 30px 0;
+    }
+
+    #sales-data th,
+    #sales-data td
+    {
+        border: 1px solid #ccc;
+        padding: 7px 10px;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: right;
+    }
+</style>
+
+<table id="sales-data">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Total in USD</th>
+            <th>vs. last week</th>
+            <th>vs. same week a year ago</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for title, values in table.items() %}
+            <tr>
+                <td>{{title}}</td>
+                <td>{{values['last']}}</td>
+                <td>{{values['prev']}}</td>
+                <td>{{values['prev_year']}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>
+Thank you for your continuous business. Any questions
+or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+</p>
+
+{% endblock %}
