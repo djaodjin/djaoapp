@@ -115,7 +115,10 @@ def inject_edition_tools(response, request, context=None,
             LOGGER.debug("doesn't look like we have a S3Storage.")
         # XXX ``is_streetside(site)`` shouldn't disable all edit functionality.
         # Just the edition of templates.
-        enable_code_editor = is_streetside(site)
+        # XXX Temporarily disable edits of pages on testing because
+        # djaojdin-pages does not handle multiple slug on different accounts
+        # in same db.
+        enable_code_editor = (is_streetside(site) and not is_testing(site))
         if enable_code_editor:
             dj_urls = djaoapp_urls(
                 request, account=provider, base=site.as_base())
