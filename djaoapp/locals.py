@@ -159,9 +159,9 @@ def _provider_as_site(provider):
 
 
 def get_authorize_processor_url(processor, provider):
-    #pylint:disable=line-too-long,unused-argument
+    #pylint:disable=line-too-long
     return "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=%(client_id)s&scope=read_write&state=%(site)s" % {
-        'client_id': settings.STRIPE_CLIENT_ID,
+        'client_id': processor.client_id,
         'site': str(_provider_as_site(provider))
     }
 
