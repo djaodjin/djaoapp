@@ -6,8 +6,7 @@ import logging
 from django.conf import settings
 from django.dispatch import Signal, receiver
 from extended_templates.backends import get_email_backend
-from multitier.thread_locals import get_current_site, set_current_site
-from multitier.utils import get_site_model
+from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.utils import get_role_model
@@ -629,19 +628,22 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
             "%s will not be notified of soon expired subscription"\
             " because e-mail address is invalid.", subscription.organization)
 
+
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(weekly_sales_report_created, dispatch_uid="weekly_sales_report_created")
-def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
-    set_current_site(get_site_model().objects.get(slug='cowork'), path_prefix='')
+@receiver(weekly_sales_report_created,
+          dispatch_uid="weekly_sales_report_created")
+def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
     app = get_current_app()
-    recipients, bcc = _notified_recipients(provider, "weekly_sales_report_created")
+    recipients, bcc = _notified_recipients(
+        provider, "weekly_sales_report_created")
     if SEND_EMAIL:
         frm = app.get_from_email()
         # if from is empty the following command will fail
         if not frm:
-            raise Exception("Please fill the DEFAULT_FROM_EMAIL option in settings")
+            raise Exception(
+                "Please fill the DEFAULT_FROM_EMAIL option in settings")
 
         prev_week, _ = dates
         last_sunday = prev_week[-1]
