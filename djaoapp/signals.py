@@ -6,8 +6,7 @@ import logging
 from django.conf import settings
 from django.dispatch import Signal, receiver
 from extended_templates.backends import get_email_backend
-from multitier.thread_locals import get_current_site, set_current_site
-from multitier.utils import get_site_model
+from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.utils import get_role_model

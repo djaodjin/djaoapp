@@ -47,7 +47,7 @@
             </label>
           </div>
           {% endfor %}
-      {% elif bound_field.field.widget.input_type %}
+      {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type != 'select' %}
         <input class="form-control" name="{{bound_field.name}}"
           {% if bound_field.value() is not none %}
           value="{{bound_field.value()}}"
