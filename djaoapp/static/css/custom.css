@@ -120,3 +120,48 @@
     height: 32px;
     margin-top: 6px;
 }
+
+.dashboard-home-title
+{
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.no-results
+{
+    color: #888;
+    text-align: center;
+    padding: 20px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.fa-spin.fa-refresh
+{
+    color: #888;
+}
+
+.table>tbody+tbody
+{
+    border-top: 0;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td
+{
+    border-top: 0;
+    padding: 10px 15px;
+}
+
+.empty-table
+{
+    background: none !important;
+}
+
+.empty-table td
+{
+    padding: 0 !important;
+}
