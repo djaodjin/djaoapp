@@ -14,8 +14,9 @@
 
 .dashboard-nav-color-theme
 {
-    background: #f3f3f3;
+    background: #f9f9f9;
     color: #333;
+    border-right: 1px solid #eee;
 }
 
 .dashboard-nav-menu > .nav > li.active > a,
@@ -39,7 +40,7 @@
 .dashboard-nav-menu > hr {
     margin: 5px 0;
     border: 0;
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid #eee;
 }
 
 .dashboard-nav-menu > .nav{
@@ -71,7 +72,7 @@
 
 .footer
 {
-    border-top: 1px solid #f3f3f3;
+    border-top: 1px solid #eee;
     height: 42px;
     margin-top: 0;
     font-size: 12px;
@@ -96,7 +97,7 @@
 .navbar
 {
     padding: 5px 20px;
-    border-bottom: 1px solid #f3f3f3;
+    border-bottom: 1px solid #eee;
 }
 
 .dashboard-content h2
