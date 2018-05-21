@@ -77,7 +77,7 @@ Subscriptions to {{organization.printable_name}}
         {% for tab in tabs %}
         <div id="{{tab.slug}}" class="tab-pane{% if tab.is_active %} active{% endif %}" role="tabpanel">
 <div style="margin-top:10px;margin-bottom:10px;">
-    <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
+    <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" class="form-control filter-inline" placeholder="Filter" />
     <a id="download-{{tab.slug}}" href="{{ tab.urls.download }}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
 </div>
 <table class="table table-condensed table-striped">
@@ -244,7 +244,7 @@ Subscriptions to {{organization.printable_name}}
         {% endfor %}
     </div>
 </div>
-<div style="margin-right: 10px;">
+<div>
     <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">New Billing Profile &raquo;</a>
 </div>
 </section>

@@ -73,12 +73,14 @@
 .footer
 {
     border-top: 1px solid #e9e9e9;
-    height: 42px;
     margin-top: 0;
-    font-size: 12px;
+    font-size: 13px;
     background: #fff;
     color: #333;
-    line-height: 42px;
+    padding: 10px;
+    height: auto;
+    clear: none;
+    position: static;
 }
 
 .dashboard-nav-menu>.nav>li
@@ -145,15 +147,16 @@
     border-top: 0;
 }
 
-.table>thead>tr>th,
-.table>tbody>tr>th,
-.table>tfoot>tr>th,
-.table>thead>tr>td,
-.table>tbody>tr>td,
-.table>tfoot>tr>td
+.table th,
+.table td
 {
-    border-top: 0;
-    padding: 10px 15px;
+    border-top: 0 !important;
+    padding: 10px 15px !important;
+}
+
+.table th
+{
+    border-bottom: 1px solid #e0e0e0 !important;
 }
 
 .empty-table
@@ -164,4 +167,48 @@
 .empty-table td
 {
     padding: 0 !important;
+}
+
+.filter-inline
+{
+    display: inline-block;
+    width: 20%;
+}
+
+.dashboard-header
+{
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.dashboard-header p
+{
+    color: #777;
+    margin: 0;
+}
+
+.dashboard-header h2
+{
+    margin: 0 0 15px;
+}
+
+.navbar .navbar-nav a
+{
+    color: #2f4f4f !important;
+}
+
+.footer-links
+{
+    margin-bottom: 10px;
+}
+
+.footer-links a
+{
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+#transactions > h3
+{
+    margin-bottom: 30px;
 }
