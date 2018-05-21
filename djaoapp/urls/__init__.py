@@ -59,7 +59,8 @@ else:
     urlpatterns = []
 
 urlpatterns += [
-    url(r'^', include('saas.backends.urls')),
+    url(r'^api/', include('saas.backends.urls.api')),
+    url(r'^', include('saas.backends.urls.views')),
     url('', include('social_django.urls', namespace='social')),
 
     # Proxy application firewall for all.

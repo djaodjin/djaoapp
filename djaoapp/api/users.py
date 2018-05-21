@@ -37,7 +37,7 @@ class CredentialsSerializer(serializers.Serializer):
 
 class CredentialsAPIView(OrganizationMixin, generics.GenericAPIView):
     """
-    .. http:get:: /api/credentials/:organization/
+    .. http:get:: /api/auth/realms/:organization/
 
     Get temporary credentials to access S3 directly from the browser.
 
