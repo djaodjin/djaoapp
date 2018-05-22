@@ -503,6 +503,8 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'signup.authentication.JWTAuthentication',
+        'signup.authentication.APIKeyAuthentication',
     )
 }
 if not DEBUG:

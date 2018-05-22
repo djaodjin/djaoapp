@@ -67,6 +67,7 @@ urlpatterns += site_patterns(
     url_direct(r'^api/', include('saas.urls.api.provider.profile')),
     url_direct(r'^api/', include('saas.urls.api.provider.metrics')),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
+    url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_self_provider(r'^api/', include('signup.urls.api.tokens')),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     url_direct(r'api/', include('signup.urls.api.contacts')),
