@@ -22,22 +22,21 @@
 .dashboard-nav-menu > .nav > li.active > a,
 .dashboard-nav-menu > .nav > li.active > a:hover
 {
-    /*background: #e3e3e3 !important;*/
-    background: #c6dcef78 !important;
+    background: none !important;
     color: #337ab7 !important;
 }
 
 .dashboard-nav-menu > .nav > li > a:hover
 {
-    background: #eaeaea !important;
-    color: #000 !important;
+    background: none !important;
+    color: #666 !important;
     text-decoration: none !important;
     -webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
 
-.dashboard-nav-menu > hr {
+.dashboard-nav hr {
     margin: 5px 0;
     border: 0;
     border-top: 1px solid #e9e9e9;
@@ -52,7 +51,9 @@
     display: flex;
     float: none;
     position: static;
-    height: 100%;
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: minmax(252px,calc(50% - 260px)) 960px 1fr;
 }
 
 .dashboard-nav
@@ -61,13 +62,54 @@
     flex-shrink: 0;
     align-items: stretch;
     display: flex;
+    padding-bottom: 10px;
+    width: 35%;
+    position: relative;
+
+
+
+    position: -webkit-sticky;
+    position: sticky;
+    -webkit-box-flex: 0;
+    -ms-flex: 0;
+    flex: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 5;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    min-width: 252px;
+    height: 100vh;
+    top: 0;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
 }
 
 .dashboard-content
 {
     padding: 30px 40px;
     display: block;
-    width: 100%;
+    width: 960px;
+}
+
+.right-spacer
+{
+    background-color: #fff;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
 }
 
 .footer
@@ -211,4 +253,91 @@
 #transactions > h3
 {
     margin-bottom: 30px;
+}
+
+.dashboard-nav .dashboard-nav-menu
+{
+    display: block;
+
+    
+    position: absolute;
+    top: 61px;
+    right: 0;
+    width: 220px;
+    bottom: 90px;
+    bottom: 80px;
+    overflow-y: auto;
+}
+
+.dashboard-nav-inner-container
+{
+    display: block;
+    width: 220px;
+    position: absolute;
+    right: 0;
+    height: 100vh;
+}
+
+.sidebar-logo
+{
+    padding: 15px;
+    border-bottom: 1px solid #e9e9e9;
+}
+
+.sidebar-logo a
+{
+    float: none;
+}
+
+.sidebar-logo img
+{
+    width: 30px;
+}
+
+.dashboard-header-menu ul
+{
+    float: right;
+    list-style: none;
+    margin: 5px 0 0;
+    padding: 0;
+}
+
+.dashboard-header-menu ul li
+{
+    display: inline-block;
+    margin: 0px 10px;
+    font-size: 15px;
+}
+
+.sidebar-footer
+{
+    color: #666;
+    padding: 10px 30px 10px;
+    font-size: 11px;
+
+    
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-top: 1px solid #e9e9e9;
+}
+
+.sidebar-footer-links
+{
+    margin-top: 10px;
+}
+
+.sidebar-footer-links a
+{
+    margin: 0 3px;
+}
+
+.sidebar-footer-links a:first-child
+{
+    margin-left: 0;
+}
+
+.sidebar-footer-links a:last-child
+{
+    margin-right: 0;
 }
