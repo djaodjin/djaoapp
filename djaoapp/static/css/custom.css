@@ -53,21 +53,11 @@
     position: static;
     min-height: 100%;
     display: grid;
-    grid-template-columns: minmax(252px,calc(50% - 260px)) 960px 1fr;
+    grid-template-columns: minmax(220px,calc(50% - 360px)) 960px 1fr;
 }
 
 .dashboard-nav
 {
-    display: block;
-    flex-shrink: 0;
-    align-items: stretch;
-    display: flex;
-    padding-bottom: 10px;
-    width: 35%;
-    position: relative;
-
-
-
     position: -webkit-sticky;
     position: sticky;
     -webkit-box-flex: 0;
@@ -89,7 +79,7 @@
     -ms-user-select: none;
     user-select: none;
     width: 100%;
-    min-width: 252px;
+    min-width: 220px;
     height: 100vh;
     top: 0;
     -webkit-box-flex: 1;
@@ -280,7 +270,7 @@
 
 .sidebar-logo
 {
-    padding: 15px;
+    padding: 15px 15px 15px 25px;
     border-bottom: 1px solid #e9e9e9;
 }
 
