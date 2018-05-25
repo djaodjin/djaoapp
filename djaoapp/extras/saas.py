@@ -3,10 +3,11 @@
 
 from __future__ import absolute_import
 
-from django.core.urlresolvers import reverse
 from multitier.thread_locals import get_current_site
 from pages.extras import AccountMixinBase
 from rules.extras import AppMixinBase
+
+from ..compat import reverse
 
 
 class ExtraMixin(AppMixinBase, AccountMixinBase):

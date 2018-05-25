@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES += (
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'signup.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -469,7 +469,9 @@ LOGGING = {
 
 # Authentication
 # --------------
-SIGNUP = {}
+SIGNUP = {
+    'ACCOUNT_MODEL': 'saas.Organization',
+}
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
     if hasattr(sys.modules[__name__], config_param):
@@ -501,7 +503,6 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-# XXX not yet committed:        'signup.auth.TokenAuthentication'
     )
 }
 if not DEBUG:

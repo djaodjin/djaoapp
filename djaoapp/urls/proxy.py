@@ -70,6 +70,10 @@ urlpatterns += site_patterns(
     url_direct(r'^api/', include('saas.urls.api.provider.profile')),
     url_direct(r'^api/', include('saas.urls.api.provider.metrics')),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
+    url_self_provider(r'^api/', include('signup.urls.api.tokens')),
+    url_self_provider(r'^api/', include('signup.urls.api.users')),
+    url_direct(r'api/', include('signup.urls.api.contacts')),
+    url(r'^api/', include('signup.urls.api.auth')),
 
     # Login, registration, and user profiles
     url_prefixed(r'^', include('djaoapp.urls.accounts')),
@@ -79,6 +83,7 @@ urlpatterns += site_patterns(
         UserProfileView.as_view(), name='users_profile'),
     url_self_provider(r'^', include('saas.urls.users')),
     url_self_provider(r'^users/', include('signup.urls.users')),
+    url_direct(r'contacts/', include('signup.urls.contacts')),
 
     url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
     url(r'^billing/cart/',

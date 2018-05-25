@@ -2323,7 +2323,10 @@
                 linkNode = jQuery("<a href='" + link + "'>" + link + "</a>")[0];
                 widget.lastSelection.insertNode(linkNode);
               } else {
-                document.execCommand("createLink", null, link);
+                //XXX not working?
+                //document.execCommand("createLink", null, link);
+                var title = widget.lastSelection.toString();
+                widget.lastSelection.surroundContents(jQuery("<a href='" + link + "'></a>")[0]);
               }
             } else {
               widget.lastSelection.startContainer.parentNode.href = link;

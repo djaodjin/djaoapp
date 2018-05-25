@@ -34,8 +34,8 @@ endif
 
 MULTITIER_DB_NAME = $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 
-
-EMAIL_FIXTURE_OPT := $(if $(shell git config user.email),--email="$(shell git config user.email)",)
+MY_EMAIL          := $(shell cd $(srcDir) && git config user.email)
+EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 
 all:
 	@echo "Nothing to be done for 'make'."
@@ -218,7 +218,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/site.conf: $(srcDir)/etc/site.conf
 		sed -e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
 			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
-			-e "s,%(ADMIN_EMAIL)s,`cd $(srcDir) && git config user.email`," \
+			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
 			-e "s,%(DB_NAME)s,$(notdir $(patsubst %/,%,$(dir $@)))," \
 			-e "s,%(binDir)s,$(binDir)," $< > $@
 

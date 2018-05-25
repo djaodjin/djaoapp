@@ -82,7 +82,7 @@ function updateChart(container, data, unit, dataScale, extra) {
         }
 
         // Dynamic margin left to Optimize display
-        marginLeft = marginLeftCalculation(marginLeft) + 5;
+        marginLeft = marginLeftCalculation(marginLeft) + 25;
         /* force the yAxis to start at zero in all cases. */
         maxY = (maxY + 1) * dataScale;
 
@@ -114,7 +114,7 @@ function updateChart(container, data, unit, dataScale, extra) {
               $.each(extra, function(index, element){
                 var extraKey = element.key;
                 var extraValue = $.grep(element.values, function(v){
-                  return hoverDate === d3.time.format("%x")(v[0]);
+                  return hoverDate === v[0];
                 })[0];
                 if (extraValue){
                   var style = null;
@@ -162,6 +162,11 @@ function updateChart(container, data, unit, dataScale, extra) {
                     }else{
                       return d3.format(unit + ",.2f")(d);
                     }
+                });
+        } else {
+            chart.yAxis
+                .tickFormat(function(d) {
+                    return d3.format(",.2f")(d);
                 });
         }
         chart.forceY(0); // Force only 0 but allow resize if unchecked chart
@@ -252,7 +257,11 @@ function updateBarChart(container, data, unit, dataScale, extra) {
 
         // clear any previous chart elements before adding new ones
         // remove svg and append it again to remove all previous attached events
+<<<<<<< HEAD
         d3.select(container + "svg").remove();
+=======
+        d3.select(container).selectAll("*").remove();
+>>>>>>> 3eb3098228984c6dfde763a2a3377138ac237aa5
         d3.select(container).append("svg").attr("class", "chart-area");
         var chart = nv.models.multiBarChart()
             .reduceXTicks(true)   // If 'false', every single x-axis tick
@@ -263,9 +272,32 @@ function updateBarChart(container, data, unit, dataScale, extra) {
             .groupSpacing(0.1);   // Distance between each group of bars.
         chart.xAxis
             .tickFormat(function(d) {
-                return d3.time.format("%x")(d); });
-        chart.yAxis
-            .tickFormat(d3.format(",.2f"));
+                if(d.date() !== 1 || d.hour() !== 0
+                   || d.minute() !== 0 || d.second() !== 0 ) {
+                    return d.format("MMM'YY*");
+                }
+                return d.clone().subtract(1, 'months').format("MMM'YY");
+            });
+        if( unit ) {
+            // If we have a unit display it along the axis.
+            chart.yAxis
+                .tickFormat(function(d) {
+                    if (d > 1000000){
+                      return d3.format(unit + ",.0f")(d / 1000000) + "M";
+                    }else if (d > 1000){
+                      return d3.format(unit + ",.0f")(d / 1000) + "K";
+                    }else{
+                      return d3.format(unit + ",.2f")(d);
+                    }
+                });
+        } else {
+            chart.yAxis
+                .tickFormat(function(d) {
+                    return d3.format(",.2f")(d);
+                });
+        }
+        chart.forceY(0); // Force only 0 but allow resize if unchecked chart
+
         chart.x(function(d) { return d[0]; })
             .y(function(d) { return d[1] / 100; });
 

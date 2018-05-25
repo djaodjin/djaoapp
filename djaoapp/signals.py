@@ -4,7 +4,6 @@
 import logging
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.dispatch import Signal, receiver
 from extended_templates.backends import get_email_backend
 from multitier.thread_locals import get_current_site
@@ -16,12 +15,13 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     user_relation_added, user_relation_requested, role_grant_accepted,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created)
-from signup.models import EmailContact
+from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
 from signup.utils import (has_invalid_password,
     printable_name as user_printable_name)
 
+from .compat import reverse
 from .locals import get_current_app
 
 #pylint: disable=unused-argument
@@ -321,12 +321,12 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
             back_url = reverse('organization_app', args=(organization,))
             if has_invalid_password(user):
                 if role.grant_key:
-                    contact, _ = EmailContact.objects.get_or_create_token(
+                    contact, _ = Contact.objects.get_or_create_token(
                         user, verification_key=role.grant_key)
                 else:
                     # The User is already in the system but the account
                     # has never been activated.
-                    contact, _ = EmailContact.objects.get_or_create_token(user,
+                    contact, _ = Contact.objects.get_or_create_token(user,
                         verification_key=organization.generate_role_key(user))
                 user.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',
@@ -483,7 +483,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
             if has_invalid_password(manager):
                 # The User is already in the system but the account
                 # has never been activated.
-                contact, _ = EmailContact.objects.get_or_create_token(manager,
+                contact, _ = Contact.objects.get_or_create_token(manager,
                     verification_key=organization.generate_role_key(manager))
                 manager.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',

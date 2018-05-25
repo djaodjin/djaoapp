@@ -8,7 +8,6 @@ from captcha.fields import ReCaptchaField
 from django import forms, http
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.db.utils import ProgrammingError
 from django.shortcuts import get_object_or_404
 from django.utils import six
@@ -19,6 +18,7 @@ from survey.forms import ResponseCreateForm
 from survey.models import SurveyModel
 from survey.views.response import ResponseCreateView
 
+from ..compat import reverse
 from ..signals import contact_requested
 
 

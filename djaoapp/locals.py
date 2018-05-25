@@ -4,7 +4,6 @@
 import logging, os
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.utils import six
 from multitier.thread_locals import get_current_site
@@ -13,6 +12,9 @@ from multitier.utils import get_site_model
 from rules.utils import get_app_model
 from saas.models import Subscription
 from saas.utils import datetime_or_now
+
+from .compat import reverse
+
 
 LOGGER = logging.getLogger(__name__)
 
