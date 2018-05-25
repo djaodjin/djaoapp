@@ -27,6 +27,7 @@
         <i ng-show="loadingUsers" class="fa fa-spinner"></i>
     </div>
   </form>
+  <div class="table-responsive">
   <table class="table table-condensed table-striped">
     <thead>
       <tr>
@@ -55,6 +56,7 @@
         </tr>
     </tbody>
   </table>
+  </div>
   <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
       <ul uib-pagination class="pagination-sm" ng-model="currentPage"
                   total-items="totalItems"

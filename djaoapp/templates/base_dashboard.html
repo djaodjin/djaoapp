@@ -59,6 +59,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                                   </button>
 
                                   <ul class="dashboard-header-nav">
+                                    <li class="hidden-lg{% if urls.provider.dashboard == request.path %} active{% endif %}">
+                                        <a href="{{urls.provider.dashboard}}">Dashboard</a>
+                                    </li>
                                     {% include "generic_navbar.html" %}
                                     {% if request|is_authenticated %}
                                         <li class="dropdown">

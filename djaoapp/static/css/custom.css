@@ -357,6 +357,14 @@ body
     z-index: 3;
 }
 
+@media (max-width: 369px)
+{
+    .dashboard-header-nav li.hidden-lg
+    {
+        display: none;
+    }
+}
+
 @media (min-width: 768px)
 {
     .navbar-toggle
