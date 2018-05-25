@@ -27,6 +27,7 @@
         <a id="download" href="{{download_url}}?q=[[filterExpr]]&start_at=[[params.start_at]]&ends_at=[[params.ends_at]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
+    <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -58,6 +59,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
     <div class="text-center">
       <ul uib-pagination class="pagination-sm" ng-model="currentPage"
                 total-items="totalItems"
