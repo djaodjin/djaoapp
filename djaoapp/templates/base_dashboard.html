@@ -62,7 +62,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                                     <li class="hidden-lg{% if urls.provider.dashboard == request.path %} active{% endif %}">
                                         <a href="{{urls.provider.dashboard}}">Dashboard</a>
                                     </li>
-                                    {% include "generic_navbar.html" %}
+                                    <li>
+                                        <a href="{{request|url_app}}">Back to app &rarr;</a>
+                                    </li>
                                     {% if request|is_authenticated %}
                                         <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.user.username}} <span class="caret"></span></a>
