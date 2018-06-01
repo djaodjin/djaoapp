@@ -14,7 +14,7 @@
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
       <fetch><url>/var/www/djaoapp/./reps/djaoapp/htdocs</url></fetch>
-      <dep name="Django" target="python" includes="1.9.9">
+      <dep name="Django" target="python" includes="1.11.13">
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
       <dep name="django-assets" target="python">
@@ -23,7 +23,7 @@
       <dep name="django-urldecorators" target="python">
         <lib>.*/(urldecorators)/__init__.py</lib>
       </dep>
-      <dep name="djangorestframework" target="python" includes="3.7.0">
+      <dep name="djangorestframework" target="python" includes="3.8.2">
         <lib>.*/(rest_framework)/__init__.py</lib>
       </dep>
       <dep name="whitenoise" target="python">

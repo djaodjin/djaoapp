@@ -41,12 +41,12 @@ Weekly sales report
         </tr>
     </thead>
     <tbody>
-        {% for title, values in table.items() %}
+        {% for row in table %}
             <tr>
-                <td>{{title}}</td>
-                <td>{{values['last']}}</td>
-                <td>{{values['prev']}}</td>
-                <td>{{values['prev_year']}}</td>
+                <td>{{row.key}}</td>
+                <td>{{row.values.last}}</td>
+                <td>{{row.values.prev}}</td>
+                <td>{{row.values.prev_year}}</td>
             </tr>
         {% endfor %}
     </tbody>
