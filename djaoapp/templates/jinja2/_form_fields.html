@@ -17,7 +17,7 @@
     <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
       <div class="checkbox">
         <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
-          <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value() %}checked="checked"{% endif %}>
+          <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value() %}checked="checked"{% endif %}{% if bound_field.field.disabled %} disabled{% endif %}>
           {{ bound_field.label|safe }}
         </label>
       </div>
@@ -38,16 +38,19 @@
           cols="40" rows="10"
           {% if bound_field.field.widget.attrs.get('placeholder','') %}
           placeholder="{{bound_field.field.widget.attrs.get('placeholder','')}}"
+          {% endif %}
+          {% if bound_field.field.disabled %}
+          disabled
           {% endif %}>{% if bound_field.value() %}{{bound_field.value()}}{% endif %}</textarea>
       {% elif bound_field.field|is_radio %}
           {% for choice in bound_field.field.widget.choices %}
           <div class="radio">
             <label>
-              <input type="radio" name="{{bound_field.name}}"{% if bound_field.value() == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}
+              <input type="radio" name="{{bound_field.name}}"{% if bound_field.value() == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}"{% if bound_field.field.disabled %} disabled{% endif %}>{{choice[1]}}
             </label>
           </div>
           {% endfor %}
-      {% elif bound_field.field.widget.input_type %}
+      {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type != 'select' %}
         <input class="form-control" name="{{bound_field.name}}"
           {% if bound_field.value() is not none %}
           value="{{bound_field.value()}}"
@@ -68,10 +71,14 @@
           {% if bound_field.field.widget.attrs.step %}
           step="{{bound_field.field.widget.attrs.step}}"
           {% endif %}
+          {% if bound_field.field.disabled %}
+          disabled
+          {% endif %}
         />
       {% else %}
       {## XXX Everything else Select... ##}
-        <select class="form-control" name="{{bound_field.name}}">
+        <select class="form-control" name="{{bound_field.name}}"
+          {% if bound_field.field.disabled %} disabled{% endif %}>
           {% for choice in bound_field.field.widget.choices %}
           <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
           {% endfor %}

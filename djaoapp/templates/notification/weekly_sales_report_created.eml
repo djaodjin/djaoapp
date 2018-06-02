@@ -51,7 +51,9 @@ Weekly sales report
         {% endfor %}
     </tbody>
 </table>
-
+<p>
+<a href="https://djaodjin.com/docs/#revenue-reports">Definitions for Total Sales, Payments, etc.</a>
+</p>
 <p>
 Thank you for your continuous business. Any questions
 or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.

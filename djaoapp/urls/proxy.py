@@ -46,7 +46,7 @@ else:
 
 urlpatterns += site_patterns(
     # HTTP request pipeline and visual appearence.
-    url_direct(r'^api/credentials/(%(organization)s/)?', # site/subdomain
+    url_direct(r'^api/auth/tokens/realms/(%(organization)s/)?', # site/subdomain
         CredentialsAPIView.as_view(), name='api_credentials'),
     url_direct(r'^api/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationAPIView.as_view(), name='api_notification_send_test_email'),
@@ -55,10 +55,7 @@ urlpatterns += site_patterns(
     url_direct(r'^api/proxy/$',
         AppUpdateAPIView.as_view(), name='rules_api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
-    url_direct(r'^api/', include('pages.urls.api.elements')),
-    url_direct(r'^api/', include('pages.urls.api.sources')),
-    url_direct(r'^api/', include('pages.urls.api.less_variables')),
-    url_direct(r'^api/', include('pages.urls.api.sitecss')),
+    url_direct(r'^api/', include('pages.urls.api')),
 
     # Proxy subscription firewall
     url(r'^api/', include('saas.urls.api.cart')), # DELETE implements own policy
@@ -70,6 +67,7 @@ urlpatterns += site_patterns(
     url_direct(r'^api/', include('saas.urls.api.provider.profile')),
     url_direct(r'^api/', include('saas.urls.api.provider.metrics')),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
+    url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_self_provider(r'^api/', include('signup.urls.api.tokens')),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     url_direct(r'api/', include('signup.urls.api.contacts')),
@@ -77,6 +75,7 @@ urlpatterns += site_patterns(
 
     # Login, registration, and user profiles
     url_prefixed(r'^', include('djaoapp.urls.accounts')),
+    url_authenticated(r'^', include('saas.urls.request')),
     url_active(r'^users/$',
         UserRedirectView.as_view(), name='accounts_profile'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
@@ -92,7 +91,6 @@ urlpatterns += site_patterns(
                 pattern_name='saas_organization_cart'),
                        login_url='registration_register'),
         name='saas_cart'),
-    url_authenticated(r'^', include('saas.urls.request')),
     url(r'^', include('saas.urls.noauth')),
     url_direct(r'^', include('saas.urls.broker')),
     url_authenticated(r'^', include('saas.urls.redirects')),

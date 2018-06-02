@@ -14,14 +14,13 @@ from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from saas import settings as saas_settings
-from saas.mixins import ProviderMixin, UserMixin
+from saas.mixins import ProviderMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
 from signup.views.users import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
-    RegistrationPasswordConfirmView as RegistrationPasswordConfirmBaseView,
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView,
@@ -107,12 +106,6 @@ class PasswordResetConfirmView(AuthMixin, AppMixin,
         # from the base class back here.
         messages.info(self.request, "Your password has been reset sucessfully.")
         return super(PasswordResetConfirmView, self).get_success_url()
-
-
-class RegistrationPasswordConfirmView(AuthMixin, AppMixin,
-                                      RegistrationPasswordConfirmBaseView):
-
-    pass
 
 
 class SigninView(AuthMixin, AppMixin, SigninBaseView):
@@ -303,7 +296,7 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             organization_extra=organization_extra)
 
 
-class UserProfileView(AuthMixin, UserMixin, ProviderMixin, UserProfileBaseView):
+class UserProfileView(AuthMixin, ProviderMixin, UserProfileBaseView):
 
     # These fields declared in ``UserProfileBaseView`` will be overriden
     # by the ones declared in ``OrganizationMixin``.

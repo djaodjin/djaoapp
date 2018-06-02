@@ -12,6 +12,12 @@
     <div class="collapse-sidebar hidden-lg">
         <a href="#"><i class="fa fa-times"></i></a>
     </div>
+    <ul class="nav nav-pills nav-stacked">
+    <li>
+    {% include "saas/_organization_select.html" %}
+    </li>
+    </ul>
+    <hr />
     <div class="sidebar-logo">
         <a href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
         <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>

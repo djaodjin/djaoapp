@@ -1,5 +1,5 @@
-<hr />
-<ul class="nav nav-pills nav-stacked" data-intro="User profile" data-position="right">
+
+<ul class="nav nav-pills nav-stacked" data-intro="Subscriber profile" data-position="right">
 {% if urls.provider and urls.provider.profile %}
 <li {% if urls.provider.profile == request.path %} class="active"{% endif %}>
   <a id="saas_provider_profile" href="{{ urls.provider.profile }}"><i class="fa fa-user"></i><span class="">Profile</span></a>
@@ -16,7 +16,7 @@
 </li>
 {% endfor %}
 {% endif %}
-{% if not (urls.provider and urls.provider.profile) %}
+{% if not urls.provider or not urls.provider.profile %}
 {% if urls.organization.billing %}
 <li {% if urls.organization.billing == request.path %} class="active"{% endif %}>
   <a id="saas_billing_info" href="{{urls.organization.billing}}"><i class="fa fa-credit-card"></i><span>Billing</span></a>

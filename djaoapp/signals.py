@@ -6,11 +6,9 @@ import logging
 from django.conf import settings
 from django.dispatch import Signal, receiver
 from extended_templates.backends import get_email_backend
-from multitier.thread_locals import get_current_site, set_current_site
-from multitier.utils import get_site_model
+from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
-from saas.utils import get_role_model
 from saas.signals import (charge_updated, claim_code_generated, card_updated,
     expires_soon, order_executed, organization_updated,
     user_relation_added, user_relation_requested, role_grant_accepted,
@@ -128,10 +126,6 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     A new user has activated his account. We have a complete profile
     and active email address now.
     """
-    for role in get_role_model().objects.filter(grant_key=verification_key):
-        role.grant_key = None
-        role.save()
-
     broker = get_broker()
     site = get_current_site()
     recipients, bcc = _notified_recipients(broker, "user_activated_notice")
@@ -332,6 +326,9 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
     if user.email != organization.email:
         if user.email:
             back_url = reverse('organization_app', args=(organization,))
+            if role.grant_key:
+                back_url = reverse('saas_role_grant_accept',
+                    args=(role.grant_key,))
             if has_invalid_password(user):
                 if role.grant_key:
                     verification_key = role.grant_key
@@ -343,9 +340,6 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                         user, verification_key=verification_key)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url)
-            elif role.grant_key:
-                back_url = reverse('saas_role_grant_accept',
-                    args=(user, role.grant_key))
             site = get_current_site()
             app = get_current_app()
             context = {
@@ -416,8 +410,9 @@ def user_relation_requested_notice(sender, organization, user,
 @receiver(role_grant_accepted, dispatch_uid="role_grant_accepted")
 def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     user_context = get_user_context(request.user if request else None)
-    provider = role.plan.organization
-    if provider.email:
+    recipients, bcc = _notified_recipients(
+        role.organization, "role_grant_accepted_notice")
+    if recipients:
         site = get_current_site()
         app = get_current_app()
         LOGGER.debug("[signal] role_grant_accepted_notice("\
@@ -425,21 +420,22 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
         if SEND_EMAIL:
             get_email_backend(connection=app.get_connection()).send(
                 from_email=app.get_from_email(),
-                recipients=[provider.email],
+                recipients=[role.organization.email] + recipients,
+                bcc=bcc,
                 reply_to=user_context['email'],
                 template='notification/role_grant_accepted.eml',
                 context={
                     'broker': get_broker(), 'app': app,
-                    'back_url': site.as_absolute_uri(reverse('organization_app',
-                        args=(provider,))),
+                    'back_url': site.as_absolute_uri(reverse('saas_role_detail',
+                        args=(role.organization, role.role_description))),
                     'organization': role.organization,
-                    'plan': role.plan,
+                    'role': role.role_description.title,
                     'user': user_context})
     else:
         LOGGER.warning(
-            "%s will not be notified that the role of %s to %s"\
-            " was accepted because e-mail address is invalid.", provider,
-            role.organization, role.plan)
+            "%s will not be notified that the %s role of %s"\
+            " was accepted because e-mail address is invalid.",
+            role.organization, role.role_description, request.user)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -650,6 +646,8 @@ def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
         last_sunday = prev_week[-1]
         date = last_sunday.strftime("%A %b %d, %Y")
 
+        # XXX using the provider in templates is incorrect. "Any questions
+        # or comments..." should show DjaoDjin support email address.
         get_email_backend(connection=app.get_connection()).send(
             from_email=frm, recipients=recipients,
             bcc=bcc, template='notification/weekly_sales_report_created.eml',
