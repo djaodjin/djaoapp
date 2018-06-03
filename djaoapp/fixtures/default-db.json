@@ -332,7 +332,7 @@
 {
     "fields":{
       "slug": "cowork",
-      "db_name": "cowork",
+      "db_name": "testing",
       "account": 4,
       "domain": null,
       "tag": "streetside"
@@ -351,7 +351,7 @@
     "fields": {
         "app": 1,
         "rank": 1,
-        "path": "/app/",
+        "path": "/app",
         "rule_op": 1,
         "is_forward": false,
         "engaged": "app"
@@ -362,11 +362,21 @@
     "fields": {
         "app": 1,
         "rank": 2,
+        "path": "/forward/",
+        "rule_op": 1,
+        "is_forward": true
+    },
+    "model": "rules.Rule", "pk": 2
+},
+{
+    "fields": {
+        "app": 1,
+        "rank": 3,
         "path": "/",
         "rule_op": 0,
         "is_forward": false
     },
-    "model": "rules.Rule", "pk": 2
+    "model": "rules.Rule", "pk": 3
 },
 {
     "fields": {
