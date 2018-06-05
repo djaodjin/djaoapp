@@ -46,7 +46,8 @@ clean: clean-themes
 		$(srcDir)/htdocs/static/cache
 
 clean-themes:
-	-rm -rf $(srcDir)/themes/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
+	-rm -rf $(srcDir)/themes/djaoapp/templates/index.html \
+		$(srcDir)/themes/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
 		$(srcDir)/htdocs/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
 		$(srcDir)/htdocs/balme
 	cd $(srcDir) && find . -type d -name "brevent-*" -exec rm -rf {} +
