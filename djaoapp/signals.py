@@ -336,8 +336,16 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                     # The User is already in the system but the account
                     # has never been activated.
                     verification_key = organization.generate_role_key(user)
-                contact, _ = Contact.objects.get_or_create_token(
-                        user, verification_key=verification_key)
+                reason = "You have been invited to create an account"\
+                    " to join %s." % role.organization.printable_name
+                contact, created = Contact.objects.get_or_create_token(
+                    user, verification_key=verification_key,
+                    reason=reason)
+                if not created:
+                    # XXX It is possible a 'reason' field would be a better
+                    # implementation.
+                    contact.extra = reason
+                    contact.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url)
             site = get_current_site()

@@ -29,7 +29,7 @@ from rules.mixins import AppMixin
 
 from ..compat import reverse
 from ..locals import get_current_broker
-from ..forms.custom_signup import (PersonalRegistrationForm,
+from ..forms.custom_signup import (ActivationForm, PersonalRegistrationForm,
     SigninForm, TogetherRegistrationForm)
 
 
@@ -82,7 +82,13 @@ class AuthMixin(object):
 
 class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
 
-    pass
+    form_class = ActivationForm
+
+    def get_initial(self):
+        kwargs = super(ActivationView, self).get_initial()
+        kwargs.update({'legal_agreement_url': reverse('legal_agreement',
+            args=('terms-of-use',))})
+        return kwargs
 
 
 class PasswordResetView(AuthMixin, AppMixin, PasswordResetBaseView):

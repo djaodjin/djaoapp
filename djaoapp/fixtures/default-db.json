@@ -332,7 +332,7 @@
 {
     "fields":{
       "slug": "cowork",
-      "db_name": "testing",
+      "db_name": "cowork",
       "account": 4,
       "domain": null,
       "tag": "streetside"

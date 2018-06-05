@@ -12,9 +12,9 @@ from django_countries import countries
 from saas.forms import OrganizationForm
 from saas.models import Organization
 from signup.backends.auth import UsernameOrEmailAuthenticationForm
-from signup.forms import NameEmailForm
+from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
 
-from djaoapp.forms.fields import PhoneNumberField
+from .fields import PhoneNumberField
 
 NAME_RE = r"^([^\W\d_]|[ \.\'\-])+$"
 
@@ -32,11 +32,36 @@ class MissingFieldsMixin(object):
         missing = []
         for field_name, _ in six.iteritems(self._errors):
             if field_name != NON_FIELD_ERRORS:
-                if not field_name in self.data:
+                if not field_name in self.data and not isinstance(
+                        self.fields[field_name], forms.BooleanField):
+                    # BooleanField/Checkbox might not be sent by the browser
+                    # when they are unchecked.
                     missing += [field_name]
         if missing:
             self.add_error(None, "These input fields are missing: %s."
                 % ', '.join(missing))
+
+
+class ActivationForm(MissingFieldsMixin, ActivationFormBase):
+
+    def __init__(self, *args, **kwargs):
+        legal_agreement_url = kwargs['initial'].pop('legal_agreement_url', None)
+        super(ActivationForm, self).__init__(*args, **kwargs)
+        if legal_agreement_url:
+            # BooleanField/Checkbox might not be sent by the browser
+            # when they are unchecked which will lead to a generic
+            # "field required" error message.
+            # We add `required=False` here so that the error message
+            # is generated in `clean_terms_of_use` instead.
+            self.fields['terms_of_use'] = forms.BooleanField(label=_(
+                'I agree with <a href="' + legal_agreement_url
+                + '">terms and conditions</a>'), required=False)
+
+    def clean_terms_of_use(self):
+        if not self.cleaned_data['terms_of_use']:
+            raise forms.ValidationError(
+                _("You must agree to terms and conditions."))
+        return self.cleaned_data['terms_of_use']
 
 
 class FrictionlessSignupForm(MissingFieldsMixin, NameEmailForm):
