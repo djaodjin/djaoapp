@@ -324,8 +324,9 @@
 {
     "fields":{
       "slug": "djaoapp",
+      "account": 2,
       "domain": null,
-      "account": 2
+      "tag": "streetside"
     },
     "model": "multitier.site", "pk": 1
 },
