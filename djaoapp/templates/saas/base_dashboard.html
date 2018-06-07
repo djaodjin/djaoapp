@@ -8,16 +8,14 @@
 {% endblock %}
 
 {% block dashboard_nav %}
+<div class="dashboard-overlay dashboard-sidebar-overlay"></div>
 <div class="dashboard-nav dashboard-nav-color-theme">
     <div class="collapse-sidebar hidden-lg">
         <a href="#"><i class="fa fa-times"></i></a>
     </div>
-    <ul class="nav nav-pills nav-stacked">
-    <li>
-    {% include "saas/_organization_select.html" %}
-    </li>
-    </ul>
-    <hr />
+    <div class="dashboard-sidebar-menubar">
+        {% include "saas/_menubar.html" %}
+    </div>
     <div class="sidebar-logo">
         <a href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
         <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
@@ -30,7 +28,6 @@
         {% include "saas/_subscriber_sidebar.html" %}
       {% endblock %}
     </div>
-    <!--<hr />-->
     <div class="sidebar-footer">
         {% block footer %}
             <div>

@@ -58,26 +58,13 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                                     <span class="icon-bar"></span>
                                   </button>
 
-                                  <ul class="dashboard-header-nav">
-                                    <li class="hidden-lg{% if urls.provider.dashboard == request.path %} active{% endif %}">
-                                        <a href="{{urls.provider.dashboard}}">Dashboard</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{request|url_app}}">Back to app &rarr;</a>
-                                    </li>
-                                    {% if request|is_authenticated %}
-                                        <li class="dropdown">
-                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.user.username}} <span class="caret"></span></a>
-                                          <ul class="dropdown-menu">
-                                            <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
-                                          </ul>
-                                        </li>
-                                    {% else %}
-                                        <li><a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                    {% endif %}
-                                  </ul>
+                                  <div class="dashboard-content-menubar">
+                                      {% if request|is_authenticated %}
+                                          {% include "saas/_menubar.html" %}
+                                      {% else %}
+                                          <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+                                      {% endif %}
+                                  </div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-lg-8 col-lg-pull-4">
@@ -170,6 +157,5 @@ jQuery(document).ready(function($) {
     </script>
     {% block bodyscripts %}{% endblock %}
     {% endblock %}
-    <div class="dashboard-overlay"></div>
 </body>
 </html>

@@ -1,0 +1,34 @@
+<div class="menubar">
+    <a href="#" class="menubar-dropdown-toggle">
+        {% if top_accessibles|length > 0 %}
+            <span class="menubar-org">
+                {{top_accessibles[0].printable_name}}
+                <span class="caret"></span>
+            </span>
+        {% endif %}
+        <span class="menubar-username">
+            {{request.user.username}}
+            {% if top_accessibles|length == 0 %}
+                <span class="caret"></span>
+            {% endif %}
+        </span>
+    </a>
+    <div class="menubar-dropdown-container">
+        <ul class="dropdown-menu">
+            {% if top_accessibles|length > 0 %}
+                <li class="dropdown-label">{{request.user.username}}</li>
+            {% endif %}
+            <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
+            <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
+            {% if top_accessibles|length > 1 %}
+                {% for accessible in top_accessibles %}
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-label">{{accessible.printable_name}}</li>
+                    <li><a href="#">App</a></li>
+                    <li><a href="{{accessible.location}}">Settings</a></li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+        <div class="dashboard-overlay dashboard-menubar-overlay"></div>
+    </div>
+</div>
