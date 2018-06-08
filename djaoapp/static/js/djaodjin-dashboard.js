@@ -9,38 +9,59 @@
     "use strict";
 
 $(document).ready(function(){
-    $(".dashboard-nav-toggle").click(function() {
-        var element = $(this);
-        var icon = element.children("i");
-        var nav = element.parents(".dashboard-nav");
-        var containerInner = nav.parents(".dashboard-inner-container");
-        var navWidth = nav.width();
-        var toggleWidth = element.width();
-        var sidebarEdge = containerInner.css("left");
-        icon.removeClass();
-        if( sidebarEdge === "-" + (navWidth - toggleWidth) + "px" ) {
-            sidebarEdge = 0;
-            icon.addClass("fa fa-angle-double-left");
-        } else {
-            sidebarEdge = "-" + (navWidth - toggleWidth) + "px";
-            icon.addClass("fa fa-angle-double-right");
-        }
-        var animates = {left: sidebarEdge};
-        var container =  containerInner.parents(".dashboard-container");
-        var containerW = container.width();
-        if( containerW >= 768 ) {
-            if( sidebarEdge ) {
-                var newInnerWidth = containerW + (navWidth - toggleWidth);
-                animates['width'] = "" + newInnerWidth + "px";
-            } else {
-                animates['width'] = "" + containerW + "px";
-            }
-        }
-        containerInner.animate(animates, 500, function() {
-            container.trigger("resize");
+    (function(){
+        // slideout sidebar
+        var body = $('body');
+        var nav = $('.dashboard-nav');
+        var overlay = $('.dashboard-sidebar-overlay');
+        var content = $('.dashboard-content');
+
+        $(".dashboard-header-menu .navbar-toggle").click(function() {
+            content.animate({left: '220px'})
+            body.css('overflow', 'hidden')
+            overlay.show()
+            nav.animate({left: '0'});
         });
-    });
+        overlay.add('.collapse-sidebar').click(function() {
+            overlay.hide()
+            body.css('overflow', 'visible')
+            nav.animate({left: '-350px'})
+            content.animate({left: 0})
+        });
+        $(window).resize(function() {
+            overlay.hide()
+            $(body).add(nav).add(content).removeAttr('style')
+        });
+    })();
+
+    (function(){
+        // menubar
+        var menubar = $('.menubar');
+        var overlay = menubar.find('.dashboard-menubar-overlay');
+        var dpdwnMenu = menubar.find('.dropdown-menu');
+        var dpdwnToggle = menubar.find('.menubar-dropdown-toggle')
+        var open = false;
+        overlay.add(dpdwnToggle).click(function(e) {
+            if($(this).closest('.dropdown-menu').length === 0 ) {
+                if(open){
+                    open = false;
+                    dpdwnMenu.hide();
+                    overlay.hide();
+                }
+            }
+        });
+        dpdwnToggle.click(function(e){
+            var $t = $(this);
+            if(!open){
+                e.stopPropagation();
+                $t.siblings('.menubar-dropdown-container')
+                  .find('.dropdown-menu')
+                  .show();
+                overlay.show();
+                open = true;
+            }
+        });
+    })();
 });
 
 })(jQuery);
-

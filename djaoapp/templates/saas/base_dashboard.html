@@ -4,23 +4,44 @@
 {% assets "css_dashboard" %}
 <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
+<link rel="stylesheet" href="{{'/static/css/custom.css'|asset}}"/>
 {% endblock %}
 
 {% block dashboard_nav %}
+<div class="dashboard-overlay dashboard-sidebar-overlay"></div>
 <div class="dashboard-nav dashboard-nav-color-theme">
-  <div class="dashboard-nav-inner-container">
+    <div class="collapse-sidebar hidden-lg">
+        <a href="#"><i class="fa fa-times"></i></a>
+    </div>
+    <div class="dashboard-sidebar-menubar">
+        {% include "saas/_menubar.html" %}
+    </div>
+    <div class="sidebar-logo">
+        <a href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+    </div>
     <div class="dashboard-nav-menu">
       {% block sidebar %}
-        {% include "saas/_subscriber_sidebar.html" %}
       {% if organization.is_provider %}
         {% include "saas/_provider_sidebar.html" %}
       {% endif %}
+        {% include "saas/_subscriber_sidebar.html" %}
       {% endblock %}
     </div>
-    <div class="dashboard-nav-toggle dashboard-nav-color-theme">
-      <i class="fa initial"></i>
+    <div class="sidebar-footer">
+        {% block footer %}
+            <div>
+                Powered by &copy; 2018 DjaoDjin. All rights reserved.
+            </div>
+            <div class="sidebar-footer-links">
+                <a href="/legal/" target="_blank">Legal</a>
+                &middot;
+                <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+            </div>
+        {% endblock %}
     </div>
-  </div>
 </div>
 {% endblock %}
 

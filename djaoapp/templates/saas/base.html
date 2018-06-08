@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_dashboard.html" %}
 
 {% block localheader %}
 {% if STRIPE_PUB_KEY %}
@@ -42,15 +42,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{% block saas_title %}{% endblock %}<div style="display: inline-block;"><sup style="display: none;font-size:0.5em;cursor:pointer;"><i id="help-request" class="fa fa-question-circle"></i></sup></div></h1>
-</div>
 {% block saas_page_layout %}
 <p class="lead">
     {% block saas_lead_help %}{% endblock %}
 </p>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-xs-12">
         {% block saas_help %}{% endblock %}
         {% block saas_content %}{% endblock %}
     </div>

@@ -1,12 +1,13 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}<i class="fa fa-wrench"></i> HTTP Request Pipeline{% endblock %}
+{% block saas_title %}HTTP Request Pipeline{% endblock %}
 
 {% block saas_page_layout %}
 <div ng-app="ruleApp">
   <div  ng-controller="RuleListCtrl">
+    <div class="row">
     <div class="col-md-12" data-trip data-trip-index="1" data-trip-content="<h2>Configure the request pipeline</h2><p>Set URL access rules and where authorized requests are forwared to...</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-      <h2>Domain</h2>
+      <h3>Domain</h3>
       <div data-trip data-trip-index="2" data-trip-content="<p>Check the domain for which the access rules apply. All HTTP requests to {{site_available_at_url}}<br />will be checked against the access rules defined below.</p>" data-trip-position="s">
         <p>
 The site is available at <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
@@ -14,7 +15,8 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
       </div>
     </div>
     <div class="col-md-12">
-      <h2>Access Rules</h2>
+      <h3>Access Rules</h3>
+      <div class="table-responsive">
       <table class="table table-condensed table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
         <thead>
           <tr>
@@ -22,7 +24,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th>Path</th>
             <th>Access Rule</th>
             <th class="text-center">Forward</th>
-            <th>Delete</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="rules" dnd-list="rules">
@@ -60,6 +62,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
           </tr>
         </tbody>
       </table>
+      </div>
       <!-- modal dialog for Adding a rule -->
       <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
            aria-labelledby="Add Access Rule" aria-hidden="true">
@@ -95,14 +98,12 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
       <!-- end of modal dialog for Adding a rule -->
     </div>
     <div class="col-md-12">
-      <h2>Web application</h2>
-      <ul class="nav nav-tabs dashboard-tab">
-        <li class="active">
-          <a href="#endpoint" data-toggle="tab">HTTP End Point</a>
-        </li>
-      </ul>
-      <div class="tab-content">
+      <h3>Web application</h3>
+      <p>
+          HTTP End Point
+      <p>
         <div id="endpoint" class="tab-pane active">
+        <div class="row">
           <div class="col-md-12" style="margin-bottom:50px;">
             <label for="">Entry point *</label>
             <form id="entry-point-form" class="form-inline" method="post" ng-submit="submitEntryPoint('#entry-point-form')">
@@ -162,9 +163,10 @@ The key will only be displayed once. Keep it secure.
           </div>
         </div>
         <!-- end of modal dialog for Encrypted Session Key -->
-      </div>
+        </div>
     </div>
     <!-- Web Application -->
+  </div>
   </div>
 </div>
 {% endblock %}

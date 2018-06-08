@@ -1,46 +1,45 @@
 {% if urls.provider %}
 {# urls.provider will only be set when the ``request.user`` is a manager    #}
 {# of the organization.                                                     #}
-<hr />
+<!--<hr />-->
 <ul class="nav nav-pills nav-stacked" data-intro="Pricing, billing and metrics" data-position="right">
     <li {% if urls.provider.dashboard == request.path %} class="active"{% endif %}>
-        <a id="saas_dashboard" href="{{urls.provider.dashboard}}"><i class="fa fa-wrench"></i> <span class="">&#09;Dashboard</span></a>
+        <a id="saas_dashboard" href="{{urls.provider.dashboard}}"><i class="fa fa-wrench"></i><span class="">Dashboard</span></a>
     </li>
     <li {% if urls.provider.coupons == request.path %} class="active"{% endif %}>
-        <a id="saas_coupon_list" href="{{urls.provider.coupons}}"><i class="fa fa-ticket"></i><span class="">&#09;Coupons</span></a>
+        <a id="saas_coupon_list" href="{{urls.provider.coupons}}"><i class="fa fa-ticket"></i><span class="">Coupons</span></a>
     </li>
     <li {% if urls.provider.transfers == request.path %} class="active"{% endif %}>
-        <a id="saas_transfer_info" href="{{urls.provider.transfers}}"><i class="fa fa-usd"></i><span class="">&#09;Funds</span></a>
+        <a id="saas_transfer_info" href="{{urls.provider.transfers}}"><i class="fa fa-usd"></i><span class="">Funds</span></a>
     </li>
     <li {% if urls.provider.metrics_sales == request.path %} class="active"{% endif %}>
-        <a id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}"><i class="fa fa-bar-chart-o"></i><span class="">&#09;Revenue</span></a>
+        <a id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}"><i class="fa fa-bar-chart-o"></i><span class="">Revenue</span></a>
     </li>
     <li {% if urls.provider.metrics_plans == request.path %} class="active"{% endif %}>
-        <a id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}"><i class="fa fa-bar-chart-o"></i><span class="">&#09;Plans</span></a>
+        <a id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}"><i class="fa fa-bar-chart-o"></i><span class="">Plans</span></a>
     </li>
-    <li {% if urls.provider.subscribers == request.path %} class="active"{% endif %}  style="margin-bottom: 20px;">
-        <a id="saas_subscriber_list" href="{{urls.provider.subscribers}}"><i class="fa fa-users"></i><span class="">&#09;Subscribers</span></a>
+    <li {% if urls.provider.subscribers == request.path %} class="active"{% endif %}>
+        <a id="saas_subscriber_list" href="{{urls.provider.subscribers}}"><i class="fa fa-users"></i><span class="">Subscribers</span></a>
     </li>
 </ul>
 <hr />
 <ul class="nav nav-pills nav-stacked" data-intro="Roles and permissions" data-position="right">
     {% if urls.notifications %}
     <li {% if urls.notifications == request.path %} class="active"{% endif %}>
-        <a id="notifications_lnk" href="{{urls.notifications}}"><i class="fa fa-long-arrow-right"></i><span class="">&#09;Notifications</span></a>
+        <a id="notifications_lnk" href="{{urls.notifications}}"><i class="fa fa-long-arrow-right"></i><span class="">Notifications</span></a>
     </li>
     {% endif %}
     {% if FEATURES_DEBUG %}
     {% if urls.pages.theme_base %}
     <li {% if urls.pages.theme_base == request.path %} class="active"{% endif %}>
-        <a id="pages_theme" href="{{urls.pages.theme_base}}"><i class="fa fa-wrench"></i><span class="">&#09;Theme</span></a>
+        <a id="pages_theme" href="{{urls.pages.theme_base}}"><i class="fa fa-wrench"></i><span class="">Theme</span></a>
     </li>
     {% endif %}
     {% endif %}
     {% if urls.rules and urls.rules.app %}
     <li {% if urls.rules.app == request.path %} class="active"{% endif %}>
-        <a id="rules_update" href="{{urls.rules.app}}"><i class="fa fa-wrench"></i><span class="">&#09;Rules</span></a>
+        <a id="rules_update" href="{{urls.rules.app}}"><i class="fa fa-wrench"></i><span class="">Rules</span></a>
     </li>
     {% endif %}
 </ul>
-<hr />
 {% endif %}
