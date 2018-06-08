@@ -30,6 +30,7 @@ if settings.DEBUG:
     from django.contrib import admin
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     from django.conf.urls.static import static
+    from ..views.docs import APIDocView, schema_view
     import debug_toolbar
 
     # admin doc and panel
@@ -54,6 +55,9 @@ if settings.DEBUG:
             name='csrf_error'),
         url(r'^favicon.ico$', django_static_serve,
             {'path': 'favicon.ico'}),
+        url(r'^docs/api/redoc/$', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
+        url(r'^docs/api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
+        url(r'^docs/api/', APIDocView.as_view()),
     ]
 else:
     urlpatterns = []

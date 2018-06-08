@@ -34,3 +34,11 @@ jsmin==2.2.2
 django-extensions==1.6.7
 django-debug-panel==0.8.3
 django-debug-toolbar==1.9.1
+
+# development
+drf-yasg==1.8.0
+flex==6.13.2
+pygments==2.2.0
+swagger-spec-validator==2.3.0
+Sphinx==1.7.5
+sphinxcontrib-httpdomain==1.6.1

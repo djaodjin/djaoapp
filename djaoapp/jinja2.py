@@ -86,6 +86,16 @@ def environment(**options):
     env.filters['describe'] = saas.templatetags.saas_tags.describe
 
     if settings.DEBUG:
+        env.filters['query_parameters'] = \
+            djaoapp.templatetags.djaoapp_tags.query_parameters
+        env.filters['request_body_parameters'] = \
+            djaoapp.templatetags.djaoapp_tags.request_body_parameters
+        env.filters['not_key'] = \
+            djaoapp.templatetags.djaoapp_tags.not_key
+        env.filters['schema_href'] = \
+            djaoapp.templatetags.djaoapp_tags.schema_href
+        env.filters['schema_name'] = \
+            djaoapp.templatetags.djaoapp_tags.schema_name
         env.filters['addslashes'] = django.template.defaultfilters.addslashes
         env.globals.update({
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,

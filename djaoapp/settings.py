@@ -40,6 +40,7 @@ if DEBUG:
         'debug_toolbar',
         'debug_panel',
         'django_extensions',
+        'drf_yasg'
         )
 else:
     ENV_INSTALLED_APPS = RULES_APPS

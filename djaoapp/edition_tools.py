@@ -93,6 +93,8 @@ def inject_edition_tools(response, request, context=None,
             'saas_plan_base', args=(provider,))}
 
     if not fail_edit_perm(request, account=provider):
+        # XXX `not fail_edit_perm` will pass even if site is testing, which
+        # puts the tools to edit online. Error of duplicate remains.
         if is_testing(site):
             if has_bank_account(provider):
                 body_top_template_name = "pages/_body_top_testing_manager.html"

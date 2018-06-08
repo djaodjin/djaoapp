@@ -25,6 +25,12 @@ from .edition_tools import inject_edition_tools as _inject_edition_tools
 
 LOGGER = logging.getLogger(__name__)
 
+DEFAULT_RULES_PREFIXES = [
+    '/api/auth/', '/api/billing/', '/api/metrics/',
+    '/api/profile/', '/api/users/',
+    '/billing/', '/metrics/', '/profile/', '/users/'
+]
+
 
 def inject_edition_tools(function=None):
     """
@@ -69,10 +75,7 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
             try:
                 app = get_current_app()
                 redirect_url, _, _ = check_matched(request, app,
-                    prefixes=[
-                        '/api/billing/', '/api/metrics/', '/api/profile/',
-                        '/api/users/',
-                        '/billing/', '/metrics/', '/profile/', '/users/'])
+                    prefixes=DEFAULT_RULES_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
                         return http.HttpResponseRedirect(redirect_url)
@@ -117,10 +120,7 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL):
             try:
                 app = get_current_app()
                 redirect_url, _, _ = check_matched(request, app,
-                    prefixes=[
-                        '/api/billing/', '/api/metrics/', '/api/profile/',
-                        '/api/users/',
-                        '/billing/', '/metrics/', '/profile/', '/users/'])
+                    prefixes=DEFAULT_RULES_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
                         return http.HttpResponseRedirect(redirect_url)
@@ -166,10 +166,7 @@ def requires_provider_only(function=None, roledescription=None,
             try:
                 app = get_current_app()
                 redirect_url, _, _ = check_matched(request, app,
-                    prefixes=[
-                        '/api/billing/', '/api/metrics/', '/api/profile/',
-                        '/api/users/',
-                        '/billing/', '/metrics/', '/profile/', '/users/'])
+                    prefixes=DEFAULT_RULES_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
                         return http.HttpResponseRedirect(redirect_url)
@@ -212,10 +209,7 @@ def requires_self_provider(function=None, strength=NORMAL):
             try:
                 app = get_current_app()
                 redirect_url, _, _ = check_matched(request, app,
-                    prefixes=[
-                        '/api/billing/', '/api/metrics/', '/api/profile/',
-                        '/api/users/',
-                        '/billing/', '/metrics/', '/profile/', '/users/'])
+                    prefixes=DEFAULT_RULES_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
                         return http.HttpResponseRedirect(redirect_url)

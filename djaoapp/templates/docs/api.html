@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% macro api_param_doc(param, read_direction=True) -%}
+{% if param.type %}
+  {% if param.type == 'object' %}
+    <json-schema-lazy></json-schema-lazy>
+    <json-schema class="">
+      <table class="params-wrap">
+        {% for attr_name, attr in param.properties.items() %}
+        {% if (read_direction and attr_name|not_key) or (not read_direction and not attr.readOnly) %}
+        <tr class="param">
+            <td class="param-name">
+                <span class="param-name-wrap">
+                    <span class="param-name-content">
+                        {{attr_name}}
+                        <span class="param-name-enumvalue" hidden=""> null </span>
+                    </span>
+                </span>
+            </td>
+            <td class="param-info">
+                <div>
+                    <span class="param-type" title="">{{attr.type}}{% if attr.type == 'array' %} of {{attr|schema_name}}{% endif %}
+                    </span>
+                    {% if attr.required %}
+                    <span class="param-required">Required</span>
+                    {% endif %}
+                </div>
+                {% if attr.description %}
+                <div class="param-description">{{attr.description}}</div>
+                {% endif %}
+                {% if attr.type == 'array' and attr|schema_href %}
+                <div>
+                    {{api_param_doc(definitions[attr|schema_href], read_direction)}}
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </table>
+    </json-schema>
+  {% else %}
+    <div class="param">
+      <div class="param-name">
+        <span class="param-name-wrap">{{param.name}}</span>
+      </div>
+      <div class="param-info">
+        <div>
+            <span class="param-type integer" title="">{{param.type}}</span>
+        </div>
+        <div class="param-description">
+            <p>{{param.description}}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% elif param.schema %}
+    {{api_param_doc(param.schema, read_direction)}}
+{% else %}
+    {{api_param_doc(definitions[param|schema_href], read_direction)}}
+{% endif %}
+{%- endmacro %}
+
+
+{% block content %}
+<div class="row" style="display: flex;">
+  <div class="col-sm-2 dashboard-nav-color-theme" style="flex-grow: 1;">
+    <div class="dashboard-nav-menu">
+      <ul class="nav nav-pills nav-stacked">
+        <li></li>
+        <li><a href="#authentication">Authentication</a></li>
+        {% for tag in tags %}
+        <li><a href="#{{tag|lower}}">{{tag}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-10" style="flex-grow: 1;">
+    <div class="row" style="display: flex;">
+      <div class="col-sm-7" style="flex-grow: 1;">
+        <a name="authentication" href="#authentication"><h2>Authentication</h2></a>
+        <p>
+Authenticate your account by including your API key in API requests.
+You can manage your API keys on your <a href="https://djaodjin.com/users/">profile page</a>.
+Your API keys carry many privileges, so be sure to keep them secure!
+Do not share your secret API keys in publicly accessible areas such GitHub,
+client-side code, and so forth.
+        </p>
+        <p>
+Authentication to the API is performed via <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">HTTP Basic Auth</a>.
+Provide your API key as the basic auth username value.
+You do not need to provide a password.
+        </p>
+        <p>
+All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
+        </p>
+      </div>
+      <div class="col-sm-5 code" style="flex-grow: 1;">
+        <h3>Example request</h3>
+        <pre class="code">curl {{api_base_url}} \
+    -u BQokikJOvBiI2HlWgH4olfQ24ret3awZ:</pre>
+        <p>
+curl uses the -u flag to pass basic auth credentials.
+(Adding a colon after your API key prevents curl from asking for a password.)
+        </p>
+      </div>
+    </div>
+    {% for api_end_point in api_end_points %}
+    <div class="row" style="display: flex;">
+      <div class="col-sm-7" style="flex-grow: 1;">
+        {% if api_end_point.tags != variable_watcher %}
+        <a name="{{api_end_point.tags}}" href="#{{api_end_point.tags}}"><h2>{{api_end_point.tags|capitalize}}</h2></a>
+        {% set variable_watcher = api_end_point.tags %}
+        {% endif %}
+        <h3>{{api_end_point.func|upper}} {{api_end_point.path}}</h3>
+        <div>
+            {{api_end_point.description}}
+        </div>
+        {% if api_end_point.parameters|query_parameters %}
+        <div>
+            <h5 class="param-list-header">Query parameters<span class="hint--top-right hint--large" data-hint="Parameters that are appended to the URL.
+                                                                                       For example, in /items?id=###, the query parameter is id">?</span></h5>
+            <div class="params-wrap">
+                {% for param in api_end_point.parameters|query_parameters %}
+                    {{ api_param_doc(param) }}
+                {% endfor %}
+            </div>
+        </div> <!-- .param-list-header -->
+        {% endif %}
+        {% if api_end_point.parameters|request_body_parameters(definitions) %}
+        <div>
+            <h5 class="param-list-header">Request body</h5>
+            <div class="params-wrap">
+                {% for param in api_end_point.parameters|request_body_parameters(definitions) %}
+                    {{ api_param_doc(param, read_direction=False) }}
+                {% endfor %}
+            </div>
+        </div> <!-- .param-list-header -->
+        {% endif %}
+        <responses-list>
+            <h5 class="responses-list-header param-list-header">Responses</h5>
+            {% for resp_code, param in api_end_point.responses.items() %}
+            <zippy>
+                <div class="zippy zippy-success">
+                    <div class="zippy-title">
+                        <span class="zippy-title-content"><p>{{resp_code}}</p></span>
+                    </div>
+                    {% if param.type or param.schema %}
+                    <div class="zippy-content">
+                        {{ api_param_doc(param) }}
+                    </div>
+                    {% endif %}
+                </div>
+            </zippy>
+            {% endfor %}
+        </responses-list><!-- .responses-list -->
+      </div>
+      <div class="col-sm-5 code" style="flex-grow: 1;">
+        <h3>Examples</h3>
+        <div class="code">{{api_end_point.examples}}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
