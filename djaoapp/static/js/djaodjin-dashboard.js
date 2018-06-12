@@ -18,7 +18,8 @@ $(document).ready(function(){
         var content = $('.dashboard-content');
         var open = false;
 
-        $(".dashboard-header-menu .navbar-toggle").click(function() {
+        $(".dashboard-header-menu .navbar-toggle").click(function(e) {
+            e.preventDefault();
             if(!open) {
                 body.css('overflow', 'hidden')
                 container.css('overflow', 'hidden')
@@ -68,6 +69,7 @@ $(document).ready(function(){
             }
         });
         dpdwnToggle.click(function(e){
+            e.preventDefault();
             var $t = $(this);
             if(!open){
                 e.stopPropagation();

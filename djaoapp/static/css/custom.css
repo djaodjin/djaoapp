@@ -306,7 +306,7 @@ body
     background: #888;
 }
 
-.dashboard-content-menubar .menubar-dropdown-toggle
+.dashboard-menubar .menubar-dropdown-toggle
 {
     display: block;
     line-height: 1em;
@@ -316,7 +316,7 @@ body
     font-size: 13px;
 }
 
-.dashboard-content-menubar .menubar .dropdown-menu
+.dashboard-menubar .menubar .dropdown-menu
 {
     left: auto;
     right: 0;
@@ -358,6 +358,7 @@ body
 .menubar-dropdown-container .dropdown-menu
 {
     z-index: 6;
+    white-space: nowrap;
 }
 
 .nvtooltip
@@ -433,30 +434,15 @@ body
     font-size: 13px;
 }
 
-.dashboard-sidebar-menubar .menubar-dropdown-toggle
+.menubar .dropdown-label .dropdown-label-role
 {
-    display: block;
-    width: 220px;
-    padding: 13px 25px;
-    border-bottom: 1px solid #e9e9e9;
-    line-height: 1em;
-}
-
-.dashboard-sidebar-menubar .menubar-dropdown-toggle:hover,
-.dashboard-sidebar-menubar .menubar-dropdown-toggle:focus,
-.dashboard-sidebar-menubar .menubar-dropdown-toggle:active
-{
-    text-decoration: none !important;
-}
-
-.dashboard-sidebar-menubar .menubar-dropdown-toggle:hover .menubar-org
-{
-    color: #333;
-}
-
-.dashboard-sidebar-menubar .menubar-dropdown-toggle:hover .menubar-username
-{
-    color: #666;
+    color: #fff;
+    margin-left: 10px;
+    background: #337ab7cc;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
 }
 
 .menubar-org
@@ -484,6 +470,28 @@ body
 .navbar-logo img
 {
     width: 32px;
+}
+
+.dashboard-top-navigation
+{
+    display: flex;
+}
+
+.dashboard-top-menu
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    display: none;
+}
+
+.dashboard-top-menu li
+{
+    margin: 0 10px;
+    font-size: 15px;
 }
 
 @media (max-width: 1199px)
@@ -533,7 +541,7 @@ body
         font-size: 15px;
     }
 
-    .dashboard-content-menubar .menubar-dropdown-toggle
+    .dashboard-menubar .menubar-dropdown-toggle
     {
         font-size: 12px;
         padding: 8px 25px;
@@ -544,7 +552,7 @@ body
         bottom: 64px;
     }
 
-    .dashboard-content-menubar .menubar .dropdown-menu
+    .dashboard-menubar .menubar .dropdown-menu
     {
         margin: 5px 0 0;
     }
@@ -560,6 +568,11 @@ body
 
 @media (min-width: 1200px)
 {
+    .dashboard-top-menu
+    {
+        display: flex;
+    }
+
     .dashboard-nav
     {
         position: -webkit-sticky;
