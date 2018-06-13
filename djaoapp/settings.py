@@ -732,5 +732,16 @@ SURVEY = {
     'BELONGS_MODEL': 'saas.Organization'
 }
 
+
+# API documentation
+SWAGGER_SETTINGS = {
+    'DEFAULT_PAGINATOR_INSPECTORS': [
+        'djaoapp.docs.DocTotalPagination',
+        'drf_yasg.inspectors.DjangoRestResponsePagination',
+        'drf_yasg.inspectors.CoreAPICompatInspector',
+    ],
+}
+
+
 # Demo mode ...
 REUSABLE_PRODUCTS = ('demo',)
