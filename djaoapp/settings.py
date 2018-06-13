@@ -502,9 +502,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'signup.authentication.JWTAuthentication',
         'signup.authentication.APIKeyAuthentication',
+        # `rest_framework.authentication.SessionAuthentication` is the last
+        # one in the list because it will raise a PermissionDenied if the CSRF
+        # is absent.
+        'rest_framework.authentication.SessionAuthentication',
     )
 }
 if not DEBUG:

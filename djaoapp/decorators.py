@@ -96,7 +96,8 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
     return decorator
 
 
-def requires_provider(function=None, roledescription=None, strength=NORMAL):
+def requires_provider(function=None, roledescription=None, strength=NORMAL,
+                    redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
@@ -132,7 +133,8 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL):
                     roledescription=roledescription, strength=strength)
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
-                        "%(user)s is neither a manager "\
+                        redirect_field_name=redirect_field_name,
+                        descr="%(user)s is neither a manager "\
 " for %(slug)s nor a manager of one of %(slug)s providers." % {
     'user': request.user, 'slug': slug})
             return view_func(request, *args, **kwargs)
@@ -145,7 +147,8 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL):
 
 
 def requires_provider_only(function=None, roledescription=None,
-                      strength=NORMAL):
+                           strength=NORMAL,
+                           redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
@@ -181,7 +184,8 @@ def requires_provider_only(function=None, roledescription=None,
                     roledescription=roledescription, strength=strength)
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
-                        "%(user)s is not a manager of one of"\
+                        redirect_field_name=redirect_field_name,
+                        descr="%(user)s is not a manager of one of"\
 " %(slug)s providers." % {'user': request.user, 'slug': slug})
             return view_func(request, *args, **kwargs)
 
@@ -192,7 +196,8 @@ def requires_provider_only(function=None, roledescription=None,
     return decorator
 
 
-def requires_self_provider(function=None, strength=NORMAL):
+def requires_self_provider(function=None, strength=NORMAL,
+                           redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Same decorator as saas.requires_self_provider with the added permissions
     that managers of the site database itself are also able to access
@@ -221,10 +226,13 @@ def requires_self_provider(function=None, strength=NORMAL):
                         return http.HttpResponseRedirect(redirect_url)
                     raise PermissionDenied()
             except NoRuleMatch:
-                if _fail_self_provider(
+                redirect_url = _fail_self_provider(
                         request, user=kwargs.get('user', None),
-                        strength=strength):
-                    raise PermissionDenied("%(auth)s has neither a direct"\
+                        strength=strength)
+                if redirect_url:
+                    return redirect_or_denied(request, redirect_url,
+                        redirect_field_name=redirect_field_name,
+                        descr="%(auth)s has neither a direct"\
 " relation to an organization connected to %(user)s nor a connection to one"\
 "of the providers to such organization." % {
     'auth': request.user, 'user': kwargs.get('user', None)})

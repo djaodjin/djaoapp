@@ -4,6 +4,10 @@
 {% block accounts_localheader %}{% endblock %}
 {% endblock %}
 
+{% block content %}
+{% block accounts_content %}{% endblock %}
+{% endblock %}
+
 {% block bodyscripts %}
 {% assets "js_auth" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
