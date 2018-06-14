@@ -494,6 +494,18 @@ body
     font-size: 15px;
 }
 
+.app-top-navigation
+{
+    display: flex;
+    float: right;
+}
+
+.app-top-navbar
+{
+    padding: 10px 25px;
+    border-bottom: 1px solid #eee;
+}
+
 @media (max-width: 1199px)
 {
     .navbar-logo
@@ -560,7 +572,7 @@ body
 
 @media (min-width: 768px)
 {
-    .navbar-toggle
+    .dashboard-header-menu .navbar-toggle
     {
         display: block;
     }
@@ -635,7 +647,7 @@ body
         justify-content: flex-end;
     }
 
-    .navbar-toggle
+    .dashboard-header-menu .navbar-toggle
     {
         display: none;
     }

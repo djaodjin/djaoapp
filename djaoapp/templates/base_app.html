@@ -50,58 +50,43 @@
 <body>
     <div id="wrap">
         <div id="main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <header>
-                            <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
-                                <div class="navbar-header" style="width: 100%;">
-                                    <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
-                                    <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
-                                    {% block header_navbar_large %}
-                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                        <i class="fa fa-chevron-down"></i>
-                                    </button>
-                                    <div style="float:right;margin-right: 15px;">
-                                        <ul class="nav navbar-nav navbar-right">
-                                            {% if request|is_authenticated %}
-                                            <li>
-                                                <a id="authenticated-user" href="{{request|url_profile}}">{{request.user.username}}</a>
-                                            </li>
-                                            <li class="hidden-xs">
-                                                <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
-                                            </li>
-                                            {% else %}
-                                            <li>
-                                                <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                            {% endif %}
-                                        </ul>
-                                        <ul class="hidden-xs nav navbar-nav navbar-right">
-                                            {% include "_appmenu.html" %}
-                                        </ul>
-                                    </div>
-                                    {% endblock %}
-                                </div>
-                                {% block header_navbar_small %}
-                                <div class="hidden-sm hidden-md hidden-lg">
-                                    <div class="navbar-collapse collapse">
-                                        <ul class="nav navbar-nav navbar-right">
-                                            {% include "_appmenu.html" %}
-                                            {% if request|is_authenticated %}
-                                            <li>
-                                                <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
-                                            </li>
-                                            {% endif %}
-                                        </ul>
-                                    </div>
-                                </div>
-                                {% endblock %}
-                            </nav>
-                            {% block fullviewport %}
-                            {% endblock %}
-                        </header>
+            <header class="app-top-navbar">
+                <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+                    <div class="navbar-header" style="width: 100%;">
+                        <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                        {% block header_navbar_large %}
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
+                            <div class="app-top-navigation">
+                              <ul class="dashboard-top-menu">
+                                  {% include "_appmenu.html" %}
+                              </ul>
+                              <div class="dashboard-menubar">
+                                  {% if request|is_authenticated %}
+                                      {% include "saas/_menubar.html" %}
+                                  {% else %}
+                                      <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+                                  {% endif %}
+                              </div>
+                            </div>
+                        {% endblock %}
                     </div>
-                </div>
+                    {% block header_navbar_small %}
+                    <div class="hidden-sm hidden-md hidden-lg">
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% include "_appmenu.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endblock %}
+                </nav>
+                {% block fullviewport %}
+                {% endblock %}
+            </header>
+            <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
                             <header class="dashboard-header">
@@ -159,51 +144,99 @@
         </div>
     </footer>
     {% endblock %}
+
     {% block _bodyscripts %}
-    {% assets "js_base" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    <script type="text/javascript">
-jQuery(document).ready(function($) {
-    {% if csrf_token %}
-    $.ajaxSetup({
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function(xhr, settings) {
-            // these HTTP methods do not require CSRF protection
-            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
-                xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
-            }
-        }
-    });
-    {% endif %}
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-full-width",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": 200,
-        "hideDuration": 200,
-        "timeOut": "0",
-        "extendedTimeOut": "0",
-        "showEasing": "linear",
-        "hideEasing": "linear",
-        "showMethod": "slideDown",
-        "hideMethod": "slideUp",
-        containerId: "messages-content",
-        toastClass: "alert",
-        iconClasses: {
-            error: "alert-danger",
-            info: "alert-info",
-            success: "alert-success",
-            warning: "alert-warning"
-        },
-    };
-});
-    </script>
-    {% block bodyscripts %}{% endblock %}
+        {% assets "js_base" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                {% if csrf_token %}
+                $.ajaxSetup({
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                        // these HTTP methods do not require CSRF protection
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+                        }
+                    }
+                });
+                {% endif %}
+            });
+        </script>
+        {% block bodyscripts %}
+            {% assets "js_saas" %}
+                <script type="text/javascript" charset="utf-8" src="{{ ASSET_URL }}"></script>
+            {% endassets %}
+            <script type="text/javascript">
+                jQuery(document).ready(function($) {
+                {% if urls and urls.provider %}
+                    $("[data-plan]").plan({
+                        saas_api_plan: "{{ urls.provider.api_plans }}",
+                        saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+                    });
+                {% endif %}
+                {% if urls and urls.api_redeem %}
+                    $("#redeem-code").redeem(
+                        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
+                {% endif %}
+                    var cardForm = $("#payment-form");
+                {% if urls and urls.api_cart %}
+                    if( cardForm.length > 0 ) {
+                        cardForm.find("#invoicables").invoice(
+                            {currency_unit: "{% if lines_price %}{{ lines_price.unit }}{% endif %}",
+                             saas_api_cart: "{{ urls.api_cart }}" });
+                    }
+                {% endif %}
+                {% if STRIPE_PUB_KEY %}
+                    cardForm.card({
+                        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+                        saas_api_card: "{{ urls.organization.api_card }}"
+                    });
+                    $("#bank-form").bank({stripePubKey: "{{STRIPE_PUB_KEY}}"});
+                {% endif %}
+                {% if charge %}
+                    $(".charge-refund").click(function () {
+                        var self = $(this);
+                        $("#charge-refund").refund({
+                            availableAmount: self.attr("data-available-amount"),
+                            linenum: self.attr("data-linenum"),
+                            saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+                            refundButton: self
+                        });
+                    });
+                    $("#email-charge-receipt").chargeEmailReceipt({
+                        initialState: "{{charge.state_string}}",
+                        saas_api_email_charge_receipt:
+                            "{{ urls.charge.api_email_receipt }}"
+                    });
+
+                    $("#{{charge}}").chargeMonitor({
+                       initialState: "{{charge.state_string}}",
+                       saas_api_charge: "{{ urls.charge.api_base }}"
+                    });
+                {% endif %}
+                });
+
+                jQuery(document).ready(function($) {
+                    if ($('[data-trip]').length > 0){
+                        $("#help-request").parent().show();
+                        $("#help-request").click(function(){
+                            var trip = new Trip({
+                                enableAnimation: false,
+                                showCloseBox: true,
+                                showNavigation: true,
+                                delay:10000,
+                                tripTheme:'black',
+                            });
+                            trip.start();
+                        });
+                    }
+                });
+            </script>
+            {% block saas_bodyscripts %}{% endblock %}
+        {% endblock %}
     {% endblock %}
 </body>
 {% endblock %}

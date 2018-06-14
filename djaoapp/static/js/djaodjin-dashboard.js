@@ -51,36 +51,6 @@ $(document).ready(function(){
                 .removeAttr('style')
         });
     })();
-
-    (function(){
-        // menubar
-        var menubar = $('.menubar');
-        var overlay = menubar.find('.dashboard-menubar-overlay');
-        var dpdwnMenu = menubar.find('.dropdown-menu');
-        var dpdwnToggle = menubar.find('.menubar-dropdown-toggle')
-        var open = false;
-        overlay.add(dpdwnToggle).click(function(e) {
-            if($(this).closest('.dropdown-menu').length === 0 ) {
-                if(open){
-                    open = false;
-                    dpdwnMenu.hide();
-                    overlay.hide();
-                }
-            }
-        });
-        dpdwnToggle.click(function(e){
-            e.preventDefault();
-            var $t = $(this);
-            if(!open){
-                e.stopPropagation();
-                $t.siblings('.menubar-dropdown-container')
-                  .find('.dropdown-menu')
-                  .show();
-                overlay.show();
-                open = true;
-            }
-        });
-    })();
 });
 
 })(jQuery);
