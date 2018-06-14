@@ -39,14 +39,12 @@
     }
     </style>
     {% block saas_localheader %}
-        {% assets "css_dashboard" %}
-        <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-        {% endassets %}
-        <link rel="stylesheet" href="{{'/static/css/custom.css'|asset}}"/>
     {% endblock %}
 {% endblock %}
 
 {% block body %}
+<!-- temp -->
+<link rel="stylesheet" href="{{'/static/css/custom.css'|asset}}"/>
 <body>
     <div id="wrap">
         <div id="main">
