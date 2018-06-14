@@ -50,59 +50,60 @@
 <body>
     <div id="wrap">
         <div id="main">
-            <header>
-                <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
-                    <div class="navbar-header" style="width: 100%;">
-                        <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
-                        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
-                        {% block header_navbar_large %}
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <i class="fa fa-chevron-down"></i>
-                        </button>
-                        <div style="float:right;margin-right: 15px;">
-                            <ul class="nav navbar-nav navbar-right">
-                                {% if request|is_authenticated %}
-                                <li>
-                                    <a id="authenticated-user" href="{{request|url_profile}}">{{request.user.username}}</a>
-                                </li>
-                                <li class="hidden-xs">
-                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
-                                </li>
-                                {% else %}
-                                <li>
-                                    <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                {% endif %}
-                            </ul>
-                            <ul class="hidden-xs nav navbar-nav navbar-right">
-                                {% include "_appmenu.html" %}
-                            </ul>
-                        </div>
-                        {% endblock %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <header>
+                            <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+                                <div class="navbar-header" style="width: 100%;">
+                                    <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                                    <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                                    {% block header_navbar_large %}
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                    <div style="float:right;margin-right: 15px;">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            {% if request|is_authenticated %}
+                                            <li>
+                                                <a id="authenticated-user" href="{{request|url_profile}}">{{request.user.username}}</a>
+                                            </li>
+                                            <li class="hidden-xs">
+                                                <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
+                                            </li>
+                                            {% else %}
+                                            <li>
+                                                <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+                                            {% endif %}
+                                        </ul>
+                                        <ul class="hidden-xs nav navbar-nav navbar-right">
+                                            {% include "_appmenu.html" %}
+                                        </ul>
+                                    </div>
+                                    {% endblock %}
+                                </div>
+                                {% block header_navbar_small %}
+                                <div class="hidden-sm hidden-md hidden-lg">
+                                    <div class="navbar-collapse collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            {% include "_appmenu.html" %}
+                                            {% if request|is_authenticated %}
+                                            <li>
+                                                <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% endblock %}
+                            </nav>
+                            {% block fullviewport %}
+                            {% endblock %}
+                        </header>
                     </div>
-                    {% block header_navbar_small %}
-                    <div class="hidden-sm hidden-md hidden-lg">
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right">
-                                {% include "_appmenu.html" %}
-                                {% if request|is_authenticated %}
-                                <li>
-                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                    {% endblock %}
-                </nav>
-                {% block fullviewport %}
-                {% endblock %}
-            </header>
-            <div class="dashboard-container">
-                <div class="dashboard-inner-container">
-                    {% block dashboard_nav %}
-                    <!-- <div class="dashboard-nav"></div> -->
-                    {% endblock %}
-                    <div class="dashboard-content">
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
                             <header class="dashboard-header">
                                 <h2 class="dashboard-title">
                                     {% block saas_title %}{% endblock %}
@@ -112,6 +113,10 @@
                                 </h2>
                                 <p>{% block saas_descr %}{% endblock %}</p>
                             </header>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
                             <div id="messages">
                                 <div id="messages-content">
                                     {% for message in request|messages %}
@@ -130,8 +135,12 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            {% block content %}
-                            {% endblock %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% block content %}
+                        {% endblock %}
                     </div>
                 </div>
             </div>
