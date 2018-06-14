@@ -60,14 +60,15 @@
                             <div class="app-top-navigation">
                               <ul class="dashboard-top-menu">
                                   {% include "_appmenu.html" %}
-                              </ul>
-                              <div class="dashboard-menubar">
-                                  {% if request|is_authenticated %}
-                                      {% include "saas/_menubar.html" %}
-                                  {% else %}
-                                      <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+                                  {% if not request|is_authenticated %}
+                                      <li><a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a></li>
                                   {% endif %}
-                              </div>
+                              </ul>
+                              {% if request|is_authenticated %}
+                                  <div class="dashboard-menubar">
+                                      {% include "saas/_menubar.html" %}
+                                  </div>
+                              {% endif %}
                             </div>
                         {% endblock %}
                     </div>

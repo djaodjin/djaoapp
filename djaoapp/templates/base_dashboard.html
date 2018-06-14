@@ -100,11 +100,7 @@
                                           {% include "_appmenu.html" %}
                                       </ul>
                                       <div class="dashboard-menubar">
-                                          {% if request|is_authenticated %}
-                                              {% include "saas/_menubar.html" %}
-                                          {% else %}
-                                              <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                          {% endif %}
+                                          {% include "saas/_menubar.html" %}
                                       </div>
                                   </div>
                             </div>
