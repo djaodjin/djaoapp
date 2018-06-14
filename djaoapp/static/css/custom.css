@@ -376,36 +376,6 @@ body
     overflow-y: auto;
 }
 
-.dashboard-nav .collapse-sidebar
-{
-    position: absolute;
-    right: -61px;
-    top: 0;
-}
-
-.dashboard-nav .collapse-sidebar a
-{
-    display: block;
-    color: #fefefe;
-    text-decoration: none;
-    font-size: 28px;
-    height: 61px;
-    line-height: 61px;
-    width: 61px;
-    background: #ccc;
-    border-radius: 0 0 5px 0;
-    text-align: center;
-    /* alternate version
-    width: 31px;
-    box-shadow: 10px 2px 60px #bbb;
-    font-size: 18px;*/
-}
-
-.dashboard-nav .collapse-sidebar a:hover
-{
-    background: #ddd;
-}
-
 .menubar .dropdown-menu
 {
     left: 15px;
@@ -508,6 +478,11 @@ body
 .app-top-navigation .dashboard-top-menu
 {
     min-height: 51px;
+}
+
+#leaderboard
+{
+    margin-top: 50px;
 }
 
 @media (max-width: 1199px)

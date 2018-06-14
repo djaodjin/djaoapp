@@ -88,19 +88,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                            <header class="dashboard-header">
-                                <h2 class="dashboard-title">
-                                    {% block saas_title %}{% endblock %}
-                                    <span style="display: inline-block;">
-                                        <sup style="display: none;font-size:0.5em;cursor:pointer;"><i id="help-request" class="fa fa-question-circle"></i></sup>
-                                    </span>
-                                </h2>
-                                <p>{% block saas_descr %}{% endblock %}</p>
-                            </header>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
                             <div id="messages">
                                 <div id="messages-content">
                                     {% for message in request|messages %}
