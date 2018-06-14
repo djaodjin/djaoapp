@@ -164,7 +164,7 @@ body
 
 .dashboard-header h2
 {
-    margin: 0 0 15px;
+    margin: 10px 0 15px;
 }
 
 .navbar .navbar-nav a
@@ -575,6 +575,11 @@ body
     .dashboard-header-menu .navbar-toggle
     {
         display: block;
+    }
+
+    .app-top-navbar .dashboard-top-menu
+    {
+        display: flex;
     }
 }
 
