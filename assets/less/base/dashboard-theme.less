@@ -1,35 +1,30 @@
 // Visual appearance of dashboard sidebar
 
-@dashboard-sidebar-bg:       @brand-primary;
-@dashboard-sidebar-color:    white;
+@dashboard-sidebar-bg: #f3f3f3;
+@dashboard-sidebar-color: #333;
+@dashboard-sidebar-active-color: @brand-primary;
+@dashboard-sidebar-border-color: #e9e9e9;
 
 .dashboard-nav-color-theme {
     background-color: @dashboard-sidebar-bg;
-    background-color: #f3f3f3; // temp
     color: @dashboard-sidebar-color;
-    color: #333; // temp
-    border-right: 1px solid #e9e9e9; // temp
+    border-right: 1px solid @dashboard-sidebar-border-color;
 }
 
 .dashboard-nav hr {
     margin: 5px 0;
-    border-top: 1px solid @dashboard-sidebar-color;
-    border-top: 1px solid #e9e9e9; // temp
+    border-top: 1px solid @dashboard-sidebar-border-color;
 }
 
 .dashboard-nav-menu > .nav > li > a {
-   background-color:transparent;
    color: @dashboard-sidebar-color;
-   color: #333; // temp
 }
 
 .dashboard-nav-menu > .nav > li.active > a,
 .dashboard-nav-menu > .nav > li.active > a:hover {
-  color: @dashboard-sidebar-bg;
+  color: @dashboard-sidebar-active-color;
 }
 
-
 .dashboard-nav-menu > .nav > li:not(.active) > a:hover{
-   color: @dashboard-sidebar-color;
-   color: #666; // temp
+   color: #666;
 }

@@ -203,7 +203,7 @@ body
 {
     padding: 15px 15px 15px 25px;
     border-bottom: 1px solid #e9e9e9;
-    width: 220px;
+    width: @dashboard-sidebar-width;
     height: 61px;
 }
 
@@ -242,7 +242,7 @@ body
     color: #666;
     padding: 10px 30px 10px;
     font-size: 11px;
-    width: 220px;
+    width: @dashboard-sidebar-width;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -402,7 +402,7 @@ body
     .dashboard-inner-container
     {
         display: grid;
-        grid-template-columns: minmax(220px,~"calc(50% - 360px)") 960px 1fr;
+        grid-template-columns: minmax(@dashboard-sidebar-width,~"calc(50% - 360px)") 960px 1fr;
     }
 
     .dashboard-nav
@@ -423,7 +423,7 @@ body
         -ms-flex-align: end;
         align-items: flex-end;
         width: 100%;
-        min-width: 220px;
+        min-width: @dashboard-sidebar-width;
         height: 100vh;
         top: 0;
         box-shadow: none;
