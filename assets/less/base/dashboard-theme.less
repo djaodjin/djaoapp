@@ -5,26 +5,31 @@
 
 .dashboard-nav-color-theme {
     background-color: @dashboard-sidebar-bg;
+    background-color: #f3f3f3; // temp
     color: @dashboard-sidebar-color;
+    color: #333; // temp
+    border-right: 1px solid #e9e9e9; // temp
 }
 
-.dashboard-nav-menu > hr {
-  border-top: 1px solid @dashboard-sidebar-color;
+.dashboard-nav hr {
+    margin: 5px 0;
+    border-top: 1px solid @dashboard-sidebar-color;
+    border-top: 1px solid #e9e9e9; // temp
 }
 
 .dashboard-nav-menu > .nav > li > a {
    background-color:transparent;
    color: @dashboard-sidebar-color;
+   color: #333; // temp
 }
 
-.dashboard-nav-menu > .nav > li.active > a {
-  background-color: @dashboard-sidebar-color;
+.dashboard-nav-menu > .nav > li.active > a,
+.dashboard-nav-menu > .nav > li.active > a:hover {
   color: @dashboard-sidebar-bg;
-  border-radius: 0px;
-  text-decoration: underline;
 }
+
 
 .dashboard-nav-menu > .nav > li:not(.active) > a:hover{
    color: @dashboard-sidebar-color;
-   text-decoration: underline;
+   color: #666; // temp
 }

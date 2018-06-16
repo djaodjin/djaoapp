@@ -189,6 +189,16 @@ body{
     text-align:center;
     font-size:11px;
     width: 100%;
+
+    /*border-top: 1px solid #e9e9e9; // move to theme
+    margin-top: 0;
+    font-size: 13px;
+    background: #fff;
+    color: #333;
+    padding: 10px;
+    height: auto;
+    clear: none;
+    position: static;*/
 }
 
 /* Navbar */
@@ -663,4 +673,196 @@ section#hosting{
      margin:-.2px;
   }
 
+}
+
+.header-menubar .menubar-dropdown-toggle
+{
+    display: block;
+    line-height: 1em;
+    background: #efefef;
+    padding: 10px 30px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.header-menubar .menubar .dropdown-menu
+{
+    left: auto;
+    right: 0;
+    margin: 10px 0 0;
+}
+
+.menubar .dropdown-menu .divider
+{
+    margin: 5px 0;
+}
+
+.header-menubar-overlay
+{
+    z-index: 4;
+}
+
+.menubar-dropdown-container
+{
+    z-index: 5;
+}
+
+.menubar-dropdown-container .dropdown-menu
+{
+    z-index: 6;
+    white-space: nowrap;
+}
+
+.menubar .dropdown-menu
+{
+    left: 15px;
+    right: auto;
+    margin: -2px 0 0;
+}
+
+.menubar .dropdown-menu li a
+{
+    width: 200px;
+    padding: 5px 25px;
+}
+
+.menubar
+{
+    position: relative;
+}
+
+.menubar .dropdown-label
+{
+    color: #888;
+    text-transform: lowercase;
+    padding: 2px 25px;
+    font-size: 13px;
+}
+
+.menubar .dropdown-label .dropdown-label-role
+{
+    color: #fff;
+    margin-left: 10px;
+    background: #337ab7cc;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.menubar-org
+{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+.menubar-username
+{
+    color: #777;
+}
+
+.app-top-navigation
+{
+    display: flex;
+    float: right;
+    align-items: center;
+}
+
+.app-top-navbar
+{
+    padding: 10px 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.app-top-navigation .dashboard-top-menu
+{
+    min-height: 51px;
+}
+
+.footer-links
+{
+    margin-bottom: 10px;
+}
+
+.footer-links a
+{
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.djaodjin-overlay
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    display: none;
+    left: 0;
+    top: 0;
+}
+
+#leaderboard
+{
+    margin-top: 50px;
+}
+
+.nvtooltip
+{
+    z-index: 3;
+}
+
+.dashboard-top-menu
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    display: none;
+}
+
+.dashboard-top-menu li
+{
+    margin: 0 10px;
+    font-size: 15px;
+}
+
+.table>tbody+tbody
+{
+    border-top: 0;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td
+{
+    border-top: 0;
+    padding: 10px 15px;
+}
+
+.table th
+{
+    border-bottom: 1px solid #e0e0e0;
+}
+
+@media (min-width: 768px)
+{
+    .app-top-navbar .dashboard-top-menu
+    {
+        display: flex;
+    }
+}
+
+@media (min-width: 1200px)
+{
+    .dashboard-top-menu
+    {
+        display: flex;
+    }
 }

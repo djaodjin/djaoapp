@@ -42,7 +42,6 @@
         {% assets "css_dashboard" %}
         <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
         {% endassets %}
-        <link rel="stylesheet" href="{{'/static/css/custom.css'|asset}}"/>
     {% endblock %}
 {% endblock %}
 
@@ -50,7 +49,7 @@
 <body>
     <div class="dashboard-inner-container">
         {% block dashboard_nav %}
-            <div class="dashboard-overlay dashboard-sidebar-overlay"></div>
+            <div class="djaodjin-overlay dashboard-sidebar-overlay"></div>
             <div class="dashboard-nav dashboard-nav-color-theme">
                 <div class="sidebar-logo">
                     <a href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
@@ -99,8 +98,8 @@
                                       <ul class="dashboard-top-menu">
                                           {% include "_appmenu.html" %}
                                       </ul>
-                                      <div class="dashboard-menubar">
-                                          {% include "saas/_menubar.html" %}
+                                      <div class="header-menubar">
+                                          {% include "_menubar.html" %}
                                       </div>
                                   </div>
                             </div>

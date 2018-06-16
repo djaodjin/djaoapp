@@ -43,8 +43,6 @@
 {% endblock %}
 
 {% block body %}
-<!-- temp -->
-<link rel="stylesheet" href="{{'/static/css/custom.css'|asset}}"/>
 <body>
     <div id="wrap">
         <div id="main">
@@ -65,8 +63,8 @@
                                   {% endif %}
                               </ul>
                               {% if request|is_authenticated %}
-                                  <div class="dashboard-menubar">
-                                      {% include "saas/_menubar.html" %}
+                                  <div class="header-menubar">
+                                      {% include "_menubar.html" %}
                                   </div>
                               {% endif %}
                             </div>

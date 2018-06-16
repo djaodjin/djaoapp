@@ -38,7 +38,7 @@ $(document).ready(function(){
     (function(){
         // menubar
         var menubar = $('.menubar');
-        var overlay = menubar.find('.dashboard-menubar-overlay');
+        var overlay = menubar.find('.header-menubar-overlay');
         var dpdwnMenu = menubar.find('.dropdown-menu');
         var dpdwnToggle = menubar.find('.menubar-dropdown-toggle')
         var open = false;
