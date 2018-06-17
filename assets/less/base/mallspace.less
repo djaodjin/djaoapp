@@ -160,45 +160,27 @@ html, body {
     height: 100%;
 }
 
-body{
-    min-width:100%;
-    background:#FFF;
+body {
+    display: flex;
+    flex-direction: column;
 }
 
-#wrap{
-    width: 100%;
-    min-height: 100%;
+#wrap {
+    flex: 1 0 auto;
 }
 
-/* Unless the font-size for #main and .footer match, using ``em`` metrics will
-   create bottom and overlap margins that have different heights, hence
-   sticking the footer to the bottom while introducing a "border" above it. */
 #main {
-    min-height: 100%;
     overflow:auto;
-    padding-bottom: 22px; /* must be in pixel (see comment abolve) */
 }
 
 .footer {
-    position: relative;
-    height: 22px;      /* must be in pixel (see comment abolve) */
-    margin:0;
-    margin-top:-22px;  /* stick to bottom (see comment above) */
-    clear:both;
-    bottom: 0;
-    text-align:center;
-    font-size:11px;
-    width: 100%;
-
-    /*border-top: 1px solid #e9e9e9; // move to theme
-    margin-top: 0;
-    font-size: 13px;
-    background: #fff;
+    text-align: center;
+    font-size: 12px;
+    flex-shrink: 0;
     color: #333;
+    margin-top: 15px;
     padding: 10px;
-    height: auto;
-    clear: none;
-    position: static;*/
+    border-top: 1px solid #e9e9e9;
 }
 
 /* Navbar */
@@ -722,7 +704,6 @@ section#hosting{
 
 .menubar .dropdown-menu li a
 {
-    width: 200px;
     padding: 5px 25px;
 }
 
@@ -735,7 +716,7 @@ section#hosting{
 {
     color: #888;
     text-transform: lowercase;
-    padding: 2px 25px;
+    padding: 2px 25px 7px;
     font-size: 13px;
 }
 

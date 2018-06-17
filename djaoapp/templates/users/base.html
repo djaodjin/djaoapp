@@ -1,13 +1,13 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
 {% block sidebar %}
-<ul class="nav nav-pills nav-stacked">
+<ul class="nav">
 <li>
   <a id="app_home" href="{{request|url_app}}"><i class="fa fa-home"></i> <span class="">&#09;Home</span></a>
 </li>
 </ul>
 <hr />
-<ul class="nav nav-pills nav-stacked"
+<ul class="nav"
     data-intro="User profile" data-position="right">
   <li {% if request.path == urls.user.profile %} class="active"{% endif %}>
     <a id="users_profile" href="{{urls.user.profile}}"><i class="fa fa-user"></i> <span>&#09;Profile</span></a>
@@ -19,7 +19,7 @@
   {% endif %}
 </ul>
 <hr />
-<ul class="nav nav-pills nav-stacked"
+<ul class="nav"
     data-intro="Organizations managed by the user" data-position="right">
   {% for organization in top_accessibles %}
   <li>
