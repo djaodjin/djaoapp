@@ -1,55 +1,89 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="DjaoDjin inc.">
-    <meta name="copyright" content="Copyright (c) 2018 DjaoDjin inc.">
-    <title>{% block title %}{% if site %}{{request.site.printable_name}}{% else %}Bootstrap a Subscription Business Today{% endif %} | DjaoDjin{% endblock %}</title>
-    <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
-    <meta property="og:site_name" content="DjaoDjin" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:account_id" content="1551213320" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:creator" content="@djaodjin" />
-    <meta name="twitter:domain" content="https://djaodjin.com" />
-    <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
-    <meta name="twitter:site" content="@djaodjin" />
-    {% assets "css_base" %}
-    <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
-    {% endassets %}
-    <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
-    {% if csrf_token %}
-    <meta name="csrf-token" content="{{csrf_token}}">
+{% extends "base.html" %}
+
+{% block localheader %}
+    {% if STRIPE_PUB_KEY %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     {% endif %}
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    {% block localheader %}{% endblock %}
-    {% if 'djaodjin.com' in request|host %}
-    <!-- Google Analytics -->
-    <script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-41399084-1', 'auto');
-  ga('send', 'pageview');
-    </script>
-    {% endif %}
-</head>
+    <style>
+    {# These CSS classes are used on streetside pages which are not also #}
+    {# dashboard pages.                                                  #}
+    .card-icons {
+      min-height: 32px;
+      padding: 9px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+      background-color: #f5f5f5;
+      border: 1px solid #e3e3e3;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-icons > img {
+      opacity: 0.1;
+    }
+
+    #card-exp-month {
+      width: 50px;
+      margin-right: 10px;
+    }
+
+    #card-exp-year {
+      width: 65px;
+    }
+
+    @media screen and (min-width: 768px) {
+      #card-cvc {
+        width: 100px;
+      }
+    }
+    </style>
+    {% block saas_localheader %}
+        {% assets "css_dashboard" %}
+        <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+        {% endassets %}
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
 <body>
     <div class="dashboard-inner-container">
         {% block dashboard_nav %}
+            <div class="djaodjin-overlay dashboard-sidebar-overlay"></div>
+            <div class="dashboard-nav dashboard-nav-color-theme">
+                <div class="sidebar-logo">
+                    <a href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                    <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                </div>
+                <div class="dashboard-nav-menu">
+                    {% block sidebar %}
+                        {% if organization.is_provider %}
+                            {% include "saas/_provider_sidebar.html" %}
+                        {% endif %}
+                        {% include "saas/_subscriber_sidebar.html" %}
+                    {% endblock %}
+                </div>
+                <div class="sidebar-footer">
+                    {% block footer %}
+                        <div>
+                            Powered by &copy; 2018 DjaoDjin. All rights reserved.
+                        </div>
+                        <div class="sidebar-footer-links">
+                            <a href="/legal/" target="_blank">Legal</a>
+                            &middot;
+                            <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                            <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                            <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
         {% endblock %}
         <div class="dashboard-content">
             <div class="container">
                 <header class="dashboard-header">
                     <div class="row">
-                        <div class="col-xs-12 col-lg-4 col-lg-push-8">
+                        <div class="col-xs-12 col-lg-6 col-lg-push-6">
                             <div class="dashboard-header-menu">
                                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false">
                                     <span class="sr-only">Toggle navigation</span>
@@ -58,16 +92,19 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                                     <span class="icon-bar"></span>
                                   </button>
 
-                                  <div class="dashboard-content-menubar">
-                                      {% if request|is_authenticated %}
-                                          {% include "saas/_menubar.html" %}
-                                      {% else %}
-                                          <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                      {% endif %}
+                                  <a href="/" class="navbar-logo"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+
+                                  <div class="dashboard-top-navigation">
+                                      <ul class="dashboard-top-menu">
+                                          {% include "_appmenu.html" %}
+                                      </ul>
+                                      <div class="header-menubar">
+                                          {% include "_menubar.html" %}
+                                      </div>
                                   </div>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-lg-8 col-lg-pull-4">
+                        <div class="col-xs-12 col-lg-6 col-lg-pull-6">
                             <h2 class="dashboard-title">
                                 {% block saas_title %}{% endblock %}
                                 <span style="display: inline-block;">
@@ -103,6 +140,17 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                 <div class="row">
                     <div class="col-xs-12">
                         {% block content %}
+                            {% block saas_page_layout %}
+                            <p class="lead">
+                                {% block saas_lead_help %}{% endblock %}
+                            </p>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {% block saas_help %}{% endblock %}
+                                    {% block saas_content %}{% endblock %}
+                                </div>
+                            </div>
+                            {% endblock %}
                         {% endblock %}
                     </div>
                 </div>
@@ -112,50 +160,182 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     </div>
     
     {% block _bodyscripts %}
-    {% assets "js_base" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    <script type="text/javascript">
-jQuery(document).ready(function($) {
-    {% if csrf_token %}
-    $.ajaxSetup({
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function(xhr, settings) {
-            // these HTTP methods do not require CSRF protection
-            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
-                xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
-            }
-        }
-    });
-    {% endif %}
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-full-width",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": 200,
-        "hideDuration": 200,
-        "timeOut": "0",
-        "extendedTimeOut": "0",
-        "showEasing": "linear",
-        "hideEasing": "linear",
-        "showMethod": "slideDown",
-        "hideMethod": "slideUp",
-        containerId: "messages-content",
-        toastClass: "alert",
-        iconClasses: {
-            error: "alert-danger",
-            info: "alert-info",
-            success: "alert-success",
-            warning: "alert-warning"
-        },
-    };
-});
-    </script>
-    {% block bodyscripts %}{% endblock %}
+
+        {% assets "js_base" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                {% if csrf_token %}
+                $.ajaxSetup({
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                        // these HTTP methods do not require CSRF protection
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+                        }
+                    }
+                });
+                {% endif %}
+            });
+        </script>
+
+        {% block bodyscripts %}
+            {% assets "js_saas" %}
+            <script type="text/javascript" charset="utf-8" src="{{ ASSET_URL }}"></script>
+            {% endassets %}
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+            {% if urls and urls.provider %}
+                $("[data-plan]").plan({
+                    saas_api_plan: "{{ urls.provider.api_plans }}",
+                    saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+                });
+            {% endif %}
+            {% if urls and urls.api_redeem %}
+                $("#redeem-code").redeem(
+                    {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
+            {% endif %}
+                var cardForm = $("#payment-form");
+            {% if urls and urls.api_cart %}
+                if( cardForm.length > 0 ) {
+                    cardForm.find("#invoicables").invoice(
+                        {currency_unit: "{% if lines_price %}{{ lines_price.unit }}{% endif %}",
+                         saas_api_cart: "{{ urls.api_cart }}" });
+                }
+            {% endif %}
+            {% if STRIPE_PUB_KEY %}
+                cardForm.card({
+                    stripePubKey: "{{ STRIPE_PUB_KEY }}",
+                    saas_api_card: "{{ urls.organization.api_card }}"
+                });
+                $("#bank-form").bank({stripePubKey: "{{STRIPE_PUB_KEY}}"});
+            {% endif %}
+            {% if charge %}
+                $(".charge-refund").click(function () {
+                    var self = $(this);
+                    $("#charge-refund").refund({
+                        availableAmount: self.attr("data-available-amount"),
+                        linenum: self.attr("data-linenum"),
+                        saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+                        refundButton: self
+                    });
+                });
+                $("#email-charge-receipt").chargeEmailReceipt({
+                    initialState: "{{charge.state_string}}",
+                    saas_api_email_charge_receipt:
+                        "{{ urls.charge.api_email_receipt }}"
+                });
+
+                $("#{{charge}}").chargeMonitor({
+                   initialState: "{{charge.state_string}}",
+                   saas_api_charge: "{{ urls.charge.api_base }}"
+                });
+            {% endif %}
+            });
+
+            jQuery(document).ready(function($) {
+                if ($('[data-trip]').length > 0){
+                    $("#help-request").parent().show();
+                    $("#help-request").click(function(){
+                        var trip = new Trip({
+                            enableAnimation: false,
+                            showCloseBox: true,
+                            showNavigation: true,
+                            delay:10000,
+                            tripTheme:'black',
+                        });
+                        trip.start();
+                    });
+                }
+            });
+            </script>
+            {% block saas_bodyscripts %}
+                {% assets "js_angular" %}
+                <script type="text/javascript" charset="utf-8" src="{{ ASSET_URL }}"></script>
+                {% endassets %}
+                {% assets "js_dashboard" %}
+                <script type="text/javascript" charset="utf-8" src="{{ ASSET_URL }}"></script>
+                {% endassets %}
+
+                <script type="text/javascript">
+                /* Implementation Note: Not including a list of dependent modules
+                   (2nd parameter to `module`) "re-opens" the module for additional
+                   configuration.
+                   - We add the CSRF token for as an HTTP header on API calls.
+                   - We make it easier to separate between django and angularjs templates
+                     by changing Angular defaults to [[ and ]] characters. */
+                var reopenSaasApp = angular.module('saasApp');
+                reopenSaasApp.config(['$interpolateProvider', '$httpProvider',
+                           function($interpolateProvider, $httpProvider) {
+                    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
+                    $interpolateProvider.startSymbol('[[');
+                    $interpolateProvider.endSymbol(']]');
+                }]);
+                reopenSaasApp.constant('settings', {
+                urls: {
+                    api_balance_lines: "{{urls.api_balance_lines}}",
+                    api_broker_balances: "{{urls.api_broker_balances}}",
+                    api_transactions: "{{saas_api_transactions}}",
+                {% if urls.organization %}
+                {% if urls.organization.api_roles %}
+                    saas_api_user_roles_url: "{{ urls.organization.api_roles }}",
+                {% endif %}
+                {% if urls.organization.api_role_descriptions %}
+                    saas_api_role_descriptions_url: "{{ urls.organization.api_role_descriptions }}",
+                {% endif %}
+                {% if urls.organization.api_cancel_balance_due %}
+                    api_cancel_balance_due: "{{ urls.organization.api_cancel_balance_due }}",
+                {% endif %}
+                    /* subscriptions */
+                    api_organizations: "{{ urls.organization.api_profile_base }}",
+                    saas_api_subscriptions: "{{ urls.organization.api_subscriptions }}",
+                {% endif %}
+                {% if urls.provider %}
+                    saas_api_coupon_url: "{{ urls.provider.api_coupons }}",
+                    saas_metrics_coupons_url: "{{ urls.provider.coupons }}",
+                    saas_api_plans: "{{ urls.provider.api_plans }}",
+                    /* subscribers */
+                    saas_api_churned: "{{ urls.provider.api_subscribers_churned }}",
+                    saas_api_active_subscribers: "{{ urls.provider.api_subscribers_active }}",
+                    /* transactions */
+                    api_receivables: "{{urls.provider.api_receivables}}",
+                    saas_api_bank: "{{ urls.provider.api_bank }}",
+                    {% if urls.provider.api_metrics_coupon_uses %}
+                        api_metrics_coupon_uses: "{{urls.provider.api_metrics_coupon_uses}}",
+                    {% endif %}
+                {% endif %}
+                    /* users */
+                {% if urls.broker %}
+                    api_registered: "{{ urls.broker.api_users_registered }}",
+                    api_users: "{{ urls.broker.api_users }}",
+                {% endif %}
+                    /* accounts */
+                {% if urls.accounts_base and urls.provider and urls.provider.api_accounts %}
+                    accounts_base: "{{ urls.accounts_base }}",
+                    api_accounts: "{{ urls.provider.api_accounts }}",
+                {% endif %}
+                {% if urls.user %}
+                    api_accessibles: "{{urls.user.api_accessibles}}",
+                {% endif %}
+                {% if request|is_authenticated %}
+                    saas_api_organization: "{% if urls and urls.organization %}{{ urls.organization.api_base }}{% endif %}",
+                    user_profile_redirect: "{% if urls and urls.user %}{{urls.user.profile_redirect}}{% endif %}",
+                {% endif %}
+                },
+                itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+                tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
+                {% if sort_by_field %}sortByField: "{{sort_by_field}}",{% endif %}
+                {% if sort_direction %}sortDirection: "{{sort_direction}}",{% endif %}
+                date_range: {
+                    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+                    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+                }});
+                </script>
+                {% block dashboard_bodyscripts %}{% endblock %}
+            {% endblock %}
+        {% endblock %}
     {% endblock %}
 </body>
-</html>
+{% endblock %}

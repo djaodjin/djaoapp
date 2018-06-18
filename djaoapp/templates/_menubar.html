@@ -23,12 +23,12 @@
             {% if top_accessibles|length > 1 %}
                 {% for accessible in top_accessibles %}
                     <li role="separator" class="divider"></li>
-                    <li class="dropdown-label">{{accessible.printable_name}}</li>
+                    <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">admin</span></li>
                     <li><a href="#">App</a></li>
                     <li><a href="{{accessible.location}}">Settings</a></li>
                 {% endfor %}
             {% endif %}
         </ul>
-        <div class="dashboard-overlay dashboard-menubar-overlay"></div>
+        <div class="djaodjin-overlay header-menubar-overlay"></div>
     </div>
 </div>

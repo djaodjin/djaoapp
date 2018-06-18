@@ -628,7 +628,7 @@ PAGES = {
         'app_proxy_help.html',
         'base.html',
         'contact.html',
-        'generic_navbar.html',
+        '_appmenu.html',
 #        'index.html',
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',

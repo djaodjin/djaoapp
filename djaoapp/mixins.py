@@ -40,7 +40,7 @@ class DjaoAppMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(DjaoAppMixin, self).get_context_data(**kwargs)
-        context.update({'edit_perm': self.edit_perm}) # XXX generic_navbar.html
+        context.update({'edit_perm': self.edit_perm}) # XXX _appmenu.html
         if self.organization:
             if not Plan.objects.filter(
                     organization=self.organization).exists():

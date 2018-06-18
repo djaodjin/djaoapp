@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block localheader %}
+    {% if STRIPE_PUB_KEY %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    {% endif %}
+    <style>
+    {# These CSS classes are used on streetside pages which are not also #}
+    {# dashboard pages.                                                  #}
+    .card-icons {
+      min-height: 32px;
+      padding: 9px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+      background-color: #f5f5f5;
+      border: 1px solid #e3e3e3;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-icons > img {
+      opacity: 0.1;
+    }
+
+    #card-exp-month {
+      width: 50px;
+      margin-right: 10px;
+    }
+
+    #card-exp-year {
+      width: 65px;
+    }
+
+    @media screen and (min-width: 768px) {
+      #card-cvc {
+        width: 100px;
+      }
+    }
+    </style>
+    {% block saas_localheader %}
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+<body>
+    <div id="wrap">
+        <div id="main">
+            <header class="app-top-navbar">
+                <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+                    <div class="navbar-header" style="width: 100%;">
+                        <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                        {% block header_navbar_large %}
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
+                            <div class="app-top-navigation">
+                              <ul class="dashboard-top-menu">
+                                  {% include "_appmenu.html" %}
+                                  {% if not request|is_authenticated %}
+                                      <li><a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a></li>
+                                  {% endif %}
+                              </ul>
+                              {% if request|is_authenticated %}
+                                  <div class="header-menubar">
+                                      {% include "_menubar.html" %}
+                                  </div>
+                              {% endif %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                    {% block header_navbar_small %}
+                    <div class="hidden-sm hidden-md hidden-lg">
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% include "_appmenu.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endblock %}
+                </nav>
+                {% block fullviewport %}
+                {% endblock %}
+            </header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                            <div id="messages">
+                                <div id="messages-content">
+                                    {% for message in request|messages %}
+                                    <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <div>{{message|safe}}</div>
+                                    </div>
+                                    {% endfor %}
+                                    {% if form %}
+                                    {% for message in form|messages %}
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <div>{{message}}</div>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/legal/" target="_blank">Legal</a>
+            <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+            <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+            <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+        </div>
+        <div class="copyr">
+            Powered by &copy; 2018 DjaoDjin. All rights reserved.
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block _bodyscripts %}
+        {% assets "js_base" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                {% if csrf_token %}
+                $.ajaxSetup({
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                        // these HTTP methods do not require CSRF protection
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+                        }
+                    }
+                });
+                {% endif %}
+            });
+        </script>
+        {% block bodyscripts %}
+            {% assets "js_saas" %}
+                <script type="text/javascript" charset="utf-8" src="{{ ASSET_URL }}"></script>
+            {% endassets %}
+            <script type="text/javascript">
+                jQuery(document).ready(function($) {
+                {% if urls and urls.provider %}
+                    $("[data-plan]").plan({
+                        saas_api_plan: "{{ urls.provider.api_plans }}",
+                        saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+                    });
+                {% endif %}
+                {% if urls and urls.api_redeem %}
+                    $("#redeem-code").redeem(
+                        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
+                {% endif %}
+                    var cardForm = $("#payment-form");
+                {% if urls and urls.api_cart %}
+                    if( cardForm.length > 0 ) {
+                        cardForm.find("#invoicables").invoice(
+                            {currency_unit: "{% if lines_price %}{{ lines_price.unit }}{% endif %}",
+                             saas_api_cart: "{{ urls.api_cart }}" });
+                    }
+                {% endif %}
+                {% if STRIPE_PUB_KEY %}
+                    cardForm.card({
+                        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+                        saas_api_card: "{{ urls.organization.api_card }}"
+                    });
+                    $("#bank-form").bank({stripePubKey: "{{STRIPE_PUB_KEY}}"});
+                {% endif %}
+                {% if charge %}
+                    $(".charge-refund").click(function () {
+                        var self = $(this);
+                        $("#charge-refund").refund({
+                            availableAmount: self.attr("data-available-amount"),
+                            linenum: self.attr("data-linenum"),
+                            saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+                            refundButton: self
+                        });
+                    });
+                    $("#email-charge-receipt").chargeEmailReceipt({
+                        initialState: "{{charge.state_string}}",
+                        saas_api_email_charge_receipt:
+                            "{{ urls.charge.api_email_receipt }}"
+                    });
+
+                    $("#{{charge}}").chargeMonitor({
+                       initialState: "{{charge.state_string}}",
+                       saas_api_charge: "{{ urls.charge.api_base }}"
+                    });
+                {% endif %}
+                });
+
+                jQuery(document).ready(function($) {
+                    if ($('[data-trip]').length > 0){
+                        $("#help-request").parent().show();
+                        $("#help-request").click(function(){
+                            var trip = new Trip({
+                                enableAnimation: false,
+                                showCloseBox: true,
+                                showNavigation: true,
+                                delay:10000,
+                                tripTheme:'black',
+                            });
+                            trip.start();
+                        });
+                    }
+                });
+            </script>
+            {% block saas_bodyscripts %}{% endblock %}
+        {% endblock %}
+    {% endblock %}
+</body>
+{% endblock %}

@@ -11,3 +11,8 @@
     <a href="{{request|url_app}}">App</a>
 </li>
 {% endif %}
+{% if not request|is_authenticated %}
+<li class="visible-xs">
+    <a href="{{request|url_login}}">Sign In</a>
+</li>
+{% endif %}
