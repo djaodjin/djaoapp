@@ -5,14 +5,22 @@
 Functions used to inject edition tools within an HTML response.
 """
 import logging
+from collections import namedtuple
 
+from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.files.storage import get_storage_class
+from django.template import loader
+from django.utils.module_loading import import_string
+from django.utils import six
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
+from pages.compat import render_template
 from pages.views.pages import inject_edition_tools as pages_inject_edition_tools
+from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
+from saas.models import Organization, get_broker, is_broker
 
 from .compat import csrf, reverse
 from .locals import is_streetside, is_testing
@@ -20,6 +28,9 @@ from .locals import is_streetside, is_testing
 
 LOGGER = logging.getLogger(__name__)
 
+TopAccessibleOrganization = namedtuple('TopAccessibleOrganization',
+    ['slug', 'printable_name', 'settings_location', 'role_slug',
+     'app_location'])
 
 def djaoapp_urls(request, account=None, base=None):
     if account is None:
@@ -146,6 +157,61 @@ def inject_edition_tools(response, request, context=None,
             'djaodjin': dj_urls,
             'edit': edit_urls}})
     context.update(csrf(request))
-    return pages_inject_edition_tools(response, request, context=context,
+
+    # Insert the authenticated user information and roles on organization.
+    content_type = response.get('content-type', '')
+    if not content_type.startswith('text/html'):
+        return None
+    soup = pages_inject_edition_tools(response, request, context=context,
         body_top_template_name=body_top_template_name,
         body_bottom_template_name=body_bottom_template_name)
+    if not soup:
+        soup = BeautifulSoup(response.content, 'html5lib')
+    if soup and soup.body:
+        # Implementation Note: we have to use ``.body.next`` here
+        # because html5lib "fixes" our HTML by adding missing
+        # html/body tags. Furthermore if we use
+        #``soup.body.insert(1, BeautifulSoup(body_top, 'html.parser'))``
+        # instead, later on ``soup.find_all(class_=...)`` returns
+        # an empty set though ``soup.prettify()`` outputs the full
+        # expected HTML text.
+        auth_user = soup.body.find(class_='header-menubar')
+        user_menu_template = '_menubar.html'
+        if auth_user and user_menu_template:
+            serializer_class = import_string(rules_settings.SESSION_SERIALIZER)
+            serializer = serializer_class(request)
+            path_parts = reversed(request.path.split('/'))
+            top_accessibles = []
+            has_broker_role = False
+            active_organization = None
+            for role, organizations in six.iteritems(serializer.data['roles']):
+                for organization in organizations:
+                    db_obj = Organization.objects.get(
+                        slug=organization['slug']) # XXX Need to remove query.
+                    if db_obj.is_provider:
+                        settings_location = reverse('saas_dashboard',
+                            args=(organization['slug'],))
+                    else:
+                        settings_location = reverse('saas_organization_profile',
+                            args=(organization['slug'],))
+                    app_location = reverse('organization_app',
+                        args=(organization['slug'],))
+                    if organization['slug'] in path_parts:
+                        active_organization = TopAccessibleOrganization(
+                            organization['slug'],
+                            organization['printable_name'],
+                            settings_location, role, app_location)
+                    if is_broker(organization['slug']):
+                        has_broker_role = True
+                    top_accessibles += [TopAccessibleOrganization(
+                        organization['slug'], organization['printable_name'],
+                        settings_location, role, app_location)]
+            if not active_organization and has_broker_role:
+                active_organization = get_broker()
+            context.update({'active_organization':active_organization})
+            context.update({'top_accessibles': top_accessibles})
+            template = loader.get_template(user_menu_template)
+            user_menu = render_template(template, context, request).strip()
+            auth_user.insert(1, BeautifulSoup(
+                user_menu, 'html5lib').body.next)
+    return soup

@@ -1,8 +1,8 @@
 <div class="menubar">
     <a href="#" class="menubar-dropdown-toggle">
-        {% if top_accessibles|length > 0 %}
+        {% if active_organization %}
             <span class="menubar-org">
-                {{top_accessibles[0].printable_name}}
+                {{active_organization.printable_name}}
                 <span class="caret"></span>
             </span>
         {% endif %}
@@ -20,12 +20,12 @@
             {% endif %}
             <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
             <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
-            {% if top_accessibles|length > 1 %}
+            {% if top_accessibles|length > 0 %}
                 {% for accessible in top_accessibles %}
                     <li role="separator" class="divider"></li>
-                    <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">admin</span></li>
-                    <li><a href="#">App</a></li>
-                    <li><a href="{{accessible.location}}">Settings</a></li>
+                    <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
+                    <li><a href="{{accessible.app_location}}">App</a></li>
+                    <li><a href="{{accessible.settings_location}}">Settings</a></li>
                 {% endfor %}
             {% endif %}
         </ul>
