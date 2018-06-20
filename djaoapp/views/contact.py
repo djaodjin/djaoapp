@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import six
 from saas.mixins import ProviderMixin
 from saas.models import Organization, split_full_name
+from signup import settings as signup_settings
 from signup.auth import validate_redirect
 from survey.forms import ResponseCreateForm
 from survey.models import SurveyModel
@@ -43,7 +44,9 @@ class ContactForm(ResponseCreateForm):
             widget=forms.Textarea(attrs={'class':'form-control',
             'placeholder': kwargs.get('initial', {}).get('placeholder', "")}))
         if not kwargs.get('initial', {}).get('email', None):
-            self.fields['captcha'] = ReCaptchaField()
+            if signup_settings.REQUIRES_RECAPTCHA:
+                self.fields['captcha'] = ReCaptchaField(
+                    attrs={'theme' : 'clean'})
 
 
 class ContactView(ProviderMixin, ResponseCreateView):

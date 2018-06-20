@@ -471,6 +471,7 @@ LOGGING = {
 # --------------
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
+    'REQUIRES_RECAPTCHA': True,
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.

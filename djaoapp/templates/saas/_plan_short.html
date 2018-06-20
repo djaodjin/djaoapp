@@ -55,7 +55,7 @@ be positive and/or the setup fee will. -->
     <footer class="plan-footer">
         <div style="margin:5px;">
             {% if plan.is_not_priced %}
-            <a class="btn btn-primary" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
+            <a class="btn btn-default" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
             {% else %}
             <button class="btn btn-primary"
                     type="submit" name="submit" value="{{plan.slug}}">Subscribe</button>

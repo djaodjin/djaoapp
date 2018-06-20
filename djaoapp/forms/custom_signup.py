@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from saas.forms import OrganizationForm
 from saas.models import Organization
+from signup import settings as signup_settings
 from signup.backends.auth import UsernameOrEmailAuthenticationForm
 from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
 
@@ -88,7 +89,13 @@ class SignupForm(MissingFieldsMixin, NameEmailForm):
     new_password2 = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'Type Password Again'}),
         label=_("Password confirmation"))
-    captcha = ReCaptchaField(attrs={'theme' : 'clean'})
+
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+        if signup_settings.REQUIRES_RECAPTCHA:
+            # Default captcha field is already appended at the end of the list
+            # of fields. We overwrite it here to set the theme.
+            self.fields['captcha'] = ReCaptchaField(attrs={'theme' : 'clean'})
 
     def clean_username(self):
         """

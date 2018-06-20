@@ -187,5 +187,15 @@ def processor_redirect(request, site=None):
 
 def provider_absolute_url(request,
                           provider=None, location='/', with_scheme=True):
-    return build_absolute_uri(request, site=_provider_as_site(provider),
+    site = _provider_as_site(provider)
+    if site:
+        try:
+            # If `site == get_current_site()`, we have a full-proof way
+            # to generate the absolute URL with either a domain name or
+            # a path prefix depending on the request.
+            return site.as_absolute_uri(path=location)
+        except AttributeError:
+            # OK, we'll use the default build_absolute_uri from multitier.
+            pass
+    return build_absolute_uri(request, site=site,
         location=location, with_scheme=with_scheme)
