@@ -13,13 +13,13 @@ from django.shortcuts import get_object_or_404
 from django.utils import six
 from saas.mixins import ProviderMixin
 from saas.models import Organization, split_full_name
-from signup import settings as signup_settings
 from signup.auth import validate_redirect
 from survey.forms import ResponseCreateForm
 from survey.models import SurveyModel
 from survey.views.response import ResponseCreateView
 
 from ..compat import reverse
+from ..locals import get_current_app
 from ..signals import contact_requested
 
 
@@ -44,7 +44,7 @@ class ContactForm(ResponseCreateForm):
             widget=forms.Textarea(attrs={'class':'form-control',
             'placeholder': kwargs.get('initial', {}).get('placeholder', "")}))
         if not kwargs.get('initial', {}).get('email', None):
-            if signup_settings.REQUIRES_RECAPTCHA:
+            if getattr(get_current_app(), 'requires_recaptcha', False):
                 self.fields['captcha'] = ReCaptchaField(
                     attrs={'theme' : 'clean'})
 

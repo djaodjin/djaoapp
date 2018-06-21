@@ -11,11 +11,11 @@ from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from saas.forms import OrganizationForm
 from saas.models import Organization
-from signup import settings as signup_settings
 from signup.backends.auth import UsernameOrEmailAuthenticationForm
 from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
 
 from .fields import PhoneNumberField
+from ..locals import get_current_app
 
 NAME_RE = r"^([^\W\d_]|[ \.\'\-])+$"
 
@@ -92,7 +92,7 @@ class SignupForm(MissingFieldsMixin, NameEmailForm):
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
-        if signup_settings.REQUIRES_RECAPTCHA:
+        if getattr(get_current_app(), 'requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
             # of fields. We overwrite it here to set the theme.
             self.fields['captcha'] = ReCaptchaField(attrs={'theme' : 'clean'})
