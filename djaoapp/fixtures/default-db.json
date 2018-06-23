@@ -4,7 +4,7 @@
       "slug": "stripe",
       "full_name": "Stripe",
       "created_at": "2012-08-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "stripe@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "185 Berry St #550",
       "locality":  "San Francisco",
@@ -30,7 +30,7 @@
       "slug": "djaoapp",
       "full_name": "DjaoDjin",
       "created_at": "2012-08-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "djaoapp@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -48,7 +48,7 @@
       "slug": "djaodjin",
       "full_name": "DjaoDjin",
       "created_at": "2012-08-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "djaodjin@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -159,7 +159,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "donny@localhost.localdomain",
       "first_name": "Donny",
       "last_name": "Cooper",
       "is_active": true,
@@ -182,7 +182,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "alice@localhost.localdomain",
       "first_name": "Alice",
       "last_name": "Cooper",
       "is_active": true,
@@ -205,7 +205,7 @@
 {
     "fields": {
       "date_joined": "2015-01-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "yan@localhost.localdomain",
       "first_name": "Yan",
       "last_name": "Lee",
       "groups": [],
@@ -238,7 +238,7 @@
 {
     "fields": {
       "date_joined": "2017-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "kenneth@localhost.localdomain",
       "first_name": "Kenneth",
       "last_name": "Contributor",
       "is_active": true,
@@ -270,7 +270,7 @@
 {
     "fields": {
       "slug": "cowork",
-      "email": "support@djaoapp.com",
+      "email": "cowork@localhost.localdomain",
       "full_name": "Chamoix Coworking",
       "created_at": "2012-09-14T14:16:55-09:00",
       "processor": 1,
@@ -284,7 +284,7 @@
       "slug": "xia-card7",
       "full_name": "Xia Card7",
       "created_at": "2016-08-22T00:00:00+00:00",
-      "email": "support@djaoapp.com",
+      "email": "xia+card7@localhost.localdomain",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
       "region": "CA",
@@ -382,7 +382,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "xia@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
@@ -407,7 +407,7 @@
       "slug": "xia",
       "full_name": "Xia Lee",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "xia@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -431,7 +431,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "joe@localhost.localdomain",
       "first_name": "Joe",
       "last_name": "Smith",
       "is_active": true,
@@ -456,7 +456,7 @@
       "slug": "joe-bulk",
       "full_name": "Joe Bulk Buying",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "joe+bulk@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -481,7 +481,7 @@
 {
     "fields": {
       "date_joined": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "asmith@localhost.localdomain",
       "first_name": "Amelie",
       "groups": [],
       "is_active": true,
@@ -507,7 +507,7 @@
       "slug": "asmith",
       "full_name": "Amelie Smith",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "asmith@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -542,7 +542,7 @@
       "slug": "stephanie",
       "full_name": "Stephanie DuJardin",
       "created_at": "2015-01-01T00:00:00-09:00",
-      "email": "support@djaoapp.com",
+      "email": "stephanie@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -557,7 +557,7 @@
 {
     "fields": {
       "date_joined": "2015-01-01T00:00:00-09:00",
-      "email": "support@djaoapp.com",
+      "email": "stephanie@localhost.localdomain",
       "first_name": "Stephanie",
       "groups": [],
       "is_active": true,
@@ -601,7 +601,7 @@
       "slug": "to-be-deleted-1",
       "full_name": "Subscriber ToBeDeleted",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "to-be-deleted-1@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -618,7 +618,7 @@
       "slug": "to-be-deleted-2",
       "full_name": "2nd Subscriber ToBeDeleted",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "to-be-deleted-2@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -634,7 +634,7 @@
     "fields": {
       "username": "to-be-deleted-2",
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "to-be-deleted-2@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
@@ -668,7 +668,7 @@
       "slug": "subscriber-5",
       "full_name": "Subscriber Five",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "subscriber-5@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -692,7 +692,7 @@
 {
     "fields": {
       "date_joined": "2016-03-18T00:00:00-09:00",
-      "email": "support@djaoapp.com",
+      "email": "needactive@localhost.localdomain",
       "first_name": "Stephanie",
       "is_active": true,
       "is_staff": false,
@@ -714,7 +714,7 @@
 {
     "fields": {
       "slug": "dibaggio-parents",
-      "email": "support@djaoapp.com",
+      "email": "dibaggio-parents@localhost.localdomain",
       "full_name": "Di Baggio Middle School Parents Association",
       "created_at": "2012-09-14T14:16:55-09:00",
       "processor": 1,
@@ -742,7 +742,7 @@
 {
     "fields": {
       "slug": "tennis-club",
-      "email": "support@djaoapp.com",
+      "email": "tennis-club@localhost.localdomain",
       "full_name": "Tennis Club of North Beach",
       "created_at": "2012-09-14T14:16:55-09:00",
       "processor": 1,
@@ -754,7 +754,7 @@
 {
     "fields": {
       "slug": "club",
-      "email": "support@djaoapp.com",
+      "email": "club@localhost.localdomain",
       "full_name": "Association of Online Educators",
       "created_at": "2012-09-14T14:16:55-09:00",
       "processor": 1,
@@ -876,7 +876,7 @@
 {
     "fields": {
       "date_joined": "2016-03-18T00:00:00-09:00",
-      "email": "support@djaoapp.com",
+      "email": "melissa@localhost.localdomain",
       "first_name": "Melissa",
       "last_name": "NoOrg",
       "is_active": true,

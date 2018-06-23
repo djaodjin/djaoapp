@@ -50,7 +50,7 @@
       "slug": "stripe",
       "full_name": "Stripe",
       "created_at": "2012-08-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "stripe@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "185 Berry St #550",
       "locality":  "San Francisco",
@@ -84,7 +84,7 @@
       "slug": "cowork",
       "full_name": "Chamoix Coworking",
       "created_at": "2012-08-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "cowork@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -184,7 +184,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "alice@localhost.localdomain",
       "first_name": "Alice",
       "last_name": "Cooper",
       "is_active": true,
@@ -207,7 +207,7 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "support@djaoapp.com",
+      "email": "xia@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
@@ -241,7 +241,7 @@
       "slug": "xia",
       "full_name": "Xia Lee",
       "created_at": "2012-09-14T14:16:55-09:00",
-      "email": "support@djaoapp.com",
+      "email": "xia@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
