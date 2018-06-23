@@ -14,17 +14,18 @@ from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from saas import settings as saas_settings
-from saas.mixins import ProviderMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.views.users import (
+from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
-    SignupView as SignupBaseView,
+    SignupView as SignupBaseView)
+from signup.views.users import (
     UserProfileView as UserProfileBaseView)
+
 from rules.mixins import AppMixin
 
 from ..compat import reverse
@@ -302,19 +303,28 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             organization_extra=organization_extra)
 
 
-class UserProfileView(AuthMixin, ProviderMixin, UserProfileBaseView):
+class UserProfileView(UserProfileBaseView):
 
-    # These fields declared in ``UserProfileBaseView`` will be overriden
-    # by the ones declared in ``OrganizationMixin``.
-    model = get_user_model()
-    slug_field = 'username'
-    slug_url_kwarg = 'user'
+    @property
+    def attached_organization(self):
+        if not hasattr(self, '_attached_organization'):
+            self._attached_organization = Organization.objects.attached(
+                self.kwargs.get(self.slug_url_kwarg))
+        return self._attached_organization
+
+    def form_valid(self, form):
+        # There is something fundamentally wrong if we have an `attached_user`
+        # and we get here. The `GET` request should have redirected us
+        # to the organization profile page.
+        if self.attached_organization:
+            messages.error(self.request, 'This user does not support updates'\
+                ' through POST request.')
+            return HttpResponseRedirect(reverse('saas_organization_profile',
+                args=(self.attached_organization,)))
+        return super(UserProfileView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
-        # XXX attached_manager
-        queryset = Organization.objects.filter(
-            slug=kwargs.get(self.slug_url_kwarg))
-        if queryset.exists():
-            return HttpResponseRedirect(
-                reverse('saas_organization_profile', args=(queryset.get(),)))
+        if self.attached_organization:
+            return HttpResponseRedirect(reverse('saas_organization_profile',
+                args=(self.attached_organization,)))
         return super(UserProfileView, self).get(request, *args, **kwargs)

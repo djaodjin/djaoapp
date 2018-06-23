@@ -11,11 +11,12 @@ LOCALSTATEDIR := $(installTop)/var
 CONFIG_DIR    := $(SYSCONFDIR)/djaoapp
 ASSETS_DIR    := $(srcDir)/htdocs/static
 
+installDirs   ?= /usr/bin/install -d
+installFiles  ?= /usr/bin/install -p -m 644
 NPM           ?= npm
 PIP           := $(binDir)/pip
 PYTHON        := $(binDir)/python
-installFiles  ?= /usr/bin/install -p -m 644
-installDirs   ?= /usr/bin/install -d
+SQLITE        ?= sqlite3
 
 # Django 1.7,1.8 sync tables without migrations by default while Django 1.9
 # requires a --run-syncdb argument.
@@ -71,6 +72,7 @@ initdb: install-default-themes initdb-testing initdb-cowork
 	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 	cd $(srcDir) && \
 		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && \
 		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
 	@echo "-- Set streetside processor deposit key."
@@ -80,6 +82,7 @@ initdb: install-default-themes initdb-testing initdb-cowork
 initdb-testing: install-conf
 	-[ -f $(DB_TEST_FILENAME) ] && rm -f $(DB_TEST_FILENAME)
 	cd $(srcDir) && DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_TEST_FILENAME)
 	cd $(srcDir) && \
 		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
 
@@ -89,6 +92,7 @@ initdb-cowork: install-conf
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
 		$(RUNSYNCDB) --database cowork --noinput
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 
