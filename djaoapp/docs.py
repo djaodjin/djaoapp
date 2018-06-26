@@ -24,10 +24,51 @@
 
 from collections import OrderedDict
 
+from django.utils.translation import ugettext_lazy as _
 from drf_yasg import openapi
-from drf_yasg.inspectors.query import DjangoRestResponsePagination
+from drf_yasg.inspectors import NotHandled, DjangoRestResponsePagination
 from rest_framework.pagination import CursorPagination
-from saas.pagination import TotalPagination
+from saas.pagination import BalancePagination, TotalPagination
+
+
+class DocBalancePagination(DjangoRestResponsePagination):
+    """
+    Provides response schema pagination warpping for saas.BalancePagination
+    """
+    def get_paginated_response(self, paginator, response_schema):
+        assert response_schema.type == openapi.TYPE_ARRAY, "array return"\
+            " expected for paged response"
+        paged_schema = NotHandled
+        if isinstance(paginator, BalancePagination):
+            has_count = not isinstance(paginator, CursorPagination)
+            paged_schema = openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties=OrderedDict((
+                    ('balance', openapi.Schema(
+                        type=openapi.TYPE_INTEGER,
+                        description="balance of all transactions in cents"\
+                        " (i.e. 100ths) of unit")),
+                    ('unit', openapi.Schema(
+                        type=openapi.TYPE_INTEGER,
+                        description="three-letter ISO 4217 code"\
+                        " for currency unit (ex: usd)")),
+                    ('count', openapi.Schema(
+                        type=openapi.TYPE_INTEGER,
+                        description="The number of Charge records"
+                    ) if has_count else None),
+                    ('next', openapi.Schema(
+                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
+                        description="API end point to get the next page"\
+                            "of Charge matching the query")),
+                    ('previous', openapi.Schema(
+                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
+                        description="API end point to get the previous page"\
+                            "of Charge matching the query")),
+                    ('results', response_schema),
+                )),
+                required=['balance', 'unit', 'count', 'results']
+            )
+        return paged_schema
 
 
 class DocTotalPagination(DjangoRestResponsePagination):
@@ -37,20 +78,28 @@ class DocTotalPagination(DjangoRestResponsePagination):
     def get_paginated_response(self, paginator, response_schema):
         assert response_schema.type == openapi.TYPE_ARRAY, "array return"\
             " expected for paged response"
-        paged_schema = None
+        paged_schema = NotHandled
         if isinstance(paginator, TotalPagination):
             has_count = not isinstance(paginator, CursorPagination)
             paged_schema = openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties=OrderedDict((
                     ('total', openapi.Schema(
-                        type=openapi.TYPE_INTEGER)),
+                        type=openapi.TYPE_INTEGER,
+                        description=_(
+                            "The sum of all Charge amount (in unit)"))),
                     ('count', openapi.Schema(
-                        type=openapi.TYPE_INTEGER) if has_count else None),
+                        type=openapi.TYPE_INTEGER,
+                        description=_("The number of Charge records")
+                    ) if has_count else None),
                     ('next', openapi.Schema(
-                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI)),
+                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
+                        description=_("API end point to get the next page"\
+                            "of Charge matching the query"))),
                     ('previous', openapi.Schema(
-                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI)),
+                        type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
+                        description=_("API end point to get the previous page"\
+                            "of Charge matching the query"))),
                     ('results', response_schema),
                 )),
                 required=['total', 'count', 'results']

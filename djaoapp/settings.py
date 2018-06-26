@@ -736,6 +736,7 @@ SURVEY = {
 # API documentation
 SWAGGER_SETTINGS = {
     'DEFAULT_PAGINATOR_INSPECTORS': [
+        'djaoapp.docs.DocBalancePagination',
         'djaoapp.docs.DocTotalPagination',
         'drf_yasg.inspectors.DjangoRestResponsePagination',
         'drf_yasg.inspectors.CoreAPICompatInspector',

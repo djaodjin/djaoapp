@@ -156,6 +156,9 @@ class APIDocView(TemplateView):
         tags = set([])
         for path, path_details in schema.paths.items():
             for func, func_details in path_details.items():
+                if func.lower() == 'patch':
+                    # We merge PUT and PATCH together.
+                    continue
                 try:
                     sep = ""
                     in_examples = False
@@ -181,6 +184,7 @@ class APIDocView(TemplateView):
                     description = rst_to_html(description)
                     examples = rst_to_html(examples)
                     api_end_points += [{
+                        'operationId': func_details.operationId,
                         'func': func,
                         'path': path,
                         'tags': ''.join(func_details.tags),
