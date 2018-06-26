@@ -14,6 +14,7 @@ from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from saas import settings as saas_settings
+from saas.mixins import ProviderMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
 from signup.views.auth import (
@@ -303,7 +304,9 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             organization_extra=organization_extra)
 
 
-class UserProfileView(UserProfileBaseView):
+# Implementation Note: inherits from ProviderMixin
+# in order to include `top_accessibles`.
+class UserProfileView(ProviderMixin, UserProfileBaseView):
 
     @property
     def attached_organization(self):

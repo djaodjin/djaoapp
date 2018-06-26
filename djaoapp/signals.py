@@ -15,6 +15,7 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created,
     weekly_sales_report_created)
+from saas.utils import datetime_or_now
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
@@ -344,6 +345,7 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                 if not created:
                     # XXX It is possible a 'reason' field would be a better
                     # implementation.
+                    contact.created_at = datetime_or_now()
                     contact.extra = reason
                     contact.save()
                 back_url = "%s?next=%s" % (reverse('registration_activate',
