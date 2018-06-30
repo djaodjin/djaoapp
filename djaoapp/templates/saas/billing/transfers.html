@@ -11,7 +11,7 @@
         <h1 class="text-primary">Available</h1>
         <dl ng-show="balance_amount !== 'N/A'" class="dl-horizontal">
           <dt id="balance-amount" ng-cloak data-trip data-trip-index="2" data-trip-content="<p>The amount available for you to transfer to your bank account.</p>" data-trip-position="s">[[balance_amount | humanizeCell : balance_unit : 0.01]]</dt>
-          <dd><a ng-show="balance_amount > 0" id="saas_withdraw_funds" href="{{ urls.provider.withdraw_funds }}" data-trip data-trip-index="4" data-trip-content="<p>Withdraw up to the available amount.</p>" data-trip-position="s">withdraw</a></dd>
+          <dd><a ng-show="balance_amount > 0" id="saas_withdraw_funds" href="{{urls.provider.withdraw_funds}}" data-trip data-trip-index="4" data-trip-content="<p>Withdraw up to the available amount.</p>" data-trip-position="s">withdraw</a></dd>
         </dl>
         <dl ng-show="balance_amount === 'N/A'" class="dl-horizontal">
           <dt ng-cloak>[[balance_amount]]</dt>
@@ -21,7 +21,7 @@
       <section id="info" class="col-md-6">
         <h1 class="text-primary">Deposit Information <a id="update_bank"
             class="btn btn-link"
-            href="{{ urls.provider.bank }}"
+            href="{{urls.provider.bank}}"
             data-trip data-trip-index="3" data-trip-content="<p>Update your bank information so funds can be transfered to you.</p>" data-trip-position="s">Update</a></h1>
         <dl class="dl-horizontal">
             <dt>Institution</dt>
@@ -38,7 +38,7 @@
     </div>
     <section>
       <div>
-        <a id="add-offline-transaction" href="{{ urls.provider.import_transactions }}">Add offline transaction</a>
+        <a id="add-offline-transaction" href="{{urls.provider.import_transactions}}">Add offline transaction</a>
       </div>
     </section>
   </div>

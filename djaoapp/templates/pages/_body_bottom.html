@@ -1,5 +1,5 @@
 {% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
+<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
 
 {# Scripts that need to be injected into the page actually being edited #}
@@ -20,18 +20,18 @@ jQuery(document).ready(function($) {
   addPlan.find(".plan-footer a").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
   addPlan.click(function(event) {
        event.preventDefault();
-       $(this).plan({saas_api_plan: "{{ urls.edit.api_plans }}"}).create(true); /* XXX requires assets js_saas in page. */
+       $(this).plan({saas_api_plan: "{{urls.edit.api_plans}}"}).create(true); /* XXX requires assets js_saas in page. */
        /* XXX relaod=true, really ugly but will do until we integrate angularjs. */
   });
   addPlan.show();
 
   $(".plan").editPlan({
-      baseUrl: "{{ urls.edit.api_plans }}",
-      baseEditPlanUrl: "{{ urls.edit.plan_update_base }}"
+      baseUrl: "{{urls.edit.api_plans}}",
+      baseEditPlanUrl: "{{urls.edit.plan_update_base}}"
   });
 
   $(".editable-plan").editor({
-    baseUrl: "{{ urls.edit.api_plans }}/",
+    baseUrl: "{{urls.edit.api_plans}}/",
     uniqueIdentifier: "data-slug",
     rangeUpdate: function(editable, newVal){
             var text = "per month";
@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
   });
 
   $('.editable').editor({
-    baseUrl: '{{ urls.edit.api_page_elements }}',
+    baseUrl: '{{urls.edit.api_page_elements}}',
     preventBlurOnClick: '#toggle-media-gallery, .dj-gallery-item'
   });
 });
@@ -93,5 +93,5 @@ less = {
 </script>
 
 {% assets "js_pages" %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+<script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}

@@ -1,7 +1,6 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{# ``|safe`` here because an e-mail's subject line shouldn't be HTML encoded. #}
 A user has registered for {{broker.printable_name|safe}}
 {% endblock %}
 

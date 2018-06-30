@@ -1,6 +1,4 @@
 {% if urls.provider %}
-{# urls.provider will only be set when the ``request.user`` is a manager    #}
-{# of the organization.                                                     #}
 <hr />
 <ul class="nav nav-pills nav-stacked" data-intro="Pricing, billing and metrics" data-position="right">
     <li {% if urls.provider.dashboard == request.path %} class="active"{% endif %}>

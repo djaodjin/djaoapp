@@ -6,7 +6,7 @@
 <div ng-app="saasApp" ng-cloak>
 <div ng-controller="CouponListCtrl" data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
     <div class="pull-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
-<a id="download" href="{{ urls.provider.download_coupons }}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+<a id="download" href="{{urls.provider.download_coupons}}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
     </div>
     <table id="coupon-list" class="table table-condensed table-striped" >
         <thead>

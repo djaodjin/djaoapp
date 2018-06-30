@@ -8,7 +8,6 @@ Implementation Note:
 #}
 
 {% block subject %}
-{# ``|safe`` here because an e-mail's subject line shouldn't be HTML encoded. #}
 Receipt from {{provider.printable_name|safe}}
 {% endblock %}
 

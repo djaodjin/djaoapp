@@ -1,5 +1,5 @@
 {% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
+<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
 
 {# media editors #}
@@ -55,7 +55,7 @@ jQuery(document).ready(function($) {
     {% endif %}
     loadImageEvent: "gallery-opened",
 
-    saveDroppedMediaUrl: "{{ urls.edit.api_page_elements }}",
+    saveDroppedMediaUrl: "{{urls.edit.api_page_elements}}",
     buttonClass: "btn btn-block btn-primary",
     mediaClass: "thumbnail thumbnail-gallery",
     selectedMediaClass: "thumbnail-active",
@@ -173,13 +173,13 @@ jQuery(document).ready(function($) {
                  {% else %}
                  data-dj-style-variable-editor=""
                  {% endif %}
-                 value="{{ attribute.value }}" />
+                 value="{{attribute.value}}" />
         </div>
         <div class="dj-style-button-wrap">
           <button class="btn btn-default style-reset-button"
                   title="reset to default"
                   data-target="style_attribute_{{section_name}}_{{loop.index}}"
-                  data-reset-value="{{ attribute.default }}"
+                  data-reset-value="{{attribute.default}}"
                   type="button"><i class="fa fa-undo"></i></button>
         </div>
       </div>
@@ -244,7 +244,7 @@ jQuery(document).ready(function($) {
 
 {# aggregated, minified scripts #}
 {% assets "js_theme_editors" %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+<script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}
 {# XXX not included in assets because issue with jsmin #}
 {#     as well as loading Ace plugins in DEBUG=0       #}

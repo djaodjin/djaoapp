@@ -26,7 +26,7 @@ Subscriptions to {{organization.printable_name}}
         <div id="registered-users" class="tab-pane" role="tabpanel">
             <div style="margin-top:10px;margin-bottom:10px;">
                 <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
-                <a id="download-registered" href="{{ registered.urls.download }}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                <a id="download-registered" href="{{registered.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
             </div>
             <table class="table table-condensed table-striped" style="width:100%">
                 <thead>
@@ -78,7 +78,7 @@ Subscriptions to {{organization.printable_name}}
         <div id="{{tab.slug}}" class="tab-pane{% if tab.is_active %} active{% endif %}" role="tabpanel">
 <div style="margin-top:10px;margin-bottom:10px;">
     <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
-    <a id="download-{{tab.slug}}" href="{{ tab.urls.download }}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+    <a id="download-{{tab.slug}}" href="{{tab.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
 </div>
 <table class="table table-condensed table-striped">
     <thead>
@@ -128,7 +128,7 @@ Subscriptions to {{organization.printable_name}}
     <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['organization.printable_name']" ng-show="dir.organization" ng-cloak ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length > 0">
         <tr ng-show="entry.organization_printable_name_CHANGED">
             <td colspan="5">
-                <a id="[[entry.organization.slug]]" href="{{ urls.organization.profile_base }}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a></td>
+                <a id="[[entry.organization.slug]]" href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a></td>
         </tr>
         <tr ng-class="endsSoon(entry)">
             <td></td>
@@ -157,7 +157,7 @@ Subscriptions to {{organization.printable_name}}
         <tr ng-class="endsSoon(entry)">
             <td></td>
             <td>
-                <a href="{{ urls.organization.profile_base }}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.created_at | date: mediumDate]]</td>
             <td>[[entry.ends_at |date: mediumDate]]</td>
@@ -183,7 +183,7 @@ Subscriptions to {{organization.printable_name}}
         <tr ng-class="endsSoon(entry)">
             <td></td>
             <td>
-                <a id="[[entry.organization.slug]]" href="{{ urls.organization.profile_base }}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a id="[[entry.organization.slug]]" href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.ends_at |date: mediumDate]]</td>
@@ -209,7 +209,7 @@ Subscriptions to {{organization.printable_name}}
         <tr ng-class="endsSoon(entry)">
             <td></td>
             <td>
-                <a href="{{ urls.organization.profile_base }}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.created_at | date: mediumDate]]</td>

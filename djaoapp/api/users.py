@@ -52,6 +52,7 @@ class CredentialsAPIView(OrganizationMixin, generics.GenericAPIView):
     serializer_class = CredentialsSerializer
 
     def get(self, request, *args, **kwargs):
+        #pylint:disable=unused-argument,no-self-use
         context = {}
         app = get_current_app()
         try:

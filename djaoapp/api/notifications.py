@@ -75,7 +75,7 @@ class NotificationAPIView(AppMixin, APIView):
     http_method_names = ['post']
     serializer_class = None
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         try:
             app = get_current_app()
             get_email_backend(connection=app.get_connection()).send(

@@ -12,6 +12,7 @@ from saas.views import UserRedirectView
 from signup.urls.users import USERNAME_PAT
 from urldecorators import include, url
 
+from ..api.custom_themes import ThemePackageListAPIView
 from ..api.notifications import NotificationAPIView
 from ..api.users import CredentialsAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
@@ -19,6 +20,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_frictionless_self_provider, url_prefixed)
 from ..views.contact import ContactView
 from ..views.custom_signup import UserProfileView
+from ..views.custom_themes import ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView, NotificationListView,
     NotificationInnerFrameView)
 from ..views.product import (AppCreateView, AppPageView, AppPageRedirectView,
@@ -55,6 +57,8 @@ urlpatterns += site_patterns(
     url_direct(r'^api/proxy/$',
         AppUpdateAPIView.as_view(), name='rules_api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
+    url_direct(r'^api/themes/',
+        ThemePackageListAPIView.as_view(), name='pages_api_themes'),
     url_direct(r'^api/', include('pages.urls.api')),
 
     # Proxy subscription firewall
@@ -107,7 +111,9 @@ urlpatterns += site_patterns(
     url_dashboard(r'^proxy/rules/',
         AppDashboardView.as_view(), name='rules_update'),
     url_dashboard(r'^', include('rules.urls.configure')),
-#XXX currently disabled:    url_dashboard(r'^', include('pages.urls.themes')),
+    url_dashboard(r'^themes/download/',
+        ThemePackageDownloadView.as_view(), name='theme_download'),
+    url_dashboard(r'^', include('pages.urls.themes')),
 
     # Various pages on the djaoapp site itself.
     url_prefixed(r'^contact/', ContactView.as_view(), name='contact'),

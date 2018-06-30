@@ -1,8 +1,6 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{# We are putting |safe here because an e-mail's subject line shouldn't be
-HTML encoded. #}
 You were added as a {{role}} to {{organization.printable_name|safe}}
 {% endblock %}
 
@@ -14,7 +12,7 @@ You were added as a {{role}} to {{organization.printable_name|safe}}
 </p>
 {% else %}
 <p>Hi {{user.printable_name}},</p>
-{%endif %}
+{% endif %}
 <p>
 You were added as a {{role}} to {{organization.printable_name}}
 and can access the <a href="{{back_url}}">{{organization.printable_name}} account</a>

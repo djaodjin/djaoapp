@@ -10,7 +10,6 @@
             Please enter your e-mail address. Your password will be reset and you will get a chance to choose a new password.
         </p>
         {% if form %}
-        {# Some bots will try to access accounts/recover/ which would crash. #}
         {% include "accounts/_recover_form.html" %}
         {% endif %}
         <hr />

@@ -9,9 +9,8 @@
         <div class="signup-group row">
             <div class="col-sm-offset-3 col-sm-6">
                 {% if form %}
-{# Some bots will try to access accounts/login/ which would crash. #}
                 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-                    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+                    method="post" action=".{% if next %}/?next={{next}}{% endif %}">
                     {% include "_form_fields.html" %}
                     <div class="form-action text-center">
                         <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
@@ -21,10 +20,10 @@
                 <hr />
                 <div>
                     <p>
-Forgot password? <i class="fa fa-long-arrow-right"></i> <a href="{{ urls.user.password_reset }}{% if next %}?next={{next}}{% endif %}">Recover</a>
+Forgot password? <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">Recover</a>
                     </p>
                     <p>
-Don't have an account? <i class="fa fa-long-arrow-right"></i> <a href="{{ urls.user.register }}{% if next %}?next={{next}}{% endif %}">Sign up</a>
+Don't have an account? <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">Sign up</a>
                     </p>
                 </div>
             </div>

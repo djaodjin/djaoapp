@@ -18,7 +18,7 @@ You are about to activate your account and need to enter a password to secure
 it, or you have an account already and requested to change your password.
         </p>
         <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-                method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+                method="post" action=".{% if next %}/?next={{next}}{% endif %}">
             {% include "_form_fields.html" %}
             <p>
 By clicking on the &quot;Submit&quot; button below,
