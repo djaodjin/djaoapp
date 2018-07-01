@@ -631,7 +631,7 @@ PAGES = {
         'app_proxy_help.html',
         'base.html',
         'contact.html',
-        'generic_navbar.html',
+        '_appmenu.html',
 #        'index.html',
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',
@@ -668,7 +668,6 @@ PAGES = {
         'pages/_body_top.html',
         'pages/_body_top_connect_processor.html',
         'pages/_body_top_toggle_production.html',
-        'pages/create_package.html',
         'pages/pages_editor_modes.html',
         'pages/theme.html',
         'rules/app_dashboard.html',
@@ -683,9 +682,9 @@ PAGES = {
         'saas/agreements/security.md'
         'saas/agreements/terms-of-use.md'
         'saas/app/new.html',
-        'saas/base-2col.html',
         'saas/base.html',
         'saas/base_dashboard.html',
+        'saas/base_dashboard-2col.html',
         'saas/billing/balance.html',
         'saas/billing/bank.html',
         'saas/billing/card.html',

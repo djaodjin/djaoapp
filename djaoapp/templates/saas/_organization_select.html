@@ -1,9 +1,0 @@
-{% if top_accessibles|length == 1 %}
-<span>{{organization.printable_name}}</span>
-{% else %}
-<select class="form-control">
-    {% for accessible in top_accessibles %}
-    <option value="{{accessible.location}}"{% if accessible.slug == organization.slug %} selected="1"{% endif %}>{{accessible.printable_name}}</option>
-    {% endfor %}
-</select>
-{% endif %}

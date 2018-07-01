@@ -8,6 +8,7 @@
     <div class="pull-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
 <a id="download" href="{{urls.provider.download_coupons}}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
     </div>
+    <div class="table-responsive">
     <table id="coupon-list" class="table table-condensed table-striped" >
         <thead>
         <tr>
@@ -72,6 +73,7 @@
             <td></td>
         </tr>
     </table>
+    </div>
     <div class="text-center">
         <ul uib-pagination ng-model="currentPage"
                     total-items="totalItems"

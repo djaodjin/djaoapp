@@ -29,6 +29,7 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/bootstrap.js',
                  'vendor/bootbox.js',
                  'vendor/toastr.js',
+                 'js/djaodjin-general.js',
             filters='yui_js', output='cache/base.js')
 register('js_base', js_base)
 

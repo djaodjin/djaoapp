@@ -1,0 +1,38 @@
+{% if request|is_authenticated %}
+    <div class="menubar">
+        <a href="#" class="menubar-dropdown-toggle">
+            {% if active_organization %}
+                <span class="menubar-org">
+                    {{active_organization.printable_name}}
+                    <span class="caret"></span>
+                </span>
+            {% endif %}
+            <span class="menubar-username">
+                {{request.user.username}}
+                {% if top_accessibles|length == 0 %}
+                    <span class="caret"></span>
+                {% endif %}
+            </span>
+        </a>
+        <div class="menubar-dropdown-container">
+            <ul class="dropdown-menu">
+                {% if top_accessibles|length > 0 %}
+                    <li class="dropdown-label">{{request.user.username}}</li>
+                {% endif %}
+                <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
+                <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
+                {% if top_accessibles|length > 0 %}
+                    {% for accessible in top_accessibles %}
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
+                        <li><a href="{{accessible.app_location}}">App</a></li>
+                        <li><a href="{{accessible.settings_location}}">Settings</a></li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            <div class="djaodjin-overlay header-menubar-overlay"></div>
+        </div>
+    </div>
+{% else %}
+    <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+{% endif %}

@@ -42,105 +42,90 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     {% endif %}
 </head>
 <body>
-    <div id="wrap">
-        <div id="main">
-            <header>
-                <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
-                    <div class="navbar-header" style="width: 100%;">
-                        <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
-                        <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
-                        {% block header_navbar_large %}
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <i class="fa fa-chevron-down"></i>
-                        </button>
-                        <div style="float:right;margin-right: 15px;">
-                            <ul class="nav navbar-nav navbar-right">
-                                {% if request|is_authenticated %}
-                                <li>
-                                    <a id="authenticated-user" href="{{request|url_profile}}">{{request.user.username}}</a>
-                                </li>
-                                <li class="hidden-xs">
-                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out <i class="fa fa-sign-out fa-lg"></i></a>
-                                </li>
-                                {% else %}
-                                <li>
-                                    <a id="login" href="{{request|url_login}}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
-                                {% endif %}
-                            </ul>
-                            <ul class="hidden-xs nav navbar-nav navbar-right">
-                                {% include "generic_navbar.html" %}
-                            </ul>
-                        </div>
-                        {% endblock %}
-                    </div>
-                    {% block header_navbar_small %}
-                    <div class="hidden-sm hidden-md hidden-lg">
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right">
-                                {% include "generic_navbar.html" %}
-                                {% if request|is_authenticated %}
-                                <li>
-                                    <a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out <i class="fa fa-sign-out fa-lg"></i></a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                    {% endblock %}
-                </nav>
-                {% block fullviewport %}
+  <div id="wrap">
+    <div id="main">
+      <div class="dashboard-container">
+        <div class="dashboard-inner-container">
+          {% block dashboard_nav %}
+          <!-- <div class="dashboard-nav"></div> -->
+          {% endblock %}
+          <div class="dashboard-content">
+            <header class="" style="border-bottom: 1px solid black;">
+              <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+                {% block navbar_brand %}
+                <div class="navbar-header">
+                    <a class="navbar-brand-logo" href="/"><img src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" /></a>
+                    <a class="navbar-brand" href="{{request|url_home}}" data-intro="Edit homepage" data-position="bottom">{{request|site_printable_name}}</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <i class="fa fa-chevron-down"></i>
+                    </button>
+                </div>
                 {% endblock %}
-            </header>
-            <div>
-                <div class="dashboard-container">
-                    <div class="dashboard-inner-container">
-                        {% block dashboard_nav %}
-                        <!-- <div class="dashboard-nav"></div> -->
-                        {% endblock %}
-                        <div class="dashboard-content">
-                            <div>
-                                <div id="messages">
-                                    <div id="messages-content">
-                                        {% for message in request|messages %}
-                                        <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
-                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                            <div>{{message|safe}}</div>
-                                        </div>
-                                        {% endfor %}
-                                        {% if form %}
-                                        {% for message in form|messages %}
-                                        <div class="alert alert-danger">
-                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                            <div>{{message}}</div>
-                                        </div>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                {% block content %}
-                                {% endblock %}
-                            </div>
-                        </div>
+                {% block header_navbar_large %}
+                <ul class="nav navbar-nav" style="float:right;margin-right:15px;">
+                    {% include "generic_navbar.html" %}
+                    <li class="header-menubar">
+                        {# links to user profile and #}
+                        {# organizations is added here. #}
+                        <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+                    </li>
+                </ul>
+                {% endblock %}
+                {% block header_navbar_small %}
+                <div class="hidden-sm hidden-md hidden-lg">
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% include "generic_navbar.html" %}
+                        </ul>
                     </div>
                 </div>
+                {% endblock %}
+              </nav>
+              {% block fullviewport %}
+              {% endblock %}
+            </header>
+            <div>
+                <div id="messages">
+                    <div id="messages-content">
+                        {% for message in request|messages %}
+                        <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <div>{{message|safe}}</div>
+                        </div>
+                        {% endfor %}
+                        {% if form %}
+                        {% for message in form|messages %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <div>{{message}}</div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% block content %}
+                {% endblock %}
             </div>
-        </div>
-    </div>
-    {% block footer %}
-    <footer class="footer">
-        <div class="copyr">Powered by &copy; 2018 DjaoDjin. All rights reserved. - <a href="/legal/" target="_blank">Legal</a>
-            &nbsp;&nbsp;
-            <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-            <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-            <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
-        </div>
-    </footer>
-    {% endblock %}
-    {% block _bodyscripts %}
-    {% assets "js_base" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    <script type="text/javascript">
+          </div><!-- /.dashboard-content -->
+        </div><!-- /.dashboard-inner-container -->
+      </div><!-- /.dashboard-container -->
+    </div><!-- /#main -->
+  </div><!-- /.wrap -->
+  {% block footer %}
+  <footer class="footer">
+      <div class="copyr">Powered by &copy; 2018 DjaoDjin. All rights reserved. - <a href="/legal/" target="_blank">Legal</a>
+          &nbsp;&nbsp;
+          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+          <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+          <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+      </div>
+  </footer>
+  {% endblock %}
+  {% block _bodyscripts %}
+  {% assets "js_base" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  <script type="text/javascript">
 jQuery(document).ready(function($) {
     {% if csrf_token %}
     $.ajaxSetup({
@@ -179,8 +164,8 @@ jQuery(document).ready(function($) {
         },
     };
 });
-    </script>
-    {% block bodyscripts %}{% endblock %}
-    {% endblock %}
+  </script>
+  {% block bodyscripts %}{% endblock %}
+  {% endblock %}
 </body>
 </html>
