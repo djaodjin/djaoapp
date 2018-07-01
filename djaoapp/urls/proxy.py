@@ -57,7 +57,7 @@ urlpatterns += site_patterns(
     url_direct(r'^api/proxy/$',
         AppUpdateAPIView.as_view(), name='rules_api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
-    url_direct(r'^api/themes/',
+    url_direct(r'^api/themes/$',
         ThemePackageListAPIView.as_view(), name='pages_api_themes'),
     url_direct(r'^api/', include('pages.urls.api')),
 
