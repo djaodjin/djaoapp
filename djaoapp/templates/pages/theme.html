@@ -1,19 +1,44 @@
-{% extends "saas/base_dashboard.html" %}
+{% extends "saas/base-2col.html" %}
 
 {% block saas_title %}Theme{% endblock %}
 
+{% block saas_help %}
+<p>
+When you are modifying root templates, like <filename>base.html</filename>
+for example, you may inadvertently break the dashboard and become unable
+to access this page to upload a fixed package.
+</p>
+<p>
+It is recommended to make a backup copy of the original theme before you
+start updating it by clicking on the <em>Download</em> link.
+</p>
+<p>
+In the advent you are unable to access this page to upload a fixed package,
+you could the restore the backup theme through an API call as such:
+</p>
+<pre class="code"><code>curl -i -u *api_key*:  -X POST -F file=@*package*.zip https://{{site_available_at_url}}api/themes/</code></pre>
+<p>
+Thus also make sure to obtain your API key before uploading a new theme.
+</p>
+<p>
+Note that you can use the API call as part of your automated deployment process
+as well.
+</p>
+{% endblock %}
+
 {% block saas_content %}
 <div ng-app="UploaderApp">
-<div class="col-sm-offset-3 col-sm-6" ng-controller="UploaderCtrl" ng-cloak>
-  <div class="dj-upload"
-       data-complete-url="{{urls.pages.api_themes}}"
-       djupload-success >
-    <div class="dropzone-previews previewsContainer">
-      <span class="dz-default dz-message"><i class="fa fa-cloud"></i> Upload theme package (.zip)</span>
+  <div class="col-sm-offset-3 col-sm-6" ng-controller="UploaderCtrl" ng-cloak>
+    <div class="dj-upload"
+         data-complete-url="{{urls.pages.api_themes}}"
+         djupload-success >
+      <div class="dropzone-previews previewsContainer">
+        <span class="dz-default dz-message"><i class="fa fa-cloud"></i> Upload theme package (.zip)</span>
+      </div>
     </div>
-  </div>
-  <div class="text-center">
-    <a class="btn btn-default" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
+    <div class="text-center">
+      <a class="btn btn-default" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
+    </div>
   </div>
 </div>
 {% endblock %}
@@ -33,7 +58,6 @@ app.config(['$interpolateProvider', '$httpProvider',
 }]);
 app.constant('urls', {
     url_base_theme: "{{urls.pages.api_themes}}",
-    active_theme: "{{request.site.theme}}"
 });
 app.constant('csrf', {
     csrf_token: "{{csrf_token}}",

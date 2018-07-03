@@ -20,7 +20,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_frictionless_self_provider, url_prefixed)
 from ..views.contact import ContactView
 from ..views.custom_signup import UserProfileView
-from ..views.custom_themes import ThemePackageDownloadView
+from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView, NotificationListView,
     NotificationInnerFrameView)
 from ..views.product import (AppCreateView, AppPageView, AppPageRedirectView,
@@ -113,7 +113,8 @@ urlpatterns += site_patterns(
     url_dashboard(r'^', include('rules.urls.configure')),
     url_dashboard(r'^themes/download/',
         ThemePackageDownloadView.as_view(), name='theme_download'),
-    url_dashboard(r'^', include('pages.urls.themes')),
+    url_dashboard(r'^themes/',
+        ThemePackageView.as_view(), name='theme_update'),
 
     # Various pages on the djaoapp site itself.
     url_prefixed(r'^contact/', ContactView.as_view(), name='contact'),
