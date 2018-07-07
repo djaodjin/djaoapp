@@ -29,7 +29,7 @@ as well.
 {% block saas_content %}
 <div ng-app="UploaderApp">
   <div class="col-sm-offset-3 col-sm-6" ng-controller="UploaderCtrl" ng-cloak>
-    <div class="dj-upload"
+    <div class="pages-upload"
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
       <div class="dropzone-previews previewsContainer">
@@ -74,4 +74,11 @@ app.constant('s3', {
 {% endif %}
 });
 </script>
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+  $(".pages-upload").djupload({
+      uploadUrl: "{{urls.pages.api_themes}}",
+  });
+});
+  </script>
 {% endblock %}
