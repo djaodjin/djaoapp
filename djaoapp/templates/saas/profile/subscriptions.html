@@ -7,6 +7,7 @@
 {% block saas_content %}
 <section id="subscriptions" ng-app="saasApp" ng-cloak>
 <div ng-controller="subscriptionListCtrl" data-trip data-trip-index="1" data-trip-content="<h2>Subscriptions</h2><p>List of all your active subscriptions.<br />You can manage all your active subscriptions here.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+<div class="table-responsive">
 <table class="table">
  <thead>
   <tr>
@@ -85,6 +86,7 @@
   </tr>
  </tbody>
 </table>
+</div>
 <div class="text-center">
     <ul uib-pagination class="pagination-sm" ng-model="currentPage"
                 total-items="subscribed.count"

@@ -55,6 +55,56 @@
     transition: right 0.25s ease-in-out;
 }
 
+.dashboard-nav-main {
+    min-height: 100%;
+    padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
+                             in pixel */
+}
+
+.dashboard-nav .navbar-brand-logo {
+  float: left;
+  padding: 2px;
+  font-size: 18px;
+  line-height: 20px;
+  height: 50px;
+}
+
+.dashboard-nav .navbar-brand-logo > img {
+  width: auto;
+  max-height: 46px;
+}
+
+.dashboard-nav-footer
+{
+    position: absolute;
+    clear:both;
+    bottom: 0;
+    padding: 10px 30px 10px;
+    font-size: 11px;
+    width: @dashboard-sidebar-width;
+    border-top: 1px solid;
+}
+
+.dashboard-nav-footer .footer-links
+{
+    margin-top: 10px;
+}
+
+.dashboard-nav-footer .footer-links a
+{
+    margin: 0 3px;
+}
+
+.dashboard-nav-footer .footer-links a:first-child
+{
+    margin-left: 0;
+}
+
+.dashboard-nav-footer .footer-links a:last-child
+{
+    margin-right: 0;
+}
+
 .dashboard-content {
     display: table-cell;
     position: relative;
@@ -63,17 +113,6 @@
     background-color: @dashboard-content-bg;
     color: black;
 }
-
-/* XXX deprecated
-.dashboard-nav-container {
-    clear: left;
-    float: left;
-    width: 100%;
-    overflow: hidden;
-    background-color: @dashboard-sidebar-bg;
-    color: @dashboard-sidebar-color;
-}
-*/
 
 .dashboard-nav-inner-container {
     display: table;
@@ -91,9 +130,11 @@
     cursor: pointer;
     vertical-align: middle;
     text-align: center;
+    /* forces height of the sidebar to 100vh - @navbar-height - footer-height */
     /* works from Firefox Windows 43.0.1 and Firefox OSX 22 */
-    height: -moz-calc(~"100vh - 50px - 22px");
-    height:      calc(~"100vh - 50px - 22px");
+    /* height: -moz-calc(~"100vh - 50px - 22px"); */
+    /* height:      calc(~"100vh - 50px - 22px"); */
+    height: 100vh;
 }
 
 .dashboard-nav-menu > hr {
@@ -133,4 +174,18 @@
     .dashboard-nav-toggle .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
     }
+}
+
+.no-results
+{
+    color: #888;
+    text-align: center;
+    padding: 20px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.dashboard-home-title
+{
+    border-bottom: 1px solid #e0e0e0;
 }

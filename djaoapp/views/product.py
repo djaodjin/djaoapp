@@ -164,7 +164,7 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
     def get_context_data(self, **kwargs):
         context = super(
             DjaoAppPageRedirectView, self).get_context_data(**kwargs)
-        # Add URLs needed for generic_navbar.html and sidebar
+        # Add URLs needed for _appmenu.html and sidebar
         broker = get_current_broker()
         context.update({'provider': broker})
         return context
@@ -221,7 +221,7 @@ class DjaoAppPageView(TemplateView):
         return super(DjaoAppPageView, self).get_template_names()
 
     def get_context_data(self, **kwargs):
-        # Add URLs needed for generic_navbar.html and sidebar
+        # Add URLs needed for _appmenu.html and sidebar
         context = super(DjaoAppPageView, self).get_context_data(**kwargs)
         broker = get_current_broker()
         context.update({'provider': broker})
