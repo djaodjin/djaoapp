@@ -63,6 +63,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                         {# organizations is added here. #}
                         <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
                     </li>
+                    {% if request|is_authenticated %}
+                    <li><a title="Click Here to sign out" href="{{request|url_logout}}">Sign Out <span class="fa fa-sign-out fa-lg"></span></a></li>
+                    {% endif %}
                 </ul>
                 {% endblock %}
                 {% block header_navbar_small %}

@@ -125,7 +125,7 @@ migratedb-%:
 vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
-	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/Tex $(ASSETS_DIR)/vendor/fonts/HTML-CSS/Tex/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/Tex/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
+	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
 	$(installFiles) $(srcDir)/assets/less/base/*.less $(ASSETS_DIR)/base
 	$(installFiles) $(srcDir)/assets/less/vendor/bootstrap/*.less $(ASSETS_DIR)/vendor/bootstrap
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
@@ -170,13 +170,13 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/MathJax/MathJax.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/MathJax/config/*.js $(ASSETS_DIR)/vendor/config
-	$(installFiles) $(installTop)/node_modules/MathJax/extensions/*.js $(ASSETS_DIR)/vendor/extensions
-	$(installFiles) $(installTop)/node_modules/MathJax/jax/output/CommonHTML/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML
-	$(installFiles) $(installTop)/node_modules/MathJax/jax/output/CommonHTML/fonts/Tex/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/Tex
-	$(installFiles) $(installTop)/node_modules/MathJax/fonts/HTML-CSS/TeX/woff/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff
-	$(installFiles) $(installTop)/node_modules/MathJax/fonts/HTML-CSS/TeX/otf/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf
+	$(installFiles) $(installTop)/node_modules/mathjax/MathJax.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/mathjax/config/*.js $(ASSETS_DIR)/vendor/config
+	$(installFiles) $(installTop)/node_modules/mathjax/extensions/*.js $(ASSETS_DIR)/vendor/extensions
+	$(installFiles) $(installTop)/node_modules/mathjax/jax/output/CommonHTML/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML
+	$(installFiles) $(installTop)/node_modules/mathjax/jax/output/CommonHTML/fonts/TeX/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX
+	$(installFiles) $(installTop)/node_modules/mathjax/fonts/HTML-CSS/TeX/woff/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff
+	$(installFiles) $(installTop)/node_modules/mathjax/fonts/HTML-CSS/TeX/otf/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf
 	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/pagedown/Markdown.Converter.js $(installTop)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
