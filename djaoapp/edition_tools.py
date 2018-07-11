@@ -79,7 +79,7 @@ def inject_edition_tools(response, request, context=None,
     method returns a BeautifulSoup object of the content such that
     ``PageMixin`` inserts the edited page elements.
     """
-    #pylint:disable=too-many-locals
+    #pylint:disable=too-many-locals,too-many-nested-blocks,too-many-statements
     content_type = response.get('content-type', '')
     if not content_type.startswith('text/html'):
         return None
@@ -176,23 +176,25 @@ def inject_edition_tools(response, request, context=None,
             # expected HTML text.
             auth_user = soup.body.find(class_='header-menubar')
             user_menu_template = '_menubar.html'
-            print("XXX auth_user=%s, user_menu_template=%s" % (auth_user, user_menu_template))
             if auth_user and user_menu_template:
-                serializer_class = import_string(rules_settings.SESSION_SERIALIZER)
+                serializer_class = import_string(
+                    rules_settings.SESSION_SERIALIZER)
                 serializer = serializer_class(request)
                 path_parts = reversed(request.path.split('/'))
                 top_accessibles = []
                 has_broker_role = False
                 active_organization = None
-                for role, organizations in six.iteritems(serializer.data['roles']):
+                for role, organizations in six.iteritems(
+                        serializer.data['roles']):
                     for organization in organizations:
                         db_obj = Organization.objects.get(
-                            slug=organization['slug']) # XXX Need to remove query.
+                            slug=organization['slug']) # XXX Remove query.
                         if db_obj.is_provider:
                             settings_location = reverse('saas_dashboard',
                                 args=(organization['slug'],))
                         else:
-                            settings_location = reverse('saas_organization_profile',
+                            settings_location = reverse(
+                                'saas_organization_profile',
                                 args=(organization['slug'],))
                         app_location = reverse('organization_app',
                             args=(organization['slug'],))
@@ -204,7 +206,8 @@ def inject_edition_tools(response, request, context=None,
                         if is_broker(organization['slug']):
                             has_broker_role = True
                         top_accessibles += [TopAccessibleOrganization(
-                            organization['slug'], organization['printable_name'],
+                            organization['slug'],
+                            organization['printable_name'],
                             settings_location, role, app_location)]
                 if not active_organization and has_broker_role:
                     active_organization = get_broker()
