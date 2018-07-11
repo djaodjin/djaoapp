@@ -55,6 +55,12 @@
     transition: right 0.25s ease-in-out;
 }
 
+.dashboard-nav-main {
+    min-height: 100%;
+    padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
+                             in pixel */
+}
+
 .dashboard-nav .navbar-brand-logo {
   float: left;
   padding: 2px;
@@ -107,17 +113,6 @@
     background-color: @dashboard-content-bg;
     color: black;
 }
-
-/* XXX deprecated
-.dashboard-nav-container {
-    clear: left;
-    float: left;
-    width: 100%;
-    overflow: hidden;
-    background-color: @dashboard-sidebar-bg;
-    color: @dashboard-sidebar-color;
-}
-*/
 
 .dashboard-nav-inner-container {
     display: table;

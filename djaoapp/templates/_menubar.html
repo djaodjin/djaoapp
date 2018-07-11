@@ -25,7 +25,7 @@
                     {% for accessible in top_accessibles %}
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
-                        <li><a href="{{accessible.app_location}}">App</a></li>
+                        <li><a href="{{accessible.app_location}}">Home</a></li>
                         <li><a href="{{accessible.settings_location}}">Settings</a></li>
                     {% endfor %}
                 {% endif %}
