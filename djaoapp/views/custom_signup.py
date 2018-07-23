@@ -17,14 +17,14 @@ from saas import settings as saas_settings
 from saas.mixins import ProviderMixin
 from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.views.users import (
+from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
-    SignupView as SignupBaseView,
-    UserProfileView as UserProfileBaseView)
+    SignupView as SignupBaseView)
+from signup.views.users import UserProfileView as UserProfileBaseView
 from rules.mixins import AppMixin
 
 from ..compat import reverse

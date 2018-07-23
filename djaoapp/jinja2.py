@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from django.conf import settings
 import django.template.defaulttags
 from django_assets.env import get_env
-from deployutils.apps.django.management.commands import get_template_search_path
+from deployutils.apps.django.themes import get_template_search_path
 from deployutils.apps.django.templatetags import deployutils_extratags
 from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment
 import multitier.templatetags.multitier_tags
