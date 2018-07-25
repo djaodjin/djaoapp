@@ -22,7 +22,7 @@ SQLITE        ?= sqlite3
 # requires a --run-syncdb argument.
 # Implementation Note: We have to wait for the config files to be installed
 # before running the manage.py command (else missing SECRECT_KEY).
-RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
+RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
 APP_NAME      ?= djaoapp
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
@@ -71,30 +71,30 @@ initdb: install-default-themes initdb-testing initdb-cowork
 	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
 	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
 	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
 	@echo "-- Set streetside processor deposit key."
 	sqlite3 $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
 
 
 initdb-testing: install-conf
 	-[ -f $(DB_TEST_FILENAME) ] && rm -f $(DB_TEST_FILENAME)
-	cd $(srcDir) && DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
+	cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
 	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_TEST_FILENAME)
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
 
 
 initdb-cowork: install-conf
 	-[ -f $(MULTITIER_DB_FILENAME) ] && rm -f $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
 		$(RUNSYNCDB) --database cowork --noinput
 	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 
 
 migratedb-cowork: initdb-cowork
@@ -107,7 +107,7 @@ migratedb-%:
 	cd $(srcDir) && MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 		$(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database $(subst migratedb-,,$@)
 	cd $(srcDir) \
-	&& DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) \
+	&& DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) \
 	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 	$(PYTHON) ./manage.py loadfixtures --database $(subst migratedb-,,$@) $(EMAIL_FIXTURE_OPT) $(abspath $(srcDir)/../../..)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(subst migratedb-,,$@)-streetside.json
 	@echo "-- Set streetside processor deposit key."

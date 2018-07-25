@@ -21,8 +21,10 @@ DB_PORT = 5432
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True,
-        location=os.getenv("SETTINGS_LOCATION", None),
-        passphrase=os.getenv("SETTINGS_CRYPT_KEY", None)))
+        location=os.getenv("%s_SETTINGS_LOCATION" % APP_NAME.upper(),
+            os.getenv("SETTINGS_LOCATION", None)),
+        passphrase=os.getenv("%s_SETTINGS_CRYPT_KEY" % APP_NAME.upper(),
+            os.getenv("SETTINGS_CRYPT_KEY", None))))
 
 if os.getenv('DEBUG'):
     # Enable override on command line.
