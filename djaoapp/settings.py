@@ -603,11 +603,10 @@ def theme_dir(account):
     return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
 
 PAGES = {
-    'ACCOUNT_MODEL': getattr(sys.modules[__name__], 'RULES_APP_MODEL',
-        'rules.App'),
+    'ACCOUNT_MODEL': 'saas.Organization',
+    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_broker',
     'ACCOUNT_URL_KWARG' : 'app',
     'ACTIVE_THEME_CALLABLE': 'djaoapp.locals.get_active_theme',
-    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_app',
     'EXTRA_MIXIN': djaoapp.extras.pages.ExtraMixin,
     'PUBLIC_ROOT': HTDOCS,
     'TEMPLATES_BLACKLIST': [
