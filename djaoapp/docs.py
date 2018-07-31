@@ -24,7 +24,6 @@
 
 from collections import OrderedDict
 
-from django.utils.translation import ugettext_lazy as _
 from drf_yasg import openapi
 from drf_yasg.inspectors import NotHandled, DjangoRestResponsePagination
 from rest_framework.pagination import CursorPagination
@@ -54,16 +53,16 @@ class DocBalancePagination(DjangoRestResponsePagination):
                         " for currency unit (ex: usd)")),
                     ('count', openapi.Schema(
                         type=openapi.TYPE_INTEGER,
-                        description="The number of Charge records"
+                        description="The number of records"
                     ) if has_count else None),
                     ('next', openapi.Schema(
                         type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
                         description="API end point to get the next page"\
-                            "of Charge matching the query")),
+                            "of records matching the query")),
                     ('previous', openapi.Schema(
                         type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
                         description="API end point to get the previous page"\
-                            "of Charge matching the query")),
+                            "of records matching the query")),
                     ('results', response_schema),
                 )),
                 required=['balance', 'unit', 'count', 'results']
@@ -86,20 +85,20 @@ class DocTotalPagination(DjangoRestResponsePagination):
                 properties=OrderedDict((
                     ('total', openapi.Schema(
                         type=openapi.TYPE_INTEGER,
-                        description=_(
-                            "The sum of all Charge amount (in unit)"))),
+                        description=
+                            "The sum of all Charge amount (in unit)")),
                     ('count', openapi.Schema(
                         type=openapi.TYPE_INTEGER,
-                        description=_("The number of Charge records")
+                        description="The number of records"
                     ) if has_count else None),
                     ('next', openapi.Schema(
                         type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
-                        description=_("API end point to get the next page"\
-                            "of Charge matching the query"))),
+                        description="API end point to get the next page"\
+                            "of records matching the query")),
                     ('previous', openapi.Schema(
                         type=openapi.TYPE_STRING, format=openapi.FORMAT_URI,
-                        description=_("API end point to get the previous page"\
-                            "of Charge matching the query"))),
+                        description="API end point to get the previous page"\
+                            "of records matching the query")),
                     ('results', response_schema),
                 )),
                 required=['total', 'count', 'results']

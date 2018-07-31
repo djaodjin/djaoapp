@@ -136,9 +136,28 @@ class NoHeaderHTMLWriter(Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
+
 def rst_to_html(string):
-    result = core.publish_string(string, writer=NoHeaderHTMLWriter())
+    result = core.publish_string(string,
+        writer=NoHeaderHTMLWriter())
     return mark_safe(result.decode('utf-8'))
+
+
+def transform_links(line):
+    look = True
+    while look:
+        look = re.search(r'(:doc:`([^`]+)<(\S+)>`)', line)
+        if look:
+            line = line.replace(look.group(1),
+            "`%s <http://djaodjin-saas.readthedocs.io/en/latest/%s.html>`_" % (
+                look.group(2), look.group(3)))
+            continue
+        look = re.search(r'(:ref:`([^`]+)<(\S+)>`)', line)
+        if look:
+            line = line.replace(look.group(1),
+            "`%s <http://djaodjin-saas.readthedocs.io/en/latest/%s.html>`_" % (
+                look.group(2), look.group(3)))
+    return line
 
 
 class APIDocView(TemplateView):
@@ -160,13 +179,15 @@ class APIDocView(TemplateView):
                     # We merge PUT and PATCH together.
                     continue
                 try:
+                    print("XXX %s" % str(func_details.operationId))
                     sep = ""
                     in_examples = False
                     tags |= set(func_details.tags)
                     description = ""
                     examples = ""
                     for line in func_details.description.splitlines():
-                        if re.match(r'\*\*Example', line.strip()):
+                        line = transform_links(line)
+                        if re.match(r'\*\*Example', line):
                             in_examples = True
                             sep = ""
                         elif in_examples:
@@ -180,7 +201,7 @@ class APIDocView(TemplateView):
                             sep = "\n"
                         else:
                             description += sep + line
-                            sep = " "
+                            sep = "\n"
                     description = rst_to_html(description)
                     examples = rst_to_html(examples)
                     api_end_points += [{

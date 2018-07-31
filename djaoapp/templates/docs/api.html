@@ -19,19 +19,26 @@
             </td>
             <td class="param-info">
                 <div>
-                    <span class="param-type" title="">{{attr.type}}{% if attr.type == 'array' %} of {{attr|schema_name}}{% endif %}
+                    <span class="param-type" title="">
+                        {% if attr.type %}
+                          {{attr.type}}{% if attr.type == 'array' %} of {{attr|schema_name}}{% endif %}
+                        {% else %}
+                          {{attr|schema_name}}
+                        {% endif %}
                     </span>
-                    {% if attr.required %}
-                    <span class="param-required">Required</span>
+                    {% if attr|schema_href %}
+                    <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{attr|schema_name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+                    <div id="collapse-{{operationId}}-{{attr|schema_name}}" class="collapse">
+                        {{api_param_doc(definitions[attr|schema_href], operationId, read_direction)}}
+                    </div>
                     {% endif %}
                 </div>
                 {% if attr.description %}
                 <div class="param-description">{{attr.description}}</div>
                 {% endif %}
-                {% if attr.type == 'array' and attr|schema_href %}
-                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
-                <div id="collapse-{{operationId}}" class="collapse">
-                    {{api_param_doc(definitions[attr|schema_href], operationId, read_direction)}}
+                {% if attr.required %}
+                <div>
+                    <span class="param-required">Required</span>
                 </div>
                 {% endif %}
             </td>
@@ -119,8 +126,7 @@ curl uses the -u flag to pass basic auth credentials.
         </div>
         {% if api_end_point.parameters|query_parameters %}
         <div>
-            <h5 class="param-list-header">Query parameters<span class="hint--top-right hint--large" data-hint="Parameters that are appended to the URL.
-                                                                                       For example, in /items?id=###, the query parameter is id">?</span></h5>
+            <h5 class="param-list-header"><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
             <div class="params-wrap">
                 {% for param in api_end_point.parameters|query_parameters %}
                     {{ api_param_doc(param, api_end_point.operationId) }}
