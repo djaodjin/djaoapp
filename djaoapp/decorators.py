@@ -8,6 +8,7 @@ from django import http
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.exceptions import PermissionDenied
 from django.db import DEFAULT_DB_ALIAS
+from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.utils.decorators import available_attrs
 from django.utils import six
@@ -16,9 +17,12 @@ from pages.locals import (enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
 from rules.perms import NoRuleMatch, check_matched, redirect_or_denied
 from rules.utils import get_current_app
-from saas.decorators import (NORMAL, _fail_direct, _fail_provider,
-    _fail_provider_only, _fail_self_provider, _has_valid_access)
+from saas.decorators import (NORMAL, fail_authenticated, _fail_direct,
+    _fail_provider, _fail_provider_only, _fail_self_provider, _has_valid_access)
+from signup.models import Contact
+from saas.utils import get_role_model
 
+from .compat import reverse
 from .locals import get_current_broker
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 
@@ -55,6 +59,51 @@ def inject_edition_tools(function=None):
                     # trailing whitespace on a reformatted HTML textarea
                     response.content = str(soup)
             return response
+        return _wrapped_view
+
+    if function:
+        return decorator(function)
+    return decorator
+
+
+def requires_authenticated(function=None,
+                           redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Decorator for views that checks that the user is authenticated.
+
+    ``django.contrib.auth.decorators.login_required`` will automatically
+    redirect to the login page. We wante to redirect to the activation
+    page when required, as well as raise a ``PermissionDenied``
+    instead when Content-Type is showing we are dealing with an API request.
+    """
+    def decorator(view_func):
+        @wraps(view_func, assigned=available_attrs(view_func))
+        def _wrapped_view(request, *args, **kwargs):
+            redirect_url = fail_authenticated(request)
+            if redirect_url:
+                verification_key = kwargs.get('verification_key', None)
+                if verification_key:
+                    contact = Contact.objects.filter(
+                        verification_key=verification_key).first()
+                    if not contact:
+                        # Not a `Contact`, let's try `Role`.
+                        role_model = get_role_model()
+                        try:
+                            role = role_model.objects.filter(
+                                Q(grant_key=verification_key)
+                                | Q(request_key=verification_key)).get()
+                            contact, _ = Contact.objects.get_or_create_token(
+                                role.user)
+                            verification_key = contact.verification_key
+                        except role_model.DoesNotExist:
+                            pass
+                    if contact:
+                        redirect_url = request.build_absolute_uri(
+                            reverse('registration_activate',
+                                args=(verification_key,)))
+                return redirect_or_denied(request, redirect_url,
+                    redirect_field_name=redirect_field_name)
+            return view_func(request, *args, **kwargs)
         return _wrapped_view
 
     if function:

@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="col-md-offset-3 col-md-6">
+        {% if object %}
         <div class="page-header">
             <h1 class="text-center"><span class="fa fa-pencil"></span> Activate account</h1>
             <p>
@@ -30,6 +31,11 @@ You are about to activate your account. Please set a password to secure it.
                 You already have an account? <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">Sign in</a>
             </div>
         </div>
+        {% else %}
+        <p>
+            This activation token is invalid or has expired.
+        </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
