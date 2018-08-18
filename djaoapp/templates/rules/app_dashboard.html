@@ -105,21 +105,28 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         <div id="endpoint" class="tab-pane active">
         <div class="row">
           <div class="col-md-12" style="margin-bottom:50px;">
-            <label for="">Entry point *</label>
-            <form id="entry-point-form" class="form-inline" method="post" ng-submit="submitEntryPoint('#entry-point-form')">
+            <form id="entry-point-form" method="post" ng-submit="submitEntryPoint('#entry-point-form')">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-              <div class="form-group col-md-6">
-                <div class="row">
-                  <div class="input-group col-md-12" data-trip data-trip-index="4" data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
-                    <input class="form-control form-control" id="id_entry_point" maxlength="100" name="entry_point" type="text" value="{{form.instance.entry_point}}">
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-primary">Update</button>
-                    </span>
-                  </div>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="">Entry point *</label>
+                  <input class="form-control" id="id_entry_point" maxlength="100" name="entry_point" type="text" value="{{form.instance.entry_point}}" data-trip data-trip-index="4" data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="">Session encoding *</label>
+                  <select class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
+                    <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>No session forwarded</option>
+                    <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>Cookie-based session backend</option>
+                    <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>JWT-based session backend</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <div style="height:25px;"></div>
+                  <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
                 </div>
               </div>
-              <div class="form-group">
-                <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </form>
           </div>
@@ -164,9 +171,45 @@ The key will only be displayed once. Keep it secure.
         </div>
         <!-- end of modal dialog for Encrypted Session Key -->
         </div>
-    </div>
-    <!-- Web Application -->
-  </div>
+    </div><!-- /Web Application -->
+    <div class="col-md-12">
+      <h3>Testing</h3>
+      <p>
+Enter a username and check the token that will be passed to your backend
+service.
+      </p>
+      <form id="token-form" class="form-inline" method="post" ng-submit="getSessionData('#token-form')">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <div class="input-group">
+          <input id="id_username" class="form-control" maxlength="100" name="username" type="text">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Check</button>
+          </span>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-md-12 text-left">
+          <dl id="session-data">
+            <dt>Session Data</dt>
+            <dd>
+              <pre class="code"><code>[[forward_session]]</code></pre>
+            </dd>
+          </dl>
+          <dl id="session-header">
+            <dt>As HTTP Header</dt>
+            <dd>
+              <pre class="code"><code>[[forward_session_header]]</code></pre>
+            </dd>
+          </dl>
+          <dl>
+            <dt>Forwarding requests to</dt>
+            <dd>
+              <pre class="code"><code>[[forward_url]]</code></pre>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div><!-- /testing tokens -->
   </div>
 </div>
 {% endblock %}
@@ -193,6 +236,7 @@ app.constant('urls', {
     rules_api_rule_url: "{{urls.rules.api_rules}}",
     rules_api_detail_url: "{{urls.rules.api_detail}}",
     rules_api_generate_key: "{{urls.rules.api_generate_key}}",
+    rules_api_session_data: "{{urls.rules.api_session_data}}",
 });
 
 jQuery(document).ready(function($) {
