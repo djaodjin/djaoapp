@@ -1,5 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
+from __future__ import unicode_literals
 
 import logging
 from functools import wraps
@@ -12,6 +13,7 @@ from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.utils.decorators import available_attrs
 from django.utils import six
+from django.utils.translation import ugettext_lazy as _
 from multitier.thread_locals import get_current_site
 from pages.locals import (enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
@@ -122,7 +124,8 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
         def _wrapped_view(request, *args, **kwargs):
             try:
                 app = get_current_app()
-                redirect_url, _, _ = check_matched(request, app,
+                #pylint:disable=unused-variable
+                redirect_url, matched, session = check_matched(request, app,
                     prefixes=DEFAULT_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
@@ -135,8 +138,8 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr="%(user)s is not a direct manager '\
-    ' of %(organization)s." % {'user': request.user, 'organization': slug})
+                        descr=_("%(user)s is not a direct manager "\
+    " of %(organization)s.") % {'user': request.user, 'organization': slug})
 
             return view_func(request, *args, **kwargs)
 
@@ -168,7 +171,8 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL,
                     return view_func(request, *args, **kwargs)
             try:
                 app = get_current_app()
-                redirect_url, _, _ = check_matched(request, app,
+                #pylint:disable=unused-variable
+                redirect_url, matched, session = check_matched(request, app,
                     prefixes=DEFAULT_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
@@ -182,8 +186,8 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr="%(user)s is neither a manager "\
-" for %(slug)s nor a manager of one of %(slug)s providers." % {
+                        descr=_("%(user)s is neither a manager "\
+" for %(slug)s nor a manager of one of %(slug)s providers.") % {
     'user': request.user, 'slug': slug})
             return view_func(request, *args, **kwargs)
 
@@ -216,7 +220,8 @@ def requires_provider_only(function=None, roledescription=None,
                     return view_func(request, *args, **kwargs)
             try:
                 app = get_current_app()
-                redirect_url, _, _ = check_matched(request, app,
+                #pylint:disable=unused-variable
+                redirect_url, matched, session = check_matched(request, app,
                     prefixes=DEFAULT_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
@@ -230,8 +235,8 @@ def requires_provider_only(function=None, roledescription=None,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr="%(user)s is not a manager of one of"\
-" %(slug)s providers." % {'user': request.user, 'slug': slug})
+                        descr=_("%(user)s is not a manager of one of"\
+" %(slug)s providers.") % {'user': request.user, 'slug': slug})
             return view_func(request, *args, **kwargs)
 
         return _wrapped_view
@@ -261,7 +266,8 @@ def requires_self_provider(function=None, strength=NORMAL,
                     return view_func(request, *args, **kwargs)
             try:
                 app = get_current_app()
-                redirect_url, _, _ = check_matched(request, app,
+                #pylint:disable=unused-variable
+                redirect_url, matched, session = check_matched(request, app,
                     prefixes=DEFAULT_PREFIXES)
                 if redirect_url:
                     if isinstance(redirect_url, six.string_types):
@@ -274,9 +280,9 @@ def requires_self_provider(function=None, strength=NORMAL,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr="%(auth)s has neither a direct"\
+                        descr=_("%(auth)s has neither a direct"\
 " relation to an organization connected to %(user)s nor a connection to one"\
-"of the providers to such organization." % {
+"of the providers to such organization.") % {
     'auth': request.user, 'user': kwargs.get('user', None)})
             return view_func(request, *args, **kwargs)
         return _wrapped_view

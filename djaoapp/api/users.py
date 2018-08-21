@@ -1,5 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
+from __future__ import unicode_literals
 
 import logging
 

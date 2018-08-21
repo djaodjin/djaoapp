@@ -80,6 +80,7 @@ MIDDLEWARE_CLASSES += (
     'rules.middleware.RulesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'signup.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -156,6 +157,8 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, APP_NAME, 'locale'),)
 
 # Date/time settings
 # ------------------

@@ -1,6 +1,5 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
-
 from __future__ import unicode_literals
 
 import logging
@@ -13,6 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin
 from saas.models import Organization, Signature
@@ -99,9 +99,9 @@ class PasswordResetView(AuthMixin, AppMixin, PasswordResetBaseView):
         # Implementation Note: Because we add a ``AuthMixin``
         # that overrides ``get_success_url``, we need to add this code
         # from the base class back here.
-        messages.info(self.request, "Please follow the instructions "\
+        messages.info(self.request, _("Please follow the instructions "\
             "in the email that has just been sent to you to reset"\
-            " your password.")
+            " your password."))
         return super(PasswordResetView, self).get_success_url()
 
 
@@ -112,7 +112,8 @@ class PasswordResetConfirmView(AuthMixin, AppMixin,
         # Implementation Note: Because we add a ``AuthMixin``
         # that overrides ``get_success_url``, we need to add this code
         # from the base class back here.
-        messages.info(self.request, "Your password has been reset sucessfully.")
+        messages.info(self.request,
+            _("Your password has been reset sucessfully."))
         return super(PasswordResetConfirmView, self).get_success_url()
 
 

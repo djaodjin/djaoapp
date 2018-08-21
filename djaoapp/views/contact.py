@@ -1,5 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
+from __future__ import unicode_literals
 
 import logging, socket
 from smtplib import SMTPException
@@ -11,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.db.utils import ProgrammingError
 from django.shortcuts import get_object_or_404
 from django.utils import six
+from django.utils.translation import ugettext_lazy as _
 from saas.mixins import ProviderMixin
 from saas.models import Organization, split_full_name
 from signup.auth import validate_redirect
@@ -121,17 +123,17 @@ class ContactView(ProviderMixin, ResponseCreateView):
                     sender=__name__, provider=provider,
                     user=user, reason=items, request=self.request)
                 messages.info(self.request,
-    'Your request has been sent. We will reply within 24 hours. Thank you.')
+    _("Your request has been sent. We will reply within 24 hours. Thank you."))
             except (SMTPException, socket.error) as err:
                 LOGGER.exception("%s on page %s",
                     err, self.request.get_raw_uri())
                 messages.error(self.request,
-    "Sorry, there was an issue sending your request for information"\
-    " to '%s &lt;%s&gt;'." % (provider.full_name, provider.email))
+    _("Sorry, there was an issue sending your request for information"\
+    " to '%s &lt;%s&gt;'.") % (provider.full_name, provider.email))
         else:
             messages.warning(self.request,
-    'Thank you for the feedback. Please feel free to leave your contact'\
-' information next time so we can serve you better.')
+    _("Thank you for the feedback. Please feel free to leave your contact"\
+" information next time so we can serve you better."))
         if not response:
             response = http.HttpResponseRedirect(self.get_success_url())
         return response
