@@ -129,7 +129,8 @@ class ContactView(ProviderMixin, ResponseCreateView):
                     err, self.request.get_raw_uri())
                 messages.error(self.request,
     _("Sorry, there was an issue sending your request for information"\
-    " to '%s &lt;%s&gt;'.") % (provider.full_name, provider.email))
+    " to '%(full_name)s &lt;%(email)s&gt;'.") % {
+        'full_name': provider.full_name, 'email': provider.email})
         else:
             messages.warning(self.request,
     _("Thank you for the feedback. Please feel free to leave your contact"\
