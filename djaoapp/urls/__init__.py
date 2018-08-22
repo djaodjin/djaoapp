@@ -13,6 +13,7 @@ from django.contrib.staticfiles.views import serve as django_static_serve
 from urldecorators import include, url
 
 from multitier.settings import SLUG_RE
+from multitier.urlresolvers import url_sites
 
 from ..compat import reverse_lazy
 from ..urlbuilders import (url_authenticated, url_active, url_direct,
@@ -64,5 +65,5 @@ urlpatterns += [
     url('', include('social_django.urls', namespace='social')),
 
     # Proxy application firewall for all.
-    url(r'^', include('djaoapp.urls.proxy')),
+    url_sites(r'^', include('djaoapp.urls.proxy')),
 ]
