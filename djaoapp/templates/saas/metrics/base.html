@@ -17,7 +17,7 @@
     <ul class="nav nav-tabs dashboard-tab table-chooser">
       <li ng-class="{active: tab == activeTab}" ng-repeat="tab in tabs" ng-click="tabClicked($event)">
         <a href="#[[tab]]" data-toggle="tab">
-          [[getTable(tab).title]] <span ng-if="getTable(tab).unit" href="#[[tab]]">([[getTable(tab).unit]])</span>
+          [[getTable(tab).title]] <span ng-if="getTable(tab).unit" href="#[[tab]]">([[getTable(tab).unit | currencyToSymbol]])</span>
         </a>
       </li>
     </ul>
