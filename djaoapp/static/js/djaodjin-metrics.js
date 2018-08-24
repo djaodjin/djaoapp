@@ -48,8 +48,29 @@ function drawChartBackground(chart){
 // dates must be moment objects in order to compute ticks accurately.
 function updateChart(container, data, unit, dataScale, extra) {
     "use strict";
-
     dataScale = dataScale || 1;
+    var defaults = {
+        "decimal": ".",
+        "thousands": ",",
+        "grouping": [3],
+        "currency": ["$", ""],
+        "dateTime": "%a %b %e %X %Y",
+        "date": "%m/%d/%Y",
+        "time": "%H:%M:%S",
+        "periods": ["AM", "PM"],
+        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    };
+    if( unit === "usd" || unit === "cad" ) {
+        defaults["currency"] = ["$", ""];
+    } else if( unit === "eur" ) {
+        defaults["currency"] = ["", "\u20ac"];
+    } else {
+        defaults["currency"] = [unit, ""];
+    }
+    var curr = d3.locale(defaults);
     nv.addGraph(function() {
         // clear any previous chart elements before adding new ones
         // remove svg and append it again to remove all previous attached events
@@ -73,11 +94,11 @@ function updateChart(container, data, unit, dataScale, extra) {
         var marginLeft = maxY * dataScale;
         if( unit ) {
             if (marginLeft > 1000000){
-              marginLeft = d3.format(unit + ",.0f")(marginLeft / 1000000) + "M";
+              marginLeft = curr.numberFormat("$,.0f")(marginLeft / 1000000) + "M";
             }else if (marginLeft > 1000){
-              marginLeft = d3.format(unit + ",.0f")(marginLeft / 1000) + "K";
+              marginLeft = curr.numberFormat("$,.0f")(marginLeft / 1000) + "K";
             }else{
-              marginLeft = d3.format(unit + ",.2f")(marginLeft);
+              marginLeft = curr.numberFormat("$,.2f")(marginLeft);
             }
         }
 
@@ -105,7 +126,7 @@ function updateChart(container, data, unit, dataScale, extra) {
             if (unit){
               $.each($html.find("td.value"), function(index, element){
                 var value = $(element).text();
-                $(element).text(d3.format(unit + ",.2f")(value));
+                $(element).text(curr.numberFormat("$,.2f")(value));
               });
             }
 
@@ -156,11 +177,11 @@ function updateChart(container, data, unit, dataScale, extra) {
             chart.yAxis
                 .tickFormat(function(d) {
                     if (d > 1000000){
-                      return d3.format(unit + ",.0f")(d / 1000000) + "M";
+                      return curr.numberFormat("$,.0f")(d / 1000000) + "M";
                     }else if (d > 1000){
-                      return d3.format(unit + ",.0f")(d / 1000) + "K";
+                      return curr.numberFormat("$,.0f")(d / 1000) + "K";
                     }else{
-                      return d3.format(unit + ",.2f")(d);
+                      return curr.numberFormat("$,.2f")(d);
                     }
                 });
         } else {
@@ -253,6 +274,28 @@ function exportCSV(event) {
 function updateBarChart(container, data, unit, dataScale, extra) {
     "use strict";
     dataScale = dataScale || 1;
+    var defaults = {
+        "decimal": ".",
+        "thousands": ",",
+        "grouping": [3],
+        "currency": ["$", ""],
+        "dateTime": "%a %b %e %X %Y",
+        "date": "%m/%d/%Y",
+        "time": "%H:%M:%S",
+        "periods": ["AM", "PM"],
+        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    };
+    if( unit === "usd" || unit === "cad" ) {
+        defaults["currency"] = ["$", ""];
+    } else if( unit === "eur" ) {
+        defaults["currency"] = ["", "\u20ac"];
+    } else {
+        defaults["currency"] = [unit, ""];
+    }
+    var curr = d3.locale(defaults);
     nv.addGraph(function() {
 
         // clear any previous chart elements before adding new ones
@@ -279,11 +322,11 @@ function updateBarChart(container, data, unit, dataScale, extra) {
             chart.yAxis
                 .tickFormat(function(d) {
                     if (d > 1000000){
-                      return d3.format(unit + ",.0f")(d / 1000000) + "M";
+                      return curr.numberFormat("$,.0f")(d / 1000000) + "M";
                     }else if (d > 1000){
-                      return d3.format(unit + ",.0f")(d / 1000) + "K";
+                      return curr.numberFormat("$,.0f")(d / 1000) + "K";
                     }else{
-                      return d3.format(unit + ",.2f")(d);
+                      return curr.numberFormat("$,.2f")(d);
                     }
                 });
         } else {
