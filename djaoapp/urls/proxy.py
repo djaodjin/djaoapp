@@ -19,7 +19,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
      url_frictionless_self_provider, url_prefixed)
 from ..views.contact import ContactView
-from ..views.custom_signup import UserProfileView
+from ..views.custom_signup import UserProfileView, UserNotificationsView
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView, NotificationListView,
     NotificationInnerFrameView)
@@ -82,6 +82,8 @@ urlpatterns += site_patterns(
     url_authenticated(r'^', include('saas.urls.request')),
     url_active(r'^users/$',
         UserRedirectView.as_view(), name='accounts_profile'),
+    url_self_provider(r'^users/(?P<user>%s)/notifications/$' % USERNAME_PAT,
+        UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
     url_self_provider(r'^', include('saas.urls.users')),

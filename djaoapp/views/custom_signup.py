@@ -15,8 +15,9 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin
-from saas.models import Organization, Signature
+from saas.models import Organization, Signature, get_broker
 from signup.auth import validate_redirect
+from signup.models import Notification
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
@@ -25,7 +26,8 @@ from signup.views.auth import (
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView)
 from signup.views.users import (
-    UserProfileView as UserProfileBaseView)
+    UserProfileView as UserProfileBaseView,
+    UserNotificationsView as UserNotificationsBaseView)
 
 from rules.mixins import AppMixin
 
@@ -321,8 +323,8 @@ class UserProfileView(ProviderMixin, UserProfileBaseView):
         # and we get here. The `GET` request should have redirected us
         # to the organization profile page.
         if self.attached_organization:
-            messages.error(self.request, 'This user does not support updates'\
-                ' through POST request.')
+            messages.error(self.request, _("This user does not support updates'\
+                ' through POST request."))
             return HttpResponseRedirect(reverse('saas_organization_profile',
                 args=(self.attached_organization,)))
         return super(UserProfileView, self).form_valid(form)
@@ -332,3 +334,19 @@ class UserProfileView(ProviderMixin, UserProfileBaseView):
             return HttpResponseRedirect(reverse('saas_organization_profile',
                 args=(self.attached_organization,)))
         return super(UserProfileView, self).get(request, *args, **kwargs)
+
+
+# Implementation Note: inherits from ProviderMixin
+# in order to include `top_accessibles`.
+class UserNotificationsView(ProviderMixin, UserNotificationsBaseView):
+    """
+    A view where a user can configure their notification settings
+    """
+
+    def get_notifications(self):
+        if get_broker().with_role(saas_settings.MANAGER).filter(
+                pk=self.user.pk).exists():
+            return super(UserNotificationsView, self).get_notifications()
+        return Notification.objects.filter(slug__in=(
+            'charge_updated', 'card_updated', 'order_executed',
+            'organization_updated', 'expires_soon'))
