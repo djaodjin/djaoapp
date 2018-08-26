@@ -12,11 +12,9 @@
   <li {% if request.path == urls.user.profile %} class="active"{% endif %}>
     <a id="users_profile" href="{{urls.user.profile}}"><i class="fa fa-user"></i> <span>&#09;Profile</span></a>
   </li>
-  {% if FEATURES_DEBUG %}
   <li {% if request.path == urls.user.notifications %} class="active"{% endif %}>
     <a id="users_notifications" href="{{urls.user.notifications}}"><i class="fa fa-envelope"></i> <span>&#09;Notifications</span></a>
   </li>
-  {% endif %}
 </ul>
 <hr />
 <ul class="nav"
