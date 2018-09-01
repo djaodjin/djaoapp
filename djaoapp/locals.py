@@ -9,6 +9,7 @@ from django.utils import six
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
+from pages.utils import get_default_storage_base
 from rules.utils import get_app_model
 
 from .compat import reverse
@@ -124,6 +125,12 @@ def get_current_assets_dirs():
     assets_dirs = [
         theme_dir + settings.STATIC_URL[:-1], theme_dir] + list(assets_dirs)
     return assets_dirs
+
+
+def get_default_storage(request, account=None):
+    # pylint:disable=unused-argument
+    # XXX use `account` to generate `key_prefix`.
+    return get_default_storage_base(request, account=get_current_app(request))
 
 
 def get_active_theme():

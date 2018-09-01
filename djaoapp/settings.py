@@ -609,6 +609,7 @@ def theme_dir(account):
 PAGES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_broker',
+    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.locals.get_default_storage',
     'ACCOUNT_URL_KWARG' : 'app',
     'ACTIVE_THEME_CALLABLE': 'djaoapp.locals.get_active_theme',
     'EXTRA_MIXIN': djaoapp.extras.pages.ExtraMixin,
