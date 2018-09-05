@@ -203,14 +203,11 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         elif registration == self.app.TOGETHER_REGISTRATION:
             user = self.register_together(**cleaned_data)
         else:
-            user = super(SignupView, self).register_user(**cleaned_data)
+            user = self.register_user(**cleaned_data)
             if user:
                 Signature.objects.create_signature(
                     saas_settings.TERMS_OF_USE, user)
 
-        # Bypassing authentication here, we are doing frictionless registration
-        # the first time around.
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth_login(self.request, user)
         return user
 
