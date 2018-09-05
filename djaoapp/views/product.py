@@ -4,6 +4,7 @@
 """
 Default start page for a djaodjin-hosted product.
 """
+from __future__ import unicode_literals
 
 import logging
 
@@ -16,6 +17,7 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.static import serve
 
@@ -164,7 +166,7 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
     def get_context_data(self, **kwargs):
         context = super(
             DjaoAppPageRedirectView, self).get_context_data(**kwargs)
-        # Add URLs needed for generic_navbar.html and sidebar
+        # Add URLs needed for _appmenu.html and sidebar
         broker = get_current_broker()
         context.update({'provider': broker})
         return context
@@ -190,7 +192,7 @@ class PricingView(DjaoAppMixin, PageMixin, CartPlanListView):
             context.update({'plan': Plan()})
             if not self.object_list.exists():
                 messages.info(self.request,
-                    "No Plans yet. Click the 'Add Plan' button to create one.")
+                  _("No Plans yet. Click the 'Add Plan' button to create one."))
         return context
 
 
@@ -221,7 +223,7 @@ class DjaoAppPageView(TemplateView):
         return super(DjaoAppPageView, self).get_template_names()
 
     def get_context_data(self, **kwargs):
-        # Add URLs needed for generic_navbar.html and sidebar
+        # Add URLs needed for _appmenu.html and sidebar
         context = super(DjaoAppPageView, self).get_context_data(**kwargs)
         broker = get_current_broker()
         context.update({'provider': broker})

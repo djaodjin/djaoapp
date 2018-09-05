@@ -58,16 +58,24 @@ class SessionSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_session_key(request):
-        return request.session.session_key
+        if hasattr(request, 'session'):
+            return request.session.session_key
+        return None
 
     @staticmethod
     def get_access_key(request):
-        return request.session.get('access_key', None)
+        if hasattr(request, 'session'):
+            return request.session.get('access_key', None)
+        return None
 
     @staticmethod
     def get_secret_key(request):
-        return request.session.get('secret_key', None)
+        if hasattr(request, 'session'):
+            return request.session.get('secret_key', None)
+        return None
 
     @staticmethod
     def get_security_token(request):
-        return request.session.get('security_token', None)
+        if hasattr(request, 'session'):
+            return request.session.get('security_token', None)
+        return None

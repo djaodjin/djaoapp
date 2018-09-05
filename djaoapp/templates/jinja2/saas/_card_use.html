@@ -5,7 +5,7 @@
     <div class="row">
         <fieldset class="col-lg-5 col-md-5">
             <legend>
-Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{ urls.organization.update_card }}">Update</a>{% endif %}
+Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{urls.organization.update_card}}">Update</a>{% endif %}
             </legend>
             {% if last4 %}
             <div>
@@ -87,12 +87,12 @@ for details.
         </fieldset>
         <fieldset class="col-lg-5 col-md-5 col-lg-offset-1 col-md-offset-1">
             <legend>Billing Address</legend>
-            {{ input_field(form['card_name'], form.hide_labels) }}
-            {{ input_field(form['card_address_line1'], form.hide_labels) }}
-            {{ input_field(form['country'], form.hide_labels) }}
-            {{ input_field(form['region'], form.hide_labels) }}
-            {{ input_field(form['card_city'], form.hide_labels) }}
-            {{ input_field(form['card_address_zip'], form.hide_labels) }}
+            {{input_field(form['card_name'], form.hide_labels)}}
+            {{input_field(form['card_address_line1'], form.hide_labels)}}
+            {{input_field(form['country'], form.hide_labels)}}
+            {{input_field(form['region'], form.hide_labels)}}
+            {{input_field(form['card_city'], form.hide_labels)}}
+            {{input_field(form['card_address_zip'], form.hide_labels)}}
             {% endif %}
 {##
 Previous endif before fieldset closing tag so the "Credit Card Information"

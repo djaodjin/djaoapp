@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-12">
         <form method="post" id="payment-form" class="form-horizontal"
-              action=".{% if next %}/?next={{ next }}{% endif %}">
+              action=".{% if next %}/?next={{next}}{% endif %}">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
             {% if invoicables %}
             {% include "saas/_invoiceables.html" %}

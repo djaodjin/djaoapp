@@ -1,60 +1,45 @@
-{% extends "saas/base_dashboard.html" %}
+{% extends "saas/base_dashboard-2col.html" %}
 
-{% block localheader %}
-<script type="text/javascript">
-$(document).ready(function() {
-  Dropzone.autoDiscover = false;
-});
-</script>
+{% block saas_title %}Theme{% endblock %}
+
+{% block saas_help %}
+<p>
+When you are modifying root templates, like <filename>base.html</filename>
+for example, you may inadvertently break the dashboard and become unable
+to access this page to upload a fixed package.
+</p>
+<p>
+It is recommended to make a backup copy of the original theme before you
+start updating it by clicking on the <em>Download</em> link.
+</p>
+<p>
+In the advent you are unable to access this page to upload a fixed package,
+you could the restore the backup theme through an API call as such:
+</p>
+<pre class="code"><code>curl -i -u *api_key*:  -X POST -F file=@*package*.zip https://{{site_available_at_url}}api/themes/</code></pre>
+<p>
+Thus also make sure to obtain your API key before uploading a new theme.
+</p>
+<p>
+Note that you can use the API call as part of your automated deployment process
+as well.
+</p>
 {% endblock %}
 
-{% block saas_title %}Themes{% endblock %}
-
-{% block saas_lead_help %}Please select a theme or upload/edit yours.{% endblock %}
-
 {% block saas_content %}
-<div ng-app="UploaderApp" ng-controller="UploaderCtrl" ng-cloak>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th class="text-center">Id</th>
-        <th class="text-center">Is active?</th>
-        <th class="text-center">Created at</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="djaodjin-theme-upload-container text-center" dropzone="dropzoneConfig" success-fn="applyTheme(id)" colspan="4">
-          <i class="fa fa-cloud-upload fa-2x"></i>
-          <br>
-          <h4>Drag and drop here or click to upload theme package</h4>
-        </td>
-      </tr>
-      <tr ng-repeat="template in themeList.results|orderBy: '-created_at'" id="theme-[[template.name]]">
-        <td>[[ template.name ]]
-          <a ng-hide="[[activeTheme == template.slug ]]" ng-click="getTemplateDetail(template.id)" href>
-            <small>Activate</small>
-          </a>
-          {% if FEATURES_DEBUG %}
-          <a ng-hide="!template.account" href="{{ urls.pages.theme_base }}[[template.slug]]/">
-            <small>Edit</small>
-          </a>
-          <a ng-hide="!template.account" href="{{ urls.pages.theme_base }}[[template.slug]]/download/">
-            <small>Downlad</small>
-          </a>
-          {% endif %}
-          <form method="post" action="." id="form-theme-[[template.id]]" test-id="form-theme-[[template.name]]">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <input type='hidden' name='theme' value="[[ template.slug  || 'balme' ]]"/>
-          </form>
-        </td>
-        <td class="text-center">[[ (template.slug.replace(template.name + '-', '') || '-')|limitTo:10]]</td>
-        <td class="text-center"><span ng-show="[[activeTheme == template.slug]]"><i class="fa fa-check-circle text-success"></i></span></td>
-        <td class="text-center" title="[[template.created_at|date:'yyyy-MM-dd HH:mm:ss']]">[[template.created_at|date]]</td>
-      </tr>
-    </tbody>
-  </table>
+<div ng-app="UploaderApp">
+  <div class="col-sm-offset-3 col-sm-6" ng-controller="UploaderCtrl" ng-cloak>
+    <div class="pages-upload"
+         data-complete-url="{{urls.pages.api_themes}}"
+         djupload-success >
+      <div class="dropzone-previews previewsContainer">
+        <span class="dz-default dz-message"><i class="fa fa-cloud"></i> Upload theme package (.zip)</span>
+      </div>
+    </div>
+    <div class="text-center">
+      <a id="download-theme" class="btn btn-default" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -66,17 +51,16 @@ $(document).ready(function() {
 var app = angular.module('UploaderApp');
 app.config(['$interpolateProvider', '$httpProvider',
            function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token }}';
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
     /* Makes it easier to separate between django and angularjs templates */
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 }]);
 app.constant('urls', {
-    url_base_theme: "{{ urls.pages.api_themes }}",
-    active_theme: "{{request.site.theme}}"
+    url_base_theme: "{{urls.pages.api_themes}}",
 });
 app.constant('csrf', {
-    csrf_token: "{{ csrf_token }}",
+    csrf_token: "{{csrf_token}}",
 });
 app.constant('s3', {
     mediaPrefix: "{% if media_prefix %}{{media_prefix}}{% else %}{% endif %}",
@@ -90,4 +74,11 @@ app.constant('s3', {
 {% endif %}
 });
 </script>
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+  $(".pages-upload").djupload({
+      uploadUrl: "{{urls.pages.api_themes}}",
+  });
+});
+  </script>
 {% endblock %}

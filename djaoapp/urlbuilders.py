@@ -20,7 +20,7 @@ def url_authenticated(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
         view, name=name,
-        decorators=['saas.decorators.requires_authenticated',
+        decorators=['djaoapp.decorators.requires_authenticated',
                     'djaoapp.decorators.inject_edition_tools'])
 
 
@@ -31,7 +31,7 @@ def url_active(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
         view, name=name,
-        decorators=['saas.decorators.requires_authenticated',
+        decorators=['djaoapp.decorators.requires_authenticated',
                     'signup.decorators.active_required',
                     'saas.decorators.requires_agreement',
                     'djaoapp.decorators.inject_edition_tools'
@@ -45,7 +45,7 @@ def url_direct(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
                            'djaoapp.decorators.requires_direct',
@@ -62,7 +62,7 @@ def url_dashboard(regex, view, name=None):
     return url(regex % {
             "app": r'(?P<app>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
                            'djaoapp.decorators.requires_direct',
@@ -79,7 +79,7 @@ def url_provider(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
                            'djaoapp.decorators.requires_provider',
@@ -94,7 +94,7 @@ def url_provider_only(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
                            'djaoapp.decorators.requires_provider_only',
@@ -112,7 +112,7 @@ def url_self_provider(regex, view, name=None):
     return url(regex % {
             "user": r'(?P<user>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
                            'djaoapp.decorators.requires_self_provider',
@@ -128,7 +128,7 @@ def url_frictionless_self_provider(regex, view, name=None):
     return url(regex % {
             "user": r'(?P<user>%s)' % ACCT_REGEX},
                view, name=name,
-               decorators=['saas.decorators.requires_authenticated',
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'djaoapp.decorators.requires_self_provider',
                            'djaoapp.decorators.inject_edition_tools'
                ])

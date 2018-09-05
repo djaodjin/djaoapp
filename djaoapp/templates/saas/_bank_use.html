@@ -1,4 +1,4 @@
-<form method="post" id="bank-form" class="form-horizontal" action=".{% if next %}/?next={{ next }}{% endif %}">
+<form method="post" id="bank-form" class="form-horizontal" action=".{% if next %}/?next={{next}}{% endif %}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     <fieldset>
         <h1 class="text-center">Bank Information {% if last4 and not force_update %}<a class="btn" href="{{urls.provider.bank}}">Update</a>{% endif %}</h1>

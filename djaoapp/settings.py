@@ -20,9 +20,7 @@ DB_HOST = ''
 DB_PORT = 5432
 
 update_settings(sys.modules[__name__],
-    load_config(APP_NAME, 'credentials', 'site.conf', verbose=True,
-        location=os.getenv("SETTINGS_LOCATION", None),
-        passphrase=os.getenv("SETTINGS_CRYPT_KEY", None)))
+    load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
 if os.getenv('DEBUG'):
     # Enable override on command line.
@@ -83,6 +81,7 @@ MIDDLEWARE_CLASSES += (
     'rules.middleware.RulesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'signup.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -159,6 +158,8 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, APP_NAME, 'locale'),)
 
 # Date/time settings
 # ------------------
@@ -472,6 +473,7 @@ LOGGING = {
 # --------------
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
+    'ACCOUNT_ACTIVATION_DAYS': 30,
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
@@ -503,9 +505,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'signup.authentication.JWTAuthentication',
         'signup.authentication.APIKeyAuthentication',
+        # `rest_framework.authentication.SessionAuthentication` is the last
+        # one in the list because it will raise a PermissionDenied if the CSRF
+        # is absent.
+        'rest_framework.authentication.SessionAuthentication',
     )
 }
 if not DEBUG:
@@ -595,6 +600,7 @@ RULES = {
          'saas.decorators.fail_self_provider_strong',   # 14
          'saas.decorators.fail_paid_subscription',      # 15
          'saas.decorators.fail_subscription',           # 16
+         'signup.decorators.fail_active',               # 17
     ),
 }
 
@@ -603,11 +609,11 @@ def theme_dir(account):
     return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
 
 PAGES = {
-    'ACCOUNT_MODEL': getattr(sys.modules[__name__], 'RULES_APP_MODEL',
-        'rules.App'),
+    'ACCOUNT_MODEL': 'saas.Organization',
+    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_broker',
+    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.locals.get_default_storage',
     'ACCOUNT_URL_KWARG' : 'app',
     'ACTIVE_THEME_CALLABLE': 'djaoapp.locals.get_active_theme',
-    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_app',
     'EXTRA_MIXIN': djaoapp.extras.pages.ExtraMixin,
     'PUBLIC_ROOT': HTDOCS,
     'TEMPLATES_BLACKLIST': [
@@ -629,7 +635,7 @@ PAGES = {
         'app_proxy_help.html',
         'base.html',
         'contact.html',
-        'generic_navbar.html',
+        '_appmenu.html',
 #        'index.html',
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',
@@ -655,7 +661,6 @@ PAGES = {
         'notification/card_updated.eml',
         'notification/charge_receipt.eml',
         'notification/claim_code_generated.eml',
-        'notification/new_task_added.eml',
         'notification/order_executed.eml',
         'notification/password_reset.eml',
         'notification/user_activated.eml',
@@ -667,8 +672,6 @@ PAGES = {
         'pages/_body_top.html',
         'pages/_body_top_connect_processor.html',
         'pages/_body_top_toggle_production.html',
-        'pages/create_package.html',
-        'pages/file_edition.html',
         'pages/pages_editor_modes.html',
         'pages/theme.html',
         'rules/app_dashboard.html',
@@ -683,9 +686,9 @@ PAGES = {
         'saas/agreements/security.md'
         'saas/agreements/terms-of-use.md'
         'saas/app/new.html',
-        'saas/base-2col.html',
         'saas/base.html',
         'saas/base_dashboard.html',
+        'saas/base_dashboard-2col.html',
         'saas/billing/balance.html',
         'saas/billing/bank.html',
         'saas/billing/card.html',

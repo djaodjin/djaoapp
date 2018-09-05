@@ -1,4 +1,4 @@
-{% extends "saas/base-2col.html" %}
+{% extends "saas/base_dashboard-2col.html" %}
 
 {% block saas_title %}
 <i class="fa fa-money"></i> Update {{organization.printable_name}} Deposit Information
@@ -47,7 +47,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">Cancel</button>
-                <form style="display:inline-block;" method="post" action="{{ urls.provider.deauthorize_bank }}">
+                <form style="display:inline-block;" method="post" action="{{urls.provider.deauthorize_bank}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                   <input type="hidden" name="stripeToken" value="OOPS" />
                   <button id="de-authorize-action-btn" type="submit"

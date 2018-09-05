@@ -1,7 +1,9 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
+from __future__ import unicode_literals
 
 from django.template import TemplateDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
 from rest_framework import status
 from rest_framework.response import Response
@@ -75,7 +77,7 @@ class NotificationAPIView(AppMixin, APIView):
     http_method_names = ['post']
     serializer_class = None
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         try:
             app = get_current_app()
             get_email_backend(connection=app.get_connection()).send(
@@ -86,7 +88,7 @@ class NotificationAPIView(AppMixin, APIView):
                 context=get_test_email_context())
         except TemplateDoesNotExist:
             return Response({"details":
-                "Problem with template. Could not send test email."},
+                _("Problem with template. Could not send test email.")},
                 status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"details": "Test email sent to %s" % request.user.email})
+            {"details": _("Test email sent to %s") % request.user.email})

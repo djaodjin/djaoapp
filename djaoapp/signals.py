@@ -5,6 +5,7 @@ import logging
 
 from django.conf import settings
 from django.dispatch import Signal, receiver
+from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
 from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
@@ -15,6 +16,8 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created,
     weekly_sales_report_created)
+from saas.utils import datetime_or_now
+from signup.settings import NOTIFICATIONS_OPT_OUT
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification)
@@ -28,7 +31,6 @@ from .locals import get_current_app
 #pylint: disable=protected-access
 
 LOGGER = logging.getLogger(__name__)
-OPT_OUT = True
 SEND_EMAIL = True
 
 contact_requested = Signal( #pylint:disable=invalid-name
@@ -43,7 +45,7 @@ def _notified_recipients(organization, notification_slug):
 
     managers = organization.with_role(saas_settings.MANAGER)
     # checking whether those users are subscribed to the notification
-    if OPT_OUT:
+    if NOTIFICATIONS_OPT_OUT:
         filtered = managers.exclude(notifications__slug=notification_slug)
     else:
         filtered = managers.filter(notifications__slug=notification_slug)
@@ -223,16 +225,19 @@ def charge_updated_notice(sender, charge, user, **kwargs):
 @receiver(card_updated, dispatch_uid="card_updated")
 def card_updated_notice(sender, organization, user,
                         old_card, new_card, **kwargs):
-    recipients, bcc = _notified_recipients(organization, "card_updated")
+    broker = get_broker()
+    recipients, bcc = _notified_recipients(organization, 'card_updated')
+    broker_recipients, broker_bcc = _notified_recipients(broker, 'card_updated')
     app = get_current_app()
     LOGGER.debug("[signal] card_updated_notice(organization=%s, user=%s,"\
         "old_card=%s, new_card=%s)", organization, user, old_card, new_card)
     if SEND_EMAIL:
         get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients, bcc=bcc,
+            from_email=app.get_from_email(), recipients=recipients,
+            bcc=bcc + broker_recipients + broker_bcc,
             template='notification/card_updated.eml',
             context={
-                'broker': get_broker(), 'app': app,
+                'broker': broker, 'app': app,
                 'organization': organization, 'user': get_user_context(user),
                 'old_card': old_card, 'new_card': new_card})
 
@@ -246,9 +251,9 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     invoiced_items = Transaction.objects.filter(id__in=invoiced_items)
     broker = get_broker()
     recipients, bcc = _notified_recipients(
-        invoiced_items.first().dest_organization, "order_executed")
+        invoiced_items.first().dest_organization, 'order_executed')
     broker_recipients, broker_bcc = _notified_recipients(
-        broker, "order_executed")
+        broker, 'order_executed')
     app = get_current_app()
     LOGGER.debug("[signal] order_executed_notice(invoiced_items=%s, user=%s)",
         invoiced_items, user)
@@ -288,9 +293,9 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
     if not changes:
         return
     broker = get_broker()
-    recipients, _ = _notified_recipients(organization, "organization_updated")
+    recipients, _ = _notified_recipients(organization, 'organization_updated')
     broker_recipients, broker_bcc = _notified_recipients(
-        broker, "organization_updated")
+        broker, 'organization_updated')
     LOGGER.info("%s updated", organization,
         extra={'event': 'update-fields', 'organization': str(organization),
                'changes': changes})
@@ -330,24 +335,16 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                 back_url = reverse('saas_role_grant_accept',
                     args=(role.grant_key,))
             if has_invalid_password(user):
-                if role.grant_key:
-                    verification_key = role.grant_key
-                else:
-                    # The User is already in the system but the account
-                    # has never been activated.
-                    verification_key = organization.generate_role_key(user)
-                reason = "You have been invited to create an account"\
-                    " to join %s." % role.organization.printable_name
+                reason = _("You have been invited to create an account"\
+                    " to join %s.") % role.organization.printable_name
                 contact, created = Contact.objects.get_or_create_token(
-                    user, verification_key=verification_key,
-                    reason=reason)
+                    user, reason=reason)
                 if not created:
                     # XXX It is possible a 'reason' field would be a better
                     # implementation.
+                    contact.created_at = datetime_or_now()
                     contact.extra = reason
                     contact.save()
-                back_url = "%s?next=%s" % (reverse('registration_activate',
-                    args=(contact.verification_key,)), back_url)
             site = get_current_site()
             app = get_current_app()
             context = {
@@ -604,7 +601,7 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
 @receiver(expires_soon, dispatch_uid="expires_soon")
 def expires_soon_notice(sender, subscription, nb_days, **kwargs):
     broker = get_broker()
-    broker_recipients, broker_bcc = _notified_recipients(broker, "expires_soon")
+    broker_recipients, broker_bcc = _notified_recipients(broker, 'expires_soon')
     if subscription.organization.email:
         site = get_current_site()
         app = get_current_app()
@@ -615,13 +612,13 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
         LOGGER.debug("[signal] expires_soon_notice("\
                      " subscription=%s, nb_days=%s)", subscription, nb_days)
         if SEND_EMAIL:
+            recipients, bcc = _notified_recipients(subscription.organization,
+                'expires_soon')
             get_email_backend(connection=app.get_connection()).send(
                 from_email=app.get_from_email(),
-                recipients=[subscription.organization.email] + [notified.email
-                    for notified in subscription.organization.with_role(
-                        saas_settings.MANAGER)],
+                recipients=recipients,
                 reply_to=broker_recipients[0],
-                bcc=broker_recipients + broker_bcc,
+                bcc=bcc + broker_recipients + broker_bcc,
                 template='notification/expires_soon.eml',
                 context={'broker': get_broker(), 'app': app,
                     'back_url': back_url, 'nb_days': nb_days,

@@ -11,17 +11,18 @@ LOCALSTATEDIR := $(installTop)/var
 CONFIG_DIR    := $(SYSCONFDIR)/djaoapp
 ASSETS_DIR    := $(srcDir)/htdocs/static
 
+installDirs   ?= /usr/bin/install -d
+installFiles  ?= /usr/bin/install -p -m 644
 NPM           ?= npm
 PIP           := $(binDir)/pip
 PYTHON        := $(binDir)/python
-installFiles  ?= /usr/bin/install -p -m 644
-installDirs   ?= /usr/bin/install -d
+SQLITE        ?= sqlite3
 
 # Django 1.7,1.8 sync tables without migrations by default while Django 1.9
 # requires a --run-syncdb argument.
 # Implementation Note: We have to wait for the config files to be installed
 # before running the manage.py command (else missing SECRECT_KEY).
-RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
+RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
 APP_NAME      ?= djaoapp
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
@@ -70,27 +71,30 @@ initdb: install-default-themes initdb-testing initdb-cowork
 	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
 	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
 	@echo "-- Set streetside processor deposit key."
 	sqlite3 $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
 
 
 initdb-testing: install-conf
 	-[ -f $(DB_TEST_FILENAME) ] && rm -f $(DB_TEST_FILENAME)
-	cd $(srcDir) && DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
+	cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_TEST_FILENAME)
 	cd $(srcDir) && \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
 
 
 initdb-cowork: install-conf
 	-[ -f $(MULTITIER_DB_FILENAME) ] && rm -f $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
 		$(RUNSYNCDB) --database cowork --noinput
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 
 
 migratedb-cowork: initdb-cowork
@@ -103,7 +107,7 @@ migratedb-%:
 	cd $(srcDir) && MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 		$(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database $(subst migratedb-,,$@)
 	cd $(srcDir) \
-	&& DJAOAPP_CONFIG_DIR=$(CONFIG_DIR) \
+	&& DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) \
 	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 	$(PYTHON) ./manage.py loadfixtures --database $(subst migratedb-,,$@) $(EMAIL_FIXTURE_OPT) $(abspath $(srcDir)/../../..)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(subst migratedb-,,$@)-streetside.json
 	@echo "-- Set streetside processor deposit key."
@@ -121,7 +125,7 @@ migratedb-%:
 vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
-	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/Tex $(ASSETS_DIR)/vendor/fonts/HTML-CSS/Tex/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/Tex/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
+	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
 	$(installFiles) $(srcDir)/assets/less/base/*.less $(ASSETS_DIR)/base
 	$(installFiles) $(srcDir)/assets/less/vendor/bootstrap/*.less $(ASSETS_DIR)/vendor/bootstrap
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
@@ -166,13 +170,13 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/MathJax/MathJax.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/MathJax/config/*.js $(ASSETS_DIR)/vendor/config
-	$(installFiles) $(installTop)/node_modules/MathJax/extensions/*.js $(ASSETS_DIR)/vendor/extensions
-	$(installFiles) $(installTop)/node_modules/MathJax/jax/output/CommonHTML/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML
-	$(installFiles) $(installTop)/node_modules/MathJax/jax/output/CommonHTML/fonts/Tex/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/Tex
-	$(installFiles) $(installTop)/node_modules/MathJax/fonts/HTML-CSS/TeX/woff/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff
-	$(installFiles) $(installTop)/node_modules/MathJax/fonts/HTML-CSS/TeX/otf/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf
+	$(installFiles) $(installTop)/node_modules/mathjax/MathJax.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/mathjax/config/*.js $(ASSETS_DIR)/vendor/config
+	$(installFiles) $(installTop)/node_modules/mathjax/extensions/*.js $(ASSETS_DIR)/vendor/extensions
+	$(installFiles) $(installTop)/node_modules/mathjax/jax/output/CommonHTML/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML
+	$(installFiles) $(installTop)/node_modules/mathjax/jax/output/CommonHTML/fonts/TeX/*.js $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX
+	$(installFiles) $(installTop)/node_modules/mathjax/fonts/HTML-CSS/TeX/woff/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff
+	$(installFiles) $(installTop)/node_modules/mathjax/fonts/HTML-CSS/TeX/otf/* $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf
 	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/pagedown/Markdown.Converter.js $(installTop)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
