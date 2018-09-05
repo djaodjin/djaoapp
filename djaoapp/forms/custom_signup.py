@@ -206,7 +206,7 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
     """
     submit_title = _("Register")
     user_model = get_user_model()
-    full_name = forms.CharField(label=_('Organization name'))
+    organization_name = forms.CharField(label=_('Organization name'))
 
     class Meta: # duplicate of in OrganizationForm.Meta. Is it needed?
         model = Organization
@@ -214,7 +214,8 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
                   'region', 'locality', 'street_address', 'postal_code')
         widgets = {'country': forms.widgets.Select(choices=countries)}
 
-    user_full_name = forms.RegexField(NAME_RE,
+    # full_name is overridden from OrganizationForm to mean user full_name
+    full_name = forms.RegexField(NAME_RE,
         label=_("Full name"), min_length=2, max_length=30,
         error_messages={'invalid': _("Full name may only contain letters"\
             " and dot (.) or apostrophe (') characters.")})
@@ -283,21 +284,20 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
                 _("A user with that username already exists."))
         return self.cleaned_data['username']
 
-    def clean_full_name(self):
+    def clean_organization_name(self):
         """
         Validate that the username is not already taken.
         """
 #XXX disabled until we figure out why it raises a KeyError in production (!dev)
 #XXX        user = self.user_model(email=self.cleaned_data['email'])
 #XXX uses None in ``find_candidates`` for now.
-        organization_name = self.cleaned_data['full_name']
+        organization_name = self.cleaned_data['organization_name']
         candidates = Organization.objects.find_candidates(
                 organization_name, user=None)
         if candidates.exists():
             raise forms.ValidationError(
                 _("Your organization might already be registered."))
-        return self.cleaned_data['full_name']
-
+        return self.cleaned_data['organization_name']
 
 
 class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):

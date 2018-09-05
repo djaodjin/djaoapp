@@ -98,7 +98,6 @@ class RegisterMixin(object):
         'first_name',
         'last_name',
         'full_name',
-        'user_full_name',
         'organization_name',
         'username',
         'password',
@@ -120,27 +119,27 @@ class RegisterMixin(object):
         with the added constraint that username and organization slug
         are identical such that it creates a transparent user billing profile.
         """
-        return self.register_together(
-            user_selector='full_name',
-            organization_selector='full_name',
+        return self.register_together(organization_selector='full_name',
             **cleaned_data)
 
     def register_together(self,
-                          user_selector='user_full_name',
-                          organization_selector='full_name',
+                          user_selector='full_name',
+                          organization_selector='organization_name',
                           **cleaned_data):
         """
         Registers both a User and an Organization at the same time.
         """
         #pylint:disable=too-many-arguments,too-many-locals
-        first_name = cleaned_data.get('first_name', None)
-        last_name = cleaned_data.get('last_name', None)
+        first_name = cleaned_data.get('first_name', "")
+        last_name = cleaned_data.get('last_name', "")
+        full_name = cleaned_data.get(user_selector,
+            cleaned_data.get('full_name', None))
         if not first_name:
             # If the form does not contain a first_name/last_name pair,
             # we assume a full_name was passed instead.
-            full_name = cleaned_data.get(
-                user_selector, cleaned_data.get('full_name', None))
             first_name, _, last_name = full_name_natural_split(full_name)
+        if not full_name:
+            full_name = ("%s %s" % (first_name, last_name)).strip()
         organization_extra = {}
         role_extra = {}
         user_extra = {}
@@ -160,14 +159,14 @@ class RegisterMixin(object):
             user_extra = None
 
         username = cleaned_data.get('username', None)
-        password = cleaned_data.get('password', None)
-        organization_full_name = cleaned_data.get(
-                organization_selector, cleaned_data.get('full_name', None))
+        password = cleaned_data.get('password',
+            cleaned_data.get('new_password1', None))
+        organization_name = cleaned_data.get(organization_selector, full_name)
         if user_selector == organization_selector:
             # We have a personal registration
             organization_slug = username
         else:
-            organization_slug = slugify(organization_full_name)
+            organization_slug = slugify(organization_name)
         with transaction.atomic():
             # Create a ``User``
             user = get_user_model().objects.create_user(
@@ -182,7 +181,7 @@ class RegisterMixin(object):
             # Create an ``Organization`` and set the user as its manager.
             account = Organization.objects.create(
                 slug=organization_slug,
-                full_name=organization_full_name,
+                full_name=organization_name,
                 email=cleaned_data.get('email', None),
                 phone=cleaned_data.get('phone', ""),
                 street_address=cleaned_data.get('street_address', ""),

@@ -91,9 +91,7 @@ JwcBUUMECj8AKxsHtRHUSypco"
         if registration == self.app.PERSONAL_REGISTRATION:
             user = self.register_personal(**serializer.validated_data)
         elif registration == self.app.TOGETHER_REGISTRATION:
-            user = self.register_together(
-                organization_selector='organization_name',
-                **serializer.validated_data)
+            user = self.register_together(**serializer.validated_data)
         else:
             user = self.register_user(**serializer.validated_data)
         if user:

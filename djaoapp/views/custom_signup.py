@@ -133,7 +133,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     def form_invalid(self, form):
         #pylint:disable=protected-access
-        organization_selector = 'full_name'
+        organization_selector = 'organization_name'
         if len(form._errors) == 1 and organization_selector in form._errors:
             for err in form._errors[organization_selector]:
                 if err.startswith(
@@ -179,18 +179,39 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         return super(SignupView, self).get_form_class()
 
     def register(self, **cleaned_data):
-        if self.app:
-            if self.app.registration == self.app.PERSONAL_REGISTRATION:
-                user = self.register_personal(**cleaned_data)
-            elif self.app.registration == self.app.TOGETHER_REGISTRATION:
-                user = self.register_together(**cleaned_data)
-            auth_login(self.request, user)
-            return user
+        #pylint:disable=too-many-boolean-expressions
+        registration = self.app.USER_REGISTRATION
+        full_name = cleaned_data.get('full_name', None)
+        organization_name = cleaned_data.get('organization_name', None)
+        if organization_name:
+            # We have a registration of a user and organization together.
+            registration = self.app.TOGETHER_REGISTRATION
+            if full_name and full_name == organization_name:
+                # No we have a personal registration after all
+                registration = self.app.PERSONAL_REGISTRATION
+        elif (cleaned_data.get('street_address', None) or
+            cleaned_data.get('locality', None) or
+            cleaned_data.get('region', None) or
+            cleaned_data.get('postal_code', None) or
+            cleaned_data.get('country', None) or
+            cleaned_data.get('phone', None)):
+            # We have enough information for a billing profile
+            registration = self.app.PERSONAL_REGISTRATION
 
-        user = super(SignupView, self).register(**cleaned_data)
-        if user:
-            Signature.objects.create_signature(
-                saas_settings.TERMS_OF_USE, user)
+        if registration == self.app.PERSONAL_REGISTRATION:
+            user = self.register_personal(**cleaned_data)
+        elif registration == self.app.TOGETHER_REGISTRATION:
+            user = self.register_together(**cleaned_data)
+        else:
+            user = super(SignupView, self).register_user(**cleaned_data)
+            if user:
+                Signature.objects.create_signature(
+                    saas_settings.TERMS_OF_USE, user)
+
+        # Bypassing authentication here, we are doing frictionless registration
+        # the first time around.
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth_login(self.request, user)
         return user
 
 
