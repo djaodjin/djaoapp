@@ -599,6 +599,7 @@ RULES = {
          'saas.decorators.fail_self_provider_strong',   # 14
          'saas.decorators.fail_paid_subscription',      # 15
          'saas.decorators.fail_subscription',           # 16
+         'signup.decorators.fail_active',               # 17
     ),
 }
 
