@@ -12,7 +12,7 @@ from saas.views import UserRedirectView
 from signup.urls.users import USERNAME_PAT
 from urldecorators import include, url
 
-from ..api.auth import JWTRegister
+from ..api.auth import DjaoAppJWTRegister
 from ..api.custom_themes import ThemePackageListAPIView
 from ..api.notifications import NotificationAPIView
 from ..api.users import CredentialsAPIView
@@ -76,7 +76,8 @@ urlpatterns += site_patterns(
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
     url_direct(r'api/', include('signup.urls.api.contacts')),
-    url(r'^api/auth/register/', JWTRegister.as_view(), name='api_register'),
+    url(r'^api/auth/register/',
+        DjaoAppJWTRegister.as_view(), name='api_register'),
     url(r'^api/', include('signup.urls.api.auth')),
 
     # Login, registration, and user profiles
