@@ -11,7 +11,7 @@ djangorestframework==3.8.2
 djaodjin-deployutils==0.5.6
 djaodjin-extended-templates==0.2.3
 djaodjin-multitier==0.1.4
-djaodjin-pages==0.2.0
+djaodjin-pages==0.2.1
 djaodjin-rules==0.1.2
 djaodjin-saas==0.3.3
 djaodjin-signup==0.2.3
