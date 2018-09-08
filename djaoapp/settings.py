@@ -582,24 +582,25 @@ RULES = {
     'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
     'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
     'RULE_OPERATORS': (
-        '',                                             # 0
-         'saas.decorators.fail_authenticated',          # 1
-         'saas.decorators.fail_agreement',              # 2
-         'saas.decorators.fail_direct',                 # 3
-         'saas.decorators.fail_direct_weak',            # 4
-         'saas.decorators.fail_direct_strong',          # 5
-         'saas.decorators.fail_provider',               # 6
-         'saas.decorators.fail_provider_weak',          # 7
-         'saas.decorators.fail_provider_strong',        # 8
-         'saas.decorators.fail_provider_only',          # 9
-         'saas.decorators.fail_provider_only_weak',     # 10
-         'saas.decorators.fail_provider_only_strong',   # 11
-         'saas.decorators.fail_self_provider',          # 12
-         'saas.decorators.fail_self_provider_weak',     # 13
-         'saas.decorators.fail_self_provider_strong',   # 14
-         'saas.decorators.fail_paid_subscription',      # 15
-         'saas.decorators.fail_subscription',           # 16
-         'signup.decorators.fail_active',               # 17
+        '',                                            # 0
+        'saas.decorators.fail_authenticated',          # 1
+        'saas.decorators.fail_agreement',              # 2
+        'saas.decorators.fail_direct',                 # 3
+        'saas.decorators.fail_direct_weak',            # 4
+        'saas.decorators.fail_direct_strong',          # 5
+        'saas.decorators.fail_provider',               # 6
+        'saas.decorators.fail_provider_weak',          # 7
+        'saas.decorators.fail_provider_strong',        # 8
+        'saas.decorators.fail_provider_only',          # 9
+        'saas.decorators.fail_provider_only_weak',     # 10
+        'saas.decorators.fail_provider_only_strong',   # 11
+        'saas.decorators.fail_self_provider',          # 12
+        'saas.decorators.fail_self_provider_weak',     # 13
+        'saas.decorators.fail_self_provider_strong',   # 14
+        'saas.decorators.fail_paid_subscription',      # 15
+        'saas.decorators.fail_subscription',           # 16
+        'signup.decorators.fail_active',               # 17
+        'saas.decorators.fail_provider_readable'       # 18
     ),
 }
 
