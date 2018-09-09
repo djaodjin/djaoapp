@@ -22,6 +22,7 @@ from rules.utils import get_current_app
 from saas.decorators import (NORMAL, fail_authenticated, _fail_direct,
     _fail_provider, _fail_provider_only, _fail_self_provider, _has_valid_access)
 from signup.models import Contact
+from signup.utils import has_invalid_password
 from saas.utils import get_role_model
 
 from .compat import reverse
@@ -99,7 +100,7 @@ def requires_authenticated(function=None,
                             verification_key = contact.verification_key
                         except role_model.DoesNotExist:
                             pass
-                    if contact:
+                    if contact and has_invalid_password(contact.user):
                         redirect_url = request.build_absolute_uri(
                             reverse('registration_activate',
                                 args=(verification_key,)))
