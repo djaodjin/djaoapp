@@ -489,8 +489,8 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
         if organization.email:
             site = get_current_site()
             app = get_current_app()
-            back_url = site.as_absolute_uri(reverse('subscription_grant_accept',
-                args=(organization, subscription.grant_key,)))
+            back_url = reverse('subscription_grant_accept',
+                args=(organization, subscription.grant_key,))
             manager = organization.with_role(saas_settings.MANAGER).first()
             # The following line could as well be `if invite:`
             if has_invalid_password(manager):
@@ -511,7 +511,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                     template='notification/subscription_grant_created.eml',
                     context={
                         'broker': get_broker(), 'app': app,
-                        'back_url': back_url,
+                        'back_url': site.as_absolute_uri(back_url),
                         'organization': organization,
                         'plan': subscription.plan,
                         'reason': reason if reason is not None else "",
