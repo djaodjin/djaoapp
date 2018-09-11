@@ -85,11 +85,18 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
 
     form_class = ActivationForm
 
+    def activate_user(self, form):
+        user = super(ActivationView, self).activate_user(form)
+        if user:
+            Signature.objects.create_signature(saas_settings.TERMS_OF_USE, user)
+        return user
+
     def get_initial(self):
         kwargs = super(ActivationView, self).get_initial()
         kwargs.update({'legal_agreement_url': reverse('legal_agreement',
             args=('terms-of-use',))})
         return kwargs
+
 
 
 class PasswordResetView(AuthMixin, AppMixin, PasswordResetBaseView):
