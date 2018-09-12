@@ -13,7 +13,7 @@ from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import fail_direct
 from saas.models import Organization, Plan, Signature
-from signup.utils import full_name_natural_split
+from signup.helpers import full_name_natural_split
 
 from .compat import reverse
 from .edition_tools import fail_edit_perm, inject_edition_tools

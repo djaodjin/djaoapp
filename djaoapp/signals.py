@@ -16,7 +16,6 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created,
     weekly_sales_report_created)
-from saas.utils import datetime_or_now
 from signup.settings import NOTIFICATIONS_OPT_OUT
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
@@ -65,10 +64,20 @@ def _notified_recipients(organization, notification_slug):
 
 
 def get_user_context(user):
-    return {'username': user.username,
-        'email': user.email,
-        'first_name': user.first_name,
-        'printable_name': user_printable_name(user)}
+    if user:
+        return {
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'printable_name': user_printable_name(user)
+        }
+    broker = get_broker()
+    return {
+        'username': broker.slug,
+        'email': broker.email,
+        'first_name': broker.full_name,
+        'printable_name': broker.printable_name
+    }
 
 
 # We insure the method is only bounded once no matter how many times
@@ -337,14 +346,8 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
             if has_invalid_password(user):
                 reason = _("You have been invited to create an account"\
                     " to join %s.") % role.organization.printable_name
-                contact, created = Contact.objects.get_or_create_token(
+                Contact.objects.update_or_create_token(
                     user, reason=reason)
-                if not created:
-                    # XXX It is possible a 'reason' field would be a better
-                    # implementation.
-                    contact.created_at = datetime_or_now()
-                    contact.extra = reason
-                    contact.save()
             site = get_current_site()
             app = get_current_app()
             context = {
@@ -483,30 +486,46 @@ def subscribe_grant_accepted_notice(sender, subscription, grant_key,
 @receiver(subscription_grant_created, dispatch_uid="subscription_grant_created")
 def subscribe_grant_created_notice(sender, subscription, reason=None,
                                    invite=False, request=None, **kwargs):
+    #pylint:disable=too-many-locals
     if subscription.grant_key:
         user_context = get_user_context(request.user if request else None)
         organization = subscription.organization
-        if organization.email:
-            site = get_current_site()
-            app = get_current_app()
-            back_url = reverse('subscription_grant_accept',
-                args=(organization, subscription.grant_key,))
-            manager = organization.with_role(saas_settings.MANAGER).first()
+        back_url_base = reverse('subscription_grant_accept',
+            args=(organization, subscription.grant_key,))
+        LOGGER.debug("[signal] subscribe_grant_created_notice("\
+            " subscription=%s, reason=%s, invite=%s)",
+            subscription, reason, invite)
+        # We don't use `_notified_recipients` because
+        #    1. We need the actual User object to update/create a Contact
+        #    2. We should not send to the organization e-mail address
+        #       because the e-mail there might not be linked to a manager.
+        managers = organization.with_role(saas_settings.MANAGER)
+        emails = kwargs.get('emails', None)
+        if emails:
+            managers = managers.filter(email__in=emails)
+        if not managers:
+            LOGGER.warning(
+                "%s will not be notified of a subscription grant to %s"\
+                "because there are no managers to send e-mails to.",
+                organization, subscription.plan)
+        for manager in managers:
             # The following line could as well be `if invite:`
             if has_invalid_password(manager):
                 # The User is already in the system but the account
                 # has never been activated.
-                contact, _ = Contact.objects.get_or_create_token(manager,
-                    verification_key=organization.generate_role_key(manager))
+                contact, _ = Contact.objects.update_or_create_token(manager)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
-                    args=(contact.verification_key,)), back_url)
-            LOGGER.debug("[signal] subscribe_grant_created_notice("\
-                " subscription=%s, reason=%s, invite=%s)",
-                subscription, reason, invite)
+                    args=(contact.verification_key,)), back_url_base)
+            else:
+                back_url = back_url_base
+            LOGGER.debug("[signal] would send subscribe_grant_created_notice"\
+                " for subscription '%s' to '%s'", subscription, manager.email)
             if SEND_EMAIL:
+                site = get_current_site()
+                app = get_current_app()
                 get_email_backend(connection=app.get_connection()).send(
                     from_email=app.get_from_email(),
-                    recipients=[organization.email],
+                    recipients=[manager.email],
                     reply_to=user_context['email'],
                     template='notification/subscription_grant_created.eml',
                     context={
@@ -517,11 +536,6 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                         'reason': reason if reason is not None else "",
                         'invite': invite,
                         'user': user_context})
-        else:
-            LOGGER.warning(
-                "%s will not be notified of a subscription grant to %s"\
-                "because e-mail address is invalid.",
-                organization, subscription.plan)
 
 
 # We insure the method is only bounded once no matter how many times

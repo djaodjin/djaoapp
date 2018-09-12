@@ -95,7 +95,7 @@ def requires_authenticated(function=None,
                             role = role_model.objects.filter(
                                 Q(grant_key=verification_key)
                                 | Q(request_key=verification_key)).get()
-                            contact, _ = Contact.objects.get_or_create_token(
+                            contact, _ = Contact.objects.update_or_create_token(
                                 role.user)
                             verification_key = contact.verification_key
                         except role_model.DoesNotExist:
