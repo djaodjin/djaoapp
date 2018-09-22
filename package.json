@@ -35,7 +35,8 @@
     "skrollr": "0.6.26",
     "toastr": "2.1.2",
     "trip.js": "3.3.3",
-    "ace-builds": "1.2.2"
+    "ace-builds": "1.2.2",
+    "vue": "^2.5.17"
     },
     "resolutions": {
         "angular": "1.4.10",
