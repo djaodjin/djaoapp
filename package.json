@@ -36,7 +36,8 @@
     "toastr": "2.1.2",
     "trip.js": "3.3.3",
     "ace-builds": "1.2.2",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vuejs-datepicker": "^1.5.3"
     },
     "resolutions": {
         "angular": "1.4.10",
