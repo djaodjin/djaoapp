@@ -29,8 +29,8 @@ from .compat import reverse
 from .locals import get_current_broker
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 
-
-LOGGER = logging.getLogger(__name__)
+# This logger is really only useful for 'rules' in debug mode.
+LOGGER = logging.getLogger('rules')
 
 DEFAULT_PREFIXES = [
     '/api/billing/', '/api/metrics/', '/api/profile/',
@@ -82,6 +82,7 @@ def requires_authenticated(function=None,
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
+            LOGGER.debug("Enters djaoapp.decorators.requires_authenticated")
             redirect_url = fail_authenticated(request)
             if redirect_url:
                 verification_key = kwargs.get('verification_key', None)
@@ -123,6 +124,7 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
+            LOGGER.debug("Enters djaoapp.decorators.requires_direct")
             try:
                 app = get_current_app()
                 #pylint:disable=unused-variable
@@ -161,6 +163,7 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL,
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
+            LOGGER.debug("Enters djaoapp.decorators.requires_provider")
             site = get_current_site()
             organization = kwargs.get('organization', None)
             if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
@@ -210,6 +213,7 @@ def requires_provider_only(function=None, roledescription=None,
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
+            LOGGER.debug("Enters djaoapp.decorators.requires_provider_only")
             site = get_current_site()
             organization = kwargs.get('organization', None)
             if site.db_name:
@@ -257,6 +261,7 @@ def requires_self_provider(function=None, strength=NORMAL,
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
+            LOGGER.debug("Enters djaoapp.decorators.requires_self_provider")
             site = get_current_site()
             if site.db_name:
                 # We have a separate database so it is OK for a manager
