@@ -6,6 +6,7 @@ Default start page for a djaodjin-hosted product.
 """
 
 import os, re
+from collections import OrderedDict, defaultdict
 
 from django.conf import settings
 from django.utils.safestring import mark_safe
@@ -13,9 +14,11 @@ from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
+from rest_framework.compat import URLPattern, URLResolver, get_original_route
+from rest_framework.schemas.generators import SchemaGenerator
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from drf_yasg.generators import OpenAPISchemaGenerator
+from drf_yasg.generators import OpenAPISchemaGenerator, EndpointEnumerator
 
 
 OPENAPI_INFO = openapi.Info(
@@ -136,7 +139,6 @@ class NoHeaderHTMLWriter(Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
-
 def rst_to_html(string):
     result = core.publish_string(string,
         writer=NoHeaderHTMLWriter())
@@ -160,6 +162,132 @@ def transform_links(line):
     return line
 
 
+def endpoint_ordering(endpoint):
+    path, method, callback, decorators = endpoint
+    method_priority = {
+        'GET': 0,
+        'POST': 1,
+        'PUT': 2,
+        'PATCH': 3,
+        'DELETE': 4
+    }.get(method, 5)
+    return (path, method_priority)
+
+
+class APIDocEndpointEnumerator(EndpointEnumerator):
+
+    def get_api_endpoints(self, patterns=None, prefix='', app_name=None,
+                          namespace=None, default_decorators=None):
+        """
+        Return a list of all available API endpoints by inspecting the URL conf.
+        Copied from super and edited to look at decorators.
+        """
+        if patterns is None:
+            patterns = self.patterns
+
+        api_endpoints = []
+
+        for pattern in patterns:
+            path_regex = prefix + get_original_route(pattern)
+            decorators = default_decorators
+            if hasattr(pattern, 'decorators'):
+                decorators = pattern.decorators
+            if isinstance(pattern, URLPattern):
+                try:
+                    path = self.get_path_from_regex(path_regex)
+                    callback = pattern.callback
+                    url_name = pattern.name
+                    if self.should_include_endpoint(path, callback,
+                            app_name or '', namespace or '', url_name):
+                        path = self.replace_version(path, callback)
+                        for method in self.get_allowed_methods(callback):
+                            endpoint = (path, method, callback, decorators)
+                            api_endpoints.append(endpoint)
+                except Exception:  # pragma: no cover
+                    logger.warning('failed to enumerate view', exc_info=True)
+
+            elif isinstance(pattern, URLResolver):
+                nested_endpoints = self.get_api_endpoints(
+                    patterns=pattern.url_patterns,
+                    prefix=path_regex,
+                    app_name="%s:%s" % (app_name,
+                        pattern.app_name) if app_name else pattern.app_name,
+                    namespace="%s:%s" % (namespace,
+                        pattern.namespace) if namespace else pattern.namespace,
+                    default_decorators=decorators
+                )
+                api_endpoints.extend(nested_endpoints)
+            else:
+                logger.warning("unknown pattern type {}".format(type(pattern)))
+
+        api_endpoints = sorted(api_endpoints, key=endpoint_ordering)
+        return api_endpoints
+
+
+class APIDocGenerator(OpenAPISchemaGenerator):
+
+    endpoint_enumerator_class = APIDocEndpointEnumerator
+
+    def get_endpoints(self, request):
+        """Iterate over all the registered endpoints in the API and return
+        a fake view with the right parameters.
+
+        :param rest_framework.request.Request request: request to bind
+        to the endpoint views
+        :return: {path: (view_class, list[(http_method, view_instance)])
+        :rtype: dict
+        """
+        enumerator = self.endpoint_enumerator_class(self._gen.patterns, self._gen.urlconf, request=request)
+        endpoints = enumerator.get_api_endpoints()
+        view_paths = defaultdict(list)
+        view_cls = {}
+        for path, method, callback, decorators in reversed(endpoints):
+            view = self.create_view(callback, method, request)
+            path = self._gen.coerce_path(path, method, view)
+            view_paths[path].append((method, view, decorators))
+            view_cls[path] = callback.cls
+        return {path: (view_cls[path], methods)
+            for path, methods in view_paths.items()}
+
+    def get_paths(self, endpoints, components, request, public):
+        """Generate the Swagger Paths for the API from the given endpoints.
+
+        :param dict endpoints: endpoints as returned by get_endpoints
+        :param ReferenceResolver components: resolver/container for Swagger References
+        :param Request request: the request made against the schema view; can be None
+        :param bool public: if True, all endpoints are included regardless of access through `request`
+        :returns: the :class:`.Paths` object and the longest common path prefix, as a 2-tuple
+        :rtype: tuple[openapi.Paths,str]
+        """
+        if not endpoints:
+            return openapi.Paths(paths={}), ''
+
+        prefix = self.determine_path_prefix(list(endpoints.keys())) or ''
+        assert '{' not in prefix, "base path cannot be templated in swagger 2.0"
+
+        paths = OrderedDict()
+        for path, (view_cls, methods) in sorted(endpoints.items()):
+            operations = {}
+            for method, view, decorators in methods:
+                if not public and not self._gen.has_view_permissions(path, method, view):
+                    continue
+
+                operation = self.get_operation(view, path, prefix, method, components, request)
+                if operation is not None:
+                    operations[method.lower()] = operation
+
+            if operations:
+                # since the common prefix is used as the API basePath, it must be stripped
+                # from individual paths when writing them into the swagger document
+                path_suffix = path[len(prefix):]
+                if not path_suffix.startswith('/'):
+                    path_suffix = '/' + path_suffix
+                paths[path_suffix] = self.get_path_item(path, view_cls, operations)
+
+        return openapi.Paths(paths=paths), prefix
+
+
+
 class APIDocView(TemplateView):
 
     template_name = 'docs/api.html'
@@ -169,8 +297,7 @@ class APIDocView(TemplateView):
         context = super(APIDocView, self).get_context_data(**kwargs)
         api_end_points = []
         api_base_url = self.request.build_absolute_uri(location='/api')
-        generator = OpenAPISchemaGenerator(
-            info=OPENAPI_INFO, url=api_base_url)
+        generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
         for path, path_details in schema.paths.items():
@@ -179,7 +306,6 @@ class APIDocView(TemplateView):
                     # We merge PUT and PATCH together.
                     continue
                 try:
-                    print("XXX %s" % str(func_details.operationId))
                     sep = ""
                     in_examples = False
                     tags |= set(func_details.tags)
