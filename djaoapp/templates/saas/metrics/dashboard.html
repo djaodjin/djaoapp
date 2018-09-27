@@ -6,37 +6,27 @@ Provider Dashboard
 {% block saas_descr %}A section short description{% endblock %}
 
 {% block saas_content %}
-<div ng-app="saasApp">
 <div class="row">
-    <div class="col-md-10 center" ng-controller="searchListCtrl">
+    <div class="col-md-10 center" id="search-list-container">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
                 <div class="form-group">
-                    <input type="text" placeholder="Search..." ng-model="filterExpr" ng-change="filterList(filterExpr)" class="form-control" />
+                    <input type="text" placeholder="Search..." v-model="filterExpr" v-on:input="filterList" class="form-control" />
                 </div>
             </div>
         </div>
         <table class="table table-striped">
-            <tbody id="search-results" ng-cloak ng-show="items.$resolved && items.results.length > 0">
-                <tr ng-repeat="entry in items.results">
-                    <td><a href="{{urls.accounts_base}}[[entry.slug]]/">[[entry.slug]]</td>
+            <tbody id="search-results" v-cloak v-show="itemsLoaded && items.results.length > 0">
+                <tr v-for="entry in items.results">
+                    <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
                     <td>[[entry.full_name]]</td>
                     <td>[[entry.email]]</td>
                     <td>[[relativeDate(entry.created_at)]]</td>
                 </tr>
             </tbody>
         </table>
-        <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
-            <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                        total-items="totalItems"
-                        items-per-page="itemsPerPage"
-                        boundary-links="true"
-                        max-size="maxSize"
-                        previous-text="&lsaquo;"
-                        next-text="&rsaquo;"
-                        first-text="&laquo;"
-                        last-text="&raquo;"
-                        ng-change="pageChanged()"></ul>
+        <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
         </div>
     </div>
 </div>
@@ -49,77 +39,58 @@ Provider Dashboard
 No items to take care of Today.
         </p>
     </div>
-    <div class="col-md-4"  ng-controller="receivableListCtrl">
+    <div class="col-md-4" id="today-sales-container">
         <div class="dashboard-home-title">
-            <h4>Today Sales<span ng-show="items.$resolved" ng-cloak>: [[items.total|humanizeCell : items.unit : 0.01]]</span></h4>
+            <h4>Today Sales<span v-show="itemsLoaded" v-cloak>: [[items.total | humanizeCell(items.unit, 0.01)]]</span></h4>
         </div>
-        <table class="table table-striped" ng-cloak>
-            <tbody ng-hide="items.$resolved">
+        <table class="table table-striped" v-cloak>
+            <tbody v-show="!itemsLoaded">
                 <tr class="empty-table">
                     <td colspan="2">
                         <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
                     </td>
                 </tr>
             </tbody>
-            <tbody ng-show="items.$resolved && items.results.length === 0">
+            <tbody v-show="itemsLoaded && items.results.length === 0">
                 <tr class="empty-table">
                     <td colspan="2">
                         <p class="no-results">No sales data yet</p>
                     </td>
                 </tr>
             </tbody>
-            <tbody id="has-items" ng-show="items.$resolved && items.results.length > 0">
-                <tr ng-repeat="entry in items.results">
-                    <td class="[[ entry.is_debit ? 'text-danger' : '']]"><a href="{{urls.organization.billing_base}}[[entry.dest_organization]]/">[[entry.amount]]</a></td>
+            <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0">
+                <tr v-for="entry in items.results">
+                    <td v-bind:class="entry.is_debit ? 'text-danger' : ''"><a v-bind:href="'{{urls.organization.billing_base}}' + entry.dest_organization + '/'">[[entry.amount]]</a></td>
                     <td>[[relativeDate(entry.created_at)]]</td>
                 </tr>
             </tbody>
         </table>
-        <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
-            <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                        total-items="totalItems"
-                        items-per-page="itemsPerPage"
-                        boundary-links="true"
-                        max-size="maxSize"
-                        previous-text="&lsaquo;"
-                        next-text="&rsaquo;"
-                        first-text="&laquo;"
-                        last-text="&raquo;"
-                        ng-change="pageChanged()"></ul>
+        <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
         </div>
     </div>
-    <div class="col-md-4" ng-controller="userListCtrl">
+    <div class="col-md-4" id="user-list-container">
         <div class="dashboard-home-title">
             <h4>Recently registered</h4>
         </div>
-        <table class="table table-striped" ng-cloak>
-            <tbody id="loading-registered" ng-hide="items.$resolved">
+        <table class="table table-striped" v-cloak>
+            <tbody id="loading-registered" v-show="!itemsLoaded">
                 <tr class="empty-table">
                     <td colspan="2">
                         <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
                     </td>
                 </tr>
             </tbody>
-            <tbody id="has-registered" ng-show="items.$resolved && items.results.length > 0">
-                <tr ng-repeat="entry in items.results">
-                    <td><a href="{{urls.accounts_base}}[[entry.slug]]/">[[entry.slug]]</td>
+            <tbody id="has-registered" v-show="itemsLoaded && items.results.length > 0">
+                <tr v-for="entry in items.results">
+                    <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
                     <td>[[relativeDate(entry.created_at)]]</td>
                 </tr>
             </tbody>
         </table>
-        <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
-            <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                        total-items="totalItems"
-                        items-per-page="itemsPerPage"
-                        boundary-links="true"
-                        max-size="maxSize"
-                        previous-text="&lsaquo;"
-                        next-text="&rsaquo;"
-                        first-text="&laquo;"
-                        last-text="&raquo;"
-                        ng-change="pageChanged()"></ul>
+        <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

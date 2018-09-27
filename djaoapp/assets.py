@@ -82,6 +82,10 @@ js_angular = Bundle(
     'vendor/angular-sanitize.js',
     'vendor/ui-bootstrap-tpls.js',
     'vendor/jquery-ui.js',
+    'vendor/vue.js',
+    'vendor/uiv.min.js',
+    'vendor/vue2-filters.js',
+    'js/djaodjin-vue.js',
     filters='jsmin', output='cache/angular.js')
 register('js_angular', js_angular)
 

@@ -68,28 +68,8 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{% assets "js_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-{% assets "js_dashboard" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-
 <script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration.
-   - We add the CSRF token for as an HTTP header on API calls.
-   - We make it easier to separate between django and angularjs templates
-     by changing Angular defaults to [[ and ]] characters. */
-var reopenSaasApp = angular.module('saasApp');
-reopenSaasApp.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-reopenSaasApp.constant('settings', {
+var djaodjinSettings = {
 urls: {
     api_balance_lines: "{{urls.api_balance_lines}}",
     api_broker_balances: "{{urls.api_broker_balances}}",
@@ -140,14 +120,37 @@ urls: {
     user_profile_redirect: "{% if urls and urls.user %}{{urls.user.profile_redirect}}{% endif %}",
 {% endif %}
 },
-itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}2{% endif %},
 tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
 {% if sort_by_field %}sortByField: "{{sort_by_field}}",{% endif %}
 {% if sort_direction %}sortDirection: "{{sort_direction}}",{% endif %}
 date_range: {
     start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
     ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-}});
+}};
+</script>
+{% assets "js_angular" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
+{% assets "js_dashboard" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
+
+<script type="text/javascript">
+/* Implementation Note: Not including a list of dependent modules
+   (2nd parameter to `module`) "re-opens" the module for additional
+   configuration.
+   - We add the CSRF token for as an HTTP header on API calls.
+   - We make it easier to separate between django and angularjs templates
+     by changing Angular defaults to [[ and ]] characters. */
+var reopenSaasApp = angular.module('saasApp');
+reopenSaasApp.config(['$interpolateProvider', '$httpProvider',
+           function($interpolateProvider, $httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+}]);
+reopenSaasApp.constant('settings', djaodjinSettings);
 </script>
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

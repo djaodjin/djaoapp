@@ -37,7 +37,8 @@
     "trip.js": "3.3.3",
     "ace-builds": "1.2.2",
     "vue": "^2.5.17",
-    "vuejs-datepicker": "^1.5.3"
+    "uiv": "^0.26.2",
+    "vue2-filters": "^0.3.0"
     },
     "resolutions": {
         "angular": "1.4.10",
