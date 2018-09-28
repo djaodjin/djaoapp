@@ -8,13 +8,10 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
-from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
-from saas.mixins import ProviderMixin
-from saas.models import Organization, Signature, get_broker
+from saas.models import Organization, Signature
 from signup.auth import validate_redirect
-from signup.models import Notification
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetView as PasswordResetBaseView,
@@ -22,9 +19,6 @@ from signup.views.auth import (
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView)
-from signup.views.users import (
-    UserProfileView as UserProfileBaseView,
-    UserNotificationsView as UserNotificationsBaseView)
 from rules.mixins import AppMixin
 
 from ..compat import reverse

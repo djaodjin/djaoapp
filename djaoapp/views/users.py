@@ -4,36 +4,20 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin
-from saas.models import Organization, Signature, get_broker
-from signup.auth import validate_redirect
+from saas.models import Organization, get_broker
 from signup.mixins import UserMixin
 from signup.models import Notification
-from signup.views.auth import (
-    ActivationView as ActivationBaseView,
-    PasswordResetView as PasswordResetBaseView,
-    PasswordResetConfirmView as PasswordResetConfirmBaseView,
-    SigninView as SigninBaseView,
-    SignoutView as SignoutBaseView,
-    SignupView as SignupBaseView)
 from signup.views.users import (
     UserProfileView as UserProfileBaseView,
     UserNotificationsView as UserNotificationsBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
-from rules.mixins import AppMixin
 
 from ..compat import reverse
-from ..forms.custom_signup import (ActivationForm, PersonalRegistrationForm,
-    SigninForm, TogetherRegistrationForm)
-from ..locals import get_current_broker
-from ..mixins import RegisterMixin
 
 
 LOGGER = logging.getLogger(__name__)

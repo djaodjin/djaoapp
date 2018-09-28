@@ -12,10 +12,10 @@ from saas.views import UserRedirectView
 from signup.urls.users import USERNAME_PAT
 from urldecorators import include, url
 
-from ..api.auth import JWTRegister
+from ..api.auth import JWTRegister, CredentialsAPIView
 from ..api.custom_themes import ThemePackageListAPIView
 from ..api.notifications import NotificationAPIView
-from ..api.users import CredentialsAPIView
+from ..api.users import UserProfileAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
      url_frictionless_self_provider, url_prefixed)
@@ -75,6 +75,8 @@ urlpatterns += site_patterns(
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_self_provider(r'^api/', include('signup.urls.api.tokens')),
+    url_self_provider(r'^api/users/(?P<user>%s)/$' % USERNAME_PAT,
+        UserProfileAPIView.as_view(), name='api_user_profile'),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     url_direct(r'api/', include('signup.urls.api.contacts')),
     url(r'^api/auth/register/', JWTRegister.as_view(), name='api_register'),

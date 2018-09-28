@@ -94,6 +94,9 @@ urls: {
     api_balance_lines: "{{urls.api_balance_lines}}",
     api_broker_balances: "{{urls.api_broker_balances}}",
     api_transactions: "{{saas_api_transactions}}",
+{% if urls.api_candidates %}
+    api_candidates: "{{urls.api_candidates}}",
+{% endif %}
 {% if urls.organization %}
 {% if urls.organization.api_roles %}
     saas_api_user_roles_url: "{{ urls.organization.api_roles }}",
