@@ -12,10 +12,10 @@
 {% block dashboard_nav %}
 <div class="dashboard-nav dashboard-nav-color-theme">
   <div class="dashboard-nav-inner-container">
-    <div>
+    <div class="dashboard-nav-main-container" style="display:inline-block;">
       <div class="dashboard-nav-main">
         <header>
-          <nav>
+          <nav class="navbar navbar-default">
             {% include "_navbarbrand.html" %}
           </nav>
         </header>
@@ -43,8 +43,16 @@
       </div>
       {% endblock %}
     </div>
-    <div class="dashboard-nav-toggle dashboard-nav-color-theme">
-      <i class="fa initial"></i>
+    <div class="dashboard-nav-toggle dashboard-nav-color-theme" style="display:inline-block;float:right;">
+        <header>
+          <nav class="navbar navbar-default">
+            {# `.navbar-brand` forces the height to match other header blocks #}
+            <div class="navbar-brand"></div>
+          </nav>
+        </header>
+        <div class="dashboard-nav-toggle-main">
+         <i class="fa initial"></i>
+        </div>
     </div>
   </div><!-- /.dashboard-nav-inner-container -->
 </div>

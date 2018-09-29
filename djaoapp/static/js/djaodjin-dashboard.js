@@ -54,7 +54,7 @@ $(document).ready(function(){
 */
         $(".dashboard-nav-toggle").click(function() {
             var element = $(this);
-            var icon = element.children("i");
+            var icon = element.find("i");
             var nav = element.parents(".dashboard-nav");
             var containerInner = nav.parents(".dashboard-inner-container");
             var navWidth = nav.width();

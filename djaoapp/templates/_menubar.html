@@ -2,17 +2,17 @@
     <div class="menubar">
         <a href="#" class="menubar-dropdown-toggle">
             {% if active_organization %}
-                <span class="menubar-org">
-                    {{active_organization.printable_name}}
-                    <span class="caret"></span>
-                </span>
-            {% endif %}
-            <span class="menubar-username">
-                {{request.user.username}}
-                {% if top_accessibles|length == 0 %}
-                    <span class="caret"></span>
-                {% endif %}
+            <span class="menubar-label-title">
+                {{active_organization.printable_name}} <span class="caret"></span>
             </span>
+            <span class="menubar-label-subtitle">
+                {{request.user.username}}
+            </span>
+            {% else %}
+            <span class="menubar-label">
+                {{request.user.username}} <span class="caret"></span>
+            </span>
+            {% endif %}
         </a>
         <div class="menubar-dropdown-container">
             <ul class="dropdown-menu">

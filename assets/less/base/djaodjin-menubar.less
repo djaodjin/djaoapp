@@ -3,10 +3,8 @@
 .header-menubar .menubar-dropdown-toggle
 {
     display: block;
-    line-height: 1em;
-    padding: 10px 30px;
-    border-radius: 3px;
-    font-size: 13px;
+    padding: 0 15px;
+    text-decoration: none;
 }
 
 .header-menubar .menubar .dropdown-menu
@@ -81,13 +79,26 @@
     display: inline-block;
 }
 
-.menubar-org
+.menubar-label
 {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 16px;
+    padding-top:    @navbar-padding-vertical;
+    padding-bottom: @navbar-padding-vertical;
+    line-height: @line-height-computed;
 }
 
-.menubar-username
+.menubar-label-title
 {
+    display: block;
+    padding-top: @navbar-padding-vertical - 5;
+      // `- 5` because height of menubar-label-subtitle will be 17px no matter
+      // what and we have 33 + 17 = 53 apparently so we make some space here.
+    padding-bottom: 0;
+    line-height: @line-height-computed;
+}
+
+.menubar-label-subtitle
+{
+//    line-height: @navbar-padding-vertical;
+    font-size: @font-size-small;
+    height: @navbar-padding-vertical;
 }

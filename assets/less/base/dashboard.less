@@ -128,13 +128,18 @@
     display: table-cell;
     width: @dashboard-sidebar-toggle;
     cursor: pointer;
-    vertical-align: middle;
-    text-align: center;
     /* forces height of the sidebar to 100vh - @navbar-height - footer-height */
     /* works from Firefox Windows 43.0.1 and Firefox OSX 22 */
     /* height: -moz-calc(~"100vh - 50px - 22px"); */
     /* height:      calc(~"100vh - 50px - 22px"); */
-    height: 100vh;
+}
+
+.dashboard-nav-toggle-main {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  width: @dashboard-sidebar-toggle;
+  height: 100vh;
 }
 
 .dashboard-nav-menu > hr {
