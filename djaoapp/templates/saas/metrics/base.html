@@ -5,57 +5,59 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="metrics_table" ng-app="saasApp" ng-cloak>
-  <style>
-    .chart-area{
-      height: 400px !important;
-      width: 100%;
-    }
-  </style>
+<style>
+.chart-area{
+  height: 400px !important;
+  width: 100%;
+}
+</style>
 
-  <div ng-controller="metricsCtrl" data-trip data-trip data-trip-index="1" data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-    <ul class="nav nav-tabs dashboard-tab table-chooser">
-      <li ng-class="{active: tab == activeTab}" ng-repeat="tab in tabs" ng-click="tabClicked($event)">
-        <a href="#[[tab]]" data-toggle="tab">
-          [[getTable(tab).title]] <span ng-if="getTable(tab).unit" href="#[[tab]]">([[getTable(tab).unit | currencyToSymbol]])</span>
-        </a>
-      </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div id="metrics-table" class="tab-pane active">
-        <div class="date-chooser pull-right">
-          <span>To</span>
-          <select  class="form-control" ng-model="timezone" style="display:inline-block; width:80px;">
-            <option value="local">Local</option>
-            <option value="utc">UTC</option>
-          </select>
-          <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
-          <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
-        </div>
-        <div id="metrics-chart" class="chart-content">
-          <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-        </div>
-        <!-- Display as a table -->
-        <div class="table-responsive">
-            <table class="table" style="font-size:0.7em;">
-              <tr>
-                <td></td>
-                <td ng-repeat="col in getTable(activeTab).data[0].values">[[col[0] | monthHeading]]</td>
-              </tr>
-              <tr ng-repeat="row in getTable(activeTab).data">
-                <td ng-if="row.location"><span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a id="[[row.key]]" href="[[row.location]]">[[row.key]]</a></td>
-                <td ng-if="!row.location">[[row.key]]</td>
-                <td ng-repeat="col in row.values" title="[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale : false]]">[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale]]</td>
-              </tr>
-              {% block metrics_extra_data %}
-              {% endblock %}
-            </table>
-        </div>
-      </div>
+<section id="metrics-container">
+    <div data-trip data-trip data-trip-index="1" data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+        <tabs v-model="currentTab" :transition-duration="0" @change="prepareCurrentTabData">
+            <tab v-for="tab in tables" v-bind:title="tabTitle(tab)" v-bind:key="tab.key">
+                <div class="date-chooser pull-right">
+                  <span>To</span>
+                  <select  class="form-control" v-model="timezone" @change="prepareCurrentTabData" style="display:inline-block; width:80px;">
+                    <option value="local">Local</option>
+                    <option value="utc">UTC</option>
+                  </select>
+                    <uiv-dropdown class="form-group" append-to-body menu-right>
+                      <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+                      <template slot="dropdown">
+                        <li>
+                          <uiv-date-picker
+                            v-model="ends_at"
+                            v-on:input="prepareCurrentTabData"
+                            icon-control-left="fa fa-caret-left"
+                            icon-control-right="fa fa-caret-right" />
+                        </li>
+                      </template>
+                    </uiv-dropdown>
+                  <span class="date" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | formatDate('MMM D, Y')]]</span>
+                </div>
+                <div :id="'metrics-chart-' + tab.key" class="chart-content">
+                  <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                </div>
+                <!-- Display as a table -->
+                <div class="table-responsive">
+                    <table class="table" style="font-size:0.7em;">
+                      <tr>
+                        <td></td>
+                        <td v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
+                      </tr>
+                      <tr v-for="row in currentTableData.data" :key="row.key">
+                        <td v-if="row.location"><span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a :href="row.location">[[row.key]]</a></td>
+                        <td v-if="!row.location">[[row.key]]</td>
+                        <td v-for="col in row.values" :key="col[0].toISOString()" :title="col[1]|humanizeCell(currentTableData.unit, currentTableData.scale, false)">[[col[1]|humanizeCell(currentTableData.unit, currentTableData.scale)]]</td>
+                      </tr>
+                      {% block metrics_extra_data %}
+                      {% endblock %}
+                    </table>
+                </div>
+            </tab>
+        </tabs>
     </div>
-  </div>
 </section>
 {% endblock %}
 
