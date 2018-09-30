@@ -39,8 +39,8 @@ class UserProfileView(ProviderMixin, UserProfileBaseView):
         # and we get here. The `GET` request should have redirected us
         # to the organization profile page.
         if self.attached_organization:
-            messages.error(self.request, _("This user does not support updates'\
-                ' through POST request."))
+            messages.error(self.request, _("This user does not support updates"\
+                " through POST request."))
             return HttpResponseRedirect(reverse('saas_organization_profile',
                 args=(self.attached_organization,)))
         return super(UserProfileView, self).form_valid(form)

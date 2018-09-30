@@ -141,8 +141,8 @@ def requires_direct(function=None, roledescription=None, strength=NORMAL,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr=_("%(user)s is not a direct manager "\
-    " of %(organization)s.") % {'user': request.user, 'organization': slug})
+                        descr=_("%(auth)s is not a direct manager"\
+    " of %(organization)s.") % {'auth': request.user, 'organization': slug})
 
             return view_func(request, *args, **kwargs)
 
@@ -190,9 +190,9 @@ def requires_provider(function=None, roledescription=None, strength=NORMAL,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr=_("%(user)s is neither a manager "\
-" for %(slug)s nor a manager of one of %(slug)s providers.") % {
-    'user': request.user, 'slug': slug})
+                        descr=_("%(auth)s is neither a manager of"\
+" %(organization)s nor a manager of one of %(organization)s providers.") % {
+    'auth': request.user, 'organization': slug})
             return view_func(request, *args, **kwargs)
 
         return _wrapped_view
@@ -240,8 +240,8 @@ def requires_provider_only(function=None, roledescription=None,
                 if redirect_url:
                     return redirect_or_denied(request, redirect_url,
                         redirect_field_name=redirect_field_name,
-                        descr=_("%(user)s is not a manager of one of"\
-" %(slug)s providers.") % {'user': request.user, 'slug': slug})
+                        descr=_("%(auth)s is not a manager of one of"\
+" %(organization)s providers.") % {'auth': request.user, 'organization': slug})
             return view_func(request, *args, **kwargs)
 
         return _wrapped_view
@@ -288,7 +288,7 @@ def requires_self_provider(function=None, strength=NORMAL,
                         redirect_field_name=redirect_field_name,
                         descr=_("%(auth)s has neither a direct"\
 " relation to an organization connected to %(user)s nor a connection to one"\
-"of the providers to such organization.") % {
+" of the providers to such organization.") % {
     'auth': request.user, 'user': kwargs.get('user', None)})
             return view_func(request, *args, **kwargs)
         return _wrapped_view

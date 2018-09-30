@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-30 03:18+0000\n"
+"POT-Creation-Date: 2018-09-30 03:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: French\n"
+"Language: Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: deployutils/apps/django/mixins.py:168
 #, python-format
@@ -29,7 +29,7 @@ msgstr ""
 #: signup/forms.py:113 signup/forms.py:114 signup/forms.py:149
 #: signup/forms.py:150
 msgid "Password"
-msgstr "Mot de passe"
+msgstr ""
 
 #: djaoapp/api/notifications.py:91
 msgid "Problem with template. Could not send test email."
@@ -1043,11 +1043,12 @@ msgstr ""
 
 #: signup/backends/auth.py:59 signup/backends/auth.py:60
 msgid "Username or e-mail"
-msgstr "Nom d'utilisateur ou email"
+msgstr ""
 
 #: signup/backends/auth.py:68
+#, python-format
 msgid "%(username)s or e-mail"
-msgstr "%(username)s ou email"
+msgstr ""
 
 #: signup/decorators.py:146 signup/views/auth.py:149
 msgid ""

@@ -41,8 +41,8 @@ class MissingFieldsMixin(object):
                     # when they are unchecked.
                     missing += [field_name]
         if missing:
-            self.add_error(None, _("These input fields are missing: %s.")
-                % ', '.join(missing))
+            self.add_error(None, _("These input fields are missing: "\
+                "%(identifiers)s.") % {'identifiers': ', '.join(missing)})
 
 
 class ActivationForm(MissingFieldsMixin, ActivationFormBase):
@@ -84,13 +84,13 @@ class SignupForm(MissingFieldsMixin, NameEmailForm):
     username = forms.SlugField(widget=forms.TextInput(
         attrs={'placeholder': _("Username")}),
         max_length=30, label=_("Username"),
-        error_messages={'invalid': _("username may only contain letters,"\
-" numbers and -/_ characters. Spaces are not allowed.")})
+        error_messages={'invalid': _("Username may only contain letters,"\
+" digits and -/_ characters. Spaces are not allowed.")})
     new_password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': _("Password")}), label=_("Password"))
     new_password2 = forms.CharField(widget=forms.PasswordInput(
-        attrs={'placeholder': _("Type Password Again")}),
-        label=_("Password confirmation"))
+        attrs={'placeholder': _("Type password again")}),
+        label=_("Confirm password"))
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
@@ -115,7 +115,7 @@ class SignupForm(MissingFieldsMixin, NameEmailForm):
             email__iexact=self.cleaned_data['email'])
         if user.exists():
             raise forms.ValidationError(
-                _("A user with that email address already exists."))
+                _("A user with that e-mail address already exists."))
         return self.cleaned_data['email']
 
     def clean(self):
@@ -128,15 +128,15 @@ class SignupForm(MissingFieldsMixin, NameEmailForm):
             new_password2 = self.cleaned_data.get('new_password2', True)
             if new_password1 != new_password2:
                 self._errors['new_password1'] = self.error_class([
-                    _("This field does not match Password confirmation.")])
+                    _("This field does not match password confirmation.")])
                 self._errors['new_password2'] = self.error_class([
-                    _("This field does not match Password.")])
+                    _("This field does not match password.")])
                 if 'new_password1' in self.cleaned_data:
                     del self.cleaned_data['new_password1']
                 if 'new_password2' in self.cleaned_data:
                     del self.cleaned_data['new_password2']
                 raise forms.ValidationError(
-                    _("Password and Password confirmation do not match."))
+                    _("Password and password confirmation do not match."))
         return self.cleaned_data
 
 
@@ -163,8 +163,8 @@ class EmailListSignupForm(MissingFieldsMixin, forms.Form):
 
     email = forms.EmailField(
         widget=forms.TextInput(attrs={
-            'placeholder': _("Email"), 'maxlength': 75}),
-        label=_("E-mail"))
+            'placeholder': _("E-mail address"), 'maxlength': 75}),
+        label=_("E-mail address"))
     first_name = forms.RegexField(NAME_RE,
         label=_('First name'), min_length=2, max_length=30,
         error_messages={'invalid': _("First name may only contain letters"\
@@ -176,7 +176,7 @@ class EmailListSignupForm(MissingFieldsMixin, forms.Form):
     new_password1 = forms.CharField(
         widget=forms.PasswordInput, label=_("Password"))
     new_password2 = forms.CharField(
-        widget=forms.PasswordInput, label=_("Password confirmation"))
+        widget=forms.PasswordInput, label=_("Confirm password"))
 
     def clean(self):
         """
@@ -188,15 +188,15 @@ class EmailListSignupForm(MissingFieldsMixin, forms.Form):
             new_password2 = self.cleaned_data.get('new_password2', True)
             if new_password1 != new_password2:
                 self._errors['new_password1'] = self.error_class([
-                    _("This field does not match Password confirmation.")])
+                    _("This field does not match password confirmation.")])
                 self._errors['new_password2'] = self.error_class([
-                    _("This field does not match Password.")])
+                    _("This field does not match password.")])
                 if 'new_password1' in self.cleaned_data:
                     del self.cleaned_data['new_password1']
                 if 'new_password2' in self.cleaned_data:
                     del self.cleaned_data['new_password2']
                 raise forms.ValidationError(
-                    _("Password and Password confirmation do not match."))
+                    _("Password and password confirmation do not match."))
         return self.cleaned_data
 
 
@@ -221,15 +221,15 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
             " and dot (.) or apostrophe (') characters.")})
     username = forms.SlugField(
         label=_("Username"), max_length=30,
-        error_messages={'invalid': _("username may only contain letters,"\
-            " numbers and -/_ characters. Spaces are not allowed.")})
+        error_messages={'invalid': _("Username may only contain letters,"\
+            " digits and -/_ characters. Spaces are not allowed.")})
     email = forms.EmailField(
         widget=forms.TextInput(attrs={'maxlength': 75}),
-        label=_("Email address"))
+        label=_("E-mail address"))
     new_password1 = forms.CharField(
         widget=forms.PasswordInput, label=_("Password"))
     new_password2 = forms.CharField(
-        widget=forms.PasswordInput, label=_("Password confirmation"))
+        widget=forms.PasswordInput, label=_("Confirm password"))
 
     def __init__(self, *args, **kwargs):
         #call our superclasse's initializer
@@ -249,15 +249,15 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
             new_password2 = self.cleaned_data.get('new_password2', True)
             if new_password1 != new_password2:
                 self._errors['new_password1'] = self.error_class([
-                    _("This field does not match Password confirmation.")])
+                    _("This field does not match password confirmation.")])
                 self._errors['new_password2'] = self.error_class([
-                    _("This field does not match Password.")])
+                    _("This field does not match password.")])
                 if 'new_password1' in self.cleaned_data:
                     del self.cleaned_data['new_password1']
                 if 'new_password2' in self.cleaned_data:
                     del self.cleaned_data['new_password2']
                 raise forms.ValidationError(
-                    _("Password and Password confirmation do not match."))
+                    _("Password and password confirmation do not match."))
         return self.cleaned_data
 
     def clean_email(self):
@@ -270,7 +270,7 @@ class TogetherRegistrationForm(MissingFieldsMixin, OrganizationForm):
             email__iexact=self.cleaned_data['email'])
         if user.exists():
             raise forms.ValidationError(
-                _("A user with that email already exists."))
+                _("A user with that e-mail address already exists."))
         return self.cleaned_data['email']
 
     def clean_username(self):
@@ -317,17 +317,18 @@ class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):
 
     username = forms.SlugField(
         label=_("Username"), max_length=30,
-        error_messages={'invalid': _("username may only contain letters,"\
-            " numbers and -/_ characters. Spaces are not allowed.")})
+        error_messages={'invalid': _("Username may only contain letters,"\
+            " digits and -/_ characters. Spaces are not allowed.")})
     email = forms.EmailField(
-        widget=forms.TextInput(attrs={'maxlength': 75}), label=_("E-mail"))
+        widget=forms.TextInput(attrs={'maxlength': 75}),
+        label=_("E-mail address"))
     email2 = forms.EmailField(
         widget=forms.TextInput(attrs={'maxlength': 75}),
         label=_("E-mail confirmation"))
     new_password1 = forms.CharField(
         widget=forms.PasswordInput, label=_("Password"))
     new_password2 = forms.CharField(
-        widget=forms.PasswordInput, label=_("Password confirmation"))
+        widget=forms.PasswordInput, label=_("Confirm password"))
     first_name = forms.RegexField(NAME_RE,
         label=_("First name"), min_length=2, max_length=30,
         error_messages={'invalid': _("First name may only contain letters"\
@@ -337,15 +338,15 @@ class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):
         error_messages={'invalid': _("Last name may only contain letters"\
             " and dot (.) or apostrophe (') characters.")})
     street_address = forms.CharField(label=_("Street address"))
-    locality = forms.CharField(label=_("City"))
-    region = forms.CharField(label=_("State/Province"))
+    locality = forms.CharField(label=_("City/Town"))
+    region = forms.CharField(label=_("State/Province/County"))
     postal_code = forms.RegexField(regex=r'^[\w\s-]+$',
-        label=_("Postal code"), max_length=30,
+        label=_("Zip/Postal code"), max_length=30,
         error_messages={'invalid': _("The postal code may contain only"\
-            " letters, numbers, spaces and '-' characters.")})
+            " letters, digits, spaces and '-' characters.")})
     country = forms.RegexField(regex=r'^[a-zA-Z ]+$',
         widget=forms.widgets.Select(choices=countries), label=_("Country"))
-    phone = PhoneNumberField(label=_('Phone'))
+    phone = PhoneNumberField(label=_('Phone number'))
 
     def clean(self):
         """
@@ -358,30 +359,30 @@ class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):
             email2 = self.cleaned_data.get('email2', 'B')
             if email != email2:
                 self._errors['email'] = self.error_class([
-                    _("This field does not match E-mail confirmation.")])
+                    _("This field does not match e-mail confirmation.")])
                 self._errors['email2'] = self.error_class([
-                    _("This field does not match E-mail.")])
+                    _("This field does not match e-mail.")])
                 if 'email' in self.cleaned_data:
                     del self.cleaned_data['email']
                 if 'email2' in self.cleaned_data:
                     del self.cleaned_data['email2']
                 raise forms.ValidationError(
-                    _("Email and E-mail confirmation do not match."))
+                    _("E-mail and e-mail confirmation do not match."))
         if not ('new_password1' in self._errors
             or 'new_password2' in self._errors):
             new_password1 = self.cleaned_data.get('new_password1', False)
             new_password2 = self.cleaned_data.get('new_password2', True)
             if new_password1 != new_password2:
                 self._errors['new_password1'] = self.error_class([
-                    _("This field does not match Password confirmation.")])
+                    _("This field does not match password confirmation.")])
                 self._errors['new_password2'] = self.error_class([
-                    _("This field does not match Password.")])
+                    _("This field does not match password.")])
                 if 'new_password1' in self.cleaned_data:
                     del self.cleaned_data['new_password1']
                 if 'new_password2' in self.cleaned_data:
                     del self.cleaned_data['new_password2']
                 raise forms.ValidationError(
-                    _("Password and Password confirmation do not match."))
+                    _("Password and password confirmation do not match."))
         if not ('first_name' in self._errors or 'last_name' in self._errors):
             first_name = self.cleaned_data.get('first_name', False)
             last_name = self.cleaned_data.get('last_name', False)
@@ -408,7 +409,7 @@ class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):
             email__iexact=self.cleaned_data['email'])
         if user.exists():
             raise forms.ValidationError(
-                _("A user with that email already exists."))
+                _("A user with that e-mail address already exists."))
         return self.cleaned_data['email']
 
     def clean_email2(self):
@@ -450,5 +451,6 @@ class PersonalRegistrationForm(MissingFieldsMixin, OrganizationForm):
             slug=self.cleaned_data['username'])
         if organization.exists():
             raise forms.ValidationError(
-                _("A profile with that username already exists."))
+                # XXX use username_label? profile vs. User?
+                _("A profile with that identifier already exists."))
         return self.cleaned_data['username']

@@ -91,4 +91,5 @@ class NotificationAPIView(AppMixin, APIView):
                 _("Problem with template. Could not send test email.")},
                 status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"details": _("Test email sent to %s") % request.user.email})
+            {"details": _("Test email sent to %(email)s") % {
+                'email': request.user.email}})

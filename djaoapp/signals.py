@@ -345,7 +345,8 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                     args=(role.grant_key,))
             if has_invalid_password(user):
                 reason = _("You have been invited to create an account"\
-                    " to join %s.") % role.organization.printable_name
+                    " to join %(organization)s.") % {
+                    'organization': role.organization.printable_name}
                 Contact.objects.update_or_create_token(
                     user, reason=reason)
             site = get_current_site()
