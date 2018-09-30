@@ -24,6 +24,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th>Path</th>
             <th>Access Rule</th>
             <th class="text-center">Forward</th>
+            <th>Engage tags</th>
             <th></th>
           </tr>
         </thead>
@@ -49,13 +50,17 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                      ng-change="updateForward(rule)"
                      ng-checked="rule.is_forward" />
             </td>
+            <td class="engaged">
+                <span ng-hide="engagedEditMode[$index]" ng-click="editEngaged($index)">[[rule.engaged]] <i class="fa fa-pencil"></i></span>
+                <input ng-show="engagedEditMode[$index]" type="text" class="form-control" ng-keydown="saveEngaged($event, rule, $index)" ng-blur="saveEngaged($event, rule, $index)" ng-model="rule.engaged" uib-tooltip="Edit engaged and press 'Enter'" uib-tooltip-trigger="focus" uib-tooltip-placement="top" id="input_engaged">
+            </td>
             <td width="100">
               <button class="btn btn-danger btn-sm" ng-click="remove($index)">
                 <i class="fa fa-trash-o"></i></button>
             </td>
           </tr>
           <tr>
-            <td colspan="5">
+            <td colspan="6">
               <a id="add-rule" href="#"
                  data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> Add ...</a>
             </td>
