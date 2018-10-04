@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import logging
 
 from django.contrib.auth import get_user_model
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils import six
 from pages.locals import get_edition_tools_context_data
@@ -14,6 +14,7 @@ from saas import settings as saas_settings
 from saas.decorators import fail_direct
 from saas.models import Organization, Plan, Signature
 from signup.helpers import full_name_natural_split
+from signup.utils import handle_uniq_error
 
 from .compat import reverse
 from .edition_tools import fail_edit_perm, inject_edition_tools
@@ -167,44 +168,50 @@ class RegisterMixin(object):
             organization_slug = username
         else:
             organization_slug = slugify(organization_name)
-        with transaction.atomic():
-            # Create a ``User``
-            user = get_user_model().objects.create_user(
-                username=username,
-                password=password,
-                email=cleaned_data.get('email', None),
-                first_name=first_name,
-                last_name=last_name)
 
-            Signature.objects.create_signature(saas_settings.TERMS_OF_USE, user)
+        try:
+            with transaction.atomic():
+                # Create a ``User``
+                user = get_user_model().objects.create_user(
+                    username=username,
+                    password=password,
+                    email=cleaned_data.get('email', None),
+                    first_name=first_name,
+                    last_name=last_name)
 
-            # Create an ``Organization`` and set the user as its manager.
-            account = Organization.objects.create(
-                slug=organization_slug,
-                full_name=organization_name,
-                email=cleaned_data.get('email', None),
-                phone=cleaned_data.get('phone', ""),
-                street_address=cleaned_data.get('street_address', ""),
-                locality=cleaned_data.get('locality', ""),
-                region=cleaned_data.get('region', ""),
-                postal_code=cleaned_data.get('postal_code', ""),
-                country=cleaned_data.get('country', ""),
-                extra=organization_extra)
-            account.add_manager(user, extra=role_extra)
-            LOGGER.info("created organization '%s' with"\
-                " full name: '%s', email: '%s', phone: '%s',"\
-                " street_address: '%s', locality: '%s', region: '%s',"\
-                " postal_code: '%s', country: '%s'.", account.slug,
-                account.full_name, account.email, account.phone,
-                account.street_address, account.locality, account.region,
-                account.postal_code, account.country,
-                extra={'event': 'create', 'request': self.request, 'user': user,
-                    'type': 'Organization', 'slug': account.slug,
-                    'full_name': account.full_name, 'email': account.email,
-                    'street_address': account.street_address,
-                    'locality': account.locality, 'region': account.region,
-                    'postal_code': account.postal_code,
-                    'country': account.country})
+                Signature.objects.create_signature(
+                    saas_settings.TERMS_OF_USE, user)
+
+                # Create an ``Organization`` and set the user as its manager.
+                account = Organization.objects.create(
+                    slug=organization_slug,
+                    full_name=organization_name,
+                    email=cleaned_data.get('email', None),
+                    phone=cleaned_data.get('phone', ""),
+                    street_address=cleaned_data.get('street_address', ""),
+                    locality=cleaned_data.get('locality', ""),
+                    region=cleaned_data.get('region', ""),
+                    postal_code=cleaned_data.get('postal_code', ""),
+                    country=cleaned_data.get('country', ""),
+                    extra=organization_extra)
+                account.add_manager(user, extra=role_extra)
+                LOGGER.info("created organization '%s' with"\
+                    " full name: '%s', email: '%s', phone: '%s',"\
+                    " street_address: '%s', locality: '%s', region: '%s',"\
+                    " postal_code: '%s', country: '%s'.", account.slug,
+                    account.full_name, account.email, account.phone,
+                    account.street_address, account.locality, account.region,
+                    account.postal_code, account.country,
+                    extra={'event': 'create',
+                        'request': self.request, 'user': user,
+                        'type': 'Organization', 'slug': account.slug,
+                        'full_name': account.full_name, 'email': account.email,
+                        'street_address': account.street_address,
+                        'locality': account.locality, 'region': account.region,
+                        'postal_code': account.postal_code,
+                        'country': account.country})
+        except IntegrityError as err:
+            handle_uniq_error(err)
 
         # Sign-in the newly registered user, bypassing authentication here,
         # since we might have a frictionless registration.

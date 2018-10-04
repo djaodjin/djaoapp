@@ -10,7 +10,8 @@
   </a>
 </script>
 <div ng-controller="userRelationListCtrl">
-  <form class="form-inline">
+  <form class="form-inline" ng-submit="save($event)">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
       <input name="user" type="text" placeholder="Username or e-mail"
              autocomplete="off"
@@ -20,7 +21,7 @@
              uib-typeahead-template-url="customTemplate.html"
              class="form-control input-sm" style="width: 100%;">
       <div class="input-group-btn">
-        <button class="btn btn-primary btn-sm" type="submit" ng-click="save($event)">Add {{role_descr.title}}</button>
+        <button class="btn btn-primary btn-sm" type="submit">Add {{role_descr.title}}</button>
       </div>
     </div>
     <div style="height:14px">
