@@ -3,11 +3,8 @@
 {% block saas_title %}Add offline transaction{% endblock %}
 
 {% block saas_page_layout %}
-<section ng-app="saasApp" ng-cloak>
-  <script type="text/ng-template" id="customTemplate.html">
-    <a><span bind-html-unsafe="match.model.organization.printable_name + ' - ' + match.model.plan.title | uibTypeaheadHighlight:query"></span></a>
-  </script>
-  <div class="col-md-6 col-md-offset-3" ng-controller="importTransactionsCtrl">
+<section>
+<div class="col-md-6 col-md-offset-3" id="import-transaction-container">
     <form action="." class="form-horizontal" method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <fieldset>
@@ -15,34 +12,47 @@
           <label class="control-label" for="subscription">
             Subscription
           </label>
-          <input id="subscription" class="form-control" name="subscription"
-                 placeholder="Subscriber name or email" type="text"
-                 autocomplete="off"
-                 ng-model="subscription"
-                 uib-typeahead="subscription as subscription.organization.slug + ':' + subscription.plan.slug for subscription in getSubscriptions($viewValue)"
-                 uib-typeahead-loading="loadingSubscriptions"
-                 uib-typeahead-template-url="customTemplate.html">
+            <input
+                id="typeahead"
+                class="form-control"
+                type="text"
+                placeholder="Subscriber name or email"
+                name="subscription"
+                autocomplete="off"/>
+            <uiv-typeahead
+                v-model="itemSelected"
+                target="#typeahead"
+                item-key="itemKey"
+                :async-function="getSubscriptions"
+                :open-on-focus="false"/>
+
           {% for error in form.subscription.errors %}
           <span class="help-block"><strong>{{error}}</strong></span>
           {% endfor %}
-          <div ng-show="loadingSubscriptions" style="height:14px">
+          <div v-show="searching" style="height:14px">
             <i class="fa fa-spinner"></i>
           </div>
         </div>
         <div class="form-group{% if form.created_at.errors %} has-error{% endif %}">
-          <label class="control-label" for="created_at">
-            Created At
-          </label>
-          <div class="input-group">
-            <input id="created_at" class="form-control" type="text" name="created_at"
-                   ng-model="createdAt" ng-required="true"
-                   is-open="opened.createdAt"
-                   uib-datepicker-popup="[[format]]"
-                   datepicker-options="dateOptions" close-text="Close" />
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="open($event, 'createdAt')"><i class="fa fa-calendar"></i></button>
-            </span>
-          </div>
+            <uiv-dropdown append-to-body>
+              <label class="control-label" for="created_at">
+                Created At
+              </label>
+              <div class="input-group">
+                <input class="form-control" type="text" v-model="created_at" name="created_at" required>
+                <div class="input-group-btn">
+                  <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+                </div>
+              </div>
+              <template slot="dropdown">
+                <li>
+                  <uiv-date-picker
+                    v-model="created_at"
+                    icon-control-left="fa fa-caret-left"
+                    icon-control-right="fa fa-caret-right" />
+                </li>
+              </template>
+            </uiv-dropdown>
           {% for error in form.created_at.errors %}
           <span class="help-block"><strong>{{error}}</strong></span>
           {% endfor %}

@@ -5,28 +5,14 @@ Subscriptions to {{organization.printable_name}}
 {% endblock %}
 
 {% block saas_content %}
-<section id="subscribers" ng-app="saasApp" ng-cloak>
-<div ng-controller="subscriberListCtrl" data-trip data-trip-index="1" data-trip-content="<h2>Active Subscribers</h2><p>List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-    <ul class="nav nav-tabs dashboard-tab" role="tablist">
+<section id="subscribers">
+<div id="subscribers-list-container" data-trip data-trip-index="1" data-trip-content="<h2>Active Subscribers</h2><p>List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+    <tabs v-model="currentTab" :transition-duration="0" @change="tabChanged">
         {% if registered %}
-        <li ng-click="tabClicked($event)">
-            <a href="#registered-users" data-toggle="tab">Registered</a>
-        </li>
-        {% endif %}
-        {% for tab in tabs %}
-        <li {% if tab.is_active %}class="active"{% endif %} ng-click="tabClicked($event)">
-            <a href="#{{tab.slug}}" data-toggle="tab">{{tab.title}}</a>
-        </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        {% if registered %}
-        <div id="registered-users" class="tab-pane" role="tabpanel">
+        <tab title="Registered">
             <div style="margin-top:10px;margin-bottom:10px;">
-                <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
-                <a id="download-registered" href="{{registered.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                <label>Filter</label> <input type="text" class="form-control" v-model="filterExpr" v-on:input="get" />
+                <a id="download-registered" :href="'{{registered.urls.download}}?q=' + filterExpr" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
             </div>
             <div class="table-responsive">
             <table class="table table-condensed table-striped" style="width:100%">
@@ -38,191 +24,195 @@ Subscriptions to {{organization.printable_name}}
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-hide="registered.$resolved">
+                    <tr v-show="!registered.loaded">
                         <td colspan="2">
                             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                         </td>
                     </tr>
-                    <tr ng-show="registered.$resolved && registered.count == 0">
+                    <tr v-show="registered.loaded && registered.count == 0">
                         <td colspan="2">
-                            <h4 class="text-center"><em>No registered users<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+                            <h4 class="text-center"><em>No registered users<span v-show="filterExpr"> [[filterExpr]]</span></em></h4>
                         </td>
                     </tr>
                 </tbody>
-                <tbody class="has-results" ng-repeat="entry in registered.results" ng-cloak ng-show="registered.$resolved && registered.results.length > 0">
+                <tbody class="has-results" v-for="entry in registered.results" v-cloak v-show="registered.loaded && registered.results.length > 0">
                     <tr>
                         <td>
-                            <a id="[[entry.slug]]" href="{{urls.user.profile_redirect}}[[entry.slug]]/">[[entry.full_name]]</a>
+                            <a :href="'{{urls.user.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
                         </td>
                         <td>
-                        [[relativeDate(entry.created_at)]]
+                        [[entry.created_at | relativeDate]]
                         </td>
                     </tr>
                 </tbody>
             </table>
             </div>
-            <div class="text-center">
-                <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                            total-items="registered.count"
-                            items-per-page="itemsPerPage"
-                            boundary-links="true"
-                            max-size="maxSize"
-                            previous-text="&lsaquo;"
-                            next-text="&rsaquo;"
-                            first-text="&laquo;"
-                            last-text="&raquo;"
-                            ng-change="pageChanged(registered)"
-                            ng-show="registered.$resolved && registered.results.length > 0"></ul>
+            <div class="text-center" v-show="registered.loaded && totalItems > itemsPerPage">
+                <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
             </div>
-        </div>
+        </tab>
         {% endif %}
+
+
         {% for tab in tabs %}
-        <div id="{{tab.slug}}" class="tab-pane{% if tab.is_active %} active{% endif %}" role="tabpanel">
+        <tab title="{{tab.title}}">
 <div style="margin-top:10px;margin-bottom:10px;">
-    <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" class="form-control filter-inline" placeholder="Filter" />
-    <a id="download-{{tab.slug}}" href="{{tab.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+    <input type="text" v-model="filterExpr" v-on:input="filterList" class="form-control filter-inline" placeholder="Filter" />
+    <a id="download-{{tab.slug}}" :href="'{{tab.urls.download}}?q=' + filterExpr" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
 </div>
 <div class="table-responsive">
 <table class="table table-condensed table-striped">
     <thead>
-        <tr ng-show="dir.organization">
-            <th>Subscriber<button class="btn-link btn-sort" ng-click="sortBy('organization')"><i class="fa fa-sort[[dir.organization ? ('-' + dir.organization) : '']]"></i></button></th>
-            <th>Plan<button class="btn-link btn-sort" ng-click="sortBy('plan')"><i class="fa fa-sort[[dir.plan ? ('-' + dir.plan) : '']]"></i></button></th>
-            <th>Since<button class="btn-link btn-sort" ng-click="sortBy('created_at')"><i class="fa fa-sort[[dir.created_at ? ('-' + dir.created_at) : '']]"></i></button></th>
-            <th>Ends At<button class="btn-link btn-sort" ng-click="sortBy('ends_at')"><i class="fa fa-sort[[dir.ends_at ? ('-' + dir.ends_at) : '']]"></i></button></th>
+        <tr v-show="dir.organization">
+            <th>Subscriber<button class="btn-link btn-sort" v-on:click="sortBy('organization')"><i :class="'fa fa-sort' + (dir.organization ? ('-' + dir.organization) : '')"></i></button></th>
+            <th>Plan<button class="btn-link btn-sort" v-on:click="sortBy('plan')"><i :class="'fa fa-sort' + (dir.plan ? ('-' + dir.plan) : '')"></i></button></th>
+            <th>Since<button class="btn-link btn-sort" v-on:click="sortBy('created_at')"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
+            <th>Ends At<button class="btn-link btn-sort" v-on:click="sortBy('ends_at')"><i :class="'fa fa-sort' + (dir.ends_at ? ('-' + dir.ends_at) : '')"></i></button></th>
             <th>Description</th>
         </tr>
-        <tr ng-show="dir.plan">
-            <th>Plan<button class="btn-link btn-sort" ng-click="sortBy('plan')"><i class="fa fa-sort[[dir.plan ? ('-' + dir.plan) : '']]"></i></button></th>
-            <th>Subscriber<button class="btn-link btn-sort" ng-click="sortBy('organization')"><i class="fa fa-sort[[dir.organization ? ('-' + dir.organization) : '']]"></i></button></th>
-            <th>Since<button class="btn-link btn-sort" ng-click="sortBy('created_at')"><i class="fa fa-sort[[dir.created_at ? ('-' + dir.created_at) : '']]"></i></button></th>
-            <th>Ends At<button class="btn-link btn-sort" ng-click="sortBy('ends_at')"><i class="fa fa-sort[[dir.ends_at ? ('-' + dir.ends_at) : '']]"></i></button></th>
+        <tr v-show="dir.plan">
+            <th>Plan<button class="btn-link btn-sort" v-on:click="sortBy('plan')"><i :class="'fa fa-sort' + (dir.plan ? ('-' + dir.plan) : '')"></i></button></th>
+            <th>Subscriber<button class="btn-link btn-sort" v-on:click="sortBy('organization')"><i :class="'fa fa-sort' + (dir.organization ? ('-' + dir.organization) : '')"></i></button></th>
+            <th>Since<button class="btn-link btn-sort" v-on:click="sortBy('created_at')"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
+            <th>Ends At<button class="btn-link btn-sort" v-on:click="sortBy('ends_at')"><i :class="'fa fa-sort' + (dir.ends_at ? ('-' + dir.ends_at) : '')"></i></button></th>
             <th>Description</th>
         </tr>
-        <tr ng-show="dir.created_at">
-            <th>Since<button class="btn-link btn-sort" ng-click="sortBy('created_at')"><i class="fa fa-sort[[dir.created_at ? ('-' + dir.created_at) : '']]"></i></button></th>
-            <th>Subscriber<button class="btn-link btn-sort" ng-click="sortBy('organization')"><i class="fa fa-sort[[dir.organization ? ('-' + dir.organization) : '']]"></i></button></th>
-            <th>Plan<button class="btn-link btn-sort" ng-click="sortBy('plan')"><i class="fa fa-sort[[dir.plan ? ('-' + dir.plan) : '']]"></i></button></th>
-            <th>Ends At<button class="btn-link btn-sort" ng-click="sortBy('ends_at')"><i class="fa fa-sort[[dir.ends_at ? ('-' + dir.ends_at) : '']]"></i></button></th>
+        <tr v-show="dir.created_at">
+            <th>Since<button class="btn-link btn-sort" v-on:click="sortBy('created_at')"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
+            <th>Subscriber<button class="btn-link btn-sort" v-on:click="sortBy('organization')"><i :class="'fa fa-sort' + (dir.organization ? ('-' + dir.organization) : '')"></i></button></th>
+            <th>Plan<button class="btn-link btn-sort" v-on:click="sortBy('plan')"><i :class="'fa fa-sort' + (dir.plan ? ('-' + dir.plan) : '')"></i></button></th>
+            <th>Ends At<button class="btn-link btn-sort" v-on:click="sortBy('ends_at')"><i :class="'fa fa-sort' + (dir.ends_at ? ('-' + dir.ends_at) : '')"></i></button></th>
             <th>Description</th>
         </tr>
-        <tr ng-show="dir.ends_at">
-            <th>Ends At<button class="btn-link btn-sort" ng-click="sortBy('ends_at')"><i class="fa fa-sort[[dir.ends_at ? ('-' + dir.ends_at) : '']]"></i></button></th>
-            <th>Subscriber<button class="btn-link btn-sort" ng-click="sortBy('organization')"><i class="fa fa-sort[[dir.organization ? ('-' + dir.organization) : '']]"></i></button></th>
-            <th>Plan<button class="btn-link btn-sort" ng-click="sortBy('plan')"><i class="fa fa-sort[[dir.plan ? ('-' + dir.plan) : '']]"></i></button></th>
-            <th>Since<button class="btn-link btn-sort" ng-click="sortBy('created_at')"><i class="fa fa-sort[[dir.created_at ? ('-' + dir.created_at) : '']]"></i></button></th>
+        <tr v-show="dir.ends_at">
+            <th>Ends At<button class="btn-link btn-sort" v-on:click="sortBy('ends_at')"><i :class="'fa fa-sort' + (dir.ends_at ? ('-' + dir.ends_at) : '')"></i></button></th>
+            <th>Subscriber<button class="btn-link btn-sort" v-on:click="sortBy('organization')"><i :class="'fa fa-sort' + (dir.organization ? ('-' + dir.organization) : '')"></i></button></th>
+            <th>Plan<button class="btn-link btn-sort" v-on:click="sortBy('plan')"><i :class="'fa fa-sort' + (dir.plan ? ('-' + dir.plan) : '')"></i></button></th>
+            <th>Since<button class="btn-link btn-sort" v-on:click="sortBy('created_at')"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
             <th>Description</th>
         </tr>
     </thead>
-    <tbody class="fetching-results" ng-hide="{{tab.slug}}.$resolved">
+    <tbody class="fetching-results" v-show="!{{tab.slug}}.loaded">
         <tr>
             <td colspan="5">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
     </tbody>
-    <tbody class="has-no-results" ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length == 0">
+    <tbody class="has-no-results" v-show="{{tab.slug}}.loaded && {{tab.slug}}.results.length == 0">
         <tr>
             <td colspan="5">
                 <h4 class="text-center"><em>No subscribers<span ng-show="filterExpr"> with filter: '[[filterExpr]]'</span></em></h4>
             </td>
         </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['organization.printable_name']" ng-show="dir.organization" ng-cloak ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length > 0">
-        <tr ng-show="entry.organization_printable_name_CHANGED">
+    <tbody v-for="(group, key) in groupBy({{tab.slug}}.results, 'organization.printable_name')" v-show="dir.organization && {{tab.slug}}.loaded && {{tab.slug}}.results.length > 0" v-cloak>
+        <tr>
             <td colspan="5">
-                <a id="[[entry.organization.slug]]" href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a></td>
+                <a :href="'{{urls.organization.profile_base}}' + group[0].organization.slug + '/subscriptions/'">[[group[0].organization.printable_name]]</a></td>
         </tr>
-        <tr ng-class="endsSoon(entry)">
+        <tr v-for="(entry, index) in group" :class="endsSoon(entry)">
             <td></td>
             <td>[[entry.plan.title]]</td>
-            <td>[[entry.created_at | date: mediumDate]]</td>
-            <td>[[entry.ends_at |date: mediumDate]]</td>
-            <td id="[[entry.id]]" class="description editable">
-                <span ng-hide="entry.editDescription"
-                      ng-click="editDescription($event, entry)">[[entry.description]] <i class="fa fa-pencil"></i></span>
-                <input ng-show="entry.editDescription" type="text"
+            <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
+            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td class="description editable">
+                <span v-show="!entry.edit_description" @click="editDescription(entry, group[0].organization.slug)">
+                    [[entry.description]] <i class="fa fa-pencil"></i>
+                </span>
+                <input v-show="entry.edit_description" type="text"
                        class="form-control"
-                       ng-blur="saveDescription($event, entry)"
-                       ng-model="entry.description"
+                       @blur="saveDescription(entry)"
+                       @keyup.13="saveDescription(entry)"
+                       v-model="entry.description"
+                       :ref="refId(entry, group[0].organization.slug)"
                        tooltip="Edit description here"
                        tooltip-trigger="focus"
                        tooltip-placement="top">
             </td>
         </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['plan.title']" ng-show="dir.plan" ng-cloak>
-        <tr ng-show="entry.plan_title_CHANGED">
+    <tbody v-for="(group, key) in groupBy({{tab.slug}}.results, 'plan.title')" v-cloak v-show="dir.plan">
+        <tr>
             <td colspan="5">
-                [[entry.plan.title]]
+                [[group[0].plan.title]]
             </td>
         </tr>
-        <tr ng-class="endsSoon(entry)">
+        <tr v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
-            <td>[[entry.created_at | date: mediumDate]]</td>
-            <td>[[entry.ends_at |date: mediumDate]]</td>
-            <td id="[[entry.id]]" class="description editable">
-                <span ng-hide="entry.editDescription"
-                      ng-click="editDescription($event, entry)">[[entry.description]] <i class="fa fa-pencil"></i></span>
-                <input ng-show="entry.editDescription" type="text"
+            <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
+            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td class="description editable">
+                <span v-show="!entry.edit_description" @click="editDescription(entry, group[0].plan.slug)">
+                    [[entry.description]] <i class="fa fa-pencil"></i>
+                </span>
+                <input v-show="entry.edit_description" type="text"
                        class="form-control"
-                       ng-blur="saveDescription($event, entry)"
-                       ng-model="entry.description"
+                       @blur="saveDescription(entry)"
+                       @keyup.13="saveDescription(entry)"
+                       v-model="entry.description"
+                       :ref="refId(entry, group[0].plan.slug)"
                        tooltip="Edit description here"
                        tooltip-trigger="focus"
                        tooltip-placement="top">
             </td>
         </tr>
     </tbody>
-    <tbody class="has-results" ng-repeat="entry in {{tab.slug}}.results | groupBy:['created_at']" ng-show="dir.created_at" ng-cloak>
-        <tr ng-show="entry.created_at_CHANGED">
+    <tbody v-for="(group, top_i) in groupBy({{tab.slug}}.results, 'created_at')" v-cloak v-show="dir.created_at">
+        <tr>
             <td colspan="5">
-                [[entry.created_at | date: mediumDate]]
+                [[group[0].created_at | formatDate('MMM D, Y')]]
             </td>
         </tr>
-        <tr ng-class="endsSoon(entry)">
+        <tr v-for="(entry, index) in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a id="[[entry.organization.slug]]" href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
-            <td>[[entry.ends_at |date: mediumDate]]</td>
-            <td id="[[entry.id]]" class="description editable">
-                <span ng-hide="entry.editDescription"
-                      ng-click="editDescription($event, entry)">[[entry.description]] <i class="fa fa-pencil"></i></span>
-                <input ng-show="entry.editDescription" type="text"
+            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td class="description editable">
+                <span v-show="!entry.edit_description" @click="editDescription(entry, group[0].created_at)">
+                    [[entry.description]] <i class="fa fa-pencil"></i>
+                </span>
+                <input v-show="entry.edit_description" type="text"
                        class="form-control"
-                       ng-blur="saveDescription($event, entry)"
-                       ng-model="entry.description"
+                       @blur="saveDescription(entry)"
+                       @keyup.13="saveDescription(entry)"
+                       v-model="entry.description"
+                       :ref="refId(entry, group[0].created_at)"
                        tooltip="Edit description here"
                        tooltip-trigger="focus"
                        tooltip-placement="top">
             </td>
         </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['ends_at']" ng-show="dir.ends_at" ng-cloak>
-        <tr ng-show="entry.ends_at_CHANGED">
+    <tbody v-for="(group, key) in groupBy({{tab.slug}}.results, 'ends_at')" v-cloak v-show="dir.ends_at">
+        <tr>
             <td colspan="5">
-                [[entry.ends_at |date: mediumDate]]
+                [[group[0].ends_at | formatDate('MMM D, Y')]]
             </td>
         </tr>
-        <tr ng-class="endsSoon(entry)">
+        <tr v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a>
+                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
-            <td>[[entry.created_at | date: mediumDate]]</td>
-            <td id="[[entry.id]]" class="description editable">
-                <span ng-hide="entry.editDescription"
-                      ng-click="editDescription($event, entry)">[[entry.description]] <i class="fa fa-pencil"></i></span>
-                <input ng-show="entry.editDescription" type="text"
+            <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
+            <td class="description editable">
+                <span v-show="!entry.edit_description" @click="editDescription(entry, group[0].ends_at)">
+                    [[entry.description]] <i class="fa fa-pencil"></i>
+                </span>
+                <input v-show="entry.edit_description" type="text"
                        class="form-control"
-                       ng-blur="saveDescription($event, entry)"
-                       ng-model="entry.description"
+                       @blur="saveDescription(entry)"
+                       @keyup.13="saveDescription(entry)"
+                       v-model="entry.description"
+                       :ref="refId(entry, group[0].ends_at)"
                        tooltip="Edit description here"
                        tooltip-trigger="focus"
                        tooltip-placement="top">
@@ -231,22 +221,12 @@ Subscriptions to {{organization.printable_name}}
     </tbody>
 </table>
 </div>
-<div class="text-center">
-    <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                total-items="{{tab.slug}}.count"
-                items-per-page="itemsPerPage"
-                boundary-links="true"
-                max-size="maxSize"
-                previous-text="&lsaquo;"
-                next-text="&rsaquo;"
-                first-text="&laquo;"
-                last-text="&raquo;"
-                ng-change="pageChanged({{tab.slug}})"
-                ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length > 0"></ul>
+<div class="text-center" v-show="{{tab.slug}}.loaded && totalItems > itemsPerPage">
+    <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" size="sm" boundary-links/>
 </div>
-        </div>
+            </tab>
         {% endfor %}
-    </div>
+    </tabs>
 </div>
 <div>
     <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">New Billing Profile &raquo;</a>

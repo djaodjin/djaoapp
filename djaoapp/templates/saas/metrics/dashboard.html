@@ -21,7 +21,7 @@ Provider Dashboard
                     <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
                     <td>[[entry.full_name]]</td>
                     <td>[[entry.email]]</td>
-                    <td>[[relativeDate(entry.created_at)]]</td>
+                    <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>
@@ -61,7 +61,7 @@ No items to take care of Today.
             <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0">
                 <tr v-for="entry in items.results">
                     <td v-bind:class="entry.is_debit ? 'text-danger' : ''"><a v-bind:href="'{{urls.organization.billing_base}}' + entry.dest_organization + '/'">[[entry.amount]]</a></td>
-                    <td>[[relativeDate(entry.created_at)]]</td>
+                    <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>
@@ -84,7 +84,7 @@ No items to take care of Today.
             <tbody id="has-registered" v-show="itemsLoaded && items.results.length > 0">
                 <tr v-for="entry in items.results">
                     <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
-                    <td>[[relativeDate(entry.created_at)]]</td>
+                    <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>

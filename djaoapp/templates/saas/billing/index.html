@@ -89,6 +89,70 @@ Are you sure you would like to cancel the whole balance of [[items.balance|human
       <!-- end of modal dialog -->
       {% endif %}
     </div>
+    {% include "saas/_transactions-bk.html" %}
+  </div>
+</div>
+
+
+
+
+
+<div class="col-md-12">
+  <div class="row" id="billing-statement-container">
+    <div ref="billing_container" data-api-url="{{urls.organization.api_card}}" data-trip data-trip-index="1"
+         data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+      <section id="balance" class="col-md-6">
+        <h1 class="text-primary">Balance{% if urls.organization.api_cancel_balance_due %} <button v-if="items.balance > 0" id="cancel-balance-btn" class="btn btn-danger" @click="modalOpen=true" v-cloak>cancel balance due</button>{% endif %}</h1>
+        <dl class="dl-horizontal">
+          <dt data-trip data-trip-index="2" data-trip-content="<p>The amount you owe.</p>" data-trip-position="s">
+            <i class="fa fa-refresh fa-spin" v-if="!itemsLoaded"></i>
+            <span v-if="itemsLoaded" v-cloak>[[items.balance | humanizeCell(items.unit,  0.01)]]</span>
+          </dt>
+          <dd>
+            Balance
+            <span v-if="!itemsLoaded || items.balance == 0">due</span>
+            <span v-if="items.balance > 0" v-cloak>due (<a href="{{urls.organization.balance}}">pay now</a>)
+            </span>
+            <span v-if="items.balance < 0" v-cloak>credit</span>
+          </dd>
+        </dl>
+        {% if urls.organization.vtcharge %}
+        <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
+        {% endif %}
+      </section>
+      <section id="payment-form" class="col-md-6">
+        <h1 class="text-primary">Credit Card
+        <a class="btn" href="{{urls.organization.update_card}}"
+           data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
+        <dl class="dl-horizontal">
+          <dt>card</dt>
+          <dd class="last4">
+            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+            <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
+          </dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>expires</dt>
+          <dd class="exp_date">
+            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+            <span v-if="balanceLoaded" v-cloak>[[exp_date]]</span>
+          </dd>
+        </dl>
+      </section>
+      {% if urls.organization.api_cancel_balance_due %}
+      <!-- modal dialog for cancelling balance due -->
+        <modal v-model="modalOpen" title="Cancel balance due">
+            <p>
+                Are you sure you would like to cancel the whole balance of [[items.balance | humanizeCell(items.unit, 0.01)]] ?
+            </p>
+            <div slot="footer">
+                <button class="btn btn-default" @click="modalOpen=false">Cancel</button>
+                <button class="btn btn-primary" @click="cancelBalance">OK</button>
+            </div>
+        </modal>
+      <!-- end of modal dialog -->
+      {% endif %}
+    </div>
     {% include "saas/_transactions.html" %}
   </div>
 </div>
