@@ -4,18 +4,17 @@
 
 {% block saas_page_layout %}
 <div class="row">
-  <div class="col-md-12" ng-app="saasApp">
-    <div class="row" ng-controller="billingSummaryCtrl"
-         data-api-url="{{urls.provider.api_bank}}">
+  <div class="col-md-12" id="transfers-container">
+    <div class="row">
       <div data-trip data-trip-index="1" data-trip-content="<h2>Funds</h2><p>Transfer earned income to the organization bank account. All paid subscriptions<br />accumulate in the organization's Funds balance. You can see all deposits<br />into the organization Funds balance and transfer available funds to a bank account here.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
         <section id="funds" class="col-md-6">
           <h3>Available</h3>
-          <dl ng-show="balance_amount !== 'N/A'" class="dl-horizontal">
-            <dt id="balance-amount" ng-cloak data-trip data-trip-index="2" data-trip-content="<p>The amount available for you to transfer to your bank account.</p>" data-trip-position="s">[[balance_amount | humanizeCell : balance_unit : 0.01]]</dt>
-            <dd><a ng-show="balance_amount > 0" id="saas_withdraw_funds" href="{{ urls.provider.withdraw_funds }}" data-trip data-trip-index="4" data-trip-content="<p>Withdraw up to the available amount.</p>" data-trip-position="s">withdraw</a></dd>
+          <dl v-show="balance_amount !== 'N/A'" class="dl-horizontal">
+            <dt id="balance-amount" v-cloak data-trip data-trip-index="2" data-trip-content="<p>The amount available for you to transfer to your bank account.</p>" data-trip-position="s">[[balance_amount | humanizeCell(balance_unit, 0.01)]]</dt>
+            <dd><a v-show="balance_amount > 0" id="saas_withdraw_funds" href="{{ urls.provider.withdraw_funds }}" data-trip data-trip-index="4" data-trip-content="<p>Withdraw up to the available amount.</p>" data-trip-position="s">withdraw</a></dd>
           </dl>
-          <dl ng-show="balance_amount === 'N/A'" class="dl-horizontal">
-            <dt ng-cloak>[[balance_amount]]</dt>
+          <dl v-show="balance_amount === 'N/A'" class="dl-horizontal">
+            <dt v-cloak>[[balance_amount]]</dt>
             <dd></dd>
           </dl>
         </section>
@@ -26,20 +25,18 @@
                                      data-trip data-trip-index="3" data-trip-content="<p>Update your bank information so funds can be transfered to you.</p>" data-trip-position="s">Update</a></h3>
           <dl class="dl-horizontal">
             <dt>Institution</dt>
-            <dd ng-cloak>[[bank_name]]</dd>
+            <dd v-cloak>[[bank_name]]</dd>
           </dl>
           <dl class="dl-horizontal">
             <dt>Account Number</dt>
-            <dd ng-cloak>[[last4]]</dd>
+            <dd v-cloak>[[last4]]</dd>
           </dl>
         </section>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div ng-controller="transactionListCtrl">
-          {% include "saas/_transactions-bk.html" %}
-        </div>
+          {% include "saas/_transactions.html" %}
       </div>
     </div>
     <div class="row">

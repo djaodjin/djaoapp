@@ -75,6 +75,9 @@ urls: {
     api_broker_balances: "{{urls.api_broker_balances}}",
     api_transactions: "{{saas_api_transactions}}",
 {% if urls.organization %}
+{% if urls.organization.api_card %}
+    saas_api_user_card: "{{ urls.organization.api_card }}",
+{% endif %}
 {% if urls.organization.api_roles %}
     saas_api_user_roles_url: "{{ urls.organization.api_roles }}",
 {% endif %}

@@ -3,11 +3,11 @@
     <form class="form-inline">
       <div class="form-group">
         <uiv-dropdown append-to-body>
-          <label class="control-label" for="starts_at">
+          <label class="control-label" for="start_at">
             From
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" v-model="starts_at">
+            <input class="form-control" type="text" v-model="start_at">
             <div class="input-group-btn">
               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
             </div>
@@ -15,7 +15,8 @@
           <template slot="dropdown">
             <li>
               <uiv-date-picker
-                v-model="starts_at"
+                v-on:input="get"
+                v-model="start_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />
             </li>
@@ -36,6 +37,7 @@
           <template slot="dropdown">
             <li>
               <uiv-date-picker
+                v-on:input="get"
                 v-model="ends_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />
@@ -48,7 +50,7 @@
         <input class="form-control" type="text" v-model="filterExpr" @input="filterList" />
       </div>
       <div class="pull-right">
-        <a id="download" :href="'{{download_url}}?q=' + filterExpr + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+        <a id="download" :href="'{{download_url}}?q=' + filterExpr + '&start_at=' + start_at + '&ends_at=' + ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
     <div class="table-responsive">
