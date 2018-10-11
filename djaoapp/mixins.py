@@ -9,8 +9,10 @@ from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils import six
 from pages.locals import get_edition_tools_context_data
+from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
+from saas.api.roles import create_user_from_email
 from saas.decorators import fail_direct
 from saas.models import Organization, Plan, Signature
 from signup.helpers import full_name_natural_split
@@ -21,6 +23,15 @@ from .edition_tools import fail_edit_perm, inject_edition_tools
 
 
 LOGGER = logging.getLogger(__name__)
+
+def _clean_field(cleaned_data, field_name):
+    """
+    This insures that `NOT NULL` fields have a value of "" instead of `None`.
+    """
+    field = cleaned_data.get(field_name, "")
+    if field is None:
+        field = ""
+    return field
 
 
 class DjaoAppMixin(object):
@@ -159,25 +170,32 @@ class RegisterMixin(object):
         if not user_extra:
             user_extra = None
 
+        email = cleaned_data.get('email', None)
         username = cleaned_data.get('username', None)
-        password = cleaned_data.get('password',
-            cleaned_data.get('new_password1', None))
+        password = cleaned_data.get('password', None)
         organization_name = cleaned_data.get(organization_selector, full_name)
         if user_selector == organization_selector:
             # We have a personal registration
             organization_slug = username
         else:
             organization_slug = slugify(organization_name)
-
+        if not organization_slug:
+            raise ValidationError(_("The organization name must contain"\
+                " some alphabetical characters."))
         try:
             with transaction.atomic():
                 # Create a ``User``
-                user = get_user_model().objects.create_user(
-                    username=username,
-                    password=password,
-                    email=cleaned_data.get('email', None),
-                    first_name=first_name,
-                    last_name=last_name)
+                if username:
+                    user = get_user_model().objects.create_user(
+                        username=username,
+                        password=password,
+                        email=email,
+                        first_name=first_name,
+                        last_name=last_name)
+                else:
+                    user = create_user_from_email(email, password=password,
+                        first_name=first_name,
+                        last_name=last_name)
 
                 Signature.objects.create_signature(
                     saas_settings.TERMS_OF_USE, user)
@@ -186,13 +204,14 @@ class RegisterMixin(object):
                 account = Organization.objects.create(
                     slug=organization_slug,
                     full_name=organization_name,
-                    email=cleaned_data.get('email', None),
-                    phone=cleaned_data.get('phone', ""),
-                    street_address=cleaned_data.get('street_address', ""),
-                    locality=cleaned_data.get('locality', ""),
-                    region=cleaned_data.get('region', ""),
-                    postal_code=cleaned_data.get('postal_code', ""),
-                    country=cleaned_data.get('country', ""),
+                    email=_clean_field(cleaned_data, 'email'),
+                    phone=_clean_field(cleaned_data, 'phone'),
+                    street_address=_clean_field(
+                        cleaned_data, 'street_address'),
+                    locality=_clean_field(cleaned_data, 'locality'),
+                    region=_clean_field(cleaned_data, 'region'),
+                    postal_code=_clean_field(cleaned_data, 'postal_code'),
+                    country=_clean_field(cleaned_data, 'country'),
                     extra=organization_extra)
                 account.add_manager(user, extra=role_extra)
                 LOGGER.info("created organization '%s' with"\
@@ -200,18 +219,20 @@ class RegisterMixin(object):
                     " street_address: '%s', locality: '%s', region: '%s',"\
                     " postal_code: '%s', country: '%s'.", account.slug,
                     account.full_name, account.email, account.phone,
-                    account.street_address, account.locality, account.region,
-                    account.postal_code, account.country,
+                    account.street_address, account.locality,
+                    account.region, account.postal_code, account.country,
                     extra={'event': 'create',
                         'request': self.request, 'user': user,
                         'type': 'Organization', 'slug': account.slug,
-                        'full_name': account.full_name, 'email': account.email,
+                        'full_name': account.full_name,
+                        'email': account.email,
                         'street_address': account.street_address,
-                        'locality': account.locality, 'region': account.region,
+                        'locality': account.locality,
+                        'region': account.region,
                         'postal_code': account.postal_code,
                         'country': account.country})
         except IntegrityError as err:
-            handle_uniq_error(err)
+            handle_uniq_error(err, renames={'slug': organization_selector})
 
         # Sign-in the newly registered user, bypassing authentication here,
         # since we might have a frictionless registration.

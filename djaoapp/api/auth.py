@@ -76,13 +76,12 @@ JwcBUUMECj8AKxsHtRHUSypco"
     def register(self, serializer):
         #pylint: disable=maybe-no-member,too-many-boolean-expressions
         registration = self.app.IMPLICIT_REGISTRATION
-        full_name = serializer.validated_data.get(
-            'full_name', None)
-        organization_name = serializer.validated_data.get(
-            'organization_name', None)
-        if organization_name:
+        full_name = serializer.validated_data.get('full_name', None)
+        if 'organization_name' in serializer.data:
             # We have a registration of a user and organization together.
             registration = self.app.TOGETHER_REGISTRATION
+            organization_name = serializer.validated_data.get(
+                'organization_name', None)
             if full_name and full_name == organization_name:
                 # No we have a personal registration after all
                 registration = self.app.PERSONAL_REGISTRATION

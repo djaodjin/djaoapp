@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8 text-center" style="margin-top: 50px;">
+            <p>
+                <i class="fa fa-meh-o fa-4x"></i>
+            </p>
+            <p>
+400 Bad Request - Sorry, there was an error loading this page.
+            </p>
+            {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                <div>{{message}}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <p>
+If you think there is a mistake, please <a href="/contact/">contact us</a>.
+            </p>
+            <p>
+We do our best to reply within 24 hours. Thank you!
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

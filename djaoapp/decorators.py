@@ -1,5 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
+from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import logging
@@ -14,6 +15,7 @@ from django.template.response import TemplateResponse
 from django.utils.decorators import available_attrs
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
+import jinja2.exceptions
 from multitier.thread_locals import get_current_site
 from pages.locals import (enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
@@ -54,7 +56,15 @@ def inject_edition_tools(function=None):
                 # the content_type on restframework responses is set
                 # very late (render), while at the same time django
                 # defaults it to text/html until then.
-                response.render()
+                try:
+                    response.render()
+                except jinja2.exceptions.TemplateError as err:
+                    response = TemplateResponse(
+                        request=request,
+                        template="400.html",
+                        context={'messages': [str(err)]},
+#                        using=view_func.template_engine,
+                        status=400)
                 soup = _inject_edition_tools(response, request,
                     context=get_edition_tools_context_data())
                 if soup:

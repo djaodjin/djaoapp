@@ -24,17 +24,19 @@ class PhoneNumberField(fields.CharField):
         """
         Returns a formatted phone number as a string.
         """
-        try:
-            phone_number = phonenumbers.parse(value, None)
-        except phonenumbers.NumberParseException as err:
-            LOGGER.info("tel %s:%s", value, err)
-            phone_number = None
-        if not phone_number:
+        if self.required:
             try:
-                phone_number = phonenumbers.parse(value, "US")
-            except phonenumbers.NumberParseException:
+                phone_number = phonenumbers.parse(value, None)
+            except phonenumbers.NumberParseException as err:
+                LOGGER.info("tel %s:%s", value, err)
+                phone_number = None
+            if not phone_number:
+                try:
+                    phone_number = phonenumbers.parse(value, "US")
+                except phonenumbers.NumberParseException:
+                    raise ValidationError(self.error_messages['invalid'])
+            if phone_number and not phonenumbers.is_valid_number(phone_number):
                 raise ValidationError(self.error_messages['invalid'])
-        if phone_number and not phonenumbers.is_valid_number(phone_number):
-            raise ValidationError(self.error_messages['invalid'])
-        return phonenumbers.format_number(
-            phone_number, phonenumbers.PhoneNumberFormat.E164)
+            return phonenumbers.format_number(
+                phone_number, phonenumbers.PhoneNumberFormat.E164)
+        return None

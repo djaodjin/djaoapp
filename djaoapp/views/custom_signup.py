@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
@@ -32,16 +31,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AuthMixin(object):
-
-    def form_invalid(self, form):
-        # We move all non_field_errors into messages to make it easier
-        # to write templates (i.e. a single for loop on messages).
-        # pylint: disable=protected-access
-        for error in form.non_field_errors():
-            messages.error(self.request, error)
-        if NON_FIELD_ERRORS in form._errors:
-            del form._errors[NON_FIELD_ERRORS]
-        return super(AuthMixin, self).form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super(AuthMixin, self).get_context_data(**kwargs)
@@ -183,10 +172,10 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         #pylint:disable=too-many-boolean-expressions
         registration = self.app.USER_REGISTRATION
         full_name = cleaned_data.get('full_name', None)
-        organization_name = cleaned_data.get('organization_name', None)
-        if organization_name:
+        if 'organization_name' in cleaned_data:
             # We have a registration of a user and organization together.
             registration = self.app.TOGETHER_REGISTRATION
+            organization_name = cleaned_data.get('organization_name', None)
             if full_name and full_name == organization_name:
                 # No we have a personal registration after all
                 registration = self.app.PERSONAL_REGISTRATION
