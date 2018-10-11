@@ -49,7 +49,7 @@ Thank you,
                 </div>
             </uiv-modal>
         </form>
-        <user-typeahead v-on:item-save="save" inline-template>
+        <user-typeahead v-on:item-save="save" :url="typeaheadUrl" inline-template>
             <div>
                 <form class="form-inline" v-on:submit.prevent="submit">
                     <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
