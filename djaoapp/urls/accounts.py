@@ -10,6 +10,9 @@ from djaoapp.views.custom_signup import (ActivationView, PasswordResetView,
 
 
 urlpatterns = [
+    url(r'^register/frictionless/',
+        SignupView.as_view(template_name='accounts/register/frictionless.html'),
+        name='registration_frictionless'),
     # Normal sign up of a user
     url(r'^register/',
         SignupView.as_view(form_class=SignupForm),
