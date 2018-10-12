@@ -8,6 +8,21 @@ HTML encoded. #}
 
 {% block html_content %}
 <h3>{{provider.printable_name}} Order Confirmation</h3>
+{% if organization %}
+<div class="info">
+  <table>
+    <thead>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="info-row-header">NAME&nbsp;&nbsp;</th>
+        <td>{{organization.printable_name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<hr class="horizontal-divide">
+{% endif %}
 <div id="invoiced_items">
     <table class="table table-striped">
       <thead>
@@ -27,6 +42,13 @@ HTML encoded. #}
     </table>
 </div>
 <hr class="horizontal-divide">
+<div>
+{% if created_by %}
+<p>
+This order was initiated by <a href="{{urls.order.created_by}}">{{created_by.get_full_name()}}.</a>
+</p>
+{% endif %}
+</div>
 <div id="support">
 <p>
 This order confirmation only notifies that you intend to pay

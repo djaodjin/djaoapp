@@ -256,24 +256,29 @@ def card_updated_notice(sender, organization, user,
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(order_executed, dispatch_uid="order_executed")
 def order_executed_notice(sender, invoiced_items, user, **kwargs):
-    from saas.models import Transaction
-    invoiced_items = Transaction.objects.filter(id__in=invoiced_items)
     broker = get_broker()
-    recipients, bcc = _notified_recipients(
-        invoiced_items.first().dest_organization, 'order_executed')
+    invoiced_items = list(invoiced_items)
+    organization = (invoiced_items[0].dest_organization
+        if invoiced_items else None)
+    recipients, bcc = _notified_recipients(organization, 'order_executed')
     broker_recipients, broker_bcc = _notified_recipients(
         broker, 'order_executed')
     app = get_current_app()
     LOGGER.debug("[signal] order_executed_notice(invoiced_items=%s, user=%s)",
-        invoiced_items, user)
+        [invoiced_item.pk for invoiced_item in invoiced_items], user)
     if SEND_EMAIL:
+        context = {'broker': broker, 'app': app, 'provider': broker,
+            'organization': organization, 'invoiced_items': invoiced_items,
+            'created_by': user}
+        if user:
+            context.update({'urls': {'order': {'created_by':
+                reverse('users_profile', args=(user,))}}})
         get_email_backend(connection=app.get_connection()).send(
             from_email=app.get_from_email(), recipients=recipients,
             bcc=bcc + broker_recipients + broker_bcc,
             reply_to=broker_recipients[0],
             template='notification/order_executed.eml',
-            context={'broker': broker, 'app': app,
-                'provider': broker, 'invoiced_items': invoiced_items})
+            context=context)
 
 
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated")

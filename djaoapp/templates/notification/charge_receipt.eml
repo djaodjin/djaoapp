@@ -8,11 +8,11 @@ Implementation Note:
 #}
 
 {% block subject %}
-Receipt from {{provider.printable_name|safe}}
+Receipt from {{provider.printable_name|safe}}{% if refunded %} - Refund{% endif %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{provider.printable_name}} Charge Receipt</h3>
+<h3>{{provider.printable_name}}{% if refunded %} Refund{% else %} Charge{% endif %} Receipt</h3>
 <div id="status">
     {% if charge.is_paid %}
     <p>
@@ -48,7 +48,7 @@ Receipt from {{provider.printable_name|safe}}
       </tr>
       <tr>
         <th class="info-row-header">AMOUNT&nbsp;&nbsp;</th>
-        <td>{{charge.price|humanize_money}}</td>
+        <td>{% if refunded %}{{charge.invoiced_total_after_refund|humanize_money}} (after refund){% else %}{{charge.price|humanize_money}}{% endif %}</td>
       </tr>
       {% if charge.card_name %}
       <tr>
