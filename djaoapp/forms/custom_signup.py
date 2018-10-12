@@ -16,6 +16,7 @@ from django_countries.fields import Country
 from rules.utils import get_app_model
 from saas.forms import PostalFormMixin
 from saas.models import Organization
+from signup.settings import FULL_NAME_PAT
 from signup.backends.auth import UsernameOrEmailAuthenticationForm
 from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
 
@@ -238,7 +239,7 @@ class PersonalRegistrationForm(SignupForm):
     new_password2 = forms.CharField(
         widget=forms.PasswordInput, label=_("Confirm password"))
     full_name = forms.RegexField(
-        regex=r'^[\w\s]+$', max_length=60,
+        regex=FULL_NAME_PAT, max_length=60,
         widget=forms.TextInput(attrs={'placeholder':'Full name'}),
         label=_("Full name"),
         error_messages={'invalid':
