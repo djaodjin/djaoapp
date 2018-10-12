@@ -5,20 +5,20 @@
 {% block saas_content %}
 <section id="accessible-list-container">
   <div class="text-right">
-    <span>Filter</span> <input type="text" v-model="filterExpr" @input="filterList" />
+    <span>Filter</span> <input type="text" v-model="params.q" @input="filterList" />
   </div>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name<button class="btn-link btn-sort" @click="sortBy('slug')"><i :class="'fa fa-sort' + (dir.slug ? ('-' + dir.slug) : '')"></i></button></th>
-        <th>Role<button class="btn-link btn-sort" @click="sortBy('role_name')"><i :class="'fa fa-sort' + (dir.role_name ? ('-' + dir.role_name) : '')"></i></button></th>
+        <th>Name<button class="btn-link btn-sort" @click="sortBy('slug')"><i :class="sortIcon('slug')"></i></button></th>
+        <th>Role<button class="btn-link btn-sort" @click="sortBy('role_name')"><i :class="sortIcon('role_name')"></i></button></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td colspan="3">
-            <form class="form-horizontal" v-on:submit.prevent="create">
+            <form class="form-horizontal" @submit.prevent="create">
                 <uiv-modal v-model="modalOpen" v-cloak title="Request access...">
                     <div class="modal-body">
                         <p class="text-danger">
@@ -62,9 +62,9 @@ Thank you,
                     </div>
                 </uiv-modal>
             </form>
-            <user-typeahead v-on:item-save="save" :url="typeaheadUrl" inline-template>
+            <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
                 <div>
-                    <form class="form-inline" v-on:submit.prevent="submit">
+                    <form class="form-inline" @submit.prevent="submit">
                         <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the name or email of the organization you wish to add.</p>" data-trip-position="s">
                             <div>
                                 <input id="userTypeahead" class="form-control input-sm" style="width: 100%;" type="text" placeholder="Name or email"/>
@@ -98,7 +98,7 @@ Thank you,
       </tr>
       <tr v-for="(entry, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
         <td>
-          <a href="'{{urls.organization.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
+          <a :href="'{{urls.organization.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
         </td>
         <td class="text-center">
           [[entry.request_key ? "requested" : entry.role_description]]
@@ -108,7 +108,7 @@ Thank you,
     </tbody>
   </table>
   <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-    <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
   </div>
 </section>
 {% endblock %}

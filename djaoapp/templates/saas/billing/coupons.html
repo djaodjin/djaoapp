@@ -6,17 +6,17 @@
 <div id="coupon-list-container">
 <div data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
     <div class="pull-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
-<a id="download" v-bind:href="'{{urls.provider.download_coupons}}?q=' + filterExpr" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+<a id="download" :href="'{{urls.provider.download_coupons}}?q=' + params.q" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
     </div>
     <div class="table-responsive">
     <table id="coupon-list" class="table table-condensed table-striped" >
         <thead>
         <tr>
-            <th>Code<button class="btn-link btn-sort" v-on:click="sortBy('code')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupons by ascending and descending order.</p>" data-trip-position="s"><i v-bind:class="'fa fa-sort' + (dir.code ? ('-' + dir.code) : '')"></i></button></th>
-            <th>Percent<button class="btn-link btn-sort" v-on:click="sortBy('percent')"><i v-bind:class="'fa fa-sort' + (dir.percent ? ('-' + dir.percent) : '')"></i></button></th>
-            <th>Expires At<button class="btn-link btn-sort" v-on:click="sortBy('ends_at')"><i v-bind:class="'fa fa-sort' + (dir.ends_at ? ('-' + dir.ends_at) : '')"></i></button></th>
-            <th>Description<button class="btn-link btn-sort" v-on:click="sortBy('description')"><i v-bind:class="'fa fa-sort' + (dir.description ? ('-' + dir.description) : '')"></i></button></th>
-            <th>Created At<button class="btn-link btn-sort" v-on:click="sortBy('created_at')"><i v-bind:class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
+            <th>Code<button class="btn-link btn-sort" @click="sortBy('code')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupons by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('code')"></i></button></th>
+            <th>Percent<button class="btn-link btn-sort" @click="sortBy('percent')"><i :class="sortIcon('percent')"></i></button></th>
+            <th>Expires At<button class="btn-link btn-sort" @click="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
+            <th>Description<button class="btn-link btn-sort" @click="sortBy('description')"><i :class="sortIcon('description')"></i></button></th>
+            <th>Created At<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
             <th></th>
         </tr>
         </thead>
@@ -28,26 +28,26 @@
                 <input type="text" class="form-control input-sm" v-model="newCoupon.percent" placeholder="Percent">
             </td>
             <td>
-                <button class="btn btn-primary btn-sm" v-on:click="save()" data-trip data-trip-index="2" data-trip-content="<p>Add a coupon by entering a code, percentage and click &quot;Create Coupon&quot;.</p>" data-trip-position="s">Create Coupon</button>
+                <button class="btn btn-primary btn-sm" @click="save()" data-trip data-trip-index="2" data-trip-content="<p>Add a coupon by entering a code, percentage and click &quot;Create Coupon&quot;.</p>" data-trip-position="s">Create Coupon</button>
             </td>
             <td>
             </td>
             <td colspan="2" data-trip data-trip-index="6" data-trip-content="<p>Filter the list of coupon displayed.</p>" data-trip-position="s">
-                <label>Filter</label> <input type="text" v-model="filterExpr" v-on:input="filterList" />
+                <label>Filter</label> <input type="text" v-model="params.q" @input="filterList" />
             </td>
         </tr>
-        <tr v-show="!couponsLoaded">
+        <tr v-show="!itemsLoaded">
             <td colspan="5">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
-        <tr v-show="couponsLoaded && coupons.results.length === 0">
+        <tr v-show="itemsLoaded && items.results.length === 0">
             <td colspan="5">
-                <h4 class="text-center"><em>No Coupons<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+                <h4 class="text-center"><em>No Coupons<span v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
-        <tr v-for="(coupon, index) in coupons.results" v-cloak v-show="couponsLoaded && coupons.results.length > 0">
-            <td><a v-bind:id="coupon.code" v-bind:href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></td>
+        <tr v-for="(coupon, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
+            <td><a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></td>
             <td>[[coupon.percent]]</td>
             <td>
                 <div style="display:inline-block">
@@ -57,7 +57,7 @@
                         <li>
                           <uiv-date-picker
                             v-model="coupon.ends_at"
-                            v-on:input="selected(index)"
+                            @input="selected(index)"
                             icon-control-left="fa fa-caret-left"
                             icon-control-right="fa fa-caret-right" />
                         </li>
@@ -69,11 +69,11 @@
                 </span>
             </td>
             <td class="description">
-                <span v-show="!edit_description[index]" v-on:click="editDescription(index)">[[coupon.description]] <i class="fa fa-pencil"></i></span>
-                <input v-show="edit_description[index]" ref="edit_description_input" type="text" class="form-control" v-on:keydown="saveDescription(coupon, index, $event)" v-on:blur="saveDescription(coupon, index, $event)" v-model="coupon.description" id="input_description">
+                <span v-show="!edit_description[index]" @click="editDescription(index)">[[coupon.description]] <i class="fa fa-pencil"></i></span>
+                <input v-show="edit_description[index]" ref="edit_description_input" type="text" class="form-control" @keydown="saveDescription(coupon, index, $event)" @blur="saveDescription(coupon, index, $event)" v-model="coupon.description" id="input_description">
             </td>
             <td class="date">[[coupon.created_at | formatDate('MMM D, Y')]]</td>
-            <td><button class="btn btn-danger btn-sm" v-on:click="remove(index)"><i class="fa fa-trash-o"></i></button></td>
+            <td><button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i></button></td>
         </tr>
         <tr>
             <td data-trip data-trip-index="8" data-trip-content="<p>Click on a coupon code to see who has redeem it.</p>" data-trip-position="s"></td>
@@ -85,8 +85,8 @@
         </tr>
     </table>
     </div>
-    <div class="text-center" v-show="couponsLoaded && totalItems > itemsPerPage">
-        <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
     </div>
 </div>
 </div>

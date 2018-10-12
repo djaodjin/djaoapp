@@ -7,7 +7,7 @@
             From
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" v-model="start_at">
+            <input class="form-control" type="text" v-model="params.start_at">
             <div class="input-group-btn">
               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
             </div>
@@ -15,8 +15,8 @@
           <template slot="dropdown">
             <li>
               <uiv-date-picker
-                v-on:input="get"
-                v-model="start_at"
+                @input="get"
+                v-model="params.start_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />
             </li>
@@ -29,7 +29,7 @@
             To
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" v-model="ends_at">
+            <input class="form-control" type="text" v-model="params.ends_at">
             <div class="input-group-btn">
               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
             </div>
@@ -37,8 +37,8 @@
           <template slot="dropdown">
             <li>
               <uiv-date-picker
-                v-on:input="get"
-                v-model="ends_at"
+                @input="get"
+                v-model="params.ends_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />
             </li>
@@ -47,19 +47,19 @@
       </div>
       <div class="form-group">
         <label>Filter</label>
-        <input class="form-control" type="text" v-model="filterExpr" @input="filterList" />
+        <input class="form-control" type="text" v-model="params.q" @input="filterList" />
       </div>
       <div class="pull-right">
-        <a id="download" :href="'{{download_url}}?q=' + filterExpr + '&start_at=' + start_at + '&ends_at=' + ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+        <a id="download" :href="'{{download_url}}?q=' + params.q + '&start_at=' + start_at + '&ends_at=' + ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
     <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Date<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
-          <th>Amount<button class="btn-link btn-sort" @click="sortBy('amount')"><i :class="'fa fa-sort' + (dir.amount ? ('-' + dir.amount) : '')"></i></button></th>
-          <th>Description<button class="btn-link btn-sort" @click="sortBy('description')"><i :class="'fa fa-sort' + (dir.description ? ('-' + dir.description) : '')"></i></button></th>
+          <th>Date<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
+          <th>Amount<button class="btn-link btn-sort" @click="sortBy('amount')"><i :class="sortIcon('amount')"></i></button></th>
+          <th>Description<button class="btn-link btn-sort" @click="sortBy('description')"><i :class="sortIcon('description')"></i></button></th>
           <th></th>
         </tr>
       </thead>
@@ -73,7 +73,7 @@
       <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="4">
-            <h4 class="text-center"><em>No transactions<span v-show="filterExpr"> [[filterExpr]]</span></em></h4>
+            <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
           </td>
         </tr>
       </tbody>
@@ -87,6 +87,6 @@
     </table>
     </div>
     <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-        <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
     </div>
 </section>

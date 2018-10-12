@@ -16,9 +16,9 @@
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
-                    <th>User<button class="btn-link btn-sort" @click="sortBy('slug')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="'fa fa-sort' + (dir.slug ? ('-' + dir.slug) : '')"></i></button></th>
-                    <th>Plan<button class="btn-link btn-sort" @click="sortBy('plan')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="'fa fa-sort' + (dir.plan ? ('-' + dir.plan) : '')"></i></button></th>
-                    <th>Used at<button class="btn-link btn-sort" @click="sortBy('created_at')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="'fa fa-sort' + (dir.created_at ? ('-' + dir.created_at) : '')"></i></button></th>
+                    <th>User<button class="btn-link btn-sort" @click="sortBy('slug')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('slug')"></i></button></th>
+                    <th>Plan<button class="btn-link btn-sort" @click="sortBy('plan')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('plan')"></i></button></th>
+                    <th>Used at<button class="btn-link btn-sort" @click="sortBy('created_at')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('created_at')"></i></button></th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +29,7 @@
                 </tr>
                 <tr v-show="itemsLoaded && items.results.length == 0">
                     <td colspan="3">
-                        <h4 class="text-center"><em>No use of {{coupon.code}} coupon<span v-show="filterExpr"> [[filterExpr]]</span></em></h4>
+                        <h4 class="text-center"><em>No use of {{coupon.code}} coupon<span v-show="params.q"> [[params.q]]</span></em></h4>
                     </td>
                 </tr>
                 <tr v-for="item in items.results" v-cloak
@@ -40,7 +40,7 @@
                 </tr>
         </table>
         <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
         </div>
     </div>
 </section>

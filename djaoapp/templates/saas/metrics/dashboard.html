@@ -11,7 +11,7 @@ Provider Dashboard
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
                 <div class="form-group">
-                    <input type="text" placeholder="Search..." v-model="filterExpr" v-on:input="filterList" class="form-control" />
+                    <input type="text" placeholder="Search..." v-model="params.q" @input="filterList" class="form-control" />
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@ Provider Dashboard
             </tbody>
         </table>
         <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
         </div>
     </div>
 </div>
@@ -60,13 +60,13 @@ No items to take care of Today.
             </tbody>
             <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0">
                 <tr v-for="entry in items.results">
-                    <td v-bind:class="entry.is_debit ? 'text-danger' : ''"><a v-bind:href="'{{urls.organization.billing_base}}' + entry.dest_organization + '/'">[[entry.amount]]</a></td>
+                    <td :class="entry.is_debit ? 'text-danger' : ''"><a :href="'{{urls.organization.billing_base}}' + entry.dest_organization + '/'">[[entry.amount]]</a></td>
                     <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>
         <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
         </div>
     </div>
     <div class="col-md-4" id="user-list-container">
@@ -83,13 +83,13 @@ No items to take care of Today.
             </tbody>
             <tbody id="has-registered" v-show="itemsLoaded && items.results.length > 0">
                 <tr v-for="entry in items.results">
-                    <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
+                    <td><a :href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
                     <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>
         <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
         </div>
     </div>
 </div>

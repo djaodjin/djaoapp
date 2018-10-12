@@ -21,7 +21,7 @@
   {% if plans %}
   <tr>
       <td colspan="5">
-          <form id="subscribe" @submit="subscribe('{{organization}}')">
+          <form id="subscribe" @submit.prevent="subscribe('{{organization}}')">
               <div class="input-group">
                   <select class="form-control" name="plan" v-model="plan">
                       <option selected :value="{}">Select a plan...</option>
@@ -49,7 +49,7 @@
   </tr>
  </tbody>
  <tbody v-cloak v-show="itemsLoaded && items.results.length > 0">
-  <tr ng-class="endsSoon(entry)" v-for="(entry, index) in items.results">
+  <tr :class="endsSoon(entry)" v-for="(entry, index) in items.results">
    <td><a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a></td>
    <td class="date">
     <uiv-dropdown class="form-group" v-if="entry.editable" append-to-body>
@@ -58,7 +58,7 @@
         <li>
           <uiv-date-picker
             v-model="entry.ends_at"
-            v-on:input="selected(index)"
+            @input="selected(index)"
             icon-control-left="fa fa-caret-left"
             icon-control-right="fa fa-caret-right" />
         </li>
@@ -95,7 +95,7 @@
 </table>
 </div>
 <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-    <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" size="sm" boundary-links/>
+    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
 </div>
 <!-- modal dialog to confirm unsubscribe -->
 <modal v-model="modalOpen" title="Unsubscribe ...">

@@ -6,7 +6,7 @@
 <div data-trip data-trip-index="1" data-trip-content="<h2>Add/Remove {{role_descr}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
 <section id="{{role_descr}}">
     <div id="user-relation-list-container">
-        <form class="form-horizontal" v-on:submit.prevent="create">
+        <form class="form-horizontal" @submit.prevent="create">
             <uiv-modal v-model="modalOpen" v-cloak title="Invite {{role_descr}}">
                 <div class="modal-body">
                     <p class="text-danger">
@@ -49,9 +49,9 @@ Thank you,
                 </div>
             </uiv-modal>
         </form>
-        <user-typeahead v-on:item-save="save" :url="typeaheadUrl" inline-template>
+        <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
             <div>
-                <form class="form-inline" v-on:submit.prevent="submit">
+                <form class="form-inline" @submit.prevent="submit">
                     <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
                         <div>
                             <input id="userTypeahead" class="form-control input-sm" style="width: 100%;" type="text" placeholder="Username or Email"/>
@@ -92,20 +92,20 @@ Thank you,
                     </tr>
                     <tr v-show="itemsLoaded && items.results.length == 0">
                         <td colspan="3">
-                            <h4 class="text-center"><em>No {{role_descr.title}}<span v-show="filterExpr"> [[filterExpr]]</span></em></h4>
+                            <h4 class="text-center"><em>No {{role_descr.title}}</em></h4>
                         </td>
                     </tr>
-                    <tr v-bind:class="item.request_key ? 'disabled' : 'active'" v-for="(item, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
+                    <tr :class="item.request_key ? 'disabled' : 'active'" v-for="(item, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
                         <td style="vertical-align:middle;">[[item.user.slug]]</td>
-                        <td style="vertical-align:middle;">[[item.user.email]] <button class="btn btn-default btn-sm" v-if="item.request_key" v-on:click="save(item.user)">grant</button></td>
+                        <td style="vertical-align:middle;">[[item.user.email]] <button class="btn btn-default btn-sm" v-if="item.request_key" @click="save(item.user)">grant</button></td>
                         <td style="vertical-align:middle;"><i>[[item.grant_key ? "invited" : ""]]</i></td>
-                        <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" v-on:click="remove(index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to revoke access to the user.</p>" data-trip-position="s"><i class="fa fa-remove"></i></button></td>
+                        <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" @click="remove(index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to revoke access to the user.</p>" data-trip-position="s"><i class="fa fa-remove"></i></button></td>
                     </tr>
                 </tbody>
               </table>
           </div>
           <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="currentPage" :total-page="pageCount" v-on:change="get" boundary-links/>
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
           </div>
 </section>
 </div>
