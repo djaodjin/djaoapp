@@ -22,8 +22,6 @@ from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
 from .fields import PhoneNumberField
 from ..locals import get_current_app
 
-NAME_RE = r"^([^\W\d_]|[ \.\'\-])+$"
-
 
 class MissingFieldsMixin(object):
 
