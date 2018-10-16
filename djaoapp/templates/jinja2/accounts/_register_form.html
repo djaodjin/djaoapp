@@ -8,7 +8,7 @@
     <fieldset>
         <legend>Login Credentials</legend>
         {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['password'], form.hide_labels) }}
+        {{ input_field(form['new_password'], form.hide_labels) }}
         {{ input_field(form['new_password2'], form.hide_labels) }}
         {{ input_field(form['full_name'], form.hide_labels) }}
         {{ input_field(form['email'], form.hide_labels) }}
@@ -29,7 +29,7 @@
         {{ input_field(form['username'], form.hide_labels) }}
         {{ input_field(form['email'], form.hide_labels) }}
         {{ input_field(form['email2'], form.hide_labels) }}
-        {{ input_field(form['password'], form.hide_labels) }}
+        {{ input_field(form['new_password'], form.hide_labels) }}
         {{ input_field(form['new_password2'], form.hide_labels) }}
     </fieldset>
     <fieldset>
@@ -46,7 +46,7 @@
         {{ input_field(form['full_name'], form.hide_labels) }}
         {{ input_field(form['email'], form.hide_labels) }}
         {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['password'], form.hide_labels) }}
+        {{ input_field(form['new_password'], form.hide_labels) }}
         {{ input_field(form['new_password2'], form.hide_labels) }}
     {% else %}
     {% for name, field in form|iterfields %}
