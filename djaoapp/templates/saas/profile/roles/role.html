@@ -4,7 +4,7 @@
 
 {% block saas_content %}
 <div data-trip data-trip-index="1" data-trip-content="<h2>Add/Remove {{role_descr}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-<section id="{{role_descr}}">
+<section>
     <div id="user-relation-list-container">
         <form class="form-horizontal" @submit.prevent="create">
             <uiv-modal v-model="modalOpen" v-cloak title="Invite {{role_descr}}">
@@ -107,6 +107,7 @@ Thank you,
           <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
             <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
           </div>
-</section>
+      </div>
+    </section>
 </div>
 {% endblock %}
