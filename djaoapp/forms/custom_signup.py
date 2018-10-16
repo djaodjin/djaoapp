@@ -18,7 +18,8 @@ from saas.forms import PostalFormMixin
 from saas.models import Organization
 from signup.settings import FULL_NAME_PAT
 from signup.backends.auth import UsernameOrEmailAuthenticationForm
-from signup.forms import ActivationForm as ActivationFormBase, NameEmailForm
+from signup.forms import (ActivationForm as ActivationFormBase, NameEmailForm,
+    PasswordConfirmMixin)
 
 from .fields import PhoneNumberField
 from ..locals import get_current_app
@@ -83,7 +84,8 @@ class SigninForm(MissingFieldsMixin, UsernameOrEmailAuthenticationForm):
     hide_labels = True
 
 
-class SignupForm(MissingFieldsMixin, PostalFormMixin, NameEmailForm):
+class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
+                 NameEmailForm):
     """
     Form to Register a user and (optionally) an organization accounts.
 
@@ -98,11 +100,13 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, NameEmailForm):
         max_length=30, label=_("Username"),
         error_messages={'invalid': _("Username may only contain letters,"\
 " digits and -/_ characters. Spaces are not allowed.")})
-    password = forms.CharField(required=False, widget=forms.PasswordInput(
-        attrs={'placeholder': _("Password")}), label=_("Password"))
-    new_password2 = forms.CharField(required=False, widget=forms.PasswordInput(
-        attrs={'placeholder': _("Type password again")}),
-        label=_("Confirm password"))
+    new_password = forms.CharField(required=False, strip=False,
+        label=_("Password"),
+        widget=forms.PasswordInput(attrs={'placeholder': _("Password")}))
+    new_password2 = forms.CharField(required=False, strip=False,
+        label=_("Confirm password"),
+        widget=forms.PasswordInput(
+            attrs={'placeholder': _("Type password again")}))
 
     organization_name = forms.CharField(required=False,
         label=_('Organization name'))
@@ -120,7 +124,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, NameEmailForm):
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
-        if getattr(get_current_app(), 'requires_recaptcha', False):
+        if getattr(get_current_app(), 'registration_requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
             # of fields. We overwrite it here to set the theme.
             self.fields['captcha'] = ReCaptchaField(attrs={'theme' : 'clean'})
@@ -182,33 +186,10 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, NameEmailForm):
                 _("Your organization might already be registered."))
         return self.cleaned_data['organization_name']
 
-    def clean_password(self):
-        if 'password' in self.data:
-            if len(self.cleaned_data['password']) < 4:
-                raise forms.ValidationError(
-                    _("Your password is too easy to guess."))
-            return self.cleaned_data['password']
-
-    def clean(self):
-        """
-        Validates that both passwords respectively match.
-        """
-        if not ('password' in self._errors
-            or 'new_password2' in self._errors):
-            password = self.cleaned_data.get('password', False)
-            new_password2 = self.cleaned_data.get('new_password2', True)
-            if password != new_password2:
-                self._errors['password'] = self.error_class([
-                    _("This field does not match password confirmation.")])
-                self._errors['new_password2'] = self.error_class([
-                    _("This field does not match password.")])
-                if 'password' in self.cleaned_data:
-                    del self.cleaned_data['password']
-                if 'new_password2' in self.cleaned_data:
-                    del self.cleaned_data['new_password2']
-                raise forms.ValidationError(
-                    _("Password and password confirmation do not match."))
-        return self.cleaned_data
+    def clean_new_password(self):
+        if 'new_password' in self.data:
+            return super(SignupForm, self).clean_new_password()
+        return None
 
 
 class TogetherRegistrationForm(SignupForm):
@@ -234,10 +215,13 @@ class PersonalRegistrationForm(SignupForm):
     email2 = forms.EmailField(
         widget=forms.TextInput(attrs={'maxlength': 75}),
         label=_("E-mail confirmation"))
-    password = forms.CharField(
-        widget=forms.PasswordInput, label=_("Password"))
-    new_password2 = forms.CharField(
-        widget=forms.PasswordInput, label=_("Confirm password"))
+    new_password = forms.CharField(strip=False,
+        label=_("Password"),
+        widget=forms.PasswordInput(attrs={'placeholder': _("Password")}))
+    new_password2 = forms.CharField(strip=False,
+        label=_("Confirm password"),
+        widget=forms.PasswordInput(
+            attrs={'placeholder': _("Type password again")}))
     full_name = forms.RegexField(
         regex=FULL_NAME_PAT, max_length=60,
         widget=forms.TextInput(attrs={'placeholder':'Full name'}),

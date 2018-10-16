@@ -113,7 +113,7 @@ class RegisterMixin(object):
         'organization_name',
         'username',
         'password',
-        'new_password1',
+        'new_password',
         'new_password2',
         'email',
         'username',
@@ -172,7 +172,8 @@ class RegisterMixin(object):
 
         email = cleaned_data.get('email', None)
         username = cleaned_data.get('username', None)
-        password = cleaned_data.get('password', None)
+        password = cleaned_data.get('new_password',
+            cleaned_data.get('password', None))
         organization_name = cleaned_data.get(organization_selector, full_name)
         if user_selector == organization_selector:
             # We have a personal registration
