@@ -123,6 +123,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
     phone = PhoneNumberField(required=False, label=_('Phone number'))
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('instance', None)
         super(SignupForm, self).__init__(*args, **kwargs)
         if getattr(get_current_app(), 'registration_requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
