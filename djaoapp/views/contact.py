@@ -46,7 +46,7 @@ class ContactForm(ResponseCreateForm):
             widget=forms.Textarea(attrs={'class':'form-control',
             'placeholder': kwargs.get('initial', {}).get('placeholder', "")}))
         if not kwargs.get('initial', {}).get('email', None):
-            if getattr(get_current_app(), 'requires_recaptcha', False):
+            if getattr(get_current_app(), 'contact_requires_recaptcha', False):
                 self.fields['captcha'] = ReCaptchaField(
                     attrs={'theme' : 'clean'})
 
