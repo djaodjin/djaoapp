@@ -7,7 +7,7 @@ import django
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.defaults import page_not_found as base_page_not_found
-from rest_framework.views import APIView
+from rest_framework.views import APIView, exception_handler
 from rest_framework.renderers import JSONRenderer, StaticHTMLRenderer
 
 LOGGER = logging.getLogger(__name__)
@@ -30,6 +30,21 @@ class PermissionDeniedView(APIView):
         response = self.handle_exception(self.exception)
         response = self.finalize_response(request, response, *args, **kwargs)
         return response
+
+
+def drf_exception_handler(exc, context):
+    """
+    Handler to capture input parameters when a 500 exception occurs.
+    """
+    # XXX This is not ideal as it doesn't show the actual text - still better
+    #     than nothing.
+    response = exception_handler(exc, context)
+    if response is None:
+        request = context.get('request', None)
+        if request and request.method not in ['GET', 'HEAD', 'OPTIONS']:
+            #pylint:disable=protected-access
+            request._request.POST = request.data
+    return response
 
 
 @requires_csrf_token

@@ -67,13 +67,13 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
 )
 
 if DEBUG:
-    MIDDLEWARE_CLASSES = tuple([
+    MIDDLEWARE = tuple([
         'debug_panel.middleware.DebugPanelMiddleware',
     ])
 else:
-    MIDDLEWARE_CLASSES = ()
+    MIDDLEWARE = ()
 
-MIDDLEWARE_CLASSES += (
+MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
     'multitier.middleware.SiteMiddleware',
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
@@ -87,6 +87,9 @@ MIDDLEWARE_CLASSES += (
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'deployutils.apps.django.middleware.RequestLoggingMiddleware',
 )
+
+MIDDLEWARE_CLASSES = MIDDLEWARE
+
 
 ROOT_URLCONF = 'djaoapp.urls'
 
@@ -500,6 +503,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'djaoapp.views.errors.drf_exception_handler',
     'PAGE_SIZE': 25,
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
