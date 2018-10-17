@@ -197,6 +197,6 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
             if user:
                 Signature.objects.create_signature(
                     saas_settings.TERMS_OF_USE, user)
-
-        auth_login(self.request, user)
+        if user:
+            auth_login(self.request, user)
         return user
