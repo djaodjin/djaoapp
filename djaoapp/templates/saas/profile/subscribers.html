@@ -11,7 +11,7 @@ Subscriptions to {{organization.printable_name}}
         {% if registered %}
         <tab title="Registered">
             <div style="margin-top:10px;margin-bottom:10px;">
-                <label>Filter</label> <input type="text" class="form-control" v-model="params.q" v-on:input="filterList" />
+                <label>Filter</label> <input type="text" class="form-control" v-model="params.q" @input="filterList" />
                 <a id="download-registered" :href="'{{registered.urls.download}}?q=' + params.q" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
             </div>
             <div class="table-responsive">
@@ -48,7 +48,7 @@ Subscriptions to {{organization.printable_name}}
             </table>
             </div>
             <div class="text-center" v-show="registered.loaded && totalItems > itemsPerPage">
-                <uiv-pagination v-model="params.page" :total-page="pageCount" v-on:change="get" boundary-links/>
+                <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
             </div>
         </tab>
         {% endif %}
@@ -57,7 +57,7 @@ Subscriptions to {{organization.printable_name}}
         {% for tab in tabs %}
         <tab title="{{tab.title}}">
 <div style="margin-top:10px;margin-bottom:10px;">
-    <input type="text" v-model="params.q" v-on:input="filterList" class="form-control filter-inline" placeholder="Filter" />
+    <input type="text" v-model="params.q" @input="filterList" class="form-control filter-inline" placeholder="Filter" />
     <a id="download-{{tab.slug}}" :href="'{{tab.urls.download}}?q=' + params.q" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
 </div>
 <div class="table-responsive">
@@ -102,7 +102,7 @@ Subscriptions to {{organization.printable_name}}
     <tbody class="has-no-results" v-show="{{tab.slug}}.loaded && {{tab.slug}}.results.length == 0">
         <tr>
             <td colspan="5">
-                <h4 class="text-center"><em>No subscribers<span ng-show="params.q"> with filter: '[[params.q]]'</span></em></h4>
+                <h4 class="text-center"><em>No subscribers<span v-show="params.q"> with filter: '[[params.q]]'</span></em></h4>
             </td>
         </tr>
     </tbody>
@@ -222,7 +222,7 @@ Subscriptions to {{organization.printable_name}}
 </table>
 </div>
 <div class="text-center" v-show="{{tab.slug}}.loaded && totalItems > itemsPerPage">
-    <uiv-pagination v-model="params.page" :total-page="pageCount" v-on:change="get" size="sm" boundary-links/>
+    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
 </div>
             </tab>
         {% endfor %}

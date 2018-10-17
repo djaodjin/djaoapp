@@ -5,7 +5,7 @@
 {% block saas_content %}
 <section id="role-list-container"
     data-trip data-trip-index="1" data-trip-content="<h2>Add/Remove roles</h2><p>Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-  <div saas-organization="{{organization.slug}}">
+  <div>
     <h2 v-show="!itemsLoaded">Please wait...</h2>
     <div v-show="itemsLoaded">
       <div v-for="roleDescription in items.results">
