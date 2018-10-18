@@ -150,11 +150,6 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         """
         if 'email' in self.cleaned_data:
             self.cleaned_data['email'] = self.cleaned_data['email'].lower()
-        user = self.user_model.objects.filter(
-            email__iexact=self.cleaned_data['email'])
-        if user.exists():
-            raise forms.ValidationError(
-                _("A user with that e-mail address already exists."))
         return self.cleaned_data['email']
 
     def clean_username(self):
