@@ -190,7 +190,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
     def clean_new_password(self):
         if 'new_password' in self.data:
             return super(SignupForm, self).clean_new_password()
-        return None
+        return ""
 
 
 class TogetherRegistrationForm(SignupForm):

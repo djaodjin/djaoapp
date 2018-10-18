@@ -22,7 +22,7 @@ from rules.mixins import AppMixin
 
 from ..compat import reverse
 from ..forms.custom_signup import (ActivationForm, PersonalRegistrationForm,
-    SigninForm, TogetherRegistrationForm)
+    SigninForm, SignupForm, TogetherRegistrationForm)
 from ..locals import get_current_broker
 from ..mixins import RegisterMixin
 
@@ -115,6 +115,7 @@ class SignoutView(SignoutBaseView):
 
 class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
+    form_class = SignupForm
     user_model = get_user_model()
     role_extra_fields = (('role_function', 'Function', False),)
     organization_extra_fields = (

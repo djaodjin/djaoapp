@@ -4,7 +4,6 @@
 from django.conf.urls import url
 
 from signup import settings
-from djaoapp.forms.custom_signup import SignupForm
 from djaoapp.views.custom_signup import (ActivationView, PasswordResetView,
     PasswordResetConfirmView, SigninView, SignoutView, SignupView)
 
@@ -15,7 +14,7 @@ urlpatterns = [
         name='registration_frictionless'),
     # Normal sign up of a user
     url(r'^register/',
-        SignupView.as_view(form_class=SignupForm),
+        SignupView.as_view(),
         name='registration_register'),
     url(r'^activate/(?P<verification_key>%s)/'
         % settings.EMAIL_VERIFICATION_PAT,
