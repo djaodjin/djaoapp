@@ -190,7 +190,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     date_range: {
         start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
         ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-    }};
+    },
+    csrf: '{{csrf_token}}',
+    };
     </script>
   {% assets "js_base" %}
   <script type="text/javascript" src="{{ ASSET_URL }}"></script>
