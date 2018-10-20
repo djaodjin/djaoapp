@@ -2,37 +2,40 @@
 
 {% block content %}
 <div class="container">
-  <div class="row" ng-app="signupApp">
-    <div ng-controller="contactsCtrl">
+  <div class="row">
+    <div id="contact-list-container">
       <div class="page-header">
         <h2>Contacts</h2>
       </div>
       <div class="col-sm-6">
-        <div ng-hide="items.$resolved">
+        <div v-show="!itemsLoaded">
           <h3>Loading ...</h3>
         </div>
-        <div ng-cloak ng-show="items.$resolved && items.results.length == 0">
-          <h4><em>No contacts<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+        <div v-cloak v-show="itemsLoaded && items.results.length === 0">
+          <h4><em>No contacts</em></h4>
         </div>
-        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
-          <div ng-repeat="entry in items.results">
-            <p><a href="{{urls.contacts}}[[entry.slug]]/">[[entry.full_name]]</a></p>
+        <div id="has-activities" v-cloak v-show="itemsLoaded && items.results.length > 0">
+          <div v-for="entry in items.results">
+            <p><a :href="'{{urls.contacts}}' + entry.slug + '/'">[[entry.full_name]] - [[entry.email]]</a></p>
           </div>
+        </div>
+        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
         </div>
       </div>
       <div class="col-sm-6">
-        <form class="form" ng-submit="createContact()">
+        <form class="form" @submit.prevent="createContact">
           <div class="form-group">
             <label>Full name</label>
-            <input class="form-control" type="text" name="full_name" ng-model="contact.full_name">
+            <input class="form-control" type="text" name="full_name" v-model="contact.full_name">
           </div>
           <div class="form-group">
             <label>Nick name</label>
-            <input class="form-control" type="text" name="nick_name" ng-model="contact.nick_name">
+            <input class="form-control" type="text" name="nick_name" v-model="contact.nick_name">
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input class="form-control" type="text" name="email" ng-model="contact.email">
+            <input class="form-control" type="text" name="email" v-model="contact.email">
           </div>
           <button class="btn btn-primary" type="submit" value="submit">Create Contact</button>
         </form>
