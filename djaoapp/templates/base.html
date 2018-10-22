@@ -173,6 +173,12 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         api_user_profile: "{{urls.user.api_profile}}",
         user_profile_redirect: "{{urls.user.profile_redirect}}",
     {% endif %}
+    {% if urls.rules %}
+        rules_api_rule_url: "{{urls.rules.api_rules}}",
+        rules_api_detail_url: "{{urls.rules.api_detail}}",
+        rules_api_generate_key: "{{urls.rules.api_generate_key}}",
+        rules_api_session_data: "{{urls.rules.api_session_data}}",
+    {% endif %}
         api_activities: "{{urls.api_activities}}",
         api_contact: "{{urls.api_contact}}",
         api_contacts: "{{urls.api_contacts}}",
@@ -199,17 +205,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   {% endassets %}
   <script type="text/javascript">
 jQuery(document).ready(function($) {
-    {% if csrf_token %}
-    $.ajaxSetup({
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function(xhr, settings) {
-            // these HTTP methods do not require CSRF protection
-            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
-                xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
-            }
-        }
-    });
-    {% endif %}
     toastr.options = {
         "closeButton": true,
         "debug": false,
