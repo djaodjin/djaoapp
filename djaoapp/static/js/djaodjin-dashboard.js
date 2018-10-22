@@ -10,6 +10,7 @@
 
 $(document).ready(function(){
     (function(){
+/*
         // slideout sidebar
         var body = $('body');
         var nav = $('.dashboard-nav');
@@ -41,32 +42,34 @@ $(document).ready(function(){
                 })
             }
         });
-/* interfers with sidebar showing/hiding.
-        $(window).resize(function() {
-            open = false;
-            overlay.hide()
-            $(body)
-                .add(nav)
-                .add(content)
-                .add(container)
-                .removeAttr('style')
-        });
 */
         $(".dashboard-nav-toggle").click(function() {
             var element = $(this);
             var icon = element.children("i");
-            var nav = element.parents(".dashboard-nav");
+//            var nav = element.parents(".dashboard-nav");
+            var nav = $(".dashboard-nav");
             var containerInner = nav.parents(".dashboard-inner-container");
             var navWidth = nav.width();
-            var toggleWidth = element.width();
+//            var toggleWidth = element.width();
+            var toggleWidth = $(".dashboard-nav-border").width();
+
             var sidebarEdge = containerInner.css("left");
-            icon.removeClass();
             if( sidebarEdge === "-" + (navWidth - toggleWidth) + "px" ) {
                 sidebarEdge = 0;
-                icon.addClass("fa fa-angle-double-left");
+                if( icon.hasClass("fa-angle-double-right") ) {
+                    icon.toggleClass("fa-angle-double-left fa-angle-double-right");
+                }
+                if( icon.hasClass("fa-bars") ) {
+                    icon.toggleClass("fa-bars fa-close");
+                }
             } else {
                 sidebarEdge = "-" + (navWidth - toggleWidth) + "px";
-                icon.addClass("fa fa-angle-double-right");
+                if( icon.hasClass("fa-angle-double-left") ) {
+                    icon.toggleClass("fa-angle-double-left fa-angle-double-right");
+                }
+                if( icon.hasClass("fa-close") ) {
+                    icon.toggleClass("fa-bars fa-close");
+                }
             }
             var animates = {left: sidebarEdge};
             var container =  containerInner.parents(".dashboard-container");

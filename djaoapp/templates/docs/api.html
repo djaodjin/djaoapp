@@ -70,20 +70,142 @@
 {%- endmacro %}
 
 
-{% block content %}
-<div class="row" style="display: flex;">
-  <div class="col-sm-2 dashboard-nav-color-theme" style="flex-grow: 1;">
-    <div class="dashboard-nav-menu">
-      <ul class="nav nav-pills nav-stacked">
-        <li></li>
-        <li><a href="#authentication">Authentication</a></li>
-        {% for tag in tags %}
-        <li><a href="#{{tag|lower}}">{{tag}}</a></li>
-        {% endfor %}
-      </ul>
+{% block localheader %}
+{% assets "css_dashboard" %}
+<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+{% endassets %}
+<style>
+.dashboard-inner-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+/*
+.dashboard-nav {
+  flex-grow: 1;
+  user-select: none;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 100%;
+  box-shadow: 10px 0 100px #ccc;
+  width: 220px;
+}
+*/
+
+.dashboard-nav {
+  position: -webkit-sticky;
+  position: sticky;
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 5;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  min-width: 252px;
+  height: 100vh;
+  top: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+
+.dashboard-nav:after, .dashboard-nav:before {
+  content: "";
+  position: absolute;
+  top: 0;
+}
+
+.dashboard-content {
+ flex-grow: 1;
+}
+
+.dashboard-content .navbar .dashboard-nav-toggle {
+    position: relative;
+    margin-right: 15px;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}
+
+
+{% block dashboard_nav %}
+<div class="dashboard-nav dashboard-nav-color-theme">
+  <div class="dashboard-nav-inner-container">
+    <div>
+      <div class="dashboard-nav-main">
+        <header>
+          <nav>
+            {% include "_navbarbrand.html" %}
+          </nav>
+        </header>
+        <div class="dashboard-nav-menu">
+          {% block sidebar %}
+          <ul class="nav nav-pills nav-stacked">
+              <li><a href="#authentication">Authentication</a></li>
+              {% for tag in tags %}
+              <li><a href="#{{tag|lower}}">{{tag}}</a></li>
+              {% endfor %}
+          </ul>
+          {% endblock %}
+        </div>
+      </div>
+      {% block dashboard_footer %}
+      <div class="dashboard-nav-footer">
+        <div>
+          Powered by &copy; 2018 DjaoDjin. All rights reserved.
+        </div>
+        <div class="footer-links">
+          <a href="/legal/" target="_blank">Legal</a>
+          &middot;
+          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+          <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+          <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+        </div>
+      </div>
+      {% endblock %}
     </div>
-  </div>
-  <div class="col-sm-10" style="flex-grow: 1;">
+    <div class="dashboard-nav-toggle dashboard-nav-border dashboard-nav-color-theme">
+      <i class="fa initial"></i>
+    </div>
+  </div><!-- /.dashboard-nav-inner-container -->
+</div>
+{% endblock %}
+
+{% block content_navbarbrand %}
+<button aria-expanded="false" class="dashboard-nav-toggle" type="button">
+    <i class="fa fa-bars"></i>
+</button>
+{% endblock %}
+
+{% block content %}
+<div>
+  <div class="col-sm-12">
     <div class="row" style="display: flex;">
       <div class="col-sm-7" style="flex-grow: 1;">
         <a name="authentication" href="#authentication"><h2>Authentication</h2></a>
@@ -170,4 +292,10 @@ curl uses the -u flag to pass basic auth credentials.
     {% endfor %}
   </div>
 </div>
+{% endblock %}
+
+{% block bodyscripts %}
+{% assets "js_dashboard" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
 {% endblock %}

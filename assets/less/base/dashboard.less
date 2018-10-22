@@ -124,7 +124,7 @@
     width: @dashboard-sidebar-width - @dashboard-sidebar-toggle;
 }
 
-.dashboard-nav-toggle {
+.dashboard-nav-border {
     display: table-cell;
     width: @dashboard-sidebar-toggle;
     cursor: pointer;
@@ -160,7 +160,7 @@
    text-align:center;
 }
 
-.dashboard-nav-toggle .initial:before {
+.dashboard-nav-border .initial:before {
       content: "\f100"; /* .fa-angle-double-left:before */
 }
 
@@ -171,7 +171,7 @@
       width:      calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
     }
 
-    .dashboard-nav-toggle .initial:before {
+    .dashboard-nav-border .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
     }
 }
