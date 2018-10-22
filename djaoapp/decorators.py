@@ -65,6 +65,7 @@ def inject_edition_tools(function=None):
                         context={'messages': [str(err)]},
 #                        using=view_func.template_engine,
                         status=400)
+                    response.render()
                 soup = _inject_edition_tools(response, request,
                     context=get_edition_tools_context_data())
                 if soup:
