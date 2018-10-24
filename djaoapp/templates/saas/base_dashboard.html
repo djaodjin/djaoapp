@@ -12,7 +12,7 @@
 {% block dashboard_nav %}
 <div class="dashboard-nav dashboard-nav-color-theme">
   <div class="dashboard-nav-inner-container">
-    <div class="dashboard-nav-main-container" style="display:inline-block;">
+    <div class="dashboard-nav-main-container dashboard-nav-color-theme" style="display:inline-block;">
       <div class="dashboard-nav-main">
         <header>
           <nav class="navbar navbar-default">
@@ -29,7 +29,7 @@
         </div>
       </div>
       {% block dashboard_footer %}
-      <div class="dashboard-nav-footer">
+      <div class="dashboard-nav-footer dashboard-nav-color-theme">
         <div>
           Powered by &copy; 2018 DjaoDjin. All rights reserved.
         </div>
@@ -43,7 +43,7 @@
       </div>
       {% endblock %}
     </div>
-    <div class="dashboard-nav-toggle dashboard-nav-color-theme" style="display:inline-block;float:right;">
+    <div class="dashboard-nav-border dashboard-nav-toggle dashboard-nav-color-theme" style="display:inline-block;float:right;">
         <header>
           <nav class="navbar navbar-default">
             {# `.navbar-brand` forces the height to match other header blocks #}
@@ -56,6 +56,7 @@
     </div>
   </div><!-- /.dashboard-nav-inner-container -->
 </div>
+<div class="dashboard-nav-push-content"></div>
 {% endblock %}
 
 {% block content %}
