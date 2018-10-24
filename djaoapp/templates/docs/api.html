@@ -75,92 +75,22 @@
 <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
 <style>
-.dashboard-inner-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-/*
-.dashboard-nav {
-  flex-grow: 1;
-  user-select: none;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  overflow: visible;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  z-index: 5;
-  height: 100%;
-  box-shadow: 10px 0 100px #ccc;
-  width: 220px;
-}
-*/
-
-.dashboard-nav {
-  position: -webkit-sticky;
-  position: sticky;
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  z-index: 5;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-align: end;
-  -ms-flex-align: end;
-  align-items: flex-end;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  width: 100%;
-  min-width: 252px;
-  height: 100vh;
-  top: 0;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-}
-
-
-.dashboard-nav:after, .dashboard-nav:before {
-  content: "";
-  position: absolute;
-  top: 0;
-}
-
-.dashboard-content {
- flex-grow: 1;
-}
-
-.dashboard-content .navbar .dashboard-nav-toggle {
-    position: relative;
-    margin-right: 15px;
-    padding: 9px 10px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    background-color: transparent;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
+.dashboard-nav-push-content {
+  width: 240px;
+  display: inline-block;
+  flex-shrink: 0;
 }
 </style>
 {% endblock %}
 
 
 {% block dashboard_nav %}
-<div class="dashboard-nav dashboard-nav-color-theme">
+<div class="dashboard-nav initial">
   <div class="dashboard-nav-inner-container">
-    <div>
-      <div class="dashboard-nav-main">
+    <div class="dashboard-nav-main dashboard-nav-color-theme">
+      <div>
         <header>
-          <nav>
+          <nav class="navbar navbar-default">
             {% include "_navbarbrand.html" %}
           </nav>
         </header>
@@ -176,7 +106,7 @@
         </div>
       </div>
       {% block dashboard_footer %}
-      <div class="dashboard-nav-footer">
+      <div class="dashboard-nav-footer dashboard-nav-color-theme">
         <div>
           Powered by &copy; 2018 DjaoDjin. All rights reserved.
         </div>
@@ -190,24 +120,27 @@
       </div>
       {% endblock %}
     </div>
-    <div class="dashboard-nav-toggle dashboard-nav-border dashboard-nav-color-theme">
-      <i class="fa initial"></i>
+    <div class="dashboard-nav-border dashboard-nav-color-theme">
+<ul class="nav navbar-nav">
+  <li>
+    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
+        <i class="fa initial"></i>
+    </a>
+  </li>
+</ul>
     </div>
   </div><!-- /.dashboard-nav-inner-container -->
 </div>
+<div class="dashboard-nav-push-content"></div>
 {% endblock %}
 
 {% block content_navbarbrand %}
-<button aria-expanded="false" class="dashboard-nav-toggle" type="button">
-    <i class="fa fa-bars"></i>
-</button>
 {% endblock %}
 
 {% block content %}
 <div>
-  <div class="col-sm-12">
-    <div class="row" style="display: flex;">
-      <div class="col-sm-7" style="flex-grow: 1;">
+    <section class="row method">
+      <div class="col-sm-7">
         <a name="authentication" href="#authentication"><h2>Authentication</h2></a>
         <p>
 Authenticate your account by including your API key in API requests.
@@ -225,7 +158,7 @@ You do not need to provide a password.
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
         </p>
       </div>
-      <div class="col-sm-5 code" style="flex-grow: 1;">
+      <div class="col-sm-5 code">
         <h3>Example request</h3>
         <pre class="code">curl {{api_base_url}} \
     -u BQokikJOvBiI2HlWgH4olfQ24ret3awZ:</pre>
@@ -234,10 +167,10 @@ curl uses the -u flag to pass basic auth credentials.
 (Adding a colon after your API key prevents curl from asking for a password.)
         </p>
       </div>
-    </div>
+    </section>
     {% for api_end_point in api_end_points %}
-    <div class="row" style="display: flex;">
-      <div class="col-sm-7" style="flex-grow: 1;">
+    <section class="row method">
+      <div class="col-sm-7">
         {% if api_end_point.tags != variable_watcher %}
         <a name="{{api_end_point.tags}}" href="#{{api_end_point.tags}}"><h2>{{api_end_point.tags|capitalize}}</h2></a>
         {% set variable_watcher = api_end_point.tags %}
@@ -284,13 +217,12 @@ curl uses the -u flag to pass basic auth credentials.
             {% endfor %}
         </responses-list><!-- .responses-list -->
       </div>
-      <div class="col-sm-5 code" style="flex-grow: 1;">
+      <div class="col-sm-5 code">
         <h3>Examples</h3>
         <div class="code">{{api_end_point.examples}}</div>
       </div>
-    </div>
+    </section>
     {% endfor %}
-  </div>
 </div>
 {% endblock %}
 

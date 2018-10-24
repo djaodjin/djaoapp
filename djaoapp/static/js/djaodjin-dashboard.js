@@ -43,33 +43,27 @@ $(document).ready(function(){
             }
         });
 */
-        $(".dashboard-nav-toggle").click(function() {
+        $(".dashboard-nav-toggle").click(function(event) {
+            event.preventDefault();
             var element = $(this);
             var icon = element.children("i");
 //            var nav = element.parents(".dashboard-nav");
             var nav = $(".dashboard-nav");
             var containerInner = nav.parents(".dashboard-inner-container");
+            var navBorder = nav.find(".dashboard-nav-border");
             var navWidth = nav.width();
-//            var toggleWidth = element.width();
-            var toggleWidth = $(".dashboard-nav-border").width();
-
+            var toggleWidth = navBorder.width();
             var sidebarEdge = containerInner.css("left");
+            nav.removeClass("initial opened closed");
+            icon.removeClass("initial opened closed");
             if( sidebarEdge === "-" + (navWidth - toggleWidth) + "px" ) {
                 sidebarEdge = 0;
-                if( icon.hasClass("fa-angle-double-right") ) {
-                    icon.toggleClass("fa-angle-double-left fa-angle-double-right");
-                }
-                if( icon.hasClass("fa-bars") ) {
-                    icon.toggleClass("fa-bars fa-close");
-                }
+                nav.addClass("opened");
+                icon.addClass("opened");
             } else {
                 sidebarEdge = "-" + (navWidth - toggleWidth) + "px";
-                if( icon.hasClass("fa-angle-double-left") ) {
-                    icon.toggleClass("fa-angle-double-left fa-angle-double-right");
-                }
-                if( icon.hasClass("fa-close") ) {
-                    icon.toggleClass("fa-bars fa-close");
-                }
+                nav.addClass("closed");
+                icon.addClass("closed");
             }
             var animates = {left: sidebarEdge};
             var container =  containerInner.parents(".dashboard-container");

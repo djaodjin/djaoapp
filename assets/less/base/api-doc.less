@@ -1,5 +1,22 @@
 .code {
-  background-color: #f3f3f3;
+  background-color: #222527;
+  color: #dde4e8;
+}
+
+.method {
+  display: flex;
+}
+
+.method > div {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: @screen-xs-max) {
+
+  .method {
+    display: block;
+  }
+
 }
 
 pre.code{
@@ -7,10 +24,40 @@ pre.code{
   border:none;
   padding:0;
   font-size: 14;
+  background: #272b2d;
+  color: #d0d0d0;
+  direction: ltr;
+  font-family: monospace;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-spacing: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
 pre.code code{
-  background-color: transparent;
+}
+
+.code.json .name {
+  color: #c1ef65;
+}
+
+.code.json .literal.string {
+  color: #d0d0d0;
+}
+
+.code.json .literal.number {
+  color: #77bcd7;
+}
+
+.code.json .keyword {
+  color: #ebde68;
 }
 
 .param-list-header {
