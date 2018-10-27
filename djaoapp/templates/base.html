@@ -189,7 +189,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         user_profile_redirect: "{% if urls and urls.user %}{{urls.user.profile_redirect}}{% endif %}",
     {% endif %}
     },
-    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}2{% endif %},
+    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
     tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
     {% if sort_by_field %}sortByField: "{{sort_by_field}}",{% endif %}
     {% if sort_direction %}sortDirection: "{{sort_direction}}",{% endif %}
