@@ -120,6 +120,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
     role_extra_fields = (('role_function', 'Function', False),)
     organization_extra_fields = (
         ('organization_parent_corporation', 'Parent corporation', False),
+        ('organization_dba_name', 'Doing Business As', False),
     )
 
     def form_invalid(self, form):
