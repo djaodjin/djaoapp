@@ -16,18 +16,15 @@ Provider Dashboard
             </div>
         </div>
         <table class="table table-striped">
-            <tbody id="search-results" v-cloak v-show="itemsLoaded && items.results.length > 0">
-                <tr v-for="entry in items.results">
-                    <td><a v-bind:href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
+            <tbody id="search-results" v-cloak v-show="(itemsLoaded || usersLoaded) && combined.results.length > 0">
+                <tr v-for="entry in combined.results">
+                    <td><a :href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</td>
                     <td>[[entry.full_name]]</td>
                     <td>[[entry.email]]</td>
                     <td>[[entry.created_at | relativeDate]]</td>
                 </tr>
             </tbody>
         </table>
-        <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
-            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
-        </div>
     </div>
 </div>
 <div class="row">
