@@ -161,9 +161,8 @@
     "fields": {
         "app": 3,
         "rank": 13,
-        "path": "/app/:organization/",
-        "rule_op": 15,
-        "kwargs": "{\"organization\": null, \"plan\": \"basic\"}",
+        "path": "/app/new/",
+        "rule_op": 1,
         "is_forward": false
     },
     "model": "rules.Rule", "pk": 13
@@ -172,8 +171,9 @@
     "fields": {
         "app": 3,
         "rank": 14,
-        "path": "/app",
-        "rule_op": 1,
+        "path": "/app/:organization/",
+        "rule_op": 15,
+        "kwargs": "{\"organization\": null, \"plan\": \"basic\"}",
         "is_forward": false
     },
     "model": "rules.Rule", "pk": 14
@@ -182,11 +182,21 @@
     "fields": {
         "app": 3,
         "rank": 15,
+        "path": "/app",
+        "rule_op": 1,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 15
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 16,
         "path": "/forward/",
         "rule_op": 1,
         "is_forward": true
     },
-    "model": "rules.Rule", "pk": 15
+    "model": "rules.Rule", "pk": 16
 },
 {
     "fields": {

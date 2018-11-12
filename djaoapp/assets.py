@@ -73,12 +73,12 @@ register('css_dashboard', css_dashboard)
 js_angular = Bundle(
     'vendor/moment.js',
     'vendor/moment-timezone-with-data.js',
-    'vendor/angular.min.js',
-    'vendor/angular-touch.min.js',
-    'vendor/angular-animate.min.js',
+    'vendor/angular.js', # modified to prevent / encode
+    'vendor/angular-touch.js',
+    'vendor/angular-animate.js',
     'vendor/angular-dragdrop.js',
-    'vendor/angular-resource.js', # modified to prevent / encode
-    'vendor/angular-route.min.js',
+    'vendor/angular-resource.js',
+    'vendor/angular-route.js',
     'vendor/angular-sanitize.js',
     'vendor/ui-bootstrap-tpls.js',
     'vendor/jquery-ui.js',
@@ -98,7 +98,7 @@ js_dashboard = Bundle(
     'js/djaodjin-dashboard.js',
     'js/djaodjin-signup-angular.js',
     'js/djaodjin-saas-angular.js',
-    'js/djaodjin-proxy-angular.js',
+    'js/djaodjin-rules-angular.js',
     'js/djaodjin-metrics.js',
     'js/uploadapp.js',
     filters='jsmin', output='cache/dashboard.js')

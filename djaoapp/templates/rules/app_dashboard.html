@@ -237,12 +237,9 @@ app.config(['$interpolateProvider', '$httpProvider',
       $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
 }]);
-app.constant('urls', {
-    rules_api_rule_url: "{{urls.rules.api_rules}}",
-    rules_api_detail_url: "{{urls.rules.api_detail}}",
-    rules_api_generate_key: "{{urls.rules.api_generate_key}}",
-    rules_api_session_data: "{{urls.rules.api_session_data}}",
-});
+app.constant('settings', {
+  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %}});
 
 jQuery(document).ready(function($) {
     $('#new-rule').on('shown.bs.modal', function(){
