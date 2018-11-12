@@ -23,7 +23,7 @@
             <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the name or email of the organization you wish to add.</p>" data-trip-position="s">
               <input name="organization" type="text" placeholder="Name or email"
                      autocomplete="off"
-                     ng-model="item.slug"
+                     ng-model="unregistered.slug"
                      uib-typeahead="item.slug for item in getCandidates($viewValue)"
                      uib-typeahead-loading="loadingOrganizations"
                      uib-typeahead-template-url="customTemplate.html"
@@ -87,8 +87,8 @@
         <form>
           <div class="modal-body">
             <p class="text-danger" ng-model="item">
-[[item.full_name]] was not found. This is an opportunity to invite
-a manager for [[item.full_name]] to join {{site.printable_name}}.
+[[unregistered.full_name]] was not found. This is an opportunity to invite
+a manager for [[unregistered.full_name]] to join {{site.printable_name}}.
             </p>
             <div class="form-group" style="margin-bottom: 15px;">
               <div class="col-sm-2">
@@ -96,7 +96,7 @@ a manager for [[item.full_name]] to join {{site.printable_name}}.
               </div>
               <div class="controls col-sm-10">
                 <input id="new-request-email" class="email"
-                       name="email" ng-model="item.email" type="text"
+                       name="email" ng-model="unregistered.email" type="text"
                        max-length="150" placeholder="invitee@example.com"
                        style="width:100%;" autofocus />
               </div>
@@ -109,7 +109,7 @@ a manager for [[item.full_name]] to join {{site.printable_name}}.
                           maxlength="255" type="text" rows="10">
 Hello,
 
-I would like to request access to [[item.full_name]].
+I would like to request access to [[unregistered.full_name]].
 
 Thank you,
 - {{request.user.first_name}}

@@ -15,7 +15,7 @@
     <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
       <input name="user" type="text" placeholder="Username or e-mail"
              autocomplete="off"
-             ng-model="item.slug"
+             ng-model="unregistered.slug"
              uib-typeahead="item.slug for item in getCandidates($viewValue)"
              uib-typeahead-loading="loadingUsers"
              uib-typeahead-template-url="customTemplate.html"
@@ -84,7 +84,7 @@
               <form class="form-horizontal">
                   <div class="modal-body">
                       <p class="text-danger" ng-model="item">
-[[item.slug]] is not yet registered. This is an opportunity to invite and
+[[unregistered.slug]] is not yet registered. This is an opportunity to invite and
 add her/him as a {{role_descr}} for {{organization.printable_name}}.
                       </p>
                       <div class="row form-group">
@@ -94,7 +94,7 @@ add her/him as a {{role_descr}} for {{organization.printable_name}}.
                           <div class="controls col-sm-10">
                               <input id="new-request-email"
                                      class="form-control" style="width:100%;"
-                                     ng-model="item.email"
+                                     ng-model="unregistered.email"
                                      name="email" type="text" max-length="150"
                                      placeholder="invitee@example.com"
                                      autofocus />
@@ -106,7 +106,7 @@ add her/him as a {{role_descr}} for {{organization.printable_name}}.
                               <textarea class="form-control"
                                         name="message"
                                         maxlength="255" type="text" rows="10">
-Hi [[item.email]],
+Hi [[unregistered.email]],
 
 I am adding you as a {{role_descr}} to {{organization.printable_name}}.
 

@@ -47,22 +47,23 @@ def environment(**options):
             get_template_search_path())
     env = DjaoappEnvironment(extensions=[AssetsExtension], **options)
     # Generic filters to render pages
-    env.filters['host'] = deployutils_extratags.host
-    env.filters['iterfields'] = djaoapp.templatetags.djaoapp_tags.iterfields
-    env.filters['is_checkbox'] = djaoapp.templatetags.djaoapp_tags.is_checkbox
-    env.filters['is_radio'] = djaoapp.templatetags.djaoapp_tags.is_radio
-    env.filters['is_textarea'] = djaoapp.templatetags.djaoapp_tags.is_textarea
-    env.filters['site_prefixed'] = \
-        multitier.templatetags.multitier_tags.site_prefixed
     env.filters['asset'] = multitier.templatetags.multitier_tags.asset
     env.filters['absolute_uri'] = \
         multitier.templatetags.multitier_tags.absolute_uri
     env.filters['djasset'] = djaoapp.templatetags.djaoapp_tags.djasset
-    env.filters['messages'] = djaoapp.templatetags.djaoapp_tags.messages
+    env.filters['host'] = deployutils_extratags.host
     env.filters['is_authenticated'] = \
         djaoapp.templatetags.djaoapp_tags.is_authenticated
-    env.filters['pluralize'] = djaoapp.templatetags.djaoapp_tags.pluralize
+    env.filters['is_checkbox'] = djaoapp.templatetags.djaoapp_tags.is_checkbox
+    env.filters['is_radio'] = djaoapp.templatetags.djaoapp_tags.is_radio
+    env.filters['is_textarea'] = djaoapp.templatetags.djaoapp_tags.is_textarea
+    env.filters['iterfields'] = djaoapp.templatetags.djaoapp_tags.iterfields
+    env.filters['messages'] = djaoapp.templatetags.djaoapp_tags.messages
     env.filters['no_cache'] = djaoapp.templatetags.djaoapp_tags.no_cache
+    env.filters['pluralize'] = djaoapp.templatetags.djaoapp_tags.pluralize
+    env.filters['site_prefixed'] = \
+        multitier.templatetags.multitier_tags.site_prefixed
+    env.filters['to_json'] = deployutils_extratags.to_json
 
     # Standard site pages
     env.filters['site_printable_name'] = \

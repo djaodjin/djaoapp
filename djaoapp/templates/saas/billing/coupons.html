@@ -46,8 +46,8 @@
                 <h4 class="text-center"><em>No Coupons<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
             </td>
         </tr>
-        <tr ng-repeat="coupon in coupons.results" ng-cloak ng-show="coupons.$resolved && coupons.results.length > 0">
-            <td><a id="[[coupon.code]]" href="{{urls.provider.metrics_coupons}}[[coupon.code]]/">[[coupon.code]]</a></td>
+        <tr id="[[coupon.code]]" ng-repeat="coupon in coupons.results" ng-cloak ng-show="coupons.$resolved && coupons.results.length > 0">
+            <td><a href="{{urls.provider.metrics_coupons}}[[coupon.code]]/">[[coupon.code]]</a></td>
             <td>[[coupon.percent]]</td>
             <td>
                 <span>
