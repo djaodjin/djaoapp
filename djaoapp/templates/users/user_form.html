@@ -148,13 +148,10 @@ reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
     $interpolateProvider.endSymbol(']]');
 }]);
 reopenSignupApp.constant('settings', {
-modals: {
+  modals: {
     generate_key: "#generate-key",
-},
-urls: {
-    api_generate_keys: "{{urls.user.api_generate_keys}}",
-    api_user_profile: "{{urls.user.api_profile}}",
-    user_profile_redirect: "{{urls.user.profile_redirect}}",
-}});
+  },
+  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+});
 </script>
 {% endblock %}
