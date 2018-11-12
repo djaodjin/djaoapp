@@ -25,14 +25,8 @@ reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
     $interpolateProvider.endSymbol(']]');
 }]);
 reopenSignupApp.constant('settings', {
-urls: {
-    api_activities: "{{urls.api_activities}}",
-    api_contact: "{{urls.api_contact}}",
-    api_contacts: "{{urls.api_contacts}}",
-    api_candidates: "{{'/api/profile/'|site_prefixed}}",
-    contacts: "{{urls.contacts}}",
-},
-itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
 });
 </script>
 {% block contacts_scripts %}{% endblock %}

@@ -8,7 +8,33 @@
         <h2>Contact profile</h2>
       </div>
       <div class="col-sm-6">
+        <dl>
+          <dt>Nick name</dt>
+          <dd>{{contact.nick_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Full name</dt>
+          <dd>{{contact.full_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Email</dt>
+          <dd>{{contact.email}}</dd>
+        </dl>
         <h3>Activities</h3>
+        <div ng-hide="items.$resolved">
+          <h3>Loading ...</h3>
+        </div>
+        <div id="has-no-activity" ng-cloak ng-show="items.$resolved && items.results.length == 0">
+          <h4><em>No activity<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+        </div>
+        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+          <div ng-repeat="entry in items.results">
+            <p>[[entry.created_at | date : mediumDate]] <a href="{{'/profile/'|site_prefixed}}[[entry.account]]/">[[entry.account]]</a> by [[entry.created_by]]:</p>
+            <div>[[entry.text]]</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
         <form class="form" ng-submit="createActivity()">
          <div class="form-group">
             <label>Account</label>
@@ -30,32 +56,6 @@
           </div>
           <button class="btn btn-primary" type="submit" value="submit">Create activity</button>
         </form>
-        <div ng-hide="items.$resolved">
-          <h3>Loading ...</h3>
-        </div>
-        <div ng-cloak ng-show="items.$resolved && items.results.length == 0">
-          <h4><em>No activity<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
-        </div>
-        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
-          <div ng-repeat="entry in items.results">
-            <p>[[entry.created_at | date : mediumDate]] <a href="{{'/profile/'|site_prefixed}}[[entry.account]]/">[[entry.account]]</a> by [[entry.created_by]]:</p>
-            <div>[[entry.text]]</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <dl>
-          <dt>Nick name</dt>
-          <dd>{{contact.nick_name}}</dd>
-        </dl>
-        <dl>
-          <dt>Full name</dt>
-          <dd>{{contact.full_name}}</dd>
-        </dl>
-        <dl>
-          <dt>Email</dt>
-          <dd>{{contact.email}}</dd>
-        </dl>
       </div>
     </div>
   </div>
