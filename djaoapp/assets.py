@@ -100,7 +100,6 @@ js_dashboard = Bundle(
     'js/djaodjin-saas-angular.js',
     'js/djaodjin-rules-angular.js',
     'js/djaodjin-metrics.js',
-    'js/uploadapp.js',
     filters='jsmin', output='cache/dashboard.js')
 register('js_dashboard', js_dashboard)
 

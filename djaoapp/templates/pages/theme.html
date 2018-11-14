@@ -27,8 +27,8 @@ as well.
 {% endblock %}
 
 {% block saas_content %}
-<div ng-app="UploaderApp">
-  <div class="col-sm-offset-3 col-sm-6" ng-controller="UploaderCtrl" ng-cloak>
+<div>
+  <div class="col-sm-offset-3 col-sm-6">
     <div class="pages-upload"
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
@@ -45,40 +45,10 @@ as well.
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration. */
-var app = angular.module('UploaderApp');
-app.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    /* Makes it easier to separate between django and angularjs templates */
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-app.constant('urls', {
-    url_base_theme: "{{urls.pages.api_themes}}",
-});
-app.constant('csrf', {
-    csrf_token: "{{csrf_token}}",
-});
-app.constant('s3', {
-    mediaPrefix: "{% if media_prefix %}{{media_prefix}}{% else %}{% endif %}",
-{% if access_key %}
-    accessKey: "{{access_key}}",
-    policy: "{{aws_policy}}",
-    signature: "{{aws_policy_signature}}",
-    securityToken: "{{security_token}}",
-    amzCredential: "{{x_amz_credential}}",
-    amzDate: "{{x_amz_date}}",
-{% endif %}
-});
-</script>
-  <script type="text/javascript">
 jQuery(document).ready(function($) {
   $(".pages-upload").djupload({
       uploadUrl: "{{urls.pages.api_themes}}",
   });
 });
-  </script>
+</script>
 {% endblock %}
