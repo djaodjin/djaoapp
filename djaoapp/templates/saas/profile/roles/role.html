@@ -9,7 +9,7 @@
   <a><span bind-html-unsafe="match.model.email | uibTypeaheadHighlight:query"></span>
   </a>
 </script>
-<div ng-controller="userRelationListCtrl">
+<div id="user-relation-list-container" ng-controller="userRelationListCtrl">
   <form class="form-inline" ng-submit="save($event)">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
@@ -74,6 +74,7 @@
        when the user must register later. -->
   <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Add {{role_descr}}" aria-hidden="true">
+  <uiv-modal v-model="modalOpen" v-cloak title="Invite {{role_descr}}">
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
@@ -81,7 +82,7 @@
                           data-dismiss="modal" aria-hidden="true">&times;</button>
                   <h4 class="modal-title">Invite {{role_descr}} ...</h4>
               </div>
-              <form class="form-horizontal">
+              <form class="form-horizontal" @submit.prevent="create">
                   <div class="modal-body">
                       <p class="text-danger" ng-model="item">
 [[unregistered.slug]] is not yet registered. This is an opportunity to invite and
@@ -111,34 +112,76 @@ Hi [[unregistered.email]],
 I am adding you as a {{role_descr}} to {{organization.printable_name}}.
 
 Thank you,
-- {{request.user.first_name}}
-                              </textarea>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default"
-                              data-dismiss="modal">Cancel</button>
-                      <button id="new-rule-submit" ng-click="create($event)"
-                              type="submit" class="btn btn-primary">Invite {{role_descr}}</button>
-                  </div>
-              </form>
+- {{request.user.first_name}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div slot="footer">
+                  <button type="button" class="btn btn-default"
+                          @click="modalOpen=false">Cancel</button>
+                  <button id="new-rule-submit"
+                          type="submit" class="btn btn-primary">Invite {{role_descr}}</button>
+                </div>
+            </uiv-modal>
+        </form>
+        <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+            <div>
+                <form class="form-inline" @submit.prevent="submit">
+                    <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
+                        <div>
+                            <input id="userTypeahead" class="form-control input-sm" style="width: 100%;" type="text" placeholder="Username or Email"/>
+                            <uiv-typeahead
+                            v-model="itemSelected"
+                            target="#userTypeahead"
+                            :async-function="getUsers"
+                            item-key="slug"
+                            :open-on-focus="false"
+                             />
+                        </div>
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary btn-sm" type="submit">Add {{role_descr.title}}</button>
+                        </div>
+                    </div>
+                    <div style="height:14px">
+                        <i v-show="searching" class="fa fa-spinner"></i>
+                    </div>
+                </form>
+            </div>
+        </user-typeahead>
+        <div class="table-responsive">
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-show="!itemsLoaded">
+                        <td colspan="3">
+                            <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                        </td>
+                    </tr>
+                    <tr v-show="itemsLoaded && items.results.length == 0">
+                        <td colspan="3">
+                            <h4 class="text-center"><em>No {{role_descr.title}}</em></h4>
+                        </td>
+                    </tr>
+                    <tr :class="item.request_key ? 'disabled' : 'active'" v-for="(item, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
+                        <td style="vertical-align:middle;">[[item.user.slug]]</td>
+                        <td style="vertical-align:middle;">[[item.user.email]] <button class="btn btn-default btn-sm" v-if="item.request_key" @click="save(item.user)">grant</button></td>
+                        <td style="vertical-align:middle;"><i>[[item.grant_key ? "invited" : ""]]</i></td>
+                        <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" @click="remove(index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to revoke access to the user.</p>" data-trip-position="s"><i class="fa fa-remove"></i></button></td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+          <div class="text-center" v-cloak v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
           </div>
       </div>
-  </div>
+    </section>
 </div>
-<!-- end of modal dialog -->
-</section>
-</div>
-{% endblock %}
-
-{% block dashboard_bodyscripts %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".add-role-modal").on('shown.bs.modal', function () {
-    var self = this;
-    $(self).find("[name='email']").focus();
-  });
-});
-</script>
 {% endblock %}

@@ -3,21 +3,11 @@
 {% block saas_title %}HTTP Request Pipeline{% endblock %}
 
 {% block saas_page_layout %}
-<div ng-app="ruleApp">
-  <div  ng-controller="RuleListCtrl">
-    <div class="row">
-    <div class="col-md-12" data-trip data-trip-index="1" data-trip-content="<h2>Configure the request pipeline</h2><p>Set URL access rules and where authorized requests are forwared to...</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-      <h3>Domain</h3>
-      <div data-trip data-trip-index="2" data-trip-content="<p>Check the domain for which the access rules apply. All HTTP requests to {{site_available_at_url}}<br />will be checked against the access rules defined below.</p>" data-trip-position="s">
-        <p>
-The site is available at <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
-        </p>
-      </div>
-    </div>
-    <div class="col-md-12">
+<script type="text/x-template" id="rules-table">
+<div>
       <h3>Access Rules</h3>
       <div class="table-responsive">
-      <table class="table table-condensed table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
+<table class="table table-condensed table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
         <thead>
           <tr>
             <th>Rank</th>
@@ -28,8 +18,14 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th></th>
           </tr>
         </thead>
-        <tbody id="rules" dnd-list="rules">
-          <tr ng-repeat="rule in rules.results" ng-cloak="" id="rule-[[rule.rank]]">
+        <draggable
+            v-model="items.results"
+            @start="drag=true"
+            @end="drag=false"
+            @change="moved"
+            element="tbody"
+            :options="{draggable:'.item'}">
+          <tr v-for="(rule, index) in items.results" v-cloak :id="'rule-' + rule.rank" :key="rule.rank" class="item">
             <td width="100">
               <div class="btn btn-default btn-sm">
                 <i class="fa fa-bars"></i></div>
@@ -37,70 +33,78 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <td>[[rule.path]]</td>
             <td width="200">
               <select name="rule" class="form-control input-sm"
-                      ng-model="rule.allow"
-                      ng-change="updateAllow(rule)">
+                      v-model="rule.allow"
+                      @change="update(rule)">
                 {% for rule in rules %}
-                <option value="{{rule.0}}">{{rule.1}}</option>
+                <option value='{{rule.0|safe}}'>{{rule.1|safe}}</option>
                 {% endfor %}
               </select>
             </td>
             <td width="100" class="text-center">
               <input type="checkbox" name="is_forward"
-                     ng-model="rule.is_forward"
-                     ng-change="updateForward(rule)"
-                     ng-checked="rule.is_forward" />
+                     v-model="rule.is_forward"
+                     @change="update(rule)"
+                     :checked="rule.is_forward" />
             </td>
             <td class="engaged">
                 <span ng-hide="engagedEditMode[$index]" ng-click="editEngaged($index)">[[rule.engaged]] <i class="fa fa-pencil"></i></span>
                 <input ng-show="engagedEditMode[$index]" type="text" class="form-control" ng-keydown="saveEngaged($event, rule, $index)" ng-blur="saveEngaged($event, rule, $index)" ng-model="rule.engaged" uib-tooltip="Edit engaged and press 'Enter'" uib-tooltip-trigger="focus" uib-tooltip-placement="top" id="input_engaged">
             </td>
             <td width="100">
-              <button class="btn btn-danger btn-sm" ng-click="remove($index)">
+              <button class="btn btn-danger btn-sm" @click="remove(index)">
                 <i class="fa fa-trash-o"></i></button>
             </td>
           </tr>
-          <tr>
-            <td colspan="6">
+          <tr slot="footer">
+            <td colspan="5">
               <a id="add-rule" href="#"
-                 data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> Add ...</a>
+                 data-toggle="modal" data-target="#new-rule"
+                 @click.prevent="ruleModalOpen=true"><i class="fa fa-plus"></i> Add ...</a>
             </td>
           </tr>
+          </draggable>
         </tbody>
       </table>
       </div>
-      <!-- modal dialog for Adding a rule -->
-      <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
-           aria-labelledby="Add Access Rule" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close"
-                      data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Path accessed ...</h4>
-            </div>
-            <div class="modal-body">
-              <div id="div_id_new_rule_path" class="form-group">
+        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+        </div>
+    <form @submit.prevent="create">
+        <modal v-model="ruleModalOpen" title="Path accessed...">
+            <div id="div_id_new_rule_path" class="form-group">
                 <div class="controls ">
                   <input id="id_new_rule_path"
                          class="form-control"
                          maxlength="255"
                          name="new_rule_path" type="text"
-                         ng-model="newRule.path">
+                         v-model="newRule.path" autofocus>
                   <p class="help-block">Your path should end with '/'. If not it will be automatically added.</p>
                 </div>
               </div>
+            <div slot="footer">
+                <button type="button" class="btn btn-default"
+                        @click.prevent="ruleModalOpen=false">Cancel</button>
+                <button id="new-rule-submit"
+                        type="submit" class="btn btn-primary">Create</button>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default"
-                      data-dismiss="modal">Cancel</button>
-              <button id="new-rule-submit" ng-click="create()"
-                      type="button" class="btn btn-primary"
-                      data-dismiss="modal">Create</button>
-            </div>
-          </div>
-        </div>
+        </modal>
+    </form>
+    </div>
+</script>
+
+<div id="rule-list-container">
+  <div>
+    <div class="row">
+    <div class="col-md-12" data-trip data-trip-index="1" data-trip-content="<h2>Configure the request pipeline</h2><p>Set URL access rules and where authorized requests are forwared to...</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+      <h3>Domain</h3>
+      <div data-trip data-trip-index="2" data-trip-content="<p>Check the domain for which the access rules apply. All HTTP requests to {{site_available_at_url}}<br />will be checked against the access rules defined below.</p>" data-trip-position="s">
+        <p>
+The site is available at <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
+        </p>
       </div>
-      <!-- end of modal dialog for Adding a rule -->
+    </div>
+    <div class="col-md-12">
+      <rules-table></rules-table>
     </div>
     <div class="col-md-12">
       <h3>Web application</h3>
@@ -110,16 +114,16 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         <div id="endpoint" class="tab-pane active">
         <div class="row">
           <div class="col-md-12" style="margin-bottom:50px;">
-            <form id="entry-point-form" method="post" ng-submit="submitEntryPoint('#entry-point-form')">
+            <form id="entry-point-form" method="post" @submit.prevent="submitEntryPoint">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
               <div class="row">
                 <div class="form-group col-md-4">
                   <label for="">Entry point *</label>
-                  <input class="form-control" id="id_entry_point" maxlength="100" name="entry_point" type="text" value="{{form.instance.entry_point}}" data-trip data-trip-index="4" data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
+                  <input ref="entryPoint" class="form-control" id="id_entry_point" maxlength="100" name="entry_point" type="text" value="{{form.instance.entry_point}}" data-trip data-trip-index="4" data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
                 </div>
                 <div class="form-group col-md-4">
                   <label for="">Session encoding *</label>
-                  <select class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
+                  <select ref="sessionBackend" class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
                     <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>No session forwarded</option>
                     <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>Cookie-based session backend</option>
                     <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>JWT-based session backend</option>
@@ -127,7 +131,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                 </div>
                 <div class="form-group col-md-4">
                   <div style="height:25px;"></div>
-                  <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+                  <a class="btn btn-primary" id="generate-key-btn" @click="openKeyModal" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</a>
                 </div>
               </div>
               <div class="form-actions">
@@ -135,46 +139,31 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               </div>
             </form>
           </div>
-          <!-- modal dialog for Encrypted Session Key -->
-          <div id="generate-key" class="modal fade"
-               tabindex="-1" role="dialog"
-               aria-labelledby="Encrypted Session Key" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close"
-                          data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">Encrypted Session Key</h4>
-                </div>
-                <div class="modal-body">
-                  <div class="form-group">
-                    <div class="controls">
-                      <input class="form-control form-control"
-                             name="key" maxlength="32" type="text" disabled
-                             value="Generating ..." />
-                    </div>
-                  </div>
-                  <div>
-                    <p>
-This is the AES key used to encrypt the session cookie passed
-to your application when a request was authorized.
-                    </p>
-                    <p>
-The key will only be displayed once. Keep it secure.
-                    </p>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button id="regenerate-key" class="btn btn-default"
-                          type="button" ng-click="generateKey('#generate-key')">Generate</button>
-                  <button type="button" class="btn btn-primary"
-                          data-dismiss="modal">OK</button>
+        <modal v-model="modalOpen" title="Encrypted Session Key">
+            <div class="form-group">
+                <div class="controls">
+                  <input class="form-control form-control"
+                         name="key" maxlength="32" type="text" disabled
+                         v-model="sessionKey"
+                         value="Generating ..." />
                 </div>
               </div>
+              <div>
+                <p>
+This is the AES key used to encrypt the session cookie passed
+to your application when a request was authorized.
+                </p>
+                <p>
+The key will only be displayed once. Keep it secure.
+                </p>
+              </div>
+            <div slot="footer">
+                <button id="regenerate-key" class="btn btn-default"
+                          type="button" @click="generateKey">Generate</button>
+                <button type="button" class="btn btn-primary"
+                        @click.prevent="modalOpen=false">OK</button>
             </div>
-          </div>
-        </div>
-        <!-- end of modal dialog for Encrypted Session Key -->
+        </modal>
         </div>
     </div><!-- /Web Application -->
     <div class="col-md-12">
@@ -183,10 +172,10 @@ The key will only be displayed once. Keep it secure.
 Enter a username and check the token that will be passed to your backend
 service.
       </p>
-      <form id="token-form" class="form-inline" method="post" ng-submit="getSessionData('#token-form')">
+      <form id="token-form" class="form-inline" method="post" @submit.prevent="getSessionData">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="input-group">
-          <input id="id_username" class="form-control" maxlength="100" name="username" type="text">
+          <input v-model="testUsername" id="id_username" class="form-control" maxlength="100" name="username" type="text">
           <span class="input-group-btn">
             <button type="submit" class="btn btn-primary">Check</button>
           </span>
@@ -217,7 +206,6 @@ service.
     </div><!-- /testing tokens -->
   </div>
 </div>
-{% endblock %}
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">

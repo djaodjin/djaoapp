@@ -4,8 +4,6 @@
 
 
 {% block saas_page_layout %}
-<div ng-app="ruleApp">
-  <div  ng-controller="RuleListCtrl">
 <section id="notifications">
   <h2>Notification e-mails</h2>
   <table class="table">
@@ -69,34 +67,10 @@
     </tr>
   </table>
 </section>
-  </div>
-</div>
 {% endblock %}
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
-/**
-Implementation Note #1:
-  Not including a list of dependent modules (2nd parameter to `module`)
-  "re-opens" the module for additional configuration.
-Implementation Note #2:
-  Pasting this code in $(document).ready will lead to a $injector/unpr
-  error in Angularjs.
-*/
-var app = angular.module('ruleApp');
-app.config(['$interpolateProvider', '$httpProvider',
-    function($interpolateProvider, $httpProvider) {
-      $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-      /* Makes it easier to separate between django and angularjs templates */
-      $interpolateProvider.startSymbol('[[');
-      $interpolateProvider.endSymbol(']]');
-}]);
-app.constant('urls', {
-    rules_api_rule_url: "{{urls.rules.api_rules}}",
-    rules_api_detail_url: "{{urls.rules.api_detail}}",
-    rules_api_generate_key: "{{urls.rules.api_generate_key}}",
-});
-
 jQuery(document).ready(function($) {
     $(".send-test-email").click(function(event) {
         var self = this;

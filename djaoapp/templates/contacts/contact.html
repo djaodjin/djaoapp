@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container">
-  <div class="row" ng-app="signupApp">
-    <div ng-controller="contactCtrl">
+  <div class="row">
+    <div id="contact-edit-container">
       <div class="page-header">
         <h2>Contact profile</h2>
       </div>
@@ -52,10 +52,37 @@
          </div>
          <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" name="text" ng-model="activity.text"></textarea>
+            <textarea class="form-control" name="text" v-model="activityText"></textarea>
           </div>
           <button class="btn btn-primary" type="submit" value="submit">Create activity</button>
         </form>
+        <div v-show="!itemsLoaded">
+          <h3>Loading ...</h3>
+        </div>
+        <div v-cloak v-show="itemsLoaded && items.results.length === 0">
+          <h4><em>No activity</em></h4>
+        </div>
+        <div id="has-activities" v-cloak v-show="itemsLoaded && items.results.length > 0">
+          <div v-for="entry in items.results">
+            <p>[[entry.created_at | formatDate('MMM D, Y')]] <a :href="'{{'/profile/'|site_prefixed}}' + entry.account + '/'">[[entry.account]]</a> by [[entry.created_by]]:</p>
+            <div>[[entry.text]]</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <dl>
+          <dt>Nick name</dt>
+          <dd>{{contact.nick_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Full name</dt>
+          <dd>{{contact.full_name}}</dd>
+        </dl>
+        <dl>
+          <dt>Email</dt>
+          <dd>{{contact.email}}</dd>
+        </dl>
+>>>>>>> 12f9468610ca72698b6345cde73f53f807a61098
       </div>
     </div>
   </div>

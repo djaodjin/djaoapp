@@ -3,61 +3,73 @@
 {% block saas_title %}Accessible by {{user}}{% endblock %}
 
 {% block saas_content %}
-<section id="managed" ng-app="saasApp">
-<div ng-controller="accessibleListCtrl">
+<section id="accessible-list-container">
   <div class="text-right">
-    <span>Filter</span> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
+    <span>Filter</span> <input type="text" v-model="params.q" @input="filterList" />
   </div>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name<button class="btn-link btn-sort" ng-click="sortBy('slug')"><i class="fa fa-sort[[dir.slug ? ('-' + dir.slug) : '']]"></i></button></th>
-        <th>Role<button class="btn-link btn-sort" ng-click="sortBy('role_name')"><i class="fa fa-sort[[dir.role_name ? ('-' + dir.role_name) : '']]"></i></button></th>
+        <th>Name<button class="btn-link btn-sort" @click="sortBy('slug')"><i :class="sortIcon('slug')"></i></button></th>
+        <th>Role<button class="btn-link btn-sort" @click="sortBy('role_name')"><i :class="sortIcon('role_name')"></i></button></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td colspan="3">
-          <form class="form-inline">
+          <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+          <form class="form-inline"
+                ng-submit="save($event)" @submit.prevent="submit">
             <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the name or email of the organization you wish to add.</p>" data-trip-position="s">
-              <input name="organization" type="text" placeholder="Name or email"
+              <input id="userTypeahead"
+                     class="form-control input-sm" style="width: 100%;"
+                     name="organization" type="text" placeholder="Name or email"
                      autocomplete="off"
                      ng-model="unregistered.slug"
                      uib-typeahead="item.slug for item in getCandidates($viewValue)"
                      uib-typeahead-loading="loadingOrganizations"
-                     uib-typeahead-template-url="customTemplate.html"
-                     class="form-control input-sm" style="width: 100%;">
+                     uib-typeahead-template-url="customTemplate.html" />
+              <uiv-typeahead
+                 v-model="itemSelected"
+                 target="#userTypeahead"
+                 :async-function="getUsers"
+                 item-key="slug"
+                 :open-on-focus="false"
+                 />
               <div class="input-group-btn">
-                <button class="btn btn-primary btn-sm" type="submit" ng-click="save($event)">Add</button>
+                <button class="btn btn-primary btn-sm" type="submit">Add</button>
               </div>
             </div>
             <div style="height:14px">
               <i ng-show="loadingOrganizations"  class="fa fa-spinner"></i>
             </div>
           </form>
+          </user-typeahead>
         </td>
       </tr>
-      <tr ng-hide="items.$resolved">
+      <tr v-show="!itemsLoaded">
         <td colspan="3">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </td>
       </tr>
-      <tr ng-show="items.$resolved && items.results.length == 0">
+      <tr v-show="itemsLoaded && items.results.length == 0">
           <td colspan="3">No organization accessible for {{user}}</td>
       </tr>
-      <tr id="[[entry.slug]]" ng-repeat="entry in items.results" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+      <tr v-for="(entry, index) in items.results" v-cloak v-show="itemsLoaded && items.results.length > 0">
         <td>
-          <a href="{{urls.organization.profile_base}}[[entry.slug]]/">[[entry.printable_name]]</a>
+          <a :href="'{{urls.organization.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
         </td>
         <td class="text-center">
           [[entry.request_key ? "requested" : entry.role_description]]
         </td>
-        <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" ng-click="remove($event, $index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to cancel access request.</p>" data-trip-position="s"><i class="fa fa-trash-o"></i></button></td>
+        <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" @click="remove(index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to cancel access request.</p>" data-trip-position="s"><i class="fa fa-trash-o"></i></button></td>
       </tr>
     </tbody>
   </table>
-  <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
+  <div class="text-center"
+       ng-show="items.$resolved && totalItems > itemsPerPage" ng-cloak
+       v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
     <ul uib-pagination class="pagination-sm" ng-model="currentPage"
                 total-items="totalItems"
                 items-per-page="itemsPerPage"
@@ -68,6 +80,10 @@
                 first-text="&laquo;"
                 last-text="&raquo;"
                 ng-change="pageChanged()"></ul>
+    <uiv-pagination v-model="params.page"
+                    :total-page="pageCount"
+                    @change="get"
+                    boundary-links />
   </div>
   <div class="text-right">
     <a href="{{urls.organization_create}}" class="btn btn-primary">Create new ...</a>
@@ -77,6 +93,7 @@
        on an organization. -->
   <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Request access" aria-hidden="true">
+  <uiv-modal v-model="modalOpen" v-cloak title="Request access...">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -84,7 +101,7 @@
                   data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Request access ...</h4>
         </div>
-        <form>
+        <form ng-submit="create($event)" @submit.prevent="create">
           <div class="modal-body">
             <p class="text-danger" ng-model="item">
 [[unregistered.full_name]] was not found. This is an opportunity to invite
@@ -119,27 +136,15 @@ Thank you,
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Cancel</button>
-            <button id="new-rule-submit" ng-click="create($event)"
+                    data-dismiss="modal" @click="modalOpen=false">Cancel</button>
+            <button id="new-rule-submit"
                     type="submit" class="btn btn-primary"
                     data-dismiss="modal">Request access</button>
           </div>
         </form>
       </div>
     </div>
+  </uiv-modal>
   </div>
-  <!-- end of modal dialog -->
-</div>
 </section>
-{% endblock %}
-
-{% block dashboard_bodyscripts %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".add-role-modal").on('shown.bs.modal', function () {
-    var self = this;
-    $(self).find("[name='email']").focus();
-  });
-});
-</script>
 {% endblock %}

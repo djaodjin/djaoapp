@@ -11,8 +11,8 @@ You can update a user contact information, as well as login credentials here.
 {% endblock %}
 
 {% block saas_content %}
-<section id="personal" ng-app="signupApp">
-  <div ng-controller="userProfileCtrl">
+<section id="personal">
+  <div id="user-profile-container">
     {% include "_form.html" %}
     <hr />
     <div class="panel panel-default" style="margin:50px auto;">
@@ -32,7 +32,7 @@ You can update a user contact information, as well as login credentials here.
         {% if urls.user.api_generate_keys %}
         <div class="row" style="margin-top:15px;">
           <div class="col-sm-5">
-            <button id="generate-key-open" class="btn btn-default" style="width:100%;" data-toggle="modal" data-target="#generate-key">Reset API Key</button>
+            <button id="generate-key-open" class="btn btn-default" style="width:100%;" @click="resetKey">Reset API Key</button>
           </div>
           <div class="col-sm-7">
             <span class="btn">Obtain a new API Key to authenticate.</span>
@@ -48,7 +48,7 @@ You can update a user contact information, as well as login credentials here.
       <div class="panel-body" style="padding: 15px;">
         <div class="row" style="margin-top: 15px;">
           <div class="col-sm-5">
-            <button id="delete-action-open" class="btn btn-danger" style="width:100%;" data-toggle="modal" data-target="#delete-action">Delete user</button>
+            <button id="delete-action-open" class="btn btn-danger" style="width:100%;" @click="userModalOpen=true">Delete user</button>
           </div>
           <div class="col-sm-7">
             <span class="btn">This operation cannot be reversed.</span>
@@ -56,77 +56,48 @@ You can update a user contact information, as well as login credentials here.
         </div>
       </div>
     </div>
-    <!-- modal dialog to delete user. -->
-    <div class="modal fade"
-         id="delete-action" tabindex="-1" role="dialog"
-         aria-labelledby="Delete user" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close"
-                    data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete user ...</h4>
-          </div>
-          <div class="modal-body">
-            <p>
+    <modal v-model="userModalOpen" title="Delete Profile...">
+        <p>
 You are about to delete the profile and account
 for <em>{{user.full_name}}</em>.
 This operation cannot be reversed.
-            </p>
-            <p>
+        </p>
+        <p>
 Are you sure you want to continue?
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button id="cancel-delete"
-                    data-dismiss="modal"
-                    class="btn btn-default">Cancel</button>
-            <button type="button" id="delete-user-btn"
-                    data-dismiss="modal"
+        </p>
+        <div slot="footer">
+            <button
+                    class="btn btn-default"
+                    @click="userModalOpen=false">Cancel</button>
+            <button type="submit"
                     class="btn btn-danger"
-                    ng-click="deleteProfile($event)">Delete</button>
-          </div>
+                    @click="deleteProfile">Delete</button>
         </div>
-      </div>
-    </div>
-    <!-- modal to confirm deletion of user -->
+    </modal>
+    <modal v-model="apiModalOpen" title="API Key">
     <!-- modal dialog to generate API keys -->
-    <div id="generate-key" class="modal fade"
-         tabindex="-1" role="dialog"
-         aria-labelledby="API Keys" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close"
-                    data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">API Key</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <div class="controls">
-                <input class="form-control form-control"
-                       ng-model="api_key" name="key" maxlength="128"
-                       type="text" disabled value="Generating ..." />
-              </div>
-            </div>
-            <div>
-              <p>
-This is the API key you can use to authenticate with the service.
-              </p>
-              <p>
-The key will only be displayed once. Keep it secure.
-              </p>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button id="regenerate-key" class="btn btn-default"
-                    type="button" ng-click="generateKey('#generate-key')">Generate</button>
-            <button type="button" class="btn btn-primary"
-                    data-dismiss="modal">OK</button>
+        <div class="form-group">
+          <div class="controls">
+            <input class="form-control form-control"
+                   v-model="apiKey" name="key" maxlength="128"
+                   type="text" disabled placeholder="Generating..." />
           </div>
         </div>
-      </div>
-    </div>
+        <div>
+          <p>
+This is the API key you can use to authenticate with the service.
+          </p>
+          <p>
+The key will only be displayed once. Keep it secure.
+          </p>
+        </div>
+        <div slot="footer">
+            <button class="btn btn-default"
+                    type="button" @click="generateKey">Generate</button>
+            <button class="btn btn-primary"
+                    @click="apiModalOpen=false">OK</button>
+        </div>
+    </modal>
     <!-- end of modal dialog to generate API keys -->
   </div> <!-- userProfileCtrl -->
 </section>
