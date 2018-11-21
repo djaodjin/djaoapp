@@ -8,38 +8,90 @@
 {% endblock %}
 
 {% block saas_content %}
-<div id="coupon-performance">
-    <div id="coupon-users-container">
-        <p v-cloak v-show="itemsLoaded">
+<div id="coupon-performance" ng-app="saasApp">
+  <div id="coupon-users-container" ng-controller="cartItemListCtrl">
+    <p ng-show="items.$resolved" ng-cloak
+       v-show="itemsLoaded" v-cloak>
 {{coupon.code}} was used [[totalItems]] time[[totalItems > 0 ? "s" : ""]].
         </p>
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
-                    <th>User<button class="btn-link btn-sort" @click="sortBy('slug')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('slug')"></i></button></th>
-                    <th>Plan<button class="btn-link btn-sort" @click="sortBy('plan')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('plan')"></i></button></th>
-                    <th>Used at<button class="btn-link btn-sort" @click="sortBy('created_at')" data-trip data-trip-index="5" data-trip-content="<p>Sort coupon use by ascending and descending order.</p>" data-trip-position="s"><i :class="sortIcon('created_at')"></i></button></th>
+                    <th>User
+                        <button class="btn-link btn-sort"
+                          data-trip data-trip-index="5"
+                          data-trip-content="<p>Sort coupon use by ascending and descending order.</p>"
+                          data-trip-position="s"
+                          ng-click="sortBy('slug')"
+                          @click="sortBy('slug')">
+                          <i ng-class="'fa fa-sort' + (params.o === 'slug' ? ('-' + params.ot) : '')"
+                             :class="sortIcon('slug')"></i>
+                        </button>
+                    </th>
+                    <th>Plan
+                        <button class="btn-link btn-sort"
+                          data-trip data-trip-index="5"
+                          data-trip-content="<p>Sort coupon use by ascending and descending order.</p>"
+                          data-trip-position="s"
+                          ng-click="sortBy('plan')"
+                          @click="sortBy('plan')">
+                          <i ng-class="'fa fa-sort' + (params.o === 'plan' ? ('-' + params.ot) : '')"
+                             :class="sortIcon('plan')"></i>
+                        </button>
+                    </th>
+                    <th>Used at
+                        <button class="btn-link btn-sort"
+                          data-trip data-trip-index="5"
+                          data-trip-content="<p>Sort coupon use by ascending and descending order.</p>"
+                          data-trip-position="s"
+                          ng-click="sortBy('created_at')"
+                          @click="sortBy('created_at')">
+                            <i ng-class="'fa fa-sort' + (params.o === 'created_at' ? ('-' + params.ot) : '')"
+                               :class="sortIcon('created_at')"></i>
+                        </button>
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-show="!itemsLoaded">
+                <tr ng-show="!items.$resolved"
+                    v-show="!itemsLoaded">
                     <td colspan="3">
                         <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                     </td>
                 </tr>
-                <tr v-show="itemsLoaded && items.results.length == 0">
+                <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
+                    v-show="itemsLoaded && items.results.length == 0" v-cloak>
                     <td colspan="3">
-                        <h4 class="text-center"><em>No use of {{coupon.code}} coupon<span v-show="params.q"> [[params.q]]</span></em></h4>
+                        <h4 class="text-center"><em>No use of {{coupon.code}} coupon<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
                     </td>
                 </tr>
-                <tr v-for="item in items.results" v-cloak
-                    v-show="itemsLoaded && items.results.length > 0" >
-                    <td><a :href="'{{urls.user.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
+                <tr ng-prop-id="item.user.slug"
+                    ng-repeat="item in items.results"
+                    ng-show="items.$resolved && items.results.length > 0" ng-cloak
+                    v-bind:id="item.user.slug"
+                    v-for="item in items.results"
+                    v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                    <td><a ng-prop-id="item.user.slug"
+                           ng-prop-href="'{{urls.user.profile_redirect}}' + item.user.slug + '/'"
+                           v-bind:href="'{{urls.user.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
                     <td>[[item.plan]]</td>
                     <td>[[item.created_at | formatDate('MMM D, Y') ]]</td>
                 </tr>
         </table>
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+        <div class="text-center"
+             ng-show="items.$resolved && items.results.length > itemsPerPage" ng-cloak
+             v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+            <ul uib-pagination class="pagination-sm"
+                total-items="totalItems"
+                items-per-page="itemsPerPage"
+                boundary-links="true"
+                max-size="maxSize"
+                previous-text="&lsaquo;"
+                next-text="&rsaquo;"
+                first-text="&laquo;"
+                last-text="&raquo;"
+                ng-model="currentPage"
+                ng-change="pageChanged()"></ul>
             <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
         </div>
     </div>

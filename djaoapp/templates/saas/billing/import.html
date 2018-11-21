@@ -3,8 +3,12 @@
 {% block saas_title %}Add offline transaction{% endblock %}
 
 {% block saas_page_layout %}
-<section>
-<div class="col-md-6 col-md-offset-3" id="import-transaction-container">
+<section ng-app="saasApp">
+  <script type="text/ng-template" id="customTemplate.html">
+    <a><span bind-html-unsafe="match.model.organization.printable_name + ' - ' + match.model.plan.title | uibTypeaheadHighlight:query"></span></a>
+  </script>
+  <div id="import-transaction-container" class="col-md-6 col-md-offset-3"
+       ng-controller="importTransactionsCtrl">
     <form action="." class="form-horizontal" method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <fieldset>
@@ -18,7 +22,11 @@
                 type="text"
                 placeholder="Subscriber name or email"
                 name="subscription"
-                autocomplete="off"/>
+                autocomplete="off"
+                ng-model="subscription"
+                uib-typeahead="subscription as subscription.organization.slug + ':' + subscription.plan.slug for subscription in getSubscriptions($viewValue)"
+                uib-typeahead-loading="loadingSubscriptions"
+                uib-typeahead-template-url="customTemplate.html"/>
             <uiv-typeahead
                 v-model="itemSelected"
                 target="#typeahead"
@@ -29,7 +37,8 @@
           {% for error in form.subscription.errors %}
           <span class="help-block"><strong>{{error}}</strong></span>
           {% endfor %}
-          <div v-show="searching" style="height:14px">
+          <div ng-show="loadingSubscriptions"
+               v-show="searching" style="height:14px">
             <i class="fa fa-spinner"></i>
           </div>
         </div>
@@ -39,9 +48,15 @@
                 Created At
               </label>
               <div class="input-group">
-                <input class="form-control" type="text" v-model="created_at" name="created_at" required>
+                <input class="form-control" type="text" name="created_at"
+                  ng-model="createdAt" ng-required="true"
+                  is-open="opened.createdAt"
+                  ng-prop-uib-datepicker-popup="format"
+                  datepicker-options="dateOptions"
+                  close-text="Close"
+                  v-model="created_at" required>
                 <div class="input-group-btn">
-                  <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+                  <btn class="dropdown-toggle" ng-click="open($event, 'createdAt')"><i class="fa fa-calendar"></i></btn>
                 </div>
               </div>
               <template slot="dropdown">

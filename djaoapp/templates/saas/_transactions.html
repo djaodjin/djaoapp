@@ -7,9 +7,16 @@
             From
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" v-model="params.start_at">
+            <input class="form-control date" type="text"
+                   ng-prop-uib-datepicker-popup="format"
+                   ng-model="params.start_at"
+                   is-open="opened.start_at"
+                   ng-required="true"
+                   close-text="Close" ng-cloak
+                   v-model="params.start_at" v-cloak>
             <div class="input-group-btn">
-              <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+              <btn class="dropdown-toggle"
+                   ng-click="open($event, 'start_at')"><i class="fa fa-calendar"></i></btn>
             </div>
           </div>
           <template slot="dropdown">
@@ -29,9 +36,15 @@
             To
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" v-model="params.ends_at">
+            <input class="form-control date" type="text"
+                   ng-prop-uib-datepicker-popup="format"
+                   is-open="opened.ends_at"
+                   ng-required="true"
+                   close-text="Close"
+                   ng-model="params.ends_at" ng-cloak
+                   v-model="params.ends_at" v-cloak>
             <div class="input-group-btn">
-              <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+              <btn class="dropdown-toggle" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></btn>
             </div>
           </div>
           <template slot="dropdown">
@@ -47,7 +60,9 @@
       </div>
       <div class="form-group">
         <label>Filter</label>
-        <input class="form-control" type="text" v-model="params.q" @input="filterList" />
+        <input class="form-control" type="text"
+          ng-model="params.q" ng-change="filterList(params.q)"
+          v-model="params.q" @input="filterList" />
       </div>
       <div class="pull-right">
         <a id="download" :href="'{{download_url}}?q=' + params.q + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
@@ -57,36 +72,78 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Date<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
-          <th>Amount<button class="btn-link btn-sort" @click="sortBy('amount')"><i :class="sortIcon('amount')"></i></button></th>
-          <th>Description<button class="btn-link btn-sort" @click="sortBy('description')"><i :class="sortIcon('description')"></i></button></th>
+          <th>Date
+              <button class="btn-link btn-sort"
+                ng-click="sortBy('date')"
+                @click="sortBy('created_at')">
+                <i ng-class="'fa fa-sort' + (dir.date ? ('-' + dir.date) : '')"
+                   :class="sortIcon('created_at')"></i>
+              </button>
+          </th>
+          <th>Amount
+              <button class="btn-link btn-sort"
+                ng-click="sortBy('amount')"
+                @click="sortBy('amount')">
+                <i ng-class="'fa fa-sort' + (dir.amount ? ('-' + dir.amount) : '')"
+                   :class="sortIcon('amount')"></i>
+              </button>
+          </th>
+          <th>Description
+              <button class="btn-link btn-sort"
+                ng-click="sortBy('description')"
+                @click="sortBy('description')">
+                <i ng-class="'fa fa-sort' + (dir.description ? ('-' + dir.description) : '')"
+                   :class="sortIcon('description')"></i>
+              </button>
+          </th>
           <th></th>
         </tr>
       </thead>
-      <tbody v-if="!itemsLoaded">
+      <tbody ng-if="!items.$resolved"
+             v-if="!itemsLoaded">
         <tr>
           <td colspan="4">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
           </td>
         </tr>
       </tbody>
-      <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+      <tbody ng-show="items.$resolved && items.results.length == 0" ng-cloak
+             v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="4">
-            <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
+            <h4 class="text-center"><em>No transactions<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
           </td>
         </tr>
       </tbody>
-      <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <tr v-for="entry in items.results">
-          <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
-          <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-          <td colspan="2" v-html="entry.description"></td>
+      <tbody id="has-transactions"
+             ng-show="items.$resolved && items.results.length > 0" ng-cloak
+             v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr ng-repeat="entry in items.results"
+            v-for="entry in items.results">
+          <td>[[entry.created_at | formatDate]]</td>
+          <td ng-class="entry.is_debit ? 'text-danger' : ''"
+              :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+          <td colspan="2"
+              ng-bind-html="entry.description | unsafe"
+              v-html="entry.description"></td>
         </tr>
       </tbody>
     </table>
     </div>
-    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+    <div class="text-center"
+         ng-show="items.$resolved && items.results.length > itemsPerPage" ng-cloak
+         v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+        <ul uib-pagination class="pagination-sm"
+            total-items="totalItems"
+            items-per-page="itemsPerPage"
+            boundary-links="true"
+            max-size="maxSize"
+            previous-text="&lsaquo;"
+            next-text="&rsaquo;"
+            first-text="&laquo;"
+            last-text="&raquo;"
+            ng-model="currentPage"
+            ng-change="pageChanged()"></ul>
         <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
     </div>
 </section>

@@ -12,6 +12,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #pylint: disable=undefined-variable
 FEATURES_REVERT_TO_DJANGO = False # XXX 2016-03-31 temporary product switch
+JS_FRAMEWORK = 'angularjs'
+#JS_FRAMEWORK = 'vuejs'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)
@@ -276,6 +278,7 @@ if FEATURES_REVERT_TO_DJANGO:
     'django.template.context_processors.request',
     'django.template.context_processors.media',
     'multitier.context_processors.features_debug',
+    'djaoapp.context_processors.js_framework',
             ],
             'loaders': TEMPLATES_LOADERS,
             'libraries': {},

@@ -73,6 +73,7 @@ register('css_dashboard', css_dashboard)
 js_angular = Bundle(
     'vendor/moment.js',
     'vendor/moment-timezone-with-data.js',
+    'vendor/jquery-ui.js',
     'vendor/angular.js', # modified to prevent / encode
     'vendor/angular-touch.js',
     'vendor/angular-animate.js',
@@ -81,22 +82,24 @@ js_angular = Bundle(
     'vendor/angular-route.js',
     'vendor/angular-sanitize.js',
     'vendor/ui-bootstrap-tpls.js',
+    filters='jsmin', output='cache/angular.js')
+register('js_angular', js_angular)
+
+
+js_vue = Bundle(
+    'vendor/moment.js',
+    'vendor/moment-timezone-with-data.js',
     'vendor/jquery-ui.js',
     'vendor/Sortable.js',
     'vendor/vue.js',
     'vendor/uiv.min.js',
     'vendor/vue2-filters.js',
     'vendor/vuedraggable.js',
-    'js/djaodjin-saas-vue.js',
-    'js/djaodjin-signup-vue.js',
-    'js/djaodjin-rules-vue.js',
-    filters='jsmin', output='cache/angular.js')
-register('js_angular', js_angular)
+    filters='jsmin', output='cache/vue.js')
+register('js_vue', js_vue)
 
 
-# must be present:
-#  - ???
-js_dashboard = Bundle(
+js_djaodjin_angular = Bundle(
     'vendor/dropzone.js',                  # XXX also in js_pages
     'vendor/d3.js',
     'vendor/nv.d3.js',
@@ -108,8 +111,24 @@ js_dashboard = Bundle(
     'js/djaodjin-saas-angular.js',
     'js/djaodjin-rules-angular.js',
     'js/djaodjin-metrics.js',
-    filters='jsmin', output='cache/dashboard.js')
-register('js_dashboard', js_dashboard)
+    filters='jsmin', output='cache/djaodjin-angular.js')
+register('js_djaodjin_angular', js_djaodjin_angular)
+
+
+js_djaodjin_vue = Bundle(
+    'vendor/dropzone.js',                  # XXX also in js_pages
+    'vendor/d3.js',
+    'vendor/nv.d3.js',
+    'vendor/trip.js',
+    'vendor/chardinjs.js',
+    'js/djaodjin-upload.js',
+    'js/djaodjin-dashboard.js',
+    'js/djaodjin-signup-vue.js',
+    'js/djaodjin-saas-vue.js',
+    'js/djaodjin-rules-vue.js',
+    'js/djaodjin-metrics.js',
+    filters='jsmin', output='cache/djaodjin-vue.js')
+register('js_djaodjin_vue', js_djaodjin_vue)
 
 
 # Related to djaodjin-pages edition tools

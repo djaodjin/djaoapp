@@ -90,6 +90,7 @@ def environment(**options):
         env.filters['addslashes'] = django.template.defaultfilters.addslashes
         env.globals.update({
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
+            'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
             'url': reverse,
             'cycle': django.template.defaulttags.cycle
         })

@@ -14,7 +14,7 @@ Update your profile, contact information, password, etc.
 {% block saas_content %}
 {% include "_form.html" %}
 <hr />
-<div class="panel panel-danger" style="margin:50px auto;" id="remove-profile-container">
+<div id="remove-profile-container" class="panel panel-danger" style="margin:50px auto;" ng-app="saasApp">
     <div class="panel-heading">
         Danger Zone
     </div>
@@ -31,7 +31,9 @@ Update your profile, contact information, password, etc.
         {% endif %}
         <div class="row" style="margin-top: 15px;">
             <div class="col-sm-5">
-                <button id="delete-action-open" class="btn btn-danger" style="width:100%;" @click="modalOpen=true">Delete profile</button>
+                <button id="delete-action-open"
+                        class="btn btn-danger" style="width:100%;"
+                        data-toggle="modal" data-target="#delete-action">Delete profile</button>
             </div>
             <div class="col-sm-7">
 <span class="btn">This operation cannot be reversed.</span>
@@ -39,24 +41,40 @@ Update your profile, contact information, password, etc.
         </div>
     </div>
 <!-- modal dialog to delete organization. -->
-<modal v-model="modalOpen" title="Delete Profile...">
-    <p>
-        You are about to delete the profile and account
-        for <em>{{organization.printable_name}}</em>.
-        This operation cannot be reversed.
-    </p>
-    <p>
-        Are you sure you want to continue?
-    </p>
-    <div slot="footer">
-        <button
-                class="btn btn-default"
-                @click="modalOpen=false">Cancel</button>
-        <button type="submit"
-                class="btn btn-danger"
-                @click="deleteProfile">Delete</button>
-    </div>
-</modal>
+<div class="modal fade"
+     id="delete-action" tabindex="-1" role="dialog"
+     aria-labelledby="Delete Profile" aria-hidden="true"
+      ng-controller="organizationProfileCtrl">
+    <form class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Profile ...</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+You are about to delete the profile and account
+for <em>{{organization.printable_name}}</em>.
+This operation cannot be reversed.
+                </p>
+                <p>
+Are you sure you want to continue?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-delete"
+                        data-dismiss="modal"
+                        class="btn btn-default">Cancel</button>
+                <button type="button" id="delete-organization-btn"
+                        class="btn btn-danger"
+                        data-dismiss="modal"
+                        ng-click="deleteProfile($event)"
+                        @click="deleteProfile">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
 <!-- modal to confirm deletion of organization -->
 </div>
 {% endblock %}
