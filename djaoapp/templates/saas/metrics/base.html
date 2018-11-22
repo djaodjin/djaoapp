@@ -24,7 +24,9 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <div id="metrics-table" class="tab-pane active">
+      <div ng-prop-id="tab"
+           ng-class="{'tab-pane': true, active: tab == activeTab}"
+           ng-repeat="tab in tabs">
         <div class="date-chooser pull-right">
           <span>To</span>
           <select  class="form-control" ng-model="timezone" style="display:inline-block; width:80px;">
@@ -34,7 +36,7 @@
           <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
           <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
         </div>
-        <div id="metrics-chart" class="chart-content">
+        <div class="chart-content">
           <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </div>
         <!-- Display as a table -->
@@ -44,8 +46,8 @@
                 <td></td>
                 <td ng-repeat="col in getTable(activeTab).data[0].values">[[col[0] | monthHeading]]</td>
               </tr>
-              <tr ng-repeat="row in getTable(activeTab).data">
-                <td ng-if="row.location"><span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a id="[[row.key]]" href="[[row.location]]">[[row.key]]</a></td>
+              <tr id="[[row.key]]" ng-repeat="row in getTable(activeTab).data">
+                <td ng-if="row.location"><span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a href="[[row.location]]">[[row.key]]</a></td>
                 <td ng-if="!row.location">[[row.key]]</td>
                 <td ng-repeat="col in row.values" title="[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale : false]]">[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale]]</td>
               </tr>
