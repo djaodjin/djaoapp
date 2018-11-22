@@ -18,7 +18,7 @@
             <dt id="balance-amount"
                 data-trip data-trip-index="2"
                 data-trip-content="<p>The amount available for you to transfer to your bank account.</p>"
-                data-trip-position="s">[[balance_amount | humanizeCell(balance_unit, 0.01)]]</dt>
+                data-trip-position="s">[[humanizeBalance()]]</dt>
             <dd><a id="saas_withdraw_funds"
                    href="{{ urls.provider.withdraw_funds }}"
                    data-trip data-trip-index="4"

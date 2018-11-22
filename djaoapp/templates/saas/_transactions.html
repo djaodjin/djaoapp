@@ -65,7 +65,9 @@
           v-model="params.q" @input="filterList" />
       </div>
       <div class="pull-right">
-        <a id="download" :href="'{{download_url}}?q=' + params.q + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+        <a id="download" class="btn btn-default" role="button"
+           ng-prop-href="'{{download_url}}?q=' + params.q + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at"
+           v-bind:href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
     <div class="table-responsive">

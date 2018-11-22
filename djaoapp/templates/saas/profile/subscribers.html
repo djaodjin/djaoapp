@@ -338,8 +338,8 @@ Subscriptions to {{organization.printable_name}}
             <td>
                 <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
-            <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
-            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td>[[entry.created_at | formatDate]]</td>
+            <td>[[entry.ends_at | formatDate]]</td>
             <td class="description editable">
                 <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
                     [[entry.description]] <i class="fa fa-pencil"></i>
@@ -368,7 +368,7 @@ Subscriptions to {{organization.printable_name}}
         <tr ng-show="entry.created_at_CHANGED"
             v-for="entry in [group[0]]">
             <td colspan="5">
-                [[entry.created_at | formatDate('MMM D, Y')]]
+                [[entry.created_at | formatDate]]
             </td>
         </tr>
         <tr ng-class="endsSoon(entry)"
@@ -378,7 +378,7 @@ Subscriptions to {{organization.printable_name}}
                 <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
-            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td>[[entry.ends_at | formatDate]]</td>
             <td class="description editable">
                 <span v-show="!entry.edit_description" @click="editDescription(entry, entry.created_at)">
                     [[entry.description]] <i class="fa fa-pencil"></i>
@@ -407,7 +407,7 @@ Subscriptions to {{organization.printable_name}}
         <tr ng-show="entry.ends_at_CHANGED"
             v-for="entry in [group[0]]">
             <td colspan="5">
-                [[entry.ends_at | formatDate('MMM D, Y')]]
+                [[entry.ends_at | formatDate]]
             </td>
         </tr>
         <tr ng-class="endsSoon(entry)"
@@ -417,7 +417,7 @@ Subscriptions to {{organization.printable_name}}
                 <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
-            <td>[[entry.created_at | formatDate('MMM D, Y')]]</td>
+            <td>[[entry.created_at | formatDate]]</td>
             <td class="description editable">
                 <span v-show="!entry.edit_description" @click="editDescription(entry, entry.ends_at)">
                     [[entry.description]] <i class="fa fa-pencil"></i>

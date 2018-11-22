@@ -17,7 +17,7 @@
          data-trip-position="screen-center"
          ng-controller="metricsCtrl">
         <ul class="nav nav-tabs dashboard-tab table-chooser">
-            <li ng-class="{active: tab == activeTab}"
+            <li ng-class="{active: table.key == activeTab}"
                 ng-repeat="table in tables"
                 ng-click="tabClicked($event)"
                 v-bind:class="activeClass(index)"
@@ -33,7 +33,7 @@
         <div class="tab-content">
             <div role="tabpanel"
                  ng-prop-id="table.key"
-                 ng-class="tab-pane {active: tab == activeTab}"
+                 ng-class="{'tab-pane': true, active: table.key == activeTab}"
                  ng-repeat="table in tables"
                  v-bind:id="table.key"
                  v-bind:class="['tab-pane', activeClass(index)]"
@@ -93,7 +93,7 @@
                         <td ng-if="row.location"
                             v-if="row.location">
                             <span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"
-                                  :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a :href="row.location">[[row.key]]</a>
+                                  :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a ng-prop-href="row.location" :href="row.location">[[row.key]]</a>
                         </td>
                         <td ng-if="!row.location"
                             v-if="!row.location">[[row.key]]</td>
@@ -101,7 +101,7 @@
                             ng-prop-title="humanizeCell(col[1], getTable(activeTab).unit, getTable(activeTab).scale)"
                              v-for="col in row.values"
                             :key="col[0].toISOString()"
-                            :title="col[1]|humanizeCell(currentTableData.unit, currentTableData.scale, false)">[[col[1]|humanizeCell(currentTableData.unit, currentTableData.scale)]]</td>
+                            :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
                       </tr>
                       {% block metrics_extra_data %}
                       {% endblock %}

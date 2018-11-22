@@ -67,7 +67,8 @@
                 </tr>
                 <tr ng-prop-id="item.user.slug"
                     ng-repeat="item in items.results"
-                    ng-show="items.$resolved && items.results.length > 0" ng-cloak
+                    ng-show="items.$resolved && items.results.length > 0"
+                  ng-cloak
                     v-bind:id="item.user.slug"
                     v-for="item in items.results"
                     v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -75,7 +76,7 @@
                            ng-prop-href="'{{urls.user.profile_redirect}}' + item.user.slug + '/'"
                            v-bind:href="'{{urls.user.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
                     <td>[[item.plan]]</td>
-                    <td>[[item.created_at | formatDate('MMM D, Y') ]]</td>
+                    <td>[[item.created_at | formatDate ]]</td>
                 </tr>
         </table>
         <div class="text-center"
