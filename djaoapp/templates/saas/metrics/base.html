@@ -19,7 +19,7 @@
         <ul class="nav nav-tabs dashboard-tab table-chooser">
             <li ng-class="{active: table.key == activeTab}"
                 ng-repeat="table in tables"
-                ng-click="tabClicked($event)"
+                ng-click="tabClicked(table)"
                 v-bind:class="activeClass(index)"
                 v-for="(table, index) in tables"
                 @click="tabClicked(index)">
