@@ -39,7 +39,7 @@
     "ace-builds": "1.2.2"
     },
     "resolutions": {
-        "angular": "1.4.10",
+        "angular": "1.7.5",
         "jquery": "1.11.1"
     }
 }
