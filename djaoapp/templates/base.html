@@ -19,6 +19,17 @@
     {% assets "css_base" %}
     <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
     {% endassets %}
+    <style media="screen">
+    {% if VUEJS %}
+[v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
+  display: none !important;
+}
+    {% else %}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+    {% endif %}
+    </style>
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
     {% if csrf_token %}
     <meta name="csrf-token" content="{{csrf_token}}">

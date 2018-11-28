@@ -39,42 +39,54 @@
                  v-bind:class="['tab-pane', activeClass(index)]"
                  v-for="(table, index) in tables"
                  v-bind:key="table.key">
-                <div class="date-chooser pull-right">
-                  <span>To</span>
-                  <select class="form-control" style="display:inline-block; width:80px;"
-                      ng-model="timezone"
-                      v-model="timezone"
-                      @change="prepareCurrentTabData">
-                    <option value="local">Local</option>
-                    <option value="utc">UTC</option>
-                  </select>
+                <form class="form-inline date-chooser pull-right">
                     <uiv-dropdown class="form-group" append-to-body menu-right>
-                      <btn class="dropdown-toggle"
-                        ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></btn>
-                      <template slot="dropdown">
-                        <li>
-                          <uiv-date-picker
-                            v-model="ends_at"
-                            v-on:input="prepareCurrentTabData"
-                            icon-control-left="fa fa-caret-left"
-                            icon-control-right="fa fa-caret-right" />
-                        </li>
-                      </template>
+                        <label class="control-label" for="ends_at">
+                            To
+                        </label>
+                        <div class="input-group">
+                            <input class="form-control date"
+                                  data-trip data-trip data-trip-index="2"
+                                  data-trip-content="<p>Look back through time.</p>"
+                                  data-trip-position="s"
+                                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
+                                  ng-model="ends_at"
+                                  ng-change="prepareCurrentTabData(ends_at, timezone)"
+                                  ng-required="true"
+                                  is-open="opened"
+                                  close-text="Close"
+                                  datepicker-options="dateOptions"
+                                  datepicker-mode="'month'"
+                                  max-date="maxDate"
+                                  show-button-bar="false"></input>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default"
+                                        ng-click="open($event, 'ends_at')"
+                                        v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                                <select class="form-control" style="width:80px;"
+                                        ng-model="timezone"
+                                        ng-change="prepareCurrentTabData(ends_at, timezone)"
+                                        v-model="timezone"
+                                        @change="prepareCurrentTabData">
+                                    <option value="local">Local</option>
+                                    <option value="utc">UTC</option>
+                                </select>
+                            </span>
+                        </div>
+                        <template slot="dropdown">
+                            <li>
+                                <uiv-date-picker
+                                     v-model="ends_at"
+                                     v-on:input="prepareCurrentTabData"
+                                     icon-control-left="fa fa-caret-left"
+                                     icon-control-right="fa fa-caret-right" />
+                            </li>
+                        </template>
                     </uiv-dropdown>
-                  <span class="date"
-                        data-trip data-trip data-trip-index="2"
-                        data-trip-content="<p>Look back through time.</p>"
-                        data-trip-position="s"
-                        ng-prop-uib-datepicker-popup="format"
-                        ng-model="ends_at"
-                        ng-required="true"
-                        is-open="opened"
-                        close-text="Close"
-                        datepicker-options="dateOptions"
-                        datepicker-mode="'month'"
-                        max-date="maxDate"
-                        show-button-bar="false">[[ends_at | formatDate]]</span>
-                </div>
+                </form>
                 <div class="chart-content">
                   <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                 </div>

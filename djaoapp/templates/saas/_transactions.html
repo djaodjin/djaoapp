@@ -8,16 +8,17 @@
           </label>
           <div class="input-group">
             <input class="form-control date" type="text"
-                   ng-prop-uib-datepicker-popup="format"
+                   uib-datepicker-popup="{{DATETIME_FORMAT}}"
                    ng-model="params.start_at"
                    is-open="opened.start_at"
                    ng-required="true"
                    close-text="Close" ng-cloak
                    v-model="params.start_at" v-cloak>
-            <div class="input-group-btn">
-              <btn class="dropdown-toggle"
-                   ng-click="open($event, 'start_at')"><i class="fa fa-calendar"></i></btn>
-            </div>
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle"
+                    ng-click="open($event, 'start_at')"><i class="fa fa-calendar"></i>
+                </button>
+            </span>
           </div>
           <template slot="dropdown">
             <li>
@@ -37,14 +38,16 @@
           </label>
           <div class="input-group">
             <input class="form-control date" type="text"
-                   ng-prop-uib-datepicker-popup="format"
+                   uib-datepicker-popup="{{DATETIME_FORMAT}}"
                    is-open="opened.ends_at"
                    ng-required="true"
                    close-text="Close"
                    ng-model="params.ends_at" ng-cloak
                    v-model="params.ends_at" v-cloak>
             <div class="input-group-btn">
-              <btn class="dropdown-toggle" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></btn>
+                <button type="button" class="btn btn-default dropdown-toggle"
+                    ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i>
+                </button>
             </div>
           </div>
           <template slot="dropdown">
@@ -64,7 +67,7 @@
           ng-model="params.q" ng-change="filterList(params.q)"
           v-model="params.q" @input="filterList" />
       </div>
-      <div class="pull-right">
+      <div class="form-group">
         <a id="download" class="btn btn-default" role="button"
            ng-prop-href="'{{download_url}}?q=' + params.q + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at"
            v-bind:href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>

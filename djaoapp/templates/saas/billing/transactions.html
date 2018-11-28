@@ -20,7 +20,7 @@
               <div class="input-group">
                 <input class="form-control date" type="text"
                   close-text="Close"
-                  ng-prop-uib-datepicker-popup="format"
+                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
                   is-open="opened.start_at"
                   ng-required="true"
                   ng-model="params.start_at"
@@ -48,7 +48,7 @@
               <div class="input-group">
                 <input class="form-control" type="text"
                   close-text="Close"
-                  ng-prop-uib-datepicker-popup="format"
+                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
                   is-open="opened.ends_at"
                   ng-required="true"
                   ng-model="params.ends_at"

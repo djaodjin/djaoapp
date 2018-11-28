@@ -48,15 +48,17 @@
                 Created At
               </label>
               <div class="input-group">
-                <input class="form-control" type="text" name="created_at"
+                <input class="form-control date" type="text" name="created_at"
+                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
                   ng-model="createdAt" ng-required="true"
                   is-open="opened.createdAt"
-                  ng-prop-uib-datepicker-popup="format"
-                  datepicker-options="dateOptions"
                   close-text="Close"
-                  v-model="created_at" required>
+                  v-model="created_at">
                 <div class="input-group-btn">
-                  <btn class="dropdown-toggle" ng-click="open($event, 'createdAt')"><i class="fa fa-calendar"></i></btn>
+                  <button type="button" class="btn btn-default"
+                          ng-click="open($event, 'createdAt')"
+                          v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                  </button>
                 </div>
               </div>
               <template slot="dropdown">

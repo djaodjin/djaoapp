@@ -57,7 +57,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                       v-model="rule.allow"
                       @change="update(rule)">
                 {% for rule in rules %}
-                <option value="{{rule.0|safe}}">{{rule.1|safe}}</option>
+                <option value="{{rule.0}}">{{rule.1}}</option>
                 {% endfor %}
               </select>
             </td>

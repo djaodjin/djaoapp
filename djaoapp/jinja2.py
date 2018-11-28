@@ -91,6 +91,7 @@ def environment(**options):
         env.globals.update({
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
             'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
+            'DATETIME_FORMAT': "MMM dd, yyyy",
             'url': reverse,
             'cycle': django.template.defaulttags.cycle
         })
