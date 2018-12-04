@@ -10,7 +10,7 @@ Subscriptions to {{organization.printable_name}}
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
         {% if registered %}
         <li ng-click="tabClicked($event)">
-            <a href="#registered-users" data-toggle="tab">Registered</a>
+            <a href="#registered" data-toggle="tab">Registered</a>
         </li>
         {% endif %}
         {% for tab in tabs %}
@@ -23,7 +23,7 @@ Subscriptions to {{organization.printable_name}}
     <!-- Tab panes -->
     <div class="tab-content">
         {% if registered %}
-        <div id="registered-users" class="tab-pane" role="tabpanel">
+        <div id="registered" class="tab-pane" role="tabpanel">
             <div style="margin-top:10px;margin-bottom:10px;">
                 <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
                 <a id="download-registered" href="{{registered.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>

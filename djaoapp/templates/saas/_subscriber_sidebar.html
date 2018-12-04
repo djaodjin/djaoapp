@@ -1,6 +1,6 @@
 <ul class="nav">
   <li>
-    <a id="app_home" href="{{request|url_app}}"><i class="fa fa-home"></i> <span class="">&#09;Home</span></a>
+    <a id="app_home" href="{{request|url_app}}{% if organization %}{{organization}}/{% endif %}"><i class="fa fa-home"></i> <span class="">&#09;Home</span></a>
   </li>
 </ul>
 <hr />
