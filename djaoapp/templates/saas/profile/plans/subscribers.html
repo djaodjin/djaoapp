@@ -1,0 +1,69 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+    {{plan}} plan subscribers
+{% endblock %}
+
+{% block saas_content %}
+<section id="plan-subscribers-container">
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div>
+        <label>Filter</label> <input type="text" v-model="params.q" @input="filterList" />
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Subscriber<button class="btn-link btn-sort" @click="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
+            <th>Plan</th>
+            <th>Since<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
+            <th>Ends at<button class="btn-link btn-sort" @click="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody v-show="!itemsLoaded">
+          <tr>
+            <td colspan="5">
+              <h4>Loading ...</h4>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0">
+          <tr>
+            <td colspan="5">
+              <h4>No subscribers<span v-show="params.q"> with filter: '[[params.q]]'</span></h4>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0">
+          <tr :class="endsSoon(entry)">
+            <td>
+              <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+            </td>
+            <td>[[entry.plan.title]]</td>
+            <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>
+            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+            <td>
+                <span v-show="!entry.edit_description" @click="editDescription(entry, index)">
+                    [[entry.description]] <i class="fa fa-pencil"></i>
+                </span>
+                <input v-show="entry.edit_description" type="text"
+                       class="form-control"
+                       @blur="saveDescription(entry)"
+                       @keyup.13="saveDescription(entry)"
+                       v-model="entry.description"
+                       :ref="refId(entry, index)"
+                       tooltip="Edit description here"
+                       tooltip-trigger="focus"
+                       tooltip-placement="top">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
+        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+    </div>
+    </div>
+      </div>
+</section>
+{% endblock %}

@@ -5,59 +5,123 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="metrics_table" ng-app="saasApp" ng-cloak>
-  <style>
-    .chart-area{
-      height: 400px !important;
-      width: 100%;
-    }
-  </style>
-
-  <div ng-controller="metricsCtrl" data-trip data-trip data-trip-index="1" data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-    <ul class="nav nav-tabs dashboard-tab table-chooser">
-      <li ng-class="{active: tab == activeTab}" ng-repeat="tab in tabs" ng-click="tabClicked($event)">
-        <a href="#[[tab]]" data-toggle="tab">
-          [[getTable(tab).title]] <span ng-if="getTable(tab).unit" href="#[[tab]]">([[getTable(tab).unit | currencyToSymbol]])</span>
-        </a>
-      </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div ng-prop-id="tab"
-           ng-class="{'tab-pane': true, active: tab == activeTab}"
-           ng-repeat="tab in tabs">
-        <div class="date-chooser pull-right">
-          <span>To</span>
-          <select  class="form-control" ng-model="timezone" style="display:inline-block; width:80px;" ng-change="prepareCurrentTabData(ends_at, timezone)">
-            <option value="local">Local</option>
-            <option value="utc">UTC</option>
-          </select>
-          <button type="button" class="btn btn-default" ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i></button>
-          <span class="date" uib-datepicker-popup="[[format]]" ng-model="ends_at" ng-change="prepareCurrentTabData(ends_at, timezone)" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" datepicker-mode="'month'" max-date="maxDate" show-button-bar="false" data-trip data-trip data-trip-index="2" data-trip-content="<p>Look back through time.</p>" data-trip-position="s">[[ends_at | date : mediumDate]]</span>
+<style>
+.chart-area{
+  height: 400px !important;
+  width: 100%;
+}
+</style>
+<section id="metrics-container" ng-app="saasApp">
+    <div data-trip data-trip data-trip-index="1"
+         data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+         data-trip-position="screen-center"
+         ng-controller="metricsCtrl">
+        <ul class="nav nav-tabs dashboard-tab table-chooser">
+            <li ng-class="{active: table.key == activeTab}"
+                ng-repeat="table in tables"
+                ng-click="tabClicked(table)"
+                v-bind:class="activeClass(index)"
+                v-for="(table, index) in tables"
+                @click="tabClicked(index)">
+                <a data-toggle="tab"
+                   ng-prop-href="'#' + table.key"
+                   v-bind:href="'#' + table.key">
+                    [[tabTitle(table)]]
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel"
+                 ng-prop-id="table.key"
+                 ng-class="{'tab-pane': true, active: table.key == activeTab}"
+                 ng-repeat="table in tables"
+                 v-bind:id="table.key"
+                 v-bind:class="['tab-pane', activeClass(index)]"
+                 v-for="(table, index) in tables"
+                 v-bind:key="table.key">
+                <form class="form-inline date-chooser pull-right">
+                    <uiv-dropdown class="form-group" append-to-body menu-right>
+                        <label class="control-label" for="ends_at">
+                            To
+                        </label>
+                        <div class="input-group">
+                            <input class="form-control date"
+                                  data-trip data-trip data-trip-index="2"
+                                  data-trip-content="<p>Look back through time.</p>"
+                                  data-trip-position="s"
+                                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
+                                  ng-model="ends_at"
+                                  ng-change="prepareCurrentTabData(ends_at, timezone)"
+                                  ng-required="true"
+                                  is-open="opened"
+                                  close-text="Close"
+                                  datepicker-options="dateOptions"
+                                  datepicker-mode="'month'"
+                                  max-date="maxDate"
+                                  show-button-bar="false"></input>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default"
+                                        ng-click="open($event, 'ends_at')"
+                                        v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                                <select class="form-control" style="width:80px;"
+                                        ng-model="timezone"
+                                        ng-change="prepareCurrentTabData(ends_at, timezone)"
+                                        v-model="timezone"
+                                        @change="prepareCurrentTabData">
+                                    <option value="local">Local</option>
+                                    <option value="utc">UTC</option>
+                                </select>
+                            </span>
+                        </div>
+                        <template slot="dropdown">
+                            <li>
+                                <uiv-date-picker
+                                     v-model="ends_at"
+                                     v-on:input="prepareCurrentTabData"
+                                     icon-control-left="fa fa-caret-left"
+                                     icon-control-right="fa fa-caret-right" />
+                            </li>
+                        </template>
+                    </uiv-dropdown>
+                </form>
+                <div class="chart-content">
+                  <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                </div>
+                <!-- Display as a table -->
+                <div class="table-responsive">
+                    <table class="table" style="font-size:0.7em;">
+                      <tr>
+                        <td></td>
+                        <td ng-repeat="col in getTable(activeTab).data[0].values"
+                            v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
+                      </tr>
+                      <tr ng-prop-id="row.key"
+                          ng-repeat="row in getTable(activeTab).data"
+                          v-bind:id="row.key"
+                          v-for="row in currentTableData.data" :key="row.key">
+                        <td ng-if="row.location"
+                            v-if="row.location">
+                            <span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"
+                                  :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a ng-prop-href="row.location" :href="row.location">[[row.key]]</a>
+                        </td>
+                        <td ng-if="!row.location"
+                            v-if="!row.location">[[row.key]]</td>
+                        <td ng-repeat="col in row.values"
+                            ng-prop-title="humanizeCell(col[1], getTable(activeTab).unit, getTable(activeTab).scale)"
+                             v-for="col in row.values"
+                            :key="col[0].toISOString()"
+                            :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
+                      </tr>
+                      {% block metrics_extra_data %}
+                      {% endblock %}
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="chart-content">
-          <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-        </div>
-        <!-- Display as a table -->
-        <div class="table-responsive">
-            <table class="table" style="font-size:0.7em;">
-              <tr>
-                <td></td>
-                <td ng-repeat="col in getTable(activeTab).data[0].values">[[col[0] | monthHeading]]</td>
-              </tr>
-              <tr id="[[row.key]]" ng-repeat="row in getTable(activeTab).data">
-                <td ng-if="row.location"><span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a href="[[row.location]]">[[row.key]]</a></td>
-                <td ng-if="!row.location">[[row.key]]</td>
-                <td ng-repeat="col in row.values" title="[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale : false]]">[[col[1]|humanizeCell : getTable(activeTab).unit : getTable(activeTab).scale]]</td>
-              </tr>
-              {% block metrics_extra_data %}
-              {% endblock %}
-            </table>
-        </div>
-      </div>
     </div>
-  </div>
 </section>
 {% endblock %}
 

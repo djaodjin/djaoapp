@@ -3,31 +3,49 @@
 {% block saas_title %}{{organization.printable_name}} {{role_descr.title}}{% endblock %}
 
 {% block saas_content %}
-<div data-trip data-trip-index="1" data-trip-content="<h2>Add/Remove {{role_descr}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-<section id="{{role_descr}}" ng-app="saasApp"  ng-cloak>
+<section id="{{role_descr}}"
+  data-trip data-trip-index="1"
+  data-trip-content="<h2>Add/Remove {{role_descr}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+  data-trip-position="screen-center"
+  ng-app="saasApp">
 <script type="text/ng-template" id="customTemplate.html">
   <a><span bind-html-unsafe="match.model.email | uibTypeaheadHighlight:query"></span>
   </a>
 </script>
-<div ng-controller="userRelationListCtrl">
-  <form class="form-inline" ng-submit="save($event)">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
-      <input name="user" type="text" placeholder="Username or e-mail"
-             autocomplete="off"
-             ng-model="unregistered.slug"
-             uib-typeahead="item.slug for item in getCandidates($viewValue)"
-             uib-typeahead-loading="loadingUsers"
-             uib-typeahead-template-url="customTemplate.html"
-             class="form-control input-sm" style="width: 100%;">
-      <div class="input-group-btn">
-        <button class="btn btn-primary btn-sm" type="submit">Add {{role_descr.title}}</button>
-      </div>
-    </div>
-    <div style="height:14px">
-        <i ng-show="loadingUsers" class="fa fa-spinner"></i>
-    </div>
-  </form>
+<div id="user-relation-list-container" ng-controller="userRelationListCtrl">
+  <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+    <form class="form-inline"
+      ng-submit="save($event)"
+      @submit.prevent="submit">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <div class="input-group"
+             data-trip data-trip-index="2"
+             data-trip-content="<p>Start typing the username or email of the person you want to add.</p>"
+             data-trip-position="s">
+            <input id="userTypeahead"
+                   class="form-control input-sm" style="width: 100%;"
+                   name="user" type="text" placeholder="Username or e-mail"
+                   autocomplete="off"
+                   ng-model="unregistered.slug"
+                   uib-typeahead="item.slug for item in getCandidates($viewValue)"
+                   uib-typeahead-loading="loadingUsers"
+                   uib-typeahead-template-url="customTemplate.html">
+            <div class="input-group-btn">
+                <button class="btn btn-primary btn-sm" type="submit">Add {{role_descr.title}}</button>
+            </div>
+        </div>
+        <uiv-typeahead
+             v-model="itemSelected"
+             target="#userTypeahead"
+             :async-function="getUsers"
+             item-key="slug"
+             :open-on-focus="false"
+             />
+        <div style="height:14px" v-if="false">
+            <i class="fa fa-spinner" ng-show="loadingUsers" ng-cloak></i>
+        </div>
+    </form>
+  </user-typeahead>
   <div class="table-responsive">
   <table class="table table-condensed table-striped">
     <thead>
@@ -39,26 +57,45 @@
       </tr>
     </thead>
     <tbody>
-        <tr ng-hide="items.$resolved">
+        <tr ng-show="!items.$resolved"
+            v-show="!itemsLoaded">
             <td colspan="3">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
-        <tr ng-show="items.$resolved && items.results.length == 0">
+        <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
+            v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <td colspan="3">
-                <h4 class="text-center"><em>No {{role_descr.title}}<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+                <h4 class="text-center"><em>No {{role_descr.title}}<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
-        <tr id="[[item.user.slug]]" class="[[item.request_key ? 'disabled' : 'active']]" ng-repeat="item in items.results" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+        <tr ng-prop-id="item.user.slug"
+            ng-class="item.request_key ? 'disabled' : 'active'"
+            ng-repeat="item in items.results"
+            ng-show="items.$resolved && items.results.length > 0" ng-cloak
+            v-bind:id="item.user.slug"
+            v-for="(item, index) in items.results"
+            v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td style="vertical-align:middle;">[[item.user.slug]]</td>
-            <td style="vertical-align:middle;">[[item.user.email]] <button class="btn btn-default btn-sm" ng-if="item.request_key" ng-click="save($event, item.user)">grant</button></td>
+            <td style="vertical-align:middle;">[[item.user.email]] <button
+                class="btn btn-default btn-sm"
+                ng-if="item.request_key"
+                ng-click="save($event, item.user)"
+                v-if="item.request_key" @click="save(item.user)">grant</button></td>
             <td style="vertical-align:middle;"><i>[[item.grant_key ? "invited" : ""]]</i></td>
-            <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm" ng-click="remove($event, $index)" data-trip data-trip-index="3" data-trip-content="<p>Click here to revoke access to the user.</p>" data-trip-position="s"><i class="fa fa-remove"></i></button></td>
+            <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm"
+                data-trip data-trip-index="3"
+                data-trip-content="<p>Click here to revoke access to the user.</p>"
+                data-trip-position="s"
+                ng-click="remove($event, $index)"
+                @click="remove(index)"><i class="fa fa-remove"></i></button></td>
         </tr>
     </tbody>
   </table>
   </div>
-  <div class="text-center" ng-cloak ng-show="items.$resolved && totalItems > itemsPerPage">
+  <div class="text-center"
+       ng-show="items.$resolved && totalItems > itemsPerPage" ng-cloak
+       v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
       <ul uib-pagination class="pagination-sm" ng-model="currentPage"
                   total-items="totalItems"
                   items-per-page="itemsPerPage"
@@ -69,76 +106,69 @@
                   first-text="&laquo;"
                   last-text="&raquo;"
                   ng-change="pageChanged()"></ul>
+      <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
   </div>
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->
-  <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
+  <div class="add-role-modal modal fade" title="Invite {{role_descr}}"
+       tabindex="-1" role="dialog"
        aria-labelledby="Add {{role_descr}}" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close"
-                          data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">Invite {{role_descr}} ...</h4>
-              </div>
-              <form class="form-horizontal">
-                  <div class="modal-body">
-                      <p class="text-danger" ng-model="item">
+  <div class="modal-dialog">
+      <form class="form-horizontal">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Invite {{role_descr}} ...</h4>
+          </div>
+          <div class="modal-body">
+            <p class="text-danger" ng-model="item">
 [[unregistered.slug]] is not yet registered. This is an opportunity to invite and
 add her/him as a {{role_descr}} for {{organization.printable_name}}.
-                      </p>
-                      <div class="row form-group">
-                          <div class="col-sm-2">
-                              <label>To</label>
-                          </div>
-                          <div class="controls col-sm-10">
-                              <input id="new-request-email"
-                                     class="form-control" style="width:100%;"
-                                     ng-model="unregistered.email"
-                                     name="email" type="text" max-length="150"
-                                     placeholder="invitee@example.com"
-                                     autofocus />
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <div class="controls">
-                              <label>The following invite message will be sent:</label>
-                              <textarea class="form-control"
-                                        name="message"
-                                        maxlength="255" type="text" rows="10">
+            </p>
+            <div class="row form-group">
+                <div class="col-sm-2">
+                    <label>To</label>
+                </div>
+                <div class="controls col-sm-10">
+                    <input id="new-request-email"
+                           class="form-control" style="width:100%;"
+                           name="email" type="text" max-length="150"
+                           placeholder="invitee@example.com"
+                           autofocus
+                           ng-model="unregistered.email"
+                           v-model="unregistered.email" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    <label>The following invite message will be sent:</label>
+                    <textarea class="form-control"
+                              name="message"
+                              maxlength="255" type="text" rows="10">
 Hi [[unregistered.email]],
 
 I am adding you as a {{role_descr}} to {{organization.printable_name}}.
 
 Thank you,
-- {{request.user.first_name}}
-                              </textarea>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default"
-                              data-dismiss="modal">Cancel</button>
-                      <button id="new-rule-submit" ng-click="create($event)"
-                              type="submit" class="btn btn-primary">Invite {{role_descr}}</button>
-                  </div>
-              </form>
+- {{request.user.first_name}}</textarea>
+                </div>
+            </div>
           </div>
-      </div>
+          <div class="modal-footer">
+              <button type="button"
+                      class="btn btn-default"
+                      data-dismiss="modal">Cancel</button>
+              <button type="submit"
+                      class="btn btn-primary"
+                      data-dismiss="modal"
+                      ng-click="create($event)"
+                      @click="create">Invite {{role_descr}}</button>
+          </div>
+        </div>
+      </form>
+  </div>
   </div>
 </div>
-<!-- end of modal dialog -->
 </section>
-</div>
-{% endblock %}
-
-{% block dashboard_bodyscripts %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".add-role-modal").on('shown.bs.modal', function () {
-    var self = this;
-    $(self).find("[name='email']").focus();
-  });
-});
-</script>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
   <div class="row" ng-app="signupApp">
-    <div ng-controller="contactCtrl">
+    <div id="contact-edit-container" ng-controller="contactCtrl">
       <div class="page-header">
         <h2>Contact profile</h2>
       </div>
@@ -21,15 +21,23 @@
           <dd>{{contact.email}}</dd>
         </dl>
         <h3>Activities</h3>
-        <div ng-hide="items.$resolved">
+        <div ng-show="!items.$resolved"
+             v-show="!itemsLoaded">
           <h3>Loading ...</h3>
         </div>
-        <div id="has-no-activity" ng-cloak ng-show="items.$resolved && items.results.length == 0">
+        <div id="has-no-activity"
+             ng-show="items.$resolved && items.results.length == 0" ng-cloak
+             v-show="itemsLoaded && items.results.length === 0" v-cloak>
           <h4><em>No activity<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
         </div>
-        <div id="has-activities" ng-cloak ng-show="items.$resolved && items.results.length > 0">
-          <div ng-repeat="entry in items.results">
-            <p>[[entry.created_at | date : mediumDate]] <a href="{{'/profile/'|site_prefixed}}[[entry.account]]/">[[entry.account]]</a> by [[entry.created_by]]:</p>
+        <div id="has-activities"
+             ng-show="items.$resolved && items.results.length > 0" ng-cloak
+             v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <div ng-repeat="entry in items.results"
+               v-for="entry in items.results">
+            <p>[[entry.created_at | formatDate]]
+              <a href="{{'/profile/'|site_prefixed}}[[entry.account]]/"
+                 :href="'{{'/profile/'|site_prefixed}}' + entry.account + '/'">[[entry.account]]</a> by [[entry.created_by]]:</p>
             <div>[[entry.text]]</div>
           </div>
         </div>
@@ -52,7 +60,9 @@
          </div>
          <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" name="text" ng-model="activity.text"></textarea>
+            <textarea class="form-control" name="text"
+                ng-model="activity.text"
+                v-model="activityText"></textarea>
           </div>
           <button class="btn btn-primary" type="submit" value="submit">Create activity</button>
         </form>

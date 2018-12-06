@@ -4,9 +4,8 @@
 
 
 {% block saas_page_layout %}
-<div ng-app="ruleApp">
-  <div  ng-controller="RuleListCtrl">
-<section id="notifications">
+<section id="notifications" ng-app="ruleApp">
+  <div ng-controller="RuleListCtrl">
   <h2>Notification e-mails</h2>
   <table class="table">
     <tr id="card_updated">
@@ -68,13 +67,13 @@
       <td><button class="btn btn-default send-test-email">Send test e-mail</button></td>
     </tr>
   </table>
-</section>
   </div>
-</div>
+</section>
 {% endblock %}
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
+{% if not VUEJS %}
 /**
 Implementation Note #1:
   Not including a list of dependent modules (2nd parameter to `module`)
@@ -91,11 +90,10 @@ app.config(['$interpolateProvider', '$httpProvider',
       $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
 }]);
-app.constant('urls', {
-    rules_api_rule_url: "{{urls.rules.api_rules}}",
-    rules_api_detail_url: "{{urls.rules.api_detail}}",
-    rules_api_generate_key: "{{urls.rules.api_generate_key}}",
-});
+app.constant('settings', {
+  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %}});
+{% endif %}
 
 jQuery(document).ready(function($) {
     $(".send-test-email").click(function(event) {

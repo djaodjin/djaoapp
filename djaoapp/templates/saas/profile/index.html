@@ -14,7 +14,7 @@ Update your profile, contact information, password, etc.
 {% block saas_content %}
 {% include "_form.html" %}
 <hr />
-<div class="panel panel-danger" style="margin:50px auto;" ng-app="saasApp">
+<div id="remove-profile-container" class="panel panel-danger" style="margin:50px auto;" ng-app="saasApp">
     <div class="panel-heading">
         Danger Zone
     </div>
@@ -31,7 +31,9 @@ Update your profile, contact information, password, etc.
         {% endif %}
         <div class="row" style="margin-top: 15px;">
             <div class="col-sm-5">
-                <button id="delete-action-open" class="btn btn-danger" style="width:100%;" data-toggle="modal" data-target="#delete-action">Delete profile</button>
+                <button id="delete-action-open"
+                        class="btn btn-danger" style="width:100%;"
+                        data-toggle="modal" data-target="#delete-action">Delete profile</button>
             </div>
             <div class="col-sm-7">
 <span class="btn">This operation cannot be reversed.</span>
@@ -41,8 +43,9 @@ Update your profile, contact information, password, etc.
 <!-- modal dialog to delete organization. -->
 <div class="modal fade"
      id="delete-action" tabindex="-1" role="dialog"
-     aria-labelledby="Delete Profile" aria-hidden="true" ng-controller="organizationProfileCtrl">
-    <div class="modal-dialog">
+     aria-labelledby="Delete Profile" aria-hidden="true"
+      ng-controller="organizationProfileCtrl">
+    <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close"
@@ -64,12 +67,13 @@ Are you sure you want to continue?
                         data-dismiss="modal"
                         class="btn btn-default">Cancel</button>
                 <button type="button" id="delete-organization-btn"
-                        data-dismiss="modal"
                         class="btn btn-danger"
-                        ng-click="deleteProfile($event)">Delete</button>
+                        data-dismiss="modal"
+                        ng-click="deleteProfile($event)"
+                        @click="deleteProfile">Delete</button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 <!-- modal to confirm deletion of organization -->
 </div>
