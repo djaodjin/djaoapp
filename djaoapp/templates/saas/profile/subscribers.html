@@ -6,7 +6,9 @@ Subscriptions to {{organization.printable_name}}
 
 {% block saas_content %}
 <section id="subscribers" ng-app="saasApp" ng-cloak>
-<div ng-controller="subscriberListCtrl" data-trip data-trip-index="1" data-trip-content="<h2>Active Subscribers</h2><p>List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+<div ng-controller="subscriberListCtrl"
+     ng-init="refresh()"
+     data-trip data-trip-index="1" data-trip-content="<h2>Active Subscribers</h2><p>List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
         {% if registered %}
         <li ng-click="tabClicked($event)">
@@ -24,9 +26,13 @@ Subscriptions to {{organization.printable_name}}
     <div class="tab-content">
         {% if registered %}
         <div id="registered" class="tab-pane" role="tabpanel">
-            <div style="margin-top:10px;margin-bottom:10px;">
-                <label>Filter</label> <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" />
-                <a id="download-registered" href="{{registered.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+            <div style="margin-top:10px;">
+                <div class="form-group" style="display:inline-block;">
+                    <input class="form-control" type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" placeholder="Filter"></input>
+                </div>
+                <div class="pull-right" style="display:inline-block;">
+                    <a id="download-registered" href="{{registered.urls.download}}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                </div>
             </div>
             <div class="table-responsive">
             <table class="table table-condensed table-striped" style="width:100%">
@@ -38,18 +44,18 @@ Subscriptions to {{organization.printable_name}}
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-hide="registered.$resolved">
+                    <tr ng-hide="tables.registered.$resolved">
                         <td colspan="2">
                             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                         </td>
                     </tr>
-                    <tr ng-show="registered.$resolved && registered.count == 0">
+                    <tr ng-show="tables.registered.$resolved && tables.registered.count == 0">
                         <td colspan="2">
                             <h4 class="text-center"><em>No registered users<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
                         </td>
                     </tr>
                 </tbody>
-                <tbody class="has-results" ng-repeat="entry in registered.results" ng-cloak ng-show="registered.$resolved && registered.results.length > 0">
+                <tbody class="has-results" ng-repeat="entry in tables.registered.results" ng-cloak ng-show="tables.registered.$resolved && tables.registered.results.length > 0">
                     <tr>
                         <td>
                             <a id="[[entry.slug]]" href="{{urls.user.profile_redirect}}[[entry.slug]]/">[[entry.full_name]]</a>
@@ -63,7 +69,7 @@ Subscriptions to {{organization.printable_name}}
             </div>
             <div class="text-center">
                 <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                            total-items="registered.count"
+                            total-items="tables.registered.count"
                             items-per-page="itemsPerPage"
                             boundary-links="true"
                             max-size="maxSize"
@@ -72,18 +78,22 @@ Subscriptions to {{organization.printable_name}}
                             first-text="&laquo;"
                             last-text="&raquo;"
                             ng-change="pageChanged(registered)"
-                            ng-show="registered.$resolved && registered.results.length > 0"></ul>
+                            ng-show="tables.registered.$resolved && tables.registered.results.length > 0"></ul>
             </div>
         </div>
         {% endif %}
         {% for tab in tabs %}
         <div id="{{tab.slug}}" class="tab-pane{% if tab.is_active %} active{% endif %}" role="tabpanel">
-          <div style="margin-top:10px;margin-bottom:10px;">
-            <input type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" class="form-control filter-inline" placeholder="Filter" />
-            <a id="download-{{tab.slug}}" href="{{tab.urls.download}}?q=[[filterExpr]]" class="btn btn-default pull-right" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
-          </div>
-          <div class="table-responsive">
-            <table class="table table-condensed table-striped">
+            <div style="margin-top:10px;">
+                <div class="form-group" style="display:inline-block;">
+                  <input class="form-control" type="text" ng-model="filterExpr" ng-change="filterList(filterExpr)" placeholder="Filter"></input>
+                </div>
+                <div class="pull-right" style="display:inline-block;">
+                    <a id="download-{{tab.slug}}" href="{{tab.urls.download}}?q=[[filterExpr]]" class="btn btn-default" role="button"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-condensed table-striped">
     <thead>
       <tr ng-show="params.o === 'organization'">
         <th>Subscriber<button class="btn-link btn-sort" ng-click="sortBy('organization')"><i class="fa fa-sort[[(params.o === 'organization') ? ('-' + params.ot) : '']]"></i></button></th>
@@ -114,21 +124,21 @@ Subscriptions to {{organization.printable_name}}
         <th>Description</th>
       </tr>
     </thead>
-    <tbody class="fetching-results" ng-show="!{{tab.slug}}.$resolved">
+    <tbody class="fetching-results" ng-show="!tables.{{tab.slug}}.$resolved">
       <tr>
         <td colspan="5">
           <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </td>
       </tr>
     </tbody>
-    <tbody class="has-no-results" ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length == 0">
+    <tbody class="has-no-results" ng-show="tables.{{tab.slug}}.$resolved && tables.{{tab.slug}}.results.length == 0">
       <tr>
         <td colspan="5">
           <h4 class="text-center"><em>No subscribers<span ng-show="filterExpr"> with filter: '[[filterExpr]]'</span></em></h4>
         </td>
       </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['organization.printable_name']" ng-show="params.o === 'organization'" ng-cloak ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length > 0">
+    <tbody ng-repeat="entry in tables.{{tab.slug}}.results | groupBy:['organization.printable_name']" ng-show="params.o === 'organization'" ng-cloak ng-show="tables.{{tab.slug}}.$resolved && tables.{{tab.slug}}.results.length > 0">
       <tr ng-show="entry.organization_printable_name_CHANGED">
         <td colspan="5">
           <a id="[[entry.organization.slug]]" href="{{urls.organization.profile_base}}[[entry.organization.slug]]/subscriptions/">[[entry.organization.printable_name]]</a></td>
@@ -151,7 +161,7 @@ Subscriptions to {{organization.printable_name}}
         </td>
       </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['plan.title']" ng-show="params.o === 'plan'" ng-cloak>
+    <tbody ng-repeat="entry in tables.{{tab.slug}}.results | groupBy:['plan.title']" ng-show="params.o === 'plan'" ng-cloak>
         <tr ng-show="entry.plan_title_CHANGED">
             <td colspan="5">
                 [[entry.plan.title]]
@@ -177,7 +187,7 @@ Subscriptions to {{organization.printable_name}}
             </td>
         </tr>
     </tbody>
-    <tbody class="has-results" ng-repeat="entry in {{tab.slug}}.results | groupBy:['created_at']" ng-show="params.o === 'created_at'" ng-cloak>
+    <tbody class="has-results" ng-repeat="entry in tables.{{tab.slug}}.results | groupBy:['created_at']" ng-show="params.o === 'created_at'" ng-cloak>
         <tr ng-show="entry.created_at_CHANGED">
             <td colspan="5">
                 [[entry.created_at | date: mediumDate]]
@@ -203,7 +213,7 @@ Subscriptions to {{organization.printable_name}}
             </td>
         </tr>
     </tbody>
-    <tbody ng-repeat="entry in {{tab.slug}}.results | groupBy:['ends_at']" ng-show="params.o === 'ends_at'" ng-cloak>
+    <tbody ng-repeat="entry in tables.{{tab.slug}}.results | groupBy:['ends_at']" ng-show="params.o === 'ends_at'" ng-cloak>
         <tr ng-show="entry.ends_at_CHANGED">
             <td colspan="5">
                 [[entry.ends_at |date: mediumDate]]
@@ -233,7 +243,7 @@ Subscriptions to {{organization.printable_name}}
 </div>
 <div class="text-center">
     <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                total-items="{{tab.slug}}.count"
+                total-items="tables.{{tab.slug}}.count"
                 items-per-page="itemsPerPage"
                 boundary-links="true"
                 max-size="maxSize"
@@ -242,13 +252,11 @@ Subscriptions to {{organization.printable_name}}
                 first-text="&laquo;"
                 last-text="&raquo;"
                 ng-change="pageChanged({{tab.slug}})"
-                ng-show="{{tab.slug}}.$resolved && {{tab.slug}}.results.length > 0"></ul>
+                ng-show="tables.{{tab.slug}}.$resolved && tables.{{tab.slug}}.results.length > 0"></ul>
 </div>
         </div>
         {% endfor %}
     </div>
-</div>
-<div>
     <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">New Billing Profile &raquo;</a>
 </div>
 </section>

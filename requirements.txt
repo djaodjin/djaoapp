@@ -9,12 +9,12 @@ django-urldecorators==0.6
 djangorestframework==3.8.2
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.7
-djaodjin-extended-templates==0.2.3
+djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.6
 djaodjin-pages==0.2.2
 djaodjin-rules==0.1.4
-djaodjin-saas==0.3.3
-djaodjin-signup==0.2.4
+djaodjin-saas==0.3.4
+djaodjin-signup==0.2.5
 djaodjin-survey==0.1.7
 jinja2==2.8.1
 # gunicorn 19.0 is broken (see issue 787)
