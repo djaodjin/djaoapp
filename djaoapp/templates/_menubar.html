@@ -14,19 +14,19 @@
             </span>
             {% endif %}
         </a>
-        <div class="menubar-dropdown-container">
+        <div class="dropdown menubar-dropdown-container">
             <ul class="dropdown-menu">
                 {% if top_accessibles|length > 0 %}
                     <li class="dropdown-label">{{request.user.username}}</li>
                 {% endif %}
-                <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
-                <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
+                <a class="dropdown-item" id="authenticated-user" href="{{request|url_profile}}">Profile</a>
+                <a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a>
                 {% if top_accessibles|length > 0 %}
                     {% for accessible in top_accessibles %}
-                        <li role="separator" class="divider"></li>
+                        <div class="dropdown-divider"></div>
                         <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
-                        <li><a href="{{accessible.app_location}}">Home</a></li>
-                        <li><a href="{{accessible.settings_location}}">Settings</a></li>
+                        <a class="dropdown-item" href="{{accessible.app_location}}">Home</a>
+                        <a class="dropdown-item" href="{{accessible.settings_location}}">Settings</a>
                     {% endfor %}
                 {% endif %}
             </ul>

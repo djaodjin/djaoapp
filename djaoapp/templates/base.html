@@ -62,30 +62,23 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           {% endblock %}
           <div class="dashboard-content">
             <header>
-              <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
+              <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}" style="background-color: #ffffff">
                 {% block content_navbarbrand %}
                 {% include "_navbarbrand.html" %}
                 {% endblock %}
                 {% block header_navbar_large %}
-                <ul class="nav navbar-nav" style="float:right;margin-right:15px;">
-                    {% include "generic_navbar.html" %}
-                    <li class="header-menubar">
-                        {# links to user profile and #}
-                        {# organizations is added here. #}
-                        <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
-                    </li>
-                    {% if request|is_authenticated %}
-                    <li><a title="Click Here to sign out" href="{{request|url_logout}}">Sign Out <span class="fa fa-sign-out fa-lg"></span></a></li>
-                    {% endif %}
-                </ul>
-                {% endblock %}
-                {% block header_navbar_small %}
-                <div class="hidden-sm hidden-md hidden-lg">
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            {% include "generic_navbar.html" %}
-                        </ul>
-                    </div>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0" style="float:right;margin-right:15px;">
+                        {% include "generic_navbar.html" %}
+                        <li class="nav-item header-menubar">
+                            {# links to user profile and #}
+                            {# organizations is added here. #}
+                            <a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+                        </li>
+                        {% if request|is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" title="Click Here to sign out" href="{{request|url_logout}}">Sign Out <span class="fa fa-sign-out fa-lg"></span></a></li>
+                        {% endif %}
+                    </ul>
                 </div>
                 {% endblock %}
               </nav>

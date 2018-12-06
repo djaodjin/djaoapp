@@ -1,8 +1,8 @@
 {% if request|is_authenticated %}
-<li>
-    <a href="{{request|url_app}}">App</a>
+<li class="nav-item">
+    <a class="nav-link" href="{{request|url_app}}">App</a>
 </li>
 {% endif %}
-<li {% if request|url_pricing in request.path %}class="active"{% endif %}>
-    <a href="{{request|url_pricing}}" data-intro="Add pricing plans" data-position="bottom">Pricing</a>
+<li {% if request|url_pricing in request.path %}class="nav-item active"{% endif %}>
+    <a class="nav-link" href="{{request|url_pricing}}" data-intro="Add pricing plans" data-position="bottom">Pricing</a>
 </li>
