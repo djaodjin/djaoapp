@@ -16,7 +16,7 @@
             <fieldset id="extra-charge">
                 <legend>Extra Charge</legend>
                 <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
-                    <label class="control-label" for="descr">Description</label>
+                    <label class="col-form-label" for="descr">Description</label>
                     <div class="controls">
                         <input id="descr" class="form-control" name="descr"
                          type="text" placeholder="Description for the charge" />
@@ -26,7 +26,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
-                    <label class="control-label" for="amount">Amount</label>
+                    <label class="col-form-label" for="amount">Amount</label>
                     <div class="controls">
                     <input id="amount"  class="form-control"
                            type="number" min="0" step="any" placeholder="0"
@@ -44,7 +44,7 @@
                 <a href="" class="collapsible">Have a registration code?</a>
                 <div style="display:none;">
                     <div style="display:inline-block;width:25%;">
-                    <label class="control-label" style="text-align:left;font-weight:normal;">If you received a registration code, please enter it here.</label>
+                    <label class="col-form-label" style="text-align:left;font-weight:normal;">If you received a registration code, please enter it here.</label>
                     <div class="input-group">
                         <input class="form-control" name="code" type="text" placeholder="Enter Code">
                         <span class="input-group-btn">

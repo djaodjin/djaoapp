@@ -18,7 +18,7 @@
     </div>
     {% else %}
     {% if not hide_labels %}
-    <label class="control-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
+    <label class="col-form-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
     {% endif %}
     <div class="controls">
       {% if bound_field.field|is_textarea %}
