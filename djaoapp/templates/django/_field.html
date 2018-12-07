@@ -25,7 +25,7 @@
         <textarea class="textarea form-control" name="{{bound_field.name}}" cols="40" rows="10">{% if bound_field.value %}{{bound_field.value}}{% endif %}</textarea>
       {% elif bound_field.field|is_radio %}
           {% for choice in bound_field.field.widget.choices %}
-          <div class="radio">
+          <div class="form-check">
             <label>
               <input type="radio" name="{{bound_field.name}}"{% if bound_field.value == choice.0 %} selected="1"{% endif %} value="{{choice.0}}">{{choice.1}}
             </label>
