@@ -22,7 +22,7 @@
                          type="text" placeholder="Description for the charge" />
                     </div>
                     {% for error in form.descr.errors %}
-                    <span class="help-block"><strong>{{error}}</strong></span>
+                    <span class="form-text"><strong>{{error}}</strong></span>
                     {% endfor %}
                 </div>
                 <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
@@ -33,7 +33,7 @@
                            name="amount" autocomplete="off" />
                     </div>
                     {% for error in form.amount.errors %}
-                    <span class="help-block"><strong>{{error}}</strong></span>
+                    <span class="form-text"><strong>{{error}}</strong></span>
                     {% endfor %}
                 </div>
             </fieldset>

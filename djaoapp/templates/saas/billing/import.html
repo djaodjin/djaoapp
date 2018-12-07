@@ -35,7 +35,7 @@
                 :open-on-focus="false"/>
 
           {% for error in form.subscription.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
           <div ng-show="loadingSubscriptions"
                v-show="searching" style="height:14px">
@@ -71,7 +71,7 @@
               </template>
             </uiv-dropdown>
           {% for error in form.created_at.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
@@ -80,7 +80,7 @@
           </label>
           <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount">
           {% for error in form.amount.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
@@ -90,7 +90,7 @@
           <div>
             <input class="form-control" name="descr" type="text" placeholder="description">
             {% for error in form.descr.errors %}
-            <span class="help-block"><strong>{{error}}</strong></span>
+            <span class="form-text"><strong>{{error}}</strong></span>
             {% endfor %}
           </div>
         </div>

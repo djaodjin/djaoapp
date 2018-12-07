@@ -60,10 +60,10 @@
     </div>
     {% endif %}
     {% for error in bound_field.errors %}
-    <span class="help-block"><strong>{{error}}</strong></span>
+    <span class="form-text"><strong>{{error}}</strong></span>
     {% endfor %}
     {% if bound_field.help_text %}
-    <span class="help-block">{{bound_field.help_text}}</span>
+    <span class="form-text">{{bound_field.help_text}}</span>
     {% endif %}
 </div>
 {% endif %}
