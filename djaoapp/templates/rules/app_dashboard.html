@@ -46,7 +46,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
             <td width="100">
-              <div class="btn btn-default btn-sm">
+              <div class="btn btn-secondary btn-sm">
                 <i class="fa fa-bars"></i></div>
             </td>
             <td>[[rule.path]]</td>
@@ -147,7 +147,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
                       type="button" class="btn btn-primary"
@@ -233,7 +233,7 @@ The key will only be displayed once. Keep it secure.
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button id="regenerate-key" class="btn btn-default"
+                  <button id="regenerate-key" class="btn btn-secondary"
                           type="button"
                           ng-click="generateKey('#generate-key')"
                           @click="generateKey">Generate</button>

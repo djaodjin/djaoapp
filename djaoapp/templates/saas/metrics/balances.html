@@ -5,7 +5,7 @@
 {% block saas_content %}
 <div id="balance-list-container" ng-app="saasApp">
   <div class="date-chooser pull-right">
-      <a id="download" class="btn btn-default" role="button"
+      <a id="download" class="btn btn-secondary" role="button"
          ng-prop-href="'{{urls.download_balances}}?start_at=' + params.start_at + '&ends_at=' + params.ends_at"
          v-bind:href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> Download</a>
       <span>To</span>
@@ -74,7 +74,7 @@
               ng-repeat="row in balances.table"
               v-for="(row, index) in items.table">
               <td>
-                  <div class="btn btn-default btn-sm">
+                  <div class="btn btn-secondary btn-sm">
                       <i class="fa fa-bars"></i></div>
               </td>
               <td>

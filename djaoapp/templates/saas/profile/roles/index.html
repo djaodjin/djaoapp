@@ -77,7 +77,7 @@
                   v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <td style="vertical-align:middle;">[[item.user.slug]]</td>
                 <td style="vertical-align:middle;">[[item.user.email]] <button
-                    class="btn btn-default btn-sm"
+                    class="btn btn-secondary btn-sm"
                     ng-if="item.request_key"
                     ng-click="save($event, item.user)"
                     v-if="item.request_key" @click="save(item.user)">grant</button></td>
@@ -153,7 +153,7 @@ Thank you,
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
                       type="submit" class="btn btn-primary">Invite {{role_descr}}</button>
@@ -182,7 +182,7 @@ Thank you,
               </div>
           </div>
           <div slot="footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       @click="modalOpen=false">Cancel</button>
               <button type="submit" class="btn btn-primary">Create role</button>
           </div>

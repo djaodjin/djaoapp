@@ -38,7 +38,7 @@ Subscriptions to {{organization.printable_name}}
               </div>
               <div class="pull-right" style="display:inline-block;">
                 <a id="download-registered"
-                   class="btn btn-default pull-right" role="button"
+                   class="btn btn-secondary pull-right" role="button"
                    ng-prop-href="'{{registered.urls.download}}?q=' + params.q"
                    v-bind:href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
               </div>
@@ -116,7 +116,7 @@ Subscriptions to {{organization.printable_name}}
               </div>
               <div class="pull-right" style="display:inline-block;">
                   <a id="download-{{tab.slug}}"
-                     class="btn btn-default pull-right" role="button"
+                     class="btn btn-secondary pull-right" role="button"
                      ng-prop-href="'{{tab.urls.download}}?q=' + params.q"
                      v-bind:href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
               </div>

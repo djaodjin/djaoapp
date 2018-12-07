@@ -45,7 +45,7 @@
                 to your Stripe account.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
+                <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
                 <form style="display:inline-block;" method="post" action="{{urls.provider.deauthorize_bank}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">

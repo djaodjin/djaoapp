@@ -6,8 +6,8 @@
 <div class="row" style="margin-bottom: 15px;">
     <div class="col-sm-10">
         <div class="btn-group pull-right">
-            <a id="email-charge-receipt" class="btn btn-default" href="">Email Again</a>
-            <a id="charge-printable" class="btn btn-default" target="_blank"
+            <a id="email-charge-receipt" class="btn btn-secondary" href="">Email Again</a>
+            <a id="charge-printable" class="btn btn-secondary" target="_blank"
    href="{{urls.charge.printable_receipt}}">Printable</a>
         </div>
     </div>
@@ -70,7 +70,7 @@
           <td>{{line.invoiced|describe}}</td>
           <td>
             {% if line.refundable %}
-            <button class="charge-refund btn btn-default"
+            <button class="charge-refund btn btn-secondary"
                     data-toggle="modal" data-target="#charge-refund"
                     data-available-amount="{{line.invoiced.dest_amount}}"
                     data-linenum="{{line.rank}}">Refund</button>
@@ -121,7 +121,7 @@ Please specify the amount you would like refunded (in {{charge.unit}}).
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
+                <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
                 <button type="submit" class="submit-refund btn btn-primary"
                         data-dismiss="modal">OK</button>
