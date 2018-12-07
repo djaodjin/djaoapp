@@ -31,17 +31,17 @@ Subscriptions to {{organization.printable_name}}
         {% if registered %}
         <div id="registered" class="tab-pane" role="tabpanel">
             <div style="margin-top:10px;">
-              <div class="form-group">
-                <input type="text" class="form-control" style="display:inline-block;"
-                       ng-model="params.q" ng-change="filterList(params.q)"
-                       v-model="params.q" @input="filterList"></input>
-              </div>
-              <div class="pull-right" style="display:inline-block;">
-                <a id="download-registered"
-                   class="btn btn-default pull-right" role="button"
-                   ng-prop-href="'{{registered.urls.download}}?q=' + params.q"
-                   v-bind:href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-              </div>
+                <div class="form-group" style="display:inline-block;">
+                    <input class="form-control" type="text"
+                           ng-model="params.q" ng-change="filterList(params.q)"
+                           v-model="params.q" @input="filterList"></input>
+                </div>
+                <div class="pull-right" style="display:inline-block;">
+                    <a id="download-registered"
+                       class="btn btn-default pull-right" role="button"
+                       ng-prop-href="'{{registered.urls.download}}?q=' + params.q"
+                       v-bind:href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                </div>
             </div>
             <div class="table-responsive">
             <table class="table table-condensed table-striped" style="width:100%">
@@ -108,18 +108,18 @@ Subscriptions to {{organization.printable_name}}
              class="tab-pane{% if tab.is_active %} active{% endif %}"
              role="tabpanel">
             <div style="margin-top:10px;">
-              <div class="form-group">
-                <input class="form-control" style="display:inline-block;"
+                <div class="form-group" style="display:inline-block;">
+                    <input class="form-control" style="display:inline-block;"
                        type="text" placeholder="Filter"
                        ng-model="params.q" ng-change="filterList(params.q)"
                        v-model="params.q" @input="filterList"></input>
-              </div>
-              <div class="pull-right" style="display:inline-block;">
+                </div>
+                <div class="pull-right" style="display:inline-block;">
                   <a id="download-{{tab.slug}}"
                      class="btn btn-default pull-right" role="button"
                      ng-prop-href="'{{tab.urls.download}}?q=' + params.q"
                      v-bind:href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-              </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-condensed table-striped">

@@ -4,11 +4,38 @@
 {% endblock %}
 
 {% block bodyscripts %}
-{% assets "js_angular" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
+{% if VUEJS %}
+<script type="text/javascript">
+var djaodjinSettings = {
+    urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+    tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
+    date_range: {
+      start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+      ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+    },
+    user: {
+      username: "{{request.user.username}}",
+      slug: "{{request.user.username}}",
+      first_name: "{{request.user.first_name}}",
+      last_name: "{{request.user.last_name}}"
+    },
+    csrf: '{{csrf_token}}',
+};
+</script>
+{% assets "js_vue" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
-{% assets "js_dashboard" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
+{% assets "js_djaodjin_vue" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
+
+{% else %}
+{% assets "js_angular" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+{% endassets %}
+{% assets "js_djaodjin_angular" %}
+<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
 <script type="text/javascript">
 /* Implementation Note: Not including a list of dependent modules
@@ -29,5 +56,6 @@ reopenSignupApp.constant('settings', {
   itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
 });
 </script>
+{% endif %}
 {% block contacts_scripts %}{% endblock %}
 {% endblock %}
