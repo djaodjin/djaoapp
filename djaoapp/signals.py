@@ -30,7 +30,7 @@ from .locals import get_current_app
 #pylint: disable=protected-access
 
 LOGGER = logging.getLogger(__name__)
-SEND_EMAIL = True
+SEND_EMAIL = False
 
 contact_requested = Signal( #pylint:disable=invalid-name
     providing_args=["provider", "user", "reason"])
