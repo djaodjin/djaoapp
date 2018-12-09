@@ -50,6 +50,7 @@
                                   data-trip-content="<p>Look back through time.</p>"
                                   data-trip-position="s"
                                   uib-datepicker-popup="{{DATETIME_FORMAT}}"
+                                  v-model="ends_at"
                                   ng-model="ends_at"
                                   ng-change="prepareCurrentTabData(ends_at, timezone)"
                                   ng-required="true"
@@ -60,9 +61,8 @@
                                   max-date="maxDate"
                                   show-button-bar="false"></input>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default"
-                                        ng-click="open($event, 'ends_at')"
-                                        v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                                <button type="button" class="btn btn-default dropdown-toggle"
+                                        ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i>
                                 </button>
                             </span>
                             <span class="input-group-btn">
