@@ -37,6 +37,7 @@
     "toastr": "2.1.2",
     "trip.js": "3.3.3",
     "ace-builds": "1.2.2",
+    "sortablejs": "^1.7.0",
     "vue": "^2.5.17",
     "uiv": "^0.26.2",
     "vue2-filters": "^0.3.0",
