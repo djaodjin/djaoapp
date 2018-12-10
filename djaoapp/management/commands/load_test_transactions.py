@@ -14,6 +14,10 @@ from saas.models import Transaction
 from saas.utils import datetime_or_now
 from saas.settings import PROCESSOR_ID
 
+from ... import settings
+
+# disabling email notifications
+settings.SEND_EMAIL = False
 
 LOGGER = logging.getLogger(__name__)
 

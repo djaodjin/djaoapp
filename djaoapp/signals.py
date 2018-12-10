@@ -25,12 +25,13 @@ from signup.utils import (has_invalid_password,
 
 from .compat import reverse
 from .locals import get_current_app
+from . import settings
 
 #pylint: disable=unused-argument
 #pylint: disable=protected-access
 
 LOGGER = logging.getLogger(__name__)
-SEND_EMAIL = True
+SEND_EMAIL = settings.SEND_EMAIL
 
 contact_requested = Signal( #pylint:disable=invalid-name
     providing_args=["provider", "user", "reason"])

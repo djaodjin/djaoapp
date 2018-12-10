@@ -24,6 +24,7 @@
             <li>
               <uiv-date-picker
                 @input="get"
+                format="{{DATETIME_FORMAT}}"
                 v-model="params.start_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />
@@ -54,6 +55,7 @@
             <li>
               <uiv-date-picker
                 @input="get"
+                format="{{DATETIME_FORMAT}}"
                 v-model="params.ends_at"
                 icon-control-left="fa fa-caret-left"
                 icon-control-right="fa fa-caret-right" />

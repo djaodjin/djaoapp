@@ -28,17 +28,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th></th>
           </tr>
         </thead>
-        {% if VUEJS %}
-        <draggable
-           v-model="items.results"
-           @start="drag=true"
-           @end="drag=false"
-           @change="moved"
-           element="tbody"
-           :options="{draggable:'.item'}">
-        {% else %}
-        <tbody id="rules" dnd-list="rules">
-        {% endif %}
+        <tbody id="rules" dnd-list="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
           <tr class="item"
               ng-prop-id="'rule-' + rule.rank"
               ng-repeat="rule in rules.results" ng-cloak
@@ -46,7 +36,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
             <td width="100">
-              <div class="btn btn-default btn-sm">
+              <div class="btn btn-default btn-sm rule-handle">
                 <i class="fa fa-bars"></i></div>
             </td>
             <td>[[rule.path]]</td>
@@ -73,8 +63,9 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <td class="engaged">
                 <span ng-show="!engagedEditMode[$index]"
                       ng-click="editEngaged($index)"
-                      v-show="!rule.edit_description"
-                      @click="editDescription(index)">[[rule.engaged]] <i class="fa fa-pencil"></i></span>
+                      @click="editDescription(index)"
+                      v-show="!edit_description[index]"
+                      >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
                 <input type="text" class="form-control"
                        ng-show="engagedEditMode[$index]"
                        ng-keydown="saveEngaged($event, rule, $index)"
@@ -83,10 +74,12 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                        uib-tooltip="Edit engaged and press 'Enter'"
                        uib-tooltip-trigger="focus"
                        uib-tooltip-placement="top"
-                       @blur="saveDescription(rule)"
-                       @keyup.13="saveDescription(rule)"
-                       v-model="rule.description"
-                       v-show="rule.edit_description">
+                       v-show="edit_description[index]"
+                       v-model="rule.engaged"
+                       ref="edit_description_input"
+                       @keydown="saveDescription(rule, index, $event)"
+                       @blur="saveDescription(rule, index, $event)"
+                       >
             </td>
             <td width="100">
               <button class="btn btn-danger btn-sm" ng-click="remove($index)">
@@ -99,11 +92,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                  data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> Add ...</a>
             </td>
           </tr>
-        {% if VUEJS %}
-        </draggable>
-        {% else %}
         </tbody>
-        {% endif %}
       </table>
       <div class="text-center"
            ng-show="rules.$resolved && rules.results.length > itemsPerPage" ng-cloak

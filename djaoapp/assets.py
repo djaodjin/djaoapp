@@ -94,7 +94,7 @@ js_vue = Bundle(
     'vendor/vue.js',
     'vendor/uiv.min.js',
     'vendor/vue2-filters.js',
-    'vendor/vuedraggable.js',
+    'vendor/vue-sortable.js',
     filters='jsmin', output='cache/vue.js')
 register('js_vue', js_vue)
 
