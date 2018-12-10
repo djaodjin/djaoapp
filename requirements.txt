@@ -23,7 +23,7 @@ jinja2==2.8.1
 gunicorn==19.7.1
 phonenumbers==8.5.0
 python-social-auth==0.3.6
-pytz==2018.3
+pytz==2018.7
 social-auth-app-django==1.2.0
 whitenoise==3.3.0
 
@@ -31,7 +31,7 @@ whitenoise==3.3.0
 cssmin==0.2.0
 yuicompressor==2.4.8
 jsmin==2.2.2
-django-extensions==1.6.7
+django-extensions==2.1.4
 django-debug-panel==0.8.3
 django-debug-toolbar==1.9.1
 

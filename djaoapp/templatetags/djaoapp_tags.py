@@ -162,7 +162,7 @@ def schema_href(attr):
         pass
     try:
         return attr['items']['$ref'].replace('#/definitions/', '')
-    except:
+    except Exception: #pylint:disable=broad-except
         pass
     return ''
 

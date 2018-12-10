@@ -88,6 +88,7 @@ class PasswordResetView(AuthMixin, AppMixin, PasswordResetBaseView):
         # Implementation Note: Because we add a ``AuthMixin``
         # that overrides ``get_success_url``, we need to add this code
         # from the base class back here.
+        #pylint:disable=useless-super-delegation
         return super(PasswordResetView, self).get_success_url()
 
 

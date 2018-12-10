@@ -56,8 +56,10 @@ if settings.DEBUG:
             name='csrf_error'),
         url(r'^favicon.ico$', django_static_serve,
             {'path': 'favicon.ico'}),
-        url(r'^docs/api/redoc/$', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
-        url(r'^docs/api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
+        url(r'^docs/api/redoc/$', schema_view.with_ui('redoc',
+            cache_timeout=None), name='schema-redoc'),
+        url(r'^docs/api/swagger(?P<format>\.json|\.yaml)$',
+            schema_view.without_ui(cache_timeout=None), name='schema-json'),
         url(r'^docs/api/', APIDocView.as_view()),
     ]
 else:

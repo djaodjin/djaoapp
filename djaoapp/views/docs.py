@@ -5,7 +5,7 @@
 Default start page for a djaodjin-hosted product.
 """
 
-import os, re
+import logging, os, re
 from collections import OrderedDict, defaultdict
 
 from django.conf import settings
@@ -15,10 +15,12 @@ from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
 from rest_framework.compat import URLPattern, URLResolver, get_original_route
-from rest_framework.schemas.generators import SchemaGenerator
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from drf_yasg.generators import OpenAPISchemaGenerator, EndpointEnumerator
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 OPENAPI_INFO = openapi.Info(
@@ -163,7 +165,7 @@ def transform_links(line):
 
 
 def endpoint_ordering(endpoint):
-    path, method, callback, decorators = endpoint
+    path, method, _, _ = endpoint
     method_priority = {
         'GET': 0,
         'POST': 1,
@@ -182,6 +184,7 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
         Return a list of all available API endpoints by inspecting the URL conf.
         Copied from super and edited to look at decorators.
         """
+        #pylint:disable=arguments-differ,too-many-arguments,too-many-locals
         if patterns is None:
             patterns = self.patterns
 
@@ -203,8 +206,8 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                         for method in self.get_allowed_methods(callback):
                             endpoint = (path, method, callback, decorators)
                             api_endpoints.append(endpoint)
-                except Exception:  # pragma: no cover
-                    logger.warning('failed to enumerate view', exc_info=True)
+                except Exception: #pylint:disable=broad-except
+                    LOGGER.warning('failed to enumerate view', exc_info=True)
 
             elif isinstance(pattern, URLResolver):
                 nested_endpoints = self.get_api_endpoints(
@@ -218,7 +221,7 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                 )
                 api_endpoints.extend(nested_endpoints)
             else:
-                logger.warning("unknown pattern type {}".format(type(pattern)))
+                LOGGER.warning("unknown pattern type %s", type(pattern))
 
         api_endpoints = sorted(api_endpoints, key=endpoint_ordering)
         return api_endpoints
@@ -237,7 +240,8 @@ class APIDocGenerator(OpenAPISchemaGenerator):
         :return: {path: (view_class, list[(http_method, view_instance)])
         :rtype: dict
         """
-        enumerator = self.endpoint_enumerator_class(self._gen.patterns, self._gen.urlconf, request=request)
+        enumerator = self.endpoint_enumerator_class(
+            self._gen.patterns, self._gen.urlconf, request=request)
         endpoints = enumerator.get_api_endpoints()
         view_paths = defaultdict(list)
         view_cls = {}
@@ -250,15 +254,8 @@ class APIDocGenerator(OpenAPISchemaGenerator):
             for path, methods in view_paths.items()}
 
     def get_paths(self, endpoints, components, request, public):
-        """Generate the Swagger Paths for the API from the given endpoints.
-
-        :param dict endpoints: endpoints as returned by get_endpoints
-        :param ReferenceResolver components: resolver/container for Swagger References
-        :param Request request: the request made against the schema view; can be None
-        :param bool public: if True, all endpoints are included regardless of access through `request`
-        :returns: the :class:`.Paths` object and the longest common path prefix, as a 2-tuple
-        :rtype: tuple[openapi.Paths,str]
-        """
+        """Generate the Swagger Paths for the API from the given endpoints."""
+        #pylint:disable=too-many-locals
         if not endpoints:
             return openapi.Paths(paths={}), ''
 
@@ -268,24 +265,27 @@ class APIDocGenerator(OpenAPISchemaGenerator):
         paths = OrderedDict()
         for path, (view_cls, methods) in sorted(endpoints.items()):
             operations = {}
-            for method, view, decorators in methods:
-                if not public and not self._gen.has_view_permissions(path, method, view):
+            for method, view, _ in methods:
+                if not public and not self._gen.has_view_permissions(
+                        path, method, view):
                     continue
 
-                operation = self.get_operation(view, path, prefix, method, components, request)
+                operation = self.get_operation(
+                    view, path, prefix, method, components, request)
                 if operation is not None:
                     operations[method.lower()] = operation
 
             if operations:
-                # since the common prefix is used as the API basePath, it must be stripped
-                # from individual paths when writing them into the swagger document
+                # since the common prefix is used as the API basePath,
+                # it must be stripped from individual paths when writing
+                # them into the swagger document
                 path_suffix = path[len(prefix):]
                 if not path_suffix.startswith('/'):
                     path_suffix = '/' + path_suffix
-                paths[path_suffix] = self.get_path_item(path, view_cls, operations)
+                paths[path_suffix] = self.get_path_item(
+                    path, view_cls, operations)
 
         return openapi.Paths(paths=paths), prefix
-
 
 
 class APIDocView(TemplateView):

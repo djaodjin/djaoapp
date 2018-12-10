@@ -40,6 +40,7 @@ class DocBalancePagination(DjangoRestResponsePagination):
         paged_schema = NotHandled
         if isinstance(paginator, BalancePagination):
             has_count = not isinstance(paginator, CursorPagination)
+            #pylint:disable=redefined-variable-type
             paged_schema = openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties=OrderedDict((
@@ -80,6 +81,7 @@ class DocTotalPagination(DjangoRestResponsePagination):
         paged_schema = NotHandled
         if isinstance(paginator, TotalPagination):
             has_count = not isinstance(paginator, CursorPagination)
+            #pylint:disable=redefined-variable-type
             paged_schema = openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties=OrderedDict((
