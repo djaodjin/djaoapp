@@ -25,7 +25,6 @@ from signup.utils import (has_invalid_password,
 
 from .compat import reverse
 from .locals import get_current_app
-from . import settings
 
 #pylint: disable=unused-argument
 #pylint: disable=protected-access
