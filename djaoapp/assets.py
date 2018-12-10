@@ -130,6 +130,11 @@ js_djaodjin_vue = Bundle(
     filters='jsmin', output='cache/djaodjin-vue.js')
 register('js_djaodjin_vue', js_djaodjin_vue)
 
+# Used in docs/api.html
+js_dashboard = Bundle(
+    'js/djaodjin-dashboard.js',
+    filters='jsmin', output='cache/djaodjin-dashboard.js')
+register('js_dashboard', js_dashboard)
 
 # Related to djaodjin-pages edition tools
 # ---------------------------------------

@@ -1,19 +1,26 @@
 {% extends "saas/base.html" %}
 
-{% block content_navbarbrand %}{% endblock %}
-{% block footer %}{% endblock %}
-
-{% block saas_localheader %}
+{% block localheader %}
 {% assets "css_dashboard" %}
 <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
+<style>
+.dashboard-nav-push-content {
+  width: 240px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+</style>
 {% endblock %}
 
+{% block content_navbarbrand %}{% endblock %}
+{% block footer %}{% endblock %}
+
 {% block dashboard_nav %}
-<div class="dashboard-nav dashboard-nav-color-theme">
+<div class="dashboard-nav initial">
   <div class="dashboard-nav-inner-container">
-    <div class="dashboard-nav-main-container dashboard-nav-color-theme" style="display:inline-block;">
-      <div class="dashboard-nav-main">
+    <div class="dashboard-nav-main dashboard-nav-color-theme">
+      <div>
         <header>
           <nav class="navbar navbar-default">
             {% include "_navbarbrand.html" %}
@@ -43,16 +50,14 @@
       </div>
       {% endblock %}
     </div>
-    <div class="dashboard-nav-border dashboard-nav-toggle dashboard-nav-color-theme" style="display:inline-block;float:right;">
-        <header>
-          <nav class="navbar navbar-default">
-            {# `.navbar-brand` forces the height to match other header blocks #}
-            <div class="navbar-brand"></div>
-          </nav>
-        </header>
-        <div class="dashboard-nav-toggle-main">
-         <i class="fa initial"></i>
-        </div>
+    <div class="dashboard-nav-border dashboard-nav-color-theme">
+<ul class="nav navbar-nav">
+  <li>
+    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
+        <i class="fa initial"></i>
+    </a>
+  </li>
+</ul>
     </div>
   </div><!-- /.dashboard-nav-inner-container -->
 </div>
@@ -67,7 +72,7 @@
 <p class="lead">
     {% block saas_lead_help %}{% endblock %}
 </p>
-<div class="row">
+<div class="row method">
     <div class="col-md-12">
         {% block saas_help %}{% endblock %}
         {% block saas_content %}{% endblock %}

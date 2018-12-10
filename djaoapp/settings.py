@@ -40,6 +40,7 @@ if DEBUG:
         'debug_toolbar',
         'debug_panel',
         'django_extensions',
+        'drf_yasg'
         )
 else:
     ENV_INSTALLED_APPS = RULES_APPS
@@ -741,6 +742,18 @@ PAGES = {
 SURVEY = {
     'BELONGS_MODEL': 'saas.Organization'
 }
+
+
+# API documentation
+SWAGGER_SETTINGS = {
+    'DEFAULT_PAGINATOR_INSPECTORS': [
+        'djaoapp.docs.DocBalancePagination',
+        'djaoapp.docs.DocTotalPagination',
+        'drf_yasg.inspectors.DjangoRestResponsePagination',
+        'drf_yasg.inspectors.CoreAPICompatInspector',
+    ],
+}
+
 
 # Demo mode ...
 REUSABLE_PRODUCTS = ('demo',)

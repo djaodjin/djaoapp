@@ -10,6 +10,7 @@
 
 $(document).ready(function(){
     (function(){
+/*
         // slideout sidebar
         var body = $('body');
         var nav = $('.dashboard-nav');
@@ -41,32 +42,27 @@ $(document).ready(function(){
                 })
             }
         });
-/* interfers with sidebar showing/hiding.
-        $(window).resize(function() {
-            open = false;
-            overlay.hide()
-            $(body)
-                .add(nav)
-                .add(content)
-                .add(container)
-                .removeAttr('style')
-        });
 */
-        $(".dashboard-nav-toggle").click(function() {
+        $(".dashboard-nav-toggle").click(function(event) {
+            event.preventDefault();
             var element = $(this);
             var icon = element.find("i");
             var nav = element.parents(".dashboard-nav");
             var containerInner = nav.parents(".dashboard-inner-container");
+            var navBorder = nav.find(".dashboard-nav-border");
             var navWidth = nav.width();
-            var toggleWidth = element.width();
+            var toggleWidth = navBorder.width();
             var sidebarEdge = containerInner.css("left");
-            icon.removeClass();
+            nav.removeClass("initial opened closed");
+            icon.removeClass("initial opened closed");
             if( sidebarEdge === "-" + (navWidth - toggleWidth) + "px" ) {
                 sidebarEdge = 0;
-                icon.addClass("fa fa-angle-double-left");
+                nav.addClass("opened");
+                icon.addClass("opened");
             } else {
                 sidebarEdge = "-" + (navWidth - toggleWidth) + "px";
-                icon.addClass("fa fa-angle-double-right");
+                nav.addClass("closed");
+                icon.addClass("closed");
             }
             var animates = {left: sidebarEdge};
             var container =  containerInner.parents(".dashboard-container");

@@ -110,6 +110,63 @@ def value_attr(field):
             return 'value=%s' % force_text(value)
     return ""
 
+
+@register.filter()
+def query_parameters(params):
+    return [param for param in params if param['in'] == 'query']
+
+
+@register.filter()
+def request_body_parameters(params, schema):
+    definitions = schema
+    results = []
+    # We filtered all the params in the body, now let's remove the ones
+    # which are read-only.
+    for param in [param for param in params if param['in'] == 'body']:
+        if 'schema' in param:
+            # Schema reference
+            at_least_one = False
+            for _, attr in six.iteritems(
+                    definitions[schema_href(param.schema)].properties):
+                if 'readOnly' in attr:
+                    continue
+                else:
+                    at_least_one = True
+                    break
+            if at_least_one:
+                results += [param]
+        else:
+            results += [param]
+    return results
+
+@register.filter()
+def not_key(param_name):
+    return not (param_name.lower() == 'password'
+            or param_name.lower().endswith('_key')
+            or param_name.lower().endswith('_password'))
+
+
+@register.filter()
+def schema_name(attr):
+    name = schema_href(attr)
+    if name:
+        return name
+    return attr['type']
+
+
+@register.filter()
+def schema_href(attr):
+    try:
+        return attr['$ref'].replace('#/definitions/', '')
+    except KeyError:
+        pass
+    try:
+        return attr['items']['$ref'].replace('#/definitions/', '')
+    except:
+        pass
+    return ''
+
+
 @register.filter()
 def url_app(request): #pylint:disable=unused-argument
     return reverse('product_default_start')

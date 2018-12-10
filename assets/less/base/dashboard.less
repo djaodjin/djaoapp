@@ -1,7 +1,8 @@
 // CSS specific to the DjaoDjin dashboard
 
-@dashboard-sidebar-width:    220px;
+@dashboard-sidebar-width:    240px;
 @dashboard-sidebar-toggle:    20px;
+@dashboard-nav-footer-height: 91px;
 @dashboard-content-bg:       white;
 
 // Manager dashboards (templates/saas/*.html)
@@ -32,27 +33,43 @@
 }
 
 .dashboard-inner-container {
-    display: table;
-    float: left;
-    width: 100%;
     position: relative;
-    left: 0;
     color: black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .dashboard-nav {
-    display: table-cell;
-    width: @dashboard-sidebar-width; // .col-md-2 width: 16.66666667%;
-    position: relative; // .col-md-2
-    overflow: hidden;
-    -webkit-transition: right 0.25s ease-in-out;
-    -moz-transition: right 0.25s ease-in-out;
-    -ms-transition: right 0.25s ease-in-out;
-    -o-transition: right 0.25s ease-in-out;
-    transition: right 0.25s ease-in-out;
+  width: @dashboard-sidebar-width; // .col-md-2 width: 16.66666667%;
+  overflow: hidden;
+  -webkit-transition: right 0.25s ease-in-out;
+  -moz-transition: right 0.25s ease-in-out;
+  -ms-transition: right 0.25s ease-in-out;
+  -o-transition: right 0.25s ease-in-out;
+  transition: right 0.25s ease-in-out;
+
+
+  flex-grow: 1;
+  user-select: none;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 100%;
+}
+
+.dashboard-nav-push-content {
+  width: @dashboard-sidebar-width;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .dashboard-nav-main {
+    float: left;
     min-height: 100%;
     padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
                              in pixel */
@@ -71,6 +88,11 @@
   max-height: 46px;
 }
 
+.dashboard-nav-menu {
+  height: calc(~"100vh -" (@dashboard-nav-footer-height + @navbar-height));
+  overflow-y: auto;
+}
+
 .dashboard-nav-footer
 {
     position: absolute;
@@ -78,7 +100,7 @@
     bottom: 0;
     padding: 10px 30px 10px;
     font-size: 11px;
-    width: @dashboard-sidebar-width;
+    width: @dashboard-sidebar-width - @dashboard-sidebar-toggle;
     border-top: 1px solid;
 }
 
@@ -103,26 +125,19 @@
 }
 
 .dashboard-content {
-    display: table-cell;
-    position: relative;
     overflow: hidden;
     vertical-align: top;
     background-color: @dashboard-content-bg;
     color: black;
-}
-
-.dashboard-nav-inner-container {
-    display: table;
-    width: @dashboard-sidebar-width;
+    width: 100%;
 }
 
 .dashboard-nav .dashboard-nav-menu {
-    display: table-cell;
     width: @dashboard-sidebar-width - @dashboard-sidebar-toggle;
 }
 
-.dashboard-nav-toggle {
-    display: table-cell;
+.dashboard-nav-border {
+    float:left;
     width: @dashboard-sidebar-toggle;
     cursor: pointer;
     /* forces height of the sidebar to 100vh - @navbar-height - footer-height */
@@ -141,10 +156,12 @@
 
 .dashboard-nav-menu > hr {
   margin-left: @dashboard-sidebar-toggle;
+  margin-right: @dashboard-sidebar-toggle;
 }
 
 .dashboard-nav-menu > .nav{
    margin-left: @dashboard-sidebar-toggle;
+   margin-right: @dashboard-sidebar-toggle;
 }
 
 .dashboard-nav-menu > .nav > li {
@@ -162,9 +179,18 @@
    text-align:center;
 }
 
-.dashboard-nav-toggle .initial:before {
+.nav .dashboard-nav-toggle > .closed:before  {
+      content: "\f101"; /* .fa-angle-double-right:before */
+}
+
+.nav .dashboard-nav-toggle > .opened:before  {
       content: "\f100"; /* .fa-angle-double-left:before */
 }
+
+.nav .dashboard-nav-toggle > .initial:before  {
+      content: "\f100"; /* .fa-angle-double-left:before */
+}
+
 
 @media screen and (max-width: @screen-xs-max) {
     .dashboard-inner-container {
@@ -173,8 +199,26 @@
       width:      calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
     }
 
-    .dashboard-nav-toggle .initial:before {
+    .dashboard-nav-border {
+      display: block;
+    }
+
+    .nav .dashboard-nav-toggle > .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
+    }
+
+    .dashboard-content {
+      margin-top: @navbar-height;
+    }
+
+    .dashboard-content > header {
+      position: fixed;
+      height:  @navbar-height;
+      top: 0;
+      background: white;
+      z-index: 4;
+      width: 100%;
+      left: 0;
     }
 }
 

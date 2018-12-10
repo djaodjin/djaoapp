@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import logging
 
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from pages.utils import get_default_storage
 from rest_framework import serializers
 from rest_framework import generics
@@ -28,13 +29,21 @@ LOGGER = logging.getLogger(__name__)
 
 class RegisterSerializer(CreateUserSerializer):
 
-    organization_name = serializers.CharField(required=False)
-    street_address = serializers.CharField(required=False)
-    locality = serializers.CharField(required=False)
-    region = serializers.CharField(required=False)
-    postal_code = serializers.CharField(required=False)
-    country = serializers.CharField(required=False)
-    phone = serializers.CharField(required=False)
+    organization_name = serializers.CharField(required=False,
+        help_text=_("Organization name that owns the billing, registered with"\
+            " the user as manager"))
+    street_address = serializers.CharField(required=False,
+        help_text=_("Street address for the billing profile"))
+    locality = serializers.CharField(required=False,
+        help_text=_("City/Town for the billing profile"))
+    region = serializers.CharField(required=False,
+        help_text=_("State/Province/County for the billing profile"))
+    postal_code = serializers.CharField(required=False,
+        help_text=_("Zip/Postal Code for the billing profile"))
+    country = serializers.CharField(required=False,
+        help_text=_("Country for the billing profile"))
+    phone = serializers.CharField(required=False,
+        help_text=_("Phone number for the billing profile"))
 
     class Meta:
         model = get_user_model()
@@ -43,9 +52,12 @@ class RegisterSerializer(CreateUserSerializer):
             'region', 'postal_code', 'country', 'phone')
 
 
-class JWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
+class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
     """
-    Creates a new user and returns a JSON Web Token that can subsequently
+    Creates a new user and optionally an associated billing
+    or organization profile.
+
+    This end point returns a JSON Web Token that can subsequently
     be used to authenticate the new user in HTTP requests.
 
     **Example
