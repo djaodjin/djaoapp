@@ -64,7 +64,6 @@ You can update a user contact information, as well as login credentials here.
     <div class="modal fade"
          id="delete-action" tabindex="-1" role="dialog"
          aria-labelledby="Delete user" aria-hidden="true">
-    <modal v-model="userModalOpen" title="Delete Profile...">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -81,20 +80,21 @@ This operation cannot be reversed.
             <p>
 Are you sure you want to continue?
             </p>
-            <div slot="footer">
-              <button class="btn btn-default"
-                 data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger"
-                 ng-click="deleteProfile($event)"
-                 @click="deleteProfile">Delete</button>
-            </div>
-    </modal>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default"
+                    data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger"
+                    ng-click="deleteProfile($event)"
+                    @click="deleteProfile">Delete</button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- modal dialog to generate API keys -->
     <div id="generate-key" class="modal fade"
          tabindex="-1" role="dialog"
          aria-labelledby="API Keys" aria-hidden="true">
-    <modal v-model="apiModalOpen" title="API Key">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -105,9 +105,11 @@ Are you sure you want to continue?
           <div class="modal-body">
             <div class="form-group">
               <div class="controls">
-                <input class="form-control form-control"
-                       v-model="apiKey" name="key" maxlength="128"
-                       type="text" disabled placeholder="Generating..." />
+                <input class="form-control"
+                       name="key" maxlength="128"
+                       type="text" disabled placeholder="Generating..."
+                       ng-model="api_key"
+                       v-model="apiKey" />
               </div>
             </div>
             <div>
@@ -118,14 +120,16 @@ This is the API key you can use to authenticate with the service.
 The key will only be displayed once. Keep it secure.
               </p>
             </div>
-            <div slot="footer">
-              <button id="regenerate-key" class="btn btn-default" type="button"
-                      ng-click="generateKey('#generate-key')"
-                      @click="generateKey">Generate</button>
-              <button class="btn btn-primary"
-                      data-dismiss="modal">OK</button>
-            </div>
-    </modal>
+          </div>
+          <div class="modal-footer">
+            <button id="regenerate-key" class="btn btn-default" type="button"
+                    ng-click="generateKey('#generate-key')"
+                    @click="generateKey">Generate</button>
+            <button class="btn btn-primary"
+                    data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- end of modal dialog to generate API keys -->
   </div> <!-- userProfileCtrl -->
