@@ -79,6 +79,7 @@
                         <template slot="dropdown">
                             <li>
                                 <uiv-date-picker
+                                     format="{{DATETIME_FORMAT}}"
                                      v-model="ends_at"
                                      v-on:input="prepareCurrentTabData"
                                      icon-control-left="fa fa-caret-left"
