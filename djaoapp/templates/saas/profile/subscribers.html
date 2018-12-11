@@ -347,7 +347,10 @@ Subscriptions to {{organization.printable_name}}
             v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                <a ng-prop-id="entry.organization.slug"
+                   ng-prop-href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'"
+                   v-bind:id="entry.organization.slug"
+                   v-bind:href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.created_at | formatDate]]</td>
             <td>[[entry.ends_at | formatDate]]</td>
@@ -386,7 +389,10 @@ Subscriptions to {{organization.printable_name}}
             v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                <a ng-prop-id="entry.organization.slug"
+                   ng-prop-href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'"
+                   v-bind:id="entry.organization.slug"
+                   v-bind:href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.ends_at | formatDate]]</td>
@@ -425,7 +431,10 @@ Subscriptions to {{organization.printable_name}}
             v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                <a ng-prop-id="entry.organization.slug"
+                   ng-prop-href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'"
+                   v-bind:id="entry.organization.slug"
+                   v-bind:href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.created_at | formatDate]]</td>
