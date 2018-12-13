@@ -20,6 +20,7 @@ APP_NAME = os.path.basename(BASE_DIR)
 
 DB_HOST = ''
 DB_PORT = 5432
+SEND_EMAIL = True
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))

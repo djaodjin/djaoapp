@@ -33,7 +33,7 @@
 }
 
 .dashboard-inner-container {
-    position: relative;
+    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
     color: black;
     display: flex;
     flex-direction: row;
@@ -146,6 +146,24 @@
     /* height:      calc(~"100vh - 50px - 22px"); */
 }
 
+.dashboard-nav-border .dashboard-nav-toggle-container {
+  float: left;
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding-left: 0; // .nav
+}
+
+.dashboard-nav-toggle-container .dashboard-nav-toggle {
+  float: left;
+  position: relative;
+  margin: 0;
+  padding: 15px 15px; // .navbar-nav>li>a @media (min-width: 768px)
+//  padding-top: 15px;   // .navbar-nav>li>a @media (min-width: 768px)
+//  padding-bottom: 15px; // .navbar-nav>li>a @media (min-width: 768px)
+  line-height: 20px; // .navbar-nav>li>a
+}
+
 .dashboard-nav-toggle-main {
   display: table-cell;
   text-align: center;
@@ -179,15 +197,15 @@
    text-align:center;
 }
 
-.nav .dashboard-nav-toggle > .closed:before  {
+.dashboard-nav-border .dashboard-nav-toggle > .closed:before  {
       content: "\f101"; /* .fa-angle-double-right:before */
 }
 
-.nav .dashboard-nav-toggle > .opened:before  {
+.dashboard-nav-border .dashboard-nav-toggle > .opened:before  {
       content: "\f100"; /* .fa-angle-double-left:before */
 }
 
-.nav .dashboard-nav-toggle > .initial:before  {
+.dashboard-nav-border .dashboard-nav-toggle > .initial:before  {
       content: "\f100"; /* .fa-angle-double-left:before */
 }
 
@@ -199,11 +217,7 @@
       width:      calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
     }
 
-    .dashboard-nav-border {
-      display: block;
-    }
-
-    .nav .dashboard-nav-toggle > .initial:before {
+    .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
     }
 
