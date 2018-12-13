@@ -34,13 +34,17 @@
 
 .dashboard-inner-container {
     position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
-    color: black;
+    left: 0 - @dashboard-sidebar-width + @dashboard-sidebar-toggle;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    width: -moz-calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
+    width:      calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
+    color: black;
 }
 
 .dashboard-nav {
+  display:block;
   width: @dashboard-sidebar-width; // .col-md-2 width: 16.66666667%;
   overflow: hidden;
   -webkit-transition: right 0.25s ease-in-out;
@@ -209,13 +213,28 @@
       content: "\f100"; /* .fa-angle-double-left:before */
 }
 
+.dashboard-nav-push-content {
+  width: @dashboard-sidebar-width - @dashboard-sidebar-toggle;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.no-results
+{
+    color: #888;
+    text-align: center;
+    padding: 20px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.dashboard-home-title
+{
+    border-bottom: 1px solid #e0e0e0;
+}
+
 
 @media screen and (max-width: @screen-xs-max) {
-    .dashboard-inner-container {
-      left: 0 - @dashboard-sidebar-width + @dashboard-sidebar-toggle;
-      width: -moz-calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
-      width:      calc(~"100vw -" -@dashboard-sidebar-width + @dashboard-sidebar-toggle);
-    }
 
     .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
@@ -236,16 +255,41 @@
     }
 }
 
-.no-results
-{
-    color: #888;
-    text-align: center;
-    padding: 20px 10px;
-    margin: 0;
-    font-size: 14px;
-}
 
-.dashboard-home-title
-{
-    border-bottom: 1px solid #e0e0e0;
+@media screen and (min-width: @screen-sm-min) {
+
+  .dashboard-inner-container {
+    position: inherit;
+    left: 0;
+    width: inherit;
+  }
+
+  .dashboard-inner-container .dashboard-nav {
+    display:none;
+  }
+
+  .dashboard-inner-container .dashboard-nav-push-content {
+    display: none;
+  }
+
+  .dashboard-inner-container .dashboard-nav-toggle {
+    display: none;
+  }
+
+  // On dashboard pages, the sidebar is always available
+  // We override again with the optional small screen settings.
+  .dashboard-inner-container.always-on {
+    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
+    left: 0;
+    width: 100vw;
+  }
+
+  .dashboard-inner-container.always-on .dashboard-nav {
+    display:block;
+  }
+
+  .dashboard-inner-container.always-on .dashboard-nav-push-content {
+    display: inline-block;
+  }
+
 }

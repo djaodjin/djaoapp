@@ -1,6 +1,6 @@
 {% if request|is_authenticated %}
 <li>
-    <a href="{{request|url_app}}">App</a>
+    <a id="app_home" href="{{request|url_app}}{% if organization %}{{organization}}/{% endif %}">Home</a>
 </li>
 {% endif %}
 <li {% if request|url_pricing in request.path %}class="active"{% endif %}>

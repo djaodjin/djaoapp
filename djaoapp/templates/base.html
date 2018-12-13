@@ -39,6 +39,11 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+{% assets "css_dashboard" %}
+<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+{% endassets %}
+
     {% block localheader %}{% endblock %}
     {% if 'djaodjin.com' in request|host %}
     <!-- Google Analytics -->
@@ -56,37 +61,77 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   <div id="wrap">
     <div id="main">
       <div class="dashboard-container">
-        <div class="dashboard-inner-container">
+        <div class="dashboard-inner-container{% block dashboard_inner_container_classes %}{% endblock %}">
           {% block dashboard_nav %}
-          <!-- <div class="dashboard-nav"></div> -->
+          <div class="dashboard-nav initial">
+            <div class="dashboard-nav-inner-container">
+              <div class="dashboard-nav-main dashboard-nav-color-theme">
+                <div>
+                  <header>
+                    <nav class="navbar navbar-default">
+                      <div class="navbar-header">
+                        {% include "_navbarbrand.html" %}
+                      </div>
+                    </nav>
+                  </header>
+                  <div class="dashboard-nav-menu">
+                  {% block sidebar %}
+                  <ul class="nav hidden-sm hidden-md hidden-lg">
+                    {% include "generic_navbar.html" %}
+                  </ul>
+                  {% endblock %}
+                  </div>
+                </div>
+                {% block dashboard_footer %}
+                <div class="dashboard-nav-footer dashboard-nav-color-theme">
+                  <div>
+Powered by &copy; 2018 DjaoDjin. All rights reserved.
+                  </div>
+                  <div class="footer-links">
+                    <a href="/legal/" target="_blank">Legal</a>
+                    &middot;
+                    <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                    <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                    <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+                  </div>
+                </div>
+                {% endblock %}
+              </div>
+              <div class="dashboard-nav-border dashboard-nav-color-theme">
+                <ul class="dashboard-nav-toggle-container">
+                  <li>
+                    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
+                        <i class="fa initial"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div><!-- /.dashboard-nav-inner-container -->
+          </div>
+          <div class="dashboard-nav-push-content"></div>
           {% endblock %}
-          <div class="dashboard-content">
+          <div class="dashboard-content" style="min-height:100%;padding-bottom: 22px;">
             <header>
               <nav class="navbar navbar-default{% block navbar_extra_classes %}{% endblock %}">
                 {% block content_navbarbrand %}
-                {% include "_navbarbrand.html" %}
+                <div class="navbar-header hidden-xs">
+                    {% include "_navbarbrand.html" %}
+                </div>
                 {% endblock %}
                 {% block header_navbar_large %}
-                <ul class="nav navbar-nav hidden-xs" style="float:right;margin-right:15px;">
-                    {% include "generic_navbar.html" %}
-                    <li class="header-menubar">
+                <ul class="nav navbar-nav" style="float:right;margin-right:15px;">
+                    <li class="header-menubar" style="float: left;">
                         {# links to user profile and #}
                         {# organizations is added here. #}
                         <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
                     </li>
                     {% if request|is_authenticated %}
-                    <li><a title="Click Here to sign out" href="{{request|url_logout}}">Sign Out <span class="fa fa-sign-out fa-lg"></span></a></li>
+                    <li style="float: left;"><a title="Click Here to sign out" href="{{request|url_logout}}"><span class="hidden-xs">Sign Out </span><span class="fa fa-sign-out fa-lg"></span></a></li>
                     {% endif %}
                 </ul>
-                {% endblock %}
-                {% block header_navbar_small %}
-                <div class="hidden-sm hidden-md hidden-lg">
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            {% include "generic_navbar.html" %}
-                        </ul>
-                    </div>
-                </div>
+                <ul class="nav navbar-nav hidden-xs" style="float:right;">
+                    {% include "generic_navbar.html" %}
+                </ul>
                 {% endblock %}
               </nav>
               {% block fullviewport %}
@@ -111,27 +156,32 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                         {% endif %}
                     </div>
                 </div>
+                <div>
                 {% block content %}
                 {% endblock %}
+                {% block footer %}
+                <footer class="footer">
+                  <div class="copyr">Powered by &copy; 2018 DjaoDjin. All rights reserved. - <a href="/legal/" target="_blank">Legal</a>
+                    &nbsp;&nbsp;
+                    <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                    <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                    <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+                  </div>
+                </footer>
+                {% endblock footer %}
+                </div>
             </div>
           </div><!-- /.dashboard-content -->
         </div><!-- /.dashboard-inner-container -->
       </div><!-- /.dashboard-container -->
     </div><!-- /#main -->
   </div><!-- /.wrap -->
-  {% block footer %}
-  <footer class="footer">
-      <div class="copyr">Powered by &copy; 2018 DjaoDjin. All rights reserved. - <a href="/legal/" target="_blank">Legal</a>
-          &nbsp;&nbsp;
-          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-          <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-          <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
-      </div>
-  </footer>
-  {% endblock footer %}
   {% block _bodyscripts %}
   {% assets "js_base" %}
   <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  {% assets "js_dashboard" %}
+  <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
   {% endassets %}
   <script type="text/javascript">
 jQuery(document).ready(function($) {
