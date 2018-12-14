@@ -13,9 +13,36 @@ from multitier.utils import get_site_model
 from saas.models import Transaction
 from saas.utils import datetime_or_now
 from saas.settings import PROCESSOR_ID
+from saas import signals as saas_signals
+from signup import signals as signup_signals
+
 
 
 LOGGER = logging.getLogger(__name__)
+
+from collections import defaultdict
+
+
+class DisableSignals(object):
+    def __init__(self, disabled_signals):
+        self.stashed_signals = defaultdict(list)
+        self.disabled_signals = disabled_signals
+
+    def __enter__(self):
+        for signal in self.disabled_signals:
+            self.disconnect(signal)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for signal in list(self.stashed_signals):
+            self.reconnect(signal)
+
+    def disconnect(self, signal):
+        self.stashed_signals[signal] = signal.receivers
+        signal.receivers = []
+
+    def reconnect(self, signal):
+        signal.receivers = self.stashed_signals.get(signal, [])
+        del self.stashed_signals[signal]
 
 
 class Command(BaseCommand):
@@ -135,12 +162,35 @@ class Command(BaseCommand):
             help='create sample subscribers on this provider')
 
     def handle(self, *args, **options):
+        sigs = [
+            saas_signals.charge_updated,
+            saas_signals.claim_code_generated,
+            saas_signals.card_updated,
+            saas_signals.expires_soon,
+            saas_signals.order_executed,
+            saas_signals.organization_updated,
+            saas_signals.user_relation_added,
+            saas_signals.user_relation_requested,
+            saas_signals.role_grant_accepted,
+            saas_signals.subscription_grant_accepted,
+            saas_signals.subscription_grant_created,
+            saas_signals.subscription_request_accepted,
+            saas_signals.subscription_request_created,
+            saas_signals.weekly_sales_report_created,
+            signup_signals.user_registered,
+            signup_signals.user_activated,
+            signup_signals.user_reset_password,
+            signup_signals.user_verification
+        ]
+        # disabling email notifications
+        with DisableSignals(sigs):
+            self._handle(*args, **options)
+
+    def _handle(self, *args, **options):
         #pylint: disable=too-many-locals,too-many-statements
         from saas.managers.metrics import month_periods # avoid import loop
         from saas.models import (Charge, ChargeItem, Organization, Plan,
             Subscription)
-        # disabling email notifications
-        settings.SEND_EMAIL = False
 
         if 'database' in options:
             db_name = options['database']
