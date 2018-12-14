@@ -9,32 +9,6 @@
     "use strict";
 
 $(document).ready(function(){
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-full-width",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": 200,
-        "hideDuration": 200,
-        "timeOut": "0",
-        "extendedTimeOut": "0",
-        "showEasing": "linear",
-        "hideEasing": "linear",
-        "showMethod": "slideDown",
-        "hideMethod": "slideUp",
-        containerId: "messages-content",
-        toastClass: "alert",
-        iconClasses: {
-            error: "alert-danger",
-            info: "alert-info",
-            success: "alert-success",
-            warning: "alert-warning"
-        },
-    };
-
     (function(){
         // menubar
         var menubar = $('.menubar');

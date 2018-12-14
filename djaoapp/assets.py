@@ -17,6 +17,7 @@ css_base = Bundle(
     output='cache/base.css', debug=False)
 register('css_base', css_base)
 
+
 css_email = Bundle(
     os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
     filters=['less', 'cssmin'],
@@ -29,7 +30,8 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/bootstrap.js',
                  'vendor/bootbox.js',
                  'vendor/toastr.js',
-                 'js/djaodjin-general.js',
+                 'js/djaodjin-dashboard.js',
+                 'js/djaodjin-menubar.js',
             filters='yui_js', output='cache/base.js')
 register('js_base', js_base)
 
@@ -59,10 +61,6 @@ register('js_auth', js_auth)
 # must be present:
 #  - css_base
 css_dashboard = Bundle(
-    Bundle(
-        os.path.join(settings.BASE_DIR,
-            'assets/less/base/djaodjin-dashboard.less'),
-        filters='less', output='cache/djaodjin-dashboard.css', debug=False),
     'vendor/nv.d3.css',
     'vendor/trip.css',
     'vendor/chardinjs.css', # XXX duplicated from snaplines.css

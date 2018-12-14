@@ -1,10 +1,8 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
 {% block sidebar %}
-<ul class="nav">
-<li>
-  <a id="app_home" href="{{request|url_app}}"><i class="fa fa-home"></i> <span class="">&#09;Home</span></a>
-</li>
+<ul class="nav hidden-sm hidden-md hidden-lg">
+  {% include "generic_navbar.html" %}
 </ul>
 <hr />
 <ul class="nav"

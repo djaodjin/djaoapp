@@ -1,17 +1,68 @@
 {% extends "saas/base.html" %}
 
-{% block dashboard_inner_container_classes %} always-on{% endblock %}
+{% block saas_localheader %}
+{% assets "css_dashboard" %}
+<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+{% endassets %}
+{% endblock %}
+
+{% block dashboard_inner_container_classes %}dashboard-inner-container always-on{% endblock %}
 {% block content_navbarbrand %}{% endblock %}
 {% block footer %}{% endblock %}
 
-{% block sidebar %}
-<ul class="nav hidden-sm hidden-md hidden-lg">
-  {% include "generic_navbar.html" %}
-</ul>
-{% include "saas/_subscriber_sidebar.html" %}
-{% if organization.is_provider %}
-{% include "saas/_provider_sidebar.html" %}
-{% endif %}
+{% block dashboard_nav %}
+{# This code is copy/pasted from base.html with the additional changes #}
+{# to `block sidebar` such that we are able to deploy to production    #}
+{# with minimal global changes.                                        #}
+<div class="dashboard-nav initial">
+    <div class="dashboard-nav-inner-container">
+        <div class="dashboard-nav-main dashboard-nav-color-theme">
+            <div>
+                <header>
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                        </div>
+                    </nav>
+                </header>
+                <div class="dashboard-nav-menu">
+                    {% block sidebar %}
+                    <ul class="nav hidden-sm hidden-md hidden-lg">
+                        {% include "generic_navbar.html" %}
+                    </ul>
+                    {% include "saas/_subscriber_sidebar.html" %}
+                    {% if organization.is_provider %}
+                    {% include "saas/_provider_sidebar.html" %}
+                    {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+            {% block dashboard_footer %}
+            <div class="dashboard-nav-footer dashboard-nav-color-theme">
+                <div>
+Powered by &copy; 2018 DjaoDjin. All rights reserved.
+                </div>
+                <div class="footer-links">
+                    <a href="/legal/" target="_blank">Legal</a>
+                    &middot;
+                    <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                    <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                    <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+        <div class="dashboard-nav-border dashboard-nav-color-theme">
+            <ul class="dashboard-nav-toggle-container">
+                <li>
+                    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
+                        <i class="fa initial"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- /.dashboard-nav-inner-container -->
+</div>
+<div class="dashboard-nav-push-content"></div>
 {% endblock %}
 
 {% block content %}

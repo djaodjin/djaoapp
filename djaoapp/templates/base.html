@@ -39,11 +39,6 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-
-{% assets "css_dashboard" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
-
     {% block localheader %}{% endblock %}
     {% if 'djaodjin.com' in request|host %}
     <!-- Google Analytics -->
@@ -61,7 +56,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   <div id="wrap">
     <div id="main">
       <div class="dashboard-container">
-        <div class="dashboard-inner-container{% block dashboard_inner_container_classes %}{% endblock %}">
+        <div class="{% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}">
           {% block dashboard_nav %}
           <div class="dashboard-nav initial">
             <div class="dashboard-nav-inner-container">
@@ -179,9 +174,6 @@ Powered by &copy; 2018 DjaoDjin. All rights reserved.
   {% block _bodyscripts %}
   {% assets "js_base" %}
   <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {% endassets %}
-  {% assets "js_dashboard" %}
-  <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
   {% endassets %}
   <script type="text/javascript">
 jQuery(document).ready(function($) {
