@@ -1,11 +1,11 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
-{% block saas_title %}{{organization.printable_name}} {{role_descr.title}}{% endblock %}
+{% block saas_title %}{{organization.printable_name}} {{role_descr.title}}s{% endblock %}
 
 {% block saas_content %}
 <section id="{{role_descr}}"
   data-trip data-trip-index="1"
-  data-trip-content="<h2>Add/Remove {{role_descr}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+  data-trip-content="<h2>Add/Remove {{role_descr.title}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
   data-trip-position="screen-center"
   ng-app="saasApp">
 <script type="text/ng-template" id="customTemplate.html">
@@ -110,21 +110,21 @@
   </div>
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->
-  <div class="add-role-modal modal fade" title="Invite {{role_descr}}"
+  <div class="add-role-modal modal fade" title="Invite {{role_descr.title}}"
        tabindex="-1" role="dialog"
-       aria-labelledby="Add {{role_descr}}" aria-hidden="true">
+       aria-labelledby="Add {{role_descr.title}}" aria-hidden="true">
   <div class="modal-dialog">
       <form class="form-horizontal">
         <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Invite {{role_descr}} ...</h4>
+              <h4 class="modal-title">Invite {{role_descr.title}} ...</h4>
           </div>
           <div class="modal-body">
             <p class="text-danger" ng-model="item">
 [[unregistered.slug]] is not yet registered. This is an opportunity to invite and
-add her/him as a {{role_descr}} for {{organization.printable_name}}.
+add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
             </p>
             <div class="row form-group">
                 <div class="col-sm-2">
@@ -148,7 +148,7 @@ add her/him as a {{role_descr}} for {{organization.printable_name}}.
                               maxlength="255" type="text" rows="10">
 Hi [[unregistered.email]],
 
-I am adding you as a {{role_descr}} to {{organization.printable_name}}.
+I am adding you as a {{role_descr.title}} to {{organization.printable_name}}.
 
 Thank you,
 - {{request.user.first_name}}</textarea>
@@ -163,7 +163,7 @@ Thank you,
                       class="btn btn-primary"
                       data-dismiss="modal"
                       ng-click="create($event)"
-                      @click="create">Invite {{role_descr}}</button>
+                      @click="create">Invite {{role_descr.title}}</button>
           </div>
         </div>
       </form>

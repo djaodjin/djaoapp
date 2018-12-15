@@ -449,7 +449,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
         LOGGER.warning(
             "%s will not be notified that the %s role of %s"\
             " was accepted because e-mail address is invalid.",
-            role.organization, role.role_description, request.user)
+            role.organization, role.role_description.title, request.user)
 
 
 # We insure the method is only bounded once no matter how many times

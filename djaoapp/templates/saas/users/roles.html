@@ -86,7 +86,7 @@
                v-bind:href="'{{urls.organization.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
           </td>
           <td class="text-center">
-            [[entry.request_key ? "requested" : entry.role_description]]
+            [[entry.request_key ? "requested" : entry.role_description.title]]
           </td>
           <td style="vertical-align:middle;">
             <button class="btn btn-danger btn-sm"
