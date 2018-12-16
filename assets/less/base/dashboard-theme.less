@@ -24,13 +24,18 @@
   color: @dashboard-sidebar-color;
 }
 
-.dashboard-nav .nav > li > a.dashboard-nav-toggle,
-.dashboard-nav .nav > li > a.dashboard-nav-toggle:active,
-.dashboard-nav .nav > li > a.dashboard-nav-toggle:hover,
-.dashboard-nav .nav > li > a.dashboard-nav-toggle:focus,
-.dashboard-nav .nav > li > a.dashboard-nav-toggle:visited {
+.dashboard-nav-toggle-container {
+  background-color: @dashboard-sidebar-bg;
+}
+
+.dashboard-nav a.dashboard-nav-toggle,
+.dashboard-nav a.dashboard-nav-toggle:active,
+.dashboard-nav a.dashboard-nav-toggle:hover,
+.dashboard-nav a.dashboard-nav-toggle:focus,
+.dashboard-nav a.dashboard-nav-toggle:visited {
   background-color: @dashboard-sidebar-bg;
   color: @dashboard-sidebar-color;
+  border-color: #ddd;
 }
 
 .opened .dashboard-nav-main {
@@ -71,20 +76,12 @@
    color: @dashboard-sidebar-color;
 }
 
-.menubar {
-  background: @dashboard-sidebar-bg;
-}
-
-.menubar a.menubar-dropdown-toggle {
-  color: @dashboard-sidebar-color;
-}
-
-.menubar .dropdown-label
+.dropdown-menu .dropdown-label
 {
     color: @dashboard-sidebar-bg;
 }
 
-.menubar .dropdown-label .dropdown-label-role
+.dropdown-menu .dropdown-label .dropdown-label-role
 {
     color: @dashboard-sidebar-color;
     background: @dashboard-sidebar-bg;

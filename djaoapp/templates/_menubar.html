@@ -1,38 +1,41 @@
 {% if request|is_authenticated %}
-    <div class="menubar">
-        <a href="#" class="menubar-dropdown-toggle">
-            {% if active_organization %}
-            <span class="menubar-label-title">
-                {{active_organization.printable_name}} <span class="caret"></span>
-            </span>
-            <span class="menubar-label-subtitle">
-                {{request.user.username}}
-            </span>
-            {% else %}
-            <span class="menubar-label">
-                {{request.user.username}} <span class="caret"></span>
-            </span>
-            {% endif %}
-        </a>
-        <div class="menubar-dropdown-container">
-            <ul class="dropdown-menu">
-                {% if top_accessibles|length > 0 %}
-                    <li class="dropdown-label">{{request.user.username}}</li>
-                {% endif %}
-                <li><a id="authenticated-user" href="{{request|url_profile}}">Profile</a></li>
-                <li><a href="{{request|url_logout}}?next={{request|url_home}}">Sign Out</a></li>
-                {% if top_accessibles|length > 0 %}
-                    {% for accessible in top_accessibles %}
-                        <li role="separator" class="divider"></li>
-                        <li class="dropdown-label">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
-                        <li><a href="{{accessible.app_location}}">Home</a></li>
-                        <li><a href="{{accessible.settings_location}}">Settings</a></li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-            <div class="djaodjin-overlay header-menubar-overlay"></div>
-        </div>
-    </div>
+<li class="dropdown">
+  {% if active_organization %}
+  <a href="#" class="dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
+     aria-haspopup="true" aria-expanded="false">
+    <span class="menubar-label-title">
+        {{active_organization.printable_name}} <span class="caret"></span>
+    </span>
+    <span class="menubar-label-subtitle">
+        {{request.user.username}}
+    </span>
+  </a>
+  {% else %}
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+     aria-haspopup="true" aria-expanded="false">
+    <span class="menubar-label">
+      {{request.user.username}} <span class="caret"></span>
+    </span>
+  </a>
+  {% endif %}
+  <ul class="dropdown-menu" role="menu">
+    {% if top_accessibles|length > 0 %}
+    <li class="dropdown-label" role="presentation">{{request.user.username}}</li>
+    {% endif %}
+    <li role="presentation"><a id="authenticated-user" href="{{request|url_profile}}" role="menuitem" tabindex="-1">Profile</a></li>
+    <li role="presentation"><a href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">Sign Out</a></li>
+    {% if top_accessibles|length > 0 %}
+    {% for accessible in top_accessibles %}
+    <li role="separator" class="divider"></li>
+    <li class="dropdown-label" role="presentation">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
+    <li role="presentation"><a href="{{accessible.app_location}}" role="menuitem" tabindex="-1">Home</a></li>
+    <li role="presentation"><a href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">Settings</a></li>
+    {% endfor %}
+    {% endif %}
+  </ul>
+</li>
 {% else %}
-    <a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+<li>
+<a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+</li>
 {% endif %}

@@ -79,6 +79,20 @@
                              in pixel */
 }
 
+.navbar-default .navbar-brand-logo {
+  float: left;
+  padding: 2px;
+  font-size: 18px;
+  line-height: 20px;
+  height: @navbar-height;
+  margin-top:    -@navbar-padding-vertical;
+}
+
+.navbar-default .navbar-brand-logo > img {
+  width: auto;
+  max-height: 46px;
+}
+
 .dashboard-nav .navbar-brand-logo {
   float: left;
   padding: 2px;
@@ -128,6 +142,15 @@
     margin-right: 0;
 }
 
+.navbarbrand {
+   float: left;
+}
+
+.dashboard-inner-container .navbarbrand {
+//    margin-left: @dashboard-sidebar-toggle + 5; // XXX +5 is dubious but works
+   margin-left: 0;
+}
+
 .dashboard-content {
     overflow: hidden;
     vertical-align: top;
@@ -158,14 +181,33 @@
   padding-left: 0; // .nav
 }
 
-.dashboard-nav-toggle-container .dashboard-nav-toggle {
-  float: left;
-  position: relative;
-  margin: 0;
-  padding: 15px 15px; // .navbar-nav>li>a @media (min-width: 768px)
+//.dashboard-nav-toggle-container .dashboard-nav-toggle {
+//  float: left;
+//  position: relative;
+//  margin: 0;
+//  padding: 15px 15px; // .navbar-nav>li>a @media (min-width: 768px)
 //  padding-top: 15px;   // .navbar-nav>li>a @media (min-width: 768px)
 //  padding-bottom: 15px; // .navbar-nav>li>a @media (min-width: 768px)
-  line-height: 20px; // .navbar-nav>li>a
+//  line-height: 20px; // .navbar-nav>li>a
+//border: 1px solid transparent;
+//    border-radius: 4px;
+//}
+
+.dashboard-nav-toggle-container .dashboard-nav-toggle {
+  position: relative;
+  float: left;
+  margin-left: @navbar-padding-horizontal;
+  margin-right: 5px;
+  padding: 9px 10px;
+  .navbar-vertical-align(34px);
+  background-color: transparent;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  border-radius: @border-radius-base;
+}
+
+.dashboard-nav-toggle-container .dashboard-nav-toggle > i {
+  width: 14px;
 }
 
 .dashboard-nav-toggle-main {
@@ -233,6 +275,10 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
+.navbar-break {
+    display:block;
+    height: @navbar-height;
+}
 
 @media screen and (max-width: @screen-xs-max) {
 
@@ -248,15 +294,38 @@
       position: fixed;
       height:  @navbar-height;
       top: 0;
-      background: white;
       z-index: 4;
       width: 100%;
       left: 0;
     }
+
+    .navbar-right {
+      width: 100%;
+    }
 }
 
-
 @media screen and (min-width: @screen-sm-min) {
+
+  .navbarbrand {
+    padding-top:    @navbar-padding-vertical;
+    padding-bottom: @navbar-padding-vertical;
+  }
+
+  .navbar-default .navbar-brand-logo {
+    margin-top: 0;
+  }
+
+  .header-menubar {
+     float: right;
+  }
+
+  .navbar-break {
+    display:none;
+  }
+
+  .navbar-right {
+    float: right;
+  }
 
   .dashboard-inner-container {
     position: inherit;
@@ -276,6 +345,11 @@
     display: none;
   }
 
+  .dashboard-inner-container .navbarbrand {
+    margin-left: 0;
+  }
+
+
   // On dashboard pages, the sidebar is always available
   // We override again with the optional small screen settings.
   .dashboard-inner-container.always-on {
@@ -290,6 +364,10 @@
 
   .dashboard-inner-container.always-on .dashboard-nav-push-content {
     display: inline-block;
+  }
+
+  .dashboard-inner-container.always-on .navbarbrand {
+    display: none;
   }
 
 }

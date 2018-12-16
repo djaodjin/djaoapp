@@ -178,7 +178,8 @@ def inject_edition_tools(response, request, context=None,
             # expected HTML text.
             auth_user = soup.body.find(class_='header-menubar')
             user_menu_template = '_menubar.html'
-            if auth_user and user_menu_template:
+            if (request.user.is_authenticated and auth_user
+                and user_menu_template):
                 serializer_class = import_string(
                     rules_settings.SESSION_SERIALIZER)
                 serializer = serializer_class(request)
@@ -189,6 +190,9 @@ def inject_edition_tools(response, request, context=None,
                 for role, organizations in six.iteritems(
                         serializer.data['roles']):
                     for organization in organizations:
+                        if organization['slug'] == request.user.username:
+                            # Personal Organization
+                            continue
                         db_obj = Organization.objects.get(
                             slug=organization['slug']) # XXX Remove query.
                         if db_obj.is_provider:

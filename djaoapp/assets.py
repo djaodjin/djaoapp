@@ -98,6 +98,8 @@ register('js_vue', js_vue)
 
 
 js_djaodjin_angular = Bundle(
+    'js/djaodjin-dashboard.js', # also in base.js
+    'js/djaodjin-menubar.js',  # also in base.js
     'vendor/dropzone.js',                  # XXX also in js_pages
     'vendor/d3.js',
     'vendor/nv.d3.js',
@@ -114,6 +116,8 @@ register('js_djaodjin_angular', js_djaodjin_angular)
 
 
 js_djaodjin_vue = Bundle(
+    'js/djaodjin-dashboard.js', # also in base.js
+    'js/djaodjin-menubar.js',  # also in base.js
     'vendor/dropzone.js',                  # XXX also in js_pages
     'vendor/d3.js',
     'vendor/nv.d3.js',

@@ -29,6 +29,9 @@
 // styling of responsive aspects.
 
 .navbar-header {
+  padding-top:    @navbar-padding-vertical;
+  padding-bottom: @navbar-padding-vertical;
+
   &:extend(.clearfix all);
 
   @media (min-width: @grid-float-breakpoint) {
@@ -161,9 +164,9 @@
 // Brand/project name
 
 .navbar-brand {
-  float: left;
-  padding: @navbar-padding-vertical @navbar-padding-horizontal;
-  font-size: 16px;
+//  float: left;
+  padding: @navbar-padding-vertical 0 @navbar-padding-vertical @navbar-padding-horizontal;
+  font-size: @font-size-large;
   line-height: @line-height-computed;
   height: @navbar-height;
 
@@ -173,7 +176,9 @@
   }
 
   > img {
-    display: block;
+    display: inline-block;
+    width: auto;
+    max-height: @navbar-height - 4;
   }
 
   @media (min-width: @grid-float-breakpoint) {
@@ -192,9 +197,12 @@
 
 .navbar-toggle {
   position: relative;
-  margin-right: @navbar-padding-horizontal;
+//XXX  float: right;
+  margin-left: @navbar-padding-horizontal;
+  margin-right: 5px;
   padding: 9px 10px;
   .navbar-vertical-align(34px);
+  color: @navbar-default-brand-color;
   background-color: transparent;
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
@@ -229,8 +237,7 @@
 // the nav the full height of the horizontal nav (above 768px).
 
 .navbar-nav {
-// disable in order to align with sidebar toggle
-// margin: (@navbar-padding-vertical / 2) -@navbar-padding-horizontal;
+//  margin: (@navbar-padding-vertical / 2) -@navbar-padding-horizontal;
 
   > li > a {
     padding-top:    10px;
@@ -241,11 +248,11 @@
   @media (max-width: @grid-float-breakpoint-max) {
     // Dropdowns get custom display when collapsed
     .open .dropdown-menu {
-      position: static;
+//      position: static;
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: transparent;
+//      background-color: transparent;
       border: 0;
       box-shadow: none;
       > li > a,
@@ -441,7 +448,6 @@
     border-color: @navbar-default-toggle-border-color;
     &:hover,
     &:focus {
-      color: @navbar-inverse-color;
       background-color: @navbar-default-toggle-hover-bg;
     }
     .icon-bar {
@@ -466,35 +472,35 @@
       }
     }
 
-    @media (max-width: @grid-float-breakpoint-max) {
+ //   @media (max-width: @grid-float-breakpoint-max) {
       // Dropdowns get custom display when collapsed
-      .open .dropdown-menu {
-        > li > a {
-          color: @navbar-default-link-color;
-          &:hover,
-          &:focus {
-            color: @navbar-default-link-hover-color;
-            background-color: @navbar-default-link-hover-bg;
-          }
-        }
-        > .active > a {
-          &,
-          &:hover,
-          &:focus {
-            color: @navbar-default-link-active-color;
-            background-color: @navbar-default-link-active-bg;
-          }
-        }
-        > .disabled > a {
-          &,
-          &:hover,
-          &:focus {
-            color: @navbar-default-link-disabled-color;
-            background-color: @navbar-default-link-disabled-bg;
-          }
-        }
-      }
-    }
+ //     .open .dropdown-menu {
+ //       > li > a {
+ //         color: @navbar-default-link-color;
+ //         &:hover,
+ //         &:focus {
+ //           color: @navbar-default-link-hover-color;
+ //           background-color: @navbar-default-link-hover-bg;
+ //         }
+ //       }
+ //       > .active > a {
+ //         &,
+ //         &:hover,
+ //         &:focus {
+ //           color: @navbar-default-link-active-color;
+ //           background-color: @navbar-default-link-active-bg;
+ //         }
+ //       }
+ //       > .disabled > a {
+ //         &,
+ //         &:hover,
+ //         &:focus {
+ //           color: @navbar-default-link-disabled-color;
+ //           background-color: @navbar-default-link-disabled-bg;
+ //         }
+ //       }
+ //     }
+ //   }
   }
 
 
@@ -577,7 +583,6 @@
     border-color: @navbar-inverse-toggle-border-color;
     &:hover,
     &:focus {
-      color: @navbar-default-color;
       background-color: @navbar-inverse-toggle-hover-bg;
     }
     .icon-bar {
