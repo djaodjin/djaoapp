@@ -141,7 +141,7 @@
         first-text="&laquo;"
         last-text="&raquo;"
         ng-change="pageChanged(subscribed)"></ul>
-    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+    <b-pagination size="sm" :total-rows="totalItems" v-model="currentPage" :per-page="itemsPerPage">
 </div>
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"

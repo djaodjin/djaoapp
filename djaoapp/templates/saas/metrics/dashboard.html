@@ -157,7 +157,7 @@ No items to take care of Today.
                 last-text="&raquo;"
                 ng-model="currentPage"
                 ng-change="pageChanged()"></ul>
-            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+            <b-pagination size="md" :total-rows="totalItems" v-model="currentPage" :per-page="itemsPerPage">
         </div>
     </div>
 </div>
