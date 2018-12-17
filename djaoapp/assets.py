@@ -92,7 +92,8 @@ js_vue = Bundle(
     'vendor/jquery-ui.js',
     'vendor/Sortable.js',
     'vendor/vue.js',
-    'vendor/uiv.min.js',
+    'vendor/bootstrap-vue.min.js',
+    'vendor/uiv.min.js', # XXX uiv is loaded from the vue.use in djaodjin-saas 
     'vendor/vue2-filters.js',
     'vendor/vuedraggable.js',
     filters='jsmin', output='cache/vue.js')
