@@ -191,6 +191,9 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
 	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 
+build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss)
+	$(binDir)/sassc assets/scss/vendor/bootstrap/bootstrap.scss htdocs/static/cache/bootstrap.css
+
 # Once tests are completed, run 'coverage report'.
 run-coverage: initdb
 	cd $(srcDir) && coverage run --source='.,saas,signup' \
