@@ -16,6 +16,7 @@
     <meta name="twitter:domain" content="https://djaodjin.com" />
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
+    <link rel="stylesheet" media="screen" href="/static/vendor/bootstrap.css" />
     {% assets "css_base" %}
     <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
     {% endassets %}
@@ -29,6 +30,14 @@
   display: none !important;
 }
     {% endif %}
+    /* Override Bootstrap 4 styling on Django Debug Toolbar */
+    #djDebug[hidden], #djDebug [hidden] {
+        display: block !important;
+    }
+
+    #djDebug [hidden][style='display: none;'] {
+        display: none !important;
+    }
     </style>
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
     {% if csrf_token %}
