@@ -33,7 +33,7 @@ else
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
 endif
 
-MULTITIER_DB_NAME = $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
+MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 
 MY_EMAIL          := $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
@@ -105,11 +105,11 @@ migratedb-cowork: initdb-cowork
 # Add necessary tables in an already existing database, then load information
 migratedb-%:
 	cd $(srcDir) && MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
-		$(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database $(subst migratedb-,,$@)
+		$(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database $(basename $(notdir $(MULTITIER_DB_NAME)))
 	cd $(srcDir) \
 	&& DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) \
 	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
-	$(PYTHON) ./manage.py loadfixtures --database $(subst migratedb-,,$@) $(EMAIL_FIXTURE_OPT) $(abspath $(srcDir)/../../..)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(subst migratedb-,,$@)-streetside.json
+	$(PYTHON) ./manage.py loadfixtures --database $(basename $(notdir $(MULTITIER_DB_NAME))) $(EMAIL_FIXTURE_OPT) $(abspath $(srcDir)/../../..)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(basename $(notdir $(MULTITIER_DB_NAME)))-streetside.json
 	@echo "-- Set streetside processor deposit key."
 	sqlite3 $(call MULTITIER_DB_NAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_CONNECTED_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where is_provider=1;"
 	cd $(srcDir) && $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) \
