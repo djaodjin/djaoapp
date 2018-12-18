@@ -119,7 +119,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             last-text="&raquo;"
             ng-model="currentPage"
             ng-change="pageChanged()"></ul>
-        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="currentPage" :per-page="itemsPerPage">
+        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
       </div>
       </div>
       <!-- modal dialog for Adding a rule -->

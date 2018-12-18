@@ -112,7 +112,7 @@ No items to take care of Today.
                 last-text="&raquo;"
                 ng-model="currentPage"
                 ng-change="pageChanged()"></ul>
-            <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="currentPage" :per-page="itemsPerPage">
+            <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
         </div>
     </div>
     <div id="user-list-container" class="col-md-4"
@@ -157,7 +157,7 @@ No items to take care of Today.
                 last-text="&raquo;"
                 ng-model="currentPage"
                 ng-change="pageChanged()"></ul>
-            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="currentPage" :per-page="itemsPerPage">
+            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
         </div>
     </div>
 </div>
