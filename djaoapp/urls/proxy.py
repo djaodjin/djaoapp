@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
 from multitier.urlresolvers import site_patterns
-from rules.api.keys import AppUpdateAPIView
 from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
 from signup.urls.users import USERNAME_PAT
@@ -50,14 +49,14 @@ else:
 
 urlpatterns += site_patterns(
     # HTTP request pipeline and visual appearence.
-    url_direct(r'^api/auth/tokens/realms/(%(organization)s/)?', # site/subdomain
+    url_direct(r'^api/auth/tokens/realms/%(organization)s/', # site/subdomain
+        CredentialsAPIView.as_view(), name='api_credentials_organization'),
+    url_direct(r'^api/auth/tokens/realms/$', # site/subdomain
         CredentialsAPIView.as_view(), name='api_credentials'),
     url_direct(r'^api/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationAPIView.as_view(), name='api_notification_send_test_email'),
     url_direct(r'^api/notifications/',
         NotificationAPIView.as_view(), name='api_notification_base'),
-    url_direct(r'^api/proxy/$',
-        AppUpdateAPIView.as_view(), name='rules_api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
         ThemePackageListAPIView.as_view(), name='pages_api_themes'),

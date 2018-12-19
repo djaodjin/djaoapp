@@ -30,6 +30,7 @@ class DjaoappEnvironment(Jinja2Environment):
 
 
 def environment(**options):
+    #pylint:disable=too-many-statements
     from django.contrib.auth import get_user_model
     from signup.models import ActivatedUserManager
 
@@ -87,6 +88,15 @@ def environment(**options):
     env.filters['describe'] = saas.templatetags.saas_tags.describe
 
     if settings.DEBUG:
+        env.filters['addslashes'] = django.template.defaultfilters.addslashes
+        env.globals.update({
+            'FEATURES_DEBUG': settings.FEATURES_DEBUG,
+            'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
+            'DATETIME_FORMAT': "MMM dd, yyyy",
+            'url': reverse,
+            'cycle': django.template.defaulttags.cycle
+        })
+    if settings.API_DEBUG:
         env.filters['query_parameters'] = \
             djaoapp.templatetags.djaoapp_tags.query_parameters
         env.filters['request_body_parameters'] = \
@@ -97,13 +107,6 @@ def environment(**options):
             djaoapp.templatetags.djaoapp_tags.schema_href
         env.filters['schema_name'] = \
             djaoapp.templatetags.djaoapp_tags.schema_name
-        env.filters['addslashes'] = django.template.defaultfilters.addslashes
-        env.globals.update({
-            'FEATURES_DEBUG': settings.FEATURES_DEBUG,
-            'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
-            'DATETIME_FORMAT': "MMM dd, yyyy",
-            'url': reverse,
-            'cycle': django.template.defaulttags.cycle
-        })
+
     env.assets_environment = assets_env
     return env

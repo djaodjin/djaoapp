@@ -29,22 +29,30 @@ if os.getenv('DEBUG'):
     # Enable override on command line.
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
 
+API_DEBUG = DEBUG
+
 if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
     RULES_APPS = (RULES_APP_MODEL.split('.')[0],)
 else:
     RULES_APPS = tuple([])
 
 if DEBUG:
-    ENV_INSTALLED_APPS = RULES_APPS + (
+    DEBUG_APPS = RULES_APPS + (
         'django.contrib.admin',
         'django.contrib.admindocs',
         'debug_toolbar',
         'debug_panel',
         'django_extensions',
-        'drf_yasg'
         )
 else:
-    ENV_INSTALLED_APPS = RULES_APPS
+    DEBUG_APPS = RULES_APPS
+
+if API_DEBUG:
+    ENV_INSTALLED_APPS = DEBUG_APPS + (
+        'drf_yasg',
+        )
+else:
+    ENV_INSTALLED_APPS = DEBUG_APPS
 
 INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.auth',

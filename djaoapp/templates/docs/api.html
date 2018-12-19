@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "saas/base_dashboard.html" %}
 
 {% macro api_param_doc(param, operationId, read_direction=True) -%}
 {% if param.type %}
@@ -69,72 +69,17 @@
 {% endif %}
 {%- endmacro %}
 
-
-{% block localheader %}
-{% assets "css_dashboard" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
-<style>
-.dashboard-nav-push-content {
-  width: 240px;
-  display: inline-block;
-  flex-shrink: 0;
-}
-</style>
-{% endblock %}
-
-
-{% block dashboard_nav %}
-<div class="dashboard-nav initial">
-  <div class="dashboard-nav-inner-container">
-    <div class="dashboard-nav-main dashboard-nav-color-theme">
-      <div>
-        <header>
-          <nav class="navbar navbar-default">
-            {% include "_navbarbrand.html" %}
-          </nav>
-        </header>
-        <div class="dashboard-nav-menu">
-          {% block sidebar %}
-          <ul class="nav nav-pills nav-stacked">
-              <li><a href="#authentication">Authentication</a></li>
-              {% for tag in tags %}
-              <li><a href="#{{tag|lower}}">{{tag}}</a></li>
-              {% endfor %}
-          </ul>
-          {% endblock %}
-        </div>
-      </div>
-      {% block dashboard_footer %}
-      <div class="dashboard-nav-footer dashboard-nav-color-theme">
-        <div>
-          Powered by &copy; 2018 DjaoDjin. All rights reserved.
-        </div>
-        <div class="footer-links">
-          <a href="/legal/" target="_blank">Legal</a>
-          &middot;
-          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-          <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-          <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
-        </div>
-      </div>
-      {% endblock %}
-    </div>
-    <div class="dashboard-nav-border dashboard-nav-color-theme">
-<ul class="nav navbar-nav">
-  <li>
-    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
-        <i class="fa initial"></i>
-    </a>
-  </li>
+{% block sidebar %}
+<ul class="nav">
+  <li><a href="#authentication">Authentication</a></li>
+  {% for tag in tags %}
+  <li><a href="#{{tag|lower}}">{{tag}}</a></li>
+  {% endfor %}
 </ul>
-    </div>
-  </div><!-- /.dashboard-nav-inner-container -->
-</div>
-<div class="dashboard-nav-push-content"></div>
-{% endblock %}
-
-{% block content_navbarbrand %}
+<hr />
+<ul class="nav hidden-sm hidden-md hidden-lg">
+    {% include "generic_navbar.html" %}
+</ul>
 {% endblock %}
 
 {% block content %}
@@ -172,10 +117,10 @@ curl uses the -u flag to pass basic auth credentials.
     <section class="row method">
       <div class="col-sm-7">
         {% if api_end_point.tags != variable_watcher %}
-        <a name="{{api_end_point.tags}}" href="#{{api_end_point.tags}}"><h2>{{api_end_point.tags|capitalize}}</h2></a>
+        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"><h2>{{api_end_point.tags|capitalize}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
         {% set variable_watcher = api_end_point.tags %}
         {% endif %}
-        <h3>{{api_end_point.func|upper}} {{api_end_point.path}}</h3>
+        <a name="{{api_end_point.operationId}}"><h3>{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
         <div>
             {{api_end_point.description}}
         </div>

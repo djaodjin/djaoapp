@@ -29,13 +29,14 @@
                 </header>
                 <div class="dashboard-nav-menu">
                     {% block sidebar %}
-                    <ul class="nav hidden-sm hidden-md hidden-lg">
-                        {% include "generic_navbar.html" %}
-                    </ul>
                     {% include "saas/_subscriber_sidebar.html" %}
                     {% if organization.is_provider %}
                     {% include "saas/_provider_sidebar.html" %}
                     {% endif %}
+                    <hr />
+                    <ul class="nav hidden-sm hidden-md hidden-lg">
+                        {% include "generic_navbar.html" %}
+                    </ul>
                     {% endblock %}
                 </div>
             </div>

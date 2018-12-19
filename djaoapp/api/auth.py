@@ -117,16 +117,24 @@ JwcBUUMECj8AKxsHtRHUSypco"
         return user
 
 
-class CredentialsSerializer(serializers.Serializer):
+class AuthRealmsSerializer(serializers.Serializer):
 
-    location = serializers.CharField()
-    access_key = serializers.CharField()
-    acl = serializers.CharField()
-    policy = serializers.CharField()
-    signature = serializers.CharField()
-    security_token = serializers.CharField()
-    x_amz_credential = serializers.CharField()
-    x_amz_date = serializers.CharField()
+    location = serializers.CharField(
+        help_text=_("URL to upload files"))
+    access_key = serializers.CharField(
+        help_text=_("Access key"))
+    acl = serializers.CharField(
+        help_text=_("ACL (i.e. private or public-read)"))
+    policy = serializers.CharField(
+        help_text=_("Policy"))
+    signature = serializers.CharField(
+        help_text=_("Signature"))
+    security_token = serializers.CharField(
+        help_text=_("Security token"))
+    x_amz_credential = serializers.CharField(
+        help_text=_("AMZ Credential"))
+    x_amz_date = serializers.CharField(
+        help_text=_("AMZ Date"))
 
     def create(self, validated_data):
         raise NotImplementedError()
@@ -135,21 +143,32 @@ class CredentialsSerializer(serializers.Serializer):
         raise NotImplementedError()
 
 
-class CredentialsAPIView(OrganizationMixin, generics.GenericAPIView):
+class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
     """
-    .. http:get:: /api/auth/realms/:organization/
+    Gets temporary credentials to access S3 directly from the browser.
 
-    Get temporary credentials to access S3 directly from the browser.
+    **Examples
 
-    **Example response**:
+    .. code-block:: http
 
-    .. sourcecode:: http
+        GET  /api/auth/realms/cowork/ HTTP/1.1
 
-    {
-        "url": "",
-    }
+    responds
+
+    .. code-block:: json
+
+        {
+            "location": "",
+            "access_key": "",
+            "acl": "private",
+            "policy": "",
+            "signature": "",
+            "security_token": "",
+            "x_amz_credential": "",
+            "x_amz_date": ""
+        }
     """
-    serializer_class = CredentialsSerializer
+    serializer_class = AuthRealmsSerializer
 
     def get(self, request, *args, **kwargs):
         #pylint:disable=unused-argument,no-self-use
@@ -178,6 +197,6 @@ class CredentialsAPIView(OrganizationMixin, generics.GenericAPIView):
                 })
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-        serializer = CredentialsSerializer(data=context)
+        serializer = self.get_serializer(data=context)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)

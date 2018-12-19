@@ -296,7 +296,8 @@ class APIDocView(TemplateView):
         #pylint:disable=too-many-locals,too-many-nested-blocks
         context = super(APIDocView, self).get_context_data(**kwargs)
         api_end_points = []
-        api_base_url = self.request.build_absolute_uri(location='/api')
+        api_base_url = getattr(settings, 'API_BASE_URL',
+            self.request.build_absolute_uri(location='/api'))
         generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
@@ -346,5 +347,6 @@ class APIDocView(TemplateView):
             'definitions': schema.definitions,
             'api_base_url': generator.url,
             'api_end_points': api_end_points,
-            'tags': sorted([tag.capitalize() for tag in tags])})
+            'tags': sorted([tag.capitalize() for tag in
+                [('rules' if tag == 'proxy' else tag) for tag in tags]])})
         return context
