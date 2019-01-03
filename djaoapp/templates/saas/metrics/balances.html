@@ -4,6 +4,7 @@
 
 {% block saas_content %}
 <div id="balance-list-container" ng-app="saasApp">
+<div ng-controller="BalanceListCtrl">
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-default" role="button"
          ng-prop-href="'{{urls.download_balances}}?start_at=' + params.start_at + '&ends_at=' + params.ends_at"
@@ -68,9 +69,9 @@
               </td>
           </tr>
       </tbody>
-      <tbody saas-dnd-list="balances.table"
-           ng-show="balances.$resolved && balances.table.length > 0" ng-cloak
-           v-show="itemsLoaded && items.table.length > 0" v-cloak>
+      <tbody saas-dnd-list="balances"
+            ng-show="balances.$resolved && balances.table.length > 0" ng-cloak
+            v-show="itemsLoaded && items.table.length > 0" v-cloak>
           <tr ng-prop-id="'balance-' + row.rank"
               ng-repeat="row in balances.table"
               v-for="(row, index) in items.table">
@@ -91,7 +92,7 @@
                   <a target="_blank"
                      ng-prop-href="'{{urls.broker_transactions}}'+ row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0]"
                      v-bind:href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">
-                      [[col[1]|humanizeCell(items.unit, items.scale)]]
+                    [[humanizeCell(col[1])]]
                   </a>
               </td>
           </tr>
@@ -116,5 +117,6 @@
             @click="create"><i class="fa fa-plus"></i> Add Line</button>
       </div>
   </div>
+</div>
 </div>
 {% endblock %}

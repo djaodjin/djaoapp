@@ -71,7 +71,7 @@
       </div>
       <div class="form-group">
         <a id="download" class="btn btn-default" role="button"
-           ng-prop-href="'{{download_url}}?q=' + params.q + '&start_at=' + params.start_at + '&ends_at=' + params.ends_at"
+           ng-prop-href="'{{download_url}}' + getQueryString(['page'])"
            v-bind:href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
