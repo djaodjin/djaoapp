@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -161,7 +161,6 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
     """
     template_name = 'accesible_apps.html'
     pattern_name = 'organization_app'
-    explicit_create_on_none = True
 
     def get_context_data(self, **kwargs):
         context = super(

@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -11,6 +11,7 @@ from saas.views import OrganizationRedirectView as BaseOrganizationRedirectView
 
 class OrganizationRedirectView(AppMixin, BaseOrganizationRedirectView):
 
+    explicit_create_on_none = True
     implicit_create_on_none = False
 
     def get_implicit_create_on_none(self):
