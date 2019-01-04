@@ -1,0 +1,104 @@
+
+
+.header-menubar .menubar-dropdown-toggle
+{
+    display: block;
+    padding: 0 15px;
+    text-decoration: none;
+}
+
+.header-menubar .menubar .dropdown-menu
+{
+    left: auto;
+    right: 0;
+    margin: 10px 0 0;
+}
+
+.menubar .dropdown-menu .divider
+{
+    margin: 5px 0;
+}
+
+.djaodjin-overlay
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    display: none;
+    left: 0;
+    top: 0;
+}
+
+.header-menubar-overlay
+{
+    z-index: 4;
+}
+
+.menubar-dropdown-container
+{
+    z-index: 5;
+}
+
+.menubar-dropdown-container .dropdown-menu
+{
+    z-index: 6;
+    white-space: nowrap;
+}
+
+.menubar .dropdown-menu
+{
+    left: 15px;
+    right: auto;
+    margin: -2px 0 0;
+}
+
+.menubar .dropdown-menu li a
+{
+    padding: 5px 25px;
+}
+
+.menubar
+{
+    position: relative;
+}
+
+.menubar .dropdown-label
+{
+    text-transform: lowercase;
+    padding: 2px 25px 7px;
+    font-size: 13px;
+}
+
+.menubar .dropdown-label .dropdown-label-role
+{
+    margin-left: 10px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.menubar-label
+{
+    padding-top:    $navbar-padding-vertical;
+    padding-bottom: $navbar-padding-vertical;
+    line-height: $line-height-computed;
+}
+
+.menubar-label-title
+{
+    display: block;
+    padding-top: $navbar-padding-vertical - 5;
+      // `- 5` because height of menubar-label-subtitle will be 17px no matter
+      // what and we have 33 + 17 = 53 apparently so we make some space here.
+    padding-bottom: 0;
+    line-height: $line-height-computed;
+}
+
+.menubar-label-subtitle
+{
+//    line-height: $navbar-padding-vertical;
+    font-size: $font-size-small;
+    height: $navbar-padding-vertical;
+}

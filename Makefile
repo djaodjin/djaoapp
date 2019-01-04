@@ -191,8 +191,11 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
 	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 
-build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss)
-	$(binDir)/sassc assets/scss/vendor/bootstrap/bootstrap.scss htdocs/static/cache/bootstrap.css
+build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/base/*.scss)
+	$(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/base.css
 
 # Once tests are completed, run 'coverage report'.
 run-coverage: initdb
