@@ -14,7 +14,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from saas.mixins import ProviderMixin
-from saas.models import Organization, split_full_name
+from saas.models import Organization
+from saas.utils import full_name_natural_split
 from signup.auth import validate_redirect
 from survey.forms import ResponseCreateForm
 from survey.models import SurveyModel
@@ -99,7 +100,7 @@ class ContactView(ProviderMixin, ResponseCreateView):
             try:
                 user = user_model.objects.get(email=email)
             except user_model.DoesNotExist:
-                first_name, last_name = split_full_name(
+                first_name, _, last_name = full_name_natural_split(
                     form.cleaned_data.get('full_name', None))
                 user = user_model(
                     email=email, first_name=first_name, last_name=last_name)

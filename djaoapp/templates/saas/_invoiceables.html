@@ -12,10 +12,15 @@
         {% if is_bulk_buyer %}
         <tr class="seat">
           <td colspan="3">
-            <input class="seat-first-name" type="text" placeholder="First Name" />
-            <input class="seat-last-name" type="text" placeholder="Last Name" />
-            <input class="seat-email" type="text" placeholder="E-mail" />
-            <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+            <div class="col-sm-4">
+              <input class="form-control seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+            </div>
+            <div class="col-sm-4">
+              <input class="form-control seat-email" type="text" placeholder="E-mail" />
+            </div>
+            <div class="col-sm-4">
+              <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+            </div>
           </td>
         </tr>
         {% endif %}
@@ -47,10 +52,15 @@
       {% if is_bulk_buyer %}
       <tr class="seat">
         <td colspan="3">
-          <input class="seat-first-name" type="text" placeholder="First Name" />
-          <input class="seat-last-name" type="text" placeholder="Last Name" />
-          <input class="seat-email" type="text" placeholder="E-mail" />
-          <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+          <div class="col-sm-4">
+            <input class="form-control seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+          </div>
+          <div class="col-sm-4">
+            <input class="form-control seat-email" type="text" placeholder="E-mail" />
+          </div>
+          <div class="col-sm-4">
+            <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+          </div>
         </td>
       </tr>
       {% endif %}

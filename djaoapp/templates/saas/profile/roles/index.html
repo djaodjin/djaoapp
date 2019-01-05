@@ -108,21 +108,21 @@
           </div>
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
-  <div title="Invite {{role_descr}}" v-model="modalOpen" v-cloak
+  <div title="Invite {{role_descr.title}}" v-model="modalOpen" v-cloak
    class="add-role-modal modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Add {{role_descr}}" aria-hidden="true">
+       aria-labelledby="Add {{role_descr.title}}" aria-hidden="true">
   <div class="modal-dialog">
       <form class="form-horizontal" @submit.prevent="create">
         <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Invite {{role_descr}} ...</h4>
+              <h4 class="modal-title">Invite {{role_descr.title}} ...</h4>
           </div>
           <div class="modal-body">
             <p class="text-danger" ng-model="item">
 [[unregistered.slug]] is not yet registered. This is an opportunity to invite and
-add her/him as a {{role_descr}} for {{organization.printable_name}}.
+add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
             </p>
             <div class="row form-group">
                 <div class="col-sm-2">
@@ -145,7 +145,7 @@ add her/him as a {{role_descr}} for {{organization.printable_name}}.
                               maxlength="255" type="text" rows="10">
 Hi [[unregistered.email]],
 
-I am adding you as a {{role_descr}} to {{organization.printable_name}}.
+I am adding you as a {{role_descr.title}} to {{organization.printable_name}}.
 
 Thank you,
 - {{request.user.first_name}}</textarea>
@@ -156,16 +156,16 @@ Thank you,
               <button type="button" class="btn btn-default"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
-                      type="submit" class="btn btn-primary">Invite {{role_descr}}</button>
+                      type="submit" class="btn btn-primary">Invite {{role_descr.title}}</button>
           </div>
         </div>
       </form>
   </div>
   </div>
   <!-- modal dialog to create new role -->
-  <div title="Invite {{role_descr}}" v-model="modalOpen" v-cloak
+  <div title="Invite {{role_descr.title}}" v-model="modalOpen" v-cloak
    class="create-role-modal modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Add {{role_descr}}" aria-hidden="true">
+       aria-labelledby="Add {{role_descr.title}}" aria-hidden="true">
       <form class="form-horizontal" @submit.prevent="create">
           <div class="modal-body">
               <div class="row form-group">

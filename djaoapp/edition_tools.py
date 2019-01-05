@@ -29,7 +29,7 @@ from .locals import is_streetside, is_testing
 LOGGER = logging.getLogger(__name__)
 
 TopAccessibleOrganization = namedtuple('TopAccessibleOrganization',
-    ['slug', 'printable_name', 'settings_location', 'role_slug',
+    ['slug', 'printable_name', 'settings_location', 'role_title',
      'app_location'])
 
 def djaoapp_urls(request, account=None, base=None):
