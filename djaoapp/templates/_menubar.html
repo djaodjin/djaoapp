@@ -27,7 +27,7 @@
     {% if top_accessibles|length > 0 %}
     {% for accessible in top_accessibles %}
     <li role="separator" class="divider"></li>
-    <li class="dropdown-label" role="presentation">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_slug}}</span></li>
+    <li class="dropdown-label" role="presentation">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_title}}</span></li>
     <li role="presentation"><a href="{{accessible.app_location}}" role="menuitem" tabindex="-1">Home</a></li>
     <li role="presentation"><a href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">Settings</a></li>
     {% endfor %}

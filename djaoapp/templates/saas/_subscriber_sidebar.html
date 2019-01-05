@@ -11,7 +11,7 @@
 {% if urls.organization.roles %}
 {% for role_title, role_url in urls.organization.roles.items() %}
 <li{% if role_url == request.path %} class="active"{% endif %}>
-  <a href="{{role_url}}"><i class="fa fa-users"></i><span class="">{{role_title|pluralize}}</span></a>
+  <a href="{{role_url}}"><i class="fa fa-users"></i><span class="">{{role_title}}s</span></a>
 </li>
 {% endfor %}
 {% endif %}
