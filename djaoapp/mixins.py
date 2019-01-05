@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils import six
+from django.utils.translation import ugettext_lazy as _
 from pages.locals import get_edition_tools_context_data
 from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
@@ -149,7 +150,8 @@ class RegisterMixin(object):
         if not first_name:
             # If the form does not contain a first_name/last_name pair,
             # we assume a full_name was passed instead.
-            first_name, _, last_name = full_name_natural_split(full_name)
+            #pylint:disable=unused-variable
+            first_name, mid, last_name = full_name_natural_split(full_name)
         if not full_name:
             full_name = ("%s %s" % (first_name, last_name)).strip()
         organization_extra = {}
