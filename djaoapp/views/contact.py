@@ -100,7 +100,8 @@ class ContactView(ProviderMixin, ResponseCreateView):
             try:
                 user = user_model.objects.get(email=email)
             except user_model.DoesNotExist:
-                first_name, _, last_name = full_name_natural_split(
+                #pylint:disable=unused-variable
+                first_name, mid, last_name = full_name_natural_split(
                     form.cleaned_data.get('full_name', None))
                 user = user_model(
                     email=email, first_name=first_name, last_name=last_name)
