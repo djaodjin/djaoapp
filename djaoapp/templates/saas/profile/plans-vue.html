@@ -1,0 +1,97 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+Create Plan
+{% endblock %}
+
+{% block saas_page_layout %}
+<div id="new-plan-container">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            {% block saas_content %}
+            <div data-trip data-trip data-trip-index="1" data-trip-content="<h2>Plan</h2><p>Set the title, description and price of a plan.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+                {# include "saas/_plan_form.html" #}
+                <form @submit.prevent="createPlan">
+                   <div class="form-group">
+                      <label class="control-label requiredField">Title<span class="asteriskField">*</span></label> 
+                      <div class="controls"><input maxlength="50" name="title" v-model="title" type="text" class="form-control"></div>
+                   </div>
+                   <div class="form-group">
+                      <label class="control-label requiredField">Description<span class="asteriskField">*</span></label> 
+                      <div class="controls"><textarea cols="40" name="description" v-model="description" rows="10" class="textarea form-control"></textarea></div>
+                   </div>
+                   <fieldset>
+                      <legend>Pricing</legend>
+                      <div class="row">
+                         <div class="form-group">
+                            <label class="col-md-4 control-label requiredField">Unit<span class="asteriskField">*</span></label> 
+                            <div class="controls">
+                               <select name="unit" class="form-control" v-model="unit">
+                                  <option value="usd">usd</option>
+                                  <option value="cad">cad</option>
+                                  <option value="eur">eur</option>
+                               </select>
+                            </div>
+                         </div>
+                         <div class="form-group">
+                            <label class="col-md-4 control-label requiredField">Period amount<span class="asteriskField">*</span></label> 
+                            <div class="controls"><input name="period_amount" v-model="periodAmount" step="0.01" type="number" value="0.00" class="form-control"></div>
+                         </div>
+                         <div class="form-group">
+                            <label class="col-md-4 control-label requiredField">Interval<span class="asteriskField">*</span></label> 
+                            <div class="controls">
+                               <select name="interval" v-model="interval" class="form-control">
+                                  <option value="HOURLY">HOURLY</option>
+                                  <option value="DAILY">DAILY</option>
+                                  <option value="WEEKLY">WEEKLY</option>
+                                  <option value="MONTHLY">MONTHLY</option>
+                                  <option value="YEARLY">YEARLY</option>
+                               </select>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="control-label requiredField">Period length<span class="asteriskField">*</span></label> 
+                         <div class="controls"><input name="period_length" type="number" v-model="periodLength" class="form-control"> <span class="help-block">Natural period length of a subscription to the plan (monthly, yearly, etc.)</span></div>
+                      </div>
+                      <div class="form-group">
+                         <label class="control-label requiredField">Advance discount<span class="asteriskField">*</span></label> 
+                         <div class="controls"><input name="advance_discount" step="0.01" type="number" v-model="advanceDiscount" class="form-control"></div>
+                      </div>
+                   </fieldset>
+                   <fieldset>
+                      <legend>Extra Options</legend>
+                      <div class="form-group">
+                         <label class="control-label requiredField">Renewal type<span class="asteriskField">*</span></label> 
+                         <div class="controls">
+                            <select name="renewal_type" class="form-control">
+                               <option value="0">ONE_TIME</option>
+                               <option selected="selected" value="1">AUTO_RENEW</option>
+                               <option value="2">REPEAT</option>
+                            </select>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <div>
+                            <div class="checkbox"><label for="id_is_not_priced"><input id="id_is_not_priced" name="is_not_priced" type="checkbox" class="checkboxinput">
+                               Is not priced
+                               </label>
+                            </div>
+                         </div>
+                      </div>
+                   </fieldset>
+                   <div class="form-action text-center"><button type="submit" class="btn btn-block btn-primary btn-lg">Create</button></div>
+                </form>
+            </div>
+            {% endblock %}
+        </div>
+        <div class="col-md-6">
+            <p class="lead">
+                {% block saas_lead_help %}{% endblock %}
+            </p>
+            {% block saas_help %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
