@@ -40,7 +40,7 @@ class SessionSerializer(serializers.ModelSerializer):
         for role, organizations in six.iteritems(Role.objects.accessbile_by(
                 user=request.user)):
             serializer = OrganizationWithEndsAtByPlanSerializer(many=True)
-            results[role.title] = serializer.to_representation(organizations)
+            results[role.slug] = serializer.to_representation(organizations)
         return results
 
     @staticmethod
