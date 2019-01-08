@@ -33,9 +33,12 @@
               <select class="form-control" name="plan"
                 ng-model="plan"
                 v-model="plan">
-                <option selected :value="{}">Select a plan...</option>
+                <option selected
+                        value="{}"
+                        :value="{}">Select a plan...</option>
                 {% for choice in plans %}
-                <option :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
+                <option value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'
+                     :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
                 {% endfor %}
               </select>
               <span class="input-group-btn">

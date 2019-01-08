@@ -6,11 +6,20 @@
 <div id="coupon-list-container" ng-app="saasApp">
 <div data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center"
      ng-controller="CouponListCtrl">
-    <div class="pull-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
-<a id="download" class="btn btn-default" role="button"
-   ng-prop-href="'{{urls.provider.download_coupons}}?q=' + params.q"
-   v-bind:href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-    </div>
+    <form class="form-inline pull-right">
+      <div class="form-group">
+        <label>Filter</label>
+        <input class="form-control" type="text"
+          ng-model="params.q" ng-change="filterList(params.q)"
+          v-model="params.q" @input="filterList" />
+      </div>
+      <div class="form-group" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
+        <a id="download" class="btn btn-default" role="button"
+           ng-prop-href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
+           v-bind:href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+      </div>
+    </form>
+    <div style="clear:both;" />
     <div class="table-responsive">
     <table id="coupon-list" class="table table-condensed table-striped" >
         <thead>
@@ -22,7 +31,7 @@
                   data-trip-position="s"
                   ng-click="sortBy('code')"
                   @click="sortBy('code')">
-                  <i ng-class="params.o === 'code' ? params.ot : 'sort'"
+                  <i ng-class="'fa fa-sort' + ((params.o === 'code') ? ('-' + params.ot) : '')"
                      :class="sortIcon('code')"></i>
                 </button>
             </th>
@@ -30,7 +39,7 @@
                 <button class="btn-link btn-sort"
                   ng-click="sortBy('percent')"
                   @click="sortBy('percent')">
-                  <i ng-class="params.o === 'percent' ? params.ot : 'sort'"
+                  <i ng-class="'fa fa-sort' + ((params.o === 'percent') ? ('-' + params.ot) : '')"
                      :class="sortIcon('percent')"></i>
                 </button>
             </th>
@@ -38,7 +47,7 @@
                 <button class="btn-link btn-sort"
                   ng-click="sortBy('ends_at')"
                   @click="sortBy('ends_at')">
-                  <i ng-class="params.o === 'ends_at' ? params.ot : 'sort'"
+                  <i ng-class="'fa fa-sort' + ((params.o === 'ends_at') ? ('-' + params.ot) : '')"
                      :class="sortIcon('ends_at')"></i>
                 </button>
             </th>
@@ -46,7 +55,7 @@
                 <button class="btn-link btn-sort"
                   ng-click="sortBy('description')"
                   @click="sortBy('description')">
-                  <i ng-class="params.o === 'description' ? params.ot : 'sort'"
+                  <i ng-class="'fa fa-sort' + ((params.o === 'description') ? ('-' + params.ot) : '')"
                      :class="sortIcon('description')"></i>
                 </button>
             </th>
@@ -54,7 +63,7 @@
                 <button class="btn-link btn-sort"
                   ng-click="sortBy('created_at')"
                   @click="sortBy('created_at')">
-                  <i ng-class="params.o === 'created_at' ? params.ot : 'sort'"
+                  <i ng-class="'fa fa-sort' + ((params.o === 'created_at') ? ('-' + params.ot) : '')"
                     :class="sortIcon('created_at')"></i>
                 </button>
             </th>
@@ -82,32 +91,24 @@
                   ng-click="save()"
                   @click="save()">Create Coupon</button>
             </td>
-            <td>
-            </td>
-            <td colspan="2"
-                data-trip data-trip-index="6"
-                data-trip-content="<p>Filter the list of coupon displayed.</p>"
-                data-trip-position="s">
-                <label>Filter</label> <input type="text"
-                                      ng-model="params.q" ng-change="filterList(params.q)"
-                                      v-model="params.q" @input="filterList" />
+            <td colspan="3">
             </td>
         </tr>
-        <tr ng-show="!coupons.$resolved"
+        <tr ng-show="!items.$resolved"
             v-show="!itemsLoaded">
             <td colspan="5">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
-        <tr ng-show="coupons.$resolved && coupons.results.length == 0" ng-cloak
+        <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
             v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <td colspan="5">
                 <h4 class="text-center"><em>No Coupons<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
         <tr ng-prop-id="coupon.code"
-            ng-repeat="coupon in coupons.results"
-            ng-show="coupons.$resolved && coupons.results.length > 0" ng-cloak
+            ng-repeat="coupon in items.results"
+            ng-show="items.$resolved && items.results.length > 0" ng-cloak
             v-bind:id="coupon.code"
             v-for="(coupon, index) in items.results"
             v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -187,7 +188,7 @@
     </table>
     </div>
     <div class="text-center"
-         ng-show="coupons.$resolved && coupons.results.length > itemsPerPage"
+         ng-show="items.$resolved && items.count > itemsPerPage"
          v-show="itemsLoaded && totalItems > itemsPerPage">
         <ul uib-pagination ng-model="currentPage"
             total-items="totalItems"

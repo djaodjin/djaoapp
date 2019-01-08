@@ -81,9 +81,9 @@
         <tr>
           <th>Date
               <button class="btn-link btn-sort"
-                ng-click="sortBy('date')"
+                ng-click="sortBy('created_at')"
                 @click="sortBy('created_at')">
-                <i ng-class="'fa fa-sort' + (dir.date ? ('-' + dir.date) : '')"
+                <i ng-class="'fa fa-sort' + ((params.o === 'created_at') ? ('-' + params.ot) : '')"
                    :class="sortIcon('created_at')"></i>
               </button>
           </th>
@@ -91,7 +91,7 @@
               <button class="btn-link btn-sort"
                 ng-click="sortBy('amount')"
                 @click="sortBy('amount')">
-                <i ng-class="'fa fa-sort' + (dir.amount ? ('-' + dir.amount) : '')"
+                <i ng-class="'fa fa-sort' + ((params.o === 'amount') ? ('-' + params.ot) : '')"
                    :class="sortIcon('amount')"></i>
               </button>
           </th>
@@ -99,7 +99,7 @@
               <button class="btn-link btn-sort"
                 ng-click="sortBy('description')"
                 @click="sortBy('description')">
-                <i ng-class="'fa fa-sort' + (dir.description ? ('-' + dir.description) : '')"
+                <i ng-class="'fa fa-sort' + ((params.o === 'description') ? ('-' + params.ot) : '')"
                    :class="sortIcon('description')"></i>
               </button>
           </th>
@@ -138,7 +138,7 @@
     </table>
     </div>
     <div class="text-center"
-         ng-show="items.$resolved && items.results.length > itemsPerPage" ng-cloak
+         ng-show="items.$resolved && items.count > itemsPerPage" ng-cloak
          v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
         <ul uib-pagination class="pagination-sm"
             total-items="totalItems"
