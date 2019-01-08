@@ -23,7 +23,7 @@
              data-trip-content="<p>Start typing the username or email of the person you want to add.</p>"
              data-trip-position="s">
             <input id="userTypeahead"
-                   class="form-control input-sm" style="width: 100%;"
+                   class="form-control form-control-sm" style="width: 100%;"
                    name="user" type="text" placeholder="Username or e-mail"
                    autocomplete="off"
                    ng-model="unregistered.slug"
@@ -47,7 +47,7 @@
     </form>
   </user-typeahead>
   <div class="table-responsive">
-  <table class="table table-condensed table-striped">
+  <table class="table table-sm table-striped">
     <thead>
       <tr>
         <th>Username</th>
@@ -78,7 +78,7 @@
             v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td style="vertical-align:middle;">[[item.user.slug]]</td>
             <td style="vertical-align:middle;">[[item.user.email]] <button
-                class="btn btn-default btn-sm"
+                class="btn btn-secondary btn-sm"
                 ng-if="item.request_key"
                 ng-click="save($event, item.user)"
                 v-if="item.request_key" @click="save(item.user)">grant</button></td>
@@ -106,7 +106,7 @@
                   first-text="&laquo;"
                   last-text="&raquo;"
                   ng-change="pageChanged()"></ul>
-      <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
   </div>
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->
@@ -157,7 +157,7 @@ Thank you,
           </div>
           <div class="modal-footer">
               <button type="button"
-                      class="btn btn-default"
+                      class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button type="submit"
                       class="btn btn-primary"

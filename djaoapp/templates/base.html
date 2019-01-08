@@ -16,6 +16,7 @@
     <meta name="twitter:domain" content="https://djaodjin.com" />
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
+    <link rel="stylesheet" media="screen" href="/static/cache/bootstrap.css" />
     {% assets "css_base" %}
     <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
     {% endassets %}
@@ -29,6 +30,14 @@
   display: none !important;
 }
     {% endif %}
+    /* Override Bootstrap 4 styling on Django Debug Toolbar */
+    #djDebug[hidden], #djDebug [hidden] {
+        display: block !important;
+    }
+
+    #djDebug [hidden][style='display: none;'] {
+        display: none !important;
+    }
     </style>
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
     {% if csrf_token %}
@@ -62,7 +71,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           {% endblock %}
           <div class="dashboard-content">
             <header>
-              <nav class="navbar navbar-default">
+              <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
                 {% block content_navbarbrand %}
                 <div class="navbarbrand">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -74,8 +83,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                 {% block header_navbar_large %}
                 {% if request and request|is_authenticated %}
                 <ul class="nav navbar-nav" style="float:right;">
-                    <li>
-                        <a title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="hidden-xs">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="hidden-xs">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
                     </li>
                 </ul>
                 {% endif %}
@@ -83,18 +92,18 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                     {# links to user profile and #}
                     {# organizations is added here. #}
                     {% if request and request|is_authenticated %}
-                    <li>
-                        <a href="">{{request.user.username}}</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">{{request.user.username}}</a>
                     </li>
                     {% else %}
-                    <li>
-                        <a title="Click Here to sign into your account" href="{{'login/'|site_prefixed}}"><span class="fa fa-sign-in fa-lg"></span> Sign in</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Click Here to sign into your account" href="{{'login/'|site_prefixed}}"><span class="fa fa-sign-in fa-lg"></span> Sign in</a></li>
                     </li>
                     {% endif %}
                 </ul>
                 <div class="navbar-break"></div>
                 <div class="navbar-collapse collapse navbar-right">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav ml-auto mt-2 mt-lg-0">
                         {% include "generic_navbar.html" %}
                     </ul>
                 </div>

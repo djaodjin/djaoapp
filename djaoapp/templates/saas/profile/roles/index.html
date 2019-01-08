@@ -39,7 +39,7 @@
                      uib-typeahead="item.slug for item in getCandidates($viewValue)"
                      uib-typeahead-loading="loadingUsers"
                      uib-typeahead-template-url="customTemplate.html"
-                     class="form-control input-sm" style="width: 100%;">
+                     class="form-control form-control-sm" style="width: 100%;">
               <div class="input-group-btn">
                 <button class="btn btn-primary btn-sm" type="submit">Add [[roleDescription.title]]</button>
               </div>
@@ -48,7 +48,7 @@
               <i ng-show="loadingUsers" class="fa fa-spinner"></i>
             </div>
           </form>
-          <table class="table table-condensed table-striped">
+          <table class="table table-sm table-striped">
             <thead>
               <tr>
                 <th>Username</th>
@@ -77,7 +77,7 @@
                   v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <td style="vertical-align:middle;">[[item.user.slug]]</td>
                 <td style="vertical-align:middle;">[[item.user.email]] <button
-                    class="btn btn-default btn-sm"
+                    class="btn btn-secondary btn-sm"
                     ng-if="item.request_key"
                     ng-click="save($event, item.user)"
                     v-if="item.request_key" @click="save(item.user)">grant</button></td>
@@ -104,7 +104,7 @@
                             first-text="&laquo;"
                             last-text="&raquo;"
                             ng-change="pageChanged()"></ul>
-            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
           </div>
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
@@ -153,7 +153,7 @@ Thank you,
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
                       type="submit" class="btn btn-primary">Invite {{role_descr.title}}</button>
@@ -170,7 +170,7 @@ Thank you,
           <div class="modal-body">
               <div class="row form-group">
                   <div class="col-sm-2">
-                      <label class="control-label">Title</label>
+                      <label class="col-form-label">Title</label>
                   </div>
                   <div class="col-sm-10">
                       <input class="form-control" style="width:100%;"
@@ -182,7 +182,7 @@ Thank you,
               </div>
           </div>
           <div slot="footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       @click="modalOpen=false">Cancel</button>
               <button type="submit" class="btn btn-primary">Create role</button>
           </div>

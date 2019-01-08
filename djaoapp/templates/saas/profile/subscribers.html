@@ -44,7 +44,7 @@ Subscriptions to {{organization.printable_name}}
                 </div>
             </div>
             <div class="table-responsive">
-            <table class="table table-condensed table-striped" style="width:100%">
+            <table class="table table-sm table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Full name</th>
@@ -99,7 +99,7 @@ Subscriptions to {{organization.printable_name}}
                   last-text="&raquo;"
                   ng-model="currentPage"
                   ng-change="pageChanged(registered)"></ul>
-                <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+                <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
             </div>
         </div>
         {% endif %}
@@ -116,13 +116,13 @@ Subscriptions to {{organization.printable_name}}
                 </div>
                 <div class="pull-right" style="display:inline-block;">
                   <a id="download-{{tab.slug}}"
-                     class="btn btn-default pull-right" role="button"
+                     class="btn btn-secondary pull-right" role="button"
                      ng-prop-href="'{{tab.urls.download}}?q=' + params.q"
                      v-bind:href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-condensed table-striped">
+                <table class="table table-sm table-striped">
     <thead>
       <tr ng-show="params.o === 'organization'"
           v-show="params.o === 'organization'">
@@ -473,7 +473,7 @@ Subscriptions to {{organization.printable_name}}
                   first-text="&laquo;"
                   last-text="&raquo;"
                   ng-change="pageChanged('{{tab.slug}}')"></ul>
-              <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+              <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
           </div>
         </div>
         {% endfor %}

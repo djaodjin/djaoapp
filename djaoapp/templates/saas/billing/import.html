@@ -13,7 +13,7 @@
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
-          <label class="control-label" for="subscription">
+          <label class="col-form-label" for="subscription">
             Subscription
           </label>
             <input
@@ -35,7 +35,7 @@
                 :open-on-focus="false"/>
 
           {% for error in form.subscription.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
           <div ng-show="loadingSubscriptions"
                v-show="searching" style="height:14px">
@@ -44,7 +44,7 @@
         </div>
         <div class="form-group{% if form.created_at.errors %} has-error{% endif %}">
             <uiv-dropdown append-to-body>
-              <label class="control-label" for="created_at">
+              <label class="col-form-label" for="created_at">
                 Created At
               </label>
               <div class="input-group">
@@ -55,7 +55,7 @@
                   close-text="Close"
                   v-model="created_at">
                 <div class="input-group-btn">
-                  <button type="button" class="btn btn-default"
+                  <button type="button" class="btn btn-secondary"
                           ng-click="open($event, 'createdAt')"
                           v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
                   </button>
@@ -71,26 +71,26 @@
               </template>
             </uiv-dropdown>
           {% for error in form.created_at.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
-          <label class="control-label" for="amount">
+          <label class="col-form-label" for="amount">
             Amount
           </label>
           <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount">
           {% for error in form.amount.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
-          <label class="control-label" for="descr">
+          <label class="col-form-label" for="descr">
             Description
           </label>
           <div>
             <input class="form-control" name="descr" type="text" placeholder="description">
             {% for error in form.descr.errors %}
-            <span class="help-block"><strong>{{error}}</strong></span>
+            <span class="form-text"><strong>{{error}}</strong></span>
             {% endfor %}
           </div>
         </div>

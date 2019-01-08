@@ -1,6 +1,6 @@
 <!-- We assume that either the monthly recuring amount will
 be positive and/or the setup fee will. -->
-<div id="{{plan.slug}}" class="col-sm-4 plan" data-slug="{{plan.slug}}">
+<div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 plan" data-slug="{{plan.slug}}">
 <div class="plan-short">
     <div class="plan-main">
         <div class="text-center">
@@ -55,7 +55,7 @@ be positive and/or the setup fee will. -->
     <footer class="plan-footer">
         <div style="margin:5px;">
             {% if plan.is_not_priced %}
-            <a class="btn btn-default" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
+            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
             {% else %}
             <button class="btn btn-primary"
                     type="submit" name="submit" value="{{plan.slug}}">Subscribe</button>

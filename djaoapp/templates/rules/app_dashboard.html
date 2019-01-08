@@ -17,7 +17,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
     <div id="rules-table" class="col-md-12">
       <h3>Access Rules</h3>
       <div class="table-responsive">
-      <table class="table table-condensed table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
+      <table class="table table-sm table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
         <thead>
           <tr>
             <th>Rank</th>
@@ -36,12 +36,12 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
             <td width="100">
-              <div class="btn btn-default btn-sm rule-handle">
+              <div class="btn btn-secondary btn-sm rule-handle">
                 <i class="fa fa-bars"></i></div>
             </td>
             <td>[[rule.path]]</td>
             <td width="200">
-              <select name="rule" class="form-control input-sm"
+              <select name="rule" class="form-control form-control-sm"
                       ng-model="rule.allow"
                       ng-change="updateAllow(rule)"
                       v-model="rule.allow"
@@ -108,7 +108,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             last-text="&raquo;"
             ng-model="currentPage"
             ng-change="pageChanged()"></ul>
-        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
       </div>
       </div>
       <!-- modal dialog for Adding a rule -->
@@ -131,12 +131,12 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                          autofocus
                          ng-model="newRule.path"
                          v-model="newRule.path">
-                  <p class="help-block">Your path should end with '/'. If not it will be automatically added.</p>
+                  <p class="form-text">Your path should end with '/'. If not it will be automatically added.</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
                       type="button" class="btn btn-primary"
@@ -222,7 +222,7 @@ The key will only be displayed once. Keep it secure.
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button id="regenerate-key" class="btn btn-default"
+                  <button id="regenerate-key" class="btn btn-secondary"
                           type="button"
                           ng-click="generateKey('#generate-key')"
                           @click="generateKey">Generate</button>

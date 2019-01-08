@@ -31,7 +31,7 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
            <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
                 values will hit the server and break PCI compliance. -->
             <div id="row-number" class="form-group">
-                <label class="control-label" for="card-number">Card Number</label>
+                <label class="col-form-label" for="card-number">Card Number</label>
                 <div class="controls">
                     <input id="card-number"
                            class="form-control" type="text" size="16" placeholder="Card number" autocomplete="off" />
@@ -39,7 +39,7 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
             </div>
             <div class="row">
                 <div id="row-exp" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                    <label class="control-label">Expiration</label>
+                    <label class="col-form-label">Expiration</label>
                     <div class="controls">
                             <input id="card-exp-month"
                                    class="form-control" style="display:inline-block;width:40%;"
@@ -50,7 +50,7 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
                     </div>
                 </div>
                 <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                    <label class="control-label">Security Code</label>
+                    <label class="col-form-label">Security Code</label>
                     <div id="cvc-detail" style="display: none;">
                         <h3>What is CVV/CVC ?</h3>
                         <p>

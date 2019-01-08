@@ -152,6 +152,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/img/bootstrap-colorpicker/*.png $(ASSETS_DIR)/img/bootstrap-colorpicker
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/bootstrap-vue/dist/bootstrap-vue.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/d3/d3.js $(ASSETS_DIR)/vendor
@@ -185,10 +186,16 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/sortablejs/Sortable.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue-sortable/vue-sortable.js $(ASSETS_DIR)/vendor
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
+	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
+
+build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/base/*.scss)
+	$(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/base.css
 
 # Once tests are completed, run 'coverage report'.
 run-coverage: initdb

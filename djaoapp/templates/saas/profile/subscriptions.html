@@ -142,7 +142,7 @@
         first-text="&laquo;"
         last-text="&raquo;"
         ng-change="pageChanged(subscribed)"></ul>
-    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
 </div>
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
@@ -166,7 +166,7 @@
                 </p>
                 <div class="modal-footer">
                     <button id="cancel-unsubscribe"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             data-dismiss="modal">Cancel</button>
                     <button type="submit" id="unsubscribe-btn"
                             class="btn btn-danger"

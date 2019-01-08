@@ -1,0 +1,793 @@
+/* The following classes decorates the default (i.e. mallspace) homepage
+   (i.e. templates/index.html)
+*/
+.navbar-brand {
+  font-family: Sonsie One;
+}
+
+.leaderboard.jumbotron {
+  background: $brand-primary;
+  color: #fff;
+}
+
+.site-jumbotron{
+  padding-bottom: 40px;
+  margin-bottom:20px;
+  background: $brand-primary;
+  color:#FFF;
+}
+
+.site-jumbotron-text{
+  display:table-cell;
+  width:100%;
+  vertical-align:middle;
+  text-align:center;
+  position:relative;
+  text-align:center;
+}
+
+.site-jumbotron-text h1{
+  font-size: 52px;
+}
+
+.site-landing {
+  padding: 35px 0;
+}
+
+@media (min-width: $screen-sm-min) {
+  .site-landing .portrait-and-quote {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.site-feedback{
+  margin-top: 20px;
+  background: #FAFAFA;
+  padding: 40px 0;
+}
+
+.site-feedback blockquote{
+  color:#444;
+  border:none;
+}
+
+.site-feedback blockquote p{
+  font-size:22px;
+}
+
+.site-feedback blockquote footer{
+  color:#777;
+  font-style: italic;
+}
+
+.site-about,
+.site-partner{
+  background: #FFF;
+  color:#444;
+  padding:40px 0;
+}
+
+.site-about{
+  background: #FAFAFA;
+  margin-bottom: 20px;
+}
+
+
+.product-featurette {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.product-featurette > .title > .name {
+   margin-top: 5px;
+   text-transform: uppercase;
+}
+.product-featurette img {
+    margin: 0 auto;
+    box-shadow: 3px 3px 1px rgba(50, 50, 50, 1);
+}
+
+// Help blocks about DjaoDjin
+// --------------------------
+.about-us {
+    background:#c6dcef;
+    padding: 10px;
+}
+
+.about-us dt {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.about-us dd {
+    font-style: italic;
+}
+
+ol.tutorials, ul.tutorials {
+}
+
+ol.tutorials > .active, ul.tutorials > .active {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+// Login page
+// ----------
+
+.btn-google-plus {
+    color: #fff;
+    background-color: #dd4b39;
+    border-color: rgba(0,0,0,.2);
+}
+
+.btn-twitter {
+    color: #fff;
+    background-color: #4099FF;
+    border-color: rgba(0,0,0,.2);
+}
+
+.btn-github {
+    color: #fff;
+    background-color: #444;
+    border-color: rgba(0,0,0,.2);
+}
+
+.signup-group div .btn-social, .signup-group div input {
+    font-size: 1.3em;
+    height: 45px;
+    margin: 10px 0;
+    padding: 10px 12px;
+}
+
+@media screen and (min-width: $screen-sm-min) {
+  .signup-group .left-delimiter {
+    border-left: 1px solid #ccc;
+  }
+}
+
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans Semibold';
+  src: url('../fonts/OpenSans-Semibold.ttf') format('truetype');
+}
+
+/* used only in templates/base.html */
+html, body {
+    height: 100%;
+}
+
+body{
+    min-width:100%;
+    background:#FFF;
+}
+
+#wrap{
+    width: 100%;
+    min-height: 100%;
+}
+
+/* Unless the font-size for #main and .footer match, using ``em`` metrics will
+   create bottom and overlap margins that have different heights, hence
+   sticking the footer to the bottom while introducing a "border" above it. */
+#main {
+    min-height: 100%;
+    padding-bottom: 22px; /* must be in pixel (see comment abolve) */
+}
+
+.footer {
+    position: relative;
+    height: 22px;      /* must be in pixel (see comment abolve) */
+    margin:0;
+    margin-top:-22px;  /* stick to bottom (see comment above) */
+    clear:both;
+    bottom: 0;
+    text-align:center;
+    font-size:12px;
+    width: 100%;
+    flex-shrink: 0;
+    color: #333;
+    padding: 10px;
+    border-top: 1px solid #e9e9e9;
+}
+
+/* Navbar */
+.navbar-default .navbar-brand-logo {
+  float: left;
+  padding: 2px;
+  font-size: 18px;
+  line-height: 20px;
+  height: 50px;
+}
+
+.navbar-default .navbar-brand-logo > img {
+  width: auto;
+  max-height: 46px;
+}
+
+.navbar-default > .navbar-header {
+  color: $navbar-default-color;
+}
+
+.navbar-default.navbar-inverse > .navbar-header {
+  color: $navbar-inverse-color;
+}
+
+.content-block-wrapper{
+  margin-top: 50px;
+}
+
+/* -- end of css found only in templates/base.html */
+
+
+/* somewhat generic classes
+   ----
+*/
+.btn-xlg, .btn-group-xlg > .btn {
+  padding: 10px 12px;
+  font-size: 25px;
+  line-height: 2;
+  border-radius: 2px;
+}
+
+.btn-block{
+  display: block;
+  width: 100%;
+}
+
+.btn-outline-inverse{
+  background: transparent;
+  border:1px solid #FFF;
+  text-shadow: none;
+}
+
+.btn-outline-inverse:hover,
+.btn-outline-inverse:focus{
+  background: #FFF;
+  color:$brand-primary !important ;
+}
+
+.btn-social, .btn-social-icon {
+    position: relative;
+    padding-left: 44px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* XXX These look like bootstrap overrides but they are not. */
+blockquote.blockquote-right:after, blockquote.blockquote-right:before,
+blockquote.blockquote-left:after, blockquote.blockquote-left:before {
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+blockquote.blockquote-right:after, blockquote.blockquote-right:before{
+  right: 100%;
+}
+
+blockquote.blockquote-left:after, blockquote.blockquote-left:before {
+  left:100%;
+}
+
+blockquote.blockquote-right:after {
+    border-color: transparent;
+    border-right-color: $blockquote-border-color;
+    border-width: 15px;
+    margin-top: -15px;
+}
+
+blockquote.blockquote-right:before {
+    border-color: transparent;
+    border-right-color: $blockquote-border-color;
+    border-width: 17px;
+    margin-top: -17px;
+}
+
+blockquote.blockquote-left:after {
+    border-color: transparent;
+    border-left-color: $blockquote-border-color;
+    border-width: 15px;
+    margin-top: -15px;
+}
+
+blockquote.blockquote-left:before {
+    border-color: transparent;
+    border-left-color: $blockquote-border-color;
+    border-width: 17px;
+    margin-top: -17px;
+}
+
+@media screen and (max-width: 767px){
+  blockquote.blockquote-right,
+  blockquote.blockquote-left{
+    margin-top: 19px;
+  }
+
+  blockquote.blockquote-right:after, blockquote.blockquote-right:before,
+   blockquote.blockquote-left:after, blockquote.blockquote-left:before{
+    top:auto;
+    right:auto;
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  blockquote.blockquote-right:after,
+   blockquote.blockquote-left:after {
+    border-color: transparent;
+    border-bottom-color: $blockquote-border-color;
+    border-width: 15px;
+    margin-left: -15px;
+  }
+
+  blockquote.blockquote-right:before,
+   blockquote.blockquote-left:before{
+    border-color: transparent;
+    border-bottom-color: $blockquote-border-color;
+    border-width: 17px;
+    margin-left: -17px;
+  }
+}
+
+.center { /* XXX better to use bootstrap .center-block instead? */
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.collapsible {
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+}
+
+.editable{
+  cursor: text;
+}
+
+/*BLOG*/
+.tag-navbar{
+  padding-top: 7px;
+  padding-bottom: 7px;
+  background: #F3F3F3;
+  margin-bottom: 20px;
+}
+
+.welcome-blog{
+  color:#FFF;
+  background: -moz-linear-gradient(-45deg, $brand-primary 51%, #4dd0ea 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(51%,$brand-primary), color-stop(100%,#4dd0ea)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* IE10+ */
+    background: linear-gradient(135deg, $brand-primary 51%,#4dd0ea 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$brand-primary', endColorstr='#4dd0ea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.light-link{
+  color: rgba(255,255,255,0.8);
+}
+
+.light-link:hover{
+  color: rgba(255,255,255,1);
+}
+
+.em-quote {
+  font-family: Georgia,"Times New Roman",Times,serif;
+  font-weight: bold;
+  font-size: 1.3em;
+  margin: 10px;
+}
+
+.img-text {
+  border:1px solid #CCC;
+  margin: 10px;
+}
+
+
+
+.postCaption {
+  color:#777;
+  font-style:italic;
+  text-align: left;
+  font-size: 1.1em;
+  padding-bottom: 1em;
+}
+
+.postCaption h1 {
+  font-style:normal;
+  color:#333;
+  text-align: left;
+  font-size: 30px;
+}
+
+.postOdd,
+.postEven {
+  clear:both;
+  border-bottom:1px solid #CCC;
+  min-height:200px;
+  padding-bottom: 25px;
+}
+
+.postBody p:first-child{
+  display: inline-block;
+}
+
+pre.code{
+  margin:10px 0;
+  border:none;
+  padding:0;
+  font-size: 14;
+  background-color: #f3f3f3;
+  /*border:1px solid #CCC;*/
+}
+
+pre.code code{
+  background-color: transparent;
+}
+
+.djaodjin-annotate-demo { /* jquery-plugin-to-annotate-images.blog */
+    position:relative;
+    width:100%;
+}
+
+
+/* djaodjin/index.html */
+section#hosting{
+  padding:30px 0;
+}
+
+.custom-list-index{
+  list-style: none;
+  padding-left: 5px;
+}
+
+.custom-list-index li {
+  margin-top:15px;
+}
+
+.custom-list-index li:before {
+  font-family: 'FontAwesome';
+  content: "\f105";
+  margin:0 5px 0 0;
+  color: $brand-primary;
+}
+
+/* contact page */
+.survey .controls {
+  margin-left: 20px;
+}
+#div_id_question-1 .control-label,
+#div_id_question-2 .control-label,
+#div_id_question-3 .control-label,
+#div_id_question-4 .control-label,
+#div_id_question-5 .control-label,
+#div_id_question-6 .control-label {
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+/* upload private key and public certificate in domain.html */
+.dropzone-previews {
+    min-height: 150px;
+    padding: 54px 54px;
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    margin-bottom: 10px;
+}
+
+
+#toast-container > div,
+#toast-container > :hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#toast-container > div {
+    opacity: 0.9;
+    padding: 15px 15px 15px 15px;
+}
+#toast-container > .toast {
+    background-image: none !important;
+    border-radius:0;
+}
+
+#toast-container > .toast:first-child {
+    margin-top: 10px;
+}
+
+#toast-container > .toast:before {
+    position: fixed;
+    font-size: 24px;
+    line-height: 18px;
+    float: left;
+    color: #FFF;
+    padding-right:0;
+    margin: 0;
+    content:"";
+}
+
+.toast-success {
+  background-color: #5cb85c;
+}
+.toast-error {
+  background-color: #d9534f;
+}
+.toast-info {
+  background-color: #5bc0de;
+}
+.toast-warning {
+  background-color: #f0ad4e;
+}
+
+#toast-container a{
+  color:#F4F4F4;
+  text-decoration: underline;
+}
+
+#toast-container a:hover{
+  color: #FFF;
+  text-decoration: underline;
+}
+
+
+// These are used in authentication pages (i.e. accounts/*.html)
+// XXX also in plan_short.html
+// --------
+
+.form-container{
+  margin-top: 40px;
+  border:1px solid $brand-primary;
+  border-radius: 4px;
+  padding:20px;
+  padding-top: 0px;
+  margin-bottom: 20px;
+}
+
+// Pricing plans (templates/saas/pricing.html, templates/saas/plan_short.html)
+// --------
+
+.plan-short{
+  cursor: pointer;
+  margin-top: 40px;
+  border: 1px solid #337ab7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  position:relative;
+  min-width:100%;
+}
+
+.plan-short:hover{
+  cursor: pointer;
+  background-color: lighten($brand-primary, 75%);
+}
+
+.plan-pricing{
+  color: $brand-primary;
+}
+
+.plan-pricing h2{
+  font-size: 36px;
+}
+
+.plan-main{
+  margin: 0 20px 70px 20px;
+}
+
+.plan-footer{
+  position: absolute;
+  bottom:1px;
+  width: 100%;
+  text-align: center;
+}
+
+.plan-footer .btn-primary {
+  width: 100%;
+}
+
+.plan-desc ul{
+  list-style: none;
+}
+
+.plan-desc li:before {
+  font-family: 'FontAwesome';
+  content: "\f0da";
+  margin:0 5px 0 -15px;
+}
+
+.add-plan-placeholder{
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.add-plan-placeholder:hover{
+  opacity: 1;
+}
+
+@media screen and (min-width: $screen-sm-min) {
+  .row-flex > div[class$="-2"] {
+    max-width: 16.66666667% !important;
+  }
+
+  .row-flex > div.col-xs-3,
+  .row-flex > div.col-sm-3,
+  .row-flex > div.col-md-3,
+  .row-flex > div.col-lg-3 {
+    max-width: 25% !important;
+  }
+
+  .row-flex > div.col-xs-4,
+  .row-flex > div.col-sm-4,
+  .row-flex > div.col-md-4,
+  .row-flex > div.col-lg-4 {
+    max-width: 33.33333333% !important;
+  }
+
+  .row-flex > div.col-xs-5,
+  .row-flex > div.col-sm-5,
+  .row-flex > div.col-md-5,
+  .row-flex > div.col-lg-5 {
+    max-width: 41.66666667% !important;
+  }
+
+  .row-flex > div.col-xs-6,
+  .row-flex > div.col-sm-6,
+  .row-flex > div.col-md-6,
+  .row-flex > div.col-lg-6 {
+    max-width: 50 !important;
+  }
+
+  .row-flex, .row-flex > div[class*="col-"] {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex:1 1 auto;
+  }
+
+  .row-flex > div[class*="col-"]{
+     margin:-.2px;
+  }
+
+}
+
+
+.app-top-navigation
+{
+    display: flex;
+    float: right;
+    align-items: center;
+}
+
+.app-top-navbar
+{
+    padding: 10px 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.app-top-navbar .navbar-toggle
+{
+    margin: 2px 5px;
+    height: 46px;
+    font-size: 18px;
+}
+
+.app-top-navbar .navbar-brand
+{
+    display: none;
+}
+
+.app-top-navigation .dashboard-top-menu
+{
+    min-height: 51px;
+}
+
+.footer-links
+{
+    margin-bottom: 10px;
+}
+
+.footer-links a
+{
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+#leaderboard
+{
+    margin-top: 50px;
+}
+
+.nvtooltip
+{
+    z-index: 3;
+}
+
+.dashboard-top-menu
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    display: none;
+}
+
+.dashboard-top-menu li
+{
+    margin: 0 10px;
+    font-size: 15px;
+}
+
+.table>tbody+tbody
+{
+    border-top: 0;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td
+{
+    border-top: 0;
+    padding: 10px 15px;
+}
+
+.table>thead>tr>th
+{
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.app-top-navbar .navbar-header
+{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-top-navbar .navbar-header:before,
+.app-top-navbar .navbar-header:after
+{
+    display: none;
+}
+
+@media (min-width: 768px)
+{
+    .app-top-navbar .dashboard-top-menu
+    {
+        display: flex;
+    }
+
+    .app-top-navbar .navbar-brand
+    {
+        display: block;
+    }
+}
+
+@media (min-width: 1200px)
+{
+    .dashboard-top-menu
+    {
+        display: flex;
+    }
+}

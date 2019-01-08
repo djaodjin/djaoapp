@@ -15,7 +15,7 @@
                    close-text="Close" ng-cloak
                    v-model="params.start_at" v-cloak>
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle"
+                <button type="button" class="btn btn-secondary dropdown-toggle"
                     ng-click="open($event, 'start_at')"><i class="fa fa-calendar"></i>
                 </button>
             </span>
@@ -46,7 +46,7 @@
                    ng-model="params.ends_at" ng-cloak
                    v-model="params.ends_at" v-cloak>
             <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle"
+                <button type="button" class="btn btn-secondary dropdown-toggle"
                     ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i>
                 </button>
             </div>
@@ -70,7 +70,7 @@
           v-model="params.q" @input="filterList" />
       </div>
       <div class="form-group">
-        <a id="download" class="btn btn-default" role="button"
+        <a id="download" class="btn btn-secondary" role="button"
            ng-prop-href="'{{download_url}}' + getQueryString(['page'])"
            v-bind:href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
@@ -151,6 +151,6 @@
             last-text="&raquo;"
             ng-model="currentPage"
             ng-change="pageChanged()"></ul>
-        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
     </div>
 </section>
