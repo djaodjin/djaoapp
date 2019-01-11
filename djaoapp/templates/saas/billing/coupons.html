@@ -140,7 +140,7 @@
                       ng-model="coupon.ends_at"
                       ng-required="true"
                       close-text="Close">
-                    [[coupon.ends_at | formatDate ]]
+                    [[coupon.ends_at ? (coupon.ends_at | formatDate) : "Never" ]]
                 </span>
             </td>
             <td class="description">
