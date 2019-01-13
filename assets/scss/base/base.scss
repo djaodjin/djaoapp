@@ -1,8 +1,12 @@
-// Core variables and mixins
+// All the CSS we need for the entire site. This tradeoff between
+// bandwidth and latency is good as long as we have a high and consistent
+// utilization of all the CSS tags for all pages on the site.
 @import "variables.scss";
-@import "dashboard-theme.scss";
+@import "../vendor/bootstrap/bootstrap.scss";
+@import "djaodjin-dashboard.scss";
 @import "djaodjin-menubar.scss";
+@import "dashboard-theme.scss";
 @import "mallspace.scss";
 @import "../vendor/font-awesome/font-awesome.scss";
 @import "../vendor/toastr/toastr.scss";
-@import "../vendor/bootstrap/bootstrap.scss"
+@import "api-doc.scss";

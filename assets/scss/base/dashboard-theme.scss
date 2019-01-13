@@ -8,12 +8,42 @@ $dashboard-sidebar-color:    white;
     color: $dashboard-sidebar-color;
 }
 
+.dashboard-nav-color-theme .navbar-light {
+  background-color: $dashboard-sidebar-bg;
+}
+
 .dashboard-nav a,
 .dashboard-nav a:active,
 .dashboard-nav a:hover,
 .dashboard-nav a:focus,
 .dashboard-nav a:visited {
   color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav .navbar-light a.navbar-brand,
+.dashboard-nav .navbar-light a.navbar-brand:active,
+.dashboard-nav .navbar-light a.navbar-brand:hover,
+.dashboard-nav .navbar-light a.navbar-brand:focus,
+.dashboard-nav .navbar-light a.navbar-brand:visited {
+  color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-toggle-container {
+  background-color: $dashboard-sidebar-bg;
+}
+
+.dashboard-nav a.dashboard-nav-toggle,
+.dashboard-nav a.dashboard-nav-toggle:active,
+.dashboard-nav a.dashboard-nav-toggle:hover,
+.dashboard-nav a.dashboard-nav-toggle:focus,
+.dashboard-nav a.dashboard-nav-toggle:visited {
+  background-color: $dashboard-sidebar-bg;
+  color: $dashboard-sidebar-color;
+  border-color: #ddd;
+}
+
+.opened .dashboard-nav-main {
+  box-shadow: 10px 0 100px #ccc;
 }
 
 .dashboard-nav-footer {
@@ -50,20 +80,12 @@ $dashboard-sidebar-color:    white;
    color: $dashboard-sidebar-color;
 }
 
-.menubar {
-  background: $dashboard-sidebar-bg;
-}
-
-.menubar a.menubar-dropdown-toggle {
-  color: $dashboard-sidebar-color;
-}
-
-.menubar .dropdown-label
+.dropdown-menu .dropdown-label
 {
     color: $dashboard-sidebar-bg;
 }
 
-.menubar .dropdown-label .dropdown-label-role
+.dropdown-menu .dropdown-label .dropdown-label-role
 {
     color: $dashboard-sidebar-color;
     background: $dashboard-sidebar-bg;

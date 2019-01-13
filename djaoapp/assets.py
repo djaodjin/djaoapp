@@ -8,16 +8,6 @@ from django.conf import settings
 
 #pylint: disable=invalid-name
 
-# All the CSS we need for the entire site. This tradeoff between
-# bandwidth and latency is good as long as we have a high and consistent
-# utilization of all the CSS tags for all pages on the site.
-css_base = Bundle(
-    os.path.join(settings.BASE_DIR, 'assets/less/base/base.less'),
-    filters=['less', 'cssmin'],
-    output='cache/base.css', debug=False)
-register('css_base', css_base)
-
-
 css_email = Bundle(
     os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
     filters=['less', 'cssmin'],

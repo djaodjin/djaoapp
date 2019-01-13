@@ -1,9 +1,19 @@
-/* The following classes decorates the default (i.e. mallspace) homepage
-   (i.e. templates/index.html)
-*/
+// These are extensions of the bootstrap v4 classes.
+// to support djaoapp templates.
+
 .navbar-brand {
   font-family: Sonsie One;
+
+  > img {
+    display: inline-block;
+    width: auto;
+    max-height: $navbar-height - 4;
+  }
 }
+
+
+// XXX unsorted yet.
+
 
 .leaderboard.jumbotron {
   background: $brand-primary;
@@ -668,37 +678,6 @@ section#hosting{
 
 }
 
-
-.app-top-navigation
-{
-    display: flex;
-    float: right;
-    align-items: center;
-}
-
-.app-top-navbar
-{
-    padding: 10px 25px;
-    border-bottom: 1px solid #eee;
-}
-
-.app-top-navbar .navbar-toggle
-{
-    margin: 2px 5px;
-    height: 46px;
-    font-size: 18px;
-}
-
-.app-top-navbar .navbar-brand
-{
-    display: none;
-}
-
-.app-top-navigation .dashboard-top-menu
-{
-    min-height: 51px;
-}
-
 .footer-links
 {
     margin-bottom: 10px;
@@ -758,36 +737,3 @@ section#hosting{
     border-bottom: 1px solid #e0e0e0;
 }
 
-.app-top-navbar .navbar-header
-{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.app-top-navbar .navbar-header:before,
-.app-top-navbar .navbar-header:after
-{
-    display: none;
-}
-
-@media (min-width: 768px)
-{
-    .app-top-navbar .dashboard-top-menu
-    {
-        display: flex;
-    }
-
-    .app-top-navbar .navbar-brand
-    {
-        display: block;
-    }
-}
-
-@media (min-width: 1200px)
-{
-    .dashboard-top-menu
-    {
-        display: flex;
-    }
-}
