@@ -33,7 +33,7 @@ the following fields in <a href="{{urls.organization.profile}}">{{organization.p
 <hr />
 <div id="support">
 <p>
-If you those changes look suspicious to you, please email us
+If the changes look suspicious to you, please email us
 at <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
 </p>
 </div>
