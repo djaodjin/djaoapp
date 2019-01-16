@@ -9,10 +9,9 @@
   </script>
   <div id="import-transaction-container" class="col-md-6 col-md-offset-3"
        ng-controller="importTransactionsCtrl">
-    <form action="." class="form-horizontal" method="post">
-      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
-        <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
+        <div class="form-group">
           <label class="control-label" for="subscription">
             Subscription
           </label>
@@ -34,15 +33,12 @@
                 :async-function="getSubscriptions"
                 :open-on-focus="false"/>
 
-          {% for error in form.subscription.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
-          {% endfor %}
           <div ng-show="loadingSubscriptions"
                v-show="searching" style="height:14px">
             <i class="fa fa-spinner"></i>
           </div>
         </div>
-        <div class="form-group{% if form.created_at.errors %} has-error{% endif %}">
+        <div class="form-group">
             <uiv-dropdown append-to-body>
               <label class="control-label" for="created_at">
                 Created At
@@ -53,45 +49,36 @@
                   ng-model="createdAt" ng-required="true"
                   is-open="opened.createdAt"
                   close-text="Close"
-                  v-model="created_at">
+                  v-model="createdAt">
                 <div class="input-group-btn">
-                  <button type="button" class="btn btn-default"
-                          ng-click="open($event, 'createdAt')"
-                          class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                  <button type="button" class="btn btn-default dropdown-toggle"
+                          ng-click="open($event, 'createdAt')">
+                          <i class="fa fa-calendar"></i>
                   </button>
                 </div>
               </div>
               <template slot="dropdown">
                 <li>
                   <uiv-date-picker
-                    v-model="created_at"
+                    v-model="createdAt"
                     icon-control-left="fa fa-caret-left"
                     icon-control-right="fa fa-caret-right" />
                 </li>
               </template>
             </uiv-dropdown>
-          {% for error in form.created_at.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
-          {% endfor %}
         </div>
-        <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
+        <div class="form-group">
           <label class="control-label" for="amount">
             Amount
           </label>
-          <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount">
-          {% for error in form.amount.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
-          {% endfor %}
+          <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount" v-model="amount">
         </div>
-        <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
+        <div class="form-group">
           <label class="control-label" for="descr">
             Description
           </label>
           <div>
-            <input class="form-control" name="descr" type="text" placeholder="description">
-            {% for error in form.descr.errors %}
-            <span class="help-block"><strong>{{error}}</strong></span>
-            {% endfor %}
+            <input class="form-control" name="descr" type="text" placeholder="description" v-model="description">
           </div>
         </div>
       </fieldset>
