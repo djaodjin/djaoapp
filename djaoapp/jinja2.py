@@ -87,12 +87,14 @@ def environment(**options):
     env.filters['md'] = saas.templatetags.saas_tags.md
     env.filters['describe'] = saas.templatetags.saas_tags.describe
 
+    env.globals.update({
+        'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
+        'DATETIME_FORMAT': "MMM dd, yyyy",
+    })
     if settings.DEBUG:
         env.filters['addslashes'] = django.template.defaultfilters.addslashes
         env.globals.update({
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
-            'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
-            'DATETIME_FORMAT': "MMM dd, yyyy",
             'url': reverse,
             'cycle': django.template.defaulttags.cycle
         })
