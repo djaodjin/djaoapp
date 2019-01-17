@@ -38,8 +38,8 @@ $dashboard-content-bg:       white;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    width: -moz-calc(~"100vw -" -$dashboard-sidebar-width + $dashboard-sidebar-toggle);
-    width:      calc(~"100vw -" -$dashboard-sidebar-width + $dashboard-sidebar-toggle);
+    width: -moz-calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
+    width:      calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
     color: black;
 }
 
@@ -79,7 +79,7 @@ $dashboard-content-bg:       white;
                              in pixel */
 }
 
-.navbar-default .navbar-brand-logo {
+.navbar .navbar-brand-logo {
   float: left;
   padding: 2px;
   font-size: 18px;
@@ -88,7 +88,7 @@ $dashboard-content-bg:       white;
   margin-top:    -$navbar-padding-vertical;
 }
 
-.navbar-default .navbar-brand-logo > img {
+.navbar .navbar-brand-logo > img {
   width: auto;
   max-height: 46px;
 }
@@ -107,7 +107,7 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-nav-menu {
-  height: calc(~"100vh -" ($dashboard-nav-footer-height + $navbar-height));
+  height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$navbar-height}));
   overflow-y: auto;
 }
 
@@ -142,11 +142,11 @@ $dashboard-content-bg:       white;
     margin-right: 0;
 }
 
-.navbarbrand {
+.navbar-brand-container {
    float: left;
 }
 
-.dashboard-inner-container .navbarbrand {
+.dashboard-inner-container .navbar-brand-container {
 //    margin-left: $dashboard-sidebar-toggle + 5; // XXX +5 is dubious but works
    margin-left: 0;
 }
@@ -310,12 +310,7 @@ $dashboard-content-bg:       white;
 
 @media screen and (min-width: $screen-sm-min) {
 
-  .navbarbrand {
-    padding-top:    $navbar-padding-vertical;
-    padding-bottom: $navbar-padding-vertical;
-  }
-
-  .navbar-default .navbar-brand-logo {
+  .navbar .navbar-brand-logo {
     margin-top: 0;
   }
 
@@ -349,7 +344,7 @@ $dashboard-content-bg:       white;
     display: none;
   }
 
-  .dashboard-inner-container .navbarbrand {
+  .dashboard-inner-container .navbar-brand-container {
     margin-left: 0;
   }
 
@@ -370,7 +365,7 @@ $dashboard-content-bg:       white;
     display: inline-block;
   }
 
-  .dashboard-inner-container.always-on .navbarbrand {
+  .dashboard-inner-container.always-on .navbar-brand-container {
     display: none;
   }
 
