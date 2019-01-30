@@ -22,7 +22,7 @@
         </label>
       </div>
       {% for error in bound_field.errors %}
-        <span class="help-block"><strong>{{error}}</strong></span>
+        <span class="help-block">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
         <span class="help-block">{{bound_field.help_text}}</span>
@@ -85,7 +85,7 @@
         </select>
       {% endif %}
       {% for error in bound_field.errors %}
-        <span class="help-block"><strong>{{error}}</strong></span>
+        <span class="help-block">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
         <span class="help-block">{{bound_field.help_text}}</span>
@@ -111,7 +111,7 @@
         {% endfor %}
       </select>
       {% for error in bound_field.errors %}
-      <span class="help-block"><strong>{{error}}</strong></span>
+      <span class="help-block">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
       <span class="help-block">{{bound_field.help_text}}</span>
