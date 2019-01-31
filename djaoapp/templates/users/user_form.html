@@ -34,7 +34,7 @@ You can update a user contact information, as well as login credentials here.
           <div class="col-sm-5">
             <button id="generate-key-open"
               class="btn btn-default" style="width:100%;"
-              data-toggle="modal" data-target="#ask-password">Reset API Key</button>
+              data-toggle="modal" data-target="#generate-key">Reset API Key</button>
           </div>
           <div class="col-sm-7">
             <span class="btn">Obtain a new API Key to authenticate.</span>
@@ -92,10 +92,12 @@ Are you sure you want to continue?
       </div>
     </div>
     <!-- modal dialog asking for password -->
-    <div id="ask-password" class="modal fade"
+    <div id="generate-key" class="modal fade"
          tabindex="-1" role="dialog"
          aria-labelledby="Ask for password" aria-hidden="true">
-      <form class="modal-dialog" method="POST" ng-submit="generateKey('#ask-password')">
+      <form class="modal-dialog" method="POST"
+            ng-submit="generateKey($event, '#show-key')"
+            @submit.prevent="generateKey">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close"
@@ -114,15 +116,13 @@ Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary"
-                    type="submit"
-                    data-toggle="modal" data-target="#generate-key"
-                    @click="generateKey">Enter</button>
+                    type="submit">Enter</button>
           </div>
         </div>
       </form>
     </div>
     <!-- modal dialog to generate API keys -->
-    <div id="generate-key" class="modal fade"
+    <div id="show-key" class="modal fade"
          tabindex="-1" role="dialog"
          aria-labelledby="API Keys" aria-hidden="true">
       <div class="modal-dialog">
@@ -153,7 +153,7 @@ The key will only be displayed once. Keep it secure.
           </div>
           <div class="modal-footer">
             <button id="regenerate-key" class="btn btn-default" type="button"
-                    data-toggle="modal" data-target="#ask-password"
+                    data-toggle="modal" data-target="#generate-key"
                     data-dismiss="modal">Generate</button>
             <button class="btn btn-primary"
                     data-dismiss="modal">OK</button>
