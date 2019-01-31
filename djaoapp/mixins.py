@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -13,7 +13,6 @@ from pages.locals import get_edition_tools_context_data
 from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
-from saas.api.roles import create_user_from_email
 from saas.decorators import fail_direct
 from saas.models import Organization, Plan, Signature
 from signup.helpers import full_name_natural_split
@@ -188,17 +187,12 @@ class RegisterMixin(object):
         try:
             with transaction.atomic():
                 # Create a ``User``
-                if username:
-                    user = get_user_model().objects.create_user(
-                        username=username,
-                        password=password,
-                        email=email,
-                        first_name=first_name,
-                        last_name=last_name)
-                else:
-                    user = create_user_from_email(email, password=password,
-                        first_name=first_name,
-                        last_name=last_name)
+                user = get_user_model().objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name)
 
                 Signature.objects.create_signature(
                     saas_settings.TERMS_OF_USE, user)
