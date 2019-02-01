@@ -184,13 +184,13 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                 </div>
                 <div class="form-group col-md-4">
                   <div style="height:25px;"></div>
-                  <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
                 </div>
               </div>
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Update</button>
-              </div>
             </form>
+            <div>
+              <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+            </div>
           </div>
           <!-- modal dialog for Encrypted Session Key -->
           <div id="generate-key" class="modal fade"

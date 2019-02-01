@@ -4,8 +4,11 @@
 {{user.printable_name|safe}} accepted the subscription of {{organization.printable_name|safe}} to {{plan.title}}
 {% endblock %}
 
-{% block html_content %}
+{% block title %}
 <h3>{{user.printable_name|safe}} accepted the subscription of {{organization.printable_name|safe}} to {{plan.title}}</h3>
+{% endblock %}
+
+{% block html_content %}
 {% if reason %}
 <p>
 {{reason|md}}

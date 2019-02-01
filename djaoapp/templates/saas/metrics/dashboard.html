@@ -99,7 +99,7 @@ No items to take care of Today.
             </tbody>
         </table>
         <div class="text-center"
-             ng-show="items.$resolved && items.results.length > 0" ng-cloak
+             ng-show="items.$resolved && totalItems > itemsPerPage" ng-cloak
              v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
             <ul uib-pagination class="pagination-sm"
                 total-items="totalItems"

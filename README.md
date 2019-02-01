@@ -1,5 +1,5 @@
-DjaoDjin website
-================
+DjaoDjin subscriber session proxy
+=================================
 
 This Django project contains the code for DjaoDjin subscription-based session
 manager. To learn more visit [DjaoDjin's Website](https://djaodjin.com/).

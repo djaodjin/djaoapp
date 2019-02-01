@@ -68,7 +68,7 @@
                 <tr ng-prop-id="item.user.slug"
                     ng-repeat="item in items.results"
                     ng-show="items.$resolved && items.results.length > 0"
-                  ng-cloak
+                    ng-cloak
                     v-bind:id="item.user.slug"
                     v-for="item in items.results"
                     v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -80,7 +80,7 @@
                 </tr>
         </table>
         <div class="text-center"
-             ng-show="items.$resolved && items.results.length > itemsPerPage" ng-cloak
+             ng-show="items.$resolved && items.count > itemsPerPage" ng-cloak
              v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
             <ul uib-pagination class="pagination-sm"
                 total-items="totalItems"
@@ -93,7 +93,9 @@
                 last-text="&raquo;"
                 ng-model="currentPage"
                 ng-change="pageChanged()"></ul>
-            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+            <b-pagination align="center" size="md"
+                :total-rows="totalItems" :per-page="itemsPerPage"
+                v-model="params.page" @change="get">
         </div>
     </div>
 </section>

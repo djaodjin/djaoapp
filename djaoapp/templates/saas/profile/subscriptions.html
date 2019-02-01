@@ -12,7 +12,7 @@
      data-trip-position="screen-center"
      ng-controller="subscriptionListCtrl"
      ng-init="refresh()">
-<div class="table-responsive">
+<div class="table-responsive" style="min-height: 400px;">
 <table class="table">
  <thead>
   <tr>
@@ -25,7 +25,7 @@
  <tbody>
   {% if plans %}
   <tr>
-      <td colspan="5">
+      <td colspan="4">
           <form id="subscribe"
             ng-submit="subscribe('{{organization}}')"
             @submit.prevent="subscribe('{{organization}}')">
@@ -33,9 +33,12 @@
               <select class="form-control" name="plan"
                 ng-model="plan"
                 v-model="plan">
-                <option selected :value="{}">Select a plan...</option>
+                <option selected
+                        value="{}"
+                        :value="{}">Select a plan...</option>
                 {% for choice in plans %}
-                <option :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
+                <option value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'
+                     :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
                 {% endfor %}
               </select>
               <span class="input-group-btn">
@@ -71,27 +74,30 @@
        <a ng-prop-href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'"
          v-bind:href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
    </td>
-   <td class="date"
-       close-text="Close"
-       uib-datepicker-popup="{{DATETIME_FORMAT}}"
-       ng-model="entry.ends_at"
-       ng-required="true"
-       is-open="entry.opened"
-       datepicker-options="dateOptions">
-    <uiv-dropdown class="form-group" ng-if="entry.editable" v-if="entry.editable" append-to-body>
-      <btn class="dropdown-toggle" ng-click="open($event, entry)"><i class="fa fa-calendar"></i></btn>
-      <template slot="dropdown">
-        <li>
-          <uiv-date-picker
-            v-model="entry.ends_at"
-            @input="selected(index)"
-            icon-control-left="fa fa-caret-left"
-            icon-control-right="fa fa-caret-right" />
-        </li>
-      </template>
-    </uiv-dropdown>
+   <td>
+       <div style="display:inline-block" ng-if="entry.editable" v-if="entry.editable">
+           <uiv-dropdown class="form-group" append-to-body>
+               <btn class="dropdown-toggle" ng-click="open($event, entry)"><i class="fa fa-calendar"></i></btn>
+               <template slot="dropdown">
+                   <li>
+                       <uiv-date-picker
+                            v-model="entry.ends_at"
+                            @input="selected(index)"
+                            icon-control-left="fa fa-caret-left"
+                            icon-control-right="fa fa-caret-right" />
+                   </li>
+               </template>
+           </uiv-dropdown>
+           <span class="date"
+                 uib-datepicker-popup="{{DATETIME_FORMAT}}"
+                 is-open="entry.opened"
+                 datepicker-options="dateOptions"
+                 ng-model="entry.ends_at"
+                 ng-required="true"
+                 close-text="Close"></span>
+       </div>
        <span>
-           [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at, 'MMM D, Y')) : "Never"]]
+           [[entry.ends_at ? (entry.ends_at | formatDate) : "Never" ]]
        </span>
    </td>
    <td>

@@ -1,0 +1,25 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+Welcome to {{broker.printable_name|safe}}
+{% endblock %}
+
+{% block plain_content %}
+Thank you for registering at {{back_url}}.
+
+If you have any questions or comments, email us at {{broker.email}}.
+{% endblock %}
+
+{% block html_content %}
+<div>
+<p>
+Thank you for registering at {{back_url}}.
+</p>
+</div>
+<div id="support">
+<p>
+If you have any questions or comments,
+email us at <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
+</p>
+</div>
+{% endblock %}

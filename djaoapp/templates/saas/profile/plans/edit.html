@@ -35,14 +35,14 @@
                 Danger Zone
             </div>
             <div class="panel-body">
-                <button id="delete-plan" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete">Delete</button> This operation cannot be reversed.
+                <button id="delete-plan-confirm" class="btn btn-danger" data-toggle="modal" data-target="#delete-plan-modal">Delete</button> This operation cannot be reversed.
             </div>
         </div>
     </div>
 </div>
 {% endif %}
 <!-- modal dialogs -->
-<div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog"
+<div id="delete-plan-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"
      data-plan="{{form.instance.slug}}">
     <div class="modal-dialog">
@@ -56,7 +56,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
-                <a id="delete-action-btn"
+                <a id="delete-plan"
                    class="btn btn-danger btn-ok delete"
                    data-dismiss="modal">Delete</a>
             </div>

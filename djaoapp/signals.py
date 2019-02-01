@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 import logging
@@ -36,21 +36,21 @@ contact_requested = Signal( #pylint:disable=invalid-name
     providing_args=["provider", "user", "reason"])
 
 
-def _notified_recipients(organization, notification_slug):
+def _notified_recipients(organization, notification_slug, originated_by=None):
     """
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
     """
 
     managers = organization.with_role(saas_settings.MANAGER)
+    if originated_by:
+        managers = managers.exclude(email=originated_by.email)
     # checking whether those users are subscribed to the notification
     if NOTIFICATIONS_OPT_OUT:
         filtered = managers.exclude(notifications__slug=notification_slug)
     else:
         filtered = managers.filter(notifications__slug=notification_slug)
-
-    managers_emails = [notified.email for notified in filtered]
-    recipients = managers_emails
+    recipients = [notified.email for notified in filtered]
     bcc = []
     return recipients, bcc
 
@@ -113,11 +113,22 @@ def user_registered_notice(sender, user, **kwargs):
     """
     A new user has registered (frictionless or completely)
     """
-    broker = get_broker()
-    recipients, bcc = _notified_recipients(broker, "user_registered_notice")
-    app = get_current_app()
     LOGGER.debug("[signal] user_registered_notice(user=%s)", user)
-    if SEND_EMAIL and recipients:
+    if not SEND_EMAIL:
+        return
+    broker = get_broker()
+    app = get_current_app()
+    if settings.FEATURES_DEBUG:
+        site = get_current_site()
+        back_url = site.as_absolute_uri()
+        get_email_backend(connection=app.get_connection()).send(
+            from_email=app.get_from_email(), recipients=[user.email],
+            template='notification/user_welcome.eml',
+            context={'broker': get_broker(), 'app': app,
+                'user': get_user_context(user),
+                'back_url': back_url})
+    recipients, bcc = _notified_recipients(broker, "user_registered_notice")
+    if recipients:
         get_email_backend(connection=app.get_connection()).send(
             from_email=app.get_from_email(), recipients=recipients, bcc=bcc,
             template='notification/user_registered.eml',
@@ -423,11 +434,13 @@ def user_relation_requested_notice(sender, organization, user,
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(role_grant_accepted, dispatch_uid="role_grant_accepted")
 def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
-    user_context = get_user_context(request.user if request else None)
-    recipients, bcc = _notified_recipients(
-        role.organization, "role_grant_accepted_notice")
     LOGGER.debug("[signal] role_grant_accepted_notice("\
         " role=%s, grant_key=%s)", role, grant_key)
+    originated_by = request.user if request else None
+    user_context = get_user_context(originated_by)
+    recipients, bcc = _notified_recipients(
+        role.organization, "role_grant_accepted_notice",
+        originated_by=originated_by)
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
@@ -453,14 +466,16 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
 def subscribe_grant_accepted_notice(sender, subscription, grant_key,
                                        request=None, **kwargs):
     provider = subscription.plan.organization
+    originated_by = request.user if request else None
     recipients, bcc = _notified_recipients(provider,
-        "subscribe_grant_accepted_notice")
+        "subscribe_grant_accepted_notice",
+        originated_by=originated_by)
     LOGGER.debug("[signal] subscribe_grant_accepted_notice("\
         " subscription=%s, grant_key=%s)", subscription, grant_key)
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
-        user_context = get_user_context(request.user if request else None)
+        user_context = get_user_context(originated_by)
         get_email_backend(connection=app.get_connection()).send(
             from_email=app.get_from_email(),
             recipients=recipients, bcc=bcc,
