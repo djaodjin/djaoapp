@@ -114,6 +114,7 @@ js_djaodjin_vue = Bundle(
     'vendor/nv.d3.js',
     'vendor/trip.js',
     'vendor/chardinjs.js',
+    'vendor/vue-croppa.min.js',
     'js/djaodjin-upload.js',
     'js/djaodjin-dashboard.js',
     'js/djaodjin-signup-vue.js',

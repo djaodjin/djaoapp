@@ -13,7 +13,34 @@ You can update a user contact information, as well as login credentials here.
 {% block saas_content %}
 <section id="personal" ng-app="signupApp">
   <div id="user-profile-container" ng-controller="userProfileCtrl">
-    {% include "_form.html" %}
+    <form @submit.prevent="updateUser">
+        <div class="form-group">
+            <label class="control-label requiredField">Username<span class="asteriskField">*</span></label>
+            <div class="controls">
+                <input class="form-control" maxlength="254" name="username" placeholder="Username" type="text" v-model="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Email address</label>
+            <div class="controls">
+                <input class="form-control" maxlength="254" name="email" type="email" v-model="email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Full name</label>
+            <div class="controls">
+                <input class="form-control" maxlength="30" name="last_name" type="text" v-model="fullName">
+            </div>
+        </div>
+        <div class="form-group">
+            <img :src="contact.picture" v-show="contact.picture && !imageSelected" width="100" height="100">
+            <croppa v-model="picture" :width="100" :height="100"></croppa>
+            <button class="btn btn-primary btn-sm" @click="uploadImage">Save picture</button>
+        </div>
+        <div class="form-action text-center">
+            <button class="btn btn-primary btn-lg" type="submit">Update</button>
+        </div>
+    </form>
     <hr />
     <div class="panel panel-default" style="margin:50px auto;">
       <div class="panel-heading">
@@ -142,6 +169,12 @@ Are you sure you want to continue?
                        v-model="apiKey" />
               </div>
             </div>
+            <div class="form-group">
+                <input class="form-control"
+                       name="password" maxlength="128"
+                       type="password" placeholder="Password"
+                       v-model="password" />
+            </div>
             <div>
               <p>
 This is the API key you can use to authenticate with the service.
@@ -167,6 +200,7 @@ The key will only be displayed once. Keep it secure.
 {% endblock %}
 
 {% block users_bodyscripts %}
+{% if not VUEJS %}
 <script type="text/javascript">
 /* Implementation Note: Not including a list of dependent modules
    (2nd parameter to `module`) "re-opens" the module for additional
@@ -188,4 +222,5 @@ reopenSignupApp.constant('settings', {
   urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
 });
 </script>
+{% endif %}
 {% endblock %}

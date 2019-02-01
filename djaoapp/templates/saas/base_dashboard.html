@@ -104,6 +104,9 @@ var djaodjinSettings = {
       last_name: "{{request.user.last_name}}"
     },
     csrf: '{{csrf_token}}',
+    {% if STRIPE_PUB_KEY %}
+        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+    {% endif %}
 };
 </script>
 {% assets "js_vue" %}

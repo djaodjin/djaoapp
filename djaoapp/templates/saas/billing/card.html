@@ -5,12 +5,129 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="update_card">
+<section id="update-card-container">
   <div class="col-md-12">
-    <form method="post" id="payment-form" class=""
-          action=".{% if next %}/?next={{next}}{% endif %}">
-      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-      {% include "saas/_card_use.html" %}
+<form action="." class="" id="payment-form" method="post">
+<div id="card-use">
+    <div class="row">
+        <fieldset class="col-lg-5 col-md-5">
+            <legend>
+Credit Card Information
+            </legend>
+            <div v-show="haveCardData" v-cloak>
+                <dl class="dl-horizontal"><dt>card</dt> <dd>[[savedCard.last4]]</dd></dl>
+                <dl class="dl-horizontal"><dt>expires</dt> <dd>[[savedCard.expDate]]</dd></dl>
+            </div>
+            <div class="form-group">
+                <div class="card-icons text-center">
+                    <img id="amex" src="{{'static/img/american-express-curved-32px.png'|djasset}}">
+                    <img id="mastercard" src="{{'static/img/mastercard-curved-32px.png'|djasset}}">
+                    <img id="discover" src="{{'static/img/discover-curved-32px.png'|djasset}}">
+                    <img id="visa" src="{{'static/img/visa-curved-32px.png'|djasset}}">
+                </div>
+            </div>
+           <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
+                values will hit the server and break PCI compliance. -->
+            <div class="form-group" id="row-number">
+                <label class="control-label" for="card-number">Card Number</label>
+                <div class="controls">
+                    <input autocomplete="off" class="form-control" id="card-number" placeholder="Card number" size="16" type="text" v-model="cardNumber">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-6 form-group" id="row-exp">
+                    <label class="control-label">Expiration</label>
+                    <div class="controls">
+                            <input class="form-control" id="card-exp-month" maxlength="2" placeholder="MM" size="2" style="display:inline-block;width:40%;" type="text" v-model="cardExpMonth">
+                            <input class="form-control" id="card-exp-year" maxlength="4" placeholder="YYYY" size="4" style="display:inline-block;width:50%;" type="text" v-model="cardExpYear">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-6 form-group" id="row-cvc">
+                    <label class="control-label">Security Code</label>
+                    <div id="cvc-detail" style="display: none;">
+                        <h3>What is CVV/CVC ?</h3>
+                        <p>
+Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure
+established by credit card companies to reduce fraud for internet transactions.
+On a Visa, MasterCard and Discover, this 3 digit code is located on the back of
+the card. American Express, however, displays a 4 digit code on the front of
+the card. Both 3 or 4 digit codes are verification numbers used in the
+authentication process.
+                        </p>
+                        <h4>MasterCard, Visa &amp; Discover</h4>
+                        <p>
+The CVV/CVC code is the last 3 digits printed in the signature area on the
+back of the card.
+                        </p>
+                        <h4>American Express</h4>
+                        <p>
+The CVV/CVC code is the last 4 digits on the front of your card right above
+your credit card number.
+                        </p>
+                    </div>
+                    <div class="controls">
+                        <input autocomplete="off" class="form-control" id="card-cvc" maxlength="4" placeholder="CVC" size="3" type="text" v-model="cardCvc">
+                    </div>
+                </div>
+            </div>
+            <p class="form-group" style="font-size:0.8em;">
+We keep on top of all best practices to secure the information you
+provide us.
+See the <a href="/legal/security/" target="_blank">security policy</a>
+for details.
+            </p>
+        </fieldset>
+        <fieldset class="col-lg-5 col-md-5 col-lg-offset-1 col-md-offset-1">
+            <legend>Billing Address</legend>
+            <div class="form-group">
+                <label class="control-label">Card Holder</label>
+                <div class="controls">
+                    <input class="form-control" name="card_name" type="text" v-model="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Street address</label>
+                <div class="controls">
+                    <input class="form-control" name="card_address_line1" type="text" v-model="addressLine1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Country</label>
+                <div class="controls">
+                     <select v-model="addressCountry" @change="addressRegion = ''" class="form-control">
+                         <option value="">select country</option>
+                         <option :value="code" v-for="(country, code) in countries">[[country]]</option>
+                     </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">State/Province/County</label>
+                <div class="controls">
+                     <select v-model="addressRegion" v-show="addressCountry == 'US' || addressCountry == 'CA'" class="form-control">
+                         <option value="">select state</option>
+                         <option :value="code" v-for="(region, code) in regions[addressCountry]">[[region]]</option>
+                     </select>
+                     <input class="form-control" v-model="addressRegion" type="text" placeholder="Region" v-show="addressCountry != 'US' && addressCountry != 'CA'">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">City/Town</label>
+                <div class="controls">
+                    <input class="form-control" name="card_city" type="text" v-model="addressCity">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Zip/Postal code</label>
+                <div class="controls">
+                    <input class="form-control" name="card_address_zip" type="text" v-model="addressZip">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div> <!-- #card-use -->
+<div class="form-group text-center">
+    <button class="btn btn-primary btn-lg payment-submit" type="submit" @click.prevent="save">Update</button>
+</div>
     </form>
   </div>
 </section>

@@ -9,8 +9,7 @@
   </script>
   <div id="import-transaction-container" class="col-md-6 col-md-offset-3"
        ng-controller="importTransactionsCtrl">
-    <form action="." class="form-horizontal" method="post">
-      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
           <label class="col-form-label" for="subscription">
@@ -33,7 +32,6 @@
                 item-key="itemKey"
                 :async-function="getSubscriptions"
                 :open-on-focus="false"/>
-
           {% for error in form.subscription.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
@@ -42,7 +40,7 @@
             <i class="fa fa-spinner"></i>
           </div>
         </div>
-        <div class="form-group{% if form.created_at.errors %} has-error{% endif %}">
+        <div class="form-group">
             <uiv-dropdown append-to-body>
               <label class="col-form-label" for="created_at">
                 Created At
@@ -53,18 +51,19 @@
                   ng-model="createdAt" ng-required="true"
                   is-open="opened.createdAt"
                   close-text="Close"
-                  v-model="created_at">
+                  v-model="createdAt">
                 <div class="input-group-btn">
-                  <button type="button" class="btn btn-secondary"
-                          ng-click="open($event, 'createdAt')"
-                          v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
+                  <button type="button"
+                          class="btn btn-secondary dropdown-toggle"
+                          ng-click="open($event, 'createdAt')">
+                    <i class="fa fa-calendar"></i>
                   </button>
                 </div>
               </div>
               <template slot="dropdown">
                 <li>
                   <uiv-date-picker
-                    v-model="created_at"
+                    v-model="createdAt"
                     icon-control-left="fa fa-caret-left"
                     icon-control-right="fa fa-caret-right" />
                 </li>
