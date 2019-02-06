@@ -1,16 +1,18 @@
 // CSS specific to the DjaoDjin dashboard
 
+$navbar-height: 50px; // XXX until we find a better fix.
 $dashboard-sidebar-width:    240px;
 $dashboard-sidebar-toggle:    20px;
 $dashboard-nav-footer-height: 91px;
 $dashboard-content-bg:       white;
+
 
 // Manager dashboards (templates/saas/*.html)
 // --------
 
 /* subscriber pipeline */
 .ends-soon {
-    background-color: $alert-info-bg;
+    background-color: theme-color-level();
 }
 
 .date-chooser{
@@ -85,7 +87,7 @@ $dashboard-content-bg:       white;
   font-size: 18px;
   line-height: 20px;
   height: $navbar-height;
-  margin-top:    -$navbar-padding-vertical;
+//  margin-top:    -$navbar-padding-vertical;//XXX this variable does not exists
 }
 
 .navbar .navbar-brand-logo > img {
@@ -200,14 +202,14 @@ $dashboard-content-bg:       white;
 .dashboard-nav-toggle-container .dashboard-nav-toggle {
   position: relative;
   float: left;
-  margin-left: $navbar-padding-horizontal;
+//  margin-left: $navbar-padding-horizontal;//XXX variable does not exists.
   margin-right: 5px;
   padding: 9px 10px;
 //XXX  .navbar-vertical-align(34px);
   background-color: transparent;
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
-  border-radius: $border-radius-base;
+//  border-radius: $border-radius-base; //XXX variable does not exist.
 }
 
 .dashboard-nav-toggle-container .dashboard-nav-toggle > i {
@@ -284,7 +286,7 @@ $dashboard-content-bg:       white;
     height: $navbar-height;
 }
 
-@media screen and (max-width: $screen-xs-max) {
+@include media-breakpoint-up(xs) {
 
     .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
@@ -308,7 +310,7 @@ $dashboard-content-bg:       white;
     }
 }
 
-@media screen and (min-width: $screen-sm-min) {
+@include media-breakpoint-up(sm) {
 
   .navbar .navbar-brand-logo {
     margin-top: 0;

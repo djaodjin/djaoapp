@@ -1,6 +1,6 @@
 // Visual appearance of dashboard sidebar
 
-$dashboard-sidebar-bg:       $brand-primary;
+$dashboard-sidebar-bg:       theme-color(primary);
 $dashboard-sidebar-color:    white;
 
 .dashboard-nav-color-theme {

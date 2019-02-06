@@ -16,14 +16,14 @@
 
 
 .leaderboard.jumbotron {
-  background: $brand-primary;
+  background: theme-color(primary);
   color: #fff;
 }
 
 .site-jumbotron{
   padding-bottom: 40px;
   margin-bottom:20px;
-  background: $brand-primary;
+  background: theme-color(primary);
   color:#FFF;
 }
 
@@ -44,7 +44,7 @@
   padding: 35px 0;
 }
 
-@media (min-width: $screen-sm-min) {
+@include media-breakpoint-up(sm) {
   .site-landing .portrait-and-quote {
     display: flex;
     align-items: center;
@@ -148,7 +148,9 @@ ol.tutorials > .active, ul.tutorials > .active {
     padding: 10px 12px;
 }
 
-@media screen and (min-width: $screen-sm-min) {
+
+
+@include media-breakpoint-up(sm) {
   .signup-group .left-delimiter {
     border-left: 1px solid #ccc;
   }
@@ -204,28 +206,6 @@ body{
     border-top: 1px solid #e9e9e9;
 }
 
-/* Navbar */
-.navbar-default .navbar-brand-logo {
-  float: left;
-  padding: 2px;
-  font-size: 18px;
-  line-height: 20px;
-  height: 50px;
-}
-
-.navbar-default .navbar-brand-logo > img {
-  width: auto;
-  max-height: 46px;
-}
-
-.navbar-default > .navbar-header {
-  color: $navbar-default-color;
-}
-
-.navbar-default.navbar-inverse > .navbar-header {
-  color: $navbar-inverse-color;
-}
-
 .content-block-wrapper{
   margin-top: 50px;
 }
@@ -257,7 +237,7 @@ body{
 .btn-outline-inverse:hover,
 .btn-outline-inverse:focus{
   background: #FFF;
-  color:$brand-primary !important ;
+  color:theme-color(primary) !important ;
 }
 
 .btn-social, .btn-social-icon {
@@ -292,28 +272,28 @@ blockquote.blockquote-left:after, blockquote.blockquote-left:before {
 
 blockquote.blockquote-right:after {
     border-color: transparent;
-    border-right-color: $blockquote-border-color;
+    border-right-color: gray();
     border-width: 15px;
     margin-top: -15px;
 }
 
 blockquote.blockquote-right:before {
     border-color: transparent;
-    border-right-color: $blockquote-border-color;
+    border-right-color: gray();
     border-width: 17px;
     margin-top: -17px;
 }
 
 blockquote.blockquote-left:after {
     border-color: transparent;
-    border-left-color: $blockquote-border-color;
+    border-left-color: gray();
     border-width: 15px;
     margin-top: -15px;
 }
 
 blockquote.blockquote-left:before {
     border-color: transparent;
-    border-left-color: $blockquote-border-color;
+    border-left-color: gray();
     border-width: 17px;
     margin-top: -17px;
 }
@@ -341,7 +321,7 @@ blockquote.blockquote-left:before {
   blockquote.blockquote-right:after,
    blockquote.blockquote-left:after {
     border-color: transparent;
-    border-bottom-color: $blockquote-border-color;
+    border-bottom-color: gray();
     border-width: 15px;
     margin-left: -15px;
   }
@@ -349,7 +329,7 @@ blockquote.blockquote-left:before {
   blockquote.blockquote-right:before,
    blockquote.blockquote-left:before{
     border-color: transparent;
-    border-bottom-color: $blockquote-border-color;
+    border-bottom-color: gray();
     border-width: 17px;
     margin-left: -17px;
   }
@@ -380,13 +360,13 @@ blockquote.blockquote-left:before {
 
 .welcome-blog{
   color:#FFF;
-  background: -moz-linear-gradient(-45deg, $brand-primary 51%, #4dd0ea 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(51%,$brand-primary), color-stop(100%,#4dd0ea)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(-45deg, $brand-primary 51%,#4dd0ea 100%); /* IE10+ */
-    background: linear-gradient(135deg, $brand-primary 51%,#4dd0ea 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$brand-primary', endColorstr='#4dd0ea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  background: -moz-linear-gradient(-45deg, theme-color(primary) 51%, #4dd0ea 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(51%,theme-color(primary)), color-stop(100%,#4dd0ea)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* IE10+ */
+    background: linear-gradient(135deg, theme-color(primary) 51%,#4dd0ea 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='theme-color(primary)', endColorstr='#4dd0ea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .light-link{
@@ -475,7 +455,7 @@ section#hosting{
   font-family: 'FontAwesome';
   content: "\f105";
   margin:0 5px 0 0;
-  color: $brand-primary;
+  color: theme-color(primary);
 }
 
 /* contact page */
@@ -563,7 +543,7 @@ section#hosting{
 
 .form-container{
   margin-top: 40px;
-  border:1px solid $brand-primary;
+  border:1px solid theme-color(primary);
   border-radius: 4px;
   padding:20px;
   padding-top: 0px;
@@ -585,11 +565,11 @@ section#hosting{
 
 .plan-short:hover{
   cursor: pointer;
-  background-color: lighten($brand-primary, 75%);
+  background-color: lighten(theme-color(primary), 75%);
 }
 
 .plan-pricing{
-  color: $brand-primary;
+  color: theme-color(primary);
 }
 
 .plan-pricing h2{
@@ -630,7 +610,8 @@ section#hosting{
   opacity: 1;
 }
 
-@media screen and (min-width: $screen-sm-min) {
+@include media-breakpoint-up(sm) {
+
   .row-flex > div[class$="-2"] {
     max-width: 16.66666667% !important;
   }

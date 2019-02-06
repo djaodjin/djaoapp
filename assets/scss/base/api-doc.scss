@@ -11,17 +11,16 @@ a.header-anchor:hover{
 }
 
 .method {
-  display: flex;
+  display: block;
 }
 
 .method > div {
   flex-grow: 1;
 }
 
-@media screen and (max-width: $screen-xs-max) {
-
+@include media-breakpoint-up(sm) {
   .method {
-    display: block;
+    display: flex;
   }
 
 }
