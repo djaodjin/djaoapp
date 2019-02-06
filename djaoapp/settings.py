@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -21,6 +21,9 @@ APP_NAME = os.path.basename(BASE_DIR)
 DB_HOST = ''
 DB_PORT = 5432
 SEND_EMAIL = True
+
+RULES_APP_MODEL = 'djaoapp.App'
+MULTITIER_SITE_MODEL = 'djaoapp.App'
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))

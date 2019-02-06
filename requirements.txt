@@ -10,9 +10,9 @@ djangorestframework==3.8.2
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.8
 djaodjin-extended-templates==0.2.4
-djaodjin-multitier==0.1.7
+djaodjin-multitier==0.1.8
 djaodjin-pages==0.2.2
-djaodjin-rules==0.1.5
+djaodjin-rules==0.1.6
 djaodjin-saas==0.3.4
 djaodjin-signup==0.2.5
 djaodjin-survey==0.1.7
@@ -24,7 +24,7 @@ gunicorn==19.7.1
 phonenumbers==8.5.0
 python-social-auth==0.3.6
 pytz==2018.7
-social-auth-app-django==1.2.0
+social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
 whitenoise==3.3.0
 
 # To run with DEBUG=1
