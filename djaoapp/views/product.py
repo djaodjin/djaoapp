@@ -28,7 +28,6 @@ from saas.decorators import fail_direct
 from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
-from saas.views.profile import OrganizationCreateView
 from saas.views.plans import CartPlanListView
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
@@ -203,13 +202,6 @@ class AppDashboardView(AppDashboardViewBase):
             self.request, site=get_current_site().db_object)})
         return context
 
-
-class AppCreateView(ProxyPageMixin, OrganizationCreateView):
-    """
-    By default we redirect to the application unless there is a ``Rule``
-    that tells us to do otherwise.
-    """
-    pass
 
 # XXX Because we haven't separated djaoapp into its own process.
 class DjaoAppPageView(TemplateView):

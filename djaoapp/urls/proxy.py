@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 from django.conf import settings
@@ -24,7 +24,7 @@ from ..views.notifications import (NotificationDetailView, NotificationListView,
     NotificationInnerFrameView)
 from ..views.users import (UserProfileView, UserNotificationsView,
     UserAccessiblesView)
-from ..views.product import (AppCreateView, AppPageView, AppPageRedirectView,
+from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView)
 from ..views.redirects import OrganizationRedirectView
 
@@ -108,8 +108,7 @@ urlpatterns += site_patterns(
     url_direct(r'^', include('saas.urls.broker')),
     url_authenticated(r'^', include('saas.urls.redirects')),
     url_direct(r'^', include('saas.urls.provider')),
-    url_provider(r'^', include('saas.urls.subscriber.billing.payment')),
-    url_provider(r'^', include('saas.urls.subscriber.billing.info')),
+    url_provider(r'^', include('saas.urls.subscriber.billing')),
     url_provider(r'^', include('saas.urls.subscriber.profile')),
     url_dashboard(r'^proxy/notifications/(?P<template>%s)/iframe/' % ACCT_REGEX,
         NotificationInnerFrameView.as_view(), name='notification_inner_frame'),
@@ -133,10 +132,6 @@ urlpatterns += site_patterns(
 #            reverse_lazy('product_default_start'))),
 
     # Magic! redirects to the product webapp.
-    # XXX We would use url_active here except we use this url to display
-    # the list of courses on vlearning.
-    url_active(r'^app/new/', AppCreateView.as_view(),
-        name='saas_organization_create'),
     url(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
         AppPageView.as_view(), name='organization_app'),
     url(r'^app/',
