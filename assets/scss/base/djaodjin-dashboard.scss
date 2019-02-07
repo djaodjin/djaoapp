@@ -1,7 +1,7 @@
 // CSS specific to the DjaoDjin dashboard
 
 $navbar-height: 50px; // XXX until we find a better fix.
-$dashboard-sidebar-width:    240px;
+$dashboard-sidebar-width:    220px;
 $dashboard-sidebar-toggle:    20px;
 $dashboard-nav-footer-height: 91px;
 $dashboard-content-bg:       white;
@@ -35,8 +35,6 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-inner-container {
-    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
-    left: 0 - $dashboard-sidebar-width + $dashboard-sidebar-toggle;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -120,7 +118,7 @@ $dashboard-content-bg:       white;
     bottom: 0;
     padding: 10px 30px 10px;
     font-size: 11px;
-    width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
+    width: $dashboard-sidebar-width;
     border-top: 1px solid;
 }
 
@@ -166,7 +164,7 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-nav .dashboard-nav-menu {
-    width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
+    width: $dashboard-sidebar-width;
 }
 
 .dashboard-nav-border {
@@ -262,7 +260,7 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-nav-push-content {
-  width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
+  width: $dashboard-sidebar-width;
   display: inline-block;
   flex-shrink: 0;
 }
@@ -286,14 +284,19 @@ $dashboard-content-bg:       white;
     height: $navbar-height;
 }
 
-@include media-breakpoint-up(xs) {
+.navbar .nav-item
+{
+    margin: 0 10px;
+}
+
+@include media-breakpoint-down(xs) {
 
     .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
       content: "\f101"; /* .fa-angle-double-right:before */
     }
 
     .dashboard-content {
-      margin-top: $navbar-height;
+      margin-top: $navbar-height + 10px;
     }
 
     .dashboard-content > header {
@@ -305,13 +308,21 @@ $dashboard-content-bg:       white;
       left: 0;
     }
 
-    .navbar-right {
+    /*.navbar-right {
       width: 100%;
+    }*/
+
+    .navbar-brand-container
+    {
+        display: none;
     }
 }
 
 @include media-breakpoint-up(sm) {
-
+/*.dashboard-inner-container {
+    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
+    left: 0 - $dashboard-sidebar-width + $dashboard-sidebar-toggle;
+  }*/
   .navbar .navbar-brand-logo {
     margin-top: 0;
   }
@@ -332,6 +343,11 @@ $dashboard-content-bg:       white;
     position: inherit;
     left: 0;
     width: inherit;
+  }
+
+  .dashboard-inner-container .dashboard-content
+  {
+    margin-left: $dashboard-sidebar-width + 30px;
   }
 
   .dashboard-inner-container .dashboard-nav {

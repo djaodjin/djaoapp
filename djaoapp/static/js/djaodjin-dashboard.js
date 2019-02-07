@@ -43,7 +43,7 @@ $(document).ready(function(){
             }
         });
 */
-        $(".dashboard-nav-toggle").click(function(event) {
+        $(".dashboard-nav-toggle-dsh").click(function(event) {
             event.preventDefault();
             var element = $(this);
             var icon = element.find("i");
