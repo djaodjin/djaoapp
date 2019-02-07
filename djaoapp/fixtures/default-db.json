@@ -322,31 +322,47 @@
     "model": "saas.subscription", "pk": 3
 },
 {
-    "fields":{
+    "fields": {
       "slug": "djaoapp",
       "account": 2,
       "domain": null,
       "tag": "streetside"
     },
-    "model": "multitier.site", "pk": 1
+    "model": "multitier.Site", "pk": 1
 },
 {
-    "fields":{
+    "fields": {
       "slug": "cowork",
-      "db_name": "cowork",
       "account": 4,
       "domain": null,
-      "tag": "streetside"
+      "is_path_prefix": true,
+      "tag": "streetside",
+      "db_name": "cowork"
     },
-    "model": "multitier.site", "pk": 5
+    "model": "multitier.Site", "pk": 2
 },
 {
     "fields": {
       "slug": "djaoapp",
       "account": 2,
+      "domain": null,
+      "tag": "streetside",
       "registration": 3
     },
-    "model": "rules.App", "pk": 1
+    "model": "djaoapp.App", "pk": 1
+},
+{
+    "fields": {
+      "slug": "cowork",
+      "account": 4,
+      "domain": null,
+      "is_path_prefix": true,
+      "tag": "streetside",
+      "db_name": "cowork",
+      "entry_point": "http://localhost:8024",
+      "registration": 1
+    },
+    "model": "djaoapp.App", "pk": 2
 },
 {
     "fields": {

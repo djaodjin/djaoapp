@@ -23,7 +23,7 @@ DB_PORT = 5432
 SEND_EMAIL = True
 
 RULES_APP_MODEL = 'djaoapp.App'
-MULTITIER_SITE_MODEL = 'djaoapp.App'
+#MULTITIER_SITE_MODEL = 'djaoapp.App'
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
@@ -69,16 +69,13 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'captcha',
     'deployutils.apps.django',
 #    'haystack', disabled until we actively use text searches on the site.
-#XXX deprecated?    'tagging',
     'signup',
     'social_django',
     'saas',
     'pages',
     'multitier',
     'rules',
-    'survey',     # For contact page
-    # project should be the last entry.
-    'djaoapp'
+    'survey',     # XXX for contact page
 )
 
 if DEBUG:
@@ -703,7 +700,6 @@ PAGES = {
         'saas/_transactions.html',
         'saas/agreements/security.md'
         'saas/agreements/terms-of-use.md'
-        'saas/app/new.html',
         'saas/base.html',
         'saas/base_dashboard.html',
         'saas/base_dashboard-2col.html',

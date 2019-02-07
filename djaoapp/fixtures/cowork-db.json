@@ -20,10 +20,13 @@
     "fields": {
       "slug": "cowork",
       "account": 3,
+      "domain": null,
+      "tag": "streetside",
+      "db_name": "cowork",
       "entry_point": "http://localhost:8024",
       "registration": 1
     },
-    "model": "rules.App", "pk": 3
+    "model": "djaoapp.App", "pk": 3
 },
 {
     "fields": {
@@ -156,16 +159,6 @@
         "is_forward": false
     },
     "model": "rules.Rule", "pk": 12
-},
-{
-    "fields": {
-        "app": 3,
-        "rank": 13,
-        "path": "/app/new/",
-        "rule_op": 1,
-        "is_forward": false
-    },
-    "model": "rules.Rule", "pk": 13
 },
 {
     "fields": {
