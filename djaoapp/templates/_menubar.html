@@ -1,7 +1,8 @@
+<ul>
 {% if request|is_authenticated %}
-<li class="dropdown">
+<li class="nav-item dropdown align-self-center">
   {% if active_organization %}
-  <a href="#" class="dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
+  <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
      aria-haspopup="true" aria-expanded="false">
     <span class="menubar-label-title">
         {{active_organization.printable_name}} <span class="caret"></span>
@@ -11,7 +12,7 @@
     </span>
   </a>
   {% else %}
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+  <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
      aria-haspopup="true" aria-expanded="false">
     <span class="menubar-label">
       {{request.user.username}} <span class="caret"></span>
@@ -34,8 +35,12 @@
     {% endif %}
   </ul>
 </li>
+<li class="nav-item align-self-center">
+    <a class="nav-link" title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="d-none d-sm-inline-block mr-sm-2">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
+</li>
 {% else %}
-<li>
-<a id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+<li class="nav-item">
+<a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
 </li>
 {% endif %}
+</ul>

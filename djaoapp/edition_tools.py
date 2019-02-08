@@ -222,6 +222,7 @@ def inject_edition_tools(response, request, context=None,
                 template = loader.get_template(user_menu_template)
                 user_menu = render_template(template, context, request).strip()
                 auth_user.clear()
-                auth_user.append(BeautifulSoup(
-                    user_menu, 'html5lib').body.next)
+                els = BeautifulSoup(user_menu, 'html5lib').body.ul.children
+                for el in els:
+                    auth_user.append(BeautifulSoup(str(el), 'html5lib'))
     return soup

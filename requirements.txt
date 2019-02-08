@@ -12,7 +12,7 @@ djaodjin-deployutils==0.5.8
 djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.7
 djaodjin-pages==0.2.2
-djaodjin-rules==0.1.5
+djaodjin-rules==0.1.6
 djaodjin-saas==0.3.5
 djaodjin-signup==0.2.7
 djaodjin-survey==0.1.7

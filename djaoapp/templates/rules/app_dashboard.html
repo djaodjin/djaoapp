@@ -28,10 +28,8 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th></th>
           </tr>
         </thead>
-        <tbody id="rules">
+        <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
           <tr class="item"
-              ng-prop-id="'rule-' + rule.rank"
-              ng-repeat="rule in rules.results" ng-cloak
               v-bind:id="'rule-' + rule.rank"
               :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
@@ -60,9 +58,6 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                       v-show="!edit_description[index]"
                       >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
                 <input type="text" class="form-control"
-                       uib-tooltip="Edit engaged and press 'Enter'"
-                       uib-tooltip-trigger="focus"
-                       uib-tooltip-placement="top"
                        v-show="edit_description[index]"
                        v-model="rule.engaged"
                        ref="edit_description_input"

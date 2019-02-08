@@ -38,8 +38,8 @@ $dashboard-content-bg:       white;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    width: -moz-calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
-    width:      calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
+    /*width: -moz-calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
+    width:      calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));*/
     color: black;
 }
 
@@ -80,15 +80,16 @@ $dashboard-content-bg:       white;
 }
 
 .navbar .navbar-brand-logo {
-  float: left;
+  /* XXX removing custom code
+  float: left;*/
   padding: 2px;
   font-size: 18px;
-  line-height: 20px;
+  /*line-height: 20px;*/
   height: $navbar-height;
-//  margin-top:    -$navbar-padding-vertical;//XXX this variable does not exists
 }
 
 .navbar .navbar-brand-logo > img {
+  /* XXX removing custom code*/
   width: auto;
   max-height: 46px;
 }
@@ -143,7 +144,8 @@ $dashboard-content-bg:       white;
 }
 
 .navbar-brand-container {
-   float: left;
+  /* XXX removing custom code
+   float: left;*/
 }
 
 .dashboard-inner-container .navbar-brand-container {
@@ -247,17 +249,18 @@ $dashboard-content-bg:       white;
    text-align:center;
 }
 
+/*
 .dashboard-nav-border .dashboard-nav-toggle > .closed:before  {
-      content: "\f101"; /* .fa-angle-double-right:before */
+      content: "\f101"; /* .fa-angle-double-right:before 
 }
 
 .dashboard-nav-border .dashboard-nav-toggle > .opened:before  {
-      content: "\f100"; /* .fa-angle-double-left:before */
+      content: "\f100"; /* .fa-angle-double-left:before 
 }
 
 .dashboard-nav-border .dashboard-nav-toggle > .initial:before  {
-      content: "\f100"; /* .fa-angle-double-left:before */
-}
+      content: "\f100"; /* .fa-angle-double-left:before 
+}*/
 
 .dashboard-nav-push-content {
   width: $dashboard-sidebar-width;
@@ -279,10 +282,10 @@ $dashboard-content-bg:       white;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.navbar-break {
+/*.navbar-break {
     display:block;
     height: $navbar-height;
-}
+}*/
 
 .navbar .nav-item
 {
@@ -314,7 +317,7 @@ $dashboard-content-bg:       white;
 
     .navbar-brand-container
     {
-        display: none;
+        /*display: none;*/
     }
 }
 
@@ -323,11 +326,12 @@ $dashboard-content-bg:       white;
     position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
     left: 0 - $dashboard-sidebar-width + $dashboard-sidebar-toggle;
   }*/
+
   .navbar .navbar-brand-logo {
     margin-top: 0;
   }
 
-  .header-menubar {
+  /*.header-menubar {
      float: right;
   }
 
@@ -337,7 +341,7 @@ $dashboard-content-bg:       white;
 
   .navbar-right {
     float: right;
-  }
+  }*/
 
   .dashboard-inner-container {
     position: inherit;
@@ -347,7 +351,7 @@ $dashboard-content-bg:       white;
 
   .dashboard-inner-container .dashboard-content
   {
-    margin-left: $dashboard-sidebar-width + 30px;
+    margin-left: $dashboard-sidebar-width;
   }
 
   .dashboard-inner-container .dashboard-nav {

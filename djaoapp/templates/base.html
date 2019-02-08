@@ -63,11 +63,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             display: none;
         }
 
-        .dashboard-nav-border
-        {
-            display: none;
-        }
-
         .sidebar-toggle > .closed:before  {
               content: "\f101"; /* .fa-angle-double-right:before */
         }
@@ -76,10 +71,83 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
               content: "\f100"; /* .fa-angle-double-left:before */
         }
 
+        .dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
+        .dashboard-nav-color-theme .dropdown-toggle
+        {
+            color: #fff;
+        }
+
+        .dashboard-inner-container .content-area-container
+        {
+            padding: 20px;
+        }
+
+        .navbar-nav .dropdown-menu
+        {
+            position: absolute;
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+        }
+
+        .sidebar-toggle
+        {
+            vertical-align: middle;
+            line-height: 1;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            color: #666;
+            z-index: 1000;
+            background: #fff;
+        }
+
+        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle
+        {
+            border: 1px solid #eee;
+            background: #337ab7;
+        }
+
+        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
+        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover
+        {
+            color: #fff;
+        }
+
         @media (max-width: 575.98px) {
+            .navbar-brand-container
+            {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, 0);
+                z-index: 10;
+            }
+
+            .navbar-brand-container img
+            {
+                max-height: 36px;
+            }
+
+            .dashboard-nav .navbar-brand .d-none
+            {
+                display: inline-block !important;
+            }
+
             .dashboard-nav-border
             {
                 display: block;
+            }
+
+            .header-menubar .dropdown
+            {
+                position: static;
+            }
+
+            .header-menubar .dropdown-menu
+            {
+                left: auto;
+                right: 5px;
             }
         }
     </style>
@@ -131,7 +199,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           <div class="dashboard-content">
             <header>
               <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
-                <a href="" class="sidebar-toggle d-inline-block d-sm-none">
+                <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
                     <i class="fa closed"></i>
                 </a>
                 {% block content_navbarbrand %}
@@ -141,42 +209,20 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                 {% endblock %}
                 {% block header_navbar_large %}
                 <div class="navbar-collapse collapse navbar-right">
-                    <ul class="nav navbar-nav ml-auto mt-2 mt-lg-0">
+                    <ul class="nav navbar-nav ml-auto mt-lg-0">
                         {% include "generic_navbar.html" %}
                     </ul>
                 </div>
-                <div class="navbar-break"></div>
-                <div class="navbar-right">
-                  <ul class="nav navbar-nav ml-auto mt-sm-2 mt-lg-0 header-menubar">
-                    {# links to user profile and #}
-                    {# organizations is added here. #}
-                    {% if request and request|is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="">{{request.user.username}}</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" title="Click Here to sign into your account" href="{{'login/'|site_prefixed}}"><span class="fa fa-sign-in fa-lg"></span> Sign in</a></li>
-                    </li>
-                    {% endif %}
-                  </ul>
-                </div>
-                <!-- XXX we are only allowed one root element in _menubar.html -->
-                {% if request and request|is_authenticated %}
-                <div class="navbar-right">
-                  <ul class="nav navbar-nav ml-auto mt-sm-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="d-none d-sm-inline-block">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
-                    </li>
-                  </ul>
-                </div>
-                {% endif %}
+                <!--<div class="navbar-break"></div>-->
+                <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
+                    <!-- this area will be populated by _menubar.html -->
+                </ul>
                 {% endblock %}
               </nav>
               {% block fullviewport %}
               {% endblock %}
             </header>
-            <div>
+            <div class="content-area-container">
               <div id="messages">
                 <div id="messages-content">
                   {% if request %}
@@ -257,18 +303,25 @@ jQuery(document).ready(function($) {
         var $t = $(this);
         var i = $t.find('i');
         if(i.hasClass('closed')){
-            $t.css({
-                position: 'fixed',
-                left: 220,
-                top: 0,
+            $t.animate({left: 205});
+            $('.navbar-brand-container').fadeOut();
+            $('.dashboard-nav').css('left', '-220px').show().animate({left: 0}, function(){
+                i.attr('class', 'fa opened');
             });
-            i.attr('class', 'fa opened');
-            $('.dashboard-nav').show();
         } else {
-            $t.attr('style', '');
-            i.attr('class', 'fa closed');
-            $('.dashboard-nav').hide();
+            $t.animate({left: 0});
+            $('.navbar-brand-container').fadeIn();
+            $('.dashboard-nav').animate({left: '-220px'}, function(){
+                $(this).hide();
+                i.attr('class', 'fa closed');
+            });
         }
+    });
+
+    $(window).resize(function(){
+        $('.dashboard-nav, .sidebar-toggle').attr('style', '');
+        $('.sidebar-toggle').find('i').attr('class', 'fa closed');
+        $('.navbar-brand-container').attr('style', '');
     });
 });
   </script>
