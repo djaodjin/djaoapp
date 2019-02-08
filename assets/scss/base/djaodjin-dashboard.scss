@@ -38,8 +38,6 @@ $dashboard-content-bg:       white;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    /*width: -moz-calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
-    width:      calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));*/
     color: black;
 }
 
@@ -80,16 +78,12 @@ $dashboard-content-bg:       white;
 }
 
 .navbar .navbar-brand-logo {
-  /* XXX removing custom code
-  float: left;*/
   padding: 2px;
   font-size: 18px;
-  /*line-height: 20px;*/
   height: $navbar-height;
 }
 
 .navbar .navbar-brand-logo > img {
-  /* XXX removing custom code*/
   width: auto;
   max-height: 46px;
 }
@@ -143,13 +137,7 @@ $dashboard-content-bg:       white;
     margin-right: 0;
 }
 
-.navbar-brand-container {
-  /* XXX removing custom code
-   float: left;*/
-}
-
 .dashboard-inner-container .navbar-brand-container {
-//    margin-left: $dashboard-sidebar-toggle + 5; // XXX +5 is dubious but works
    margin-left: 0;
 }
 
@@ -249,19 +237,6 @@ $dashboard-content-bg:       white;
    text-align:center;
 }
 
-/*
-.dashboard-nav-border .dashboard-nav-toggle > .closed:before  {
-      content: "\f101"; /* .fa-angle-double-right:before 
-}
-
-.dashboard-nav-border .dashboard-nav-toggle > .opened:before  {
-      content: "\f100"; /* .fa-angle-double-left:before 
-}
-
-.dashboard-nav-border .dashboard-nav-toggle > .initial:before  {
-      content: "\f100"; /* .fa-angle-double-left:before 
-}*/
-
 .dashboard-nav-push-content {
   width: $dashboard-sidebar-width;
   display: inline-block;
@@ -282,21 +257,12 @@ $dashboard-content-bg:       white;
     border-bottom: 1px solid #e0e0e0;
 }
 
-/*.navbar-break {
-    display:block;
-    height: $navbar-height;
-}*/
-
 .navbar .nav-item
 {
     margin: 0 10px;
 }
 
 @include media-breakpoint-down(xs) {
-
-    .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
-      content: "\f101"; /* .fa-angle-double-right:before */
-    }
 
     .dashboard-content {
       margin-top: $navbar-height + 10px;
@@ -310,38 +276,12 @@ $dashboard-content-bg:       white;
       width: 100%;
       left: 0;
     }
-
-    /*.navbar-right {
-      width: 100%;
-    }*/
-
-    .navbar-brand-container
-    {
-        /*display: none;*/
-    }
 }
 
 @include media-breakpoint-up(sm) {
-/*.dashboard-inner-container {
-    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
-    left: 0 - $dashboard-sidebar-width + $dashboard-sidebar-toggle;
-  }*/
-
   .navbar .navbar-brand-logo {
     margin-top: 0;
   }
-
-  /*.header-menubar {
-     float: right;
-  }
-
-  .navbar-break {
-    display:none;
-  }
-
-  .navbar-right {
-    float: right;
-  }*/
 
   .dashboard-inner-container {
     position: inherit;
