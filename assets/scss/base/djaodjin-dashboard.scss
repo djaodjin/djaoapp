@@ -1,7 +1,7 @@
 // CSS specific to the DjaoDjin dashboard
 
 $navbar-height: 50px; // XXX until we find a better fix.
-$dashboard-sidebar-width:    240px;
+$dashboard-sidebar-width:    220px;
 $dashboard-sidebar-toggle:    20px;
 $dashboard-nav-footer-height: 91px;
 $dashboard-content-bg:       white;
@@ -35,13 +35,9 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-inner-container {
-    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
-    left: 0 - $dashboard-sidebar-width + $dashboard-sidebar-toggle;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    width: -moz-calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
-    width:      calc(100vw - (-#{$dashboard-sidebar-width} + #{$dashboard-sidebar-toggle}));
     color: black;
 }
 
@@ -54,8 +50,6 @@ $dashboard-content-bg:       white;
   -ms-transition: right 0.25s ease-in-out;
   -o-transition: right 0.25s ease-in-out;
   transition: right 0.25s ease-in-out;
-
-
   flex-grow: 1;
   user-select: none;
   -webkit-box-flex: 1;
@@ -68,44 +62,11 @@ $dashboard-content-bg:       white;
   height: 100%;
 }
 
-.dashboard-nav-push-content {
-  width: $dashboard-sidebar-width;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
 .dashboard-nav-main {
     float: left;
     min-height: 100%;
     padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
                              in pixel */
-}
-
-.navbar .navbar-brand-logo {
-  float: left;
-  padding: 2px;
-  font-size: 18px;
-  line-height: 20px;
-  height: $navbar-height;
-//  margin-top:    -$navbar-padding-vertical;//XXX this variable does not exists
-}
-
-.navbar .navbar-brand-logo > img {
-  width: auto;
-  max-height: 46px;
-}
-
-.dashboard-nav .navbar-brand-logo {
-  float: left;
-  padding: 2px;
-  font-size: 18px;
-  line-height: 20px;
-  height: 50px;
-}
-
-.dashboard-nav .navbar-brand-logo > img {
-  width: auto;
-  max-height: 46px;
 }
 
 .dashboard-nav-menu {
@@ -120,7 +81,7 @@ $dashboard-content-bg:       white;
     bottom: 0;
     padding: 10px 30px 10px;
     font-size: 11px;
-    width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
+    width: $dashboard-sidebar-width;
     border-top: 1px solid;
 }
 
@@ -144,12 +105,7 @@ $dashboard-content-bg:       white;
     margin-right: 0;
 }
 
-.navbar-brand-container {
-   float: left;
-}
-
 .dashboard-inner-container .navbar-brand-container {
-//    margin-left: $dashboard-sidebar-toggle + 5; // XXX +5 is dubious but works
    margin-left: 0;
 }
 
@@ -166,62 +122,7 @@ $dashboard-content-bg:       white;
 }
 
 .dashboard-nav .dashboard-nav-menu {
-    width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
-}
-
-.dashboard-nav-border {
-    float:left;
-    width: $dashboard-sidebar-toggle;
-    cursor: pointer;
-    /* forces height of the sidebar to 100vh - $navbar-height - footer-height */
-    /* works from Firefox Windows 43.0.1 and Firefox OSX 22 */
-    /* height: -moz-calc(~"100vh - 50px - 22px"); */
-    /* height:      calc(~"100vh - 50px - 22px"); */
-}
-
-.dashboard-nav-border .dashboard-nav-toggle-container {
-  float: left;
-  list-style: none;
-  display: block;
-  margin: 0;
-  padding-left: 0; // .nav
-}
-
-//.dashboard-nav-toggle-container .dashboard-nav-toggle {
-//  float: left;
-//  position: relative;
-//  margin: 0;
-//  padding: 15px 15px; // .navbar-nav>li>a @media (min-width: 768px)
-//  padding-top: 15px;   // .navbar-nav>li>a @media (min-width: 768px)
-//  padding-bottom: 15px; // .navbar-nav>li>a @media (min-width: 768px)
-//  line-height: 20px; // .navbar-nav>li>a
-//border: 1px solid transparent;
-//    border-radius: 4px;
-//}
-
-.dashboard-nav-toggle-container .dashboard-nav-toggle {
-  position: relative;
-  float: left;
-//  margin-left: $navbar-padding-horizontal;//XXX variable does not exists.
-  margin-right: 5px;
-  padding: 9px 10px;
-//XXX  .navbar-vertical-align(34px);
-  background-color: transparent;
-  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  border: 1px solid transparent;
-//  border-radius: $border-radius-base; //XXX variable does not exist.
-}
-
-.dashboard-nav-toggle-container .dashboard-nav-toggle > i {
-  width: 14px;
-}
-
-.dashboard-nav-toggle-main {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  width: $dashboard-sidebar-toggle;
-  height: 100vh;
+    width: $dashboard-sidebar-width;
 }
 
 .dashboard-nav-menu > hr {
@@ -249,24 +150,6 @@ $dashboard-content-bg:       white;
    text-align:center;
 }
 
-.dashboard-nav-border .dashboard-nav-toggle > .closed:before  {
-      content: "\f101"; /* .fa-angle-double-right:before */
-}
-
-.dashboard-nav-border .dashboard-nav-toggle > .opened:before  {
-      content: "\f100"; /* .fa-angle-double-left:before */
-}
-
-.dashboard-nav-border .dashboard-nav-toggle > .initial:before  {
-      content: "\f100"; /* .fa-angle-double-left:before */
-}
-
-.dashboard-nav-push-content {
-  width: $dashboard-sidebar-width - $dashboard-sidebar-toggle;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
 .no-results
 {
     color: #888;
@@ -281,19 +164,24 @@ $dashboard-content-bg:       white;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.navbar-break {
-    display:block;
-    height: $navbar-height;
+.navbar .nav-item
+{
+    margin: 0 10px;
 }
 
-@include media-breakpoint-up(xs) {
+.dashboard-nav {
+    // sidebar not visible on frontend on desktops
+    display: none;
+}
 
-    .dashboard-nav-border .dashboard-nav-toggle > .initial:before {
-      content: "\f101"; /* .fa-angle-double-right:before */
-    }
+.dashboard-inner-container .dashboard-nav {
+    // sidebar is visible on dashboard on desktops
+    display: block;
+}
 
+@include media-breakpoint-down(xs) {
     .dashboard-content {
-      margin-top: $navbar-height;
+      margin-top: $navbar-height + 10px;
     }
 
     .dashboard-content > header {
@@ -305,70 +193,92 @@ $dashboard-content-bg:       white;
       left: 0;
     }
 
-    .navbar-right {
-      width: 100%;
+    .dashboard-nav,
+    .dashboard-inner-container .dashboard-nav {
+        display: none;
+    }
+
+    .navbar-brand-container
+    {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 10;
+    }
+
+    .navbar-brand-container .navbar-brand > img
+    {
+        max-height: 36px;
+    }
+
+    // always display djaoapp name inside sidebar
+    // otherwise need to have two partial brand templates
+    .dashboard-nav .navbar-brand .d-none
+    {
+        display: inline-block !important;
+    }
+
+    .header-menubar .dropdown
+    {
+        position: static;
+    }
+
+    .header-menubar .dropdown-menu
+    {
+        left: auto;
+        right: 5px;
     }
 }
 
 @include media-breakpoint-up(sm) {
-
-  .navbar .navbar-brand-logo {
-    margin-top: 0;
-  }
-
-  .header-menubar {
-     float: right;
-  }
-
-  .navbar-break {
-    display:none;
-  }
-
-  .navbar-right {
-    float: right;
-  }
-
   .dashboard-inner-container {
     position: inherit;
     left: 0;
     width: inherit;
   }
 
-  .dashboard-inner-container .dashboard-nav {
-    display:none;
-  }
-
-  .dashboard-inner-container .dashboard-nav-push-content {
-    display: none;
-  }
-
-  .dashboard-inner-container .dashboard-nav-toggle {
-    display: none;
+  .dashboard-inner-container .dashboard-content
+  {
+    margin-left: $dashboard-sidebar-width;
   }
 
   .dashboard-inner-container .navbar-brand-container {
+    display: none;
     margin-left: 0;
   }
 
+}
 
-  // On dashboard pages, the sidebar is always available
-  // We override again with the optional small screen settings.
-  .dashboard-inner-container.always-on {
-    position: absolute; // with relative we have bug https://github.com/jquery/jquery/issues/1872
-    left: 0;
-    width: 100vw;
-  }
+.sidebar-toggle > .closed:before  {
+      content: "\f101"; /* .fa-angle-double-right:before */
+}
 
-  .dashboard-inner-container.always-on .dashboard-nav {
-    display:block;
-  }
+.sidebar-toggle > .opened:before  {
+      content: "\f100"; /* .fa-angle-double-left:before */
+}
 
-  .dashboard-inner-container.always-on .dashboard-nav-push-content {
-    display: inline-block;
-  }
+.dashboard-inner-container .content-area-container
+{
+    padding: 20px;
+}
 
-  .dashboard-inner-container.always-on .navbar-brand-container {
-    display: none;
-  }
+.navbar-nav .dropdown-menu
+{
+    position: absolute;
+}
 
+.navbar-nav {
+    flex-direction: row;
+}
+
+.sidebar-toggle
+{
+    vertical-align: middle;
+    line-height: 1;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    color: #666;
+    z-index: 1000;
+    background: #fff;
 }

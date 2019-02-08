@@ -28,10 +28,8 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th></th>
           </tr>
         </thead>
-        <tbody id="rules" dnd-list="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
+        <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
           <tr class="item"
-              ng-prop-id="'rule-' + rule.rank"
-              ng-repeat="rule in rules.results" ng-cloak
               v-bind:id="'rule-' + rule.rank"
               :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
@@ -42,8 +40,6 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <td>[[rule.path]]</td>
             <td width="200">
               <select name="rule" class="form-control form-control-sm"
-                      ng-model="rule.allow"
-                      ng-change="updateAllow(rule)"
                       v-model="rule.allow"
                       @change="update(rule)">
                 {% for rule in rules %}
@@ -53,27 +49,15 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             </td>
             <td width="100" class="text-center">
               <input type="checkbox" name="is_forward"
-                     ng-model="rule.is_forward"
-                     ng-change="updateForward(rule)"
-                     ng-checked="rule.is_forward"
                      v-model="rule.is_forward"
                      @change="update(rule)"
                      :checked="rule.is_forward" />
             </td>
             <td class="engaged">
-                <span ng-show="!engagedEditMode[$index]"
-                      ng-click="editEngaged($index)"
-                      @click="editDescription(index)"
+                <span @click="editDescription(index)"
                       v-show="!edit_description[index]"
                       >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
                 <input type="text" class="form-control"
-                       ng-show="engagedEditMode[$index]"
-                       ng-keydown="saveEngaged($event, rule, $index)"
-                       ng-blur="saveEngaged($event, rule, $index)"
-                       ng-model="rule.engaged"
-                       uib-tooltip="Edit engaged and press 'Enter'"
-                       uib-tooltip-trigger="focus"
-                       uib-tooltip-placement="top"
                        v-show="edit_description[index]"
                        v-model="rule.engaged"
                        ref="edit_description_input"
@@ -82,7 +66,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                        >
             </td>
             <td width="100">
-              <button class="btn btn-danger btn-sm" ng-click="remove($index)">
+              <button class="btn btn-danger btn-sm" @click="remove(index)">
                 <i class="fa fa-trash-o"></i></button>
             </td>
           </tr>
@@ -94,20 +78,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
           </tr>
         </tbody>
       </table>
-      <div class="text-center"
-           ng-show="rules.$resolved && rules.results.length > itemsPerPage" ng-cloak
-           v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <ul uib-pagination class="pagination-sm"
-            total-items="totalItems"
-            items-per-page="itemsPerPage"
-            boundary-links="true"
-            max-size="maxSize"
-            previous-text="&lsaquo;"
-            next-text="&rsaquo;"
-            first-text="&laquo;"
-            last-text="&raquo;"
-            ng-model="currentPage"
-            ng-change="pageChanged()"></ul>
+      <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
         <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
       </div>
       </div>
