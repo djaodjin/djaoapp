@@ -57,100 +57,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   ga('send', 'pageview');
     </script>
     {% endif %}
-    <style>
-        .dashboard-nav
-        {
-            display: none;
-        }
-
-        .sidebar-toggle > .closed:before  {
-              content: "\f101"; /* .fa-angle-double-right:before */
-        }
-
-        .sidebar-toggle > .opened:before  {
-              content: "\f100"; /* .fa-angle-double-left:before */
-        }
-
-        .dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
-        .dashboard-nav-color-theme .dropdown-toggle
-        {
-            color: #fff;
-        }
-
-        .dashboard-inner-container .content-area-container
-        {
-            padding: 20px;
-        }
-
-        .navbar-nav .dropdown-menu
-        {
-            position: absolute;
-        }
-
-        .navbar-nav {
-            flex-direction: row;
-        }
-
-        .sidebar-toggle
-        {
-            vertical-align: middle;
-            line-height: 1;
-            padding: 5px 10px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            color: #666;
-            z-index: 1000;
-            background: #fff;
-        }
-
-        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle
-        {
-            border: 1px solid #eee;
-            background: #337ab7;
-        }
-
-        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
-        .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover
-        {
-            color: #fff;
-        }
-
-        @media (max-width: 575.98px) {
-            .navbar-brand-container
-            {
-                position: absolute;
-                left: 50%;
-                transform: translate(-50%, 0);
-                z-index: 10;
-            }
-
-            .navbar-brand-container img
-            {
-                max-height: 36px;
-            }
-
-            .dashboard-nav .navbar-brand .d-none
-            {
-                display: inline-block !important;
-            }
-
-            .dashboard-nav-border
-            {
-                display: block;
-            }
-
-            .header-menubar .dropdown
-            {
-                position: static;
-            }
-
-            .header-menubar .dropdown-menu
-            {
-                left: auto;
-                right: 5px;
-            }
-        }
-    </style>
 </head>
 <body>
   <div id="wrap">
@@ -298,31 +204,6 @@ jQuery(document).ready(function($) {
             warning: "alert-warning"
         },
     };
-    $('.sidebar-toggle').click(function(e){
-        e.preventDefault();
-        var $t = $(this);
-        var i = $t.find('i');
-        if(i.hasClass('closed')){
-            $t.animate({left: 205});
-            $('.navbar-brand-container').fadeOut();
-            $('.dashboard-nav').css('left', '-220px').show().animate({left: 0}, function(){
-                i.attr('class', 'fa opened');
-            });
-        } else {
-            $t.animate({left: 0});
-            $('.navbar-brand-container').fadeIn();
-            $('.dashboard-nav').animate({left: '-220px'}, function(){
-                $(this).hide();
-                i.attr('class', 'fa closed');
-            });
-        }
-    });
-
-    $(window).resize(function(){
-        $('.dashboard-nav, .sidebar-toggle').attr('style', '');
-        $('.sidebar-toggle').find('i').attr('class', 'fa closed');
-        $('.navbar-brand-container').attr('style', '');
-    });
 });
   </script>
   {% block bodyscripts %}{% endblock %}

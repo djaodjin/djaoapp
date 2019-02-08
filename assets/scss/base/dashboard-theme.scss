@@ -28,20 +28,6 @@ $dashboard-sidebar-color:    white;
   color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-toggle-container {
-  background-color: $dashboard-sidebar-bg;
-}
-
-.dashboard-nav a.dashboard-nav-toggle,
-.dashboard-nav a.dashboard-nav-toggle:active,
-.dashboard-nav a.dashboard-nav-toggle:hover,
-.dashboard-nav a.dashboard-nav-toggle:focus,
-.dashboard-nav a.dashboard-nav-toggle:visited {
-  background-color: $dashboard-sidebar-bg;
-  color: $dashboard-sidebar-color;
-  border-color: #ddd;
-}
-
 .opened .dashboard-nav-main {
   box-shadow: 10px 0 100px #ccc;
 }
@@ -89,4 +75,22 @@ $dashboard-sidebar-color:    white;
 {
     color: $dashboard-sidebar-color;
     background: $dashboard-sidebar-bg;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle
+{
+    border: 1px solid $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover
+{
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
+.dashboard-nav-color-theme .dropdown-toggle
+{
+    color: $dashboard-sidebar-color;
 }

@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
-{% block dashboard_inner_container_classes %}dashboard-inner-container always-on{% endblock %}
+{% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
 {# XXX next is for ichamp until we re-test everything #}
-{% block dashboard_inner_classes %} class="dashboard-inner-container always-on"{% endblock %}
+{% block dashboard_inner_classes %} class="dashboard-inner-container"{% endblock %}
 
 {% block footer %}{% endblock %}
 
@@ -58,7 +58,6 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
         </div>
     </div><!-- /.dashboard-nav-inner-container -->
 </div>
-<!--<div class="dashboard-nav-push-content"></div>-->
 {% endblock %}
 
 {% block content %}
