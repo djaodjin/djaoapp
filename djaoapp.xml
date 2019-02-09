@@ -98,6 +98,38 @@
       <!-- end of for development -->
       <!-- XXX impossible to find setproctitle in MacPorts -->
       <alternates>
+        <alternate name="CentOS">
+          <dep name="python3-cryptography">
+            <!-- Native code (used by python-social-auth) -->
+            <lib>.*/(cryptography)/__init__.py</lib>
+          </dep>
+          <dep name="python3-pyOpenSSL">
+            <lib>.*/(OpenSSL)/__init__.py</lib>
+          </dep>
+          <dep name="python3-coverage">
+            <bin>(coverage).*</bin>
+          </dep>
+          <dep name="python3-billiard">
+            <lib>.*/(billiard)/__init__.py</lib>
+          </dep>
+          <dep name="python3-crypto">
+            <lib>.*/(Crypto)/__init__.py</lib>
+          </dep>
+          <dep name="python3-lxml">
+            <lib>.*/(lxml)/etree.*</lib>
+          </dep>
+          <dep name="python3-pillow">
+            <lib>.*/(PIL)/__init__.py</lib>
+          </dep>
+          <dep name="python3-psycopg2">
+            <!-- because we connect to postgresql and it is not automatically
+                 pulled from Django. -->
+            <lib>.*/(psycopg2)/__init__.py</lib>
+          </dep>
+          <dep name="python3-setproctitle">
+            <lib>.*/setproctitle.*.so</lib>
+          </dep>
+        </alternate>
         <alternate name="Darwin">
           <dep name="py36-cryptography">
             <!-- Native code (used by python-social-auth) -->
@@ -207,6 +239,25 @@
         <bin>podofo-flatform</bin>
       </dep>
       <alternates>
+        <alternate name="CentOS">
+          <dep name="cairo">
+            <lib>cairo</lib>
+          </dep>
+          <dep name="python3-cairocffi">
+            <!-- marked as a .noarch package yet will try to run gcc when
+                 installed through pip -->
+            <lib>.*/(cairocffi)/__init__.py</lib>
+          </dep>
+          <dep name="pango">
+            <lib>pango-1.0</lib>
+          </dep>
+          <dep name="python3-cffi">
+            <lib>.*/_cffi_backend.*.so</lib>
+          </dep>
+          <dep name="python3-tinycss">
+            <lib>.*/(tinycss)/__init__.py</lib>
+          </dep>
+        </alternate>
         <alternate name="Darwin">
           <dep name="cairo">
             <lib>cairo</lib>
@@ -277,6 +328,18 @@
         <share>(dws)/prefix.mk</share>
       </dep>
       <alternates>
+        <alternate name="CentOS">
+          <dep name="gcc-c++">
+            <bin>g++</bin>
+          </dep>
+          <dep name="openssl">
+            <lib>crypto.so</lib>
+          </dep>
+          <dep name="podofo-devel">
+            <include>(podofo)/podofo.h</include>
+            <lib>podofo</lib>
+          </dep>
+        </alternate>
         <alternate name="Darwin">
           <dep name="gcc">
             <bin>g++</bin>
@@ -407,6 +470,11 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
         <lib>.*/(markdown)/__init__.py</lib>
       </dep>
       <alternates>
+        <alternate name="CentOS">
+          <dep name="gcc">
+            <bin>gcc</bin>
+          </dep>
+        </alternate>
         <alternate name="Fedora">
           <dep name="gcc">
             <bin>gcc</bin>
@@ -491,6 +559,14 @@ Flexible framework to validate access to URIs and forward HTTP requests
       </dep>
       <alternates>
         <!-- instead of pip install cryptography because there is a C module -->
+        <alternate name="CentOS">
+          <dep name="python3-cryptography">
+            <lib>.*/(cryptography)/__init__.py</lib>
+          </dep>
+          <dep name="python3-cffi">
+            <lib>.*/_cffi_backend.*.so</lib>
+          </dep>
+        </alternate>
         <alternate name="Darwin">
           <dep name="py36-cryptography">
             <lib>.*/(cryptography)/__init__.py</lib>
