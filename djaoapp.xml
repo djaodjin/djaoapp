@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <projects>
-  <project name="djaodjin/djaoapp">
+  <project name="djaoapp">
     <title>djaoapp webapp</title>
     <description>
       Deploy prerequsites and code required to run the djaoapp webapp
@@ -33,31 +33,31 @@
            It will try to create a python/dws.mk, which is
            correct behavior but unexpected and troublesome
            in this case. -->
-      <dep name="djaodjin/djaodjin-deployutils">
+      <dep name="djaodjin-deployutils">
         <lib>.*/(deployutils)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-extended-templates">
+      <dep name="djaodjin-extended-templates">
         <lib>.*/(extended_templates)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-multitier">
+      <dep name="djaodjin-multitier">
         <lib>.*/(multitier)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-pages">
+      <dep name="djaodjin-pages">
         <lib>.*/(pages)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-rules">
+      <dep name="djaodjin-rules">
         <lib>.*/(rules)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-saas">
+      <dep name="djaodjin-saas">
         <lib>.*/(saas)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-signup">
+      <dep name="djaodjin-signup">
         <lib>.*/(signup)/__init__.py</lib>
       </dep>
       <dep name="djaodjin-survey" target="python" includes="0.1.7">
         <lib>.*/(survey)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/djaodjin-chat">
+      <dep name="djaodjin-chat">
         <lib>.*/(chat)/__init__.py</lib>
       </dep>
       <dep name="gunicorn" target="python" excludes="19.0">
@@ -197,7 +197,7 @@
       </alternates>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-multitier">
+  <project name="djaodjin-multitier">
     <title>Multitier app</title>
     <description>
       Django app to connect to multiple databases based on request.
@@ -210,13 +210,13 @@
       <dep name="requests" target="python">
         <lib>.*/(requests)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-extended-templates">
+  <project name="djaodjin-extended-templates">
     <title>EML and PDF templates</title>
     <description>
       Templates to send emails in Plain + HTML format.
@@ -235,7 +235,7 @@
       <dep name="WeasyPrint" target="python">
         <lib>.*/(weasyprint)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/podofo-flatform">
+      <dep name="podofo-flatform">
         <bin>podofo-flatform</bin>
       </dep>
       <alternates>
@@ -295,7 +295,7 @@
       </alternates>
     </repository>
   </project>
-  <project name="djaodjin/podofo-flatform">
+  <project name="podofo-flatform">
     <title>Generates PDF from a template and key/value pairs</title>
     <description>
       Generates PDF from a template and key/value pairs
@@ -392,13 +392,13 @@ from BitBucket with actual uploads to PyPi
 cd $srcTop/contrib/django-storages
 TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/.cache/pip install .
       </shell>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-signup">
+  <project name="djaodjin-signup">
     <title>Frictionless signup for djaoapp webapp</title>
     <description>
       Frictionless signup for djaoapp webapp
@@ -417,13 +417,13 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       <dep name="PyJWT" target="python">
         <lib>.*/(jwt)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-chat">
+  <project name="djaodjin-chat">
     <title>Chat support app</title>
     <description>
       Django app to answer customers questions online.
@@ -439,7 +439,7 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-pages">
+  <project name="djaodjin-pages">
     <title>open source pages django app</title>
     <description>
       open source pages django app
@@ -462,7 +462,7 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       <dep name="contrib/django-storages">
         <lib>.*/(storages)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
@@ -483,7 +483,7 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       </alternates>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-rules">
+  <project name="djaodjin-rules">
     <title>Apply access rules to URIs</title>
     <description>
 Flexible framework to validate access to URIs and forward HTTP requests
@@ -493,13 +493,13 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <email>support@djaodjin.com</email>
     </maintainer>
     <repository>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-saas">
+  <project name="djaodjin-saas">
     <title>djaodjin open source djaodjin-saas</title>
     <description>
       djaodjin open source djaodjin-saas
@@ -530,13 +530,13 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <dep name="stripe" target="python">
         <lib>.*/(stripe)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin/drop">
+      <dep name="drop">
         <bin>dws</bin>
         <share>(dws)/prefix.mk</share>
       </dep>
     </repository>
   </project>
-  <project name="djaodjin/djaodjin-deployutils">
+  <project name="djaodjin-deployutils">
     <title>djaodjin deploy-utils tools</title>
     <description>
       djaodjin tools to manage image assets and deploy to production
@@ -586,7 +586,7 @@ Flexible framework to validate access to URIs and forward HTTP requests
       </alternates>
     </repository>
   </project>
-  <project name="djaodjin/drop">
+  <project name="drop">
     <title>inter-project dependencies tool</title>
     <description>
 Drop is an inter-project dependencies tool that binds functionality of source
