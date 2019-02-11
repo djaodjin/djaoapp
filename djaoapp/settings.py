@@ -87,6 +87,7 @@ else:
 
 MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'multitier.middleware.SiteMiddleware',
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
