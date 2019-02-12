@@ -1,7 +1,7 @@
 <ul class="nav flex-column" data-intro="Subscriber profile" data-position="right">
 {% if urls.provider and urls.provider.profile %}
 <li {% if urls.provider.profile == request.path %} class="nav-item active"{% endif %}>
-  <a class="nav-link" id="saas_provider_profile" href="{{urls.provider.profile}}"><i class="fa fa-user"></i> <span class="">Profile</span></a>
+  <a class="nav-link" id="saas_provider_profile" href="{{urls.provider.profile}}"><i class="fa fa-user"></i><span class="">Profile</span></a>
 </li>
 {% else %}
 <li {% if urls.organization.profile == request.path %} class="nav-item active"{% endif %}>

@@ -177,6 +177,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/sortablejs/Sortable.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)

@@ -97,32 +97,33 @@ Update your profile, contact information, password, etc.
    </div>
 </form>
 <hr />
-<div class="panel panel-danger" style="margin:50px auto;">
-    <div class="panel-heading">
-        Danger Zone
-    </div>
-    <div class="panel-body" style="padding: 15px;">
-        {% if urls.organization.password_change %}
+<div class="card border-danger mb-3">
+  <div class="card-header">
+    Danger Zone
+  </div>
+  <div class="card-body text-danger">
+{% if urls.organization.password_change %}
         <div class="row">
             <div class="col-sm-5">
-                <a id="change-password" class="btn btn-danger" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
+                <a id="change-password" class="btn btn-danger btn-block" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
             </div>
             <div class="col-sm-7">
-<span class="btn">Use a new password to login.</span>
+                Use a new password to login.
             </div>
         </div>
         {% endif %}
         <div class="row" style="margin-top: 15px;">
             <div class="col-sm-5">
                 <button id="delete-action-open"
-                        class="btn btn-danger" style="width:100%;"
+                        class="btn btn-danger btn-block"
                         data-toggle="modal" data-target="#delete-action">Delete profile</button>
             </div>
             <div class="col-sm-7">
-<span class="btn">This operation cannot be reversed.</span>
+                This operation cannot be reversed.
             </div>
         </div>
-    </div>
+  </div>
+</div>
 <!-- modal dialog to delete organization. -->
 <div class="modal fade"
      id="delete-action" tabindex="-1" role="dialog"
@@ -131,9 +132,9 @@ Update your profile, contact information, password, etc.
     <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Delete Profile ...</h5>
                 <button type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Delete Profile ...</h4>
             </div>
             <div class="modal-body">
                 <p>
@@ -159,6 +160,5 @@ Are you sure you want to continue?
     </form>
 </div>
 <!-- modal to confirm deletion of organization -->
-</div>
 </div>
 {% endblock %}

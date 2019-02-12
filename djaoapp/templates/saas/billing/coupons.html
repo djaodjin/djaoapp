@@ -3,20 +3,21 @@
 {% block saas_title %}Coupons{% endblock %}
 
 {% block saas_content %}
-<div id="coupon-list-container" ng-app="saasApp">
-<div data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center"
-     ng-controller="CouponListCtrl">
+<div id="coupon-list-container">
+<div data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center"> 
     <form class="form-inline pull-right">
-      <div class="form-group">
-        <label>Filter</label>
-        <input class="form-control" type="text"
-          ng-model="params.q" ng-change="filterList(params.q)"
-          v-model="params.q" @input="filterList" />
-      </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="search-inp">Filter</span>
+              </div>
+            <input class="form-control" type="text" id="search-inp"
+              v-model="params.q" @input="filterList" />
+              <div class="input-group-append">
+                <a class="btn btn-secondary" role="button"
+               :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+              </div>
+        </div>
       <div class="form-group" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
-        <a id="download" class="btn btn-secondary" role="button"
-           ng-prop-href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
-           v-bind:href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
       </div>
     </form>
     <div style="clear:both;" />
@@ -25,47 +26,37 @@
         <thead>
         <tr>
             <th>Code
-                <button class="btn-link btn-sort"
+                <a href="#" class="btn-sort"
                   data-trip data-trip-index="5"
                   data-trip-content="<p>Sort coupons by ascending and descending order.</p>"
                   data-trip-position="s"
-                  ng-click="sortBy('code')"
-                  @click="sortBy('code')">
-                  <i ng-class="'fa fa-sort' + ((params.o === 'code') ? ('-' + params.ot) : '')"
-                     :class="sortIcon('code')"></i>
-                </button>
+                  @click.prevent="sortBy('code')">
+                  <i :class="sortIcon('code')"></i>
+                </a>
             </th>
             <th>Percent
-                <button class="btn-link btn-sort"
-                  ng-click="sortBy('percent')"
-                  @click="sortBy('percent')">
-                  <i ng-class="'fa fa-sort' + ((params.o === 'percent') ? ('-' + params.ot) : '')"
-                     :class="sortIcon('percent')"></i>
-                </button>
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('percent')">
+                  <i :class="sortIcon('percent')"></i>
+                </a>
             </th>
             <th>Expires At
-                <button class="btn-link btn-sort"
-                  ng-click="sortBy('ends_at')"
-                  @click="sortBy('ends_at')">
-                  <i ng-class="'fa fa-sort' + ((params.o === 'ends_at') ? ('-' + params.ot) : '')"
-                     :class="sortIcon('ends_at')"></i>
-                </button>
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('ends_at')">
+                  <i :class="sortIcon('ends_at')"></i>
+                </a>
             </th>
             <th>Description
-                <button class="btn-link btn-sort"
-                  ng-click="sortBy('description')"
-                  @click="sortBy('description')">
-                  <i ng-class="'fa fa-sort' + ((params.o === 'description') ? ('-' + params.ot) : '')"
-                     :class="sortIcon('description')"></i>
-                </button>
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('description')">
+                  <i :class="sortIcon('description')"></i>
+                </a>
             </th>
             <th>Created At
-                <button class="btn-link btn-sort"
-                  ng-click="sortBy('created_at')"
-                  @click="sortBy('created_at')">
-                  <i ng-class="'fa fa-sort' + ((params.o === 'created_at') ? ('-' + params.ot) : '')"
-                    :class="sortIcon('created_at')"></i>
-                </button>
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('created_at')">
+                  <i :class="sortIcon('created_at')"></i>
+                </a>
             </th>
             <th></th>
         </tr>
@@ -74,13 +65,11 @@
             <td>
                 <input type="text" class="form-control form-control-sm"
                   placeholder="Code"
-                  ng-model="newCoupon.code"
                   v-model="newCoupon.code">
             </td>
             <td>
                 <input type="text" class="form-control form-control-sm"
                   placeholder="Percent"
-                  ng-model="newCoupon.percent"
                   v-model="newCoupon.percent">
             </td>
             <td>
@@ -88,39 +77,30 @@
                   data-trip data-trip-index="2"
                   data-trip-content="<p>Add a coupon by entering a code, percentage and click &quot;Create Coupon&quot;.</p>"
                   data-trip-position="s"
-                  ng-click="save()"
                   @click="save()">Create Coupon</button>
             </td>
             <td colspan="3">
             </td>
         </tr>
-        <tr ng-show="!items.$resolved"
-            v-show="!itemsLoaded">
+        <tr v-show="!itemsLoaded">
             <td colspan="5">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
-        <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
-            v-show="itemsLoaded && items.results.length === 0" v-cloak>
+        <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <td colspan="5">
-                <h4 class="text-center"><em>No Coupons<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+                <h4 class="text-center"><em>No Coupons<span v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
-        <tr ng-prop-id="coupon.code"
-            ng-repeat="coupon in items.results"
-            ng-show="items.$resolved && items.results.length > 0" ng-cloak
-            v-bind:id="coupon.code"
-            v-for="(coupon, index) in items.results"
-            v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr :id="coupon.code" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td>
-                <a ng-prop-href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'"
-                   v-bind:href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a>
+                <a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a>
             </td>
             <td>[[coupon.percent]]</td>
             <td>
                 <div style="display:inline-block">
-                    <uiv-dropdown class="form-group" append-to-body>
-                      <btn class="dropdown-toggle" ng-click="open($event, coupon)"><i class="fa fa-calendar"></i></btn>
+                    <uiv-dropdown class="form-group mb-0" append-to-body>
+                      <btn class="dropdown-toggle btn-outline-secondary btn-sm"><i class="fa fa-calendar"></i></btn>
                       <template slot="dropdown">
                         <li>
                           <uiv-date-picker
@@ -132,31 +112,14 @@
                       </template>
                     </uiv-dropdown>
                 </div>
-                <span style="display: inline-block;"
-                      class="date"
-                      uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                      is-open="coupon.opened"
-                      datepicker-options="dateOptions"
-                      ng-model="coupon.ends_at"
-                      ng-required="true"
-                      close-text="Close">
-                    [[coupon.ends_at ? (coupon.ends_at | formatDate) : "Never" ]]
+                <span style="display: inline-block;" class="date">
+                    [[coupon.ends_at ? ($options.filters.formatDate(coupon.ends_at)) : "Never" ]]
                 </span>
             </td>
             <td class="description">
-                <span
-                  ng-click="editDescription($index)"
-                  ng-show="!edit_description[$index]"
-                  @click="editDescription(index)"
+                <span @click="editDescription(index)"
                   v-show="!edit_description[index]">[[coupon.description]] <i class="fa fa-pencil"></i></span>
                 <input id="input_description" type="text" class="form-control"
-                  ng-keydown="saveDescription($event, coupon, $index)"
-                  ng-blur="saveDescription($event, coupon, $index)"
-                  ng-model="coupon.description"
-                  uib-tooltip="Edit description and press 'Enter'"
-                  uib-tooltip-trigger="focus"
-                  uib-tooltip-placement="top"
-                  ng-show="edit_description[$index]"
                   ref="edit_description_input"
                   @keydown="saveDescription(coupon, index, $event)"
                   @blur="saveDescription(coupon, index, $event)"
@@ -165,9 +128,7 @@
             </td>
             <td class="date">[[coupon.created_at | formatDate]]</td>
             <td>
-                <button class="btn btn-danger btn-sm"
-                  ng-click="remove($index)"
-                  @click="remove(index)"><i class="fa fa-trash-o"></i>
+                <button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i>
                 </button>
             </td>
         </tr>
@@ -187,20 +148,7 @@
         </tr>
     </table>
     </div>
-    <div class="text-center"
-         ng-show="items.$resolved && items.count > itemsPerPage"
-         v-show="itemsLoaded && totalItems > itemsPerPage">
-        <ul uib-pagination ng-model="currentPage"
-            total-items="totalItems"
-            items-per-page="itemsPerPage"
-            boundary-links="true"
-            num-pages="maxSize"
-            previous-text="&lsaquo;"
-            next-text="&rsaquo;"
-            first-text="&laquo;"
-            last-text="&raquo;"
-            ng-change="pageChanged()"
-            ></ul>
+    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
         <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
     </div>
 </div>
