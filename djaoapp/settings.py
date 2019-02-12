@@ -345,7 +345,7 @@ HAYSTACK_CONNECTIONS = {
 # more details on how to customize your logging configuration.
 LOG_HANDLER = {
     'level': 'DEBUG',
-    'formatter': 'request_format' if DEBUG else 'json',
+    'formatter': 'request_format' if (DEBUG or FEATURES_DEBUG) else 'json',
     'filters': ['request'],
     'class':'logging.StreamHandler',
 }
