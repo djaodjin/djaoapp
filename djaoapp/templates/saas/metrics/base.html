@@ -11,78 +11,49 @@
   width: 100%;
 }
 </style>
-<section id="metrics-container" ng-app="saasApp">
+<section id="metrics-container">
     <div data-trip data-trip data-trip-index="1"
          data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
          data-trip-position="screen-center"
-         ng-controller="metricsCtrl">
+         >
         <ul class="nav nav-tabs dashboard-tab table-chooser">
-            <li ng-class="{active: table.key == currentTableData.key}"
-                ng-repeat="table in tables"
-                ng-click="tabClicked(table)"
-                v-bind:class="activeClass(index)"
-                v-for="(table, index) in tables"
-                @click="tabClicked(index)">
-                <a data-toggle="tab"
-                   ng-prop-href="'#' + table.key"
-                   v-bind:href="'#' + table.key">
+            <li v-for="(table, index) in tables" class="nav-item">
+                <a data-toggle="tab" :href="'#' + table.key" :class="activeClass(index)" @click="tabClicked(index)">
                     [[tabTitle(table)]]
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel"
-                 ng-prop-id="table.key"
-                 ng-class="{'tab-pane': true, active: table.key == currentTableData.key}"
-                 ng-repeat="table in tables"
-                 v-bind:id="table.key"
-                 v-bind:class="['tab-pane', activeClass(index)]"
-                 v-for="(table, index) in tables"
-                 v-bind:key="table.key">
-                <form class="form-inline date-chooser pull-right">
+            <div role="tabpanel" :id="table.key" :class="['tab-pane', activeClass(index)]" v-for="(table, index) in tables" :key="table.key">
+                <form class="form-inline date-chooser pull-right mb-3">
                     <uiv-dropdown class="form-group" append-to-body menu-right>
-                        <label class="control-label" for="ends_at">
-                            To
-                        </label>
-                        <div class="input-group">
-                            <input class="form-control date"
+                        <div class="input-group input-group mr-2">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text" id="to-inp">To</span>
+                            </div>
+                            <input class="form-control"
                                   data-trip data-trip data-trip-index="2"
                                   data-trip-content="<p>Look back through time.</p>"
                                   data-trip-position="s"
-                                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                                  v-model="ends_at"
-                                  ng-model="ends_at"
-                                  ng-change="prepareCurrentTabData(ends_at, timezone)"
-                                  ng-required="true"
-                                  is-open="opened"
-                                  close-text="Close"
-                                  datepicker-options="dateOptions"
-                                  datepicker-mode="'month'"
-                                  max-date="maxDate"
-                                  show-button-bar="false"></input>
-                            <span class="input-group-btn">
-                                <button type="button"
-                                        class="btn btn-secondary dropdown-toggle"
-                                        ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i>
+                                  v-model="ends_at"></input>
+                              <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
                                 </button>
-                            </span>
-                            <span class="input-group-btn">
-                                <select class="form-control" style="width:80px;"
-                                        ng-model="timezone"
-                                        ng-change="prepareCurrentTabData(ends_at, timezone)"
+                              </div>
+                                
+                        </div>
+                        <select class="form-control"
                                         v-model="timezone"
                                         @change="prepareCurrentTabData">
                                     <option value="local">Local</option>
                                     <option value="utc">UTC</option>
                                 </select>
-                            </span>
-                        </div>
                         <template slot="dropdown">
                             <li>
                                 <uiv-date-picker
                                      format="{{DATETIME_FORMAT}}"
                                      v-model="ends_at"
-                                     v-on:input="prepareCurrentTabData"
+                                     @input="prepareCurrentTabData"
                                      icon-control-left="fa fa-caret-left"
                                      icon-control-right="fa fa-caret-right" />
                             </li>
@@ -97,25 +68,15 @@
                     <table class="table" style="font-size:0.7em;">
                       <tr>
                         <td></td>
-                        <td ng-repeat="col in currentTableData.data[0].values"
-                            v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
+                        <td v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
                       </tr>
-                      <tr ng-prop-id="row.key"
-                          ng-repeat="row in currentTableData.data"
-                          v-bind:id="row.key"
-                          v-for="row in currentTableData.data" :key="row.key">
-                        <td ng-if="row.location"
-                            v-if="row.location">
-                            <span ng-class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"
-                                  :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span> <a ng-prop-href="row.location" :href="row.location">[[row.key]]</a>
+                      <tr :id="row.key" v-for="row in currentTableData.data" :key="row.key">
+                        <td v-if="row.location">
+                            <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span>
+                            <a :href="row.location">[[row.key]]</a>
                         </td>
-                        <td ng-if="!row.location"
-                            v-if="!row.location">[[row.key]]</td>
-                        <td ng-repeat="col in row.values"
-                            ng-prop-title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale)"
-                             v-for="col in row.values"
-                            :key="col[0].toISOString()"
-                            :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
+                        <td v-if="!row.location">[[row.key]]</td>
+                        <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
                       </tr>
                       {% block metrics_extra_data %}
                       {% endblock %}

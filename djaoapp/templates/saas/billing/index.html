@@ -12,14 +12,13 @@ You can also see the list of all payments made here.
 {% endblock %}
 
 {% block saas_page_layout %}
-<div class="col-md-12" ng-app="saasApp">
-  <div id="billing-statement-container" class="row"
-       ng-controller="billingStatementCtrl">
-    <div ref="billing_container"
+<div class="row" id="billing-statement-container">
+<div class="col-sm-12">
+  <div class="row" 
          data-trip data-trip-index="1"
          data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
          data-trip-position="screen-center">
-      <section id="balance" class="col-md-6">
+      <section id="balance" class="col-sm-6">
         <h1 class="text-primary">Balance{% if urls.organization.api_cancel_balance_due %}
           <button id="cancel-balance-btn" class="btn btn-danger"
              data-toggle="modal"
@@ -56,7 +55,7 @@ You can also see the list of all payments made here.
         <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
         {% endif %}
       </section>
-      <section id="payment-form" class="col-md-6"
+      <section id="payment-form" class="col-sm-6"
                ng-controller="billingSummaryCtrl"
                data-api-url="{{urls.organization.api_card}}">
         <h1 class="text-primary">Credit Card
@@ -116,7 +115,12 @@ Are you sure you would like to cancel the whole balance of [[humanizeBalance()]]
       <!-- end of modal dialog -->
       {% endif %}
     </div>
-    {% include "saas/_transactions.html" %}
+    <div class="row">
+      <div class="col-12">
+        {% include "saas/_transactions.html" %}
+      </div>
+    </div>
   </div>
+</div>
 </div>
 {% endblock %}
