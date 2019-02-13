@@ -78,7 +78,6 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{% if VUEJS %}
 <script type="text/javascript">
 var djaodjinSettings = {
     urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
@@ -106,47 +105,6 @@ var djaodjinSettings = {
 {% assets "js_djaodjin_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
-
-{% else %}
-{% assets "js_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-{% assets "js_djaodjin_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-<script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration.
-   - We add the CSRF token for as an HTTP header on API calls.
-   - We make it easier to separate between django and angularjs templates
-     by changing Angular defaults to [[ and ]] characters. */
-var reopenSaasApp = angular.module('saasApp');
-reopenSaasApp.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-reopenSaasApp.constant('settings', {
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-  tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
-  date_range: {
-    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
-    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-  },
-  {% if sort_by_field %}sortByField: "{{sort_by_field}}",{% endif %}
-  {% if sort_direction %}sortDirection: "{{sort_direction}}",{% endif %}
-  user: {
-    username: "{{request.user.username}}",
-    slug: "{{request.user.username}}",
-    first_name: "{{request.user.first_name}}",
-    last_name: "{{request.user.last_name}}"
-  }
-});
-</script>
-{% endif %}
 
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

@@ -11,8 +11,8 @@ You can update a user contact information, as well as login credentials here.
 {% endblock %}
 
 {% block saas_content %}
-<section id="personal" ng-app="signupApp">
-  <div id="user-profile-container" ng-controller="userProfileCtrl">
+<section id="personal">
+  <div id="user-profile-container">
     <form @submit.prevent="updateUser">
         <div class="form-group">
             <label class="control-label requiredField">Username<span class="asteriskField">*</span></label>
@@ -42,47 +42,45 @@ You can update a user contact information, as well as login credentials here.
         </div>
     </form>
     <hr />
-    <div class="panel panel-default" style="margin:50px auto;">
-      <div class="panel-heading">
-      </div>
-      <div class="panel-body" style="padding: 15px;">
+    <div class="card border-secondary mb-4">
+      <div class="card-body text-secondary">
         {% if urls.user.password_change %}
-        <div class="row">
+        <div class="row align-items-center">
           <div class="col-sm-5">
-            <a id="change-password" class="btn btn-secondary" href="{{urls.user.password_change}}" style="width:100%;">Change Password</a>
+            <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">Change Password</a>
           </div>
           <div class="col-sm-7">
-            <span class="btn">Use a new password to login.</span>
+            Use a new password to login.
           </div>
         </div>
         {% endif %}
         {% if urls.user.api_generate_keys %}
-        <div class="row" style="margin-top:15px;">
+        <div class="row align-items-center" style="margin-top:15px;">
           <div class="col-sm-5">
             <button id="generate-key-open"
-              class="btn btn-secondary" style="width:100%;"
+              class="btn btn-secondary btn-block"
               data-toggle="modal" data-target="#generate-key">Reset API Key</button>
           </div>
           <div class="col-sm-7">
-            <span class="btn">Obtain a new API Key to authenticate.</span>
+            Obtain a new API Key to authenticate.
           </div>
         </div>
         {% endif %}
       </div>
     </div>
-    <div class="panel panel-danger" style="margin:50px auto;">
-      <div class="panel-heading">
+    <div class="card border-danger">
+      <div class="card-header">
         Danger Zone
       </div>
-      <div class="panel-body" style="padding: 15px;">
-        <div class="row" style="margin-top: 15px;">
+      <div class="card-body text-danger">
+        <div class="row align-items-center">
           <div class="col-sm-5">
-            <button id="delete-action-open" class="btn btn-danger" style="width:100%;"
+            <button id="delete-action-open" class="btn btn-danger btn-block"
               data-toggle="modal" data-target="#delete-action"
               @click="userModalOpen=true">Delete user</button>
           </div>
           <div class="col-sm-7">
-            <span class="btn">This operation cannot be reversed.</span>
+            This operation cannot be reversed.
           </div>
         </div>
       </div>
@@ -94,9 +92,9 @@ You can update a user contact information, as well as login credentials here.
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
+            <h5 class="modal-title">Delete user ...</h5>
             <button type="button" class="close"
                     data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete user ...</h4>
           </div>
           <div class="modal-body">
             <p>
@@ -122,23 +120,26 @@ Are you sure you want to continue?
     <div id="generate-key" class="modal fade"
          tabindex="-1" role="dialog"
          aria-labelledby="Ask for password" aria-hidden="true">
-      <form class="modal-dialog" method="POST"
-            ng-submit="generateKey($event, '#show-key')"
-            @submit.prevent="generateKey">
+      <form class="modal-dialog" method="POST" @submit.prevent="generateKey">
         <div class="modal-content">
           <div class="modal-header">
+            <h5 class="modal-title">Please re-enter your password ...</h5>
             <button type="button" class="close"
                     data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Please re-enter your password ...</h4>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <div class="controls">
+            <div class="form-group mb-0">
                 <input class="form-control"
                        name="password" placeholder="Password" type="password"
-                       ng-model="password"
                        v-model="password" />
-              </div>
+            </div>
+            <div class="form-group mt-3 mb-0" v-show="apiKey != 'Generating ...'">
+                <input class="form-control"
+                       name="password" placeholder="Generating" type="text"
+                       v-model="apiKey">
+                <small class="form-text text-muted text-center">
+                    This is your secret API key
+                </small>
             </div>
           </div>
           <div class="modal-footer">
