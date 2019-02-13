@@ -326,9 +326,10 @@
       "slug": "djaoapp",
       "account": 2,
       "domain": null,
+      "session_backend": 1,
       "tag": "streetside"
     },
-    "model": "multitier.Site", "pk": 1
+    "model": "djaoapp.Site", "pk": 1
 },
 {
     "fields": {
@@ -336,10 +337,11 @@
       "account": 4,
       "domain": null,
       "is_path_prefix": true,
-      "tag": "streetside",
-      "db_name": "cowork"
+      "db_name": "cowork",
+      "session_backend": 1,
+      "tag": "streetside"
     },
-    "model": "multitier.Site", "pk": 2
+    "model": "djaoapp.Site", "pk": 2
 },
 {
     "fields": {
