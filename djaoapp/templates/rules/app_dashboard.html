@@ -133,7 +133,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                   ng-submit="submitEntryPoint('#entry-point-form')"
                   @submit.prevent="submitEntryPoint">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-              <div class="row">
+              <div class="row align-items-end">
                 <div class="form-group col-md-4">
                   <label for="">Entry point *</label>
                   <input id="id_entry_point"
@@ -195,7 +195,6 @@ The key will only be displayed once. Keep it secure.
                 <div class="modal-footer">
                   <button id="regenerate-key" class="btn btn-secondary"
                           type="button"
-                          ng-click="generateKey('#generate-key')"
                           @click="generateKey">Generate</button>
                   <button type="button" class="btn btn-primary"
                           data-dismiss="modal">OK</button>
@@ -213,14 +212,12 @@ The key will only be displayed once. Keep it secure.
 Enter a username and check the token that will be passed to your backend
 service.
       </p>
-      <form id="token-form" class="form-inline" method="post"
-            ng-submit="getSessionData('#token-form')"
-            @submit.prevent="getSessionData">
+      <form id="token-form" class="form-inline mb-3" method="post" @submit.prevent="getSessionData">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="input-group">
           <input id="id_username" class="form-control"
                  maxlength="100" name="username" type="text">
-          <span class="input-group-btn">
+          <span class="input-group-append">
             <button type="submit" class="btn btn-primary">Check</button>
           </span>
         </div>

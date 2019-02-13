@@ -1,5 +1,4 @@
 <ul>
-{% if request|is_authenticated %}
 <li class="nav-item dropdown align-self-center">
   {% if active_organization %}
   <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
@@ -28,7 +27,7 @@
     {% if top_accessibles|length > 0 %}
     {% for accessible in top_accessibles %}
     <li class="dropdown-divider" role="separator"></li>
-    <li class="dropdown-label" role="presentation">{{accessible.printable_name}}<span class="dropdown-label-role">{{accessible.role_title}}</span></li>
+    <li class="dropdown-label" role="presentation"><span>{{accessible.printable_name}}</span><span class="dropdown-label-role">{{accessible.role_title}}</span></li>
     <li role="presentation"><a class="dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">Home</a></li>
     <li role="presentation"><a class="dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">Settings</a></li>
     {% endfor %}
@@ -38,9 +37,4 @@
 <li class="nav-item align-self-center">
     <a class="nav-link" title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="d-none d-sm-inline-block mr-sm-2">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
 </li>
-{% else %}
-<li class="nav-item">
-<a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
-</li>
-{% endif %}
 </ul>

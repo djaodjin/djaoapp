@@ -6,14 +6,14 @@
 
 {% block saas_content %}
 {% if organization.processor_deposit_key %}
-  <div style="display:inline-block;">
+  <div id="transfers-container">
     <dl class="dl-horizontal">
       <dt>Institution</dt>
-      <dd ng-cloak>[[bank_name]]</dd>
+      <dd v-cloak>[[bank_name]]</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Account Number</dt>
-      <dd ng-cloak>[[last4]]</dd>
+      <dd v-cloak>[[last4]]</dd>
     </dl>
   </div>
   {% if organization.processor_pub_key %}
@@ -26,7 +26,7 @@
   </p>
   {% else %}
   <!-- We have a ``managed`` account. -->
-  {% include "saas/_bank_use.html" %}
+  {# include "saas/_bank_use.html" #}
   {% endif %}
 {% else %}
 <p>
