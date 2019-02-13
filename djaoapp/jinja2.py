@@ -88,7 +88,7 @@ def environment(**options):
     env.filters['describe'] = saas.templatetags.saas_tags.describe
 
     env.globals.update({
-        'VUEJS': (settings.JS_FRAMEWORK == 'vuejs'),
+        'FEATURES_REVERT_TO_ANGULARJS': settings.FEATURES_REVERT_TO_ANGULARJS,
         'DATETIME_FORMAT': "MMM dd, yyyy",
     })
     if settings.DEBUG:

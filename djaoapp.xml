@@ -106,14 +106,11 @@
           <dep name="python3-pyOpenSSL">
             <lib>.*/(OpenSSL)/__init__.py</lib>
           </dep>
-          <dep name="python3-coverage">
+          <dep name="python36-coverage">
             <bin>(coverage).*</bin>
           </dep>
           <dep name="python3-billiard">
             <lib>.*/(billiard)/__init__.py</lib>
-          </dep>
-          <dep name="python3-crypto">
-            <lib>.*/(Crypto)/__init__.py</lib>
           </dep>
           <dep name="python3-lxml">
             <lib>.*/(lxml)/etree.*</lib>
@@ -144,9 +141,6 @@
           <dep name="py36-billiard">
             <lib>.*/(billiard)/__init__.py</lib>
           </dep>
-          <dep name="py36-crypto">
-            <lib>.*/(Crypto)/__init__.py</lib>
-          </dep>
           <dep name="py36-lxml">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
@@ -175,9 +169,6 @@
           </dep>
           <dep name="python3-billiard">
             <lib>.*/(billiard)/__init__.py</lib>
-          </dep>
-          <dep name="python3-crypto">
-            <lib>.*/(Crypto)/__init__.py</lib>
           </dep>
           <dep name="python3-lxml">
             <lib>.*/(lxml)/etree.*</lib>

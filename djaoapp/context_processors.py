@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,8 @@
 
 from django.conf import settings
 
-def js_framework(request):#pylint:disable=unused-argument
+def features_flag(request):#pylint:disable=unused-argument
     return {
-        'VUEJS': settings.JS_FRAMEWORK == 'vuejs',
+        'FEATURES_REVERT_TO_ANGULARJS': settings.FEATURES_REVERT_TO_ANGULARJS,
         'DATETIME_FORMAT': "MMM dd, yyyy"
     }

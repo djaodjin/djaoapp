@@ -29,3 +29,25 @@ class App(BaseSite, BaseApp):
     @property
     def printable_name(self):
         return self.slug
+
+
+@python_2_unicode_compatible
+class Site(BaseSite, BaseApp):
+
+    # Both slug for multitier.Site and rules.App. Since most DNS provider
+    # limit subdomain length to 25 characters, we do here too.
+    slug = models.SlugField(unique=True, max_length=25,
+        validators=[SUBDOMAIN_SLUG], help_text=_(
+            "unique identifier for the site (also serves as subdomain)"))
+    account = models.ForeignKey('saas.Organization',
+        null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'multitier_site'
+
+    def __str__(self): #pylint: disable=super-on-old-class
+        return self.slug
+
+    @property
+    def printable_name(self):
+        return self.slug

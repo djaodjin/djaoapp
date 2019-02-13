@@ -20,7 +20,7 @@
     <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
     {% endassets %}
     <style media="screen">
-    {% if VUEJS %}
+    {% if not FEATURES_REVERT_TO_ANGULARJS %}
 [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
   display: none !important;
 }

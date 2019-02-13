@@ -284,7 +284,7 @@ service.
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
-{% if not VUEJS %}
+{% if FEATURES_REVERT_TO_ANGULARJS %}
 /**
 Implementation Note #1:
   Not including a list of dependent modules (2nd parameter to `module`)

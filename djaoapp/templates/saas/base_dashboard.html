@@ -87,7 +87,7 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{% if VUEJS %}
+{% if not FEATURES_REVERT_TO_ANGULARJS %}
 <script type="text/javascript">
 var djaodjinSettings = {
     urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},

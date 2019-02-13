@@ -12,8 +12,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #pylint: disable=undefined-variable
 FEATURES_REVERT_TO_DJANGO = False # XXX 2016-03-31 temporary product switch
-JS_FRAMEWORK = 'angularjs'
-#JS_FRAMEWORK = 'vuejs'
+FEATURES_REVERT_TO_ANGULARJS = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)
@@ -23,7 +22,7 @@ DB_PORT = 5432
 SEND_EMAIL = True
 
 RULES_APP_MODEL = 'djaoapp.App'
-#MULTITIER_SITE_MODEL = 'djaoapp.App'
+MULTITIER_SITE_MODEL = 'djaoapp.Site'
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
@@ -289,7 +288,7 @@ if FEATURES_REVERT_TO_DJANGO:
     'django.template.context_processors.request',
     'django.template.context_processors.media',
     'multitier.context_processors.features_debug',
-    'djaoapp.context_processors.js_framework',
+    'djaoapp.context_processors.features_flags',
             ],
             'loaders': TEMPLATES_LOADERS,
             'libraries': {},
