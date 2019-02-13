@@ -98,8 +98,9 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
     LOGGER.debug("[signal] contact_requested_notice(provider=%s, user=%s)",
         provider, user)
     if SEND_EMAIL and recipients:
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), reply_to=user.email,
+        site = get_current_site()
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), reply_to=user.email,
             recipients=recipients, bcc=bcc,
             template='notification/user_contact.eml',
             context=context)
@@ -118,19 +119,19 @@ def user_registered_notice(sender, user, **kwargs):
         return
     broker = get_broker()
     app = get_current_app()
+    site = get_current_site()
     if settings.FEATURES_DEBUG:
-        site = get_current_site()
         back_url = site.as_absolute_uri()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=[user.email],
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=[user.email],
             template='notification/user_welcome.eml',
             context={'broker': get_broker(), 'app': app,
                 'user': get_user_context(user),
                 'back_url': back_url})
     recipients, bcc = _notified_recipients(broker, "user_registered_notice")
     if recipients:
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients, bcc=bcc,
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=recipients, bcc=bcc,
             template='notification/user_registered.eml',
             context={'broker': get_broker(), 'app': app,
                 'user': get_user_context(user)})
@@ -152,8 +153,8 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients, bcc=bcc,
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=recipients, bcc=bcc,
             template='notification/user_activated.eml',
             context={'request': request, 'broker': get_broker(),
                      'app': app, 'user': get_user_context(user),
@@ -176,8 +177,9 @@ def user_verification_notice(
         " expiration_days=%s)", user, back_url, expiration_days)
     if SEND_EMAIL:
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=[user.email],
+        site = get_current_site()
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=[user.email],
             template='notification/verification.eml',
             context={'request': request,
                 # Without ``app`` we donot set the color correctly in
@@ -200,8 +202,9 @@ def user_reset_password_notice(
         " expiration_days=%s)", user, back_url, expiration_days)
     if SEND_EMAIL:
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=[user.email],
+        site = get_current_site()
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=[user.email],
             template='notification/password_reset.eml',
             context={'request': request,
                 'broker': get_broker(), 'app': app,
@@ -227,12 +230,13 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             if user and charge.created_by != user:
                 context.update({'email_by': get_user_context(user)})
             app = get_current_app()
+            site = get_current_site()
             context.update({
                 'broker': get_broker(), 'app': app,
                 'urls': {'charge': {'created_by':
                     reverse('users_profile', args=(charge.created_by,))}}})
-            get_email_backend(connection=app.get_connection()).send(
-                from_email=app.get_from_email(), recipients=recipients,
+            get_email_backend(connection=site.get_email_connection()).send(
+                from_email=site.get_from_email(), recipients=recipients,
                 bcc=bcc + broker_recipients + broker_bcc,
                 reply_to=broker_recipients[0],
                 template='notification/charge_receipt.eml',
@@ -250,8 +254,9 @@ def card_updated_notice(sender, organization, user,
         broker_recipients, broker_bcc = _notified_recipients(broker,
             'card_updated')
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients,
+        site = get_current_site()
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=recipients,
             bcc=bcc + broker_recipients + broker_bcc,
             template='notification/card_updated.eml',
             context={
@@ -276,14 +281,15 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
         broker_recipients, broker_bcc = _notified_recipients(broker,
             'order_executed')
         app = get_current_app()
+        site = get_current_site()
         context = {'broker': broker, 'app': app, 'provider': broker,
             'organization': organization, 'invoiced_items': invoiced_items,
             'created_by': user}
         if user:
             context.update({'urls': {'order': {'created_by':
                 reverse('users_profile', args=(user,))}}})
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients,
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=recipients,
             bcc=bcc + broker_recipients + broker_bcc,
             reply_to=broker_recipients[0],
             template='notification/order_executed.eml',
@@ -301,8 +307,8 @@ def claim_code_notice(sender, subscriber, claim_code, user, **kwargs):
         # only have one person respnsible for using the claim code.
         site = get_current_site()
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=[subscriber.email],
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=[subscriber.email],
             reply_to=user.email,
             template='notification/claim_code_generated.eml',
             context={
@@ -327,8 +333,8 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
         app = get_current_app()
         broker_recipients, broker_bcc = _notified_recipients(
         broker, 'organization_updated')
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(), recipients=recipients,
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(), recipients=recipients,
             bcc=broker_recipients + broker_bcc,
             reply_to=broker.email,
             template='notification/organization_updated.eml',
@@ -383,8 +389,8 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
             LOGGER.debug("[signal] user_relation_added_notice(role=%s,"\
                 " reason=%s)", role, reason)
             if SEND_EMAIL:
-                get_email_backend(connection=app.get_connection()).send(
-                    from_email=app.get_from_email(), recipients=[user.email],
+                get_email_backend(connection=site.get_email_connection()).send(
+                    from_email=site.get_from_email(), recipients=[user.email],
                     reply_to=reply_to,
                     template=[
                         ("notification/%s_role_added.eml"
@@ -411,8 +417,8 @@ def user_relation_requested_notice(sender, organization, user,
                 "organization=%s, user=%s, reason=%s)",
                 organization, user, reason)
             if SEND_EMAIL:
-                get_email_backend(connection=app.get_connection()).send(
-                    from_email=app.get_from_email(),
+                get_email_backend(connection=site.get_email_connection()).send(
+                    from_email=site.get_from_email(),
                     recipients=[organization.email],
                     reply_to=user.email,
                     template='notification/user_relation_requested.eml',
@@ -444,8 +450,8 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(),
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(),
             recipients=recipients, bcc=bcc,
             reply_to=user_context['email'],
             template='notification/role_grant_accepted.eml',
@@ -476,8 +482,8 @@ def subscribe_grant_accepted_notice(sender, subscription, grant_key,
         site = get_current_site()
         app = get_current_app()
         user_context = get_user_context(originated_by)
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(),
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(),
             recipients=recipients, bcc=bcc,
             reply_to=user_context['email'],
             template='notification/subscription_grant_accepted.eml',
@@ -533,8 +539,8 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
             if SEND_EMAIL:
                 site = get_current_site()
                 app = get_current_app()
-                get_email_backend(connection=app.get_connection()).send(
-                    from_email=app.get_from_email(),
+                get_email_backend(connection=site.get_email_connection()).send(
+                    from_email=site.get_from_email(),
                     recipients=[manager.email],
                     reply_to=user_context['email'],
                     template='notification/subscription_grant_created.eml',
@@ -564,8 +570,8 @@ def subscribe_req_accepted_notice(sender, subscription, request_key,
         site = get_current_site()
         app = get_current_app()
         user_context = get_user_context(request.user if request else None)
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(),
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(),
             recipients=recipients, bcc=bcc,
             reply_to=user_context['email'],
             template='notification/subscription_request_accepted.eml',
@@ -594,8 +600,8 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
             LOGGER.debug("[signal] subscribe_req_created_notice("\
                          " subscription=%s, reason=%s)", subscription, reason)
             if SEND_EMAIL:
-                get_email_backend(connection=app.get_connection()).send(
-                    from_email=app.get_from_email(),
+                get_email_backend(connection=site.get_email_connection()).send(
+                    from_email=site.get_from_email(),
                     recipients=[organization.email],
                     reply_to=user_context['email'],
                     template='notification/subscription_request_created.eml',
@@ -633,8 +639,8 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
         back_url = "%s?plan=%s" % (site.as_absolute_uri(
             reverse('saas_organization_cart',
                 args=(subscription.organization,))), subscription.plan)
-        get_email_backend(connection=app.get_connection()).send(
-            from_email=app.get_from_email(),
+        get_email_backend(connection=site.get_email_connection()).send(
+            from_email=site.get_from_email(),
             recipients=recipients,
             reply_to=broker_recipients[0],
             bcc=bcc + broker_recipients + broker_bcc,
@@ -656,7 +662,8 @@ def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
         provider, "weekly_sales_report_created")
     if SEND_EMAIL and recipients:
         app = get_current_app()
-        frm = app.get_from_email()
+        site = get_current_site()
+        frm = site.get_from_email()
         # if from is empty the following command will fail
         if not frm:
             raise Exception(
@@ -668,7 +675,7 @@ def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
 
         # XXX using the provider in templates is incorrect. "Any questions
         # or comments..." should show DjaoDjin support email address.
-        get_email_backend(connection=app.get_connection()).send(
+        get_email_backend(connection=site.get_email_connection()).send(
             from_email=frm, recipients=recipients,
             bcc=bcc, template='notification/weekly_sales_report_created.eml',
             context={'broker': get_broker(), 'provider': provider,
