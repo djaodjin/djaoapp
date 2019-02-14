@@ -110,7 +110,6 @@ Are you sure you want to continue?
             <button class="btn btn-secondary"
                     data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-danger"
-                    ng-click="deleteProfile($event)"
                     @click="deleteProfile">Delete</button>
           </div>
         </div>
@@ -144,7 +143,7 @@ Are you sure you want to continue?
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary"
-                    type="submit">Enter</button>
+                    type="submit">Submit</button>
           </div>
         </div>
       </form>
@@ -166,7 +165,6 @@ Are you sure you want to continue?
                 <input class="form-control"
                        name="key" maxlength="128"
                        type="text" disabled placeholder="Generating..."
-                       ng-model="api_key"
                        v-model="apiKey" />
               </div>
             </div>
@@ -201,27 +199,4 @@ The key will only be displayed once. Keep it secure.
 {% endblock %}
 
 {% block users_bodyscripts %}
-{% if not VUEJS %}
-<script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration.
-   - We add the CSRF token for as an HTTP header on API calls.
-   - We make it easier to separate between django and angularjs templates
-     by changing Angular defaults to [[ and ]] characters. */
-var reopenSignupApp = angular.module('signupApp');
-reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-reopenSignupApp.constant('settings', {
-  modals: {
-    generate_key: "#generate-key",
-  },
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-});
-</script>
-{% endif %}
 {% endblock %}

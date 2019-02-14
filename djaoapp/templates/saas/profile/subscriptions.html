@@ -46,7 +46,7 @@
   </tr>
   <tr v-show="itemsLoaded && items.count === 0" v-cloak>
    <td colspan="4">
-       <h4 class="text-center"><em>No subcriptions<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+       <h4 class="text-center"><em>No subcriptions<span v-show="params.q"> [[params.q]]</span></em></h4>
    </td>
   </tr>
  </tbody>
@@ -78,7 +78,7 @@
    <td>
     [[entry.ends_at | relativeDate]]
    </td>
-   <td style="text-align: right;" ng-if="!entry.request_key" v-if="!entry.request_key">
+   <td style="text-align: right;" v-if="!entry.request_key">
        <button class="btn btn-danger unsubscribe"
          data-toggle="modal" data-target="#unsubscribe-action"
          @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">

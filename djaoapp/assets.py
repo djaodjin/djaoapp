@@ -58,22 +58,6 @@ css_dashboard = Bundle(
 register('css_dashboard', css_dashboard)
 
 
-js_angular = Bundle(
-    'vendor/moment.js',
-    'vendor/moment-timezone-with-data.js',
-    'vendor/jquery-ui.js',
-    'vendor/angular.js', # modified to prevent / encode
-    'vendor/angular-touch.js',
-    'vendor/angular-animate.js',
-    'vendor/angular-dragdrop.js',
-    'vendor/angular-resource.js',
-    'vendor/angular-route.js',
-    'vendor/angular-sanitize.js',
-    'vendor/ui-bootstrap-tpls.js',
-    filters='jsmin', output='cache/angular.js')
-register('js_angular', js_angular)
-
-
 js_vue = Bundle(
     'vendor/moment.js',
     'vendor/moment-timezone-with-data.js',
@@ -85,24 +69,6 @@ js_vue = Bundle(
     'vendor/vue2-filters.js',
     filters='jsmin', output='cache/vue.js')
 register('js_vue', js_vue)
-
-
-js_djaodjin_angular = Bundle(
-    'js/djaodjin-dashboard.js', # also in base.js
-    'js/djaodjin-menubar.js',  # also in base.js
-    'vendor/dropzone.js',                  # XXX also in js_pages
-    'vendor/d3.js',
-    'vendor/nv.d3.js',
-    'vendor/trip.js',
-    'vendor/chardinjs.js',
-    'js/djaodjin-upload.js',
-    'js/djaodjin-dashboard.js',
-    'js/djaodjin-signup-angular.js',
-    'js/djaodjin-saas-angular.js',
-    'js/djaodjin-rules-angular.js',
-    'js/djaodjin-metrics.js',
-    filters='jsmin', output='cache/djaodjin-angular.js')
-register('js_djaodjin_angular', js_djaodjin_angular)
 
 
 js_djaodjin_vue = Bundle(
