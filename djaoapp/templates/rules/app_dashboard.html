@@ -3,8 +3,8 @@
 {% block saas_title %}HTTP Request Pipeline{% endblock %}
 
 {% block saas_page_layout %}
-<div ng-app="ruleApp">
-  <div ng-controller="RuleListCtrl">
+<div>
+  <div>
     <div class="row">
     <div class="col-md-12" data-trip data-trip-index="1" data-trip-content="<h2>Configure the request pipeline</h2><p>Set URL access rules and where authorized requests are forwared to...</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
       <h3>Domain</h3>
@@ -98,7 +98,6 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                          maxlength="255"
                          name="new_rule_path" type="text"
                          autofocus
-                         ng-model="newRule.path"
                          v-model="newRule.path">
                   <p class="form-text">Your path should end with '/'. If not it will be automatically added.</p>
                 </div>
@@ -110,7 +109,6 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               <button id="new-rule-submit"
                       type="button" class="btn btn-primary"
                       data-dismiss="modal"
-                      ng-click="create()"
                       @click="create">Create</button>
             </div>
           </div>
@@ -249,27 +247,6 @@ service.
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
-{% if not VUEJS %}
-/**
-Implementation Note #1:
-  Not including a list of dependent modules (2nd parameter to `module`)
-  "re-opens" the module for additional configuration.
-Implementation Note #2:
-  Pasting this code in $(document).ready will lead to a $injector/unpr
-  error in Angularjs.
-*/
-var app = angular.module('ruleApp');
-app.config(['$interpolateProvider', '$httpProvider',
-    function($interpolateProvider, $httpProvider) {
-      $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-      // Makes it easier to separate between django and angularjs templates
-      $interpolateProvider.startSymbol('[[');
-      $interpolateProvider.endSymbol(']]');
-}]);
-app.constant('settings', {
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %}});
-{% endif %}
 jQuery(document).ready(function($) {
     $('#new-rule').on('shown.bs.modal', function(){
       $('#id_new_rule_path').focus();

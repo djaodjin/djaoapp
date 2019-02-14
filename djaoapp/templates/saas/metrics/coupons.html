@@ -53,7 +53,7 @@
                 </tr>
                 <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
                     <td colspan="3">
-                        <p class="text-center my-2"><em>No use of {{coupon.code}} coupon<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></p>
+                        <p class="text-center my-2"><em>No use of {{coupon.code}} coupon<span v-show="params.q"> [[params.q]]</span></em></p>
                     </td>
                 </tr>
                 <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>

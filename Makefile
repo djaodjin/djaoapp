@@ -138,13 +138,6 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/worker-css.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/worker-javascript.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/animate.css/animate.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-animate/angular-animate.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-dragdrop/src/angular-dragdrop.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-resource/angular-resource.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-route/angular-route.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-sanitize/angular-sanitize.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/angular-touch/angular-touch.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/img/bootstrap-colorpicker/*.png $(ASSETS_DIR)/img/bootstrap-colorpicker

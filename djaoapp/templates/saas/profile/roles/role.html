@@ -51,7 +51,7 @@
         </tr>
         <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <td colspan="3">
-                <h4 class="text-center"><em>No {{role_descr.title}}<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+                <h4 class="text-center"><em>No {{role_descr.title}}<span v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
         <tr :id="item.user.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -87,7 +87,7 @@
               <h4 class="modal-title">Invite {{role_descr.title}} ...</h4>
           </div>
           <div class="modal-body">
-            <p class="text-danger" ng-model="item">
+            <p class="text-danger">
 [[unregistered.slug]] is not yet registered. This is an opportunity to invite and
 add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
             </p>
@@ -101,7 +101,6 @@ add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
                            name="email" type="text" max-length="150"
                            placeholder="invitee@example.com"
                            autofocus
-                           ng-model="unregistered.email"
                            v-model="unregistered.email" />
                 </div>
             </div>
@@ -127,7 +126,6 @@ Thank you,
               <button type="submit"
                       class="btn btn-primary"
                       data-dismiss="modal"
-                      ng-click="create($event)"
                       @click="create">Invite {{role_descr.title}}</button>
           </div>
         </div>

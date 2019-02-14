@@ -18,15 +18,9 @@
     <meta name="twitter:site" content="@djaodjin" />
     <link rel="stylesheet" media="screen" href="/static/cache/base.css" />
     <style media="screen">
-    {% if VUEJS %}
 [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
   display: none !important;
 }
-    {% else %}
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
-}
-    {% endif %}
     /* Override Bootstrap 4 styling on Django Debug Toolbar */
     #djDebug[hidden], #djDebug [hidden] {
         display: block !important;
