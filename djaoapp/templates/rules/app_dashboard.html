@@ -160,7 +160,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               </div>
             </form>
             <div>
-              <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+              <button @click="generateKey" class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
             </div>
           </div>
           <!-- modal dialog for Encrypted Session Key -->
@@ -177,7 +177,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                 <div class="modal-body">
                   <div class="form-group">
                     <div class="controls">
-                      <input class="form-control"
+                      <input class="form-control" v-model="sessionKey"
                              name="key" maxlength="32" type="text" disabled
                              value="Generating ..." />
                     </div>
