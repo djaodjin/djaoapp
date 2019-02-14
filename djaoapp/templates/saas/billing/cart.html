@@ -40,16 +40,22 @@
             {% else %}
             <p class="text-center">Your subscription cart is empty.</p>
             {% endif %}
-            <div id="redeem-code" class="text-right">
+            <div id="redeem-code" class="text-right my-3">
                 <a href="" class="collapsible">Have a registration code?</a>
-                <div style="display:none;">
-                    <div style="display:inline-block;width:25%;">
-                    <label class="col-form-label" style="text-align:left;font-weight:normal;">If you received a registration code, please enter it here.</label>
-                    <div class="input-group">
-                        <input class="form-control" name="code" type="text" placeholder="Enter Code">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary submit-code">Apply</button>
-                        </span>
+                <div style="display:none;" class="mt-3">
+                    <div class="row justify-content-end">
+                    <div class="col-12 col-md-4">
+                        <form class="form">
+                            <div class="input-group input-group mb-1">
+                              <input class="form-control" name="code" type="text" placeholder="Enter Code">
+                              <div class="input-group-append">
+                                <button class="btn btn-primary submit-code">Apply</button>
+                              </div>
+                            </div>
+                            <small class="form-text text-muted text-left">
+                                If you received a registration code, please enter it here.
+                            </small>
+                        </form>
                     </div>
                     </div>
                 </div>

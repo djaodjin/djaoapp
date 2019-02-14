@@ -8,7 +8,9 @@ $dashboard-sidebar-color:    white;
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-color-theme .navbar-light {
+.dashboard-nav-color-theme .navbar-light,
+.dashboard-nav-color-theme.navbar
+{
   background-color: $dashboard-sidebar-bg;
 }
 

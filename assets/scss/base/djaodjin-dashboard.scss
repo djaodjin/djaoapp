@@ -113,6 +113,11 @@ $dashboard-content-bg:       white;
     width: 100%;
 }
 
+.dashboard-content .navbar
+{
+    background: white;
+}
+
 .dashboard-inner-container .dashboard-content-body {
   padding-left: $dashboard-sidebar-toggle;
 }
