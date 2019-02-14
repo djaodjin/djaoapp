@@ -149,7 +149,7 @@
     </table>
     </div>
     <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
     </div>
 </div>
 </div>

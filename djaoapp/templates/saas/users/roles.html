@@ -80,7 +80,7 @@
       </tbody>
     </table>
     <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
     </div>
     <div class="text-right">
       <a href="{{urls.organization_create}}" class="btn btn-primary">Create new ...</a>

@@ -71,7 +71,7 @@ Subscriptions to {{organization.printable_name}}
             </table>
             </div>
             <div class="text-center" v-show="tables.registered.loaded && totalItems > itemsPerPage" v-cloak>
-                <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+                <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
             </div>
         </div>
         {% endif %}
@@ -314,7 +314,7 @@ Subscriptions to {{organization.printable_name}}
             </table>
           </div>
           <div class="text-center" v-show="tables.{{tab.slug}}.loaded && totalItems > itemsPerPage">
-              <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+              <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
           </div>
         </div>
         {% endfor %}

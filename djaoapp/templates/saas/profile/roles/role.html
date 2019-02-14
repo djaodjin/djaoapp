@@ -7,12 +7,8 @@
   data-trip data-trip-index="1"
   data-trip-content="<h2>Add/Remove {{role_descr.title}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
   data-trip-position="screen-center"
-  ng-app="saasApp">
-<script type="text/ng-template" id="customTemplate.html">
-  <a><span bind-html-unsafe="match.model.email | uibTypeaheadHighlight:query"></span>
-  </a>
-</script>
-<div id="user-relation-list-container" ng-controller="userRelationListCtrl">
+  >
+<div id="user-relation-list-container">
   <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
     <form @submit.prevent="submit" class="mt-3">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
@@ -48,56 +44,34 @@
       </tr>
     </thead>
     <tbody>
-        <tr ng-show="!items.$resolved"
-            v-show="!itemsLoaded">
+        <tr v-show="!itemsLoaded">
             <td colspan="3">
                 <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
         </tr>
-        <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
-            v-show="itemsLoaded && items.results.length == 0" v-cloak>
+        <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <td colspan="3">
                 <h4 class="text-center"><em>No {{role_descr.title}}<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
-        <tr ng-prop-id="item.user.slug"
-            ng-class="item.request_key ? 'disabled' : 'active'"
-            ng-repeat="item in items.results"
-            ng-show="items.$resolved && items.results.length > 0" ng-cloak
-            v-bind:id="item.user.slug"
-            v-for="(item, index) in items.results"
-            v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr :id="item.user.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td style="vertical-align:middle;">[[item.user.slug]]</td>
             <td style="vertical-align:middle;">[[item.user.email]] <button
                 class="btn btn-secondary btn-sm"
-                ng-if="item.request_key"
-                ng-click="save($event, item.user)"
                 v-if="item.request_key" @click="save(item.user)">grant</button></td>
             <td style="vertical-align:middle;"><i>[[item.grant_key ? "invited" : ""]]</i></td>
             <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm"
                 data-trip data-trip-index="3"
                 data-trip-content="<p>Click here to revoke access to the user.</p>"
                 data-trip-position="s"
-                ng-click="remove($event, $index)"
                 @click="remove(index)"><i class="fa fa-remove"></i></button></td>
         </tr>
     </tbody>
   </table>
   </div>
-  <div class="text-center"
-       ng-show="items.$resolved && totalItems > itemsPerPage" ng-cloak
-       v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-      <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                  total-items="totalItems"
-                  items-per-page="itemsPerPage"
-                  boundary-links="true"
-                  max-size="maxSize"
-                  previous-text="&lsaquo;"
-                  next-text="&rsaquo;"
-                  first-text="&laquo;"
-                  last-text="&raquo;"
-                  ng-change="pageChanged()"></ul>
-      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+  <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+    [[params.page]]
+      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
   </div>
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->

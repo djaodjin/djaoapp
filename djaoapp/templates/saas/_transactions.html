@@ -86,51 +86,30 @@
           <th></th>
         </tr>
       </thead>
-      <tbody ng-if="!items.$resolved"
-             v-if="!itemsLoaded">
+      <tbody v-if="!itemsLoaded">
         <tr>
           <td colspan="4">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
           </td>
         </tr>
       </tbody>
-      <tbody ng-show="items.$resolved && items.results.length == 0" ng-cloak
-             v-show="itemsLoaded && items.results.length == 0" v-cloak>
+      <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="4">
-            <h4 class="text-center"><em>No transactions<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+            <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
           </td>
         </tr>
       </tbody>
-      <tbody id="has-transactions"
-             ng-show="items.$resolved && items.results.length > 0" ng-cloak
-             v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <tr ng-repeat="entry in items.results"
-            v-for="entry in items.results">
+      <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr v-for="entry in items.results">
           <td>[[entry.created_at | formatDate]]</td>
-          <td ng-class="entry.is_debit ? 'text-danger' : ''"
-              :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-          <td colspan="2"
-              ng-bind-html="entry.description | unsafe"
-              v-html="entry.description"></td>
+          <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+          <td colspan="2" v-html="entry.description"></td>
         </tr>
       </tbody>
     </table>
     </div>
-    <div class="text-center"
-         ng-show="items.$resolved && items.count > itemsPerPage" ng-cloak
-         v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <ul uib-pagination class="pagination-sm"
-            total-items="totalItems"
-            items-per-page="itemsPerPage"
-            boundary-links="true"
-            max-size="maxSize"
-            previous-text="&lsaquo;"
-            next-text="&rsaquo;"
-            first-text="&laquo;"
-            last-text="&raquo;"
-            ng-model="currentPage"
-            ng-change="pageChanged()"></ul>
-        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
     </div>
 </section>
