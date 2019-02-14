@@ -27,6 +27,10 @@ MULTITIER_SITE_MODEL = 'djaoapp.Site'
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
+# XXX forced back to multitier.Site model until we solve the issue
+# of installing all 'djaoapp' models into the multitiered db.
+MULTITIER_SITE_MODEL = 'multitier.Site'
+
 if os.getenv('DEBUG'):
     # Enable override on command line.
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
