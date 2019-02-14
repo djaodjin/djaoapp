@@ -104,7 +104,7 @@
 </table>
 </div>
 <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
 </div>
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"

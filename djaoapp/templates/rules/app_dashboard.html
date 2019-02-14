@@ -29,9 +29,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
           </tr>
         </thead>
         <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
-          <tr class="item"
-              v-bind:id="'rule-' + rule.rank"
-              :key="rule.rank"
+          <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
             <td width="100">
               <div class="btn btn-secondary btn-sm rule-handle">
@@ -79,7 +77,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         </tbody>
       </table>
       <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
       </div>
       </div>
       <!-- modal dialog for Adding a rule -->
@@ -129,9 +127,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         <div id="endpoint" class="tab-pane active">
         <div class="row">
           <div class="col-md-12" style="margin-bottom:50px;">
-            <form id="entry-point-form" method="post"
-                  ng-submit="submitEntryPoint('#entry-point-form')"
-                  @submit.prevent="submitEntryPoint">
+            <form id="entry-point-form" method="post" @submit.prevent="submitEntryPoint">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
               <div class="row align-items-end">
                 <div class="form-group col-md-4">
@@ -141,13 +137,14 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                          maxlength="100"
                          name="entry_point"
                          type="text"
+                         ref="entryPoint"
                          value="{{form.instance.entry_point}}"
                          data-trip data-trip-index="4"
                          data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
                 </div>
                 <div class="form-group col-md-4">
                   <label for="">Session encoding *</label>
-                  <select class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
+                  <select ref="sessionBackend" class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
                     <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>No session forwarded</option>
                     <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>Cookie-based session backend</option>
                     <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>JWT-based session backend</option>
@@ -215,7 +212,7 @@ service.
       <form id="token-form" class="form-inline mb-3" method="post" @submit.prevent="getSessionData">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="input-group">
-          <input id="id_username" class="form-control"
+          <input id="id_username" class="form-control" v-model="testUsername"
                  maxlength="100" name="username" type="text">
           <span class="input-group-append">
             <button type="submit" class="btn btn-primary">Check</button>

@@ -6,46 +6,31 @@
 <section id="role-list-container"
     data-trip data-trip-index="1"
     data-trip-content="<h2>Add/Remove roles</h2><p>Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
-    data-trip-position="screen-center"  ng-app="saasApp">
-  <div ng-controller="userRoleDescriptionCtrl"
-       saas-organization="{{organization.slug}}">
+    data-trip-position="screen-center">
+  <div>
       <button class="btn btn-primary" @click="modalOpen=true">Create role ...</button>
-    <div ng-show="!items.$resolved"
-         v-show="!itemsLoaded">
+    <div v-show="!itemsLoaded">
         <h2>Please wait...</h2>
     </div>
-    <div ng-show="items.$resolved"
-         v-show="itemsLoaded">
-      <div ng-repeat="roleDescription in items.results"
-           v-for="roleDescription in items.results">
+    <div v-show="itemsLoaded">
+      <div v-for="roleDescription in items.results">
         <div>
         <h3 style="display:inline-block">[[roleDescription.title]]
         <button class="btn btn-danger btn-sm" type="button"
-                ng-click="deleteRoleDescription(roleDescription)"
-                ng-show="!roleDescription.is_global" ng-cloak
                 @click.prevent="remove(roleDescription)"
                 v-show="!roleDescription.is_global" v-cloak>
                 <i class="fa fa-trash-o"></i></button></h3>
         </div>
-        <div id="[[roleDescription.slug]]"
-             ng-controller="userRelationListCtrl"
-             data-api-url="{{urls.organization.api_roles}}">
-          <form class="form-inline" ng-submit="save($event)">
+        <div>
+          <form class="form-inline">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
             <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
               <input name="user" type="text" placeholder="Username or e-mail"
                      autocomplete="off"
-                     ng-model="item.slug"
-                     uib-typeahead="item.slug for item in getCandidates($viewValue)"
-                     uib-typeahead-loading="loadingUsers"
-                     uib-typeahead-template-url="customTemplate.html"
                      class="form-control form-control-sm" style="width: 100%;">
               <div class="input-group-btn">
                 <button class="btn btn-primary btn-sm" type="submit">Add [[roleDescription.title]]</button>
               </div>
-            </div>
-            <div style="height:14px">
-              <i ng-show="loadingUsers" class="fa fa-spinner"></i>
             </div>
           </form>
           <table class="table table-sm table-striped">
@@ -57,54 +42,33 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-hide="items.$resolved">
-                <td colspan="3">
+              <tr>
+                <td v-show="!itemsLoaded" colspan="3">
                   <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                 </td>
               </tr>
-              <tr ng-show="items.$resolved && items.results.length == 0" ng-cloak
-                  v-show="itemsLoaded && items.results.length == 0" v-cloak>
+              <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
                 <td colspan="3">
-                  <h4 class="text-center"><em>No [[roleDescription.title]]<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+                  <h4 class="text-center"><em>No [[roleDescription.title]]<span v-show="params.q"> [[params.q]]</span></em></h4>
                 </td>
               </tr>
-              <tr ng-prop-id="item.user.slug"
-                  ng-class="item.request_key ? 'disabled' : 'active'"
-                  ng-repeat="item in items.results"
-                  ng-show="items.$resolved && items.results.length > 0" ng-cloak
-                  v-bind:id="item.user.slug"
-                  v-for="(item, index) in items.results"
+              <tr :id="item.user.slug" v-for="(item, index) in items.results"
                   v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <td style="vertical-align:middle;">[[item.user.slug]]</td>
                 <td style="vertical-align:middle;">[[item.user.email]] <button
                     class="btn btn-secondary btn-sm"
-                    ng-if="item.request_key"
-                    ng-click="save($event, item.user)"
                     v-if="item.request_key" @click="save(item.user)">grant</button></td>
                 <td style="vertical-align:middle;"><button
                    class="btn btn-danger btn-sm"
                    data-trip data-trip-index="3"
                    data-trip-content="<p>Click here to revoke access to the user.</p>"
                    data-trip-position="s"
-                   ng-click="remove($event, $index)"
                    @click="remove(index)"><i class="fa fa-remove"></i></button></td>
               </tr>
             </tbody>
           </table>
-          <div class="text-center"
-               ng-show="items.$resolved && totalItems > itemsPerPage" ng-cloak
-               v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-            <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-                            total-items="totalItems"
-                            items-per-page="itemsPerPage"
-                            boundary-links="true"
-                            max-size="maxSize"
-                            previous-text="&lsaquo;"
-                            next-text="&rsaquo;"
-                            first-text="&laquo;"
-                            last-text="&raquo;"
-                            ng-change="pageChanged()"></ul>
-            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @change="get">
+          <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
           </div>
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
@@ -131,7 +95,6 @@ add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
                 <div class="controls col-sm-10">
                     <input id="new-request-email"
                            class="form-control" style="width:100%;"
-                           ng-model="unregistered.email"
                            name="email" type="text" max-length="150"
                            placeholder="invitee@example.com"
                            autofocus />

@@ -218,11 +218,6 @@ jQuery(document).ready(function($) {
           data-target="#code-editor" data-default-width="800" data-intro="Code Editor" data-position="left">
     <img src="{{'/static/img/fa-code.png'|djasset}}" width="22" height="22" />
   </a>
-  <a id="toggle-style-editor" class="btn btn-primary"
-          style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
-          data-target="#style-editor" data-default-width="800" data-intro="Style Editor" data-position="left" title="Styles">
-    <img src="{{'/static/img/fa-italic.png'|djasset}}" width="22" height="22" />
-  </a>
   {% endif %}
   {% if FEATURES_DEBUG %}
   <a id="take_screenshot" href="" class="btn btn-primary screenshot"
