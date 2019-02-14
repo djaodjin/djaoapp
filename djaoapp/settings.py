@@ -27,10 +27,6 @@ MULTITIER_SITE_MODEL = 'djaoapp.Site'
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
-# XXX forced back to multitier.Site model until we solve the issue
-# of installing all 'djaoapp' models into the multitiered db.
-MULTITIER_SITE_MODEL = 'multitier.Site'
-
 if os.getenv('DEBUG'):
     # Enable override on command line.
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
@@ -548,13 +544,16 @@ DEBUG_TOOLBAR_CONFIG = {
 INTERNAL_IPS = ('127.0.0.1', '::1')
 
 # Software-as-a-Service  (multi-tenant)
+# We add all the rules_* tables because we don't want to add the App
+# and end up with multitier in the tenant db.
 MULTITIER = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_URL_KWARG': 'organization',
 #    'DEFAULT_URLS': ['login'], # XXX can't do reverse in multitier middleware.
-    'ROUTER_APPS': RULES_APPS + (
+    'ROUTER_APPS': (
         'social_django', 'signup', 'saas', 'pages', 'rules', 'survey'),
-    'ROUTER_TABLES': ('django_admin_log', 'django_session', 'auth_user'),
+    'ROUTER_TABLES': ('rules_app', 'rules_rules', 'rules_engagement',
+        'django_admin_log', 'django_session', 'auth_user'),
     'THEMES_DIRS': [
         os.path.join(BASE_DIR, 'themes'),
     ],
