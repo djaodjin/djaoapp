@@ -119,8 +119,10 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                         {% include "generic_navbar.html" %}
                     </ul>
                 </div>
-                <!--<div class="navbar-break"></div>-->
                 <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
+                    <li class="nav-item">
+                    <a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+                    </li>
                     <!-- this area will be populated by _menubar.html -->
                 </ul>
                 {% endblock %}

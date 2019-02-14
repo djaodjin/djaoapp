@@ -2,8 +2,9 @@
 
 {% block content %}
 <div class="container">
-    <div class="col-md-offset-3 col-md-6 col-xs-12">
-    <div class="page-header">
+    <div class="row justify-content-center">
+    <div class="col-md-6 col-12">
+    <div class="page-header mb-4">
         <h1><i class="fa fa-users fa-lg"></i> Create profile ...</h1>
     </div>
     <p>
@@ -11,9 +12,10 @@ If you are creating an organization, plan to have multiple managers,
 etc., please enter a shortID different from your username. Otherwise
 we will merge the profile with your user account.
     </p>
-    <section id="organization-form">
+    <section id="organization-form" class="mb-3">
         {% include "_form.html" %}
     </section>
+    </div>
     </div>
 </div>
 {% endblock %}

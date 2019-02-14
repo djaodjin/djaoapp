@@ -8,16 +8,21 @@
 <section id="plan-subscribers-container">
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <div>
-        <label>Filter</label> <input type="text" v-model="params.q" @input="filterList" />
-      </div>
+    <form class="form-inline">
+        <div class="input-group my-2">
+            <div class="input-group-prepend">
+                    <span class="input-group-text" id="filter-inp">Filter</span>
+            </div>
+                <input type="text" class="form-control" v-model="params.q" @input="filterList" />
+        </div>
+    </form>
       <table class="table">
         <thead>
           <tr>
-            <th>Subscriber<button class="btn-link btn-sort" @click="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
+            <th>Subscriber <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
             <th>Plan</th>
-            <th>Since<button class="btn-link btn-sort" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
-            <th>Ends at<button class="btn-link btn-sort" @click="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
+            <th>Since <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
+            <th>Ends at <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
             <th>Description</th>
           </tr>
         </thead>
