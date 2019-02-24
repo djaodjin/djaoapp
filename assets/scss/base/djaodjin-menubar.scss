@@ -42,28 +42,7 @@
     display: inline-block;
 }
 
-.menubar-label
-{
-// XXX these variables do not exist.
-//    padding-top:    $navbar-padding-vertical;
-//    padding-bottom: $navbar-padding-vertical;
-//    line-height: $line-height-computed;
-}
-
-.menubar-label-title
-{
+.menubar-label-title {
     display: block;
-//    padding-top: $navbar-padding-vertical - 5; // XXX var does not exist
-      // `- 5` because height of menubar-label-subtitle will be 17px no matter
-      // what and we have 33 + 17 = 53 apparently so we make some space here.
     padding-bottom: 0;
-//    line-height: $line-height-computed; // XXX var does not exist
-}
-
-.menubar-label-subtitle
-{
- // XXX var do not exist
-//    line-height: $navbar-padding-vertical;
-//    font-size: $font-size-small;
-//     height: $navbar-padding-vertical;
 }
