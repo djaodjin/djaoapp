@@ -179,18 +179,7 @@
         <div class="text-center"
              ng-show="items.$resolved && items.count > 0" ng-cloak
              v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-          <ul uib-pagination class="pagination-sm"
-              total-items="totalItems"
-              items-per-page="itemsPerPage"
-              boundary-links="true"
-              max-size="maxSize"
-              previous-text="&lsaquo;"
-              next-text="&rsaquo;"
-              first-text="&laquo;"
-              last-text="&raquo;"
-              ng-model="currentPage"
-              ng-change="pageChanged()"></ul>
-            <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
         </div>
       </div>
     </section>

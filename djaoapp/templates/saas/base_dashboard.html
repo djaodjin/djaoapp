@@ -6,9 +6,10 @@
 {% endassets %}
 {% endblock %}
 
-{% block dashboard_inner_container_classes %}dashboard-inner-container always-on{% endblock %}
+{% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
+{% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
 {# XXX next is for ichamp until we re-test everything #}
-{% block dashboard_inner_classes %} class="dashboard-inner-container always-on"{% endblock %}
+{% block dashboard_inner_classes %} class="dashboard-inner-container"{% endblock %}
 
 {% block footer %}{% endblock %}
 
@@ -21,7 +22,7 @@
         <div class="dashboard-nav-main dashboard-nav-color-theme">
             <div>
                 <header>
-                    <nav class="navbar navbar-default">
+                    <nav class="navbar navbar-light">
                         <div class="navbar-header">
                             {% include "_navbarbrand.html" %}
                         </div>
@@ -34,7 +35,7 @@
                     {% include "saas/_provider_sidebar.html" %}
                     {% endif %}
                     <hr />
-                    <ul class="nav hidden-sm hidden-md hidden-lg">
+                    <ul class="nav flex-column hidden-sm-up">
                         {% include "generic_navbar.html" %}
                     </ul>
                     {% endblock %}
@@ -55,18 +56,8 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
             </div>
             {% endblock %}
         </div>
-        <div class="dashboard-nav-border dashboard-nav-color-theme">
-            <ul class="dashboard-nav-toggle-container">
-                <li>
-                    <a href="" class="dashboard-nav-toggle dashboard-nav-color-theme">
-                        <i class="fa initial"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
     </div><!-- /.dashboard-nav-inner-container -->
 </div>
-<div class="dashboard-nav-push-content"></div>
 {% endblock %}
 
 {% block content %}
@@ -77,7 +68,7 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
 <p class="lead">
     {% block saas_lead_help %}{% endblock %}
 </p>
-<div class="row method">
+<div class="row">
     <div class="col-md-12">
         {% block saas_help %}{% endblock %}
         {% block saas_content %}{% endblock %}
@@ -87,7 +78,6 @@ Powered by &copy; 2019 DjaoDjin. All rights reserved.
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{% if not FEATURES_REVERT_TO_ANGULARJS %}
 <script type="text/javascript">
 var djaodjinSettings = {
     urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
@@ -104,6 +94,9 @@ var djaodjinSettings = {
       last_name: "{{request.user.last_name}}"
     },
     csrf: '{{csrf_token}}',
+    {% if STRIPE_PUB_KEY %}
+        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+    {% endif %}
 };
 </script>
 {% assets "js_vue" %}
@@ -112,47 +105,6 @@ var djaodjinSettings = {
 {% assets "js_djaodjin_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
-
-{% else %}
-{% assets "js_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-{% assets "js_djaodjin_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-<script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration.
-   - We add the CSRF token for as an HTTP header on API calls.
-   - We make it easier to separate between django and angularjs templates
-     by changing Angular defaults to [[ and ]] characters. */
-var reopenSaasApp = angular.module('saasApp');
-reopenSaasApp.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-reopenSaasApp.constant('settings', {
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-  tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
-  date_range: {
-    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
-    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-  },
-  {% if sort_by_field %}sortByField: "{{sort_by_field}}",{% endif %}
-  {% if sort_direction %}sortDirection: "{{sort_direction}}",{% endif %}
-  user: {
-    username: "{{request.user.username}}",
-    slug: "{{request.user.username}}",
-    first_name: "{{request.user.first_name}}",
-    last_name: "{{request.user.last_name}}"
-  }
-});
-</script>
-{% endif %}
 
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

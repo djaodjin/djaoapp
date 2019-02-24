@@ -3,7 +3,26 @@
 {% block saas_title %}Change Public Key{% endblock %}
 
 {% block saas_content %}
-<section id="pubkey">
-    {% include "_form.html" %}
+<section id="personal">
+<div id="update-pubkey-container">
+    <form @submit.prevent="updatePubkey">
+        <div class="form-group">
+            <label class="control-label requiredField">Pubkey<span class="asteriskField">*</span></label>
+            <div class="controls">
+                <textarea class="textarea form-control" cols="40" name="pubkey" rows="10" v-model="pubkey"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label requiredField">Password<span class="asteriskField">*</span></label>
+            <div class="controls">
+                <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
+            </div>
+        </div>
+        <div class="form-action text-center">
+            <button class="btn btn-primary btn-lg" type="submit">Update</button>
+        </div>
+    </form>
+    </form>
+</div>
 </section>
 {% endblock %}

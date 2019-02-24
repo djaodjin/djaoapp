@@ -10,7 +10,7 @@
 {% else %}
 <div class="form-group{% if bound_field.errors %} has-error{% endif %}">
     {% if bound_field.field|is_checkbox %}
-    <div class="checkbox">
+    <div class="form-check">
         <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
             <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value %}checked="checked"{% endif %}>
             {{ bound_field.label|safe }}
@@ -18,14 +18,14 @@
     </div>
     {% else %}
     {% if not hide_labels %}
-    <label class="control-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
+    <label class="col-form-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
     {% endif %}
     <div class="controls">
       {% if bound_field.field|is_textarea %}
         <textarea class="textarea form-control" name="{{bound_field.name}}" cols="40" rows="10">{% if bound_field.value %}{{bound_field.value}}{% endif %}</textarea>
       {% elif bound_field.field|is_radio %}
           {% for choice in bound_field.field.widget.choices %}
-          <div class="radio">
+          <div class="form-check">
             <label>
               <input type="radio" name="{{bound_field.name}}"{% if bound_field.value == choice.0 %} selected="1"{% endif %} value="{{choice.0}}">{{choice.1}}
             </label>
@@ -60,10 +60,10 @@
     </div>
     {% endif %}
     {% for error in bound_field.errors %}
-    <span class="help-block"><strong>{{error}}</strong></span>
+    <span class="form-text"><strong>{{error}}</strong></span>
     {% endfor %}
     {% if bound_field.help_text %}
-    <span class="help-block">{{bound_field.help_text}}</span>
+    <span class="form-text">{{bound_field.help_text}}</span>
     {% endif %}
 </div>
 {% endif %}

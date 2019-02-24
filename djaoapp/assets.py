@@ -8,16 +8,6 @@ from django.conf import settings
 
 #pylint: disable=invalid-name
 
-# All the CSS we need for the entire site. This tradeoff between
-# bandwidth and latency is good as long as we have a high and consistent
-# utilization of all the CSS tags for all pages on the site.
-css_base = Bundle(
-    os.path.join(settings.BASE_DIR, 'assets/less/base/base.less'),
-    filters=['less', 'cssmin'],
-    output='cache/base.css', debug=False)
-register('css_base', css_base)
-
-
 css_email = Bundle(
     os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
     filters=['less', 'cssmin'],
@@ -67,53 +57,17 @@ css_dashboard = Bundle(
     filters='cssmin', output='cache/dashboard.css')
 register('css_dashboard', css_dashboard)
 
-
-js_angular = Bundle(
-    'vendor/moment.js',
-    'vendor/moment-timezone-with-data.js',
-    'vendor/jquery-ui.js',
-    'vendor/angular.js', # modified to prevent / encode
-    'vendor/angular-touch.js',
-    'vendor/angular-animate.js',
-    'vendor/angular-dragdrop.js',
-    'vendor/angular-resource.js',
-    'vendor/angular-route.js',
-    'vendor/angular-sanitize.js',
-    'vendor/ui-bootstrap-tpls.js',
-    filters='jsmin', output='cache/angular.js')
-register('js_angular', js_angular)
-
-
 js_vue = Bundle(
     'vendor/moment.js',
     'vendor/moment-timezone-with-data.js',
     'vendor/jquery-ui.js',
     'vendor/Sortable.js',
     'vendor/vue.js',
-    'vendor/uiv.min.js',
+    'vendor/bootstrap-vue.min.js',
+    'vendor/uiv.min.js', # XXX uiv is loaded from the vue.use in djaodjin-saas 
     'vendor/vue2-filters.js',
-    'vendor/vue-sortable.js',
     filters='jsmin', output='cache/vue.js')
 register('js_vue', js_vue)
-
-
-js_djaodjin_angular = Bundle(
-    'js/djaodjin-dashboard.js', # also in base.js
-    'js/djaodjin-menubar.js',  # also in base.js
-    'vendor/dropzone.js',                  # XXX also in js_pages
-    'vendor/d3.js',
-    'vendor/nv.d3.js',
-    'vendor/trip.js',
-    'vendor/chardinjs.js',
-    'js/djaodjin-upload.js',
-    'js/djaodjin-dashboard.js',
-    'js/djaodjin-signup-angular.js',
-    'js/djaodjin-saas-angular.js',
-    'js/djaodjin-rules-angular.js',
-    'js/djaodjin-metrics.js',
-    filters='jsmin', output='cache/djaodjin-angular.js')
-register('js_djaodjin_angular', js_djaodjin_angular)
-
 
 js_djaodjin_vue = Bundle(
     'js/djaodjin-dashboard.js', # also in base.js
@@ -123,6 +77,7 @@ js_djaodjin_vue = Bundle(
     'vendor/nv.d3.js',
     'vendor/trip.js',
     'vendor/chardinjs.js',
+    'vendor/vue-croppa.min.js',
     'js/djaodjin-upload.js',
     'js/djaodjin-dashboard.js',
     'js/djaodjin-signup-vue.js',

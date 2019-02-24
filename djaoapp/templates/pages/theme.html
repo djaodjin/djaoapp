@@ -28,7 +28,7 @@ as well.
 
 {% block saas_content %}
 <div>
-  <div class="col-sm-offset-3 col-sm-6">
+  <div class="mt-4">
     <div class="pages-upload"
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
@@ -37,7 +37,7 @@ as well.
       </div>
     </div>
     <div class="text-center">
-      <a id="download-theme" class="btn btn-default" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
+      <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
     </div>
   </div>
 </div>

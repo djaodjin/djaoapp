@@ -16,19 +16,18 @@
     <meta name="twitter:domain" content="https://djaodjin.com" />
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
-    {% assets "css_base" %}
-    <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
-    {% endassets %}
+    <link rel="stylesheet" media="screen" href="/static/cache/base.css" />
     <style media="screen">
-    {% if not FEATURES_REVERT_TO_ANGULARJS %}
 [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
   display: none !important;
 }
-    {% else %}
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+/* Override Bootstrap 4 styling on Django Debug Toolbar */
+#djDebug[hidden], #djDebug [hidden] {
+  display: block !important;
+}
+#djDebug [hidden][style='display: none;'] {
   display: none !important;
 }
-    {% endif %}
     </style>
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
     {% if csrf_token %}
@@ -58,52 +57,73 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       <div class="dashboard-container">
         <div class="{% block dashboard_inner_container_classes %}{% endblock %}">
           {% block dashboard_nav %}
-          <!-- <div class="dashboard-nav"></div> -->
+            <div class="dashboard-nav nav-main-frnt">
+                <div class="dashboard-nav-inner-container">
+                    <div class="dashboard-nav-main dashboard-nav-color-theme">
+                        <div>
+                            <header>
+                                <nav class="navbar navbar-light">
+                                    <div class="navbar-header">
+                                        {% include "_navbarbrand.html" %}
+                                    </div>
+                                </nav>
+                            </header>
+                            <div class="dashboard-nav-menu">
+                                {% block sidebar %}
+                                <hr />
+                                <ul class="nav flex-column d-md-none">
+                                    {% include "generic_navbar.html" %}
+                                </ul>
+                                {% endblock %}
+                            </div>
+                        </div>
+                        {% block dashboard_footer %}
+                        <div class="dashboard-nav-footer dashboard-nav-color-theme">
+                            <div>
+            Powered by &copy; 2019 DjaoDjin. All rights reserved.
+                            </div>
+                            <div class="footer-links">
+                                <a href="/legal/" target="_blank">Legal</a>
+                                &middot;
+                                <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+                                <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+                                <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+                            </div>
+                        </div>
+                        {% endblock %}
+                    </div>
+                </div><!-- /.dashboard-nav-inner-container -->
+            </div>
           {% endblock %}
           <div class="dashboard-content">
             <header>
-              <nav class="navbar navbar-default">
+              <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
+                <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
+                    <i class="fa closed"></i>
+                </a>
                 {% block content_navbarbrand %}
-                <div class="navbarbrand">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <i class="fa fa-chevron-down"></i>
-                    </button>
+                <div class="navbar-brand-container">
                     {% include "_navbarbrand.html" %}
                 </div>
                 {% endblock %}
                 {% block header_navbar_large %}
-                {% if request and request|is_authenticated %}
-                <ul class="nav navbar-nav" style="float:right;">
-                    <li>
-                        <a title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="hidden-xs">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
-                    </li>
-                </ul>
-                {% endif %}
-                <ul class="nav navbar-nav header-menubar" style="float:right;">
-                    {# links to user profile and #}
-                    {# organizations is added here. #}
-                    {% if request and request|is_authenticated %}
-                    <li>
-                        <a href="">{{request.user.username}}</a>
-                    </li>
-                    {% else %}
-                    <li>
-                        <a title="Click Here to sign into your account" href="{{'login/'|site_prefixed}}"><span class="fa fa-sign-in fa-lg"></span> Sign in</a></li>
-                    </li>
-                    {% endif %}
-                </ul>
-                <div class="navbar-break"></div>
                 <div class="navbar-collapse collapse navbar-right">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav ml-auto mt-lg-0">
                         {% include "generic_navbar.html" %}
                     </ul>
                 </div>
+                <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
+                    <li class="nav-item">
+                    <a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> Sign In</a>
+                    </li>
+                    <!-- this area will be populated by _menubar.html -->
+                </ul>
                 {% endblock %}
               </nav>
               {% block fullviewport %}
               {% endblock %}
             </header>
-            <div style="padding-left:10px;">
+            <div class="content-area-container">
               <div id="messages">
                 <div id="messages-content">
                   {% if request %}

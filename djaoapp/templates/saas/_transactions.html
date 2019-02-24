@@ -1,24 +1,18 @@
 <section id="transactions">
     <h3>Transactions</h3>
-    <form class="form-inline">
-      <div class="form-group">
+    <form class="form my-3">
+    <div class="form-row">
+      <div class="col">
         <uiv-dropdown append-to-body>
-          <label class="control-label" for="start_at">
-            From
-          </label>
-          <div class="input-group">
-            <input class="form-control date" type="text"
-                   uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                   ng-model="params.start_at"
-                   is-open="opened.start_at"
-                   ng-required="true"
-                   close-text="Close" ng-cloak
-                   v-model="params.start_at" v-cloak>
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle"
-                    ng-click="open($event, 'start_at')"><i class="fa fa-calendar"></i>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="from-inp">From</span>
+            </div>
+            <input class="form-control" type="text" v-model="params.start_at" v-cloak>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
                 </button>
-            </span>
+            </div>
           </div>
           <template slot="dropdown">
             <li>
@@ -32,22 +26,15 @@
           </template>
         </uiv-dropdown>
       </div>
-      <div class="form-group">
+      <div class="col">
         <uiv-dropdown append-to-body>
-          <label class="control-label" for="ends_at">
-            To
-          </label>
-          <div class="input-group">
-            <input class="form-control date" type="text"
-                   uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                   is-open="opened.ends_at"
-                   ng-required="true"
-                   close-text="Close"
-                   ng-model="params.ends_at" ng-cloak
-                   v-model="params.ends_at" v-cloak>
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle"
-                    ng-click="open($event, 'ends_at')"><i class="fa fa-calendar"></i>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="to-inp">To</span>
+            </div>
+            <input class="form-control date" type="text" v-model="params.ends_at" v-cloak>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
                 </button>
             </div>
           </div>
@@ -63,94 +50,66 @@
           </template>
         </uiv-dropdown>
       </div>
-      <div class="form-group">
-        <label>Filter</label>
-        <input class="form-control" type="text"
-          ng-model="params.q" ng-change="filterList(params.q)"
-          v-model="params.q" @input="filterList" />
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="filter-inp">Filter</span>
+          </div>
+          <input class="form-control" type="text" v-model="params.q" @input="filterList" />
+          <div class="input-group-append">
+            <a id="download" class="btn btn-secondary" role="button"
+               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <a id="download" class="btn btn-default" role="button"
-           ng-prop-href="'{{download_url}}' + getQueryString(['page'])"
-           v-bind:href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-      </div>
+    </div>
     </form>
     <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Date
-              <button class="btn-link btn-sort"
-                ng-click="sortBy('created_at')"
-                @click="sortBy('created_at')">
-                <i ng-class="'fa fa-sort' + ((params.o === 'created_at') ? ('-' + params.ot) : '')"
-                   :class="sortIcon('created_at')"></i>
-              </button>
+              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('created_at')">
+                <i :class="sortIcon('created_at')"></i>
+              </a>
           </th>
           <th>Amount
-              <button class="btn-link btn-sort"
-                ng-click="sortBy('amount')"
-                @click="sortBy('amount')">
-                <i ng-class="'fa fa-sort' + ((params.o === 'amount') ? ('-' + params.ot) : '')"
-                   :class="sortIcon('amount')"></i>
-              </button>
+              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('amount')">
+                <i :class="sortIcon('amount')"></i>
+              </a>
           </th>
           <th>Description
-              <button class="btn-link btn-sort"
-                ng-click="sortBy('description')"
-                @click="sortBy('description')">
-                <i ng-class="'fa fa-sort' + ((params.o === 'description') ? ('-' + params.ot) : '')"
-                   :class="sortIcon('description')"></i>
-              </button>
+              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('description')">
+                <i :class="sortIcon('description')"></i>
+              </a>
           </th>
           <th></th>
         </tr>
       </thead>
-      <tbody ng-if="!items.$resolved"
-             v-if="!itemsLoaded">
+      <tbody v-if="!itemsLoaded">
         <tr>
           <td colspan="4">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
           </td>
         </tr>
       </tbody>
-      <tbody ng-show="items.$resolved && items.results.length == 0" ng-cloak
-             v-show="itemsLoaded && items.results.length == 0" v-cloak>
+      <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="4">
-            <h4 class="text-center"><em>No transactions<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
+            <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
           </td>
         </tr>
       </tbody>
-      <tbody id="has-transactions"
-             ng-show="items.$resolved && items.results.length > 0" ng-cloak
-             v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <tr ng-repeat="entry in items.results"
-            v-for="entry in items.results">
+      <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr v-for="entry in items.results">
           <td>[[entry.created_at | formatDate]]</td>
-          <td ng-class="entry.is_debit ? 'text-danger' : ''"
-              :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-          <td colspan="2"
-              ng-bind-html="entry.description | unsafe"
-              v-html="entry.description"></td>
+          <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+          <td colspan="2" v-html="entry.description"></td>
         </tr>
       </tbody>
     </table>
     </div>
-    <div class="text-center"
-         ng-show="items.$resolved && items.count > itemsPerPage" ng-cloak
-         v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <ul uib-pagination class="pagination-sm"
-            total-items="totalItems"
-            items-per-page="itemsPerPage"
-            boundary-links="true"
-            max-size="maxSize"
-            previous-text="&lsaquo;"
-            next-text="&rsaquo;"
-            first-text="&laquo;"
-            last-text="&raquo;"
-            ng-model="currentPage"
-            ng-change="pageChanged()"></ul>
-        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
     </div>
 </section>

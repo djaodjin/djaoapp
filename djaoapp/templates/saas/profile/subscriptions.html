@@ -5,13 +5,11 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="subscriptions" ng-app="saasApp">
+<section id="subscriptions">
 <div id="subscriptions-list-container"
      data-trip data-trip-index="1"
      data-trip-content="<h2>Subscriptions</h2><p>List of all your active subscriptions.<br />You can manage all your active subscriptions here.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
-     data-trip-position="screen-center"
-     ng-controller="subscriptionListCtrl"
-     ng-init="refresh()">
+     data-trip-position="screen-center">
 <div class="table-responsive" style="min-height: 400px;">
 <table class="table">
  <thead>
@@ -26,13 +24,8 @@
   {% if plans %}
   <tr>
       <td colspan="4">
-          <form id="subscribe"
-            ng-submit="subscribe('{{organization}}')"
-            @submit.prevent="subscribe('{{organization}}')">
-            <div class="input-group">
-              <select class="form-control" name="plan"
-                ng-model="plan"
-                v-model="plan">
+          <form id="subscribe" class="form-inline" @submit.prevent="subscribe('{{organization}}')">
+              <select class="form-control mr-2" name="plan" v-model="plan">
                 <option selected
                         value="{}"
                         :value="{}">Select a plan...</option>
@@ -41,43 +34,31 @@
                      :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
                 {% endfor %}
               </select>
-              <span class="input-group-btn">
-                  <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Subscribe</button>
-              </span>
-            </div>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Subscribe</button>
           </form>
       </td>
   </tr>
   {% endif %}
-  <tr ng-show="!tables.subscribed.$resolved"
-      v-show="!itemsLoaded">
+  <tr v-show="!itemsLoaded">
    <td colspan="4">
     <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
    </td>
   </tr>
-  <tr ng-show="tables.subscribed.$resolved && tables.subscribed.count == 0" ng-cloak
-      v-show="itemsLoaded && items.count === 0" v-cloak>
+  <tr v-show="itemsLoaded && items.count === 0" v-cloak>
    <td colspan="4">
        <h4 class="text-center"><em>No subcriptions<span ng-show="params.q" v-show="params.q"> [[params.q]]</span></em></h4>
    </td>
   </tr>
  </tbody>
- <tbody
-    ng-show="tables.subscribed.$resolved && tables.subscribed.results.length > 0" ng-cloak
-    v-show="itemsLoaded && items.results.length > 0" v-cloak>
-  <tr
-    ng-class="endsSoon(entry)"
-    ng-repeat="entry in tables.subscribed.results"
-    v-bind:class="endsSoon(entry)"
-    v-for="(entry, index) in items.results">
+ <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
+  <tr :class="endsSoon(entry)" v-for="(entry, index) in items.results">
    <td>
-       <a ng-prop-href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'"
-         v-bind:href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+       <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
    </td>
    <td>
-       <div style="display:inline-block" ng-if="entry.editable" v-if="entry.editable">
-           <uiv-dropdown class="form-group" append-to-body>
-               <btn class="dropdown-toggle" ng-click="open($event, entry)"><i class="fa fa-calendar"></i></btn>
+       <div style="display:inline-block" v-if="entry.editable">
+           <uiv-dropdown class="form-group mb-0" append-to-body>
+               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
                <template slot="dropdown">
                    <li>
                        <uiv-date-picker
@@ -88,16 +69,10 @@
                    </li>
                </template>
            </uiv-dropdown>
-           <span class="date"
-                 uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                 is-open="entry.opened"
-                 datepicker-options="dateOptions"
-                 ng-model="entry.ends_at"
-                 ng-required="true"
-                 close-text="Close"></span>
+           <span class="date"></span>
        </div>
-       <span>
-           [[entry.ends_at ? (entry.ends_at | formatDate) : "Never" ]]
+       <span style="display: inline-block;">
+            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "Never" ]]
        </span>
    </td>
    <td>
@@ -106,49 +81,30 @@
    <td style="text-align: right;" ng-if="!entry.request_key" v-if="!entry.request_key">
        <button class="btn btn-danger unsubscribe"
          data-toggle="modal" data-target="#unsubscribe-action"
-         ng-click="unsubscribe(entry.organization.slug, entry.plan.slug, '#unsubscribe-action')"
          @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
            Unsubscribe Now
        </button>
    </td>
-   <td style="text-align: right;"
-       ng-if="entry.request_key && entry.editable"
-       v-if="entry.request_key && entry.editable">
+   <td style="text-align: right;" v-if="entry.request_key && entry.editable">
        <button class="btn btn-danger unsubscribe"
          data-toggle="modal" data-target="#unsubscribe-action"
-         ng-click="unsubscribe(entry.organization.slug, entry.plan.slug, '#unsubscribe-action')"
          @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
            Deny
        </button>
        <button class="btn btn-primary"
-         ng-click="acceptRequest(entry.plan.organization, entry.request_key)"
          @click="acceptRequest(entry.plan.organization, entry.request_key)">
            Accept
        </button>
    </td>
-   <td style="text-align: right;"
-       ng-if="entry.request_key && !entry.editable"
-       v-if="entry.request_key && !entry.editable">
+   <td style="text-align: right;" v-if="entry.request_key && !entry.editable">
        Request pending approval ...
    </td>
   </tr>
  </tbody>
 </table>
 </div>
-<div class="text-center"
-     ng-show="tables.subscribed.$resolved && tables.subscribed.results.length > 0" ng-cloak
-     v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-    <ul uib-pagination class="pagination-sm" ng-model="currentPage"
-        total-items="tables.subscribed.count"
-        items-per-page="itemsPerPage"
-        boundary-links="true"
-        max-size="maxSize"
-        previous-text="&lsaquo;"
-        next-text="&rsaquo;"
-        first-text="&laquo;"
-        last-text="&raquo;"
-        ng-change="pageChanged(subscribed)"></ul>
-    <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+<div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
 </div>
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
@@ -157,9 +113,9 @@
     <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Unsubscribe ...</h5>
                 <button type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Unsubscribe ...</h4>
             </div>
             <div class="modal-body">
                 <p>
@@ -172,12 +128,11 @@
                 </p>
                 <div class="modal-footer">
                     <button id="cancel-unsubscribe"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             data-dismiss="modal">Cancel</button>
                     <button type="submit" id="unsubscribe-btn"
                             class="btn btn-danger"
                             data-dismiss="modal"
-                            ng-click="unsubscribeConfirmed($event)"
                             @click="unsubscribe">Unsubscribe</button>
                 </div>
             </div>

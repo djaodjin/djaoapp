@@ -1,0 +1,395 @@
+// CSS specific to the DjaoDjin dashboard
+
+$navbar-height: 50px; // XXX until we find a better fix.
+$dashboard-sidebar-width:    220px;
+$dashboard-sidebar-toggle:    20px;
+$dashboard-nav-footer-height: 91px;
+$dashboard-content-bg:       white;
+
+$dashboard-sidebar-bg:       theme-color(primary);
+$dashboard-sidebar-color:    white;
+
+
+// Manager dashboards (templates/saas/*.html)
+// --------
+
+/* subscriber pipeline */
+
+.date-chooser{
+  padding-top: 5px;
+  font-size: 0.8em;
+}
+
+.date-chooser .dropdown-menu {
+   left: auto !important;
+   right: 0px;
+ }
+
+.dashboard-container {
+    clear: left;
+    float: left;
+    width: 100%;
+// XXX temporary override to see the balances table
+//    overflow: hidden;
+    overflow: auto;
+}
+
+.dashboard-inner-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    color: black;
+}
+
+.dashboard-nav {
+  display:block;
+  width: $dashboard-sidebar-width; // .col-md-2 width: 16.66666667%;
+  overflow: hidden;
+  -webkit-transition: right 0.25s ease-in-out;
+  -moz-transition: right 0.25s ease-in-out;
+  -ms-transition: right 0.25s ease-in-out;
+  -o-transition: right 0.25s ease-in-out;
+  transition: right 0.25s ease-in-out;
+  flex-grow: 1;
+  user-select: none;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 100%;
+}
+
+.dashboard-nav-main {
+    float: left;
+    min-height: 100%;
+    padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
+                             in pixel */
+}
+
+.dashboard-nav-menu {
+  height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$navbar-height}));
+  overflow-y: auto;
+}
+
+.dashboard-nav-footer
+{
+    position: absolute;
+    clear:both;
+    bottom: 0;
+    padding: 10px 30px 10px;
+    font-size: 11px;
+    width: $dashboard-sidebar-width;
+    border-top: 1px solid;
+}
+
+.dashboard-nav-footer .footer-links
+{
+    margin-top: 10px;
+}
+
+.dashboard-nav-footer .footer-links a
+{
+    margin: 0 3px;
+}
+
+.dashboard-nav-footer .footer-links a:first-child
+{
+    margin-left: 0;
+}
+
+.dashboard-nav-footer .footer-links a:last-child
+{
+    margin-right: 0;
+}
+
+.dashboard-inner-container .navbar-brand-container {
+   margin-left: 0;
+}
+
+.dashboard-content {
+    overflow: hidden;
+    vertical-align: top;
+    background-color: $dashboard-content-bg;
+    color: black;
+    width: 100%;
+}
+
+.dashboard-inner-container .dashboard-content-body {
+  padding-left: $dashboard-sidebar-toggle;
+}
+
+.dashboard-nav .dashboard-nav-menu {
+    width: $dashboard-sidebar-width;
+}
+
+.dashboard-nav-menu > hr {
+  margin-left: $dashboard-sidebar-toggle;
+  margin-right: $dashboard-sidebar-toggle;
+}
+
+.dashboard-nav-menu > .nav{
+   margin-left: $dashboard-sidebar-toggle;
+   margin-right: $dashboard-sidebar-toggle;
+}
+
+.dashboard-nav-menu > .nav > li {
+    margin: 5px 0px;
+}
+
+.dashboard-nav-menu > .nav > li > a,
+.dashboard-nav-menu > .nav > li.active > a {
+   height:38px;
+   font-size:13px;
+}
+
+.dashboard-nav-menu > .nav > li > a > i {
+   width:25px;
+   text-align:center;
+}
+
+.no-results
+{
+    color: #888;
+    text-align: center;
+    padding: 20px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.dashboard-home-title
+{
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar .nav-item
+{
+    margin: 0 10px;
+}
+
+.dashboard-nav {
+    // sidebar not visible on frontend on desktops
+    display: none;
+}
+
+.dashboard-inner-container .dashboard-nav {
+    // sidebar is visible on dashboard on desktops
+    display: block;
+}
+
+@include media-breakpoint-down(xs) {
+    .dashboard-content {
+      margin-top: $navbar-height + 10px;
+    }
+
+    .dashboard-content > header {
+      position: fixed;
+      height:  $navbar-height;
+      top: 0;
+      z-index: 4;
+      width: 100%;
+      left: 0;
+    }
+
+    .dashboard-nav,
+    .dashboard-inner-container .dashboard-nav {
+        display: none;
+    }
+
+    .navbar-brand-container
+    {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 10;
+    }
+
+    .navbar-brand-container .navbar-brand > img
+    {
+        max-height: 36px;
+    }
+
+    // always display djaoapp name inside sidebar
+    // otherwise need to have two partial brand templates
+    .dashboard-nav .navbar-brand .d-none
+    {
+        display: inline-block !important;
+    }
+
+    .header-menubar .dropdown
+    {
+        position: static;
+    }
+
+    .header-menubar .dropdown-menu
+    {
+        left: auto;
+        right: 5px;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+  .dashboard-inner-container {
+    position: inherit;
+    left: 0;
+    width: inherit;
+  }
+
+  .dashboard-inner-container .dashboard-content
+  {
+    margin-left: $dashboard-sidebar-width;
+  }
+
+  .dashboard-inner-container .navbar-brand-container {
+    display: none;
+    margin-left: 0;
+  }
+
+}
+
+.sidebar-toggle > .closed:before  {
+      content: "\f101"; /* .fa-angle-double-right:before */
+}
+
+.sidebar-toggle > .opened:before  {
+      content: "\f100"; /* .fa-angle-double-left:before */
+}
+
+.dashboard-inner-container .content-area-container
+{
+    padding: 20px;
+}
+
+.navbar-nav .dropdown-menu
+{
+    position: absolute;
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+.sidebar-toggle
+{
+    vertical-align: middle;
+    line-height: 1;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    color: #666;
+    z-index: 1000;
+    background: #fff;
+}
+
+.typeahead-dropdown.open>.dropdown-menu
+{
+    display: block;
+}
+
+.typeahead-dropdown .dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+
+// colors for sidebar
+// ------------------
+
+.dashboard-nav-color-theme {
+    background-color: $dashboard-sidebar-bg;
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme .navbar-light {
+  background-color: $dashboard-sidebar-bg;
+}
+
+.dashboard-nav a,
+.dashboard-nav a:active,
+.dashboard-nav a:hover,
+.dashboard-nav a:focus,
+.dashboard-nav a:visited {
+  color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav .navbar-light a.navbar-brand,
+.dashboard-nav .navbar-light a.navbar-brand:active,
+.dashboard-nav .navbar-light a.navbar-brand:hover,
+.dashboard-nav .navbar-light a.navbar-brand:focus,
+.dashboard-nav .navbar-light a.navbar-brand:visited {
+  color: $dashboard-sidebar-color;
+}
+
+.opened .dashboard-nav-main {
+  box-shadow: 10px 0 100px #ccc;
+}
+
+.dashboard-nav-footer {
+  border-top-color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-footer .footer-links a
+{
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > hr {
+  border-top: 1px solid $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav > li > a {
+   background-color:transparent;
+   color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav > li.active > a {
+  background-color: $dashboard-sidebar-color;
+  color: $dashboard-sidebar-bg;
+  border-radius: 0px;
+  text-decoration: underline;
+}
+
+.dashboard-nav-menu > .nav > li:not(.active) > a:hover{
+   color: $dashboard-sidebar-color;
+   text-decoration: underline;
+}
+
+.dashboard-nav .footer {
+   color: $dashboard-sidebar-color;
+}
+
+.dropdown-menu .dropdown-label
+{
+    color: $dashboard-sidebar-bg;
+}
+
+.dropdown-menu .dropdown-label .dropdown-label-role
+{
+    color: $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle
+{
+    border: 1px solid $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover
+{
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
+.dashboard-nav-color-theme .dropdown-toggle
+{
+    color: $dashboard-sidebar-color;
+}

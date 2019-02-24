@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="container">
-    <div class="col-sm-offset-2 col-sm-8">
+    <div class="offset-sm-2 col-sm-8">
         <div class="page-header">
             <h1 class="text-center"><i class="fa fa-sign-in fa-lg"></i> Sign in</h1>
         </div>
         <div class="signup-group row">
-            <div class="col-sm-offset-3 col-sm-6">
+            <div class="offset-sm-2 col-sm-8">
                 {% if form %}
                 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
                     method="post" action=".{% if next %}/?next={{next}}{% endif %}">

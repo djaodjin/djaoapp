@@ -12,7 +12,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #pylint: disable=undefined-variable
 FEATURES_REVERT_TO_DJANGO = False # XXX 2016-03-31 temporary product switch
-FEATURES_REVERT_TO_ANGULARJS = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)

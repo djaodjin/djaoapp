@@ -126,8 +126,6 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
 	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
-	$(installFiles) $(srcDir)/assets/less/base/*.less $(ASSETS_DIR)/base
-	$(installFiles) $(srcDir)/assets/less/vendor/bootstrap/*.less $(ASSETS_DIR)/vendor/bootstrap
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/ext-language_tools.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/ace-builds/src/ext-modelist.js $(ASSETS_DIR)/vendor
@@ -152,6 +150,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/img/bootstrap-colorpicker/*.png $(ASSETS_DIR)/img/bootstrap-colorpicker
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/bootstrap-vue/dist/bootstrap-vue.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/d3/d3.js $(ASSETS_DIR)/vendor
@@ -180,8 +179,16 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/vue-sortable/vue-sortable.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
+	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
+
+build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
+	$(wildcard $(srcDir)/assets/scss/base/*.scss)
+	cd $(srcDir) && $(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/base.css
+	cd $(srcDir) && DEBUG=1 $(PYTHON) manage.py assets build
 
 # Once tests are completed, run 'coverage report'.
 run-coverage: initdb

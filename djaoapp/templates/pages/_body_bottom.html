@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
   addPlan.click(function(event) {
        event.preventDefault();
        $(this).plan({saas_api_plan: "{{urls.edit.api_plans}}"}).create(true); /* XXX requires assets js_saas in page. */
-       /* XXX relaod=true, really ugly but will do until we integrate angularjs. */
+       /* XXX relaod=true, really ugly but will do until we integrate vuejs. */
   });
   addPlan.show();
 

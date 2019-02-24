@@ -12,34 +12,118 @@ Update your profile, contact information, password, etc.
 
 
 {% block saas_content %}
-{% include "_form.html" %}
+<div id="profile-container">
+<form method="post" @submit.prevent="updateProfile">
+   <div class="form-group">
+      <label class="control-label">Organization name</label>
+      <div class="controls">
+         <input class="form-control" maxlength="100" name="full_name" type="text" v-model="name">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label requiredField">Email<span class="asteriskField">*</span></label>
+      <div class="controls">
+         <input class="form-control" maxlength="254" name="email" type="email" v-model="email">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label">Phone</label>
+      <div class="controls">
+         <input class="form-control" name="phone" type="text" v-model="phone">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label requiredField">Country<span class="asteriskField">*</span></label>
+      <div class="controls">
+        <select v-model="addressCountry" @change="addressRegion = ''" class="form-control" name="country">
+            <option value="">select country</option>
+            <option :value="code" v-for="(country, code) in countries">[[country]]</option>
+        </select>
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label requiredField">State/Province/County<span class="asteriskField">*</span></label>
+      <div class="controls">
+        <select v-model="addressRegion" v-show="addressCountry == 'US' || addressCountry == 'CA'" class="form-control">
+            <option value="">select state</option>
+            <option :value="code" v-for="(region, code) in regions[addressCountry]">[[region]]</option>
+        </select>
+        <input class="form-control" v-model="addressRegion" type="text" placeholder="Region" v-show="addressCountry != 'US' && addressCountry != 'CA'">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label requiredField">City/Town<span class="asteriskField">*</span></label>
+      <div class="controls">
+         <input class="form-control" maxlength="50" name="locality" type="text" v-model="addressCity">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label">Street address</label>
+      <div class="controls">
+         <input class="form-control" name="street_address" type="text" v-model="addressLine1">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label requiredField">Zip/Postal code<span class="asteriskField">*</span></label>
+      <div class="controls">
+         <input class="form-control" maxlength="50" name="postal_code" type="text" v-model="addressZip">
+      </div>
+   </div>
+   <div class="form-group">
+      <label class="control-label">Default Timezone</label>
+      <div class="controls">
+         <input class="form-control" name="timezone" type="text" v-model="timezone">
+      </div>
+   </div>
+   <div class="form-group">
+      <div>
+         <div class="checkbox">
+            <label class="" for="id_is_bulk_buyer">
+            <input class="checkboxinput" id="id_is_bulk_buyer" name="is_bulk_buyer" type="checkbox" v-model="isBulkBuyer">
+            Enable GroupBuy (<a href="https://djaodjin.com/docs/#group-billing" target="_blank">what is it?</a>)
+            </label>
+         </div>
+      </div>
+   </div>
+   <!-- TODO there is no such field in an API -->
+   <div class="form-group">
+      <label class="control-label">Notes</label>
+      <div class="controls">
+         <textarea class="textarea form-control" cols="40" name="extra" rows="10"></textarea>
+      </div>
+   </div>
+   <div class="form-action text-center">
+      <button class="btn btn-primary btn-lg" type="submit">Update</button>
+   </div>
+</form>
 <hr />
-<div id="remove-profile-container" class="panel panel-danger" style="margin:50px auto;" ng-app="saasApp">
-    <div class="panel-heading">
-        Danger Zone
-    </div>
-    <div class="panel-body" style="padding: 15px;">
-        {% if urls.organization.password_change %}
+<div class="card border-danger mb-3">
+  <div class="card-header">
+    Danger Zone
+  </div>
+  <div class="card-body text-danger">
+{% if urls.organization.password_change %}
         <div class="row">
             <div class="col-sm-5">
-                <a id="change-password" class="btn btn-danger" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
+                <a id="change-password" class="btn btn-danger btn-block" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
             </div>
             <div class="col-sm-7">
-<span class="btn">Use a new password to login.</span>
+                Use a new password to login.
             </div>
         </div>
         {% endif %}
         <div class="row" style="margin-top: 15px;">
             <div class="col-sm-5">
                 <button id="delete-action-open"
-                        class="btn btn-danger" style="width:100%;"
+                        class="btn btn-danger btn-block"
                         data-toggle="modal" data-target="#delete-action">Delete profile</button>
             </div>
             <div class="col-sm-7">
-<span class="btn">This operation cannot be reversed.</span>
+                This operation cannot be reversed.
             </div>
         </div>
-    </div>
+  </div>
+</div>
 <!-- modal dialog to delete organization. -->
 <div class="modal fade"
      id="delete-action" tabindex="-1" role="dialog"
@@ -48,9 +132,9 @@ Update your profile, contact information, password, etc.
     <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Delete Profile ...</h5>
                 <button type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Delete Profile ...</h4>
             </div>
             <div class="modal-body">
                 <p>
@@ -65,7 +149,7 @@ Are you sure you want to continue?
             <div class="modal-footer">
                 <button id="cancel-delete"
                         data-dismiss="modal"
-                        class="btn btn-default">Cancel</button>
+                        class="btn btn-secondary">Cancel</button>
                 <button type="button" id="delete-organization-btn"
                         class="btn btn-danger"
                         data-dismiss="modal"

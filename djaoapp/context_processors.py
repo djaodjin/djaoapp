@@ -26,6 +26,5 @@ from django.conf import settings
 
 def features_flag(request):#pylint:disable=unused-argument
     return {
-        'FEATURES_REVERT_TO_ANGULARJS': settings.FEATURES_REVERT_TO_ANGULARJS,
         'DATETIME_FORMAT': "MMM dd, yyyy"
     }

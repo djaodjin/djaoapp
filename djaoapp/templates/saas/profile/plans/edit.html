@@ -1,67 +1,68 @@
-{% extends "saas/base_dashboard.html" %}
+{% extends "saas/base_dashboard-2col.html" %}
 
 {% block saas_title %}
-{% if not form.instance.slug %}Create{% else %}Update{% endif %} Plan
+Update Plan
 {% endblock %}
 
 {% block saas_page_layout %}
-<div>
-    <div class="col-md-12">
-        <div class="col-md-6">
-            {% block saas_content %}
-            <div data-trip data-trip data-trip-index="1" data-trip-content="<h2>Plan</h2><p>Set the title, description and price of a plan.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-                {% include "saas/_plan_form.html" %}
+<div id="plan-container">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-6">
+                {% block saas_content %}
+                <div data-trip data-trip data-trip-index="1" data-trip-content="<h2>Plan</h2><p>Set the title, description and price of a plan.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
+                    <form method="post" @submit.prevent="updatePlan">
+                        {% include "saas/profile/plans/_form.html" %}
+                        <div class="form-action text-center">
+                            <button class="btn btn-block btn-primary btn-lg" type="submit">Update</button>
+                        </div>
+                    </form>
+                </div>
+                {% endblock %}
+                <div class="card border-danger mt-3">
+                  <div class="card-header">
+                    Danger Zone
+                  </div>
+                  <div class="card-body text-danger">
+                    <button id="delete-plan-confirm" class="btn btn-danger" data-toggle="modal" data-target="#delete-plan-modal">Delete</button> This operation cannot be reversed.
+                  </div>
+                  <div id="delete-plan-modal" class="modal fade" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true"
+                     data-plan="{{form.instance.slug}}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Delete Plan ...
+                            </div>
+                            <div class="modal-body">
+                                Please confirm you want to delete this plan.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Cancel</button>
+                                <a id="delete-plan"
+                                   class="btn btn-danger btn-ok delete"
+                                   data-dismiss="modal">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
             </div>
-            {% endblock %}
-        </div>
-        <div class="col-md-6">
-            {% if form.instance.slug %}
-            <p data-plan="{{form.instance.slug}}">
-                <button id="activate-plan" class="activate btn btn-primary {% if form.instance.is_active %}activated{% endif %}" data-trip-index="2" data-trip-content="<p>Toggle this plan between available for subscription or not.</p>" data-trip-position="s">{% if form.instance.is_active %}Deactivate{% else %}Activate{% endif %}</button> Users can only subscribe to active plans.
-            </p>
-            {% endif %}
-            <p class="lead">
-                {% block saas_lead_help %}{% endblock %}
-            </p>
-            {% block saas_help %}{% endblock %}
+            <div class="col-lg-6">
+                <div style="margin-bottom: 20px;">
+                    <a href="{{ url('saas_plan_subscribers', args=[organization, form.instance]) }}" class="btn btn-primary">Plan Subscribers</a>
+                </div>
+                <p data-plan="{{form.instance.slug}}">
+                    <button id="activate-plan" class="activate btn btn-primary {% if form.instance.is_active %}activated{% endif %}" data-trip-index="2" data-trip-content="<p>Toggle this plan between available for subscription or not.</p>" data-trip-position="s">{% if form.instance.is_active %}Deactivate{% else %}Activate{% endif %}</button> Users can only subscribe to active plans.
+                </p>
+                <p class="lead">
+                    {% block saas_lead_help %}{% endblock %}
+                </p>
+                {% block saas_help %}{% endblock %}
+            </div>
         </div>
     </div>
 </div>
-{% if show_delete %}
-<div>
-    <div class="col-md-12">
-        <div class="panel panel-danger" style="margin-top:50px;">
-            <div class="panel-heading">
-                Danger Zone
-            </div>
-            <div class="panel-body">
-                <button id="delete-plan-confirm" class="btn btn-danger" data-toggle="modal" data-target="#delete-plan-modal">Delete</button> This operation cannot be reversed.
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-<!-- modal dialogs -->
-<div id="delete-plan-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true"
-     data-plan="{{form.instance.slug}}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Delete Plan ...
-            </div>
-            <div class="modal-body">
-                Please confirm you want to delete this plan.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">Cancel</button>
-                <a id="delete-plan"
-                   class="btn btn-danger btn-ok delete"
-                   data-dismiss="modal">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
 
+{% endblock %}

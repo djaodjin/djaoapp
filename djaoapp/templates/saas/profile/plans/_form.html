@@ -1,0 +1,77 @@
+<div class="form-group">
+    <label class="control-label requiredField">Title<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <input class="form-control" maxlength="50" name="title" type="text" v-model="title">
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label requiredField">Description<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <textarea class="textarea form-control" cols="40" name="description" rows="10" v-model="description"></textarea>
+    </div>
+</div>
+        <legend>Pricing</legend>
+<div class="form-group">
+    <label class="control-label requiredField">Unit<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <select class="form-control" name="unit" v-model="unit">
+          <option value="usd">usd</option>
+          <option value="cad">cad</option>
+          <option value="eur">eur</option>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label requiredField">Period amount<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <input class="form-control" name="period_amount" step="0.01" type="number" v-model="periodAmount">
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label requiredField">Interval<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <select class="form-control" name="interval" v-model="interval">
+          <option value="HOURLY">Hourly</option>
+          <option value="DAILY">Daily</option>
+          <option value="WEEKLY">Weekly</option>
+          <option value="MONTHLY">Monthly</option>
+          <option value="YEARLY">Yearly</option>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label requiredField">Period length<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <input class="form-control" name="period_length" type="number" v-model="periodLength">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+            Natural period length of a subscription to the plan (monthly, yearly, etc.)
+        </small>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label requiredField">Advance discount<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <input class="form-control" name="advance_discount" step="0.01" type="number" v-model="advanceDiscount">
+    </div>
+</div>
+    <fieldset>
+        <legend>Extra Options</legend>
+<div class="form-group">
+    <label class="control-label requiredField">Renewal type<span class="asteriskField">*</span></label>
+    <div class="controls">
+        <select class="form-control" name="renewal_type" v-model="renewalType">
+          <option value="0">ONE_TIME</option>
+          <option value="1">AUTO_RENEW</option>
+          <option value="2">REPEAT</option>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" id="id_is_not_priced" name="is_not_priced" type="checkbox" v-model="isNotPriced">
+        <label class="form-check-label" for="id_is_not_priced">
+          Is not priced
+        </label>
+    </div>
+</div>
+</fieldset>

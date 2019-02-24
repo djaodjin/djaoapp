@@ -34,7 +34,7 @@ Install
     $ pip install -r requirements.txt
     $ make install-conf
     $ make vendor-assets-prerequisites
-    $ DEBUG=1 python manage.py assets build
+    $ make build-assets
 
     $ make initdb
 

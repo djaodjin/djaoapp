@@ -17,7 +17,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
     <div id="rules-table" class="col-md-12">
       <h3>Access Rules</h3>
       <div class="table-responsive">
-      <table class="table table-condensed table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
+      <table class="table table-sm table-striped" data-trip data-trip-index="3" data-trip-content="Define an <em>access rule</em> per <em>path</em> then if authorized requests<br /> should be forwarded to the web application or served by the firewall itself." data-trip-position="s">
         <thead>
           <tr>
             <th>Rank</th>
@@ -28,22 +28,16 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <th></th>
           </tr>
         </thead>
-        <tbody id="rules" dnd-list="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
-          <tr class="item"
-              ng-prop-id="'rule-' + rule.rank"
-              ng-repeat="rule in rules.results" ng-cloak
-              v-bind:id="'rule-' + rule.rank"
-              :key="rule.rank"
+        <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
+          <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
               v-for="(rule, index) in items.results" v-cloak>
             <td width="100">
-              <div class="btn btn-default btn-sm rule-handle">
+              <div class="btn btn-secondary btn-sm rule-handle">
                 <i class="fa fa-bars"></i></div>
             </td>
             <td>[[rule.path]]</td>
             <td width="200">
-              <select name="rule" class="form-control input-sm"
-                      ng-model="rule.allow"
-                      ng-change="updateAllow(rule)"
+              <select name="rule" class="form-control form-control-sm"
                       v-model="rule.allow"
                       @change="update(rule)">
                 {% for rule in rules %}
@@ -53,27 +47,15 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             </td>
             <td width="100" class="text-center">
               <input type="checkbox" name="is_forward"
-                     ng-model="rule.is_forward"
-                     ng-change="updateForward(rule)"
-                     ng-checked="rule.is_forward"
                      v-model="rule.is_forward"
                      @change="update(rule)"
                      :checked="rule.is_forward" />
             </td>
             <td class="engaged">
-                <span ng-show="!engagedEditMode[$index]"
-                      ng-click="editEngaged($index)"
-                      @click="editDescription(index)"
+                <span @click="editDescription(index)"
                       v-show="!edit_description[index]"
                       >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
                 <input type="text" class="form-control"
-                       ng-show="engagedEditMode[$index]"
-                       ng-keydown="saveEngaged($event, rule, $index)"
-                       ng-blur="saveEngaged($event, rule, $index)"
-                       ng-model="rule.engaged"
-                       uib-tooltip="Edit engaged and press 'Enter'"
-                       uib-tooltip-trigger="focus"
-                       uib-tooltip-placement="top"
                        v-show="edit_description[index]"
                        v-model="rule.engaged"
                        ref="edit_description_input"
@@ -82,7 +64,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                        >
             </td>
             <td width="100">
-              <button class="btn btn-danger btn-sm" ng-click="remove($index)">
+              <button class="btn btn-danger btn-sm" @click="remove(index)">
                 <i class="fa fa-trash-o"></i></button>
             </td>
           </tr>
@@ -94,21 +76,8 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
           </tr>
         </tbody>
       </table>
-      <div class="text-center"
-           ng-show="rules.$resolved && rules.results.length > itemsPerPage" ng-cloak
-           v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <ul uib-pagination class="pagination-sm"
-            total-items="totalItems"
-            items-per-page="itemsPerPage"
-            boundary-links="true"
-            max-size="maxSize"
-            previous-text="&lsaquo;"
-            next-text="&rsaquo;"
-            first-text="&laquo;"
-            last-text="&raquo;"
-            ng-model="currentPage"
-            ng-change="pageChanged()"></ul>
-        <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" size="sm" boundary-links/>
+      <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
       </div>
       </div>
       <!-- modal dialog for Adding a rule -->
@@ -117,9 +86,9 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
+              <h5 class="modal-title">Path accessed ...</h5>
               <button type="button" class="close"
                       data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Path accessed ...</h4>
             </div>
             <div class="modal-body">
               <div id="div_id_new_rule_path" class="form-group">
@@ -131,12 +100,12 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                          autofocus
                          ng-model="newRule.path"
                          v-model="newRule.path">
-                  <p class="help-block">Your path should end with '/'. If not it will be automatically added.</p>
+                  <p class="form-text">Your path should end with '/'. If not it will be automatically added.</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default"
+              <button type="button" class="btn btn-secondary"
                       data-dismiss="modal">Cancel</button>
               <button id="new-rule-submit"
                       type="button" class="btn btn-primary"
@@ -158,11 +127,9 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
         <div id="endpoint" class="tab-pane active">
         <div class="row">
           <div class="col-md-12" style="margin-bottom:50px;">
-            <form id="entry-point-form" method="post"
-                  ng-submit="submitEntryPoint('#entry-point-form')"
-                  @submit.prevent="submitEntryPoint">
+            <form id="entry-point-form" method="post" @submit.prevent="submitEntryPoint">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-              <div class="row">
+              <div class="row align-items-end">
                 <div class="form-group col-md-4">
                   <label for="">Entry point *</label>
                   <input id="id_entry_point"
@@ -170,13 +137,14 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
                          maxlength="100"
                          name="entry_point"
                          type="text"
+                         ref="entryPoint"
                          value="{{form.instance.entry_point}}"
                          data-trip data-trip-index="4"
                          data-trip-content="<p>Set the entry point where authorized requests should be forwarded to.</p>" data-trip-position="s">
                 </div>
                 <div class="form-group col-md-4">
                   <label for="">Session encoding *</label>
-                  <select class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
+                  <select ref="sessionBackend" class="form-control" name="session_backend" value="{{form.instance.session_backend}}">
                     <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>No session forwarded</option>
                     <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>Cookie-based session backend</option>
                     <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>JWT-based session backend</option>
@@ -189,7 +157,7 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
               </div>
             </form>
             <div>
-              <button class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
+              <button @click="generateKey" class="btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>Download the API key used to encrypt<br />sessions forwarded to your web application. <a href='http://djaodjin.com/docs/' target='_blank'>more...</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> Generate Key</button>
             </div>
           </div>
           <!-- modal dialog for Encrypted Session Key -->
@@ -199,14 +167,14 @@ The site is available at <a href="{{site_available_at_url}}">{{site_available_at
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
+                  <h5 class="modal-title">Encrypted Session Key</h5>
                   <button type="button" class="close"
                           data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">Encrypted Session Key</h4>
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
                     <div class="controls">
-                      <input class="form-control"
+                      <input class="form-control" v-model="sessionKey"
                              name="key" maxlength="32" type="text" disabled
                              value="Generating ..." />
                     </div>
@@ -222,9 +190,8 @@ The key will only be displayed once. Keep it secure.
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button id="regenerate-key" class="btn btn-default"
+                  <button id="regenerate-key" class="btn btn-secondary"
                           type="button"
-                          ng-click="generateKey('#generate-key')"
                           @click="generateKey">Generate</button>
                   <button type="button" class="btn btn-primary"
                           data-dismiss="modal">OK</button>
@@ -242,14 +209,12 @@ The key will only be displayed once. Keep it secure.
 Enter a username and check the token that will be passed to your backend
 service.
       </p>
-      <form id="token-form" class="form-inline" method="post"
-            ng-submit="getSessionData('#token-form')"
-            @submit.prevent="getSessionData">
+      <form id="token-form" class="form-inline mb-3" method="post" @submit.prevent="getSessionData">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="input-group">
-          <input id="id_username" class="form-control"
+          <input id="id_username" class="form-control" v-model="testUsername"
                  maxlength="100" name="username" type="text">
-          <span class="input-group-btn">
+          <span class="input-group-append">
             <button type="submit" class="btn btn-primary">Check</button>
           </span>
         </div>
@@ -284,27 +249,6 @@ service.
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
-{% if FEATURES_REVERT_TO_ANGULARJS %}
-/**
-Implementation Note #1:
-  Not including a list of dependent modules (2nd parameter to `module`)
-  "re-opens" the module for additional configuration.
-Implementation Note #2:
-  Pasting this code in $(document).ready will lead to a $injector/unpr
-  error in Angularjs.
-*/
-var app = angular.module('ruleApp');
-app.config(['$interpolateProvider', '$httpProvider',
-    function($interpolateProvider, $httpProvider) {
-      $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-      // Makes it easier to separate between django and angularjs templates
-      $interpolateProvider.startSymbol('[[');
-      $interpolateProvider.endSymbol(']]');
-}]);
-app.constant('settings', {
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %}});
-{% endif %}
 jQuery(document).ready(function($) {
     $('#new-rule').on('shown.bs.modal', function(){
       $('#id_new_rule_path').focus();

@@ -6,7 +6,7 @@
 <div id="balance-list-container" ng-app="saasApp">
 <div ng-controller="BalanceListCtrl">
   <div class="date-chooser pull-right">
-      <a id="download" class="btn btn-default" role="button"
+      <a id="download" class="btn btn-secondary" role="button"
          ng-prop-href="'{{urls.download_balances}}?start_at=' + params.start_at + '&ends_at=' + params.ends_at"
          v-bind:href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> Download</a>
       <span>To</span>
@@ -76,7 +76,7 @@
               ng-repeat="row in balances.table"
               v-for="(row, index) in items.table">
               <td>
-                  <div class="btn btn-default btn-sm">
+                  <div class="btn btn-secondary btn-sm">
                       <i class="fa fa-bars"></i></div>
               </td>
               <td>
@@ -100,13 +100,13 @@
   </table>
   <div class="row">
       <div class="col-sm-3">
-          <input type="text" class="form-control input-sm"
+          <input type="text" class="form-control form-control-sm"
             placeholder="Title"
             ng-model="newBalanceLine.title"
             v-model="balanceLine.title">
       </div>
       <div class="col-sm-3">
-          <input type="text" class="form-control input-sm"
+          <input type="text" class="form-control form-control-sm"
             placeholder="Selector"
             ng-model="newBalanceLine.selector"
             v-model="balanceLine.selector">

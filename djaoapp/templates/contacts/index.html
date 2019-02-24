@@ -27,7 +27,7 @@
         </div>
         <div class="text-center"
              v-show="itemsLoaded && totalItems > itemsPerPage">
-          <uiv-pagination v-model="params.page" :total-page="pageCount" @change="get" boundary-links/>
+          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
         </div>
       </div>
       <div class="col-sm-6">

@@ -11,7 +11,7 @@
             <form class="form-horizontal" method="post" action=".{% if next %}?next={{next}}{% endif %}">
                 <div class="form-group">
                     <div class="">
-                        {{form.read_terms}} <label class="control-label">I have read and accept these terms and conditions</label>
+                        {{form.read_terms}} <label class="col-form-label">I have read and accept these terms and conditions</label>
                     </div>
                 </div>
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">

@@ -3,17 +3,12 @@
 {% block saas_title %}Add offline transaction{% endblock %}
 
 {% block saas_page_layout %}
-<section ng-app="saasApp">
-  <script type="text/ng-template" id="customTemplate.html">
-    <a><span bind-html-unsafe="match.model.organization.printable_name + ' - ' + match.model.plan.title | uibTypeaheadHighlight:query"></span></a>
-  </script>
-  <div id="import-transaction-container" class="col-md-6 col-md-offset-3"
-       ng-controller="importTransactionsCtrl">
-    <form action="." class="form-horizontal" method="post">
-      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+<section>
+  <div id="import-transaction-container" class="col-md-6 col-md-offset-3">
+    <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
-          <label class="control-label" for="subscription">
+          <label class="col-form-label" for="subscription">
             Subscription
           </label>
             <input
@@ -22,75 +17,64 @@
                 type="text"
                 placeholder="Subscriber name or email"
                 name="subscription"
-                autocomplete="off"
-                ng-model="subscription"
-                uib-typeahead="subscription as subscription.organization.slug + ':' + subscription.plan.slug for subscription in getSubscriptions($viewValue)"
-                uib-typeahead-loading="loadingSubscriptions"
-                uib-typeahead-template-url="customTemplate.html"/>
+                autocomplete="off">
             <uiv-typeahead
                 v-model="itemSelected"
                 target="#typeahead"
                 item-key="itemKey"
                 :async-function="getSubscriptions"
+                class="typeahead-dropdown"
                 :open-on-focus="false"/>
-
           {% for error in form.subscription.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
-          <div ng-show="loadingSubscriptions"
-               v-show="searching" style="height:14px">
+          <div v-show="searching" style="height:14px">
             <i class="fa fa-spinner"></i>
           </div>
         </div>
-        <div class="form-group{% if form.created_at.errors %} has-error{% endif %}">
-            <uiv-dropdown append-to-body>
-              <label class="control-label" for="created_at">
+        <div class="form-group">
+              <label for="created_at" class="d-block">
                 Created At
               </label>
+            <uiv-dropdown  class="d-block" append-to-body>
               <div class="input-group">
-                <input class="form-control date" type="text" name="created_at"
-                  uib-datepicker-popup="{{DATETIME_FORMAT}}"
-                  ng-model="createdAt" ng-required="true"
-                  is-open="opened.createdAt"
-                  close-text="Close"
-                  v-model="created_at">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-default"
-                          ng-click="open($event, 'createdAt')"
-                          v-bind:class="dropdown-toggle"><i class="fa fa-calendar"></i>
-                  </button>
-                </div>
+                <input class="form-control date" type="text" name="created_at" v-model="createdAt">
+                  <div class="input-group-append">
+                      <button type="button" class="btn btn-secondary dropdown-toggle">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                  </div>
               </div>
               <template slot="dropdown">
                 <li>
                   <uiv-date-picker
-                    v-model="created_at"
+                    v-model="createdAt"
                     icon-control-left="fa fa-caret-left"
                     icon-control-right="fa fa-caret-right" />
                 </li>
               </template>
             </uiv-dropdown>
           {% for error in form.created_at.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
-          <label class="control-label" for="amount">
+          <label class="col-form-label" for="amount">
             Amount
           </label>
           <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount">
           {% for error in form.amount.errors %}
-          <span class="help-block"><strong>{{error}}</strong></span>
+          <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
-          <label class="control-label" for="descr">
+          <label class="col-form-label" for="descr">
             Description
           </label>
           <div>
             <input class="form-control" name="descr" type="text" placeholder="description">
             {% for error in form.descr.errors %}
-            <span class="help-block"><strong>{{error}}</strong></span>
+            <span class="form-text"><strong>{{error}}</strong></span>
             {% endfor %}
           </div>
         </div>

@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block bodyscripts %}
-{% if not FEATURES_REVERT_TO_ANGULARJS %}
 <script type="text/javascript">
 var djaodjinSettings = {
     urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
@@ -29,33 +28,5 @@ var djaodjinSettings = {
 {% assets "js_djaodjin_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
-
-{% else %}
-{% assets "js_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-{% assets "js_djaodjin_angular" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-<script type="text/javascript">
-/* Implementation Note: Not including a list of dependent modules
-   (2nd parameter to `module`) "re-opens" the module for additional
-   configuration.
-   - We add the CSRF token for as an HTTP header on API calls.
-   - We make it easier to separate between django and angularjs templates
-     by changing Angular defaults to [[ and ]] characters. */
-var reopenSignupApp = angular.module('signupApp');
-reopenSignupApp.config(['$interpolateProvider', '$httpProvider',
-           function($interpolateProvider, $httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{csrf_token}}';
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-}]);
-reopenSignupApp.constant('settings', {
-  urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-  itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-});
-</script>
-{% endif %}
 {% block contacts_scripts %}{% endblock %}
 {% endblock %}
