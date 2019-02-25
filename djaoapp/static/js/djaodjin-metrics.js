@@ -113,6 +113,7 @@ function updateChart(container, data, unit, dataScale, extra) {
             .margin({top: 50, right: 20, bottom: 60, left: marginLeft})
             .useInteractiveGuideline(true);
 
+        chart.legend.key(function(d){return d.title})
         chart.interactiveLayer.tooltip.contentGenerator(function(d) {
             var hoverDate = d.value;
 
@@ -129,6 +130,12 @@ function updateChart(container, data, unit, dataScale, extra) {
                 $(element).text(curr.numberFormat("$,.2f")(value));
               });
             }
+
+            // Replacing slug with title
+            $.each($html.find("td.key"), function(index, element){
+                var title = data[index].title;
+                $(element).text(title);
+            });
 
             // if extra data add it to tooltip
             if (extra && extra.length > 0){
