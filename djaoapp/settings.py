@@ -32,7 +32,8 @@ if os.getenv('DEBUG'):
 
 API_DEBUG = DEBUG
 
-if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
+if (getattr(sys.modules[__name__], 'RULES_APP_MODEL', None)
+    and getattr(sys.modules[__name__], 'RULES_APP_MODEL') != 'djaoapp.App'):
     RULES_APPS = (RULES_APP_MODEL.split('.')[0],)
 else:
     RULES_APPS = tuple([])
@@ -74,6 +75,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'multitier',
     'rules',
     'survey',     # XXX for contact page
+    'djaoapp'
 )
 
 if DEBUG:

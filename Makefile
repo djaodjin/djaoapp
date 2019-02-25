@@ -147,6 +147,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/angular-touch/angular-touch.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/bootstrap/dist/js/bootstrap.js.map $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/img/bootstrap-colorpicker/*.png $(ASSETS_DIR)/img/bootstrap-colorpicker
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
@@ -178,6 +179,7 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/sortablejs/Sortable.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js.map $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)

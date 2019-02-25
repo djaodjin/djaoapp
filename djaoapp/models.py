@@ -18,7 +18,7 @@ class App(BaseSite, BaseApp):
         validators=[SUBDOMAIN_SLUG], help_text=_(
             "unique identifier for the site (also serves as subdomain)"))
     account = models.ForeignKey('saas.Organization',
-        null=True, on_delete=models.CASCADE)
+        null=True, on_delete=models.CASCADE, related_name='djaoapp_app')
 
     class Meta:
         db_table = 'rules_app'
@@ -40,7 +40,7 @@ class Site(BaseSite, BaseApp):
         validators=[SUBDOMAIN_SLUG], help_text=_(
             "unique identifier for the site (also serves as subdomain)"))
     account = models.ForeignKey('saas.Organization',
-        null=True, on_delete=models.CASCADE)
+        null=True, on_delete=models.CASCADE, related_name='djaoapp_site')
 
     class Meta:
         db_table = 'multitier_site'
