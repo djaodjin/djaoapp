@@ -57,6 +57,7 @@ css_dashboard = Bundle(
     filters='cssmin', output='cache/dashboard.css')
 register('css_dashboard', css_dashboard)
 
+
 js_vue = Bundle(
     'vendor/moment.js',
     'vendor/moment-timezone-with-data.js',
@@ -68,6 +69,7 @@ js_vue = Bundle(
     'vendor/vue2-filters.js',
     filters='jsmin', output='cache/vue.js')
 register('js_vue', js_vue)
+
 
 js_djaodjin_vue = Bundle(
     'js/djaodjin-dashboard.js', # also in base.js

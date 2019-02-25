@@ -103,7 +103,7 @@ Update your profile, contact information, password, etc.
   </div>
   <div class="card-body text-danger">
 {% if urls.organization.password_change %}
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-sm-5">
                 <a id="change-password" class="btn btn-danger btn-block" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
             </div>
@@ -112,7 +112,7 @@ Update your profile, contact information, password, etc.
             </div>
         </div>
         {% endif %}
-        <div class="row" style="margin-top: 15px;">
+        <div class="row align-items-center" style="margin-top: 15px;">
             <div class="col-sm-5">
                 <button id="delete-action-open"
                         class="btn btn-danger btn-block"
@@ -127,8 +127,7 @@ Update your profile, contact information, password, etc.
 <!-- modal dialog to delete organization. -->
 <div class="modal fade"
      id="delete-action" tabindex="-1" role="dialog"
-     aria-labelledby="Delete Profile" aria-hidden="true"
-      ng-controller="organizationProfileCtrl">
+     aria-labelledby="Delete Profile" aria-hidden="true">
     <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -153,7 +152,6 @@ Are you sure you want to continue?
                 <button type="button" id="delete-organization-btn"
                         class="btn btn-danger"
                         data-dismiss="modal"
-                        ng-click="deleteProfile($event)"
                         @click="deleteProfile">Delete</button>
             </div>
         </div>

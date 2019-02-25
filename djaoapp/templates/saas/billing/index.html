@@ -23,7 +23,6 @@ You can also see the list of all payments made here.
           <button id="cancel-balance-btn" class="btn btn-danger"
              data-toggle="modal"
              data-target="#cancel-balance"
-             ng-if="items.balance > 0" ng-cloak
              v-if="items.balance > 0" v-cloak
           >cancel balance due</button>{% endif %}</h1>
         <dl class="dl-horizontal">
@@ -31,54 +30,40 @@ You can also see the list of all payments made here.
               data-trip-content="<p>The amount you owe.</p>"
               data-trip-position="s">
             <i class="fa fa-refresh fa-spin"
-               ng-if="!items.$resolved"
                v-if="!itemsLoaded"></i>
             <span
-               ng-if="items.$resolved" ng-cloak
                v-if="itemsLoaded" v-cloak>[[humanizeBalance()]]</span>
           </dt>
           <dd>
             Balance
+            <span v-if="!itemsLoaded || items.balance == 0">due</span>
             <span
-               ng-if="!items.$resolved || items.balance == 0"
-               v-if="!itemsLoaded || items.balance == 0">due</span>
-            <span
-               ng-if="items.balance > 0" ng-cloak
                v-if="items.balance > 0" v-cloak>due (<a href="{{urls.organization.balance}}">pay now</a>)
             </span>
-            <span
-               ng-if="items.balance < 0" ng-cloak
-               v-if="items.balance < 0" v-cloak>credit</span>
+            <span v-if="items.balance < 0" v-cloak>credit</span>
           </dd>
         </dl>
         {% if urls.organization.vtcharge %}
         <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
         {% endif %}
       </section>
-      <section id="payment-form" class="col-sm-6"
-               ng-controller="billingSummaryCtrl"
-               data-api-url="{{urls.organization.api_card}}">
+      <section id="payment-form" class="col-sm-6">
         <h1 class="text-primary">Credit Card
         <a class="btn" href="{{urls.organization.update_card}}"
            data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
         <dl class="dl-horizontal">
           <dt>card</dt>
           <dd class="last4">
-            <i class="fa fa-refresh fa-spin"
-               ng-if="!$resolved"
-               v-if="!cardLoaded"></i>
-            <span ng-if="$resolved" ng-cloak
-                  v-if="cardLoaded" v-cloak>[[last4]]</span>
+            <i class="fa fa-refresh fa-spin" v-if="!cardLoaded"></i>
+            <span v-if="cardLoaded" v-cloak>[[last4]]</span>
           </dd>
         </dl>
         <dl class="dl-horizontal">
           <dt>expires</dt>
           <dd class="exp_date">
             <i class="fa fa-refresh fa-spin"
-               ng-if="!$resolved"
                v-if="!cardLoaded"></i>
             <span
-               ng-if="$resolved" ng-cloak
                v-if="cardLoaded" v-cloak>[[exp_date]]</span>
           </dd>
         </dl>
@@ -106,7 +91,6 @@ Are you sure you would like to cancel the whole balance of [[humanizeBalance()]]
                 <button type="submit"
                   class="btn btn-primary"
                   data-dismiss="modal"
-                  ng-click="cancelBalance($event)"
                   @click="cancelBalance">OK</button>
             </div>
           </div>

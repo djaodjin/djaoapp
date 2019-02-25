@@ -73,9 +73,9 @@
                       <tr :id="row.key" v-for="row in currentTableData.data" :key="row.key">
                         <td v-if="row.location">
                             <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span>
-                            <a :href="row.location">[[row.key]]</a>
+                            <a :href="row.location">[[row.title]]</a>
                         </td>
-                        <td v-if="!row.location">[[row.key]]</td>
+                        <td v-if="!row.location">[[row.title]]</td>
                         <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
                       </tr>
                       {% block metrics_extra_data %}
