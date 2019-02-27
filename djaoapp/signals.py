@@ -235,12 +235,14 @@ def charge_updated_notice(sender, charge, user, **kwargs):
                 'broker': get_broker(), 'app': app,
                 'urls': {'charge': {'created_by':
                     reverse('users_profile', args=(charge.created_by,))}}})
+            kwargs = {}
+            if broker.email and broker.email != site.get_from_email():
+                kwargs = {'reply_to': broker.email}
             get_email_backend(connection=site.get_email_connection()).send(
                 from_email=site.get_from_email(), recipients=recipients,
                 bcc=bcc + broker_recipients + broker_bcc,
-                reply_to=broker_recipients[0],
                 template='notification/charge_receipt.eml',
-                context=context)
+                context=context, **kwargs)
 
 
 @receiver(card_updated, dispatch_uid="card_updated")
@@ -288,12 +290,14 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
         if user:
             context.update({'urls': {'order': {'created_by':
                 reverse('users_profile', args=(user,))}}})
+        kwargs = {}
+        if broker.email and broker.email != site.get_from_email():
+            kwargs = {'reply_to': broker.email}
         get_email_backend(connection=site.get_email_connection()).send(
             from_email=site.get_from_email(), recipients=recipients,
             bcc=bcc + broker_recipients + broker_bcc,
-            reply_to=broker_recipients[0],
             template='notification/order_executed.eml',
-            context=context)
+            context=context, **kwargs)
 
 
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated")
@@ -333,10 +337,12 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
         app = get_current_app()
         broker_recipients, broker_bcc = _notified_recipients(
         broker, 'organization_updated')
+        kwargs = {}
+        if broker.email and broker.email != site.get_from_email():
+            kwargs = {'reply_to': broker.email}
         get_email_backend(connection=site.get_email_connection()).send(
             from_email=site.get_from_email(), recipients=recipients,
             bcc=broker_recipients + broker_bcc,
-            reply_to=broker.email,
             template='notification/organization_updated.eml',
             context={
                 'broker': broker, 'app': app,
@@ -349,7 +355,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
                     'organization': {
                         'profile': site.as_absolute_uri(reverse(
                             'saas_organization_profile', args=(organization,)))}
-                }})
+                }}, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -639,17 +645,19 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
         back_url = "%s?plan=%s" % (site.as_absolute_uri(
             reverse('saas_organization_cart',
                 args=(subscription.organization,))), subscription.plan)
+        kwargs = {}
+        if broker.email and broker.email != site.get_from_email():
+            kwargs = {'reply_to': broker.email}
         get_email_backend(connection=site.get_email_connection()).send(
             from_email=site.get_from_email(),
             recipients=recipients,
-            reply_to=broker_recipients[0],
             bcc=bcc + broker_recipients + broker_bcc,
             template='notification/expires_soon.eml',
             context={'broker': get_broker(), 'app': app,
                 'back_url': back_url, 'nb_days': nb_days,
                 'organization': subscription.organization,
                 'plan': subscription.plan,
-                'provider': subscription.plan.organization})
+                'provider': subscription.plan.organization}, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
