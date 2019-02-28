@@ -16,7 +16,9 @@
     <meta name="twitter:domain" content="https://djaodjin.com" />
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
-    <link rel="stylesheet" media="screen" href="/static/cache/base.css" />
+    {% assets "css_base" %}
+    <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
+    {% endassets %}
     <style media="screen">
 [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
   display: none !important;

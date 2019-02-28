@@ -8,6 +8,12 @@ from django.conf import settings
 
 #pylint: disable=invalid-name
 
+css_base = Bundle(
+    os.path.join(settings.HTDOCS, 'static', 'cache', '_base.css'),
+    filters=[],
+    output='cache/base.css', debug=False)
+register('css_base', css_base)
+
 css_email = Bundle(
     os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
     filters=['less', 'cssmin'],

@@ -182,7 +182,7 @@ build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/base/*.scss)
-	cd $(srcDir) && $(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/base.css
+	cd $(srcDir) && $(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/_base.css
 	cd $(srcDir) && DEBUG=1 $(PYTHON) manage.py assets build
 
 # Once tests are completed, run 'coverage report'.
