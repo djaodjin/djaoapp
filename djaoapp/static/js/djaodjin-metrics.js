@@ -113,7 +113,7 @@ function updateChart(container, data, unit, dataScale, extra) {
             .margin({top: 50, right: 20, bottom: 60, left: marginLeft})
             .useInteractiveGuideline(true);
 
-        chart.legend.key(function(d){return d.title})
+        chart.legend.key(function(d){return d.title ? d.title : d.key; })
         chart.interactiveLayer.tooltip.contentGenerator(function(d) {
             var hoverDate = d.value;
 
@@ -133,7 +133,8 @@ function updateChart(container, data, unit, dataScale, extra) {
 
             // Replacing slug with title
             $.each($html.find("td.key"), function(index, element){
-                var title = data[index].title;
+                var title = data[index].title ?
+                    data[index].title : data[index].key;
                 $(element).text(title);
             });
 
