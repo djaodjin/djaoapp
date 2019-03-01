@@ -10,11 +10,12 @@
      data-trip data-trip-index="1"
      data-trip-content="<h2>Subscriptions</h2><p>List of all your active subscriptions.<br />You can manage all your active subscriptions here.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
      data-trip-position="screen-center">
-<div class="table-responsive" style="min-height: 400px;">
+<h4>Active subscriptions</h4>
+<div class="table-responsive mb-4">
 <table class="table">
  <thead>
   <tr>
-   <th>Subscribed to</th>
+   <th>Plan</th>
    <th>Until</th>
    <th></th>
    <th></th>
@@ -46,7 +47,7 @@
   </tr>
   <tr v-show="itemsLoaded && items.count === 0" v-cloak>
    <td colspan="4">
-       <h4 class="text-center"><em>No subcriptions<span v-show="params.q"> [[params.q]]</span></em></h4>
+       <h5 class="text-center"><em>No subcriptions<span v-show="params.q"> [[params.q]]</span></em></h5>
    </td>
   </tr>
  </tbody>
@@ -140,6 +141,34 @@
     </form>
 </div>
 <!-- /modal dialog to confirm unsubscribe -->
+</div> <!-- /controller -->
+<div id="expired-subscriptions-list-container">
+<div v-show="itemsLoaded && items.results.length > 0" v-cloak>
+<h4>Expired subscriptions</h4>
+<div class="table-responsive" style="min-height: 400px;">
+<table class="table">
+ <thead>
+  <tr>
+   <th>Plan</th>
+   <th>Expired</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr v-for="(entry, index) in items.results">
+   <td>
+       <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+   </td>
+   <td>
+        [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "Never" ]] ([[entry.ends_at | relativeDate]])
+   </td>
+  </tr>
+ </tbody>
+</table>
+</div>
+<div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+</div>
+</div>
 </div> <!-- /controller -->
 </section>
 {% endblock %}
