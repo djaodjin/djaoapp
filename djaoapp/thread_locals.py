@@ -137,6 +137,16 @@ def get_active_theme():
     return get_current_site().slug
 
 
+def get_disabled_authentication(request):
+    app = get_current_app()
+    return app.authentication == app.AUTH_DISABLED
+
+
+def get_disabled_registration(request):
+    app = get_current_app()
+    return app.authentication != app.AUTH_ENABLED
+
+
 def is_current_broker(organization_slug):
     return (get_current_broker().slug == organization_slug
             and not is_testing(get_current_site()))

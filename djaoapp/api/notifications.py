@@ -13,7 +13,7 @@ from rules.mixins import AppMixin
 from saas.models import Price, get_broker
 
 from ..compat import reverse
-from ..locals import get_current_site, get_current_app
+from ..thread_locals import get_current_site, get_current_app
 
 
 def get_test_email_context():

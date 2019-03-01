@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -28,7 +28,7 @@ from signup.utils import has_invalid_password
 from saas.utils import get_role_model
 
 from .compat import reverse
-from .locals import get_current_broker
+from .thread_locals import get_current_broker
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 
 # This logger is really only useful for 'rules' in debug mode.

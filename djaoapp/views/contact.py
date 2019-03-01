@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -22,8 +22,8 @@ from survey.models import SurveyModel
 from survey.views.response import ResponseCreateView
 
 from ..compat import reverse
-from ..locals import get_current_app
 from ..signals import contact_requested
+from ..thread_locals import get_current_app
 
 
 LOGGER = logging.getLogger(__name__)

@@ -326,10 +326,9 @@
       "slug": "djaoapp",
       "account": 2,
       "domain": null,
-      "session_backend": 1,
       "tag": "streetside"
     },
-    "model": "djaoapp.Site", "pk": 1
+    "model": "multitier.Site", "pk": 1
 },
 {
     "fields": {
@@ -338,33 +337,26 @@
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
-      "session_backend": 1,
       "tag": "streetside"
     },
-    "model": "djaoapp.Site", "pk": 2
+    "model": "multitier.Site", "pk": 2
 },
 {
     "fields": {
       "slug": "djaoapp",
       "account": 2,
-      "domain": null,
-      "tag": "streetside",
       "registration": 3
     },
-    "model": "djaoapp.App", "pk": 1
+    "model": "rules.App", "pk": 1
 },
 {
     "fields": {
       "slug": "cowork",
       "account": 4,
-      "domain": null,
-      "is_path_prefix": true,
-      "tag": "streetside",
-      "db_name": "cowork",
       "entry_point": "http://localhost:8024",
       "registration": 1
     },
-    "model": "djaoapp.App", "pk": 2
+    "model": "rules.App", "pk": 2
 },
 {
     "fields": {

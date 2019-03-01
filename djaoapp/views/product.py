@@ -32,7 +32,7 @@ from saas.views.plans import CartPlanListView
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 
-from ..locals import get_current_broker
+from ..thread_locals import get_current_broker
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
 

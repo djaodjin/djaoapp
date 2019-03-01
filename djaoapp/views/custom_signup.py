@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -23,7 +23,7 @@ from rules.mixins import AppMixin
 from ..compat import reverse
 from ..forms.custom_signup import (ActivationForm, PersonalRegistrationForm,
     SigninForm, SignupForm, TogetherRegistrationForm)
-from ..locals import get_current_broker
+from ..thread_locals import get_current_broker
 from ..mixins import RegisterMixin
 
 

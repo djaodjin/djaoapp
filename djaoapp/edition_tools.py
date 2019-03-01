@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -23,7 +23,7 @@ from saas.decorators import _valid_manager
 from saas.models import Organization, get_broker, is_broker
 
 from .compat import csrf, is_authenticated, reverse
-from .locals import is_streetside, is_testing
+from .thread_locals import is_streetside, is_testing
 
 
 LOGGER = logging.getLogger(__name__)

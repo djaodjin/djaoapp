@@ -24,7 +24,7 @@ from signup.utils import (has_invalid_password,
     printable_name as user_printable_name)
 
 from .compat import reverse
-from .locals import get_current_app
+from .thread_locals import get_current_app
 
 #pylint: disable=unused-argument
 #pylint: disable=protected-access

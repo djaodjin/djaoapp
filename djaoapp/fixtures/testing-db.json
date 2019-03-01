@@ -20,13 +20,10 @@
     "fields": {
       "slug": "cowork",
       "account": 3,
-      "domain": null,
-      "db_name": "cowork",
-      "tag": "streetside",
       "entry_point": "http://localhost:8024",
       "registration": 1
     },
-    "model": "djaoapp.App", "pk": 3
+    "model": "rules.App", "pk": 3
 },
 {
     "fields": {

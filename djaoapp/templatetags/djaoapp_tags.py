@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 from django import template
@@ -13,7 +13,7 @@ from saas.templatetags.saas_tags import attached_organization
 from django.utils.six.moves.urllib.parse import urljoin
 
 from ..compat import reverse
-from ..locals import is_streetside
+from ..thread_locals import is_streetside
 
 
 register = template.Library()

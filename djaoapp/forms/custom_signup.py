@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -22,7 +22,7 @@ from signup.forms import (ActivationForm as ActivationFormBase, NameEmailForm,
     PasswordConfirmMixin)
 
 from .fields import PhoneNumberField
-from ..locals import get_current_app
+from ..thread_locals import get_current_app
 
 
 class MissingFieldsMixin(object):

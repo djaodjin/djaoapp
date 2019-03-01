@@ -20,9 +20,6 @@ DB_HOST = ''
 DB_PORT = 5432
 SEND_EMAIL = True
 
-RULES_APP_MODEL = 'djaoapp.App'
-MULTITIER_SITE_MODEL = 'djaoapp.Site'
-
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
@@ -32,8 +29,7 @@ if os.getenv('DEBUG'):
 
 API_DEBUG = DEBUG
 
-if (getattr(sys.modules[__name__], 'RULES_APP_MODEL', None)
-    and getattr(sys.modules[__name__], 'RULES_APP_MODEL') != 'djaoapp.App'):
+if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
     RULES_APPS = (RULES_APP_MODEL.split('.')[0],)
 else:
     RULES_APPS = tuple([])
@@ -320,7 +316,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CRISPY_CLASS_CONVERTERS = {'textinput':"form-control"}
 
 EXTENDED_TEMPLATES = {
-    'ASSETS_DIRS_CALLABLE': 'djaoapp.locals.get_current_assets_dirs',
+    'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
     'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
 }
 
@@ -490,6 +486,10 @@ LOGGING = {
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_ACTIVATION_DAYS': 30,
+    'DISABLED_AUTHENTICATION':
+        'djaoapp.thread_locals.get_disabled_authentication',
+    'DISABLED_REGISTRATION':
+        'djaoapp.thread_locals.get_disabled_registration',
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
@@ -576,27 +576,27 @@ SAAS = {
         sys.modules[__name__], 'USE_FIXTURES', False),
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'BROKER': {
-        'GET_INSTANCE': 'djaoapp.locals.get_current_broker',
-        'IS_INSTANCE_CALLABLE': 'djaoapp.locals.is_current_broker',
-        'BUILD_ABSOLUTE_URI_CALLABLE': 'djaoapp.locals.provider_absolute_url',
+        'GET_INSTANCE': 'djaoapp.thread_locals.get_current_broker',
+        'IS_INSTANCE_CALLABLE': 'djaoapp.thread_locals.is_current_broker',
+        'BUILD_ABSOLUTE_URI_CALLABLE': 'djaoapp.thread_locals.provider_absolute_url',
     },
     'PROCESSOR': {
         'PUB_KEY': STRIPE_PUB_KEY,
         'PRIV_KEY': STRIPE_PRIV_KEY,
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
         'CLIENT_ID': STRIPE_CLIENT_ID,
-        'AUTHORIZE_CALLABLE': 'djaoapp.locals.get_authorize_processor_url',
-        'REDIRECT_CALLABLE': 'djaoapp.locals.processor_redirect',
+        'AUTHORIZE_CALLABLE': 'djaoapp.thread_locals.get_authorize_processor_url',
+        'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },
-    'PROCESSOR_BACKEND_CALLABLE': 'djaoapp.locals.dynamic_processor_keys',
+    'PROCESSOR_BACKEND_CALLABLE': 'djaoapp.thread_locals.dynamic_processor_keys',
 }
 
 # Software-as-a-Service (forward requests with session data)
 RULES = {
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'ACCOUNT_MODEL': 'saas.Organization',
-    'DEFAULT_APP_CALLABLE': 'djaoapp.locals.get_current_app',
+    'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
     'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
@@ -629,10 +629,10 @@ def theme_dir(account):
 
 PAGES = {
     'ACCOUNT_MODEL': 'saas.Organization',
-    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.locals.get_current_broker',
-    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.locals.get_default_storage',
+    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
+    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'ACCOUNT_URL_KWARG' : 'app',
-    'ACTIVE_THEME_CALLABLE': 'djaoapp.locals.get_active_theme',
+    'ACTIVE_THEME_CALLABLE': 'djaoapp.thread_locals.get_active_theme',
     'EXTRA_MIXIN': djaoapp.extras.pages.ExtraMixin,
     'PUBLIC_ROOT': HTDOCS,
     'TEMPLATES_BLACKLIST': [
