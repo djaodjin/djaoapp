@@ -392,3 +392,8 @@ $dashboard-sidebar-color:    white;
 {
     color: $dashboard-sidebar-color;
 }
+
+#subscriptions table td
+{
+    vertical-align: middle !important;
+}
