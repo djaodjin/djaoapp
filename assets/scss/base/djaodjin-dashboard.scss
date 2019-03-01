@@ -69,6 +69,11 @@ $dashboard-sidebar-color:    white;
                              in pixel */
 }
 
+.dashboard-nav-main .navbar
+{
+    width: $dashboard-sidebar-width;
+}
+
 .dashboard-nav-menu {
   height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$navbar-height}));
   overflow-y: auto;
