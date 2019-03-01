@@ -70,21 +70,25 @@
 {%- endmacro %}
 
 {% block sidebar %}
-<ul class="nav">
-  <li><a href="#authentication">Authentication</a></li>
+<ul class="nav flex-column">
+  <li class="nav-item">
+      <a class="nav-link" href="#authentication">Authentication</a>
+  </li>
   {% for tag in tags %}
-  <li><a href="#{{tag|lower}}">{{tag}}</a></li>
+  <li class="nav-item">
+      <a class="nav-link" href="#{{tag|lower}}">{{tag}}</a>
+  </li>
   {% endfor %}
 </ul>
 <hr />
-<ul class="nav hidden-sm hidden-md hidden-lg">
+<ul class="nav flex-column d-md-none">
     {% include "generic_navbar.html" %}
 </ul>
 {% endblock %}
 
 {% block content %}
-<div>
-    <section class="row method">
+<div class="">
+    <section class="row">
       <div class="col-sm-7">
         <a name="authentication" href="#authentication"><h2>Authentication</h2></a>
         <p>
@@ -118,7 +122,7 @@ curl uses the -u flag to pass basic auth credentials.
       </div>
     </section>
     {% for api_end_point in api_end_points %}
-    <section class="row method">
+    <section class="row">
       <div class="col-sm-7">
         {% if api_end_point.tags != variable_watcher %}
         <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"><h2>{{api_end_point.tags|capitalize}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>

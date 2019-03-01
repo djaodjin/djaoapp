@@ -65,6 +65,9 @@ class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
     .. code-block:: http
 
         POST /api/auth/register/ HTTP/1.1
+
+    .. code-block:: json
+
         {
           "username": "joe1",
           "password": "yoyo",
@@ -74,7 +77,7 @@ class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
 
     responds
 
-    .. code-block:: http
+    .. code-block:: json
 
         {
             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6\

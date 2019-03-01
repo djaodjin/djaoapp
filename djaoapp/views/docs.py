@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -301,7 +301,11 @@ class APIDocView(TemplateView):
         generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
+        count = 0
         for path, path_details in schema.paths.items():
+            #if count > 0:
+            #    break
+            count = count + 1
             for func, func_details in path_details.items():
                 if func.lower() == 'patch':
                     # We merge PUT and PATCH together.
@@ -309,7 +313,8 @@ class APIDocView(TemplateView):
                 try:
                     sep = ""
                     in_examples = False
-                    tags |= set(func_details.tags)
+                    func_tags = func_details.tags
+                    tags |= set(func_tags)
                     description = ""
                     examples = ""
                     for line in func_details.description.splitlines():
@@ -335,7 +340,7 @@ class APIDocView(TemplateView):
                         'operationId': func_details.operationId,
                         'func': func,
                         'path': path,
-                        'tags': ''.join(func_details.tags),
+                        'tags': ''.join(func_tags),
                         'description': description,
                         'parameters': func_details.parameters,
                         'responses': func_details.responses,

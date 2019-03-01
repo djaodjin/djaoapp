@@ -239,6 +239,7 @@ $dashboard-sidebar-color:    white;
   .dashboard-inner-container .dashboard-content
   {
     margin-left: $dashboard-sidebar-width;
+    width: calc(100vw - #{$dashboard-sidebar-width});
   }
 
   .dashboard-inner-container .navbar-brand-container {
