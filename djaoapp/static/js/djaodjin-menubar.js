@@ -37,6 +37,16 @@ $(document).ready(function(){
                 open = true;
             }
         });
+        $('[data-trnc]').each(function(){
+            var $el = $(this);
+            var len = parseInt($el.attr('data-trnc-len'));
+            var old = $el.text();
+            if(old.length > len){
+                var upd = old.substr(0, len) + '&hellip;';
+                $el.html(upd);
+            }
+            $el.removeAttr('data-trnc');
+        });
     })();
 });
 

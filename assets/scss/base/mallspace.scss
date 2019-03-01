@@ -723,3 +723,16 @@ section#hosting{
     border-bottom: 1px solid #e0e0e0;
 }
 
+.dashboard-nav-main .navbar
+{
+    width: 220px;
+}
+
+[data-trnc]
+{
+    width: 0 !important;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    visibility: hidden;
+}
