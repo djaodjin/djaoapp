@@ -79,7 +79,7 @@ your credit card number.
                 </div>
             </div>
         </fieldset>
-        <fieldset class="col-lg-5 col-md-5 col-lg-offset-1 col-md-offset-1">
+        <fieldset class="offset-md-1 col-md-5">
             <legend>Billing Address</legend>
             {% include "_field.html" with bound_field=form|get_bounded_field:'card_name' hide_labels=form.hide_labels %}
             {% include "_field.html" with bound_field=form|get_bounded_field:'card_address_line1' hide_labels=form.hide_labels %}

@@ -4,7 +4,7 @@
 
 {% block saas_page_layout %}
 <section>
-  <div id="import-transaction-container" class="col-md-6 col-md-offset-3">
+  <div id="import-transaction-container" class="offset-md-3 col-md-6">
     <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">

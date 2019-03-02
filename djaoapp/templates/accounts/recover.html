@@ -2,29 +2,31 @@
 
 {% block accounts_content %}
 <div class="container">
-    <div class="col-md-6 col-xs-12 center">
-        <div class="page-header">
-            <h1 class="text-center"><i class="fa fa-ellipsis-h"></i> Forgotten password</h1>
-        </div>
-        <p>
-            Please enter your e-mail address. Your password will be reset and you will get a chance to choose a new password.
-        </p>
-        {% if form %}
-        {% include "accounts/_recover_form.html" %}
-        {% endif %}
-        <hr />
-        <div class="row">
-            <div class="col-md-8">
+    <div class="row">
+        <div class="offset-md-3 col-md-6 col-xs-12">
+            <div class="page-header">
+                <h1 class="text-center"><i class="fa fa-ellipsis-h"></i> Forgotten password</h1>
+            </div>
+            <p>
+                Please enter your e-mail address. Your password will be reset and you will get a chance to choose a new password.
+            </p>
+            {% if form %}
+            {% include "accounts/_recover_form.html" %}
+            {% endif %}
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
                 Don't have an account? <i class="fa fa-long-arrow-right"></i> <a href="/register/{% if next %}?next={{next}}{% endif %}">Sign up</a>
+                </div>
+                <div class="col-md-4">
+                    <span class="text-danger pull-right">* required fields</span>
+                </div>
             </div>
-            <div class="col-md-4">
-                <span class="text-danger pull-right">* required fields</span>
-            </div>
-        </div>
-        <p style="margin-top: 25px;">
+            <p style="margin-top: 25px;">
 TIP: You are advised to verify the domain and certificate in the URL bar before
 submitting your e-mail address.
-        </p>
+            </p>
+        </div>
     </div>
 </div>
 {% endblock %}
