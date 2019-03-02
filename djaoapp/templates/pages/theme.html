@@ -4,32 +4,26 @@
 
 {% block saas_help %}
 <p>
-When you are modifying root templates, like <filename>base.html</filename>
-for example, you may inadvertently break the dashboard and become unable
-to access this page to upload a fixed package.
+When you are modifying root templates (ex: <filename>base.html</filename>),
+you may inadvertently break the dashboard and become unable to access this
+page to upload a fix.
 </p>
 <p>
-It is recommended to make a backup copy of the original theme before you
-start updating it by clicking on the <em>Download</em> link.
+You can reset to the default theme, but you will need
+<a href="{{urls.user.profile_redirect}}">an API key</a> to trigger
+the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a>
+from the command line.
 </p>
+<pre class="code"><code>curl -i -u *api_key*: -X DELETE https://{{site_available_at_url}}/api/themes/</code></pre>
 <p>
-In the advent you are unable to access this page to upload a fixed package,
-you could the restore the backup theme through an API call as such:
-</p>
-<pre class="code"><code>curl -i -u *api_key*:  -X POST -F file=@*package*.zip https://{{site_available_at_url}}api/themes/</code></pre>
-<p>
-Thus also make sure to obtain your API key before uploading a new theme.
-</p>
-<p>
-Note that you can use the API call as part of your automated deployment process
-as well.
+<a target="_blank" href="https://djaodjin.com/docs/themes/">Read more about theme customization ... &raquo;</a>
 </p>
 {% endblock %}
 
 {% block saas_content %}
 <div>
   <div class="mt-4">
-    <div class="pages-upload"
+    <div id="theme-upload" class="pages-upload"
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
       <div class="dropzone-previews previewsContainer">
@@ -38,6 +32,7 @@ as well.
     </div>
     <div class="text-center">
       <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
+      <button id="reset-theme" class="btn btn-danger">Reset to default</button>
     </div>
   </div>
 </div>
@@ -48,6 +43,20 @@ as well.
 jQuery(document).ready(function($) {
   $(".pages-upload").djupload({
       uploadUrl: "{{urls.pages.api_themes}}",
+  });
+  $("#reset-theme").click(function(event) {
+     $.ajax({
+         method: "DELETE",
+         url: "{{urls.pages.api_themes}}",
+         datatype: "json",
+         contentType: "application/json; charset=utf-8",
+         success: function(resp) {
+           showMessages(["reset to default theme"], "success");
+         },
+         error: function(resp) {
+           showErrorMessages(resp);
+         }
+     });
   });
 });
 </script>
