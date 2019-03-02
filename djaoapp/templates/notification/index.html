@@ -1,73 +1,31 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Notifications{% endblock %}
+{% block saas_title %}Notification e-mails{% endblock %}
 
 
 {% block saas_page_layout %}
 <section id="notifications">
-  <div>
-  <h2>Notification e-mails</h2>
-  <table class="table">
-    <tr id="card_updated">
-      <td><a href="{{urls.notifications}}card_updated/">Card updated</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="charge_receipt">
-      <td><a href="{{urls.notifications}}charge_receipt/">Charge receipt</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="claim_code_generated">
-      <td><a href="{{urls.notifications}}claim_code_generated/">Claim code generated</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="expires_soon">
-      <td><a href="{{urls.notifications}}expires_soon/">Expires soon</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="order_executed">
-      <td><a href="{{urls.notifications}}order_executed/">Order executed</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="organization_updated">
-      <td><a href="{{urls.notifications}}organization_updated/">Organization updated</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="password_reset">
-      <td><a href="{{urls.notifications}}password_reset/">Password reset</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="user_activated">
-      <td><a href="{{urls.notifications}}user_activated/">User activated</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="user_contact">
-      <td><a href="{{urls.notifications}}user_contact/">User contact</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="user_registered">
-      <td><a href="{{urls.notifications}}user_registered/">User registered</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    {% for role_descr in role_descriptions %}
-    <tr id="{{role_descr.slug}}_role_added">
-      <td><a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">{{role_descr.title}} added</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    {% endfor %}
-    <tr id="user_relation_requested">
-      <td><a href="{{urls.notifications}}user_relation_requested/">User relation requested</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="verification">
-      <td><a href="{{urls.notifications}}verification/">Verification</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-    <tr id="sales_report">
-      <td><a href="{{urls.notifications}}weekly_sales_report_created/">Weekly sales report generated</a></td>
-      <td><button class="btn btn-secondary send-test-email">Send test e-mail</button></td>
-    </tr>
-  </table>
+  {% for key, vals in notifications.items() %}
+  <div id="{{key}}" class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{urls.notifications}}{{key}}/">{{vals.title}}</a></h5>
+      <p class="card-text">
+{{vals.descr}}
+      </p>
+      <button class="btn btn-secondary send-test-email">Send test e-mail</button>
+    </div>
   </div>
+  {% endfor %}
+  {% for role_descr in role_descriptions %}
+  <div id="{{role_descr.slug}}_role_added" class="card">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">{{role_descr.title}} added</a></h5>
+      <p class="card-text">
+      </p>
+      <button class="btn btn-secondary send-test-email">Send test e-mail</button>
+    </div>
+  </div>
+  {% endfor %}
 </section>
 {% endblock %}
 
