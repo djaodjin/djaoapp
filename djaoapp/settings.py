@@ -697,7 +697,7 @@ PAGES = {
         'saas/_bank_use.html',
         'saas/_card_use.html',
         'saas/_invoiceables.html',
-        'saas/_plan_form.html',
+        'saas/profile/plans/_form.html',
 #        'saas/_plan_short.html',
         'saas/_provider_sidebar.html',
         'saas/_subscriber_sidebar.html',

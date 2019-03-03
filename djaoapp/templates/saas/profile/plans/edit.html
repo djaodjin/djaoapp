@@ -11,12 +11,7 @@ Update Plan
             <div class="col-lg-6">
                 {% block saas_content %}
                 <div data-trip data-trip data-trip-index="1" data-trip-content="<h2>Plan</h2><p>Set the title, description and price of a plan.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-                    <form method="post" @submit.prevent="updatePlan">
-                        {% include "saas/profile/plans/_form.html" %}
-                        <div class="form-action text-center">
-                            <button class="btn btn-block btn-primary btn-lg" type="submit">Update</button>
-                        </div>
-                    </form>
+                    {% include "saas/profile/plans/_form.html" %}
                 </div>
                 {% endblock %}
                 <div class="card border-danger mt-3">

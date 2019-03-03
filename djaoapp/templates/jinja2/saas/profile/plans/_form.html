@@ -8,10 +8,10 @@
     {{input_field(form['description'], form.hide_labels)}}
     <fieldset>
         <legend>Pricing</legend>
-        <div class="row">
-            {{input_field(form['unit'], form.hide_labels, "col-md-4")}}
-            {{input_field(form['period_amount'], form.hide_labels, "col-md-4")}}
-            {{input_field(form['interval'], form.hide_labels, "col-md-4")}}
+        <div class="row" style="margin-left:0;margin-right:0;">
+            {{input_field(form['unit'], form.hide_labels)}}
+            {{input_field(form['period_amount'], form.hide_labels)}}
+            {{input_field(form['interval'], form.hide_labels)}}
         </div>
         {{input_field(form['period_length'], form.hide_labels)}}
         {{input_field(form['advance_discount'], form.hide_labels)}}
@@ -22,7 +22,7 @@
         {{input_field(form['is_not_priced'], form.hide_labels)}}
     </fieldset>
     <div class="form-action text-center">
-        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+        <button type="submit" class="btn btn-block btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
     </div>
 </form>
 {% endblock %}
