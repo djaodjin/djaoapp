@@ -5,28 +5,26 @@
 {# media editors #}
 {# ------------- #}
 <div id="media-gallery" class="dj-gallery custom-gallery">
-  <div class="col-md-12">
-    <hr>
-    <div class="form-group">
-        <input placeholder="Search..." class="dj-gallery-filter dj-input" type="text" >
-        <div class="progress gallery-upload-progress" style="display:none;">
-          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-            <span class="progress-bar-info"></span>
-          </div>
-        </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="dj-gallery-items">
-            </div>
-            <div class="clickable-area">
-              <em>Drag'n'drop or click here.</em>
+  <div class="row">
+    <div class="col-12">
+      <div style="margin-left:5px;margin-right:5px;">
+        <hr />
+        <div class="form-group">
+          <input placeholder="Search..." class="dj-gallery-filter dj-input" type="text" >
+          <div class="progress gallery-upload-progress" style="display:none;">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+              <span class="progress-bar-info"></span>
             </div>
           </div>
         </div>
-        <div class="dj-gallery-info-item"></div>
+        <div>
+          <div class="dj-gallery-items">
+          </div>
+          <div class="clickable-area">
+            <em>Drag'n'drop or click here.</em>
+          </div>
+          <div class="dj-gallery-info-item"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -145,7 +143,9 @@ jQuery(document).ready(function($) {
     <div class="col-sm-10">
       <ul class="nav nav-tabs dashboard-tab" role="tablist">
         {# tabs are inserted here #}
-        <li class="active"><a href="#cssfile" data-toggle="tab">base.css</a></li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#cssfile" data-toggle="tab">base.css</a>
+        </li>
       </ul>
     </div>
     <div class="col-sm-2 text-right">
