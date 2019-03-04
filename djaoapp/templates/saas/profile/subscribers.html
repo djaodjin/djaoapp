@@ -51,14 +51,14 @@ Subscriptions to {{organization.printable_name}}
                         </td>
                     </tr>
                 </tbody>
-                <tbody v-show="tables.registered.loaded && tables.registered.count == 0" v-cloak>
+                <tbody class="has-no-results" v-show="tables.registered.loaded && tables.registered.count == 0" v-cloak>
                     <tr>
                         <td colspan="2">
                             <p class="text-center my-2"><em>No registered users<span v-show="params.q"> [[params.q]]</span></em></p>
                         </td>
                     </tr>
                 </tbody>
-                <tbody v-show="tables.registered.loaded && tables.registered.results.length > 0" v-cloak>
+                <tbody class="has-results" v-show="tables.registered.loaded && tables.registered.results.length > 0" v-cloak>
                     <tr v-for="entry in tables.registered.results">
                         <td>
                             <a :href="'{{urls.user.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
@@ -203,7 +203,7 @@ Subscriptions to {{organization.printable_name}}
         </td>
       </tr>
     </tbody>
-    <tbody v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'organization.printable_name')"
+    <tbody class="has-results" v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'organization.printable_name')"
            v-show="params.o === 'organization' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
       <tr v-for="entry in [group[0]]">
         <td colspan="5">
@@ -227,7 +227,8 @@ Subscriptions to {{organization.printable_name}}
         </td>
       </tr>
     </tbody>
-    <tbody v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'plan.title')"
+    <tbody class="has-results"
+           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'plan.title')"
            v-show="params.o === 'plan' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
@@ -256,7 +257,8 @@ Subscriptions to {{organization.printable_name}}
             </td>
         </tr>
     </tbody>
-    <tbody v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'created_at')"
+    <tbody class="has-results"
+           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'created_at')"
            v-show="params.o === 'created_at' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
@@ -284,7 +286,8 @@ Subscriptions to {{organization.printable_name}}
             </td>
         </tr>
     </tbody>
-    <tbody v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'ends_at')"
+    <tbody class="has-results"
+           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'ends_at')"
            v-show="params.o === 'ends_at' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
