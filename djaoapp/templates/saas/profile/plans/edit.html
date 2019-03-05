@@ -46,7 +46,7 @@ Update Plan
             </div>
             <div class="col-lg-6">
                 <div style="margin-bottom: 20px;">
-                    <a href="{{ url('saas_plan_subscribers', args=[organization, form.instance]) }}" class="btn btn-primary">Plan Subscribers</a>
+                    <a href="{{urls.plan_subscribers}}" class="btn btn-primary">Plan Subscribers</a>
                 </div>
                 <p data-plan="{{form.instance.slug}}">
                     <button id="activate-plan" class="activate btn btn-primary {% if form.instance.is_active %}activated{% endif %}" data-trip-index="2" data-trip-content="<p>Toggle this plan between available for subscription or not.</p>" data-trip-position="s">{% if form.instance.is_active %}Deactivate{% else %}Activate{% endif %}</button> Users can only subscribe to active plans.
