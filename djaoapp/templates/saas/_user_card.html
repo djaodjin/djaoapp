@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="row no-gutters">
+      <div class="col-3">
+          <div style="margin: 20px 0 20px 20px;">
+            <a :href="'/users/' + item.user.slug + '/'"><img src="{{'/static/img/default-user.png'|djasset}}" class="card-img-top" alt=""></a>
+          </div>
+      </div>
+      <div class="col-9">
+          <div class="card-body">
+            <button class="btn btn-danger btn-sm" style="float: right;"
+                data-trip data-trip-index="3"
+                data-trip-content="<p>Click here to revoke access to the user.</p>"
+                data-trip-position="s"
+                @click="remove(index)"><i class="fa fa-remove"></i></button>
+            <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.slug]]</a></h5>
+            <h6 class="card-subtitle mb-2 text-muted">[[item.grant_key ? "invited" : "active"]]</h6>
+            <p class="card-text">[[item.user.email]]</p>
+            <button class="btn btn-secondary btn-sm"
+                v-if="item.request_key" @click="save(item.user)">Grant</button>
+            <button class="btn btn-secondary btn-sm"
+                v-if="item.grant_key" @click="sendInvite(item.user.slug)">Resend Invite</button>
+          </div>
+      </div>
+  </div>
+</div>
