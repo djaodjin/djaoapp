@@ -9,7 +9,7 @@
   data-trip-position="screen-center"
   >
 <div id="user-relation-pending-list-container" class="mt-3 mb-4">
-  <div>
+  <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
     <button class="btn btn-primary" type="button" @click.prevent="showPending = !showPending" v-text="showPending ? 'Hide Pending Users' : 'Show Pending Users'">Show Pending Users</button>
   </div>
 
