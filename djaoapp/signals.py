@@ -120,7 +120,7 @@ def user_registered_notice(sender, user, **kwargs):
     broker = get_broker()
     app = get_current_app()
     site = get_current_site()
-    if settings.FEATURES_DEBUG:
+    if hasattr(app, 'welcome_email') and app.welcome_email:
         back_url = site.as_absolute_uri()
         get_email_backend(connection=site.get_email_connection()).send(
             from_email=site.get_from_email(), recipients=[user.email],
