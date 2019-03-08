@@ -87,6 +87,7 @@ js_djaodjin_vue = Bundle(
     'vendor/chardinjs.js',
     'vendor/vue-croppa.min.js',
     'js/djaodjin-upload.js',
+    'js/djaodjin-pages.js',
     'js/djaodjin-dashboard.js',
     'js/djaodjin-signup-vue.js',
     'js/djaodjin-saas-vue.js',

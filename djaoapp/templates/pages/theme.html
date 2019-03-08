@@ -37,27 +37,3 @@ from the command line.
   </div>
 </div>
 {% endblock %}
-
-{% block dashboard_bodyscripts %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".pages-upload").djupload({
-      uploadUrl: "{{urls.pages.api_themes}}",
-  });
-  $("#reset-theme").click(function(event) {
-     $.ajax({
-         method: "DELETE",
-         url: "{{urls.pages.api_themes}}",
-         datatype: "json",
-         contentType: "application/json; charset=utf-8",
-         success: function(resp) {
-           showMessages(["reset to default theme"], "success");
-         },
-         error: function(resp) {
-           showErrorMessages(resp);
-         }
-     });
-  });
-});
-</script>
-{% endblock %}

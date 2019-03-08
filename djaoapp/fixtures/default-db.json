@@ -351,15 +351,6 @@
 },
 {
     "fields": {
-      "slug": "cowork",
-      "account": 4,
-      "entry_point": "http://localhost:8024",
-      "registration": 1
-    },
-    "model": "rules.App", "pk": 2
-},
-{
-    "fields": {
         "app": 1,
         "rank": 1,
         "path": "/app",
