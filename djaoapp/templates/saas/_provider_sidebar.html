@@ -22,11 +22,6 @@
 </ul>
 <hr />
 <ul class="nav flex-column" data-intro="Roles and permissions" data-position="right">
-    {% if urls.notifications %}
-    <li {% if urls.notifications == request.path %} class="nav-item active"{% endif %}>
-        <a class="nav-link" id="notifications_lnk" href="{{urls.notifications}}"><i class="fa fa-long-arrow-right"></i><span class="">Notifications</span></a>
-    </li>
-    {% endif %}
     {% if urls.pages.theme_base %}
     <li {% if urls.pages.theme_base == request.path %} class="nav-item active"{% endif %}>
         <a class="nav-link" id="pages_theme" href="{{urls.pages.theme_base}}"><i class="fa fa-wrench"></i><span class="">Theme</span></a>

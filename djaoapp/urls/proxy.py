@@ -20,7 +20,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_frictionless_self_provider, url_prefixed)
 from ..views.contact import ContactView
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
-from ..views.notifications import (NotificationDetailView, NotificationListView,
+from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
 from ..views.users import (UserProfileView, UserNotificationsView,
     UserAccessiblesView)
@@ -115,7 +115,7 @@ urlpatterns += site_patterns(
     url_dashboard(r'^proxy/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationDetailView.as_view(), name='notification_detail'),
     url_dashboard(r'^proxy/notifications/',
-        NotificationListView.as_view(), name='notification_base'),
+        RedirectView.as_view(pattern_name='theme_update'), name='notification_base'),
     url_dashboard(r'^proxy/rules/',
         AppDashboardView.as_view(), name='rules_update'),
     url_dashboard(r'^', include('rules.urls.configure')),

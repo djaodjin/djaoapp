@@ -3,6 +3,47 @@
 {% block saas_title %}{{template}} Notification{% endblock %}
 
 {% block saas_page_layout %}
+<div id="code-editor" class="custom-gallery">
+  <ul class="nav nav-tabs dashboard-tab" role="tablist">
+    {# tabs are inserted here #}
+  </ul>
+  <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
+    {# panels are inserted here #}
+  </div>
+  <div id="new-source" class="modal fade"
+       tabindex="-1" role="dialog"
+       aria-labelledby="New source text" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">URL of the page (ex: /hello) ...</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="controls">
+              <input class="dj-input" maxlength="255" type="text"
+                     name="name">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  data-dismiss="modal">Cancel</button>
+          <button id="new-source-submit"
+                  type="button" class="btn btn-primary"
+                  data-dismiss="modal">Create</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+    initCodeEditors("{{api_sources}}");
+});
+  </script>
+</div>
 <iframe src="{{iframe_url}}" frameborder="0" style="height:100vh;width:80%">
 </iframe>
 {% endblock %}
