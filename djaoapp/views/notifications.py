@@ -3,7 +3,6 @@
 
 from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
-from django.template.loader import get_template
 from rules.mixins import AppMixin
 from saas.models import get_broker
 
@@ -50,5 +49,5 @@ class NotificationDetailView(AppMixin, TemplateView):
             'templates': templates,
             'api_sources': reverse('pages_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
-                args=(self.kwargs.get('template'),))})
+                args=(template_name,))})
         return context
