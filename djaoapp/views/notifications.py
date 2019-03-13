@@ -42,14 +42,12 @@ class NotificationDetailView(AppMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(NotificationDetailView, self).get_context_data(**kwargs)
-        contents = ''
-        names = self._get_template_names()
-        if names: 
-            tpl = get_template(names[0])
-            with open(tpl.template.template.filename) as f:
-                contents = f.read()
+        base = 'notification/%s.eml'
+        template_name = self.kwargs.get('template')
+        templates = [{'name': base % 'base', 'index': 0},
+            {'name': base % template_name, 'index': 1}]
         context.update({
-            'contents': contents,
+            'templates': templates,
             'api_sources': reverse('pages_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
                 args=(self.kwargs.get('template'),))})

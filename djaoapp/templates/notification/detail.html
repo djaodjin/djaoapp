@@ -3,47 +3,48 @@
 {% block saas_title %}{{template}} Notification{% endblock %}
 
 {% block saas_page_layout %}
-<div id="code-editor" class="custom-gallery">
+<div id="email-tpl-editor" class="mt-4" style="height: 555px; overflow: hidden;">
   <ul class="nav nav-tabs dashboard-tab" role="tablist">
+    <li class="nav-item"><a class="nav-link active" href="#tab-0" data-toggle="tab">Preview</a></li>
     {# tabs are inserted here #}
   </ul>
   <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
+    <div id="tab-0" class="tab-pane active" role="tabpanel" style="width:100%;height:100%;">
+        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0" style="height:100vh;width:80%"></iframe>
+    </div>
     {# panels are inserted here #}
   </div>
-  <div id="new-source" class="modal fade"
-       tabindex="-1" role="dialog"
-       aria-labelledby="New source text" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">URL of the page (ex: /hello) ...</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="controls">
-              <input class="dj-input" maxlength="255" type="text"
-                     name="name">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary"
-                  data-dismiss="modal">Cancel</button>
-          <button id="new-source-submit"
-                  type="button" class="btn btn-primary"
-                  data-dismiss="modal">Create</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  <script type="text/javascript">
-jQuery(document).ready(function($) {
-    initCodeEditors("{{api_sources}}");
-});
-  </script>
 </div>
-<iframe src="{{iframe_url}}" frameborder="0" style="height:100vh;width:80%">
-</iframe>
+{% endblock %}
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    var api_sources = "{{api_sources}}";
+    var templates = {{templates|safe}};
+    function addPanel(element, name, beforeElem) {
+        var tabsContainer = element.find("[role='tablist']");
+        var contentsContainer = element.find(".tab-content");
+        var idx = tabsContainer.find(">li").length;
+        var tab = $("<li class=\"nav-item\"><a class=\"nav-link" + (idx === 0 ? " active" : "") + "\" href=\"#tab-" + idx + "\" data-toggle=\"tab\">" + name + "</a></li>");
+        var content = $("<div id=\"tab-" + idx + "\" class=\"tab-pane" + (idx === 0 ? " active" : "") + " role=\"tabpanel\" style=\"width:100%;height:100%;\"><div class=\"content\" data-content=\"" + name + "\" style=\"width:100%;min-height:100%;\"></div></div>");
+        tabsContainer.append(tab);
+        contentsContainer.append(content);
+        content.find(".content").djtemplates({
+            api_source_code: api_sources,
+            iframe_view: $("#email-tpl-iframe")[0]
+        });
+    };
+
+    if( templates.length > 0 ) {
+        for( var idx = 0; idx < templates.length; ++idx ) {
+            addPanel($("#email-tpl-editor"), templates[idx].name);
+        }
+    }
+    $('body').on('click', '.dashboard-tab a', function(){
+        var tpl = $(this).text();
+        $('.content[data-content="' + tpl + '"]').trigger('pages.loadresources');
+    });
+    $('.dashboard-tab a').first().click();
+});
+</script>
 {% endblock %}
