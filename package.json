@@ -34,7 +34,8 @@
     "vue": "^2.5.17",
     "vue2-filters": "^0.3.0",
     "uiv": "^0.26.2",
-    "vue-croppa": "^1.3.8"
+    "vue-croppa": "^1.3.8",
+    "javascript-detect-element-resize": "^0.5.3"
     },
     "resolutions": {
         "jquery": "1.11.1"

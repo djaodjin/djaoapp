@@ -5,6 +5,12 @@ Subscriptions to {{organization.printable_name}}
 {% endblock %}
 
 {% block saas_content %}
+<style>
+.chart-area{
+  height: 400px !important;
+  width: 100%;
+}
+</style>
 <section id="subscribers">
 <div id="subscribers-list-container"
      data-trip data-trip-index="1"
@@ -14,6 +20,9 @@ Subscriptions to {{organization.printable_name}}
       {% if registered %}
       <li @click="tabChanged" class="nav-item">
           <a class="nav-link" href="#registered" data-toggle="tab">Registered</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#plans" data-toggle="tab">Plans</a>
       </li>
       {% endif %}
       {% for tab in tabs %}
@@ -75,6 +84,66 @@ Subscriptions to {{organization.printable_name}}
             </div>
         </div>
         {% endif %}
+        <div role="tabpanel" id="plans" class="tab-pane">
+            <div class="clearfix">
+            <form class="form-inline date-chooser pull-right mb-3">
+                <uiv-dropdown class="form-group" append-to-body menu-right>
+                    <div class="input-group mr-2">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text" id="to-inp">To</span>
+                        </div>
+                        <input class="form-control"
+                              data-trip data-trip data-trip-index="2"
+                              data-trip-content="<p>Look back through time.</p>"
+                              data-trip-position="s"
+                              v-model="ends_at"></input>
+                          <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
+                            </button>
+                          </div>
+                    </div>
+                    <select class="form-control"
+                                    v-model="timezone"
+                                    @change="getPlansData">
+                                <option value="local">Local</option>
+                                <option value="utc">UTC</option>
+                            </select>
+                    <template slot="dropdown">
+                        <li>
+                            <uiv-date-picker
+                                 format="{{DATETIME_FORMAT}}"
+                                 v-model="endsAt"
+                                 @input="getPlansData"
+                                 icon-control-left="fa fa-caret-left"
+                                 icon-control-right="fa fa-caret-right" />
+                        </li>
+                    </template>
+                </uiv-dropdown>
+            </form>
+            </div>
+            <div class="chart-content">
+              <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </div>
+            <!-- Display as a table -->
+            <div class="table-responsive">
+                <table class="table" style="font-size:0.7em;">
+                  <tr>
+                    <td></td>
+                    <td v-for="col in planTableDates">[[col[0] | monthHeading]]</td>
+                  </tr>
+                  <tr :id="row.key" v-for="row in plansData.data" :key="row.key">
+                    <td v-if="row.location">
+                        <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span>
+                        <a :href="row.location">[[row.title ? row.title : row.key]]</a>
+                    </td>
+                    <td v-if="!row.location">[[row.title ? row.title : row.key]]</td>
+                    <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], plansData.unit, plansData.scale, false)">[[humanizeCell(col[1], plansData.unit, plansData.scale)]]</td>
+                  </tr>
+                  {% block metrics_extra_data %}
+                  {% endblock %}
+                </table>
+            </div>
+        </div>
         {% for tab in tabs %}
         <div id="{{tab.slug}}"
              class="tab-pane{% if tab.is_active %} active{% endif %}"

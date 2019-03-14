@@ -26,6 +26,7 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/bootstrap.js',
                  'vendor/bootbox.js',
                  'vendor/toastr.js',
+                 'vendor/jquery.resize.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
             filters='yui_js', output='cache/base.js')
