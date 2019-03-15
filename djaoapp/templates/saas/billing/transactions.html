@@ -10,106 +10,67 @@
     </section>
     <section id="transactions">
       <div>
-        <h1 class="text-primary">Transactions</h1>
-        <form class="form-inline">
-          <div class="form-group">
-            <uiv-dropdown append-to-body>
-              <label class="control-label" for="start_at">
-                From
-              </label>
-              <div class="input-group">
-                <input class="form-control date" type="text" v-model="params.start_at">
-                <div class="input-group-btn">
-                  <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
+        <form class="form my-3">
+            <div class="form-row">
+              {% include "saas/_item_list_filter.html" %}
+              <div class="col">
+                <div class="input-group input-group-sm">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="filter-inp">Filter</span>
+                  </div>
+                  <input class="form-control" type="text" v-model="params.q" @input="filterList" />
+                  <div class="input-group-append">
+                    <a id="download" class="btn btn-secondary" role="button"
+                       :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                  </div>
                 </div>
               </div>
-              <template slot="dropdown">
-                <li>
-                  <uiv-date-picker
-                    @input="get"
-                    format="{{DATETIME_FORMAT}}"
-                    v-model="params.start_at"
-                    icon-control-left="fa fa-caret-left"
-                    icon-control-right="fa fa-caret-right" />
-                </li>
-              </template>
-            </uiv-dropdown>
-          </div>
-          <div class="form-group">
-            <uiv-dropdown append-to-body>
-              <label class="control-label" for="ends_at">
-                To
-              </label>
-              <div class="input-group">
-                <input class="form-control" type="text" v-model="params.ends_at">
-                <div class="input-group-btn">
-                  <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
-                </div>
-              </div>
-              <template slot="dropdown">
-                <li>
-                  <uiv-date-picker
-                    @input="get"
-                    v-model="params.ends_at"
-                    icon-control-left="fa fa-caret-left"
-                    icon-control-right="fa fa-caret-right" />
-                </li>
-              </template>
-            </uiv-dropdown>
-          </div>
-          <div class="form-group">
-            <label>Filter</label>
-            <input class="form-control" type="text" v-model="params.q" @input="filterList" />
-          </div>
-          <div class="pull-right">
-            <a id="download" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])">CSV Download</a>
-          </div>
+            </div>
         </form>
         <table class="table table-striped">
           <thead>
             <tr>
                 <th>Date
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('created_at')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('created_at')">
                     <i :class="sortIcon('created_at')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Amount
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('amount')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('amount')">
                     <i :class="sortIcon('amount')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Origin Organization
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('orig_organization')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('orig_organization')">
                     <i :class="sortIcon('orig_organization')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Origin Account
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('orig_account')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('orig_account')">
                     <i :class="sortIcon('orig_account')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Destination Organization
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('dest_organization')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('dest_organization')">
                     <i :class="sortIcon('dest_organization')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Destination Account
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('dest_account')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('dest_account')">
                     <i :class="sortIcon('dest_account')"></i>
-                  </button>
+                  </a>
                 </th>
                 <th>Description
-                  <button class="btn-link btn-sort"
-                    @click="sortBy('description')">
+                  <a class="btn-sort"
+                    @click.prevent="sortBy('description')">
                     <i :class="sortIcon('description')"></i>
-                  </button>
+                  </a>
                 </th>
             </tr>
           </thead>

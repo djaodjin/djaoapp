@@ -1,11 +1,15 @@
-{% extends "users/base.html" %}
+{% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}Accessible by {{user}}{% endblock %}
 
+{% block sidebar %}
+    {% include "users/_user_sidebar.html" %}
+{% endblock %}
+
 {% block saas_content %}
 <section id="accessible-list-container">
-  <div class="row mt-4">
-  <div class="col-6">
+  <div class="row mt-4 mb-2">
+  <div class="col-3">
     <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
       <form class="form-inline" @submit.prevent="submit">
         <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>Start typing the name or email of the organization you wish to add.</p>" data-trip-position="s">
@@ -27,16 +31,21 @@
       </form>
     </user-typeahead>
     </div>
-    <div class="col-6">
-    <form class="form-inline pull-right">
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="search-inp">Filter</span>
-              </div>
-            <input class="form-control" type="text" id="search-inp"
-              v-model="params.q" @input="filterList" />
+    <div class="col-sm-6">
+        <div class="form-row">
+            {% include "saas/_item_list_filter.html" %}
         </div>
-    </form>
+    </div>
+    <div class="col-sm-3">
+        <form class="form-inline">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="search-inp">Filter</span>
+                </div>
+                <input class="form-control" type="text" id="search-inp"
+                       v-model="params.q" @input="filterList" />
+            </div>
+        </form>
     </div>
     </div>
     <table class="table table-striped">
