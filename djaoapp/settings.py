@@ -19,6 +19,7 @@ APP_NAME = os.path.basename(BASE_DIR)
 DB_HOST = ''
 DB_PORT = 5432
 SEND_EMAIL = True
+RULES_APP_MODEL = 'djaoapp_extras.App'
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
