@@ -31,21 +31,10 @@
       </form>
     </user-typeahead>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-9">
         <div class="form-row">
             {% include "saas/_item_list_filter.html" %}
         </div>
-    </div>
-    <div class="col-sm-3">
-        <form class="form-inline">
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="search-inp">Filter</span>
-                </div>
-                <input class="form-control" type="text" id="search-inp"
-                       v-model="params.q" @input="filterList" />
-            </div>
-        </form>
     </div>
     </div>
     <table class="table table-striped">
@@ -56,6 +45,9 @@
           </th>
           <th>Role
             <a href="#" @click="sortBy('role_name')"><i :class="sortIcon('role_name')"></i></a>
+          </th>
+          <th>Created at
+            <a href="#" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a>
           </th>
           <th></th>
         </tr>
@@ -76,6 +68,9 @@
           </td>
           <td class="text-center">
             [[entry.request_key ? "requested" : entry.role_description.title]]
+          </td>
+          <td class="text-center">
+            [[entry.created_at | formatDate]]
           </td>
           <td style="vertical-align:middle;">
             <button class="btn btn-danger btn-sm"

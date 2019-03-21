@@ -14,16 +14,8 @@
             <div class="form-row">
               {% include "saas/_item_list_filter.html" %}
               <div class="col">
-                <div class="input-group input-group-sm">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="filter-inp">Filter</span>
-                  </div>
-                  <input class="form-control" type="text" v-model="params.q" @input="filterList" />
-                  <div class="input-group-append">
-                    <a id="download" class="btn btn-secondary" role="button"
+                    <a id="download" class="btn btn-secondary btn-sm" role="button"
                        :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-                  </div>
-                </div>
               </div>
             </div>
         </form>

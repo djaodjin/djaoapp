@@ -11,11 +11,7 @@
 <div id="coupon-performance">
   <div id="coupon-users-container">
     <div class="row my-3">
-        <div class="col-sm-6">
-            <div class="form-row">
-                {% include "saas/_item_list_filter.html" %}
-            </div>
-        </div>
+        {% include "saas/_item_list_filter.html" %}
     </div>
     <p v-show="itemsLoaded" v-cloak>
 {{coupon.code}} was used [[totalItems]] time[[totalItems > 0 ? "s" : ""]].
