@@ -319,7 +319,10 @@ class APIDocView(TemplateView):
                     examples = ""
                     for line in func_details.description.splitlines():
                         line = transform_links(line)
-                        if re.match(r'\*\*Example', line):
+                        look = re.match(r'\*\*Tags:(.*)', line)
+                        if look:
+                            tags |= set(look.group(1).split(','))
+                        elif re.match(r'\*\*Example', line):
                             in_examples = True
                             sep = ""
                         elif in_examples:

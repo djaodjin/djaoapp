@@ -26,6 +26,12 @@
                           {{attr|schema_name}}
                         {% endif %}
                     </span>
+                    {# XXX add `operationId.endswith('_create') and` as #}
+                    {# a workaround if we show PATCH instead of PUT     #}
+                    {# for updates.                                     #}
+                    {% if not read_direction and attr_name in param.required %}
+                    <span class="param-required">required</span>
+                    {% endif %}
                     {% if attr|schema_href %}
                     <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{attr|schema_name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
                     <div id="collapse-{{operationId}}-{{attr|schema_name}}" class="collapse">
@@ -35,11 +41,6 @@
                 </div>
                 {% if attr.description %}
                 <div class="param-description">{{attr.description}}</div>
-                {% endif %}
-                {% if attr.required %}
-                <div>
-                    <span class="param-required">Required</span>
-                </div>
                 {% endif %}
             </td>
         </tr>
@@ -55,6 +56,9 @@
       <div class="param-info">
         <div>
             <span class="param-type integer" title="">{{param.type}}</span>
+            {% if param.required %}
+            <span class="param-required">required</span>
+            {% endif %}
         </div>
         <div class="param-description">
             <p>{{param.description}}</p>

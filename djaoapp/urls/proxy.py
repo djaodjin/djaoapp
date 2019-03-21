@@ -14,6 +14,8 @@ from urldecorators import include, url
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
 from ..api.custom_themes import ThemePackageListAPIView
 from ..api.notifications import NotificationAPIView
+from ..api.organizations import (OrganizationDetailAPIView,
+    OrganizationListAPIView)
 from ..api.users import UserProfileAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
@@ -71,6 +73,10 @@ urlpatterns += site_patterns(
     url_direct(r'^api/', include('saas.urls.api.provider.billing')),
     url_direct(r'^api/', include('saas.urls.api.provider.profile')),
     url_direct(r'^api/', include('saas.urls.api.provider.metrics')),
+    url_provider(r'^api/profile/(?P<organization>%s)/?$' % ACCT_REGEX,
+        OrganizationDetailAPIView.as_view(), name='saas_api_organization'),
+    url_provider(r'^api/profile/$',
+        OrganizationListAPIView.as_view(), name='saas_api_profile'),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_self_provider(r'^api/', include('signup.urls.api.tokens')),

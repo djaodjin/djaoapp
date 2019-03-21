@@ -4,6 +4,8 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
 from django.dispatch import Signal, receiver
 from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
@@ -406,7 +408,7 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
         else:
             LOGGER.warning(
                 "%s will not be notified being added to %s"\
-                "because e-mail address is invalid.", user, organization)
+                " because e-mail address is invalid.", user, organization)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -438,7 +440,7 @@ def user_relation_requested_notice(sender, organization, user,
         else:
             LOGGER.warning(
                 "%s will not be notified of role request to %s"\
-                "because e-mail address is invalid.", user, organization)
+                " because e-mail address is invalid.", user, organization)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -528,7 +530,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
         if not managers:
             LOGGER.warning(
                 "%s will not be notified of a subscription grant to %s"\
-                "because there are no managers to send e-mails to.",
+                " because there are no managers to send e-mails to.",
                 organization, subscription.plan)
         for manager in managers:
             # The following line could as well be `if invite:`
@@ -623,7 +625,7 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
         else:
             LOGGER.warning(
                 "%s will not be notified of a subscription request to %s"\
-                "because e-mail address is invalid.",
+                " because e-mail address is invalid.",
                 organization, subscription.plan)
 
 
@@ -691,3 +693,10 @@ def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
                 # in notification/base.html, thus ending with an error
                 # in premailer.
                 'app': app, 'table': data, 'date': date})
+
+
+@receiver(post_save, sender=get_user_model())
+def on_user_post_save(sender, instance, created, raw, **kwargs):
+    #pylint:disable=unused-argument
+    if created and instance.is_superuser:
+        get_broker().add_manager(instance)

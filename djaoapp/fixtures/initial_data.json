@@ -1,0 +1,91 @@
+[
+{
+    "fields": {
+      "slug": "stripe",
+      "full_name": "Stripe",
+      "created_at": "2012-08-14T14:16:55-09:00",
+      "email": "stripe@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "185 Berry St #550",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94107",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 1
+},
+{
+    "fields": {
+      "slug": "terms-of-use",
+      "title": "Terms Of Use",
+      "modified": "2012-08-14T00:00:00-09:00"
+    },
+    "model": "saas.agreement", "pk": 1
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "full_name": "DjaoApp",
+      "created_at": "2015-06-01T00:00:00+00:00",
+      "email": "djaoapp@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "",
+      "locality":  "",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 2
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "account": 2,
+      "domain": null,
+      "tag": "streetside"
+    },
+    "model": "multitier.Site", "pk": 1
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "account": 2,
+      "registration": 3
+    },
+    "model": "rules.App", "pk": 1
+},
+{
+    "fields": {
+        "app": 1,
+        "rank": 1,
+        "path": "/app",
+        "rule_op": 1,
+        "is_forward": false,
+        "engaged": "app"
+    },
+    "model": "rules.Rule", "pk": 1
+},
+{
+    "fields": {
+        "app": 1,
+        "rank": 3,
+        "path": "/",
+        "rule_op": 0,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2015-06-01T00:00:00+00:00",
+      "slug": "manager",
+      "title": "Profile Manager"
+    },
+    "model": "saas.RoleDescription", "pk": 1
+}]

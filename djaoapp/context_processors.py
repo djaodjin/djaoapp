@@ -22,9 +22,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf import settings
-
-def features_flag(request):#pylint:disable=unused-argument
+def features_flags(request):#pylint:disable=unused-argument
     return {
         'DATETIME_FORMAT': "MMM dd, yyyy"
     }
