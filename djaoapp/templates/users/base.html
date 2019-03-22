@@ -1,31 +1,7 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
 {% block sidebar %}
-<ul class="nav flex-column hidden-sm hidden-md hidden-lg">
-  {% include "generic_navbar.html" %}
-</ul>
-<hr />
-<ul class="nav flex-column"
-    data-intro="User profile" data-position="right">
-  <li {% if request.path == urls.user.profile %} class="nav-item active"{% endif %}>
-    <a class="nav-link" id="users_profile" href="{{urls.user.profile}}"><i class="fa fa-user"></i> <span>&#09;Profile</span></a>
-  </li>
-  <li {% if request.path == urls.user.notifications %} class="nav-item active"{% endif %}>
-    <a class="nav-link" id="users_notifications" href="{{urls.user.notifications}}"><i class="fa fa-envelope"></i> <span>&#09;Notifications</span></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="users_accessibles" href="{{urls.user.accessibles}}"><i class="fa fa-users"></i> <span>&#09;Organizations</span></a>
-  </li>
-</ul>
-<hr />
-<ul class="nav flex-column"
-    data-intro="Organizations managed by the user" data-position="right">
-  {% for organization in top_accessibles %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{organization.location}}">{{organization.printable_name}}</a>
-  </li>
-  {% endfor %}
-</ul>
+    {% include "users/_user_sidebar.html" %}
 {% endblock %}
 
 {% block dashboard_bodyscripts %}

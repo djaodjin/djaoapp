@@ -5,20 +5,10 @@
 {% block saas_content %}
 <div id="coupon-list-container">
 <div data-trip data-trip-index="1" data-trip-content="<h2>Coupons</h2><p>Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>" data-trip-position="screen-center">
-    <div class="row">
-        <div class="col-sm-6">
-            <form class="form-inline">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="search-inp">Filter</span>
-                    </div>
-                    <input class="form-control" type="text" id="search-inp"
-                           v-model="params.q" @input="filterList" />
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6 text-right" style="display:inline-block;" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
-            <a id="download" class="btn btn-secondary" role="button"
+    <div class="row my-3">
+        {% include "saas/_item_list_filter.html" %}
+        <div class="col-sm-3 text-right" data-trip data-trip-index="7" data-trip-content="<p>Download the list of coupons if necessary.</p>" data-trip-position="s">
+            <a id="download" class="btn btn-secondary btn-sm" role="button"
                :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
         </div>
     </div>
