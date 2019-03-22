@@ -23,6 +23,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
     """
     Retrieves profile information on an ``Organization``.
 
+    **Tags: profile
+
     **Examples
 
     .. code-block:: http
@@ -56,6 +58,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
         """
         Updates profile information for an ``Organization``
 
+        **Tags: profile
+
         **Examples
 
         .. code-block:: http
@@ -80,6 +84,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
         it from the database because we don't want to loose history
         on subscriptions and transactions.
 
+        **Tags: profile
+
         **Examples
 
         .. code-block:: http
@@ -93,6 +99,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 class OrganizationListAPIView(OrganizationListBaseAPIView):
     """
     Queries all ``Organization``.
+
+    **Tags: profile
 
     **Examples
 
@@ -124,6 +132,8 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
     def post(self, request, *args, **kwargs):
         """
         Creates an``Organization``
+
+        **Tags: profile
 
         **Examples
 

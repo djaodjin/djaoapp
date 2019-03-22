@@ -125,7 +125,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
               {% block fullviewport %}
               {% endblock %}
             </header>
-            <div class="content-area-container">
+            <div{% block content_area_classes %} class="content-area-container"{% endblock %}>
               <div id="messages">
                 <div id="messages-content">
                   {% if request %}

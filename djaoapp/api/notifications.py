@@ -71,6 +71,11 @@ def get_test_email_context():
 
 
 class NotificationAPIView(AppMixin, APIView):
+    # So far this is just a dummy used in `reverse` to get a base url.
+    pass
+
+
+class NotificationDetailAPIView(AppMixin, APIView):
 
     # Even though ``GET`` will be denied, we still need to provide
     # a ``serializer_class`` because it is called before permission checks.
@@ -78,6 +83,18 @@ class NotificationAPIView(AppMixin, APIView):
     serializer_class = None
 
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
+        """
+        Sends a test notification e-mail.
+
+        **Tags: themes
+
+        **Example
+
+        .. code-block:: http
+
+            POST /api/notifications/contact_requested_notice/ HTTP/1.1
+
+        """
         try:
             app = get_current_app()
             get_email_backend(connection=app.get_connection()).send(

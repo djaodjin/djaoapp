@@ -16,17 +16,6 @@ Tested with
 - **Python:** 3.6, **Django:** 1.11.20 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.8.2
 - **Python:** 3.6, **Django:** 2.1.7 (latest),       **Django Rest Framework:** 3.8.2
 
-
-Templates Search Path
----------------------
-
-When a ``rules.App`` exists, templates will be first searched for in
-templates/*project_name*, then in templates/*project_repo*, then
-the default will be used.
-
-All CSS present in the default templates must be declared which ever
-base.html is included.
-
 Install
 -------
 
@@ -87,3 +76,14 @@ Development
 
     # To generate some sample data, disable emailing of receipts and run:
     $ python manage.py load_test_transactions
+
+
+Templates Search Path
+---------------------
+
+When a ``rules.App`` exists, templates will be first searched for in
+templates/*project_name*, then in templates/*project_repo*, then
+the default will be used.
+
+All CSS present in the default templates must be declared which ever
+base.html is included.

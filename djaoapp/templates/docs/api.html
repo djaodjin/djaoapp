@@ -75,26 +75,28 @@
 
 {% block sidebar %}
 <ul class="nav flex-column">
+  {% for tag, title in tags.items() %}
   <li class="nav-item">
-      <a class="nav-link" href="#authentication">Authentication</a>
-  </li>
-  {% for tag in tags %}
-  <li class="nav-item">
-      <a class="nav-link" href="#{{tag|lower}}">{{tag}}</a>
+      <a class="nav-link" href="#{{tag|lower}}">{{title}}</a>
   </li>
   {% endfor %}
 </ul>
-<hr />
+<hr class="d-md-none" />
 <ul class="nav flex-column d-md-none">
     {% include "generic_navbar.html" %}
 </ul>
 {% endblock %}
 
+{% block content_area_classes %} style="padding-left: 20px;"{% endblock %}
+
 {% block content %}
-<div class="">
+<div>
+    {% for api_end_point in api_end_points %}
+    {% if api_end_point.tags != variable_watcher %}
     <section class="row">
       <div class="col-sm-7">
-        <a name="authentication" href="#authentication"><h2>Authentication</h2></a>
+        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"><h2 style="margin-top:20px;">{{tags[api_end_point.tags]}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+        {% if api_end_point.tags == 'auth' %}
         <p>
 The DjaoApp API is meant to be used by your application front-end logic in the
 same way you are calling your application backend API. DjaoApp seemlessly
@@ -114,25 +116,48 @@ DjaoApp supports three methods of authentication:
         <p>
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
         </p>
+        {% elif api_end_point.tags == 'profile' %}
+        <p>
+This section contains APIs to manage identity of organizations, users
+and contacts such as name or email address.
+        </p>
+        {% elif api_end_point.tags == 'subscriptions' %}
+        <p>
+This section contains APIs to manage subscription plans and subscribers
+to those plans.
+        </p>
+        {% elif api_end_point.tags == 'billing' %}
+        <p>
+This section contains APIs to manage the checkout, billing and accounting
+workflows, including shopping carts, coupons, charges and balance statements.
+        </p>
+        {% elif api_end_point.tags == 'rbac' %}
+        <p>
+This section contains APIs to manage the checkout, billing and accounting
+workflows, including shopping carts, coupons, charges and balance statements.
+        </p>
+        {% elif api_end_point.tags == 'themes' %}
+        <p>
+This section contains APIs to upload new templates for all pages, from login
+to checkout, or reset to the default theme.
+        </p>
+        {% elif api_end_point.tags == 'metrics' %}
+        <p>
+The metrics APIs crunch the numbers and return various insight into
+the performance for the business. They are used to implement
+a <a href="https://djaodjin.com/docs/#business-performance">balances
+dashboard</a> for example.
+        </p>
+        {% endif %}
+        {% set variable_watcher = api_end_point.tags %}
       </div>
       <div class="col-sm-5 code">
-        <h3>Example request</h3>
-        <pre class="code">curl {{api_base_url}} \
-    -u BQokikJOvBiI2HlWgH4olfQ24ret3awZ:</pre>
-        <p>
-curl uses the -u flag to pass basic auth credentials.
-(Adding a colon after your API key prevents curl from asking for a password.)
-        </p>
       </div>
     </section>
-    {% for api_end_point in api_end_points %}
+    {% endif %}
     <section class="row">
       <div class="col-sm-7">
-        {% if api_end_point.tags != variable_watcher %}
-        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"><h2>{{api_end_point.tags|capitalize}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
-        {% set variable_watcher = api_end_point.tags %}
-        {% endif %}
-        <a name="{{api_end_point.operationId}}"><h3>{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+        <a name="{{api_end_point.operationId}}"><h3 style="margin-top:20px;">{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
         <div>
             {{api_end_point.description}}
         </div>

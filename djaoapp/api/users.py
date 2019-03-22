@@ -14,6 +14,8 @@ class UserProfileAPIView(UserProfileBaseAPIView):
     """
     Retrieves, updates or deletes the profile information of a user.
 
+    **Tags: profile
+
     **Example
 
     .. code-block:: http

@@ -312,16 +312,16 @@ class APIDocView(TemplateView):
                     continue
                 try:
                     sep = ""
+                    func_tags = None
                     in_examples = False
-                    func_tags = func_details.tags
-                    tags |= set(func_tags)
                     description = ""
                     examples = ""
                     for line in func_details.description.splitlines():
                         line = transform_links(line)
                         look = re.match(r'\*\*Tags:(.*)', line)
                         if look:
-                            tags |= set(look.group(1).split(','))
+                            func_tags = set([tag.strip()
+                                for tag in look.group(1).split(',')])
                         elif re.match(r'\*\*Example', line):
                             in_examples = True
                             sep = ""
@@ -339,10 +339,13 @@ class APIDocView(TemplateView):
                             sep = "\n"
                     description = rst_to_html(description)
                     examples = rst_to_html(examples)
+                    if not func_tags:
+                        func_tags = func_details.tags
+                    tags |= set(func_tags)
                     api_end_points += [{
                         'operationId': func_details.operationId,
                         'func': func,
-                        'path': path,
+                        'path': '/api%s' % path,
                         'tags': ''.join(func_tags),
                         'description': description,
                         'parameters': func_details.parameters,
@@ -351,10 +354,22 @@ class APIDocView(TemplateView):
                     }]
                 except AttributeError:
                     pass
+        expanded_tags = OrderedDict({
+            'auth': "Auth & credentials",
+            'billing': "Billing",
+            'metrics': "Metrics",
+            'profile': "Profile",
+            'rbac': "Roles & rules",
+            'subscriptions': "Subscriptions",
+            'themes': "Themes",
+        })
+        for tag in sorted(tags):
+            if not tag in expanded_tags:
+                expanded_tags.update({tag: ""})
         context.update({
             'definitions': schema.definitions,
             'api_base_url': generator.url,
-            'api_end_points': api_end_points,
-            'tags': sorted([tag.capitalize() for tag in
-                [('rules' if tag == 'proxy' else tag) for tag in tags]])})
+            'api_end_points': sorted(
+                api_end_points, key=lambda val: val['tags']),
+            'tags': expanded_tags})
         return context

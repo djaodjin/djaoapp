@@ -13,7 +13,7 @@ from urldecorators import include, url
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
 from ..api.custom_themes import ThemePackageListAPIView
-from ..api.notifications import NotificationAPIView
+from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
 from ..api.users import UserProfileAPIView
@@ -56,7 +56,8 @@ urlpatterns += site_patterns(
     url_direct(r'^api/auth/tokens/realms/$', # site/subdomain
         CredentialsAPIView.as_view(), name='api_credentials'),
     url_direct(r'^api/notifications/(?P<template>%s)/' % ACCT_REGEX,
-        NotificationAPIView.as_view(), name='api_notification_send_test_email'),
+        NotificationDetailAPIView.as_view(),
+        name='api_notification_send_test_email'),
     url_direct(r'^api/notifications/',
         NotificationAPIView.as_view(), name='api_notification_base'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
