@@ -25,6 +25,7 @@ Subscriptions to {{organization.printable_name}}
     <div class="tab-content">
         {% if registered %}
         <div id="registered" class="tab-pane" role="tabpanel">
+          <div id="registered-tab-container">
             <div style="margin-top:10px;">
                 <div class="form-group" style="display:inline-block;">
                     <input class="form-control" type="text" placeholder="Filter" v-model="params.q" @input="filterList"></input>
@@ -44,22 +45,22 @@ Subscriptions to {{organization.printable_name}}
                         </th>
                     </tr>
                 </thead>
-                <tbody v-show="!tables.registered.loaded">
+                <tbody v-show="!itemsLoaded">
                     <tr>
                         <td colspan="2">
                             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                         </td>
                     </tr>
                 </tbody>
-                <tbody class="has-no-results" v-show="tables.registered.loaded && tables.registered.count == 0" v-cloak>
+                <tbody class="has-no-results" v-show="itemsLoaded && items.count == 0" v-cloak>
                     <tr>
                         <td colspan="2">
                             <p class="text-center my-2"><em>No registered users<span v-show="params.q"> [[params.q]]</span></em></p>
                         </td>
                     </tr>
                 </tbody>
-                <tbody class="has-results" v-show="tables.registered.loaded && tables.registered.results.length > 0" v-cloak>
-                    <tr v-for="entry in tables.registered.results">
+                <tbody class="has-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                    <tr v-for="entry in items.results">
                         <td>
                             <a :href="'{{urls.user.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
                         </td>
@@ -70,15 +71,17 @@ Subscriptions to {{organization.printable_name}}
                 </tbody>
             </table>
             </div>
-            <div class="text-center" v-show="tables.registered.loaded && totalItems > itemsPerPage" v-cloak>
+            <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
                 <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
             </div>
+          </div>
         </div>
         {% endif %}
         {% for tab in tabs %}
         <div id="{{tab.slug}}"
              class="tab-pane{% if tab.is_active %} active{% endif %}"
              role="tabpanel">
+          <div id="{{tab.slug}}-tab-container">
             <div style="margin-top:10px;">
                 <div class="form-group" style="display:inline-block;">
                     <input class="form-control" style="display:inline-block;"
@@ -187,14 +190,14 @@ Subscriptions to {{organization.printable_name}}
         <th>Description</th>
       </tr>
     </thead>
-    <tbody class="fetching-results" v-show="!tables.{{tab.slug}}.loaded">
+    <tbody class="fetching-results" v-show="!itemsLoaded">
       <tr>
         <td colspan="5">
           <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </td>
       </tr>
     </tbody>
-    <tbody class="has-no-results" v-show="tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length == 0" v-cloak>
+    <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
       <tr>
         <td colspan="5">
           <p class="text-center my-2">
@@ -203,8 +206,8 @@ Subscriptions to {{organization.printable_name}}
         </td>
       </tr>
     </tbody>
-    <tbody class="has-results" v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'organization.printable_name')"
-           v-show="params.o === 'organization' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
+    <tbody class="has-results" v-for="(group, key) in groupBy(items.results, 'organization.printable_name')"
+           v-show="params.o === 'organization' && itemsLoaded && items.results.length > 0" v-cloak>
       <tr v-for="entry in [group[0]]">
         <td colspan="5">
           <a :id="entry.organization.slug" :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
@@ -228,8 +231,8 @@ Subscriptions to {{organization.printable_name}}
       </tr>
     </tbody>
     <tbody class="has-results"
-           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'plan.title')"
-           v-show="params.o === 'plan' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
+           v-for="(group, key) in groupBy(items.results, 'plan.title')"
+           v-show="params.o === 'plan' && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.plan.title]]
@@ -258,8 +261,8 @@ Subscriptions to {{organization.printable_name}}
         </tr>
     </tbody>
     <tbody class="has-results"
-           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'created_at')"
-           v-show="params.o === 'created_at' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
+           v-for="(group, key) in groupBy(items.results, 'created_at')"
+           v-show="params.o === 'created_at' && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.created_at | formatDate]]
@@ -287,8 +290,8 @@ Subscriptions to {{organization.printable_name}}
         </tr>
     </tbody>
     <tbody class="has-results"
-           v-for="(group, key) in groupBy(tables.{{tab.slug}}.results, 'ends_at')"
-           v-show="params.o === 'ends_at' && tables.{{tab.slug}}.loaded && tables.{{tab.slug}}.results.length > 0" v-cloak>
+           v-for="(group, key) in groupBy(items.results, 'ends_at')"
+           v-show="params.o === 'ends_at' && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.ends_at | formatDate]]
@@ -314,10 +317,11 @@ Subscriptions to {{organization.printable_name}}
             </td>
         </tr>
     </tbody>
-            </table>
-          </div>
-          <div class="text-center" v-show="tables.{{tab.slug}}.loaded && totalItems > itemsPerPage">
+              </table>
+            </div>
+            <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
               <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+            </div>
           </div>
         </div>
         {% endfor %}
