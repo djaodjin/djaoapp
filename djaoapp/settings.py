@@ -65,9 +65,9 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'captcha',
     'deployutils.apps.django',
 #    'haystack', disabled until we actively use text searches on the site.
+    'saas',  # Because we want `djaodjin-resources.js` picked up from here.
     'signup',
     'social_django',
-    'saas',
     'pages',
     'multitier',
     'rules',

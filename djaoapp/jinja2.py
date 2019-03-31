@@ -5,9 +5,11 @@ from __future__ import absolute_import
 
 from django.conf import settings
 import django.template.defaulttags
+from django.utils.translation import gettext, ngettext
 from django_assets.env import get_env
 from deployutils.apps.django.themes import get_template_search_path
 from deployutils.apps.django.templatetags import deployutils_extratags
+from jinja2.ext import i18n
 from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment
 import multitier.templatetags.multitier_tags
 from pages import signals as pages_signals
@@ -46,7 +48,10 @@ def environment(**options):
     if 'loader' in options:
         options['loader'] = import_string(options['loader'])(
             get_template_search_path())
-    env = DjaoappEnvironment(extensions=[AssetsExtension], **options)
+    env = DjaoappEnvironment(extensions=[AssetsExtension, i18n], **options)
+    # i18n
+    env.install_gettext_callables(gettext=gettext, ngettext=ngettext,
+        newstyle=True)
     # Generic filters to render pages
     env.filters['asset'] = multitier.templatetags.multitier_tags.asset
     env.filters['absolute_uri'] = \
