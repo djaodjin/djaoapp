@@ -4,15 +4,15 @@ DjaoDjin subscriber session proxy
 This repository contains the code for DjaoDjin subscription-based session proxy.
 To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
 
-<p style="text-align:center;">
+The session proxy is built on [Django](https://www.djangoproject.com/),
+[Vue.js](https://vuejs.org/), [Bootstrap4](https://getbootstrap.com/)
+frameworks and many more Open Source projects. Thank you for the support!
+
+<p align="center">
 <img src="https://static.djangoproject.com/img/logos/django-logo-positive.png" height="75">
 <img src="https://vuejs.org/images/logo.png" height="75">
 <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" height="75">
 </p>
-
-The session proxy is built on [Django](https://www.djangoproject.com/),
-[Vue.js](https://vuejs.org/), [Bootstrap4](https://getbootstrap.com/)
-frameworks and many more Open Source projects. Thank you for the support!
 
 It integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
