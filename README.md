@@ -4,15 +4,15 @@ DjaoDjin subscriber session proxy
 This repository contains the code for DjaoDjin subscription-based session proxy.
 To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
 
-The session proxy is built on the following frameworks:
-
-<p>
-<img src="https://static.djangoproject.com/img/logos/django-logo-positive.png" width="150">
-<img src="https://vuejs.org/images/logo.png" width="150">
-<img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="150">
+<p style="text-align:center;">
+<img src="https://static.djangoproject.com/img/logos/django-logo-positive.png" height="75">
+<img src="https://vuejs.org/images/logo.png" height="75">
+<img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" height="75">
 </p>
 
-and many more Open Source projects. Thank you for the support!
+The session proxy is built on [Django](https://www.djangoproject.com/),
+[Vue.js](https://vuejs.org/), [Bootstrap4](https://getbootstrap.com/)
+frameworks and many more Open Source projects. Thank you for the support!
 
 It integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
@@ -75,7 +75,7 @@ Then create the database, and start the built-in webserver
 Development
 -----------
 
-    You will want to toggle `DEBUG` on in the site.conf file.
+You will want to toggle `DEBUG` on in the site.conf file.
 
 <pre><code>
     $ diff -u <em>installTop</em>/etc/djaoapp/site.conf
