@@ -38,8 +38,11 @@
                 </div>
             </fieldset>
             {% else %}
+            {% block no_invoicables %}
             <p class="text-center">Your subscription cart is empty.</p>
+            {% endblock %}
             {% endif %}
+            {% block order_footer %}
             <div id="redeem-code" class="text-right my-3">
                 <a href="" class="collapsible">Have a registration code?</a>
                 <div style="display:none;" class="mt-3">
@@ -58,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            {% endblock %}
             {% block order_card %}
             {% include "saas/_card_use.html" %}
             {% endblock %}
@@ -68,6 +72,7 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-stripe.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $(".collapsible").click(function(event) {
@@ -75,6 +80,20 @@ jQuery(document).ready(function($) {
         event.preventDefault();
         $(self).next().toggle();
     });
+    var cardForm = $("#payment-form");
+{% if urls and urls.api_cart %}
+    if( cardForm.length > 0 ) {
+        cardForm.find("#invoicables").invoice(
+            {currency_unit: "{% if lines_price %}{{ lines_price.unit }}{% endif %}",
+             saas_api_cart: "{{ urls.api_cart }}" });
+    }
+{% endif %}
+{% if STRIPE_PUB_KEY %}
+    cardForm.card({
+        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+        saas_api_card: "{{ urls.organization.api_card }}"
+    });
+{% endif %}
 });
 </script>
 {% endblock %}

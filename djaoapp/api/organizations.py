@@ -8,7 +8,10 @@ from rest_framework import filters
 from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
     OrganizationListAPIView as OrganizationListBaseAPIView)
-from saas.api.serializers import CreateOrganizationSerializer
+# XXX Temporary import of OrganizationSerializer until a new version
+#     of djaodjin-saas is published.
+from saas.api.serializers import (
+    OrganizationSerializer as CreateOrganizationSerializer)
 from saas.docs import swagger_auto_schema
 from saas.utils import get_organization_model
 

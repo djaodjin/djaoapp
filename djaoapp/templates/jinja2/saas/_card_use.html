@@ -7,15 +7,15 @@
             <legend>
 Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{urls.organization.update_card}}">Update</a>{% endif %}
             </legend>
-            {% if last4 %}
-            <div>
+            {% if last4 or force_update %}
+            <div v-show="haveCardData">
                 <dl class="dl-horizontal">
                     <dt>card</dt>
-                    <dd>{{last4}}</dd>
+                    <dd data-last4="{{last4}}" v-text="savedCard.last4">{{last4}}</dd>
                 </dl>
                 <dl class="dl-horizontal">
                     <dt>expires</dt>
-                    <dd>{{exp_date}}</dd>
+                  <dd data-exp-date="{{exp_date}}" v-text="savedCard.exp_date">{{exp_date}}</dd>
                 </dl>
             </div>
             {% endif %}
@@ -31,10 +31,14 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
            <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
                 values will hit the server and break PCI compliance. -->
             <div id="row-number" class="form-group">
-                <label class="col-form-label" for="card-number">Card Number</label>
+                <label class="col-form-label"
+                       for="card-number">Card Number</label>
                 <div class="controls">
                     <input id="card-number"
-                           class="form-control" type="text" size="16" placeholder="Card number" autocomplete="off" />
+                           class="form-control" type="text"
+                           size="16" placeholder="Card number"
+                           autocomplete="off"
+                           v-model="cardNumber" />
                 </div>
             </div>
             <div class="row">
@@ -42,11 +46,17 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
                     <label class="col-form-label">Expiration</label>
                     <div class="controls">
                             <input id="card-exp-month"
-                                   class="form-control" style="display:inline-block;width:40%;"
-                                   type="text" maxlength="2" size="2" placeholder="MM" />
+                                   class="form-control"
+                                   style="display:inline-block;width:40%;"
+                                   type="text" maxlength="2" size="2"
+                                   placeholder="MM"
+                                   v-model="cardExpMonth" />
                             <input id="card-exp-year"
-                                   class="form-control" style="display:inline-block;width:50%;"
-                                   type="text" maxlength="4" size="4" placeholder="YYYY" />
+                                   class="form-control"
+                                   style="display:inline-block;width:50%;"
+                                   type="text" maxlength="4" size="4"
+                                   placeholder="YYYY"
+                                   v-model="cardExpYear" />
                     </div>
                 </div>
                 <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
@@ -74,7 +84,10 @@ your credit card number.
                     </div>
                     <div class="controls">
                         <input id="card-cvc"
-                        class="form-control" type="text" maxlength="4" size="3" placeholder="CVC" autocomplete="off" />
+                        class="form-control"
+                        type="text" maxlength="4" size="3"
+                        placeholder="CVC" autocomplete="off"
+                        v-model="cardCvc" />
                     </div>
                 </div>
             </div>

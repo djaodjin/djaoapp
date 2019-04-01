@@ -14,6 +14,7 @@ Update Plan
                     {% include "saas/profile/plans/_form.html" %}
                 </div>
                 {% endblock %}
+                {% if show_delete %}
                 <div class="card border-danger mt-3">
                   <div class="card-header">
                     Danger Zone
@@ -21,9 +22,9 @@ Update Plan
                   <div class="card-body text-danger">
                     <button id="delete-plan-confirm" class="btn btn-danger" data-toggle="modal" data-target="#delete-plan-modal">Delete</button> This operation cannot be reversed.
                   </div>
-                  <div id="delete-plan-modal" class="modal fade" tabindex="-1" role="dialog"
-                     aria-labelledby="myModalLabel" aria-hidden="true"
-                     data-plan="{{form.instance.slug}}">
+                  <div id="delete-plan-modal"
+                     class="modal fade" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -37,19 +38,29 @@ Update Plan
                                         data-dismiss="modal">Cancel</button>
                                 <a id="delete-plan"
                                    class="btn btn-danger btn-ok delete"
-                                   data-dismiss="modal">Delete</a>
+                                   data-dismiss="modal"
+                                   @click="deletePlan">Delete</a>
                             </div>
                         </div>
                     </div>
                   </div>
                 </div>
+                {% endif %}
             </div>
             <div class="col-lg-6">
                 <div style="margin-bottom: 20px;">
-                    <a href="{{urls.plan_subscribers}}" class="btn btn-primary">Plan Subscribers</a>
+                    <a href="{{urls.plan_subscribers}}">Plan Subscribers</a>
                 </div>
-                <p data-plan="{{form.instance.slug}}">
-                    <button id="activate-plan" class="activate btn btn-primary {% if form.instance.is_active %}activated{% endif %}" data-trip-index="2" data-trip-content="<p>Toggle this plan between available for subscription or not.</p>" data-trip-position="s">{% if form.instance.is_active %}Deactivate{% else %}Activate{% endif %}</button> Users can only subscribe to active plans.
+                <p>
+                  <button id="activate-plan"
+                    class="activate btn btn-primary"
+                    data-trip-index="2"
+                    data-trip-position="s"
+                    data-trip-content="<p>Toggle this plan between available for subscription or not.</p>"
+                    @click="togglePlanStatus"
+                    v-bind:class="{activated: isActive}"
+                    v-text="isActive ? 'Deactivate' : 'Activate'"></button>
+                    Users can only subscribe to active plans.
                 </p>
                 <p class="lead">
                     {% block saas_lead_help %}{% endblock %}
