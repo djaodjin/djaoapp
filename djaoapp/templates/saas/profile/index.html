@@ -42,6 +42,21 @@ Update your profile, contact information, password, etc.
         </div>
   </div>
 </div>
+{% if urls.user.api_activate %}
+<div class="card border-secondary mb-4">
+  <div class="card-body text-secondary">
+    <div class="row align-items-center">
+      <div class="col-sm-5">
+        <button id="activate-user" class="btn btn-secondary btn-block"
+                @click="activate">Activate</button>
+      </div>
+      <div class="col-sm-7">
+        Send an activation e-mail to the user.
+          </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 <!-- modal dialog to delete organization. -->
 <div class="modal fade"
      id="delete-action" tabindex="-1" role="dialog"
