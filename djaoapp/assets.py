@@ -28,6 +28,7 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/toastr.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
+                 'js/djaoapp-i18n.js',
             filters='yui_js', output='cache/base.js')
 register('js_base', js_base)
 
@@ -36,7 +37,6 @@ register('js_base', js_base)
 js_saas = Bundle(
     'vendor/jquery.payment.js',
     'js/djaodjin-saas.js',
-    'js/djaodjin-stripe.js',
     'js/djaodjin-postal.js',
     'js/djaodjin-password-strength.js',
     'js/djaodjin-resources.js', # At the end to avoid errors in browser

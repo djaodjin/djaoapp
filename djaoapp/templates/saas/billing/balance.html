@@ -1,35 +1,30 @@
-{% extends "saas/base_dashboard.html" %}
+{% extends "saas/billing/cart.html" %}
 
-{% block saas_title %}Unlock your subscriptions{% endblock %}
+{% block order_title %}Unlock your subscriptions{% endblock %}
 
-{% block saas_content %}
-<section id="balance">
-  <div class="col-md-12">
-<form method="post" id="payment-form" class="form-horizontal"
-      action=".{% if next %}/?next={{next}}{% endif %}">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    {% if invoicables %}
-    {% include "saas/_invoiceables.html" %}
-    {% else %}
-    <p class="text-center">You have no balance due.</p>
-    {% endif %}
-    {% if last_charge %}
-    <section id="charge">
-        {% if last_charge.is_failed or last_charge.is_disputed %}
-        <p>
-            On {{last_charge.created_at}} we attempted to charge your card
-        </p>
-        <div>
-            <dl class="dl-horizontal">
-                <dt>card</dt>
-                <dd>{{last_charge.last4}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>expires</dt>
-                <dd>{{last_charge.exp_date}}</dd>
-            </dl>
-        </div>
-        <p>
+{% block no_invoicables %}
+<p class="text-center">You have no balance due.</p>
+{% endblock %}
+
+{% block order_footer %}
+<div>
+  {% if last_charge %}
+  <section id="charge">
+    {% if last_charge.is_failed or last_charge.is_disputed %}
+    <p>
+      On {{last_charge.created_at}} we attempted to charge your card
+    </p>
+    <div>
+      <dl class="dl-horizontal">
+        <dt>card</dt>
+        <dd>{{last_charge.last4}}</dd>
+      </dl>
+      <dl class="dl-horizontal">
+        <dt>expires</dt>
+        <dd>{{last_charge.exp_date}}</dd>
+      </dl>
+    </div>
+    <p>
 The charge
 {% if last_charge.is_failed %}failed
 {% else %}
@@ -37,20 +32,17 @@ The charge
 {% endif %}
 {% endif %}
 (ref: #{{last_charge.processor_key}}).
-        </p>
-        <p>
+    </p>
+    <p>
 Please enter a valid credit card.
 A new charge of {{lines_price|humanize_money}} will be created.
 Thank you.
-        </p>
-        {% endif %}
-    </section>
+    </p>
     {% endif %}
-    <div class="text-center">
+  </section>
+{% endif %}
+  <div class="text-center">
 Thank you for your business.
-    </div>
-    {% include "saas/_card_use.html" %}
-</form>
+  </div>
 </div>
-</section>
 {% endblock %}
