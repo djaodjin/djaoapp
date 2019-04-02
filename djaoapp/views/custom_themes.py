@@ -12,9 +12,8 @@ class ThemePackageView(ThemePackageBaseView):
 
     def get_context_data(self, **kwargs):
         context = super(ThemePackageView, self).get_context_data(**kwargs)
-        context.update({ 'site_available_at_url': build_absolute_uri(
-            self.request, site=get_current_site().db_object),
-        })
+        context.update({'site_available_at_url': build_absolute_uri(
+            self.request, site=get_current_site().db_object)})
         return context
 
 
