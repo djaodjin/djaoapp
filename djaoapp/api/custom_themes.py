@@ -1,7 +1,6 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
 
-from rest_framework.generics import RetrieveUpdateAPIView
 from pages.api.themes import (
     ThemePackageListAPIView as ThemePackageListAPIBaseView)
 from rules.api.keys import (
