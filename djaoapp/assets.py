@@ -92,6 +92,7 @@ js_djaodjin_vue = Bundle(
     'js/djaodjin-signup-vue.js',
     'js/djaodjin-saas-vue.js',
     'js/djaodjin-rules-vue.js',
+    'js/djaodjin-djaoapp-vue.js',
     'js/djaodjin-metrics.js',
     filters='jsmin', output='cache/djaodjin-vue.js')
 register('js_djaodjin_vue', js_djaodjin_vue)

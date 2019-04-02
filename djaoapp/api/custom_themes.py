@@ -1,8 +1,13 @@
 # Copyright (c) 2018, DjaoDjin inc.
 # see LICENSE
 
+from rest_framework.generics import RetrieveUpdateAPIView
 from pages.api.themes import (
     ThemePackageListAPIView as ThemePackageListAPIBaseView)
+from rules.api.keys import (
+    AppUpdateAPIView as RulesAppUpdateAPIView)
+
+from .serializers import AppSerializer
 
 
 class ThemePackageListAPIView(ThemePackageListAPIBaseView):
@@ -12,3 +17,7 @@ class ThemePackageListAPIView(ThemePackageListAPIBaseView):
         if not hasattr(self, '_theme'):
             self._theme = self.app.slug
         return self._theme
+
+
+class AppUpdateAPIView(RulesAppUpdateAPIView):
+    serializer_class = AppSerializer
