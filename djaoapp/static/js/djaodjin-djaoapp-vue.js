@@ -3,7 +3,7 @@ var app = new Vue({
     el: "#theme-settings-container",
     mixins: [httpRequestMixin],
     data: {
-        url: '/api/proxy/',
+        url: djaodjinSettings.urls.rules.api_detail,
         showEditTools: false
     },
     methods: {
@@ -19,7 +19,7 @@ var app = new Vue({
                     show_edit_tools: vm.showEditTools,
                 },
                 function(){
-                    showMessages(["Settings have been saved."], "success");
+                    location.reload();
                 }
             );
         },

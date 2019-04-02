@@ -21,8 +21,21 @@ from the command line.
 {% endblock %}
 
 {% block saas_content %}
-<div>
-  <div class="mt-4">
+<div id="theme-settings-container">
+  <div class="mb-4">
+    <form method="post">
+        <div class="form-group form-check">
+          <input id="show_edit_tools" class="form-check-input" type="checkbox"
+              name="show_edit_tools"
+              v-model="showEditTools" @change="save">
+          <label class="form-check-label" for="show_edit_tools">
+            Show inline template editor tools
+          </label>
+        </div>
+    </form>
+  </div>
+  <hr />
+  <div>
     <div id="theme-upload" class="pages-upload"
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
@@ -34,20 +47,6 @@ from the command line.
       <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
       <button id="reset-theme" class="btn btn-danger">Reset to default</button>
     </div>
-  </div>
-</div>
-<div id="theme-settings-container">
-  <div class="mt-4">
-    <h4>Settings</h4>
-    <form method="post" @submit.prevent="save">
-        <div class="form-group form-check">
-          <input class="form-check-input" type="checkbox" name="show_edit_tools" id="show_edit_tools" v-model="showEditTools">
-          <label class="form-check-label" for="show_edit_tools">
-            Show editor tools
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
   </div>
 </div>
 {% endblock %}
