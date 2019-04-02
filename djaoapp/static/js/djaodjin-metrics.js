@@ -195,6 +195,9 @@ function updateChart(container, data, unit, dataScale, extra) {
         } else {
             chart.yAxis
                 .tickFormat(function(d) {
+                    if(dataScale === 1){
+                        return d3.format("d")(d);
+                    }
                     return d3.format(",.2f")(d);
                 });
         }

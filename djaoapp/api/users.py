@@ -1,11 +1,11 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
 from saas.utils import get_role_model
-from signup.api.users import UserProfileAPIView as UserProfileBaseAPIView
+from signup.api.contacts import ContactDetailAPIView as UserProfileBaseAPIView
 
 LOGGER = logging.getLogger(__name__)
 

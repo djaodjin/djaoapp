@@ -6,8 +6,39 @@
 from django.contrib.auth import get_user_model
 from django.utils import six
 from rest_framework import serializers
-from saas.api.serializers import OrganizationWithEndsAtByPlanSerializer
+from saas.api.serializers import (
+    OrganizationSerializer as OrganizationBaseSerializer,
+    OrganizationWithEndsAtByPlanSerializer,
+    WithSubscriptionSerializer)
 from saas.models import get_broker, Role, ChargeItem
+from saas.utils import get_organization_model
+
+
+
+class OrganizationSerializer(OrganizationBaseSerializer):
+
+    class Meta:
+        model = get_organization_model()
+        fields = ('slug', 'created_at', 'full_name',
+            'email', 'phone', 'street_address', 'locality',
+            'region', 'postal_code', 'country', 'default_timezone',
+            'printable_name', 'is_provider', 'is_bulk_buyer', 'type', 'extra')
+        read_only_fields = ('created_at',)
+
+
+class OrganizationWithSubscriptionsSerializer(OrganizationSerializer):
+
+    subscriptions = WithSubscriptionSerializer(
+        source='subscription_set', many=True, read_only=True)
+
+    class Meta:
+        model = get_organization_model()
+        fields = ('slug', 'created_at', 'full_name',
+            'email', 'phone', 'street_address', 'locality',
+            'region', 'postal_code', 'country', 'default_timezone',
+            'printable_name', 'is_provider', 'is_bulk_buyer', 'type', 'extra',
+            'subscriptions')
+        read_only_fields = ('slug', 'created_at',)
 
 
 class SessionSerializer(serializers.ModelSerializer):

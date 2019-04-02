@@ -122,7 +122,9 @@ migratedb-%:
 # The less files (under source control) to build djaoapp base.css will be
 # also be installed into the directory assets are served from to support
 # style editing.
-vendor-assets-prerequisites: $(srcDir)/package.json
+vendor-assets-prerequisites: $(installTop)/.npm
+
+$(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
 	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
@@ -178,7 +180,8 @@ vendor-assets-prerequisites: $(srcDir)/package.json
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
 	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 
-build-assets: $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
+build-assets: $(installTop)/.npm \
+	$(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/base/*.scss)

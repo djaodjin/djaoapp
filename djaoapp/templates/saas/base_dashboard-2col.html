@@ -2,20 +2,16 @@
 
 {% block saas_page_layout %}
 <div class="row">
-    <div class="col-12" style="margin-bottom: 50px;">
-        <div class="row">
-            <div class="col-xl-6">
-                {% block saas_content %}
-                {% endblock %}
-            </div>
-            <div class="col-xl-6">
-                <p class="lead">
-                    {% block saas_lead_help %}{% endblock %}
-                </p>
-                {% block saas_help %}
-                {% endblock %}
-            </div>
-        </div>
+    <div class="col-sm-6">
+        {% block saas_content %}
+        {% endblock %}
+    </div>
+    <div class="col-sm-6">
+        <p class="lead">
+            {% block saas_lead_help %}{% endblock %}
+        </p>
+        {% block saas_help %}
+        {% endblock %}
     </div>
 </div>
 {% endblock %}

@@ -17,12 +17,12 @@
     <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
       <div class="form-check">
         <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
-          <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value() %}checked="checked"{% endif %}{% if bound_field.field.disabled %} disabled{% endif %}>
+          <input id="{{bound_field.id_for_label}}" class="checkboxinput{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value() %}checked="checked"{% endif %}{% if bound_field.field.disabled %} disabled{% endif %}>
           {{bound_field.label|safe}}
         </label>
       </div>
       {% for error in bound_field.errors %}
-        <span class="form-text help-block">{{error}}</span>
+        <span class="form-text help-block invalid-feedback">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
         <small class="form-text text-muted">{{bound_field.help_text}}</small>
@@ -34,7 +34,7 @@
     {% endif %}
     <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
       {% if bound_field.field|is_textarea %}
-        <textarea class="textarea form-control" name="{{bound_field.name}}"
+        <textarea class="textarea form-control{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}"
           cols="40" rows="10"
           {% if bound_field.field.widget.attrs.get('placeholder','') %}
           placeholder="{{bound_field.field.widget.attrs.get('placeholder','')}}"
@@ -46,12 +46,12 @@
           {% for choice in bound_field.field.widget.choices %}
           <div class="form-check">
             <label>
-              <input type="radio" name="{{bound_field.name}}"{% if bound_field.value() == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}"{% if bound_field.field.disabled %} disabled{% endif %}>{{choice[1]}}
+              <input class="{% if bound_field.errors %} is-invalid{% endif %}" type="radio" name="{{bound_field.name}}"{% if bound_field.value() == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}"{% if bound_field.field.disabled %} disabled{% endif %}>{{choice[1]}}
             </label>
           </div>
           {% endfor %}
       {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type != 'select' %}
-        <input class="form-control" name="{{bound_field.name}}"
+        <input class="form-control{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}"
           {% if bound_field.value() is not none %}
           value="{{bound_field.value()}}"
           {% endif %}
@@ -77,7 +77,7 @@
         />
       {% else %}
       {## XXX Everything else Select... ##}
-        <select class="form-control" name="{{bound_field.name}}"
+        <select class="form-control{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}"
           {% if bound_field.field.disabled %} disabled{% endif %}>
           {% for choice in bound_field.field.widget.choices %}
           <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
@@ -85,7 +85,7 @@
         </select>
       {% endif %}
       {% for error in bound_field.errors %}
-        <span class="form-text help-block">{{error}}</span>
+        <span class="form-text help-block invalid-feedback">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
         <small class="form-text text-muted">{{bound_field.help_text}}</small>
@@ -102,7 +102,7 @@
   <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if bound_field.field.required %} requiredField{% endif %}">{{ bound_field.label|safe }}{% if bound_field.field.required %}<span class="asteriskField">*</span>{% endif %}</label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
-      <select class="form-control" name="{{bound_field.name}}">
+      <select class="form-control{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}">
         {% if not bound_field.value() %}
         <option value="" disabled selected>Please choose one ...</option>
         {% endif %}
@@ -111,7 +111,7 @@
         {% endfor %}
       </select>
       {% for error in bound_field.errors %}
-      <span class="form-text help-block">{{error}}</span>
+      <span class="form-text help-block invalid-feedback">{{error}}</span>
       {% endfor %}
       {% if bound_field.help_text %}
         <small class="form-text text-muted">{{bound_field.help_text}}</small>

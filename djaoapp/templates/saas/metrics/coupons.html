@@ -10,6 +10,9 @@
 {% block saas_content %}
 <div id="coupon-performance">
   <div id="coupon-users-container">
+    <div class="row my-3">
+        {% include "saas/_item_list_filter.html" %}
+    </div>
     <p v-show="itemsLoaded" v-cloak>
 {{coupon.code}} was used [[totalItems]] time[[totalItems > 0 ? "s" : ""]].
         </p>
