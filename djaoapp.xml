@@ -5,6 +5,10 @@
     <description>
       Deploy prerequsites and code required to run the djaoapp webapp
       in a production environment.
+
+      Note:
+      - CentOS 7 defaults to python2.7 with multiple prerequisites missing
+        a native package for Python 3 even in the extended repos.
     </description>
     <maintainer>
       <personname>DjaoDjin inc.</personname>
@@ -14,7 +18,7 @@
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
       <fetch><url>/var/www/djaoapp/./reps/djaoapp/htdocs</url></fetch>
-      <dep name="Django" target="python" includes="1.11.18">
+      <dep name="Django" target="python" includes="1.11.20">
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
       <dep name="django-assets" target="python">
@@ -99,23 +103,23 @@
       <!-- XXX impossible to find setproctitle in MacPorts -->
       <alternates>
         <alternate name="CentOS">
-          <dep name="python34-cryptography">
+          <dep name="python-cryptography">
             <!-- Native code (used by python-social-auth) -->
             <lib>.*/(cryptography)/__init__.py</lib>
           </dep>
-          <dep name="python3-pyOpenSSL">
+          <dep name="pyOpenSSL">
             <lib>.*/(OpenSSL)/__init__.py</lib>
           </dep>
-          <dep name="python36-coverage">
+          <dep name="python-coverage">
             <bin>(coverage).*</bin>
           </dep>
-          <dep name="python3-billiard">
+          <dep name="python-billiard">
             <lib>.*/(billiard)/__init__.py</lib>
           </dep>
-          <dep name="python3-lxml">
+          <dep name="python-lxml">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
-          <dep name="python3-pillow">
+          <dep name="python-pillow">
             <lib>.*/(PIL)/__init__.py</lib>
           </dep>
           <dep name="python-psycopg2">
@@ -123,7 +127,7 @@
                  pulled from Django. -->
             <lib>.*/(psycopg2)/__init__.py</lib>
           </dep>
-          <dep name="python34-setproctitle">
+          <dep name="python-setproctitle">
             <!-- XXX seems we don't have a python36 package yet on CentOS -->
             <lib>.*/setproctitle.*.so</lib>
           </dep>
@@ -224,18 +228,20 @@
       <dep name="premailer" target="python">
         <lib>.*/(premailer)/__init__.py</lib>
       </dep>
-      <dep name="WeasyPrint" target="python">
-        <lib>.*/(weasyprint)/__init__.py</lib>
-      </dep>
       <dep name="podofo-flatform">
         <bin>podofo-flatform</bin>
       </dep>
       <alternates>
         <alternate name="CentOS">
+          <dep name="WeasyPrint" target="python" includes="0.42.3">
+            <!-- WeasyPrint 0.42.3 is the last version supporting Python2. See
+                 comment about CentOS7 in the toplevel description field. -->
+            <lib>.*/(weasyprint)/__init__.py</lib>
+          </dep>
           <dep name="cairo">
             <lib>cairo</lib>
           </dep>
-          <dep name="python3-cairocffi">
+          <dep name="python-cairocffi">
             <!-- marked as a .noarch package yet will try to run gcc when
                  installed through pip -->
             <lib>.*/(cairocffi)/__init__.py</lib>
@@ -243,7 +249,7 @@
           <dep name="pango">
             <lib>pango-1.0</lib>
           </dep>
-          <dep name="python3-cffi">
+          <dep name="python-cffi">
             <lib>.*/_cffi_backend.*.so</lib>
           </dep>
           <dep name="python-tinycss">
@@ -251,6 +257,9 @@
           </dep>
         </alternate>
         <alternate name="Darwin">
+          <dep name="WeasyPrint" target="python">
+            <lib>.*/(weasyprint)/__init__.py</lib>
+          </dep>
           <dep name="cairo">
             <lib>cairo</lib>
           </dep>
@@ -266,6 +275,9 @@
           </dep>
         </alternate>
         <alternate name="Fedora">
+          <dep name="WeasyPrint" target="python">
+            <lib>.*/(weasyprint)/__init__.py</lib>
+          </dep>
           <dep name="cairo">
             <lib>cairo</lib>
           </dep>
@@ -321,6 +333,13 @@
       </dep>
       <alternates>
         <alternate name="CentOS">
+          <dep name="freetype-devel">
+            <!-- freetype-devel is required to compile podofo-flatfrom
+            on CentOS 7. Apparently it is not required or pulled through
+            other prerequisites on Fedora. -->
+            <include>(freetype)/freetype.h</include>
+            <lib>freetype</lib>
+          </dep>
           <dep name="gcc-c++">
             <bin>g++</bin>
           </dep>
@@ -552,10 +571,10 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <alternates>
         <!-- instead of pip install cryptography because there is a C module -->
         <alternate name="CentOS">
-          <dep name="python3-cryptography">
+          <dep name="python-cryptography">
             <lib>.*/(cryptography)/__init__.py</lib>
           </dep>
-          <dep name="python3-cffi">
+          <dep name="python-cffi">
             <lib>.*/_cffi_backend.*.so</lib>
           </dep>
         </alternate>

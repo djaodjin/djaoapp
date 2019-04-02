@@ -185,12 +185,12 @@ build-assets: $(installTop)/.npm \
 	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
 	$(wildcard $(srcDir)/assets/scss/base/*.scss) \
-	htdocs/static/js/djaoapp-i18n.js
+	$(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && $(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/_base.css
 	cd $(srcDir) && DEBUG=1 $(PYTHON) manage.py assets build
 
-htdocs/static/js/djaoapp-i18n.js:
-	$(installDirs) $(dir $@)
+$(ASSETS_DIR)/js/djaoapp-i18n.js:
+	$(installDirs) $(ASSETS_DIR)/js
 	cd $(srcDir) && $(PYTHON) manage.py generate_i18n_js $@
 
 

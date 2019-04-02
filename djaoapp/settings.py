@@ -98,9 +98,6 @@ MIDDLEWARE += (
     'deployutils.apps.django.middleware.RequestLoggingMiddleware',
 )
 
-MIDDLEWARE_CLASSES = MIDDLEWARE
-
-
 ROOT_URLCONF = 'djaoapp.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
