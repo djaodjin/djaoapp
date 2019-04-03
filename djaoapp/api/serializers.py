@@ -1,4 +1,4 @@
-# Copyright (c) 2018 DjaoDjin inc.
+# Copyright (c) 2019 DjaoDjin inc.
 # see LICENSE
 
 #pylint: disable=old-style-class,no-init
@@ -12,33 +12,30 @@ from saas.api.serializers import (
     WithSubscriptionSerializer)
 from saas.models import get_broker, Role, ChargeItem
 from saas.utils import get_organization_model
-
+from signup.serializers import ActivitySerializer
 
 
 class OrganizationSerializer(OrganizationBaseSerializer):
 
-    class Meta:
-        model = get_organization_model()
-        fields = ('slug', 'created_at', 'full_name',
-            'email', 'phone', 'street_address', 'locality',
-            'region', 'postal_code', 'country', 'default_timezone',
-            'printable_name', 'is_provider', 'is_bulk_buyer', 'type', 'extra')
-        read_only_fields = ('created_at',)
+    credentials = serializers.SerializerMethodField(read_only=True)
+
+    class Meta(OrganizationBaseSerializer.Meta):
+        fields = OrganizationBaseSerializer.Meta.fields + ('credentials',)
+
+    @staticmethod
+    def get_credentials(obj):
+        return (not has_invalid_password(obj.user)) if obj.user else False
 
 
-class OrganizationWithSubscriptionsSerializer(OrganizationSerializer):
+class ProfileSerializer(OrganizationSerializer):
 
+    activities = ActivitySerializer(many=True, read_only=True)
     subscriptions = WithSubscriptionSerializer(
         source='subscription_set', many=True, read_only=True)
 
-    class Meta:
-        model = get_organization_model()
-        fields = ('slug', 'created_at', 'full_name',
-            'email', 'phone', 'street_address', 'locality',
-            'region', 'postal_code', 'country', 'default_timezone',
-            'printable_name', 'is_provider', 'is_bulk_buyer', 'type', 'extra',
-            'subscriptions')
-        read_only_fields = ('slug', 'created_at',)
+    class Meta(OrganizationSerializer.Meta):
+        fields = OrganizationSerializer.Meta.fields + (
+            'activities', 'subscriptions',)
 
 
 class SessionSerializer(serializers.ModelSerializer):

@@ -15,8 +15,7 @@ from saas.api.serializers import (
 from saas.docs import swagger_auto_schema
 from saas.utils import get_organization_model
 
-from .serializers import (OrganizationSerializer,
-    OrganizationWithSubscriptionsSerializer)
+from .serializers import (OrganizationSerializer, ProfileSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -55,7 +54,7 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
         }
     """
 #    queryset = get_organization_model().objects.all()
-    serializer_class = OrganizationWithSubscriptionsSerializer
+    serializer_class = ProfileSerializer
 
     def put(self, request, *args, **kwargs):
         """
@@ -101,7 +100,16 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
 class OrganizationListAPIView(OrganizationListBaseAPIView):
     """
-    Queries all ``Organization``.
+    Queries a page (``PAGE_SIZE`` records) of organization and user profiles.
+
+    The queryset can be filtered for at least one field to match a search
+    term (``q``).
+
+    The queryset can be ordered by a field by adding an HTTP query parameter
+    ``o=`` followed by the field name. A sequence of fields can be used
+    to create a complete ordering by adding a sequence of ``o`` HTTP query
+    parameters. To reverse the natural order of a field, prefix the field
+    name by a minus (-) sign.
 
     **Tags: profile
 
@@ -111,7 +119,9 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 
         GET /api/profile/?o=created_at&ot=desc HTTP/1.1
 
-    .. code-block:: http
+    responds
+
+    .. code-block:: json
 
         {
             "count": 1,
