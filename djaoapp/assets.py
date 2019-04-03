@@ -37,6 +37,7 @@ register('js_base', js_base)
 js_saas = Bundle(
     'vendor/jquery.payment.js',
     'js/djaodjin-saas.js',
+    'js/djaodjin-stripe.js',
     'js/djaodjin-postal.js',
     'js/djaodjin-password-strength.js',
     'js/djaodjin-resources.js', # At the end to avoid errors in browser
