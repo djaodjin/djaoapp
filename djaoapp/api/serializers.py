@@ -13,23 +13,11 @@ from saas.api.serializers import (
 from saas.models import get_broker, Role, ChargeItem
 from saas.utils import get_organization_model
 from signup.serializers import ActivitySerializer
-from signup.utils import has_invalid_password
 
 
 class OrganizationSerializer(OrganizationBaseSerializer):
 
-    credentials = serializers.SerializerMethodField(read_only=True)
-
-    class Meta(OrganizationBaseSerializer.Meta):
-        fields = OrganizationBaseSerializer.Meta.fields + ('credentials',)
-
-    @staticmethod
-    def get_credentials(obj):
-        if hasattr(obj, 'credentials'):
-            return obj.credentials
-        if hasattr(obj, 'user'):
-            return (not has_invalid_password(obj.user))
-        return False
+    pass
 
 
 class ProfileSerializer(OrganizationSerializer):
