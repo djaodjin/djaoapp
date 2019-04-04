@@ -25,6 +25,8 @@ class OrganizationSerializer(OrganizationBaseSerializer):
 
     @staticmethod
     def get_credentials(obj):
+        if hasattr(obj, 'credentials'):
+            return obj.credentials
         if hasattr(obj, 'user'):
             return (not has_invalid_password(obj.user))
         return False
