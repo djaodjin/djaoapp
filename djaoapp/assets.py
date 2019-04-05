@@ -29,7 +29,6 @@ js_base = Bundle('vendor/jquery.js',
 #                 'vendor/jquery.resize.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
-                 'js/djaoapp-i18n.js',
             filters='yui_js', output='cache/base.js')
 register('js_base', js_base)
 
@@ -37,6 +36,7 @@ register('js_base', js_base)
 # User cart and payment processing (also includes ``showErrorMessages``).
 js_saas = Bundle(
     'vendor/jquery.payment.js',
+    'js/djaoapp-i18n.js',
     'js/djaodjin-saas.js',
     'js/djaodjin-stripe.js',
     'js/djaodjin-postal.js',
