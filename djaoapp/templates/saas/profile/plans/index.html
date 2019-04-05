@@ -6,13 +6,38 @@
 <div id="plan-list-container">
     <div class="row my-3">
         {% include "saas/_item_list_filter.html" %}
+        <div class="col-2 text-right">
+            <a class="btn btn-sm btn-primary" id="plan-new" href="{{urls.provider.plan_new}}" title="Create plan">New Plan...</a>
+        </div>
     </div>
     <div class="table-responsive">
     <table id="coupon-list" class="table table table-sm table-striped" >
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Created at</th>
+            <th>Title
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('title')">
+                  <i :class="sortIcon('title')"></i>
+                </a>
+            </th>
+            <th>Status
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('is_active')">
+                  <i :class="sortIcon('is_active')"></i>
+                </a>
+            </th>
+            <th>Period price
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('period_amount')">
+                  <i :class="sortIcon('period_amount')"></i>
+                </a>
+            </th>
+            <th>Created at
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('created_at')">
+                  <i :class="sortIcon('created_at')"></i>
+                </a>
+            </th>
             <th></th>
         </tr>
         </thead>
@@ -30,16 +55,20 @@
             <td>
                 <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
             </td>
+            <td>[[item.is_active ? 'active' : 'disabled']]</td>
+            <td>[[item.period_amount]]</td>
             <td class="date">[[item.created_at | formatDate]]</td>
-            <td>
-                <button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i>
-                </button>
-            </td>
         </tr>
     </table>
     </div>
     <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
         <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+    </div>
+    <div class="row mt-3">
+        <div class="col text-right">
+            <a id="download" class="btn btn-secondary btn-sm mr-1" role="button"
+               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+        </div>
     </div>
 </div>
 {% endblock %}
