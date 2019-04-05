@@ -10,7 +10,10 @@
   </ul>
   <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
     <div id="tab-0" class="tab-pane active" role="tabpanel" style="width:100%;height:100%;">
-        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0" style="height:100vh;width:80%"></iframe>
+        <div id="tpl-spinner" class="mt-5">
+            <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
+        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0" style="height:100vh;width:80%;display: none;"></iframe>
     </div>
     {# panels are inserted here #}
   </div>
@@ -21,16 +24,18 @@
 {% assets "js_theme_editors" %}
 <script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}
-{# XXX not included in assets because issue with jsmin #}
-{#     as well as loading Ace plugins in DEBUG=0       #}
+{% if not show_edit_tools %}
+{# when edit tools are disabled the required scripts are not included #}
 <script type="text/javascript" src="/static/vendor/ace.js"></script>
 <script type="text/javascript" src="/static/vendor/ext-language_tools.js"></script>
 <script type="text/javascript" src="/static/vendor/ext-modelist.js"></script>
 <script type="text/javascript" src="/static/vendor/ext-emmet.js"></script>
+{% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     var api_sources = "{{api_sources}}";
     var templates = {{templates|safe}};
+    var $el = $("#email-tpl-iframe");
     function addPanel(element, name, beforeElem) {
         var tabsContainer = element.find("[role='tablist']");
         var contentsContainer = element.find(".tab-content");
@@ -41,7 +46,7 @@ jQuery(document).ready(function($) {
         contentsContainer.append(content);
         content.find(".content").djtemplates({
             api_source_code: api_sources,
-            iframe_view: $("#email-tpl-iframe")[0]
+            iframe_view: $el[0]
         });
     };
 
@@ -53,6 +58,15 @@ jQuery(document).ready(function($) {
     $('body').on('click', '.dashboard-tab a', function(){
         var tpl = $(this).text();
         $('.content[data-content="' + tpl + '"]').trigger('pages.loadresources');
+        $el.hide();
+        $('#tpl-spinner').show();
+    });
+    $el.on("load", function () {
+        var contents = $el.contents();
+        contents.find('.btn-tools').remove();
+        contents.find('#djDebug').remove();
+        $('#tpl-spinner').hide();
+        $el.show();
     });
     $('.dashboard-tab a').first().click();
 });

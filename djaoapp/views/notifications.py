@@ -46,6 +46,7 @@ class NotificationDetailView(AppMixin, TemplateView):
         templates = [{'name': base % 'base', 'index': 0},
             {'name': base % template_name, 'index': 1}]
         context.update({
+            'show_edit_tools': self.app.show_edit_tools,
             'templates': templates,
             'api_sources': reverse('pages_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
