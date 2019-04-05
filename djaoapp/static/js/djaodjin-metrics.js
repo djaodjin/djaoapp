@@ -213,7 +213,7 @@ function updateChart(container, data, unit, dataScale, extra) {
         // XXX listening on the inner ``container`` does not trigger
         // the chart update so we listen to the event fired
         // in ``$(".dashboard-nav-toggle").click()``.
-        $('.dashboard-container').add(container).resize(function(){
+        $('.dashboard-container').resize(function(){
             chart.update();
             // Add timeout to update background correctly.
             setTimeout(function(){
