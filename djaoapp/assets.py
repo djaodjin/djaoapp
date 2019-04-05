@@ -26,6 +26,7 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/bootstrap.js',
                  'vendor/bootbox.js',
                  'vendor/toastr.js',
+                 'vendor/jquery.resize.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
                  'js/djaoapp-i18n.js',
@@ -93,6 +94,7 @@ js_djaodjin_vue = Bundle(
     'js/djaodjin-signup-vue.js',
     'js/djaodjin-saas-vue.js',
     'js/djaodjin-rules-vue.js',
+    'js/djaodjin-djaoapp-vue.js',
     'js/djaodjin-metrics.js',
     filters='jsmin', output='cache/djaodjin-vue.js')
 register('js_djaodjin_vue', js_djaodjin_vue)

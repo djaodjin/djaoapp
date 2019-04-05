@@ -13,6 +13,7 @@ from saas.api.serializers import (
 from saas.models import get_broker, Role, ChargeItem
 from saas.utils import get_organization_model
 from signup.serializers import ActivitySerializer
+from rules.api.serializers import AppSerializer as RulesAppSerializer
 
 
 class OrganizationSerializer(OrganizationBaseSerializer):
@@ -100,3 +101,8 @@ class SessionSerializer(serializers.ModelSerializer):
         if hasattr(request, 'session'):
             return request.session.get('security_token', None)
         return None
+
+
+class AppSerializer(RulesAppSerializer):
+    class Meta(RulesAppSerializer.Meta):
+        fields = RulesAppSerializer.Meta.fields + ('show_edit_tools',)

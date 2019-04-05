@@ -12,7 +12,7 @@ from signup.urls.users import USERNAME_PAT
 from urldecorators import include, url
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
-from ..api.custom_themes import ThemePackageListAPIView
+from ..api.custom_themes import ThemePackageListAPIView, AppUpdateAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
@@ -60,6 +60,8 @@ urlpatterns += site_patterns(
         name='api_notification_send_test_email'),
     url_direct(r'^api/notifications/',
         NotificationAPIView.as_view(), name='api_notification_base'),
+    url_direct(r'^api/proxy/$',
+        AppUpdateAPIView.as_view(), name='api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
         ThemePackageListAPIView.as_view(), name='pages_api_themes'),

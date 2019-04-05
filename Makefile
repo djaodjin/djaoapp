@@ -156,6 +156,7 @@ $(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/font-awesome/fonts/* $(ASSETS_DIR)/fonts
 	$(installFiles) $(installTop)/node_modules/highlightjs/styles/monokai_sublime.css $(installTop)/node_modules/highlightjs/styles/github.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/highlightjs/highlight.pack.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/javascript-detect-element-resize/jquery.resize.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/jquery.cookie/jquery.cookie.js $(ASSETS_DIR)/vendor

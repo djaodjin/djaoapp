@@ -6,73 +6,69 @@
 <section id="{{role_descr}}"
   data-trip data-trip-index="1"
   data-trip-content="<h2>Add/Remove {{role_descr.title}}</h2><p>When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
-  data-trip-position="screen-center"
-  >
+  data-trip-position="screen-center">
 <div id="user-relation-list-container">
   <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
-    <form id="add-user" @submit.prevent="submit" class="mt-3">
+    <form class="form-inline mb-4" @submit.prevent="submit">
+      <div style="width:100%;">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-        <div class="input-group input-group-sm mb-3"
-             data-trip data-trip-index="2"
-             data-trip-content="<p>Start typing the username or email of the person you want to add.</p>"
-             data-trip-position="s">
-          <input type="text" class="form-control" id="userTypeahead"
-            name="user" type="text" placeholder="Username or e-mail"
-            autocomplete="off">
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">Add {{role_descr.title}}</button>
+          <div class="form-group"
+               data-trip data-trip-index="2"
+               data-trip-content="<p>Start typing the username or email of the person you want to add.</p>"
+               data-trip-position="s">
+              <input type="text" class="form-control" id="userTypeahead"
+                     name="user" type="text" placeholder="Username or e-mail"
+                     autocomplete="off">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Add {{role_descr.title}}</button>
+              </div>
           </div>
-        </div>
-        <uiv-typeahead
-             v-model="itemSelected"
-             target="#userTypeahead"
-             :async-function="getUsers"
-             item-key="slug"
-             :open-on-focus="false"
-             class="typeahead-dropdown"
-             />
+          <uiv-typeahead
+               v-model="itemSelected"
+               target="#userTypeahead"
+               :async-function="getUsers"
+               item-key="slug"
+               :open-on-focus="false"
+               class="typeahead-dropdown"
+               />
+      </div>
     </form>
   </user-typeahead>
-  <div class="table-responsive">
-  <table class="table table-sm table-striped">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr v-show="!itemsLoaded">
-            <td colspan="3">
-                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-            </td>
-        </tr>
-        <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
-            <td colspan="3">
-                <h4 class="text-center"><em>No {{role_descr.title}}<span v-show="params.q"> [[params.q]]</span></em></h4>
-            </td>
-        </tr>
-        <tr :id="item.user.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            <td style="vertical-align:middle;">[[item.user.slug]]</td>
-            <td style="vertical-align:middle;">[[item.user.email]] <button
-                class="btn btn-secondary btn-sm"
-                v-if="item.request_key" @click="save(item.user)">grant</button></td>
-            <td style="vertical-align:middle;"><i>[[item.grant_key ? "invited" : ""]]</i></td>
-            <td style="vertical-align:middle;"><button class="btn btn-danger btn-sm"
-                data-trip data-trip-index="3"
-                data-trip-content="<p>Click here to revoke access to the user.</p>"
-                data-trip-position="s"
-                @click="remove(index)"><i class="fa fa-remove"></i></button></td>
-        </tr>
-    </tbody>
-  </table>
+  <hr />
+  <div class="row">
+      <div class="col-12">
+          <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text" id="search-inp">Filter</span>
+              </div>
+              <input class="form-control" type="text" id="search-inp"
+                     v-model="params.q" @input="filterList" />
+          </div>
+      </div>
   </div>
-  <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-    [[params.page]]
-      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+  <div class="row">
+      <div class="col-12 col-md-6">
+        <div v-show="!itemsLoaded">
+            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
+        <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <p class="text-muted mt-2">No {{role_descr.title}}s yet</p>
+        </div>
+      </div>
   </div>
+  <div class="row">
+    <div class="col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        {% include "saas/_user_card.html" %}
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+        </div>
+      </div>
+  </div>
+
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->
   <div class="add-role-modal modal fade" title="Invite {{role_descr.title}}"

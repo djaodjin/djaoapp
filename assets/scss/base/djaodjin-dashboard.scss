@@ -65,7 +65,6 @@ $dashboard-sidebar-color:    white;
     width: 100%;
 // XXX temporary override to see the balances table
 //    overflow: hidden;
-    overflow: auto;
 }
 
 .dashboard-inner-container {
@@ -436,4 +435,21 @@ $dashboard-sidebar-color:    white;
 #subscriptions table td
 {
     vertical-align: middle !important;
+}
+
+.pending-users-container
+{
+    background: #f3f3f3;
+    padding: 10px 20px;
+    border-radius: 3px;
+}
+
+.pending-users-container h4
+{
+    color: #333;
+}
+
+.user-card-image
+{
+    margin: 20px 0 20px 20px;
 }
