@@ -160,9 +160,11 @@ def inject_edition_tools(response, request, context=None,
             'djaodjin': dj_urls,
             'edit': edit_urls}})
     context.update(csrf(request))
-    soup = pages_inject_edition_tools(response, request, context=context,
-        body_top_template_name=body_top_template_name,
-        body_bottom_template_name=body_bottom_template_name)
+    soup = None
+    if app.show_edit_tools:
+        soup = pages_inject_edition_tools(response, request, context=context,
+            body_top_template_name=body_top_template_name,
+            body_bottom_template_name=body_bottom_template_name)
 
     # Insert the authenticated user information and roles on organization.
     if is_authenticated(request):

@@ -20,10 +20,10 @@ Provider Dashboard
         </div>
         <table class="table table-striped">
             <tbody id="search-results"
-              v-show="(itemsLoaded || usersLoaded) && combined.results.length > 0" v-cloak>
-                <tr v-for="entry in combined.results">
+              v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                <tr v-for="entry in items.results">
                     <td>
-                      <a :href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</a>
+                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
                     </td>
                     <td>[[entry.full_name]]</td>
                     <td>[[entry.email]]</td>

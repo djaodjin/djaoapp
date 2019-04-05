@@ -26,8 +26,10 @@ js_base = Bundle('vendor/jquery.js',
                  'vendor/bootstrap.js',
                  'vendor/bootbox.js',
                  'vendor/toastr.js',
+                 'vendor/jquery.resize.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
+                 'js/djaoapp-i18n.js',
             filters='yui_js', output='cache/base.js')
 register('js_base', js_base)
 
@@ -36,7 +38,6 @@ register('js_base', js_base)
 js_saas = Bundle(
     'vendor/jquery.payment.js',
     'js/djaodjin-saas.js',
-    'js/djaodjin-stripe.js',
     'js/djaodjin-postal.js',
     'js/djaodjin-password-strength.js',
     'js/djaodjin-resources.js', # At the end to avoid errors in browser
@@ -87,10 +88,12 @@ js_djaodjin_vue = Bundle(
     'vendor/chardinjs.js',
     'vendor/vue-croppa.min.js',
     'js/djaodjin-upload.js',
+    'js/djaodjin-pages.js',
     'js/djaodjin-dashboard.js',
     'js/djaodjin-signup-vue.js',
     'js/djaodjin-saas-vue.js',
     'js/djaodjin-rules-vue.js',
+    'js/djaodjin-djaoapp-vue.js',
     'js/djaodjin-metrics.js',
     filters='jsmin', output='cache/djaodjin-vue.js')
 register('js_djaodjin_vue', js_djaodjin_vue)

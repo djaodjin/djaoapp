@@ -19,6 +19,7 @@ APP_NAME = os.path.basename(BASE_DIR)
 DB_HOST = ''
 DB_PORT = 5432
 SEND_EMAIL = True
+RULES_APP_MODEL = 'djaoapp_extras.App'
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
@@ -64,9 +65,9 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'captcha',
     'deployutils.apps.django',
 #    'haystack', disabled until we actively use text searches on the site.
+    'saas',  # Because we want `djaodjin-resources.js` picked up from here.
     'signup',
     'social_django',
-    'saas',
     'pages',
     'multitier',
     'rules',
@@ -528,7 +529,9 @@ REST_FRAMEWORK = {
         # one in the list because it will raise a PermissionDenied if the CSRF
         # is absent.
         'rest_framework.authentication.SessionAuthentication',
-    )
+    ),
+    'SEARCH_PARAM': 'q',
+    'ORDERING_PARAM': 'o'
 }
 if not DEBUG:
     REST_FRAMEWORK.update({
@@ -578,18 +581,21 @@ SAAS = {
     'BROKER': {
         'GET_INSTANCE': 'djaoapp.thread_locals.get_current_broker',
         'IS_INSTANCE_CALLABLE': 'djaoapp.thread_locals.is_current_broker',
-        'BUILD_ABSOLUTE_URI_CALLABLE': 'djaoapp.thread_locals.provider_absolute_url',
+        'BUILD_ABSOLUTE_URI_CALLABLE':
+            'djaoapp.thread_locals.provider_absolute_url',
     },
     'PROCESSOR': {
         'PUB_KEY': STRIPE_PUB_KEY,
         'PRIV_KEY': STRIPE_PRIV_KEY,
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
         'CLIENT_ID': STRIPE_CLIENT_ID,
-        'AUTHORIZE_CALLABLE': 'djaoapp.thread_locals.get_authorize_processor_url',
+        'AUTHORIZE_CALLABLE':
+            'djaoapp.thread_locals.get_authorize_processor_url',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },
-    'PROCESSOR_BACKEND_CALLABLE': 'djaoapp.thread_locals.dynamic_processor_keys',
+    'PROCESSOR_BACKEND_CALLABLE':
+        'djaoapp.thread_locals.dynamic_processor_keys',
 }
 
 # Software-as-a-Service (forward requests with session data)

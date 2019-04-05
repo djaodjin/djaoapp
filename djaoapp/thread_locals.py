@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 import logging, os
@@ -11,6 +11,8 @@ from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from pages.utils import get_default_storage_base
 from rules.utils import get_app_model
+from saas.decorators import _valid_manager
+from saas.utils import get_organization_model
 
 from .compat import reverse
 
@@ -59,6 +61,12 @@ def get_current_broker():
     # If we don't write the code as such, we might end-up generating
     # an extra SQL query every time ``get_current_broker`` is called.
     thread_local_site = get_current_site()
+    if not thread_local_site:
+        LOGGER.warning(
+            "bypassing multitier and returning '%s' as broker, most likely"
+            " because the execution environment is not bound to an HTTP"\
+            " request.", settings.APP_NAME)
+        return get_organization_model().objects.get(slug=settings.APP_NAME)
     broker = getattr(thread_local_site, 'broker', None)
     if not broker:
         # rules.App and saas.Organization are in the same database.
@@ -139,10 +147,11 @@ def get_active_theme():
 
 def get_disabled_authentication(request):
     app = get_current_app()
-    return app.authentication == app.AUTH_DISABLED
+    return (app.authentication == app.AUTH_DISABLED
+        and not _valid_manager(request, [get_current_broker()]))
 
 
-def get_disabled_registration(request):
+def get_disabled_registration(request):#pylint:disable=unused-argument
     app = get_current_app()
     return app.authentication != app.AUTH_ENABLED
 

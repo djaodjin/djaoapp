@@ -14,6 +14,7 @@ Update Plan
                     {% include "saas/profile/plans/_form.html" %}
                 </div>
                 {% endblock %}
+                {% if show_delete %}
                 <div class="card border-danger mt-3">
                   <div class="card-header">
                     Danger Zone
@@ -43,6 +44,7 @@ Update Plan
                     </div>
                   </div>
                 </div>
+                {% endif %}
             </div>
             <div class="col-lg-6">
                 <div style="margin-bottom: 20px;">
