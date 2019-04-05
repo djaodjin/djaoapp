@@ -79,6 +79,7 @@ urlpatterns += site_patterns(
     url_provider(r'^api/profile/$',
         OrganizationListAPIView.as_view(), name='saas_api_profile'),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
+    url_authenticated('^api/', include('saas.urls.api.search')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_self_provider(r'^api/', include('signup.urls.api.tokens')),
     url_self_provider(r'^api/users/(?P<user>%s)/$' % USERNAME_PAT,
