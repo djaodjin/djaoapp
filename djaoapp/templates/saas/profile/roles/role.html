@@ -9,7 +9,7 @@
   data-trip-position="screen-center">
 <div id="user-relation-list-container">
   <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
-    <form class="form-inline mb-4" @submit.prevent="submit">
+    <form id="add-user" class="form-inline mb-4" @submit.prevent="submit">
       <div style="width:100%;">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="form-group"
