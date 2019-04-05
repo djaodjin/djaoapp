@@ -77,7 +77,7 @@ initdb: install-default-themes initdb-testing initdb-cowork
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json
 	@echo "-- Set streetside processor deposit key."
 	sqlite3 $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
-	sqlite3 $(DB_FILENAME) "UPDATE rules_app set show_edit_tools=1 where slug='djaoapp';"
+	sqlite3 $(DB_FILENAME) "UPDATE rules_app set show_edit_tools=1;"
 
 
 initdb-testing: install-conf
@@ -96,6 +96,7 @@ initdb-cowork: install-conf
 	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
+	sqlite3 $(dir $(DB_FILENAME))/cowork.sqlite "UPDATE rules_app set show_edit_tools=1;"
 
 
 migratedb-cowork: initdb-cowork
