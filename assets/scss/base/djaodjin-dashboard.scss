@@ -43,6 +43,11 @@ $dashboard-sidebar-color:    white;
   }
 }
 
+// Workaround: Bootstrap4 has make it a lot more complicated than necessary
+// when doing server-side validation.
+.has-error .invalid-feedback {
+  display: block;
+}
 
 // Manager dashboards (templates/saas/*.html)
 // --------

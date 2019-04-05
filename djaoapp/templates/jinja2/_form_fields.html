@@ -21,12 +21,16 @@
           {{bound_field.label|safe}}
         </label>
       </div>
-      {% for error in bound_field.errors %}
-        <span class="form-text help-block invalid-feedback">{{error}}</span>
-      {% endfor %}
-      {% if bound_field.help_text %}
-        <small class="form-text text-muted">{{bound_field.help_text}}</small>
-      {% endif %}
+      <div class="form-text help-block">
+        <div class="invalid-feedback">
+          {% for error in bound_field.errors %}
+          {{error}}
+          {% endfor %}
+        </div>
+        {% if bound_field.help_text %}
+        <small class="text-muted">{{bound_field.help_text}}</small>
+        {% endif %}
+      </div>
     </div>
     {% else %}
     {% if not hide_labels %}
@@ -84,12 +88,16 @@
           {% endfor %}
         </select>
       {% endif %}
-      {% for error in bound_field.errors %}
-        <span class="form-text help-block invalid-feedback">{{error}}</span>
-      {% endfor %}
-      {% if bound_field.help_text %}
+      <div class="form-text help-block">
+        <div class="invalid-feedback">
+          {% for error in bound_field.errors %}
+          {{error}}
+          {% endfor %}
+        </div>
+        {% if bound_field.help_text %}
         <small class="form-text text-muted">{{bound_field.help_text}}</small>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
     {% endif %}
 </div>
@@ -110,12 +118,16 @@
         <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
         {% endfor %}
       </select>
-      {% for error in bound_field.errors %}
-      <span class="form-text help-block invalid-feedback">{{error}}</span>
-      {% endfor %}
-      {% if bound_field.help_text %}
-        <small class="form-text text-muted">{{bound_field.help_text}}</small>
-      {% endif %}
+      <div class="form-text help-block">
+        <div class="invalid-feedback">
+          {% for error in bound_field.errors %}
+          {{error}}
+          {% endfor %}
+        </div>
+        {% if bound_field.help_text %}
+        <small class="text-muted">{{bound_field.help_text}}</small>
+        {% endif %}
+      </div>
   </div>
 </div>
 {%- endmacro %}
