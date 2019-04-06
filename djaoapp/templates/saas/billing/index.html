@@ -14,7 +14,7 @@ You can also see the list of all payments made here.
 {% block saas_page_layout %}
 <div class="row" id="billing-statement-container">
 <div class="col-sm-12">
-  <div class="row" 
+  <div class="row"
          data-trip data-trip-index="1"
          data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
          data-trip-position="screen-center">
@@ -47,7 +47,7 @@ You can also see the list of all payments made here.
         <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
         {% endif %}
       </section>
-      <section id="payment-form" class="col-sm-6">
+      <section class="col-sm-6">
         <h1 class="text-primary">Credit Card
         <a class="btn" href="{{urls.organization.update_card}}"
            data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
