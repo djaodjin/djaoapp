@@ -1,8 +1,12 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{{template}} Notification{% endblock %}
+{% block saas_title %}
+{{template}} Notification
+<button class="btn btn-sm btn-outline-secondary ml-3 send-test-email" data-template="{{template}}">Send test e-mail</button>
+{% endblock %}
 
 {% block saas_page_layout %}
+
 <div id="email-tpl-editor" class="mt-4" style="height: 555px; overflow: hidden;">
   <ul class="nav nav-tabs dashboard-tab" role="tablist">
     <li class="nav-item"><a class="nav-link active" href="#tab-0" data-toggle="tab">Preview</a></li>
@@ -25,7 +29,10 @@
 <script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}
 {% if not show_edit_tools %}
-{# when edit tools are disabled the required scripts are not included #}
+{#
+    when edit tools are disabled the required scripts are not included
+    however if we're serving assets via cdn I'm not sure if this is the best way
+#}
 <script type="text/javascript" src="/static/vendor/ace.js"></script>
 <script type="text/javascript" src="/static/vendor/ext-language_tools.js"></script>
 <script type="text/javascript" src="/static/vendor/ext-modelist.js"></script>
@@ -69,6 +76,24 @@ jQuery(document).ready(function($) {
         $el.show();
     });
     $('.dashboard-tab a').first().click();
-});
+
+    $(".send-test-email").click(function(event) {
+        var self = this;
+        var id = $(self).attr("data-template");
+        $.ajax({
+            type: "POST",
+            url: "{{urls.send_test_email}}" + id + "/",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", getMetaCSRFToken());
+            },
+            data: null,
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(data) { showMessages([data.details], "info"); },
+            error: function(resp) { showErrorMessages(resp); },
+        });
+    });
+  });
 </script>
+
 {% endblock %}

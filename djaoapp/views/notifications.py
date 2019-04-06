@@ -51,4 +51,7 @@ class NotificationDetailView(AppMixin, TemplateView):
             'api_sources': reverse('pages_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
                 args=(template_name,))})
+        self.update_context_urls(context, {
+            'send_test_email': reverse('api_notification_base')
+        })
         return context
