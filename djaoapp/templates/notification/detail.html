@@ -62,20 +62,20 @@ jQuery(document).ready(function($) {
             addPanel($("#email-tpl-editor"), templates[idx].name);
         }
     }
-    $('body').on('click', '.dashboard-tab a', function(){
-        var tpl = $(this).text();
-        $('.content[data-content="' + tpl + '"]').trigger('pages.loadresources');
-        $el.hide();
-        $('#tpl-spinner').show();
-    });
+
     $el.on("load", function () {
         var contents = $el.contents();
-        contents.find('.btn-tools').remove();
         contents.find('#djDebug').remove();
         $('#tpl-spinner').hide();
         $el.show();
     });
-    $('.dashboard-tab a').first().click();
+
+    $('.tab-content .content').on("pages.save", function(event) {
+        $el.hide();
+        $('#tpl-spinner').show();
+    });
+
+    $('.tab-content .content').trigger('pages.loadresources');
 
     $(".send-test-email").click(function(event) {
         var self = this;
