@@ -12,35 +12,8 @@ You can update a user contact information, as well as login credentials here.
 
 {% block saas_content %}
 <section id="personal">
-  <div id="user-profile-container">
-    <form @submit.prevent="updateUser">
-        <div class="form-group">
-            <label class="control-label requiredField">Username<span class="asteriskField">*</span></label>
-            <div class="controls">
-                <input class="form-control" maxlength="254" name="username" placeholder="Username" type="text" v-model="username">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Email address</label>
-            <div class="controls">
-                <input class="form-control" maxlength="254" name="email" type="email" v-model="email">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Full name</label>
-            <div class="controls">
-                <input class="form-control" maxlength="30" name="last_name" type="text" v-model="fullName">
-            </div>
-        </div>
-        <div class="form-group">
-            <img :src="contact.picture" v-show="contact.picture && !imageSelected" width="100" height="100">
-            <croppa v-model="picture" :width="100" :height="100"></croppa>
-            <button class="btn btn-primary btn-sm" @click="uploadImage">Save picture</button>
-        </div>
-        <div class="form-action text-center">
-            <button class="btn btn-primary btn-lg" type="submit">Update</button>
-        </div>
-    </form>
+  <div id="profile-container">
+    {% include "_form.html" %}
     <hr />
     <div class="card border-secondary mb-4">
       <div class="card-body text-secondary">
