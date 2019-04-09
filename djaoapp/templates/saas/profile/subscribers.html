@@ -62,7 +62,7 @@ Subscriptions to {{organization.printable_name}}
                 <tbody class="has-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in items.results">
                         <td>
-                            <a :href="'{{urls.user.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
+                            <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
                         </td>
                         <td>
                         [[entry.created_at | relativeDate]]
