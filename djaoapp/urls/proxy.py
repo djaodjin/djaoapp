@@ -25,7 +25,7 @@ from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView, NotificationListView,
     NotificationInnerFrameView)
 from ..views.users import (UserProfileView, UserNotificationsView,
-    UserAccessiblesView)
+    UserAccessiblesView, UserPasswordUpdateView, UserPublicKeyUpdateView)
 from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView)
 from ..views.redirects import OrganizationRedirectView
@@ -99,12 +99,14 @@ urlpatterns += site_patterns(
         UserRedirectView.as_view(), name='accounts_profile'),
     url_self_provider(r'^users/(?P<user>%s)/roles/$' % USERNAME_PAT,
         UserAccessiblesView.as_view(), name='saas_user_product_list'),
+    url_self_provider(r'^(?P<user>%s)/password/' % USERNAME_PAT,
+        UserPasswordUpdateView.as_view(), name='password_change'),
+    url_self_provider(r'^(?P<user>%s)/pubkey/' % USERNAME_PAT,
+        UserPublicKeyUpdateView.as_view(), name='pubkey_update'),
     url_self_provider(r'^users/(?P<user>%s)/notifications/$' % USERNAME_PAT,
         UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
-    url_self_provider(r'^', include('saas.urls.users')),
-    url_self_provider(r'^users/', include('signup.urls.users')),
     url_direct(r'contacts/', include('signup.urls.contacts')),
 
     url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
