@@ -1,3 +1,4 @@
 // Create CSS used to style emails.
-@import "../base/variables.scss";
+@import "../vendor/bootstrap/_functions.scss";
+@import "../vendor/bootstrap/_variables.scss";
 @import "email-theme.scss";

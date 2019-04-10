@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 import os
@@ -15,8 +15,8 @@ css_base = Bundle(
 register('css_base', css_base)
 
 css_email = Bundle(
-    os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
-    filters=['less', 'cssmin'],
+    os.path.join(settings.HTDOCS, 'static', 'cache', '_email.css'),
+    filters=[],
     output='cache/email.css', debug=False)
 register('css_email', css_email)
 

@@ -1,5 +1,5 @@
 body{
- color: $text-color;
+ color: $body-color;
  background-color: $body-bg;
  font-family: "Helvetica Neue", "Lucida Grande", Helvetica, Arial, sans-serif;
  font-size: 100%;
@@ -28,12 +28,12 @@ table.footer-wrap {
 }
 
 .footer-wrap .container p {
-  color: $gray;
+  color: $gray-200;
   font-size: 12px;
 }
 
 table.footer-wrap a {
-  color: $gray-dark;
+  color: $gray-800;
 }
 
 h1, h2, h3 {
@@ -98,7 +98,7 @@ ol li {
 
 .page-header {
   padding:10px;
-  border-bottom:2px solid $brand-primary;
+  border-bottom:2px solid theme-color(primary);
 }
 
 .page-header > h3 {
@@ -110,7 +110,7 @@ ol li {
 .page-footer {
   text-align:center;
   padding-top:20px;
-  border-top: 2px solid $brand-primary;
+  border-top: 2px solid theme-color(primary);
 }
 
 .poweredby-logo {
