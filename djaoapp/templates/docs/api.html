@@ -95,7 +95,7 @@
     {% if api_end_point.tags != variable_watcher %}
     <section class="row">
       <div class="col-sm-7">
-        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"><h2 style="margin-top:20px;">{{tags[api_end_point.tags]}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"></a><h2 style="margin-top:20px;">{{tags[api_end_point.tags]}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
         {% if api_end_point.tags == 'auth' %}
         <p>
 The DjaoApp API is meant to be used by your application front-end logic in the
@@ -157,7 +157,7 @@ dashboard</a> for example.
     {% endif %}
     <section class="row">
       <div class="col-sm-7">
-        <a name="{{api_end_point.operationId}}"><h3 style="margin-top:20px;">{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+        <a name="{{api_end_point.operationId}}"></a><h3 style="margin-top:20px;">{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
         <div>
             {{api_end_point.description}}
         </div>

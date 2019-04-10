@@ -51,6 +51,11 @@
   @include hover-focus {
     text-decoration: none;
   }
+
+  img {
+    width: auto;
+    max-height: $navbar-brand-height;
+  }
 }
 
 
@@ -191,6 +196,7 @@
 
 // Dark links against a light background
 .navbar-light {
+  background: $white;
   .navbar-brand {
     color: $navbar-light-brand-color;
 
