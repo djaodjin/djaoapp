@@ -46,6 +46,18 @@
           </div>
       </div>
   </div>
+  <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
+      <div class="col-12">
+        <div class="btn-group" role="group" aria-label="Basic example" v-cloak>
+          <button type="button" class="btn" :class="showInvited ? 'btn-primary' : 'btn-outline-primary'" @click="showInvited = !showInvited" v-if="items.invited_count > 0">
+            <i class="fa mr-2" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> Show Pending Invites <span class="badge" :class="showInvited ? 'badge-light' : 'badge-primary'">[[items.invited_count]]</span>
+          </button>
+          <button type="button" class="btn" :class="showRequested ? 'btn-primary' : 'btn-outline-primary'" @click="showRequested = !showRequested" v-if="items.requested_count > 0">
+            <i class="fa mr-2" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> Show Roles Requested <span class="badge" :class="showRequested ? 'badge-light' : 'badge-primary'">[[items.requested_count]]</span>
+          </button>
+        </div>
+      </div>
+  </div>
   <div class="row">
       <div class="col-12 col-md-6">
         <div v-show="!itemsLoaded">
