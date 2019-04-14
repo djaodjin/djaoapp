@@ -20,9 +20,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
         context.update({'site': get_current_site()})
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
-            'user': {
-                'notifications': reverse('notification_base')
-        }})
+        })
         # `ExtraMixin.get_context_data` is called before
         # `OrganizationMixin.get_context_data` had an opportunity to
         # add the organization to the `context`, so we call

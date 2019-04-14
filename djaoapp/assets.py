@@ -145,6 +145,7 @@ register('js_pages', js_pages)
 
 
 js_theme_editors = Bundle(
+    'js/djaoapp-i18n.js', # XXX duplicate. It is not always installed with saas
     #XXX Cannot find a bower install:
     # https://raw.githubusercontent.com/cowboy/jquery-throttle-debounce/master/jquery.ba-throttle-debounce.js
     "vendor/jquery.ba-throttle-debounce.js",
