@@ -1,0 +1,6 @@
+{% extends "saas/_user_card.html" %}
+
+{% block saas_user_card_footer %}
+    <button class="btn btn-secondary btn-sm"
+        v-if="item.grant_key" @click="sendInvite(item.user.slug)">Accept Grant</button>
+{% endblock %}
