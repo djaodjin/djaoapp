@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from multitier.thread_locals import get_current_site
 from pages.extras import AccountMixinBase
 from rules.extras import AppMixinBase
-from saas.utils import is_broker
+#from saas.utils import is_broker
 
 from ..compat import reverse
 
@@ -59,9 +59,10 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
             #            'api_user_activate', args=(attached_user,)),
             #    }})
 
-        if not is_broker(self.organization):
-            self.update_context_urls(context, {
-                'rules': {'app': None},
-                'pages': {'theme_base': None},
-            })
+        # XXX temporarily until djaodjin-saas v0.5 is released.
+        #if not is_broker(self.organization):
+        #    self.update_context_urls(context, {
+        #        'rules': {'app': None},
+        #        'pages': {'theme_base': None},
+        #    })
         return context

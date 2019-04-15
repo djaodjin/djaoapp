@@ -70,6 +70,21 @@ def url_dashboard(regex, view, name=None):
                ])
 
 
+def url_dashboard_iframe(regex, view, name=None):
+    """
+    Same as ``url_dashboard``, but without inject_edition_tools.
+    Used in notifications template iframe
+    """
+    return url(regex % {
+            "app": r'(?P<app>%s)' % ACCT_REGEX},
+               view, name=name,
+               decorators=['djaoapp.decorators.requires_authenticated',
+                           'signup.decorators.active_required',
+                           'saas.decorators.requires_agreement',
+                           'djaoapp.decorators.requires_direct',
+               ])
+
+
 def url_provider(regex, view, name=None):
     """
     Direct managers for the organization and managers for a provider
