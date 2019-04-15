@@ -19,10 +19,10 @@ from ..api.organizations import (OrganizationDetailAPIView,
 from ..api.users import UserProfileAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
-     url_frictionless_self_provider, url_prefixed)
+     url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
-from ..views.notifications import (NotificationDetailView, NotificationListView,
+from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
 from ..views.users import (UserProfileView, UserNotificationsView,
     UserAccessiblesView, UserPasswordUpdateView, UserPublicKeyUpdateView)
@@ -122,12 +122,13 @@ urlpatterns += site_patterns(
     url_direct(r'^', include('saas.urls.provider')),
     url_provider(r'^', include('saas.urls.subscriber.billing')),
     url_provider(r'^', include('saas.urls.subscriber.profile')),
-    url_dashboard(r'^proxy/notifications/(?P<template>%s)/iframe/' % ACCT_REGEX,
-        NotificationInnerFrameView.as_view(), name='notification_inner_frame'),
+    url_dashboard_iframe(r'^proxy/notifications/(?P<template>%s)/iframe/' %
+        ACCT_REGEX, NotificationInnerFrameView.as_view(),
+        name='notification_inner_frame'),
     url_dashboard(r'^proxy/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationDetailView.as_view(), name='notification_detail'),
     url_dashboard(r'^proxy/notifications/',
-        NotificationListView.as_view(), name='notification_base'),
+        RedirectView.as_view(pattern_name='theme_update'), name='notification_base'),
     url_dashboard(r'^proxy/rules/',
         AppDashboardView.as_view(), name='rules_update'),
     url_dashboard(r'^', include('rules.urls.configure')),
