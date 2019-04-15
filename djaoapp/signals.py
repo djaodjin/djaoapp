@@ -369,42 +369,50 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
     organization = role.organization
     if user.email != organization.email:
         if user.email:
-            back_url = reverse('organization_app', args=(organization,))
-            if role.grant_key:
-                back_url = reverse('saas_role_grant_accept',
-                    args=(role.grant_key,))
-            if has_invalid_password(user):
-                reason = _("You have been invited to create an account"\
-                    " to join %(organization)s.") % {
-                    'organization': role.organization.printable_name}
-                Contact.objects.update_or_create_token(
-                    user, reason=reason)
             site = get_current_site()
-            app = get_current_app()
-            context = {
-                'broker': get_broker(), 'app': app,
-                'back_url': site.as_absolute_uri(back_url),
-                'organization': organization,
-                'role': role.role_description.title,
-                'reason': reason if reason is not None else "",
-                'user': get_user_context(user)
-            }
-            reply_to = organization.email
-            request_user = kwargs.get('request_user', None)
-            if request_user:
-                reply_to = request_user.email
-                context.update({'request_user': get_user_context(request_user)})
-            LOGGER.debug("[signal] user_relation_added_notice(role=%s,"\
-                " reason=%s)", role, reason)
-            if SEND_EMAIL:
-                get_email_backend(connection=site.get_email_connection()).send(
-                    from_email=site.get_from_email(), recipients=[user.email],
-                    reply_to=reply_to,
-                    template=[
-                        ("notification/%s_role_grant_created.eml"
-                         % role.role_description.slug),
-                        "notification/role_grant_created.eml"],
-                    context=context)
+            if site:
+                back_url = reverse('organization_app', args=(organization,))
+                if role.grant_key:
+                    back_url = reverse('saas_role_grant_accept',
+                        args=(role.grant_key,))
+                if has_invalid_password(user):
+                    reason = _("You have been invited to create an account"\
+                        " to join %(organization)s.") % {
+                        'organization': role.organization.printable_name}
+                    Contact.objects.update_or_create_token(
+                        user, reason=reason)
+                app = get_current_app()
+                context = {
+                    'broker': get_broker(), 'app': app,
+                    'back_url': site.as_absolute_uri(back_url),
+                    'organization': organization,
+                    'role': role.role_description.title,
+                    'reason': reason if reason is not None else "",
+                    'user': get_user_context(user)
+                }
+                reply_to = organization.email
+                request_user = kwargs.get('request_user', None)
+                if request_user:
+                    reply_to = request_user.email
+                    context.update({
+                        'request_user': get_user_context(request_user)})
+                LOGGER.debug("[signal] user_relation_added_notice(role=%s,"\
+                    " reason=%s)", role, reason)
+                if SEND_EMAIL:
+                    get_email_backend(
+                        connection=site.get_email_connection()).send(
+                        from_email=site.get_from_email(),
+                        recipients=[user.email],
+                        reply_to=reply_to,
+                        template=[
+                            ("notification/%s_role_grant_created.eml"
+                             % role.role_description.slug),
+                            "notification/role_grant_created.eml"],
+                        context=context)
+            else:
+                LOGGER.warning(
+                    "%s will not be notified being added to %s"\
+                    " because there is no site domain.", user, organization)
         else:
             LOGGER.warning(
                 "%s will not be notified being added to %s"\
