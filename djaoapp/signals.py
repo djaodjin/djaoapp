@@ -401,9 +401,9 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                     from_email=site.get_from_email(), recipients=[user.email],
                     reply_to=reply_to,
                     template=[
-                        ("notification/%s_role_added.eml"
+                        ("notification/%s_role_grant_created.eml"
                          % role.role_description.slug),
-                        "notification/role_added.eml"],
+                        "notification/role_grant_created.eml"],
                     context=context)
         else:
             LOGGER.warning(
@@ -429,7 +429,7 @@ def user_relation_requested_notice(sender, organization, user,
                     from_email=site.get_from_email(),
                     recipients=[organization.email],
                     reply_to=user.email,
-                    template='notification/user_relation_requested.eml',
+                    template='notification/role_request_created.eml',
                     context={
                         'broker': get_broker(), 'app': app,
                         'back_url': site.as_absolute_uri(

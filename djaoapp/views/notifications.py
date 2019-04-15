@@ -16,9 +16,9 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
 
     def get_template_names(self):
         template_name = self.kwargs.get('template', None)
-        if template_name.endswith('_role_added'):
+        if template_name.endswith('_role_grant_created'):
             return ["notification/%s.eml" % template_name,
-                "notification/role_added.eml"]
+                "notification/role_grant_created.eml"]
         return ["notification/%s.eml" % template_name]
 
     def get_context_data(self, **kwargs):
