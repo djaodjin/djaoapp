@@ -48,7 +48,7 @@
   </div>
   <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
       <div class="col-12">
-        <div class="btn-group" role="group" aria-label="Basic example" v-cloak>
+        <div class="btn-group" role="group" aria-label="Group of buttons to show or hide invited and requested roles" v-cloak>
           <button type="button" class="btn" :class="showInvited ? 'btn-primary' : 'btn-outline-primary'" @click="showInvited = !showInvited" v-if="items.invited_count > 0">
             <i class="fa mr-2" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> Show Pending Invites <span class="badge" :class="showInvited ? 'badge-light' : 'badge-primary'">[[items.invited_count]]</span>
           </button>
