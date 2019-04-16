@@ -20,9 +20,10 @@ Update your profile, contact information, password, etc.
 
 
 {% block saas_content %}
-<div id="profile-container">
+<div id="{% if urls.user %}user-{% endif %}profile-container">
   {% include "_form.html" %}
   <hr />
+  {% if urls.user %}
   <div class="card border-secondary mb-4">
     <div class="card-body text-secondary">
       {% if urls.user.password_change %}
@@ -47,8 +48,21 @@ Update your profile, contact information, password, etc.
         </div>
       </div>
       {% endif %}
+      {% if urls.user.api_activate %}
+      <div class="row align-items-center">
+        <div class="col-sm-5">
+          <button id="activate-user"
+                  class="btn btn-secondary btn-block"
+                  @click="activate">Activate</button>
+        </div>
+        <div class="col-sm-7">
+          Send an activation e-mail to the user.
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
+  {% endif %}
   <div class="card border-danger">
     <div class="card-header">
       Danger Zone
@@ -56,9 +70,10 @@ Update your profile, contact information, password, etc.
     <div class="card-body text-danger">
       <div class="row align-items-center">
         <div class="col-sm-5">
-          <button id="delete-action-open" class="btn btn-danger btn-block"
-                  data-toggle="modal" data-target="#delete-action"
-                  @click="userModalOpen=true">Delete user</button>
+          <button id="delete-action-open"
+                  class="btn btn-danger btn-block"
+                  data-toggle="modal"
+                  data-target="#delete-action">Delete</button>
         </div>
         <div class="col-sm-7">
           This operation cannot be reversed.
@@ -66,21 +81,6 @@ Update your profile, contact information, password, etc.
       </div>
     </div>
   </div>
-  {% if urls.user.api_activate %}
-  <div class="card border-secondary mb-4">
-    <div class="card-body text-secondary">
-      <div class="row align-items-center">
-        <div class="col-sm-5">
-          <button id="activate-user" class="btn btn-secondary btn-block"
-                  @click="activate">Activate</button>
-        </div>
-        <div class="col-sm-7">
-          Send an activation e-mail to the user.
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}
 
   <!-- modal dialog to delete organization. -->
   <div class="modal fade"
@@ -114,7 +114,8 @@ Are you sure you want to continue?
         </div>
       </div>
     </form>
-  </div><!-- end modal to delete organization -->
+  </div><!-- end modal to delete profile -->
+  {% if urls.user %}
   <!-- modal dialog asking for password before generating API keys -->
   <div id="generate-key" class="modal fade"
        tabindex="-1" role="dialog"
@@ -193,5 +194,6 @@ The key will only be displayed once. Keep it secure.
       </div>
     </div>
   </div><!-- end of modal dialog to generate API keys -->
+  {% endif %}
 </div>
 {% endblock %}
