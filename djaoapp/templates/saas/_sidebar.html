@@ -1,0 +1,97 @@
+{# Profile menu items #}
+<ul class="nav flex-column" data-intro="Profile" data-position="right">
+  {% if urls.user and urls.user.profile %}
+  <li {% if request.path == urls.user.profile %} class="nav-item active"{% endif %}>
+    <a id="profile" class="nav-link" href="{{urls.user.profile}}">
+      <i class="fa fa-user"></i> <span>&#09;Profile</span>
+    </a>
+  </li>
+  {% elif urls.organization and urls.organization.profile %}
+  <li {% if urls.organization.profile == request.path %} class="nav-item active"{% endif %}>
+    <a id="profile" class="nav-link" href="{{urls.organization.profile}}">
+      <i class="fa fa-user"></i><span>Profile</span></a>
+  </li>
+  {% endif %}
+  {% if urls.organization and urls.organization.roles %}
+  {% for role_title, role_url in urls.organization.roles|iteritems %}
+  <li{% if role_url == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" href="{{role_url}}">
+      <i class="fa fa-users"></i><span class="">{{role_title|pluralize}}</span>
+    </a>
+  </li>
+  {% endfor %}
+  {% endif %}
+  {% if urls.user and urls.user.accessibles %}
+  <li class="nav-item">
+    <a id="users_accessibles" class="nav-link" href="{{urls.user.accessibles}}">
+      <i class="fa fa-users"></i> <span>&#09;Connected profiles</span></a>
+  </li>
+  {% endif %}
+  {% if urls.user and urls.user.notifications %}
+  <li {% if request.path == urls.user.notifications %} class="nav-item active"{% endif %}>
+    <a id="users_notifications" class="nav-link" href="{{urls.user.notifications}}">
+      <i class="fa fa-envelope"></i> <span>&#09;Notifications</span>
+    </a>
+  </li>
+  {% endif %}
+
+{# Subscriber menu items  #}
+  {% if urls.organization and urls.organization.billing %}
+  <li {% if urls.organization.billing == request.path %} class="nav-item active"{% endif %}>
+    <a id="saas_billing_info" class="nav-link" href="{{urls.organization.billing}}"><i class="fa fa-credit-card"></i><span>Billing</span></a>
+</li>
+  {% endif %}
+  {% if urls.organization and urls.organization.subscriptions %}
+  <li {% if urls.organization.subscriptions == request.path %} class="nav-item active"{% endif %}>
+    <a id="saas_subscription_list" class="nav-link" href="{{urls.organization.subscriptions}}"><i class="fa fa-exchange"></i><span>Subscriptions</span></a>
+  </li>
+  {% endif %}
+</ul>
+
+{# Provider menu items #}
+{% if urls.provider %}
+<hr />
+<ul class="nav flex-column"
+    data-intro="Pricing, billing and metrics" data-position="right">
+  <li {% if urls.provider.dashboard == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_dashboard" href="{{urls.provider.dashboard}}"><i class="fa fa-wrench"></i><span class="">Dashboard</span></a>
+  </li>
+  <li {% if urls.provider.coupons == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_coupon_list" href="{{urls.provider.coupons}}"><i class="fa fa-ticket"></i><span class="">Coupons</span></a>
+  </li>
+  <li {% if urls.provider.transfers == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_transfer_info" href="{{urls.provider.transfers}}"><i class="fa fa-usd"></i><span class="">Funds</span></a>
+  </li>
+  <li {% if urls.provider.metrics_sales == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}"><i class="fa fa-bar-chart-o"></i><span class="">Revenue</span></a>
+  </li>
+  <li {% if urls.provider.metrics_plans == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}"><i class="fa fa-bar-chart-o"></i><span class="">Plans</span></a>
+  </li>
+  <li {% if urls.provider.subscribers == request.path %} class="nav-item active"{% endif %}>
+    <a class="nav-link" id="saas_subscriber_list" href="{{urls.provider.subscribers}}"><i class="fa fa-users"></i><span class="">Subscribers</span></a>
+  </li>
+</ul>
+{% endif %}
+
+{# Broker menu items #}
+{% if urls.pages or urls.rules %}
+<hr />
+<ul class="nav flex-column"
+    data-intro="Roles and permissions" data-position="right">
+    {% if urls.pages.theme_base %}
+    <li {% if urls.pages.theme_base == request.path %} class="nav-item active"{% endif %}>
+        <a id="pages_theme" class="nav-link" href="{{urls.pages.theme_base}}">
+          <i class="fa fa-wrench"></i><span class="">Theme</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if urls.rules and urls.rules.app %}
+    <li {% if urls.rules.app == request.path %} class="nav-item active"{% endif %}>
+        <a id="rules_update" class="nav-link" href="{{urls.rules.app}}">
+          <i class="fa fa-wrench"></i><span class="">Rules</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}

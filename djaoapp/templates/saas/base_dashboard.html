@@ -30,13 +30,10 @@
                 </header>
                 <div class="dashboard-nav-menu">
                     {% block sidebar %}
-                    {% include "saas/_subscriber_sidebar.html" %}
-                    {% if organization.is_provider %}
-                    {% include "saas/_provider_sidebar.html" %}
-                    {% endif %}
+                    {% include "saas/_sidebar.html" %}
                     <hr class="d-md-none" />
                     <ul class="nav flex-column d-md-none">
-                        {% include "generic_navbar.html" %}
+                        {% include "_generic_navbar.html" %}
                     </ul>
                     {% endblock %}
                 </div>

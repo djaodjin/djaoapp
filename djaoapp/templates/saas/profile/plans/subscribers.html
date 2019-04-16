@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col">
     <div class="row my-3">
-        {% include "saas/_item_list_filter.html" %}
+        {% include "saas/_filter.html" %}
     </div>
       <table class="table">
         <thead>
@@ -38,7 +38,7 @@
         <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0">
           <tr :class="endsSoon(entry)">
             <td>
-              <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+              <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>

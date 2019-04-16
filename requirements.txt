@@ -11,10 +11,10 @@ djangorestframework==3.8.2
 djaodjin-deployutils==0.5.9
 djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.10
-djaodjin-pages==0.2.5
+djaodjin-pages==0.2.6
 djaodjin-rules==0.1.8
 djaodjin-saas==0.4.1
-djaodjin-signup==0.2.9
+djaodjin-signup==0.3.0
 djaodjin-survey==0.1.7
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)

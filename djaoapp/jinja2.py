@@ -64,6 +64,7 @@ def environment(**options):
     env.filters['is_radio'] = djaoapp.templatetags.djaoapp_tags.is_radio
     env.filters['is_textarea'] = djaoapp.templatetags.djaoapp_tags.is_textarea
     env.filters['iterfields'] = djaoapp.templatetags.djaoapp_tags.iterfields
+    env.filters['iteritems'] = saas.templatetags.saas_tags.iteritems
     env.filters['messages'] = djaoapp.templatetags.djaoapp_tags.messages
     env.filters['no_cache'] = djaoapp.templatetags.djaoapp_tags.no_cache
     env.filters['pluralize'] = djaoapp.templatetags.djaoapp_tags.pluralize
