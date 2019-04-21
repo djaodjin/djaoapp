@@ -13,7 +13,10 @@
                 data-trip-position="s"
                 @click="remove(index)"><i class="fa fa-remove"></i></button>
             <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.slug]]</a></h5>
-            <h6 class="card-subtitle mb-2 text-muted">[[item.grant_key ? "invited" : "active"]]</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                [[item.grant_key ? "invited" : "active"]]
+                <span v-if="item.grant_key">[[item.created_at | formatDate]]</span>
+            </h6>
             <p class="card-text">[[item.user.email]]</p>
             <button class="btn btn-secondary btn-sm"
                 v-if="item.request_key" @click="save(item.user)">Grant</button>
