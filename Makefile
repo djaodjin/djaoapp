@@ -184,13 +184,25 @@ $(installTop)/.npm: $(srcDir)/package.json
 	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 
 build-assets: $(installTop)/.npm \
-	$(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
-	$(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
-	$(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss) \
-	$(wildcard $(srcDir)/assets/scss/base/*.scss) \
-	$(ASSETS_DIR)/js/djaoapp-i18n.js
-	cd $(srcDir) && $(binDir)/sassc assets/scss/base/base.scss htdocs/static/cache/_base.css
+                $(ASSETS_DIR)/cache/_base.css \
+                $(ASSETS_DIR)/cache/_email.css \
+                $(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && DEBUG=1 $(PYTHON) manage.py assets build
+
+
+$(ASSETS_DIR)/cache/_base.css: $(srcDir)/assets/scss/base/base.scss \
+                $(wildcard $(srcDir)/assets/scss/base/*.scss) \
+                $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
+                $(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
+                $(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss)
+	cd $(srcDir) && $(binDir)/sassc $< $@
+
+
+$(ASSETS_DIR)/cache/_email.css: $(srcDir)/assets/scss/email/email.scss \
+                $(wildcard $(srcDir)/assets/scss/email/*.scss) \
+                $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss)
+	cd $(srcDir) && $(binDir)/sassc $< $@
+
 
 $(ASSETS_DIR)/js/djaoapp-i18n.js:
 	$(installDirs) $(ASSETS_DIR)/js

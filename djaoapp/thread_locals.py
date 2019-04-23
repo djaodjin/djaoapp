@@ -84,7 +84,7 @@ def get_current_app(request=None):
     # an extra SQL query every time ``get_current_app`` is called.
     thread_local_site = get_current_site()
     app = getattr(thread_local_site, 'app', None)
-    if not app:
+    if thread_local_site and not app:
         app_model = get_app_model()
         try:
             thread_local_site.app = app_model.objects.get(

@@ -2,11 +2,7 @@
     <h3>Transactions</h3>
     <form class="form my-3">
     <div class="form-row">
-        {% include "saas/_item_list_filter.html" %}
-        <div class="col">
-            <a id="download" class="btn btn-secondary btn-sm" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-        </div>
+        {% include "saas/_filter.html" %}
     </div>
     </form>
     <div class="table-responsive">

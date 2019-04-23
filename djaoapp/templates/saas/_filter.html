@@ -1,6 +1,51 @@
-<div class="input-group input-group-sm">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="filter-inp">Filter</span>
+<div class="col">
+    <uiv-dropdown append-to-body>
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="from-inp">From</span>
+        </div>
+        <input class="form-control" type="text" v-model="params.start_at" v-cloak>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
+            </button>
+        </div>
+      </div>
+      <template slot="dropdown">
+        <li>
+          <uiv-date-picker
+            @input="get"
+            format="{{DATETIME_FORMAT}}"
+            v-model="params.start_at"
+            icon-control-left="fa fa-caret-left"
+            icon-control-right="fa fa-caret-right" />
+        </li>
+      </template>
+    </uiv-dropdown>
   </div>
-  <input class="form-control" type="text" v-model="params.q" @input="filterList" />
+  <div class="col">
+    <uiv-dropdown append-to-body>
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="to-inp">To</span>
+        </div>
+        <input class="form-control date" type="text" v-model="params.ends_at" v-cloak>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
+            </button>
+        </div>
+      </div>
+      <template slot="dropdown">
+        <li>
+          <uiv-date-picker
+            @input="get"
+            format="{{DATETIME_FORMAT}}"
+            v-model="params.ends_at"
+            icon-control-left="fa fa-caret-left"
+            icon-control-right="fa fa-caret-right" />
+        </li>
+      </template>
+    </uiv-dropdown>
+</div>
+<div class="col">
+    {% include "saas/_filter_input.html" %}
 </div>

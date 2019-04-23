@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 import os
@@ -15,8 +15,8 @@ css_base = Bundle(
 register('css_base', css_base)
 
 css_email = Bundle(
-    os.path.join(settings.BASE_DIR, 'assets/less/email/email.less'),
-    filters=['less', 'cssmin'],
+    os.path.join(settings.HTDOCS, 'static', 'cache', '_email.css'),
+    filters=[],
     output='cache/email.css', debug=False)
 register('css_email', css_email)
 
@@ -145,6 +145,7 @@ register('js_pages', js_pages)
 
 
 js_theme_editors = Bundle(
+    'js/djaoapp-i18n.js', # XXX duplicate. It is not always installed with saas
     #XXX Cannot find a bower install:
     # https://raw.githubusercontent.com/cowboy/jquery-throttle-debounce/master/jquery.ba-throttle-debounce.js
     "vendor/jquery.ba-throttle-debounce.js",

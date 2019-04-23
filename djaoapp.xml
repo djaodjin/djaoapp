@@ -74,6 +74,11 @@
              regardless of the multitier site. -->
         <lib>.*/(jinja2)/__init__.py</lib>
       </dep>
+      <dep name="MarkupSafe" target="python" includes="1.1.0">
+        <!-- By default version 0.11 is installed on CentOS7,
+             which leads to an exception attempting to use jinja2 module. -->
+        <lib>.*/(jinja2)/__init__.py</lib>
+      </dep>
       <dep name="phonenumbers" target="python">
         <lib>.*/(phonenumbers)/__init__.py</lib>
       </dep>
@@ -419,7 +424,10 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       <email>support@djaodjin.com</email>
     </maintainer>
     <repository>
-      <dep name="django-recaptcha" target="python">
+      <dep name="django-recaptcha" target="python" includes="1.3.1">
+        <!-- version 2.0.2 does not work with Python3. It attempts
+        to verify RECAPTCHA_PRIVATE_KEY is of type str, though it
+        is declared as type unicode in settings.py. -->
         <lib>.*/(captcha)/__init__.py</lib>
       </dep>
       <dep name="boto3" target="python">

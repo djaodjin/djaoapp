@@ -14,17 +14,12 @@ You can also see the list of all payments made here.
 {% block saas_page_layout %}
 <div class="row" id="billing-statement-container">
 <div class="col-sm-12">
-  <div class="row" 
+  <div class="row"
          data-trip data-trip-index="1"
          data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
          data-trip-position="screen-center">
       <section id="balance" class="col-sm-6">
-        <h1 class="text-primary">Balance{% if urls.organization.api_cancel_balance_due %}
-          <button id="cancel-balance-btn" class="btn btn-danger"
-             data-toggle="modal"
-             data-target="#cancel-balance"
-             v-if="items.balance > 0" v-cloak
-          >cancel balance due</button>{% endif %}</h1>
+        <h1 class="text-primary">Balance</h1>
         <dl class="dl-horizontal">
           <dt data-trip data-trip-index="2"
               data-trip-content="<p>The amount you owe.</p>"
@@ -43,11 +38,8 @@ You can also see the list of all payments made here.
             <span v-if="items.balance < 0" v-cloak>credit</span>
           </dd>
         </dl>
-        {% if urls.organization.vtcharge %}
-        <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
-        {% endif %}
       </section>
-      <section id="payment-form" class="col-sm-6">
+      <section class="col-sm-6">
         <h1 class="text-primary">Credit Card
         <a class="btn" href="{{urls.organization.update_card}}"
            data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
@@ -98,6 +90,24 @@ Are you sure you would like to cancel the whole balance of [[humanizeBalance()]]
       </form>
       <!-- end of modal dialog -->
       {% endif %}
+    </div>
+    <div class="btn-actions text-right">
+      {% if urls.organization.api_cancel_balance_due %}
+      <button id="cancel-balance-btn"
+              class="btn btn-danger btn-sm"
+              data-toggle="modal" data-target="#cancel-balance"
+              v-if="items.balance > 0" v-cloak>cancel balance due</button>
+      {% endif %}
+      {% if urls.organization.vtcharge %}
+      <a id="one-time-charge"
+         class="btn btn-secondary btn-sm"
+         href="{{urls.organization.vtcharge}}">
+        <i class="fa fa-plus"></i> one-time charge ...
+      </a>
+      {% endif %}
+      <a id="download"
+         class="btn btn-secondary btn-sm" role="button"
+               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
     </div>
     <div class="row">
       <div class="col-12">

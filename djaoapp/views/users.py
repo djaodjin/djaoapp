@@ -7,15 +7,18 @@ import logging
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
+from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.mixins import ProviderMixin
 from saas.models import Organization, get_broker
-from signup.mixins import UserMixin
 from signup.models import Notification
 from signup.views.users import (
     UserProfileView as UserProfileBaseView,
-    UserNotificationsView as UserNotificationsBaseView)
+    UserNotificationsView as UserNotificationsBaseView,
+    PasswordChangeView as UserPasswordUpdateBaseView,
+    UserPublicKeyUpdateView as UserPublicKeyUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
+from saas.utils import update_context_urls
 
 from ..compat import reverse
 
@@ -23,9 +26,25 @@ from ..compat import reverse
 LOGGER = logging.getLogger(__name__)
 
 
-# Implementation Note: inherits from ProviderMixin
-# in order to include `top_accessibles`.
-class UserProfileView(ProviderMixin, UserProfileBaseView):
+class UserMixin(object):
+
+    def get_context_data(self, **kwargs):
+        context = super(UserMixin, self).get_context_data(**kwargs)
+        update_context_urls(context, {
+            'profile_base': reverse('saas_profile'),
+            'user': {
+                'accessibles': reverse(
+                    'saas_user_product_list', args=(self.user,)),
+                'notifications': reverse(
+                    'users_notifications', args=(self.user,)),
+                'profile': reverse('users_profile', args=(self.user,)),
+            }})
+        return context
+
+
+class UserProfileView(UserMixin, UserProfileBaseView):
+
+    template_name = 'saas/profile/index.html'
 
     @property
     def attached_organization(self):
@@ -52,9 +71,7 @@ class UserProfileView(ProviderMixin, UserProfileBaseView):
         return super(UserProfileView, self).get(request, *args, **kwargs)
 
 
-# Implementation Note: inherits from ProviderMixin
-# in order to include `top_accessibles`.
-class UserNotificationsView(ProviderMixin, UserNotificationsBaseView):
+class UserNotificationsView(UserMixin, UserNotificationsBaseView):
     """
     A view where a user can configure their notification settings
     """
@@ -67,7 +84,20 @@ class UserNotificationsView(ProviderMixin, UserNotificationsBaseView):
             'charge_updated', 'card_updated', 'order_executed',
             'organization_updated', 'expires_soon'))
 
-# Implementation Note: inherits from signup.UserMixin
-# in order to include profile and notifications sidebar menus.
+
 class UserAccessiblesView(UserMixin, UserAccessiblesBaseView):
+
+    def get_context_data(self, **kwargs):
+        context = super(UserAccessiblesView, self).get_context_data(**kwargs)
+        context.update({
+            'site': get_current_site()
+        })
+        return context
+
+
+class UserPasswordUpdateView(UserMixin, UserPasswordUpdateBaseView):
+    pass
+
+
+class UserPublicKeyUpdateView(UserMixin, UserPasswordUpdateBaseView):
     pass

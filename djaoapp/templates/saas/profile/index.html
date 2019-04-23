@@ -1,6 +1,14 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
-{% block saas_title %}{{organization.printable_name}} Profile{% endblock %}
+{% block saas_title %}
+{% if organization %}
+  {{organization.printable_name}} Profile
+{% elif user %}
+  {{user.full_name}} Profile
+{% else %}
+  Profile
+{% endif %}
+{% endblock %}
 
 {% block saas_lead_help %}Information about the profile{% endblock %}
 
@@ -12,84 +20,180 @@ Update your profile, contact information, password, etc.
 
 
 {% block saas_content %}
-<div id="profile-container">
-{% include "_form.html" %}
-<hr />
-<div class="card border-danger mb-3">
-  <div class="card-header">
-    Danger Zone
-  </div>
-  <div class="card-body text-danger">
-{% if urls.organization.password_change %}
-        <div class="row align-items-center">
-            <div class="col-sm-5">
-                <a id="change-password" class="btn btn-danger btn-block" href="{{urls.organization.password_change}}" style="width:100%;">Change Password</a>
-            </div>
-            <div class="col-sm-7">
-                Use a new password to login.
-            </div>
+<div id="{% if urls.user %}user-{% endif %}profile-container">
+  {% include "_form.html" %}
+  <hr />
+  {% if urls.user %}
+  <div class="card border-secondary mb-4">
+    <div class="card-body text-secondary">
+      {% if urls.user.password_change %}
+      <div class="row align-items-center">
+        <div class="col-sm-5">
+          <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">Change Password</a>
         </div>
-        {% endif %}
-        <div class="row align-items-center" style="margin-top: 15px;">
-            <div class="col-sm-5">
-                <button id="delete-action-open"
-                        class="btn btn-danger btn-block"
-                        data-toggle="modal" data-target="#delete-action">Delete profile</button>
-            </div>
-            <div class="col-sm-7">
-                This operation cannot be reversed.
-            </div>
+        <div class="col-sm-7">
+          Use a new password to login.
         </div>
-  </div>
-</div>
-{% if urls.user.api_activate %}
-<div class="card border-secondary mb-4">
-  <div class="card-body text-secondary">
-    <div class="row align-items-center">
-      <div class="col-sm-5">
-        <button id="activate-user" class="btn btn-secondary btn-block"
-                @click="activate">Activate</button>
       </div>
-      <div class="col-sm-7">
-        Send an activation e-mail to the user.
-          </div>
+      {% endif %}
+      {% if urls.user.api_generate_keys %}
+      <div class="row align-items-center" style="margin-top:15px;">
+        <div class="col-sm-5">
+          <button id="generate-key-open"
+                  class="btn btn-secondary btn-block"
+                  data-toggle="modal" data-target="#generate-key">Reset API Key</button>
+        </div>
+        <div class="col-sm-7">
+          Obtain a new API Key to authenticate.
+        </div>
+      </div>
+      {% endif %}
+      {% if urls.user.api_activate %}
+      <div class="row align-items-center">
+        <div class="col-sm-5">
+          <button id="activate-user"
+                  class="btn btn-secondary btn-block"
+                  @click="activate">Activate</button>
+        </div>
+        <div class="col-sm-7">
+          Send an activation e-mail to the user.
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
-</div>
-{% endif %}
-<!-- modal dialog to delete organization. -->
-<div class="modal fade"
-     id="delete-action" tabindex="-1" role="dialog"
-     aria-labelledby="Delete Profile" aria-hidden="true">
-    <form class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Profile ...</h5>
-                <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>
-You are about to delete the profile and account
-for <em>{{organization.printable_name}}</em>.
-This operation cannot be reversed.
-                </p>
-                <p>
-Are you sure you want to continue?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="cancel-delete"
-                        data-dismiss="modal"
-                        class="btn btn-secondary">Cancel</button>
-                <button type="button" id="delete-organization-btn"
-                        class="btn btn-danger"
-                        data-dismiss="modal"
-                        @click="deleteProfile">Delete</button>
-            </div>
+  {% endif %}
+  <div class="card border-danger">
+    <div class="card-header">
+      Danger Zone
+    </div>
+    <div class="card-body text-danger">
+      <div class="row align-items-center">
+        <div class="col-sm-5">
+          <button id="delete-action-open"
+                  class="btn btn-danger btn-block"
+                  data-toggle="modal"
+                  data-target="#delete-action">Delete</button>
         </div>
+        <div class="col-sm-7">
+          This operation cannot be reversed.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal dialog to delete organization. -->
+  <div class="modal fade"
+       id="delete-action" tabindex="-1" role="dialog"
+       aria-labelledby="Delete Profile" aria-hidden="true">
+    <form class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Profile ...</h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+You are about to delete the profile and account
+for <em>{% if organization %}{{organization.printable_name}}{% elif user %}{{user.full_name}}{% endif %}</em>.
+This operation cannot be reversed.
+          </p>
+          <p>
+Are you sure you want to continue?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete"
+                  data-dismiss="modal"
+                  class="btn btn-secondary">Cancel</button>
+          <button type="button" id="delete-organization-btn"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
+                  @click="deleteProfile">Delete</button>
+        </div>
+      </div>
     </form>
-</div>
-<!-- modal to confirm deletion of organization -->
+  </div><!-- end modal to delete profile -->
+  {% if urls.user %}
+  <!-- modal dialog asking for password before generating API keys -->
+  <div id="generate-key" class="modal fade"
+       tabindex="-1" role="dialog"
+       aria-labelledby="Ask for password" aria-hidden="true">
+    <form class="modal-dialog" method="POST" @submit.prevent="generateKey">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Please re-enter your password ...</h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-0">
+            <input class="form-control"
+                   name="password" placeholder="Password" type="password"
+                   v-model="password" />
+          </div>
+          <div class="form-group mt-3 mb-0" v-show="apiKey != 'Generating ...'">
+            <input class="form-control"
+                   name="key" placeholder="Generating" type="text"
+                   v-model="apiKey">
+            <small class="form-text text-muted text-center">
+              This is your secret API key
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"
+                  type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- modal dialog to generate API keys -->
+  <div id="show-key" class="modal fade"
+       tabindex="-1" role="dialog"
+       aria-labelledby="API Keys" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">API Key</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="controls">
+              <input class="form-control"
+                     name="key" maxlength="128"
+                     type="text" disabled placeholder="Generating..."
+                     v-model="apiKey" />
+            </div>
+          </div>
+          <div class="form-group">
+            <input class="form-control"
+                   name="password" maxlength="128"
+                   type="password" placeholder="Password"
+                   v-model="password" />
+          </div>
+          <div>
+            <p>
+This is the API key you can use to authenticate with the service.
+            </p>
+            <p>
+The key will only be displayed once. Keep it secure.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="regenerate-key" class="btn btn-secondary" type="button"
+                  data-toggle="modal" data-target="#generate-key"
+                  data-dismiss="modal">Generate</button>
+          <button class="btn btn-primary"
+                  data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end of modal dialog to generate API keys -->
+  {% endif %}
 </div>
 {% endblock %}
