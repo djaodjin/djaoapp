@@ -2,7 +2,7 @@
   <div class="row no-gutters">
       <div class="col-3">
           <div class="user-card-image">
-            <a :href="'/users/' + item.user.slug + '/'"><img src="{{'/static/img/default-user.png'|djasset}}" class="card-img-top" alt=""></a>
+            <a :href="'/users/' + item.user.slug + '/'"><img v-bind:src="item.user.picture ? item.user.picture : '{{'/static/img/default-user.png'|djasset}}'" class="card-img-top" alt=""></a>
           </div>
       </div>
       <div class="col-9">

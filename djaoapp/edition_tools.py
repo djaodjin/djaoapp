@@ -20,7 +20,8 @@ from pages.views.pages import inject_edition_tools as pages_inject_edition_tools
 from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
-from saas.models import Organization, get_broker, is_broker
+from saas.models import Organization, get_broker
+from saas.utils import is_broker
 
 from .compat import csrf, is_authenticated, reverse
 from .thread_locals import is_streetside, is_testing

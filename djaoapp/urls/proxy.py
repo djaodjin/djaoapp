@@ -16,6 +16,7 @@ from ..api.custom_themes import ThemePackageListAPIView, AppUpdateAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
+from ..api.roles import RoleListAPIView
 from ..api.users import UserProfileAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
@@ -80,6 +81,9 @@ urlpatterns += site_patterns(
         OrganizationDetailAPIView.as_view(), name='saas_api_organization'),
     url_provider(r'^api/profile/$',
         OrganizationListAPIView.as_view(), name='saas_api_profile'),
+    url_provider(r'^api/profile/(?P<organization>%s)/roles/(?P<role>%s)/?'
+        % (ACCT_REGEX, ACCT_REGEX),
+        RoleListAPIView.as_view(), name='saas_api_role_by_descr_list'),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_authenticated('^api/', include('saas.urls.api.search')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
