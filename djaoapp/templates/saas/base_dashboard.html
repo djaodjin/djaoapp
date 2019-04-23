@@ -99,6 +99,9 @@ var djaodjinSettings = {
 {% assets "js_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}
+<script type="text/javascript">
+Vue.use(uiv, {prefix: 'uiv'});
+</script>
 {% assets "js_djaodjin_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}

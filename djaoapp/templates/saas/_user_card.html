@@ -2,7 +2,7 @@
   <div class="row no-gutters">
       <div class="col-3">
           <div class="user-card-image">
-            <a :href="'/users/' + item.user.slug + '/'"><img src="{{'/static/img/default-user.png'|djasset}}" class="card-img-top" alt=""></a>
+            <a :href="'/users/' + item.user.slug + '/'"><img v-bind:src="item.user.picture ? item.user.picture : '{{'/static/img/default-user.png'|djasset}}'" class="card-img-top" alt=""></a>
           </div>
       </div>
       <div class="col-9">
@@ -13,7 +13,10 @@
                 data-trip-position="s"
                 @click="remove(index)"><i class="fa fa-remove"></i></button>
             <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.slug]]</a></h5>
-            <h6 class="card-subtitle mb-2 text-muted">[[item.grant_key ? "invited" : "active"]]</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                [[item.grant_key ? "invited" : "active"]]
+                <span v-if="item.grant_key">[[item.created_at | formatDate]]</span>
+            </h6>
             <p class="card-text">[[item.user.email]]</p>
             <button class="btn btn-secondary btn-sm"
                 v-if="item.request_key" @click="save(item.user)">Grant</button>
