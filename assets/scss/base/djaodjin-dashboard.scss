@@ -479,3 +479,11 @@ $dashboard-sidebar-color:    white;
 {
     font-weight: normal;
 }
+
+.organization-card .organization-buttons
+{
+    min-height: 110px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+}

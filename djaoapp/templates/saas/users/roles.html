@@ -29,7 +29,7 @@
     </div>
     <div class="col-sm-6">
         <div class="form-row">
-            {% include "saas/_filter_input.html" %}
+            {% include "saas/_filter_match.html" %}
         </div>
     </div>
     </div>
@@ -45,29 +45,7 @@
   </div>
   <div class="row my-4">
     <div class="col-lg-6 col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <div class="card organization-card">
-          <img :src="item.picture ? item.picture : '{{'/static/img/default-user.png'|djasset}}'" class="card-img-top" :alt="item.printable_name">
-          <div class="card-body">
-            <h5 class="card-title">
-                <a :href="'{{urls.profile_base}}' + item.slug + '/'">[[item.printable_name]]</a>
-            </h5>
-            <p class="card-text">
-                <span class="badge badge-primary">[[item.grant_key ? "pending" : item.role_description.title]]</span></p>
-          </div>
-          <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action">Home</a>
-            <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
-          </div>
-          <div class="card-body">
-            <button class="btn btn-secondary btn-sm btn-block" v-if="item.grant_key"
-                 @click="">Accept Grant</button>
-            <button class="btn btn-danger btn-sm btn-block"
-                    data-trip data-trip-index="3"
-                    data-trip-content="<p>Click here to cancel access request.</p>"
-                    data-trip-position="s"
-                    @click="remove(index)">Remove</button>
-          </div>
-        </div>
+        {% include "saas/_organization_card.html" %}
     </div>
   </div>
   <div class="row">
