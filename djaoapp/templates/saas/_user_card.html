@@ -18,12 +18,10 @@
                 <span v-if="item.grant_key">[[item.created_at | formatDate]]</span>
             </h6>
             <p class="card-text">[[item.user.email]]</p>
-            {% block saas_user_card_footer %}
-                <button class="btn btn-secondary btn-sm"
-                    v-if="item.request_key" @click="save(item.user)">Grant</button>
-                <button class="btn btn-secondary btn-sm"
-                    v-if="item.grant_key" @click="sendInvite(item.user.slug)">Resend Invite</button>
-            {% endblock %}
+            <button class="btn btn-secondary btn-sm"
+                v-if="item.request_key" @click="save(item.user)">Grant</button>
+            <button class="btn btn-secondary btn-sm"
+                v-if="item.grant_key" @click="sendInvite(item.user.slug)">Resend Invite</button>
           </div>
       </div>
   </div>

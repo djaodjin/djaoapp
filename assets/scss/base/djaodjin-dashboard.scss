@@ -463,3 +463,19 @@ $dashboard-sidebar-color:    white;
 {
     display: block;
 }
+
+.organization-card .card-img-top
+{
+    width: 50%;
+    margin: 20px auto 0;
+}
+
+.organization-card .card-title a
+{
+    color: black;
+}
+
+.organization-card .badge
+{
+    font-weight: normal;
+}
