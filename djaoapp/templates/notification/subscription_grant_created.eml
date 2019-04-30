@@ -1,20 +1,20 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{{user.printable_name|safe}} granted {{organization.printable_name|safe}} a subscription to {{plan.title}}
+{% trans user=user.printable_name|safe, organization=organization.printable_name|safe, plan=plan.title %}{{user}} granted {{organization}} a subscription to {{plan}}{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{user.printable_name}} granted {{organization.printable_name|safe}} a subscription to {{plan.title}}</h3>
+<h3>{% trans user=user.printable_name, organization=organization.printable_name|safe, plan=plan.title %}{{user}} granted {{organization}} a subscription to {{plan}}{% endtrans %}</h3>
 {% if reason %}
 <p>
 {{reason|md}}
 </p>
 {% endif %}
 <p>
-You can <a href="{{back_url}}">accept the subscription</a>
-by clicking on the previous link or copy/pasting the following link
-in your browser:
+{% trans %}You can{% endtrans %} <a href="{{back_url}}">{% trans %}accept the subscription{% endtrans %}</a>
+{% trans %}by clicking on the previous link or copy/pasting the following link
+in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

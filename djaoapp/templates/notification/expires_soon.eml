@@ -5,24 +5,24 @@
 We are putting |safe here because an e-mail's subject line shouldn't be
 HTML encoded.
 #}
-Your subscription to {{provider.printable_name|safe}} expires in {{nb_days}} days
+{% trans name=provider.printable_name|safe %}Your subscription to {{name}} expires in {{nb_days}} days{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>Act Now!</h3>
+<h3>{% trans %}Act Now!{% endtrans %}</h3>
 <p>
-{{organization.printable_name}} subscription to {{plan.printable_name|safe}} from {{provider.printable_name|safe}} expires in {{nb_days}} days.
+{% trans orgnization=organization.printable_name, plan=plan.printable_name|safe, provider=provider.printable_name|safe %}{{organization}} subscription to {{plan}} from {{provider}} expires in {{nb_days}} days.{% endtrans %}
 </p>
-<a href="{{back_url}}">Renew now</a>
-to insures continuous service by clicking on the previous link or copy/pasting
-the following link in your browser:
+<a href="{{back_url}}">{% trans %}Renew now{% endtrans %}</a>
+{% trans %}to insures continuous service by clicking on the previous link or copy/pasting
+the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 <p>
-Check that:
+{% trans %}Check that:{% endtrans %}
 <ol>
-  <li>You credit card is valid.</li>
-  <li>You have auto-renew checked in your profile.</li>
+  <li>{% trans %}You credit card is valid.{% endtrans %}</li>
+  <li>{% trans %}You have auto-renew checked in your profile.{% endtrans %}</li>
 </ol>
 </p>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Accessible by {{user}}{% endblock %}
+{% block saas_title %}{% trans %}Accessible by {{user}}{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <section id="accessible-list-container">
@@ -8,13 +8,13 @@
   <div class="col-3">
     <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
       <form class="form-inline" @submit.prevent="submit">
-        <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>Start typing the name or email of the organization you wish to add.</p>" data-trip-position="s">
+        <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the organization you wish to add.{% endtrans %}</p>" data-trip-position="s">
           <input id="userTypeahead"
                  class="form-control form-control-sm"
-                 name="organization" type="text" placeholder="Name or email"
+                 name="organization" type="text" placeholder="{% trans %}Name or email{% endtrans %}"
                  autocomplete="off">
           <div class="input-group-append">
-            <button class="btn btn-primary btn-sm" type="submit">Add</button>
+            <button class="btn btn-primary btn-sm" type="submit">{% trans %}Add{% endtrans %}</button>
           </div>
         </div>
         <uiv-typeahead
@@ -36,13 +36,13 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Name
+          <th>{% trans %}Name{% endtrans %}
             <a href="#" @click="sortBy('slug')"><i :class="sortIcon('slug')"></i></a>
           </th>
-          <th>Role
+          <th>{% trans %}Role{% endtrans %}
             <a href="#" @click="sortBy('role_name')"><i :class="sortIcon('role_name')"></i></a>
           </th>
-          <th>Created at
+          <th>{% trans %}Created at{% endtrans %}
             <a href="#" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a>
           </th>
           <th></th>
@@ -55,7 +55,7 @@
           </td>
         </tr>
         <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
-          <td colspan="3">No organization accessible for {{user}}</td>
+          <td colspan="3">{% trans %}No organization accessible for {{user}}{% endtrans %}</td>
         </tr>
         <tr :id="entry.slug" v-for="(entry, index) in items.results"
            v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -63,7 +63,7 @@
             <a :href="'{{urls.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
           </td>
           <td class="text-center">
-            [[entry.request_key ? "requested" : entry.role_description.title]]
+            [[entry.request_key ? "{% trans %}requested{% endtrans %}" : entry.role_description.title]]
           </td>
           <td class="text-center">
             [[entry.created_at | formatDate]]
@@ -71,7 +71,7 @@
           <td style="vertical-align:middle;">
             <button class="btn btn-danger btn-sm"
                     data-trip data-trip-index="3"
-                    data-trip-content="<p>Click here to cancel access request.</p>"
+                    data-trip-content="<p>{% trans %}Click here to cancel access request.{% endtrans %}</p>"
                     data-trip-position="s"
                     @click="remove(index)"><i class="fa fa-trash-o"></i>
             </button>
@@ -83,27 +83,27 @@
       <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
     </div>
     <div class="text-right">
-      <a href="{{urls.organization_create}}" class="btn btn-primary">Create new ...</a>
+      <a href="{{urls.organization_create}}" class="btn btn-primary">{% trans %}Create new ...{% endtrans %}</a>
     </div>
     <!-- modal dialog to add a request to add a role to a user
          on an organization. -->
     <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="Request access" aria-hidden="true">
+         aria-labelledby="{% trans %}Request access{% endtrans %}" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Request access ...</h5>
+            <h5 class="modal-title">{% trans %}Request access ...{% endtrans %}</h5>
             <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <form>
             <div class="modal-body">
               <p class="text-danger">
-[[unregistered.full_name]] was not found. This is an opportunity to invite
-a manager for [[unregistered.full_name]] to join {{site.printable_name}}.
+[[unregistered.full_name]] {% trans %}was not found. This is an opportunity to invite
+a manager for{% endtrans %} [[unregistered.full_name]] {% trans site=site.printable_name%}to join {{site}}{% endtrans %}.
               </p>
               <div class="form-group" style="margin-bottom: 15px;">
-                  <label>To</label>
+                  <label>{% trans %}To{% endtrans %}</label>
                   <input id="new-request-email" class="email form-control"
                          name="email" type="text"
                          max-length="150" placeholder="invitee@example.com"
@@ -112,16 +112,16 @@ a manager for [[unregistered.full_name]] to join {{site.printable_name}}.
               </div>
               <div id="div_id_new_user_relation" class="form-group">
                 <div class="controls">
-                  <label>The following invite message will be sent:</label>
+                  <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
                   <textarea class="form-control"
                             name="message"
                             maxlength="255" type="text" rows="10">
-Hello,
+{% trans %}Hello,
 
-I would like to request access to [[unregistered.full_name]].
+I would like to request access to{% endtrans %} [[unregistered.full_name]].
 
-Thank you,
-- {{request.user.first_name}}
+{% trans user=request.user.first_name %}Thank you,
+- {{user}}{% endtrans %}
                   </textarea>
                 </div>
               </div>
@@ -129,11 +129,11 @@ Thank you,
             <div class="modal-footer">
               <button type="button"
                       class="btn btn-secondary"
-                      data-dismiss="modal">Cancel</button>
+                      data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
               <button type="submit"
                       class="btn btn-primary"
                       data-dismiss="modal"
-                      @click="create">Request access</button>
+                      @click="create">{% trans %}Request access{% endtrans %}</button>
             </div>
           </form>
         </div>

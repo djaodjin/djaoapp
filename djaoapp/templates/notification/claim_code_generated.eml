@@ -1,15 +1,15 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{{provider.printable_name}} Subscription
+{% trans name=provider.printable_name %}{{name}} Subscription{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
 <p>
-Hello {{subscriber.printable_name}},
+{% trans name=subscriber.printable_name %}Hello {{name}},{% endtrans %}
 </p>
 <p>
-I generated a one-time code for you to access:
+{% trans %}I generated a one-time code for you to access{% endtrans %}:
 <ul>
  {% for item in cart_items %}
     <li>{{item.plan.title}}</li>
@@ -17,17 +17,17 @@ I generated a one-time code for you to access:
 </ul>
 </p>
 <p>
-Sail through the payment page by clicking on the following link:
+{% trans %}Sail through the payment page by clicking on the following link:{% endtrans %}
 </p>
 <p>
 <a href="{{urls.cart}}?code={{claim_code}}">{{urls.cart}}?code={{claim_code}}</a>
 </p>
 <p>
-Thank you,<br />
+{% trans %}Thank you,{% endtrans %}<br />
 {{user.printable_name}}<br />
 {{user.email}}<br />
 </p>
 <p>
-Any questions or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
 </p>
 {% endblock %}

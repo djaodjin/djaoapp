@@ -1,28 +1,28 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
 {% block saas_title %}
-<i class="fa fa-money"></i> Update {{organization.printable_name}} Deposit Information
+<i class="fa fa-money"></i> {% trans organization=organization.printable_name %}Update {{organization}} Deposit Information{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 {% if organization.processor_deposit_key %}
   <div id="transfers-container">
     <dl class="dl-horizontal">
-      <dt>Institution</dt>
+      <dt>{% trans %}Institution{% endtrans %}</dt>
       <dd v-cloak>[[bank_name]]</dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>Account Number</dt>
+      <dt>{% trans %}Account Number{% endtrans %}</dt>
       <dd v-cloak>[[last4]]</dd>
     </dl>
   </div>
   {% if organization.processor_pub_key %}
   <!-- We have a ``standalone`` account. -->
   <p>
-  Connected to a Stripe account.
+  {% trans %}Connected to a Stripe account.{% endtrans %}
   </p>
   <p>
-      <button id="de-authorize-btn" class="btn btn-danger" data-toggle="modal" data-target="#de-authorize">De-authorize</button>
+      <button id="de-authorize-btn" class="btn btn-danger" data-toggle="modal" data-target="#de-authorize">{% trans %}De-authorize{% endtrans %}</button>
   </p>
   {% else %}
   <!-- We have a ``managed`` account. -->
@@ -38,20 +38,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                De-authorize ...
+                {% trans %}De-authorize ...{% endtrans %}
             </div>
             <div class="modal-body">
-                Please confirm you want to de-authorize access
-                to your Stripe account.
+                {% trans %}Please confirm you want to de-authorize access
+                to your Stripe account.{% endtrans %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Cancel</button>
+                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <form style="display:inline-block;" method="post" action="{{urls.provider.deauthorize_bank}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                  <input type="hidden" name="stripeToken" value="OOPS" />
+                  <input type="hidden" name="stripeToken" value="{% trans %}OOPS{% endtrans %}" />
                   <button id="de-authorize-action-btn" type="submit"
-                          class="btn btn-danger btn-ok">De-authorize</button>
+                          class="btn btn-danger btn-ok">{% trans %}De-authorize{% endtrans %}</button>
                 </form>
             </div>
         </div>
@@ -60,6 +60,6 @@
 {% endblock %}
 
 {% block saas_lead_help %}
-Please provide the information to deposit funds
-to the bank account of {{organization.printable_name}}.
+{% trans organization=organization.printable_name %}Please provide the information to deposit funds
+to the bank account of {{organization}}.{% endtrans %}
 {% endblock %}

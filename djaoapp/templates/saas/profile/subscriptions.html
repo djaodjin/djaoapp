@@ -1,22 +1,22 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{{organization.printable_name}} Subscriptions
+{% trans organization=organization.printable_name %}{{organization}} Subscriptions{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <section id="subscriptions">
 <div id="subscriptions-list-container"
      data-trip data-trip-index="1"
-     data-trip-content="<h2>Subscriptions</h2><p>List of all your active subscriptions.<br />You can manage all your active subscriptions here.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+     data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
      data-trip-position="screen-center">
-<h4>Active subscriptions</h4>
+<h4>{% trans %}Active subscriptions{% endtrans %}</h4>
 <div class="table-responsive mb-4">
 <table class="table">
  <thead>
   <tr>
-   <th>Plan</th>
-   <th>Until</th>
+   <th>{% trans %}Plan{% endtrans %}</th>
+   <th>{% trans %}Until{% endtrans %}</th>
    <th></th>
    <th></th>
   </tr>
@@ -29,13 +29,13 @@
               <select class="form-control mr-2" name="plan" v-model="plan">
                 <option selected
                         value="{}"
-                        :value="{}">Select a plan...</option>
+                        :value="{}">{% trans %}Select a plan...{% endtrans %}</option>
                 {% for choice in plans %}
                 <option value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'
                      :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
                 {% endfor %}
               </select>
-              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Subscribe</button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
           </form>
       </td>
   </tr>
@@ -47,7 +47,7 @@
   </tr>
   <tr v-show="itemsLoaded && items.count === 0" v-cloak>
    <td colspan="4">
-       <h5 class="text-center"><em>No subcriptions<span v-show="params.q"> [[params.q]]</span></em></h5>
+       <h5 class="text-center"><em>{% trans %}No subcriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h5>
    </td>
   </tr>
  </tbody>
@@ -73,7 +73,7 @@
            <span class="date"></span>
        </div>
        <span style="display: inline-block;">
-            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "Never" ]]
+            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
        </span>
    </td>
    <td>
@@ -83,22 +83,22 @@
        <button class="btn btn-danger unsubscribe"
          data-toggle="modal" data-target="#unsubscribe-action"
          @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
-           Unsubscribe Now
+           {% trans %}Unsubscribe Now{% endtrans %}
        </button>
    </td>
    <td style="text-align: right;" v-if="entry.request_key && entry.editable">
        <button class="btn btn-danger unsubscribe"
          data-toggle="modal" data-target="#unsubscribe-action"
          @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
-           Deny
+           {% trans %}Deny{% endtrans %}
        </button>
        <button class="btn btn-primary"
          @click="acceptRequest(entry.plan.organization, entry.request_key)">
-           Accept
+           {% trans %}Accept{% endtrans %}
        </button>
    </td>
    <td style="text-align: right;" v-if="entry.request_key && !entry.editable">
-       Request pending approval ...
+       {% trans %}Request pending approval ...{% endtrans %}
    </td>
   </tr>
  </tbody>
@@ -110,31 +110,31 @@
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
      id="unsubscribe-action" tabindex="-1" role="dialog"
-     aria-labelledby="Unsubscribe" aria-hidden="true">
+     aria-labelledby="{% trans %}Unsubscribe{% endtrans %}" aria-hidden="true">
     <form class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Unsubscribe ...</h5>
+                <h5 class="modal-title">{% trans %}Unsubscribe ...{% endtrans %}</h5>
                 <button type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
                 <p>
-        You are about to delete the profile and account
-        for <em>{{organization.printable_name}}</em>.
-        This operation cannot be reversed.
+        {% trans %}You are about to delete the profile and account
+        for{% endtrans %} <em>{{organization.printable_name}}</em>.
+        {% trans %}This operation cannot be reversed.{% endtrans %}
                 </p>
                 <p>
-        Are you sure you want to continue?
+        {% trans %}Are you sure you want to continue?{% endtrans %}
                 </p>
                 <div class="modal-footer">
                     <button id="cancel-unsubscribe"
                             class="btn btn-secondary"
-                            data-dismiss="modal">Cancel</button>
+                            data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                     <button type="submit" id="unsubscribe-btn"
                             class="btn btn-danger"
                             data-dismiss="modal"
-                            @click="unsubscribe">Unsubscribe</button>
+                            @click="unsubscribe">{% trans %}Unsubscribe{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -144,13 +144,13 @@
 </div> <!-- /controller -->
 <div id="expired-subscriptions-list-container">
 <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
-<h4>Expired subscriptions</h4>
+<h4>{% trans %}Expired subscriptions{% endtrans %}</h4>
 <div class="table-responsive" style="min-height: 400px;">
 <table class="table">
  <thead>
   <tr>
-   <th>Plan</th>
-   <th>Expired</th>
+   <th>{% trans %}Plan{% endtrans %}</th>
+   <th>{% trans %}Expired{% endtrans %}</th>
   </tr>
  </thead>
  <tbody>
@@ -159,7 +159,7 @@
        <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
    </td>
    <td>
-        [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "Never" ]] ([[entry.ends_at | relativeDate]])
+        [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]] ([[entry.ends_at | relativeDate]])
    </td>
   </tr>
  </tbody>

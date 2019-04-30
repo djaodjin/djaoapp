@@ -9,19 +9,19 @@
           <div class="card-body">
             <button class="btn btn-danger btn-sm" style="float: right;"
                 data-trip data-trip-index="3"
-                data-trip-content="<p>Click here to revoke access to the user.</p>"
+                data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
                 data-trip-position="s"
                 @click="remove(index)"><i class="fa fa-remove"></i></button>
             <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.slug]]</a></h5>
             <h6 class="card-subtitle mb-2 text-muted">
-                [[item.grant_key ? "invited" : "active"]]
+                [[item.grant_key ? "{% trans %}invited{% endtrans %}" : "{% trans %}active{% endtrans %}"]]
                 <span v-if="item.grant_key">[[item.created_at | formatDate]]</span>
             </h6>
             <p class="card-text">[[item.user.email]]</p>
             <button class="btn btn-secondary btn-sm"
-                v-if="item.request_key" @click="save(item.user)">Grant</button>
+                v-if="item.request_key" @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
             <button class="btn btn-secondary btn-sm"
-                v-if="item.grant_key" @click="sendInvite(item.user.slug)">Resend Invite</button>
+                v-if="item.grant_key" @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
           </div>
       </div>
   </div>

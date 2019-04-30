@@ -2,19 +2,19 @@
 
 {% block saas_title %}
 {% if organization %}
-  {{organization.printable_name}} Profile
+  {% trans organization=organization.printable_name %}{{organization}} Profile{% endtrans %}
 {% elif user %}
-  {{user.full_name}} Profile
+  {% trans user=user.full_name %}{{user}} Profile{% endtrans %}
 {% else %}
-  Profile
+  {% trans %}Profile{% endtrans %}
 {% endif %}
 {% endblock %}
 
-{% block saas_lead_help %}Information about the profile{% endblock %}
+{% block saas_lead_help %}{% trans %}Information about the profile{% endtrans %}{% endblock %}
 
 {% block saas_help %}
 <p>
-Update your profile, contact information, password, etc.
+{% trans %}Update your profile, contact information, password, etc.{% endtrans %}
 </p>
 {% endblock %}
 
@@ -29,10 +29,10 @@ Update your profile, contact information, password, etc.
       {% if urls.user.password_change %}
       <div class="row align-items-center">
         <div class="col-sm-5">
-          <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">Change Password</a>
+          <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
         </div>
         <div class="col-sm-7">
-          Use a new password to login.
+          {% trans %}Use a new password to login.{% endtrans %}
         </div>
       </div>
       {% endif %}
@@ -41,10 +41,10 @@ Update your profile, contact information, password, etc.
         <div class="col-sm-5">
           <button id="generate-key-open"
                   class="btn btn-secondary btn-block"
-                  data-toggle="modal" data-target="#generate-key">Reset API Key</button>
+                  data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
         </div>
         <div class="col-sm-7">
-          Obtain a new API Key to authenticate.
+          {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
         </div>
       </div>
       {% endif %}
@@ -53,10 +53,10 @@ Update your profile, contact information, password, etc.
         <div class="col-sm-5">
           <button id="activate-user"
                   class="btn btn-secondary btn-block"
-                  @click="activate">Activate</button>
+                  @click="activate">{% trans %}Activate{% endtrans %}</button>
         </div>
         <div class="col-sm-7">
-          Send an activation e-mail to the user.
+          {% trans %}Send an activation e-mail to the user.{% endtrans %}
         </div>
       </div>
       {% endif %}
@@ -65,7 +65,7 @@ Update your profile, contact information, password, etc.
   {% endif %}
   <div class="card border-danger">
     <div class="card-header">
-      Danger Zone
+      {% trans %}Danger Zone{% endtrans %}
     </div>
     <div class="card-body text-danger">
       <div class="row align-items-center">
@@ -73,10 +73,10 @@ Update your profile, contact information, password, etc.
           <button id="delete-action-open"
                   class="btn btn-danger btn-block"
                   data-toggle="modal"
-                  data-target="#delete-action">Delete</button>
+                  data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
         </div>
         <div class="col-sm-7">
-          This operation cannot be reversed.
+          {% trans %}This operation cannot be reversed.{% endtrans %}
         </div>
       </div>
     </div>
@@ -85,32 +85,32 @@ Update your profile, contact information, password, etc.
   <!-- modal dialog to delete organization. -->
   <div class="modal fade"
        id="delete-action" tabindex="-1" role="dialog"
-       aria-labelledby="Delete Profile" aria-hidden="true">
+       aria-labelledby="{% trans %}Delete Profile{% endtrans %}" aria-hidden="true">
     <form class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Delete Profile ...</h5>
+          <h5 class="modal-title">{% trans %}Delete Profile ...{% endtrans %}</h5>
           <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <p>
-You are about to delete the profile and account
-for <em>{% if organization %}{{organization.printable_name}}{% elif user %}{{user.full_name}}{% endif %}</em>.
-This operation cannot be reversed.
+{% trans %}You are about to delete the profile and account
+for{% endtrans %} <em>{% if organization %}{{organization.printable_name}}{% elif user %}{{user.full_name}}{% endif %}</em>.
+{% trans %}This operation cannot be reversed.{% endtrans %}
           </p>
           <p>
-Are you sure you want to continue?
+{% trans %}Are you sure you want to continue?{% endtrans %}
           </p>
         </div>
         <div class="modal-footer">
           <button id="cancel-delete"
                   data-dismiss="modal"
-                  class="btn btn-secondary">Cancel</button>
+                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="delete-organization-btn"
                   class="btn btn-danger"
                   data-dismiss="modal"
-                  @click="deleteProfile">Delete</button>
+                  @click="deleteProfile">{% trans %}Delete{% endtrans %}</button>
         </div>
       </div>
     </form>
@@ -119,32 +119,32 @@ Are you sure you want to continue?
   <!-- modal dialog asking for password before generating API keys -->
   <div id="generate-key" class="modal fade"
        tabindex="-1" role="dialog"
-       aria-labelledby="Ask for password" aria-hidden="true">
+       aria-labelledby="{% trans %}Ask for password{% endtrans %}" aria-hidden="true">
     <form class="modal-dialog" method="POST" @submit.prevent="generateKey">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Please re-enter your password ...</h5>
+          <h5 class="modal-title">{% trans %}Please re-enter your password ...{% endtrans %}</h5>
           <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <div class="form-group mb-0">
             <input class="form-control"
-                   name="password" placeholder="Password" type="password"
+                   name="password" placeholder="{% trans %}Password{% endtrans %}" type="password"
                    v-model="password" />
           </div>
           <div class="form-group mt-3 mb-0" v-show="apiKey != 'Generating ...'">
             <input class="form-control"
-                   name="key" placeholder="Generating" type="text"
+                   name="key" placeholder="{% trans %}Generating{% endtrans %}" type="text"
                    v-model="apiKey">
             <small class="form-text text-muted text-center">
-              This is your secret API key
+              {% trans %}This is your secret API key{% endtrans %}
             </small>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary"
-                  type="submit">Submit</button>
+                  type="submit">{% trans %}Submit{% endtrans %}</button>
         </div>
       </div>
     </form>
@@ -152,44 +152,44 @@ Are you sure you want to continue?
   <!-- modal dialog to generate API keys -->
   <div id="show-key" class="modal fade"
        tabindex="-1" role="dialog"
-       aria-labelledby="API Keys" aria-hidden="true">
+       aria-labelledby="{% trans %}API Keys{% endtrans %}" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">API Key</h4>
+          <h4 class="modal-title">{% trans %}API Key{% endtrans %}</h4>
         </div>
         <div class="modal-body">
           <div class="form-group">
             <div class="controls">
               <input class="form-control"
                      name="key" maxlength="128"
-                     type="text" disabled placeholder="Generating..."
+                     type="text" disabled placeholder="{% trans %}Generating...{% endtrans %}"
                      v-model="apiKey" />
             </div>
           </div>
           <div class="form-group">
             <input class="form-control"
                    name="password" maxlength="128"
-                   type="password" placeholder="Password"
+                   type="password" placeholder="{% trans %}Password{% endtrans %}"
                    v-model="password" />
           </div>
           <div>
             <p>
-This is the API key you can use to authenticate with the service.
+{% trans %}This is the API key you can use to authenticate with the service.{% endtrans %}
             </p>
             <p>
-The key will only be displayed once. Keep it secure.
+{% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
             </p>
           </div>
         </div>
         <div class="modal-footer">
           <button id="regenerate-key" class="btn btn-secondary" type="button"
                   data-toggle="modal" data-target="#generate-key"
-                  data-dismiss="modal">Generate</button>
+                  data-dismiss="modal">{% trans %}Generate{% endtrans %}</button>
           <button class="btn btn-primary"
-                  data-dismiss="modal">OK</button>
+                  data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
         </div>
       </div>
     </div>

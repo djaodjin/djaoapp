@@ -5,14 +5,14 @@
   <div class="row">
     <div id="contact-list-container">
       <div class="page-header">
-        <h2>Contacts</h2>
+        <h2>{% trans %}Contacts{% endtrans %}</h2>
       </div>
       <div class="col-sm-6">
         <div v-show="!itemsLoaded">
           <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
         </div>
         <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
-          <h4><em>No contacts</em></h4>
+          <h4><em>{% trans %}No contacts{% endtrans %}</em></h4>
         </div>
         <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <div v-for="entry in items.results">
@@ -26,21 +26,21 @@
       <div class="col-sm-6">
         <form id="create-contact" class="form" @submit.prevent="createContact">
           <div class="form-group">
-            <label>Full name</label>
+            <label>{% trans %}Full name{% endtrans %}</label>
             <input class="form-control" type="text" name="full_name"
               v-model="contact.full_name">
           </div>
           <div class="form-group">
-            <label>Nick name</label>
+            <label>{% trans %}Nick name{% endtrans %}</label>
             <input class="form-control" type="text" name="nick_name"
               v-model="contact.nick_name">
           </div>
           <div class="form-group">
-            <label>Email</label>
+            <label>{% trans %}Email{% endtrans %}</label>
             <input class="form-control" type="text" name="email"
               v-model="contact.email">
           </div>
-          <button class="btn btn-primary" type="submit" value="submit">Create Contact</button>
+          <button class="btn btn-primary" type="submit" value="submit">{% trans %}Create Contact{% endtrans %}</button>
         </form>
       </div>
     </div>

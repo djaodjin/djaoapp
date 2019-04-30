@@ -9,10 +9,10 @@
             </div>
             <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
                 <dl>
-                    <dt>What is this page?</dt>
+                    <dt>{% trans %}What is this page?{% endtrans %}</dt>
                     <dd>
-By default a newly subscribed user or a user signing back in will land on
-this page. You can easily edit this landling page.
+{% trans %}By default a newly subscribed user or a user signing back in will land on
+this page. You can easily edit this landling page.{% endtrans %}
                     </dd>
                 </dl>
             </div>
@@ -27,13 +27,13 @@ this page. You can easily edit this landling page.
             </div>
             <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
                 <dl>
-                    <dt>Upload Paid Content</dt>
+                    <dt>{% trans %}Upload Paid Content{% endtrans %}</dt>
                     <dd>
                         <div class="dj-upload">
                             <div class="documentation dropzone-previews previewsContainer">
                                 <span class="dz-default dz-message">
-Drag-n-drop or click to upload
-the paid content you wish to distribute here (PDF file).
+{% trans %}Drag-n-drop or click to upload
+the paid content you wish to distribute here (PDF file).{% endtrans %}
                                 </span>
                                 <div class="fallback">
                                     <input name="file" type="file" />
@@ -54,12 +54,12 @@ the paid content you wish to distribute here (PDF file).
             </div>
             <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
                 <dl>
-                    <dt>Go further. Run a full-fledge session proxy</dt>
+                    <dt>{% trans %}Go further. Run a full-fledge session proxy{% endtrans %}</dt>
                     <dd>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div>
-                                    <h4>Session Data</h4>
+                                    <h4>{% trans %}Session Data{% endtrans %}</h4>
                                     <pre class="code">
                                         <code>
                                             {{forward_session}}
@@ -67,7 +67,7 @@ the paid content you wish to distribute here (PDF file).
                                     </pre>
                                 </div>
                                 <div>
-                                    <h4>As HTTP Cookie Header</h4>
+                                    <h4>{% trans %}As HTTP Cookie Header{% endtrans %}</h4>
                                     <pre class="code">
                                         <code>
                                             {{forward_session_cookie}}
@@ -76,18 +76,18 @@ the paid content you wish to distribute here (PDF file).
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <h4>Forwarding requests</h4>
+                                <h4>{% trans %}Forwarding requests{% endtrans %}</h4>
                                 <p>
-To forward HTTP requests to your application instead of showing the landing
-page:
+{% trans %}To forward HTTP requests to your application instead of showing the landing
+page:{% endtrans %}
 <ol>
-<li>Check <em>forward</em> for the /app/ rule in the <a href="{{urls.rules.app}}">rules dashboard</a></li>
-<li>Create a session encryption secret key in the <a href="{{urls.rules.app}}">rules dashboard</a></li>
-<li><a href="https://djaodjin.com/docs/" target="_blank">Integrate session decryption code</a> at the front of your application request processing pipeline</li>
+<li>{% trans %}Check{% endtrans %} <em>{% trans %}forward{% endtrans %}</em> {% trans %}for the /app/ rule in the{% endtrans %} <a href="{{urls.rules.app}}">{% trans %}rules dashboard{% endtrans %}</a></li>
+<li>{% trans %}Create a session encryption secret key in the{% endtrans %} <a href="{{urls.rules.app}}">{% trans %}rules dashboard{% endtrans %}</a></li>
+<li><a href="https://djaodjin.com/docs/" target="_blank">{% trans %}Integrate session decryption code{% endtrans %}</a> {% trans %}at the front of your application request processing pipeline{% endtrans %}</li>
 </ol>
                                 </p>
                                 <p>
-For any questions, please, feel free to <a href="/contact/">contact us</a>.
+{% trans %}For any questions, please, feel free to{% endtrans %} <a href="/contact/">{% trans %}contact us{% endtrans %}</a>.
                                 </p>
                             </div>
                         </div>

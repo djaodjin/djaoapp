@@ -5,16 +5,16 @@
     <div class="row">
         <fieldset class="col-lg-5 col-md-5">
             <legend>
-Credit Card Information{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{urls.organization.update_card}}">Update</a>{% endif %}
+{% trans %}Credit Card Information{% endtrans %}{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{urls.organization.update_card}}">{% trans %}Update{% endtrans %}</a>{% endif %}
             </legend>
             {% if last4 or force_update %}
             <div v-show="haveCardData">
                 <dl class="dl-horizontal">
-                    <dt>card</dt>
+                    <dt>{% trans %}card{% endtrans %}</dt>
                     <dd data-last4="{{last4}}" v-text="savedCard.last4">{{last4}}</dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>expires</dt>
+                    <dt>{% trans %}expires{% endtrans %}</dt>
                   <dd data-exp-date="{{exp_date}}" v-text="savedCard.exp_date">{{exp_date}}</dd>
                 </dl>
             </div>
@@ -32,74 +32,74 @@ Credit Card Information{% if last4 and not force_update %}<a id="card-update" cl
                 values will hit the server and break PCI compliance. -->
             <div id="row-number" class="form-group">
                 <label class="col-form-label"
-                       for="card-number">Card Number</label>
+                       for="card-number">{% trans %}Card Number{% endtrans %}</label>
                 <div class="controls">
                     <input id="card-number"
                            class="form-control" type="text"
-                           size="16" placeholder="Card number"
+                           size="16" placeholder="{% trans %}Card number{% endtrans %}"
                            autocomplete="off"
                            v-model="cardNumber" />
                 </div>
             </div>
             <div class="row">
                 <div id="row-exp" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                    <label class="col-form-label">Expiration</label>
+                    <label class="col-form-label">{% trans %}Expiration{% endtrans %}</label>
                     <div class="controls">
                             <input id="card-exp-month"
                                    class="form-control"
                                    style="display:inline-block;width:40%;"
                                    type="text" maxlength="2" size="2"
-                                   placeholder="MM"
+                                   placeholder="{% trans %}MM{% endtrans %}"
                                    v-model="cardExpMonth" />
                             <input id="card-exp-year"
                                    class="form-control"
                                    style="display:inline-block;width:50%;"
                                    type="text" maxlength="4" size="4"
-                                   placeholder="YYYY"
+                                   placeholder="{% trans %}YYYY{% endtrans %}"
                                    v-model="cardExpYear" />
                     </div>
                 </div>
                 <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                    <label class="col-form-label">Security Code</label>
+                    <label class="col-form-label">{% trans %}Security Code{% endtrans %}</label>
                     <div id="cvc-detail" style="display: none;">
-                        <h3>What is CVV/CVC ?</h3>
+                        <h3>{% trans %}What is CVV/CVC ?{% endtrans %}</h3>
                         <p>
-Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure
+{% trans %}Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure
 established by credit card companies to reduce fraud for internet transactions.
 On a Visa, MasterCard and Discover, this 3 digit code is located on the back of
 the card. American Express, however, displays a 4 digit code on the front of
 the card. Both 3 or 4 digit codes are verification numbers used in the
-authentication process.
+authentication process.{% endtrans %}
                         </p>
-                        <h4>MasterCard, Visa &amp; Discover</h4>
+                        <h4>{% trans %}MasterCard, Visa{% endtrans %} &amp; {% trans %}Discover{% endtrans %}</h4>
                         <p>
-The CVV/CVC code is the last 3 digits printed in the signature area on the
-back of the card.
+{% trans %}The CVV/CVC code is the last 3 digits printed in the signature area on the
+back of the card.{% endtrans %}
                         </p>
-                        <h4>American Express</h4>
+                        <h4>{% trans %}American Express{% endtrans %}</h4>
                         <p>
-The CVV/CVC code is the last 4 digits on the front of your card right above
-your credit card number.
+{% trans %}The CVV/CVC code is the last 4 digits on the front of your card right above
+your credit card number.{% endtrans %}
                         </p>
                     </div>
                     <div class="controls">
                         <input id="card-cvc"
                         class="form-control"
                         type="text" maxlength="4" size="3"
-                        placeholder="CVC" autocomplete="off"
+                        placeholder="{% trans %}CVC{% endtrans %}" autocomplete="off"
                         v-model="cardCvc" />
                     </div>
                 </div>
             </div>
             <p class="form-group" style="font-size:0.8em;">
-We keep on top of all best practices to secure the information you
+{% trans %}We keep on top of all best practices to secure the information you
 provide us.
-See the <a href="/legal/security/" target="_blank">security policy</a>
-for details.
+See the{% endtrans %} <a href="/legal/security/" target="_blank">{% trans %}security policy{% endtrans %}</a>
+{% trans %}for details.{% endtrans %}
             </p>
         </fieldset>
         <fieldset class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
-            <legend>Billing Address</legend>
+            <legend>{% trans %}Billing Address{% endtrans %}</legend>
             {{input_field(form['card_name'], form.hide_labels)}}
             {{input_field(form['card_address_line1'], form.hide_labels)}}
             {{input_field(form['country'], form.hide_labels)}}
@@ -115,6 +115,6 @@ fieldset is closed correctly both ways.
     </div>
 </div> <!-- #card-use -->
 <div class="form-group text-center">
-    <button type="submit" class="btn btn-primary btn-lg payment-submit">{% if submit_title %}{{submit_title}}{% else %}{% if force_update %}Update{% else %}Submit{% endif %}{% endif %}</button>
+    <button type="submit" class="btn btn-primary btn-lg payment-submit">{% if submit_title %}{{submit_title}}{% else %}{% if force_update %}{% trans %}Update{% endtrans %}{% else %}{% trans %}Submit{% endtrans %}{% endif %}{% endif %}</button>
 </div>
 {% endblock %}

@@ -3,10 +3,10 @@
 {% block subject %}
 {# We are putting |safe here because an e-mail's subject line shouldn't be
 HTML encoded. #}
-{{user.printable_name|safe}} was added as a {{role}} to {{organization.printable_name|safe}}
+{% trans user=user.printable_name|safe, organization=organization.printable_name|safe %}{{user}} was added as a {{role}} to {{organization}}{% endtrans %}
 {% endblock %}
 
-{% block title %}{{user.printable_name}} was added as a {{role}} to {{organization.printable_name}}{% endblock %}
+{% block title %}{% trans user=user.printable_name, organization=organization.printable_name %}{{user}} was added as a {{role}} to {{organization}}{% endtrans %}{% endblock %}
 
 {% block html_content %}
 {% if reason %}
@@ -15,10 +15,10 @@ HTML encoded. #}
 </p>
 {% endif %}
 <p>
-You can review who has a {{role}} to
-<a href="{{back_url}}">{{organization.printable_name}} account</a>
-now by clicking on the previous link or copy/pasting the following link
-in your browser:
+{% trans %}You can review who has a {{role}} to{% endtrans %}
+<a href="{{back_url}}">{% trans organization=organization.printable_name%}{{organization}} account{% endtrans %}</a>
+{% trans %}now by clicking on the previous link or copy/pasting the following link
+in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

@@ -22,19 +22,19 @@
     {% if top_accessibles|length > 0 %}
     <li class="dropdown-label" role="presentation">{{request.user.username}}</li>
     {% endif %}
-    <li role="presentation"><a id="authenticated-user" class="dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">Profile</a></li>
-    <li role="presentation"><a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">Sign Out</a></li>
+    <li role="presentation"><a id="authenticated-user" class="dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">{% trans %}Profile{% endtrans %}</a></li>
+    <li role="presentation"><a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">{% trans %}Sign Out{% endtrans %}</a></li>
     {% if top_accessibles|length > 0 %}
     {% for accessible in top_accessibles %}
     <li class="dropdown-divider" role="separator"></li>
     <li class="dropdown-label" role="presentation"><span>{{accessible.printable_name}}</span><span class="dropdown-label-role">{{accessible.role_title}}</span></li>
-    <li role="presentation"><a class="dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">Home</a></li>
-    <li role="presentation"><a class="dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">Settings</a></li>
+    <li role="presentation"><a class="dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">{% trans %}Home{% endtrans %}</a></li>
+    <li role="presentation"><a class="dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">{% trans %}Settings{% endtrans %}</a></li>
     {% endfor %}
     {% endif %}
   </ul>
 </li>
 <li class="nav-item align-self-center">
-    <a class="nav-link" title="Click Here to sign out" href="{{'/logout/'|site_prefixed}}"><span class="d-none d-sm-inline-block mr-sm-2">Sign out </span><span class="fa fa-sign-out fa-lg"></span></a>
+    <a class="nav-link" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_prefixed}}"><span class="d-none d-sm-inline-block mr-sm-2">{% trans %}Sign out{% endtrans %} </span><span class="fa fa-sign-out fa-lg"></span></a>
 </li>
 </ul>

@@ -5,7 +5,7 @@ be positive and/or the setup fee will. -->
     <div class="plan-main">
         <div class="text-center">
             {% if plan.created_at|date_in_future %}
-                <p>Avalaible soon!</p>
+                <p>{% trans %}Avalaible soon!{% endtrans %}</p>
             {% endif %}
             <div class="page-header">
                 <h2 class="editable-plan" data-key="title" data-slug="{{plan.slug}}">
@@ -18,11 +18,11 @@ be positive and/or the setup fee will. -->
                 <h2 class="text-center editable-plan edit-currency" data-key="period_amount" data-slug="{{plan.slug}}">
                 {% if not plan or plan.is_not_priced %}
 {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
-                Contact Us
+                {% trans %}Contact Us{% endtrans %}
                 {% else %}
                   {% if plan.discounted_period_price %}
                     {{plan.discounted_period_price|humanize_money}}
-                    <span class="text-danger" style="font-size:0.33em;">(was {{plan.period_price|humanize_money}})</span>
+                    <span class="text-danger" style="font-size:0.33em;">{% trans price=plan.period_price|humanize_money %}(was {{price}}){% endtrans %}</span>
                   {% else %}
                     {{plan.period_price|humanize_money}}
                   {% endif %}
@@ -37,13 +37,13 @@ be positive and/or the setup fee will. -->
                 </p>
                 <p class="text-center">
                 {% if plan.setup_price.amount > 0 %}
-                    {{plan.setup_price|humanize_money}} one-time setup
+                    {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
                 {% else %}
                     &nbsp;
                 {% endif %}
                 {% if plan.transaction_fee > 0 %}
                     {# XXX hard-coded here #}
-                    (+Stripe per transaction costs)
+                    {% trans %}(+Stripe per transaction costs){% endtrans %}
                 {% else %}
                     &nbsp;
                 {% endif %}
@@ -55,10 +55,10 @@ be positive and/or the setup fee will. -->
     <footer class="plan-footer">
         <div style="margin:5px;">
             {% if plan.is_not_priced %}
-            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">Contact Us</a>
+            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
             {% else %}
             <button class="btn btn-primary"
-                    type="submit" name="submit" value="{{plan.slug}}">Subscribe</button>
+                    type="submit" name="submit" value="{{plan.slug}}">{% trans %}Subscribe{% endtrans %}</button>
             {% endif %}
         </div>
     </footer>
