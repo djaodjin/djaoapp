@@ -1,20 +1,20 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-Account for user {{user.username}} has been activated on {{broker.printable_name}}
+{% trans user=user.username, broker=broker.printable_name %}Account for user {{user}} has been activated on {{broker}}{% endtrans %}
 {% endblock %}
 
 {% block plain_content %}
-Account for user {{user.username}} has been activated.
+{% trans user=user.username %}Account for user {{user}} has been activated.{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>An account was activated!</h3>
+<h3>{% trans %}An account was activated!{% endtrans %}</h3>
 <p>
-Full name: <b>{{user.printable_name}}</b>
+{% trans %}Full name:{% endtrans %} <b>{{user.printable_name}}</b>
 <br>
-Username: {% if urls and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
+{% trans %}Username:{% endtrans %} {% if urls and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
 <br>
-Email: {{user.email}}
+{% trans email=user.email %}Email: {{email}}{% endtrans %}
 </p>
 {% endblock %}

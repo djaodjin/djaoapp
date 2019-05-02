@@ -8,32 +8,32 @@ Implementation Note:
 #}
 
 {% block subject %}
-Receipt from {{provider.printable_name|safe}}{% if refunded %} - Refund{% endif %}
+{% trans name=provider.printable_name|safe %}Receipt from {{name}}{% endtrans %}{% if refunded %} - {% trans %}Refund{% endtrans %}{% endif %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{provider.printable_name}}{% if refunded %} Refund{% else %} Charge{% endif %} Receipt</h3>
+<h3>{{provider.printable_name}}{% if refunded %} {% trans %}Refund{% endtrans %}{% else %} {% trans %}Charge{% endtrans %}{% endif %} {% trans %}Receipt{% endtrans %}</h3>
 <div id="status">
     {% if charge.is_paid %}
     <p>
-      On {{charge.created_at|short_date}}, the credit card has been charged
-      for an amount of {{charge.price|humanize_money}}.
-      Payment Information:
+      {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, the credit card has been charged
+      for an amount of {{price}}.{% endtrans %}
+      {% trans %}Payment Information:{% endtrans %}
     </p>
     {% elif charge.is_failed %}
     <p>
-    On {{charge.created_at|short_date}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge failed.
+    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge failed.{% endtrans %}
     </p>
     {% elif charge.is_disputed %}
     <p>
-    On {{charge.created_at|short_date}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge was disputed.
+    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge was disputed.{% endtrans %}
     </p>
     {% elif charge.is_progress %}
     <p>
-    On {{charge.created_at|short_date}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge is in progress...
+    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge is in progress...{% endtrans %}
     </p>
     {% endif %}
 </div>
@@ -43,25 +43,25 @@ Receipt from {{provider.printable_name|safe}}{% if refunded %} - Refund{% endif 
     </thead>
     <tbody>
       <tr>
-        <th class="info-row-header">REFERENCE&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}REFERENCE{% endtrans %}&nbsp;&nbsp;</th>
         <td>#{{charge.processor_key}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">AMOUNT&nbsp;&nbsp;</th>
-        <td>{% if refunded %}{{charge.invoiced_total_after_refund|humanize_money}} (after refund){% else %}{{charge.price|humanize_money}}{% endif %}</td>
+        <th class="info-row-header">{% trans %}AMOUNT{% endtrans %}&nbsp;&nbsp;</th>
+        <td>{% if refunded %}{% trans amount=charge.invoiced_total_after_refund|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge.price|humanize_money}}{% endif %}</td>
       </tr>
       {% if charge.card_name %}
       <tr>
-        <th class="info-row-header">NAME&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}NAME{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.card_name}}</td>
       </tr>
       {% endif %}
       <tr>
-        <th class="info-row-header">CARD&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}CARD{% endtrans %}&nbsp;&nbsp;</th>
         <td>**** - {{charge.last4}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">EXPIRES&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.exp_date}}</td>
       </tr>
     </tbody>
@@ -72,8 +72,8 @@ Receipt from {{provider.printable_name|safe}}{% if refunded %} - Refund{% endif 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="amount-header">Amount</th>
-          <th class="description-header">Description</th>
+          <th class="amount-header">{% trans %}Amount{% endtrans %}</th>
+          <th class="description-header">{% trans %}Description{% endtrans %}</th>
           <th></th>
         </tr>
       </thead>
@@ -99,19 +99,19 @@ Receipt from {{provider.printable_name|safe}}{% if refunded %} - Refund{% endif 
 <div>
 {% if charge.created_by %}
 <p>
-This charge was initiated by <a href="{{urls.charge.created_by}}">{{charge.created_by.get_full_name()}}.</a>
+{% trans %}This charge was initiated by{% endtrans %} <a href="{{urls.charge.created_by}}">{{charge.created_by.get_full_name()}}.</a>
 </p>
 {% endif %}
 {% if email_by %}
 <p>
-This email was triggered by {{email_by.printable_name}}.
+{% trans name=email_by.printable_name %}This email was triggered by {{name}}.{% endtrans %}
 </p>
 {% endif %}
 </div>
 <div id="support">
 <p>
-Thank you for your continued business. If you have any questions or comments,
-email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans %}Thank you for your continued business. If you have any questions or comments,
+email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
 </p>
 </div>
 {% endblock %}

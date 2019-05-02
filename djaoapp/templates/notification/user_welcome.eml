@@ -1,25 +1,25 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-Welcome to {{broker.printable_name|safe}}
+{% trans broker=broker.printable_name|safe %}Welcome to {{broker}}{% endtrans %}
 {% endblock %}
 
 {% block plain_content %}
-Thank you for registering at {{back_url}}.
+{% trans %}Thank you for registering at {{back_url}}.{% endtrans %}
 
-If you have any questions or comments, email us at {{broker.email}}.
+{% trans email=broker.email %}If you have any questions or comments, email us at {{email}}.{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
 <div>
 <p>
-Thank you for registering at {{back_url}}.
+{% trans %}Thank you for registering at {{back_url}}.{% endtrans %}
 </p>
 </div>
 <div id="support">
 <p>
-If you have any questions or comments,
-email us at <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
+{% trans %}If you have any questions or comments,
+email us at{% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
 </p>
 </div>
 {% endblock %}

@@ -8,14 +8,14 @@
                 <i class="fa fa-meh-o fa-4x"></i>
             </p>
             <p>
-503 Service Unavailable{% if err %} - {{err}}{% endif %}
+{% trans %}503 Service Unavailable{% endtrans %}{% if err %} - {{err}}{% endif %}
             </p>
             <p>
-The service behind the firewall cannot be reached.
-If you think there is a mistake, please <a href="/contact/">contact us</a>.
+{% trans %}The service behind the firewall cannot be reached.
+If you think there is a mistake, please{% endtrans %} <a href="/contact/">{% trans %}contact us{% endtrans %}</a>.
             </p>
             <p>
-We do our best to reply within 24 hours. Thank you!
+{% trans %}We do our best to reply within 24 hours. Thank you!{% endtrans %}
             </p>
         </div>
     </div>

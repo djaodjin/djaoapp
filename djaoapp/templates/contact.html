@@ -4,11 +4,11 @@
 <div class="container" style="margin-bottom: 50px;">
     <div class="col-md-6 offset-md-3 col-lg-6">
         <div class="page-header">
-            <h1 class="text-center"><i class="fa fa-envelope"></i> Contact us</h1>
+            <h1 class="text-center"><i class="fa fa-envelope"></i> {% trans %}Contact us{% endtrans %}</h1>
         </div>
         <p>
-Please leave your name and email address.
-We do our best to answer each request individually within 24 hours.
+{% trans %}Please leave your name and email address.
+We do our best to answer each request individually within 24 hours.{% endtrans %}
         </p>
         {% if form %}
         {% include "_form.html" %}

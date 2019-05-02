@@ -1,16 +1,16 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Roles{% endblock %}
+{% block saas_title %}{% trans %}Roles{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <section id="role-list-container"
     data-trip data-trip-index="1"
-    data-trip-content="<h2>Add/Remove roles</h2><p>Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+    data-trip-content="<h2>{% trans %}Add/Remove roles{% endtrans %}</h2><p>{% trans %}Managers can view the revenue and subscription metrics. They can{% endtrans %}<br />{% trans %}transfer funds to the organization bank account, issue refunds, etc.{% endtrans %}<br />{% trans %}They can add discount coupons and of course, other roles. Contributors have more permissions than normal users{% endtrans %}<br />{% trans %}but restricted access compared to managers..{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
   <div>
-      <button class="btn btn-primary" @click="modalOpen=true">Create role ...</button>
+      <button class="btn btn-primary" @click="modalOpen=true">{% trans %}Create role ...{% endtrans %}</button>
     <div v-show="!itemsLoaded">
-        <h2>Please wait...</h2>
+        <h2>{% trans %}Please wait...{% endtrans %}</h2>
     </div>
     <div v-show="itemsLoaded">
       <div v-for="roleDescription in items.results">
@@ -24,20 +24,20 @@
         <div>
           <form class="form-inline">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>Start typing the username or email of the person you want to add.</p>" data-trip-position="s">
-              <input name="user" type="text" placeholder="Username or e-mail"
+            <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>" data-trip-position="s">
+              <input name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
                      autocomplete="off"
                      class="form-control form-control-sm" style="width: 100%;">
               <div class="input-group-btn">
-                <button class="btn btn-primary btn-sm" type="submit">Add [[roleDescription.title]]</button>
+                <button class="btn btn-primary btn-sm" type="submit">{% trans %}Add{% endtrans %} [[roleDescription.title]]</button>
               </div>
             </div>
           </form>
           <table class="table table-sm table-striped">
             <thead>
               <tr>
-                <th>Username</th>
-                <th>Email</th>
+                <th>{% trans %}Username{% endtrans %}</th>
+                <th>{% trans %}Email{% endtrans %}</th>
                 <th></th>
               </tr>
             </thead>
@@ -49,7 +49,7 @@
               </tr>
               <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
                 <td colspan="3">
-                  <h4 class="text-center"><em>No [[roleDescription.title]]<span v-show="params.q"> [[params.q]]</span></em></h4>
+                  <h4 class="text-center"><em>{% trans %}No{% endtrans %} [[roleDescription.title]]<span v-show="params.q"> [[params.q]]</span></em></h4>
                 </td>
               </tr>
               <tr :id="item.user.slug" v-for="(item, index) in items.results"
@@ -57,11 +57,11 @@
                 <td style="vertical-align:middle;">[[item.user.slug]]</td>
                 <td style="vertical-align:middle;">[[item.user.email]] <button
                     class="btn btn-secondary btn-sm"
-                    v-if="item.request_key" @click="save(item.user)">grant</button></td>
+                    v-if="item.request_key" @click="save(item.user)">{% trans %}grant{% endtrans %}</button></td>
                 <td style="vertical-align:middle;"><button
                    class="btn btn-danger btn-sm"
                    data-trip data-trip-index="3"
-                   data-trip-content="<p>Click here to revoke access to the user.</p>"
+                   data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
                    data-trip-position="s"
                    @click="remove(index)"><i class="fa fa-remove"></i></button></td>
               </tr>
@@ -72,25 +72,25 @@
           </div>
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
-  <div title="Invite {{role_descr.title}}" v-model="modalOpen" v-cloak
+  <div title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}" v-model="modalOpen" v-cloak
    class="add-role-modal modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Add {{role_descr.title}}" aria-hidden="true">
+       aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true">
   <div class="modal-dialog">
       <form class="form-horizontal" @submit.prevent="create">
         <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Invite {{role_descr.title}} ...</h4>
+              <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}} ...{% endtrans %}</h4>
           </div>
           <div class="modal-body">
             <p class="text-danger">
-[[unregistered.slug]] is not yet registered. This is an opportunity to invite and
-add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
+[[unregistered.slug]] {% trans role_descr=role_descr.title, organization=organization.printable_name %}is not yet registered. This is an opportunity to invite and
+add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
             </p>
             <div class="row form-group">
                 <div class="col-sm-2">
-                    <label>To</label>
+                    <label>{% trans %}To{% endtrans %}</label>
                 </div>
                 <div class="controls col-sm-10">
                     <input id="new-request-email"
@@ -102,52 +102,52 @@ add her/him as a {{role_descr.title}} for {{organization.printable_name}}.
             </div>
             <div class="form-group">
                 <div class="controls">
-                    <label>The following invite message will be sent:</label>
+                    <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
                     <textarea class="form-control"
                               name="message"
                               maxlength="255" type="text" rows="10">
-Hi [[unregistered.email]],
+{% trans %}Hi{% endtrans %} [[unregistered.email]],
 
-I am adding you as a {{role_descr.title}} to {{organization.printable_name}}.
+{% trans role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}I am adding you as a {{role_descr}} to {{organization}}.
 
 Thank you,
-- {{request.user.first_name}}</textarea>
+- {{user}}{% endtrans %}</textarea>
                 </div>
             </div>
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary"
-                      data-dismiss="modal">Cancel</button>
+                      data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
               <button id="new-rule-submit"
-                      type="submit" class="btn btn-primary">Invite {{role_descr.title}}</button>
+                      type="submit" class="btn btn-primary">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
           </div>
         </div>
       </form>
   </div>
   </div>
   <!-- modal dialog to create new role -->
-  <div title="Invite {{role_descr.title}}" v-model="modalOpen" v-cloak
+  <div title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}" v-model="modalOpen" v-cloak
    class="create-role-modal modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Add {{role_descr.title}}" aria-hidden="true">
+       aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true">
       <form class="form-horizontal" @submit.prevent="create">
           <div class="modal-body">
               <div class="row form-group">
                   <div class="col-sm-2">
-                      <label class="col-form-label">Title</label>
+                      <label class="col-form-label">{% trans %}Title{% endtrans %}</label>
                   </div>
                   <div class="col-sm-10">
                       <input class="form-control" style="width:100%;"
                              v-model="role.title"
                              name="name" type="text" max-length="150"
-                             placeholder="ex: Sales associate"
+                             placeholder="{% trans %}ex: Sales associate{% endtrans %}"
                              autofocus />
                   </div>
               </div>
           </div>
           <div slot="footer">
               <button type="button" class="btn btn-secondary"
-                      @click="modalOpen=false">Cancel</button>
-              <button type="submit" class="btn btn-primary">Create role</button>
+                      @click="modalOpen=false">{% trans %}Cancel{% endtrans %}</button>
+              <button type="submit" class="btn btn-primary">{% trans %}Create role{% endtrans %}</button>
           </div>
       </form>
   </div>

@@ -1,38 +1,38 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Plans{% endblock %}
+{% block saas_title %}{% trans %}Plans{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <div id="plan-list-container">
     <div class="row my-3">
         {% include "saas/_filter.html" %}
         <div class="col-2 text-right">
-            <a class="btn btn-sm btn-primary" id="plan-new" href="{{urls.provider.plan_new}}" title="Create plan">New Plan...</a>
+            <a class="btn btn-sm btn-primary" id="plan-new" href="{{urls.provider.plan_new}}" title="{% trans %}Create plan{% endtrans %}">{% trans %}New Plan...{% endtrans %}</a>
         </div>
     </div>
     <div class="table-responsive">
     <table id="coupon-list" class="table table table-sm table-striped" >
         <thead>
         <tr>
-            <th>Title
+            <th>{% trans %}Title{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('title')">
                   <i :class="sortIcon('title')"></i>
                 </a>
             </th>
-            <th>Status
+            <th>{% trans %}Status{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('is_active')">
                   <i :class="sortIcon('is_active')"></i>
                 </a>
             </th>
-            <th>Period price
+            <th>{% trans %}Period price{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('period_amount')">
                   <i :class="sortIcon('period_amount')"></i>
                 </a>
             </th>
-            <th>Created at
+            <th>{% trans %}Created at{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('created_at')">
                   <i :class="sortIcon('created_at')"></i>
@@ -48,14 +48,14 @@
         </tr>
         <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <td colspan="3">
-                <h4 class="text-center"><em>No Plans<span v-show="params.q"> [[params.q]]</span></em></h4>
+                <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
         </tr>
         <tr :id="item.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td>
                 <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
             </td>
-            <td>[[item.is_active ? 'active' : 'disabled']]</td>
+            <td>[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</td>
             <td>[[item.period_amount]]</td>
             <td class="date">[[item.created_at | formatDate]]</td>
         </tr>
@@ -67,7 +67,7 @@
     <div class="row mt-3">
         <div class="col text-right">
             <a id="download" class="btn btn-secondary btn-sm mr-1" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {% if form.together_registration %}
     <fieldset>
-        <legend>Login Credentials</legend>
+        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
         {{ input_field(form['username'], form.hide_labels) }}
         {{ input_field(form['new_password'], form.hide_labels) }}
         {{ input_field(form['new_password2'], form.hide_labels) }}
@@ -14,7 +14,7 @@
         {{ input_field(form['email'], form.hide_labels) }}
     </fieldset>
     <fieldset>
-        <legend>Organization Information</legend>
+        <legend>{% trans %}Organization Information{% endtrans %}</legend>
         {{ input_field(form['organization_name'], form.hide_labels) }}
         {{ input_field(form['street_address'], form.hide_labels) }}
         {{ input_field(form['country'], form.hide_labels) }}
@@ -25,7 +25,7 @@
     </fieldset>
     {% elif form.personal_registration %}
     <fieldset>
-        <legend>Login Credentials</legend>
+        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
         {{ input_field(form['username'], form.hide_labels) }}
         {{ input_field(form['email'], form.hide_labels) }}
         {{ input_field(form['email2'], form.hide_labels) }}
@@ -33,7 +33,7 @@
         {{ input_field(form['new_password2'], form.hide_labels) }}
     </fieldset>
     <fieldset>
-        <legend>Contact Information</legend>
+        <legend>{% trans %}Contact Information{% endtrans %}</legend>
         {{ input_field(form['full_name'], form.hide_labels) }}
         {{ input_field(form['street_address'], form.hide_labels) }}
         {{ input_field(form['country'], form.hide_labels) }}
@@ -56,11 +56,11 @@
     <div class="row">
     <div{% if not form.street_address %} class="offset-sm-4 col-sm-8"{% endif %}>
         <p>
-By clicking on the &quot;Register&quot; button below,
-<b>I signify that I have read and accept the
-<a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.
+{% trans %}By clicking on the{% endtrans %} &quot;{% trans %}Register{% endtrans %}&quot; {% trans %}button below,{% endtrans %}
+<b>{% trans %}I signify that I have read and accept the{% endtrans %}
+<a target="_blank" href="/legal/terms-of-use/">{% trans %}terms of service{% endtrans %}</a></b>.
         </p>
-        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
     </div>
     </div>
 </form>

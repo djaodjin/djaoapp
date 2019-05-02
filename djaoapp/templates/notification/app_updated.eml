@@ -1,13 +1,13 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{{instance.printable_name}} Updated
+{% trans name=instance.printable_name %}{{name}} Updated{% endtrans %}
 {% endblock %}
 
 {% block plain_content %}
-{{instance.printable_name}} Updated
+{% trans name=instance.printable_name %}{{name}} Updated{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{instance.printable_name}} Updated</h3>
+<h3>{% trans name=instance.printable_name %}{{name}} Updated{% endtrans %}</h3>
 {% endblock %}

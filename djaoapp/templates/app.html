@@ -5,7 +5,7 @@
   <div class="jumbotron mt-4">
     <div class="jumbotron-text">
       <div class="center" style="display:block;">
-        <h1 id="app-title" class="editable text-center" data-intro="Editable title" data-position="bottom">Welcome to {{provider.printable_name}}!</h1>
+        <h1 id="app-title" class="editable text-center" data-intro="{% trans %}Editable title{% endtrans %}" data-position="bottom">{% trans name=provider.printable_name %}Welcome to {{name}}!{% endtrans %}</h1>
         <p id="app-jumbotron" class="text-center editable edit-markdown">
 
         </p>
@@ -13,7 +13,7 @@
     </div>
     <div class="text-center">
       <p>
-      Any questions?
+      {% trans %}Any questions?{% endtrans %}
       </p>
       {% if provider.email %}
       <span class="email"><a href="mailto:{{provider.email}}">{{provider.email}}</a></span>
@@ -25,10 +25,10 @@
     </div>
   </div>
   <div class="text-center" style="margin-bottom:25px;">
-Quick links:
-<a href="{{request|url_profile}}">My profile</a>
-<a href="{{urls.organization.subscriptions}}" style="padding-left:5px;border-left:1px solid #000">My subscriptions</a>
-<a href="{{urls.organization.billing}}" style="padding-left:5px;border-left:1px solid #000">My billing</a>
+{% trans %}Quick links{% endtrans %}:
+<a href="{{request|url_profile}}">{% trans %}My profile{% endtrans %}</a>
+<a href="{{urls.organization.subscriptions}}" style="padding-left:5px;border-left:1px solid #000">{% trans %}My subscriptions{% endtrans %}</a>
+<a href="{{urls.organization.billing}}" style="padding-left:5px;border-left:1px solid #000">{% trans %}My billing{% endtrans %}</a>
   </div>
   {% block help_content %}
   {% endblock %}

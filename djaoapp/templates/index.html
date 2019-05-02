@@ -3,24 +3,24 @@
 {% block localheader %}
 <meta property="og:url" content="{{request|absolute_uri}}" />
 <meta name="twitter:url" content="{{request|absolute_uri}}" />
-<meta property="og:title" content="Homepage" />
-<meta name="twitter:title" content="Homepage" />
-<meta name="description" property="og:description" content="Sample marketing or informational website." />
-<meta name="twitter:description" content="Sample marketing or informational website." />
+<meta property="og:title" content="{% trans %}Homepage{% endtrans %}" />
+<meta name="twitter:title" content="{% trans %}Homepage{% endtrans %}" />
+<meta name="description" property="og:description" content="{% trans %}Sample marketing or informational website.{% endtrans %}" />
+<meta name="twitter:description" content="{% trans %}Sample marketing or informational website.{% endtrans %}" />
 {% endblock %}
 
 {% block content %}
 <section id="leaderboard" class="jumbotron text-center">
   <div class="container">
     <div class="col-sm-12">
-      <h1 id="leaderboard-title" class="editable display-4">Hello, world!</h1>
+      <h1 id="leaderboard-title" class="editable display-4">{% trans %}Hello, world!{% endtrans %}</h1>
       <!-- next line must be line 18 for edit testing -->
-      <h2 id="leaderboard-subtitle" class="editable">Where dreams are built</h2>
+      <h2 id="leaderboard-subtitle" class="editable">{% trans %}Where dreams are built{% endtrans %}</h2>
       <p id="leaderboard-message" class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom">
-This is a template for a marketing or informational website. It includes a large leaderboard and four supporting pieces of content. Use it as a starting point to create something unique.
+{% trans %}This is a template for a marketing or informational website. It includes a large leaderboard and four supporting pieces of content. Use it as a starting point to create something unique.{% endtrans %}
       </p>
       <p>
-        <a href="{{request|url_register}}" class="btn btn-lg btn-primary">Register</a>
+        <a href="{{request|url_register}}" class="btn btn-lg btn-primary">{% trans %}Register{% endtrans %}</a>
       </p>
     </div>
   </div>
@@ -30,24 +30,24 @@ This is a template for a marketing or informational website. It includes a large
   <div class="container">
     <div class="row">
       <div class="col-md-4 text-center">
-        <h2 id="site-description-heading-1" class="editable">Heading 1</h2>
+        <h2 id="site-description-heading-1" class="editable">{% trans %}Heading{% endtrans %} 1</h2>
         <p id="site-description-descr-1" class="editable edit-markdown">
-First set of benefits of using the site. Describe what the site can do for
-a registered user, the pain it solves, etc.
+{% trans %}First set of benefits of using the site. Describe what the site can do for
+a registered user, the pain it solves, etc.{% endtrans %}
         </p>
       </div>
       <div class="col-md-4 text-center">
-        <h2 id="site-description-heading-2" class="editable" data-intro="Editable title" data-position="right">Heading 2</h2>
+        <h2 id="site-description-heading-2" class="editable" data-intro="{% trans %}Editable title{% endtrans %}" data-position="right">{% trans %}Heading{% endtrans %} 2</h2>
         <p id="site-description-descr-2" class="editable edit-markdown">
-Second set of benefits of using the site. Describe what the site can do for
-a registered user, the pain it solves, etc.
+{% trans %}Second set of benefits of using the site. Describe what the site can do for
+a registered user, the pain it solves, etc.{% endtrans %}
         </p>
       </div>
       <div class="col-md-4 text-center">
-        <h2 id="site-description-heading-3" class="editable">Heading 3</h2>
+        <h2 id="site-description-heading-3" class="editable">{% trans %}Heading{% endtrans %} 3</h2>
         <p id="site-description-descr-3" class="editable edit-markdown">
-Third set of benefits of using the site. Describe what the site can do for
-a registered user, the pain it solves, etc.
+{% trans %}Third set of benefits of using the site. Describe what the site can do for
+a registered user, the pain it solves, etc.{% endtrans %}
         </p>
       </div>
     </div>
@@ -58,10 +58,10 @@ a registered user, the pain it solves, etc.
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-        <h2 id="site-audience-title" class="editable">Who is this site for?</h2>
+        <h2 id="site-audience-title" class="editable">{% trans %}Who is this site for?{% endtrans %}</h2>
         <p id="site-audience-descr" class="editable edit-markdown">
-This section describes the intended audience for the site. It could be
-a list of professional occupations, an ideal customer profile, etc.
+{% trans %}This section describes the intended audience for the site. It could be
+a list of professional occupations, an ideal customer profile, etc.{% endtrans %}
         </p>
       </div>
     </div>
@@ -73,13 +73,13 @@ a list of professional occupations, an ideal customer profile, etc.
       <div style="display: inline-block;">
     <div class="row portrait-and-quote">
       <div class="text-center" style="flex-shrink:0;margin:0 20px;">
-        <img id="site-feedback-portrait" class="img-fluid rounded-circle editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Portrait of statisfied customer">
+        <img id="site-feedback-portrait" class="img-fluid rounded-circle editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{% trans %}Portrait of statisfied customer{% endtrans %}">
       </div>
       <div class="text-left">
         <blockquote>
           <i class="fa fa-quote-left fa-lg"></i>
-          <span class="editable" id="site-feedback">Positive feedback about the site.</span><i class="fa fa-quote-right fa-lg"></i>
-          <footer class="editable" id="site-feedback-source">A statisfied customer</footer>
+          <span class="editable" id="site-feedback">{% trans %}Positive feedback about the site.{% endtrans %}</span><i class="fa fa-quote-right fa-lg"></i>
+          <footer class="editable" id="site-feedback-source">{% trans %}A statisfied customer{% endtrans %}</footer>
         </blockquote>
       </div>
     </div>
@@ -91,25 +91,25 @@ a list of professional occupations, an ideal customer profile, etc.
   <div class="container text-center">
     <div class="row" style="margin-bottom: 20px;">
       <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-        <h2 id="site-partner-header" class="editable">Our partners</h2>
+        <h2 id="site-partner-header" class="editable">{% trans %}Our partners{% endtrans %}</h2>
         <p id="site-partner-descr" class="editable edit-markdown">
-This section describes  &quot;powered by&quot;, partners, awards,
-certifications, etc. It can be populated by a list of logos, more quotes, etc.
+{% trans %}This section describes{% endtrans %}  &quot;{% trans %}powered by{% endtrans %}&quot;, {% trans %}partners, awards,
+certifications, etc. It can be populated by a list of logos, more quotes, etc.{% endtrans %}
         </p>
       </div>
     </div>
     <div class="row">
       <div class="col-md-3">
-        <img id="site-partner-logo-1" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 1">
+        <img id="site-partner-logo-1" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{% trans %}partner logo{% endtrans %} 1">
       </div>
       <div class="col-md-3">
-        <img id="site-partner-logo-2" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 2">
+        <img id="site-partner-logo-2" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{% trans %}partner logo{% endtrans %} 2">
       </div>
       <div class="col-md-3">
-        <img id="site-partner-logo-3" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 3">
+        <img id="site-partner-logo-3" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{% trans %}partner logo{% endtrans %} 3">
       </div>
       <div class="col-md-3">
-        <img id="site-partner-logo-4" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 4">
+        <img id="site-partner-logo-4" class="img-fluid editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="{% trans %}partner logo{% endtrans %} 4">
       </div>
     </div>
   </div>
@@ -119,10 +119,10 @@ certifications, etc. It can be populated by a list of logos, more quotes, etc.
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-        <h2 id="site-about-title" class="editable">About us</h2>
+        <h2 id="site-about-title" class="editable">{% trans %}About us{% endtrans %}</h2>
         <p id="site-about-descr" class="editable edit-markdown">
-This section describes the people behind the site. It can include ways
-to contact customer support, etc.
+{% trans %}This section describes the people behind the site. It can include ways
+to contact customer support, etc.{% endtrans %}
         </p>
       </div>
     </div>

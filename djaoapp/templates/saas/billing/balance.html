@@ -1,9 +1,9 @@
 {% extends "saas/billing/cart.html" %}
 
-{% block order_title %}Unlock your subscriptions{% endblock %}
+{% block order_title %}{% trans %}Unlock your subscriptions{% endtrans %}{% endblock %}
 
 {% block no_invoicables %}
-<p class="text-center">You have no balance due.</p>
+<p class="text-center">{% trans %}You have no balance due.{% endtrans %}</p>
 {% endblock %}
 
 {% block order_footer %}
@@ -12,37 +12,37 @@
   <section id="charge">
     {% if last_charge.is_failed or last_charge.is_disputed %}
     <p>
-      On {{last_charge.created_at}} we attempted to charge your card
+      {% trans created_at=last_charge.created_at %}On {{created_at}} we attempted to charge your card{% endtrans %}
     </p>
     <div>
       <dl class="dl-horizontal">
-        <dt>card</dt>
+        <dt>{% trans %}card{% endtrans %}</dt>
         <dd>{{last_charge.last4}}</dd>
       </dl>
       <dl class="dl-horizontal">
-        <dt>expires</dt>
+        <dt>{% trans %}expires{% endtrans %}</dt>
         <dd>{{last_charge.exp_date}}</dd>
       </dl>
     </div>
     <p>
-The charge
-{% if last_charge.is_failed %}failed
+{% trans %}The charge{% endtrans %}
+{% if last_charge.is_failed %}{% trans %}failed{% endtrans %}
 {% else %}
-{% if last_charge.is_disputed %}was disputed
+{% if last_charge.is_disputed %}{% trans %}was disputed{% endtrans %}
 {% endif %}
 {% endif %}
-(ref: #{{last_charge.processor_key}}).
+{% trans key=last_charge.processor_key %}(ref: #{{key}}).{% endtrans %}
     </p>
     <p>
-Please enter a valid credit card.
-A new charge of {{lines_price|humanize_money}} will be created.
-Thank you.
+{% trans price=lines_price|humanize_money %}Please enter a valid credit card.
+A new charge of {{price}} will be created.
+Thank you.{% endtrans %}
     </p>
     {% endif %}
   </section>
 {% endif %}
   <div class="text-center">
-Thank you for your business.
+{% trans %}Thank you for your business.{% endtrans %}
   </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@
 <section id="redirects">
   <div class="offset-md-4 col-md-4 form-container">
     <div class="page-header">
-          <h1 class="text-center"><i class="fa fa-users fa-lg"></i> Please choose an organization ...</h1>
+          <h1 class="text-center"><i class="fa fa-users fa-lg"></i> {% trans %}Please choose an organization ...{% endtrans %}</h1>
 
     </div>
     {% for redirect in redirects %}
@@ -13,7 +13,7 @@
     </div>
     {% endfor %}
     <div style="padding-top: 10px;">
-      <a id="saas_organization_create" class="btn btn-primary" style="width: 100%;" href="{{urls.organization_create}}">New ...</a>
+      <a id="saas_organization_create" class="btn btn-primary" style="width: 100%;" href="{{urls.organization_create}}">{% trans %}New ...{% endtrans %}</a>
     </div>
   </div>
 </section>

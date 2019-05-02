@@ -1,6 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Add offline transaction{% endblock %}
+{% block saas_title %}{% trans %}Add offline transaction{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
 <section>
@@ -9,13 +9,13 @@
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
           <label class="col-form-label" for="subscription">
-            Subscription
+            {% trans %}Subscription{% endtrans %}
           </label>
             <input
                 id="typeahead"
                 class="form-control"
                 type="text"
-                placeholder="Subscriber name or email"
+                placeholder="{% trans %}Subscriber name or email{% endtrans %}"
                 name="subscription"
                 autocomplete="off">
             <uiv-typeahead
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
               <label for="created_at" class="d-block">
-                Created At
+                {% trans %}Created At{% endtrans %}
               </label>
             <uiv-dropdown  class="d-block" append-to-body>
               <div class="input-group">
@@ -60,19 +60,19 @@
         </div>
         <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
           <label class="col-form-label" for="amount">
-            Amount
+            {% trans %}Amount{% endtrans %}
           </label>
-          <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="amount">
+          <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="{% trans %}Amount{% endtrans %}">
           {% for error in form.amount.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
         </div>
         <div class="form-group{% if form.descr.errors %} has-error{% endif %}">
           <label class="col-form-label" for="descr">
-            Description
+            {% trans %}Description{% endtrans %}
           </label>
           <div>
-            <input class="form-control" name="descr" type="text" placeholder="description">
+            <input class="form-control" name="descr" type="text" placeholder="{% trans %}Description{% endtrans %}">
             {% for error in form.descr.errors %}
             <span class="form-text"><strong>{{error}}</strong></span>
             {% endfor %}
@@ -81,7 +81,7 @@
       </fieldset>
       <div class="form-action text-center">
         <button class="btn btn-primary" type="submit">
-          <i class="fa fa-plus"></i> Import
+          <i class="fa fa-plus"></i> {% trans %}Import{% endtrans %}
         </button>
       </div>
     </form>

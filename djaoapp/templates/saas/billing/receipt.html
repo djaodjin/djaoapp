@@ -1,14 +1,14 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Charge Receipt{% endblock %}
+{% block saas_title %}{% trans %}Charge Receipt{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <div class="row" style="margin-bottom: 15px;">
     <div class="col-sm-10">
         <div class="btn-group pull-right">
-            <a id="email-charge-receipt" class="btn btn-secondary" href="">Email Again</a>
+            <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
             <a id="charge-printable" class="btn btn-secondary" target="_blank"
-   href="{{urls.charge.printable_receipt}}">Printable</a>
+   href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
         </div>
     </div>
 </div>
@@ -16,40 +16,40 @@
   <div id="{{charge}}">
     <section id="status">
       <p>
-        On {{charge.created_at}}, we attempted to charge your card for
-        the amount of {{charge.price|humanize_money}}.
+        {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+        the amount of {{price}}.{% endtrans %}
       </p>
       <p class="charge-status"
-         data-charge-done="The charge succeeded."
-         data-charge-failed="The charge failed."
-         data-charge-disputed="The charge was disputed."
-         data-charge-created="The charge is in progress...">
+         data-charge-done="{% trans %}The charge succeeded.{% endtrans %}"
+         data-charge-failed="{% trans %}The charge failed.{% endtrans %}"
+         data-charge-disputed="{% trans %}The charge was disputed.{% endtrans %}"
+         data-charge-created="{% trans %}The charge is in progress...{% endtrans %}">
         {% if charge.is_paid %}
-        The charge succeeded.
+        {% trans %}The charge succeeded.{% endtrans %}
         {% elif charge.is_failed %}
-        The charge failed.
+        {% trans %}The charge failed.{% endtrans %}
         {% elif charge.is_disputed %}
-        The charge was disputed.
+        {% trans %}The charge was disputed.{% endtrans %}
         {% elif charge.is_progress %}
-        The charge is in progress... <i class="fa fa-spin"></i>
+        {% trans %}The charge is in progress...{% endtrans %} <i class="fa fa-spin"></i>
         {% endif %}
       </p>
     </section>
     <section class="info">
     <dl class="dl-horizontal">
-      <dt>REFERENCE</dt>
+      <dt>{% trans %}REFERENCE{% endtrans %}</dt>
       <dd>#{{charge.processor_key}}</dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>amount</dt>
+      <dt>{% trans %}amount{% endtrans %}</dt>
       <dd id="amount-info">{{charge.price|humanize_money}}</dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>card</dt>
+      <dt>{% trans %}card{% endtrans %}</dt>
       <dd>**** - {{charge.last4}}</dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>expires</dt>
+      <dt>{% trans %}expires{% endtrans %}</dt>
       <dd>{{charge.exp_date}}</dd>
     </dl>
     </section>
@@ -58,8 +58,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Amount</th>
-          <th>Description</th>
+          <th>{% trans %}Amount{% endtrans %}</th>
+          <th>{% trans %}Description{% endtrans %}</th>
           <th></th>
         </tr>
       </thead>
@@ -73,7 +73,7 @@
             <button class="charge-refund btn btn-secondary"
                     data-toggle="modal" data-target="#charge-refund"
                     data-available-amount="{{line.invoiced.dest_amount}}"
-                    data-linenum="{{line.rank}}">Refund</button>
+                    data-linenum="{{line.rank}}">{% trans %}Refund{% endtrans %}</button>
             {% endif %}
           </td>
         </tr>
@@ -92,19 +92,19 @@
 </div>
 {% if next_url %}
 <div>
-    <a class="pull-right" href="{{next_url}}">Next &gt;</a>
+    <a class="pull-right" href="{{next_url}}">{% trans %}Next{% endtrans %} &gt;</a>
 </div>
 {% endif %}
 <!-- modal dialog for Refunds -->
 <form id="charge-refund" class="modal fade"
-     tabindex="-1" role="dialog" aria-labelledby="Refund" aria-hidden="true"
+     tabindex="-1" role="dialog" aria-labelledby="{% trans %}Refund{% endtrans %}" aria-hidden="true"
      method="post" action=".">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Refund</h4>
+                <h4 class="modal-title">{% trans %}Refund{% endtrans %}</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -116,15 +116,15 @@
                 </div>
                 <div>
                     <p>
-Please specify the amount you would like refunded (in {{charge.unit}}).
+{% trans unit=charge.unit %}Please specify the amount you would like refunded (in {{unit}}).{% endtrans %}
                     </p>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Cancel</button>
+                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit" class="submit-refund btn btn-primary"
-                        data-dismiss="modal">OK</button>
+                        data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
             </div>
         </div>
     </div>

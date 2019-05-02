@@ -8,7 +8,7 @@
     {{input_field(form['title'], form.hide_labels)}}
     {{input_field(form['description'], form.hide_labels)}}
     <fieldset>
-        <legend>Pricing</legend>
+        <legend>{% trans %}Pricing{% endtrans %}</legend>
         <div class="row" style="margin-left:0;margin-right:0;">
             {{input_field(form['unit'], form.hide_labels)}}
             {{input_field(form['period_amount'], form.hide_labels)}}
@@ -18,12 +18,12 @@
         {{input_field(form['advance_discount'], form.hide_labels)}}
     </fieldset>
     <fieldset>
-        <legend>Extra Options</legend>
+        <legend>{% trans %}Extra Options{% endtrans %}</legend>
         {{input_field(form['renewal_type'], form.hide_labels)}}
         {{input_field(form['is_not_priced'], form.hide_labels)}}
     </fieldset>
     <div class="form-action text-center">
-        <button type="submit" class="btn btn-block btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+        <button type="submit" class="btn btn-block btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
     </div>
 </form>
 {% endblock %}
