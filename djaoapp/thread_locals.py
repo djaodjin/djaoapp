@@ -212,7 +212,7 @@ def processor_redirect(request, site=None):
 
 
 def provider_absolute_url(request,
-                          provider=None, location='/', with_scheme=True):
+                          location='/', provider=None, with_scheme=True):
     site = _provider_as_site(provider)
     if site:
         try:
