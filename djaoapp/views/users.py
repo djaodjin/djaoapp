@@ -33,8 +33,6 @@ class UserMixin(object):
         update_context_urls(context, {
             'profile_base': reverse('saas_profile'),
             'user': {
-                'role_accept': reverse(
-                    'saas_api_accessibles_accept', args=(self.user,)),
                 'accessibles': reverse(
                     'saas_user_product_list', args=(self.user,)),
                 'notifications': reverse(
