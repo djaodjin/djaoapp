@@ -7,7 +7,7 @@
       </div>
       <div class="col-9">
           <div class="card-body">
-            <button class="btn btn-danger btn-sm" style="float: right;"
+            <button class="btn btn-danger btn-sm remove" style="float: right;"
                 data-trip data-trip-index="3"
                 data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
                 data-trip-position="s"
@@ -19,7 +19,8 @@
             </h6>
             <p class="card-text">[[item.user.email]]</p>
             <button class="btn btn-secondary btn-sm"
-                v-if="item.request_key" @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
+                @click="save(item.user)"
+                v-if="item.accept_request_api_url">{% trans %}Grant{% endtrans %}</button>
             <button class="btn btn-secondary btn-sm"
                 v-if="item.grant_key" @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
           </div>

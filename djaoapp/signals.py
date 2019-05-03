@@ -14,7 +14,7 @@ from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.signals import (charge_updated, claim_code_generated, card_updated,
     expires_soon, order_executed, organization_updated,
-    user_relation_added, user_relation_requested, role_grant_accepted,
+    role_grant_created, role_request_created, role_grant_accepted,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created,
     weekly_sales_report_created)
@@ -363,8 +363,8 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(user_relation_added, dispatch_uid="user_relation_added")
-def user_relation_added_notice(sender, role, reason=None, **kwargs):
+@receiver(role_grant_created, dispatch_uid="role_grant_created")
+def role_grant_created_notice(sender, role, reason=None, **kwargs):
     user = role.user
     organization = role.organization
     if user.email != organization.email:
@@ -396,7 +396,7 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
                     reply_to = request_user.email
                     context.update({
                         'request_user': get_user_context(request_user)})
-                LOGGER.debug("[signal] user_relation_added_notice(role=%s,"\
+                LOGGER.debug("[signal] role_grant_created_notice(role=%s,"\
                     " reason=%s)", role, reason)
                 if SEND_EMAIL:
                     get_email_backend(
@@ -422,14 +422,15 @@ def user_relation_added_notice(sender, role, reason=None, **kwargs):
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(user_relation_requested, dispatch_uid="user_relation_requested")
-def user_relation_requested_notice(sender, organization, user,
-                                   reason=None, **kwargs):
+@receiver(role_request_created, dispatch_uid="role_request_created")
+def role_request_created_notice(sender, role, reason=None, **kwargs):
+    organization = role.organization
+    user = role.user
     if user.email != organization.email:
         if user.email:
             site = get_current_site()
             app = get_current_app()
-            LOGGER.debug("[signal] user_relation_requested_notice("\
+            LOGGER.debug("[signal] role_request_created_notice("\
                 "organization=%s, user=%s, reason=%s)",
                 organization, user, reason)
             if SEND_EMAIL:

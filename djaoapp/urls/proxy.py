@@ -83,7 +83,7 @@ urlpatterns += site_patterns(
         OrganizationListAPIView.as_view(), name='saas_api_profile'),
     url_provider(r'^api/profile/(?P<organization>%s)/roles/(?P<role>%s)/?'
         % (ACCT_REGEX, ACCT_REGEX),
-        RoleListAPIView.as_view(), name='saas_api_role_by_descr_list'),
+        RoleListAPIView.as_view(), name='saas_api_roles_by_descr'),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_authenticated('^api/', include('saas.urls.api.search')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
