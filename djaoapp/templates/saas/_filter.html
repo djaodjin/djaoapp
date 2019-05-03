@@ -47,10 +47,5 @@
     </uiv-dropdown>
 </div>
 <div class="col">
-    <div class="input-group input-group-sm">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="filter-inp">Match</span>
-      </div>
-      <input class="form-control" type="text" v-model="params.q" @input="filterList" />
-    </div>
+    {% include "saas/_filter_match.html" %}
 </div>
