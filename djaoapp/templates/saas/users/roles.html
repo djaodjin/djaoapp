@@ -1,11 +1,11 @@
-{% extends "saas/base_dashboard.html" %}
+{% extends "saas/base_dashboard-2col.html" %}
 
 {% block saas_title %}{% trans %}Accessible by {{user}}{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <section id="accessible-list-container">
   <div class="row mt-4 mb-2">
-  <div class="col-3">
+  <div class="col-6">
     <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
       <form class="form-inline" @submit.prevent="submit">
         <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the organization you wish to add.{% endtrans %}</p>" data-trip-position="s">
@@ -27,64 +27,34 @@
       </form>
     </user-typeahead>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-6">
         <div class="form-row">
-            {% include "saas/_filter.html" %}
+            {% include "saas/_filter_match.html" %}
         </div>
     </div>
     </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>{% trans %}Name{% endtrans %}
-            <a href="#" @click="sortBy('slug')"><i :class="sortIcon('slug')"></i></a>
-          </th>
-          <th>{% trans %}Role{% endtrans %}
-            <a href="#" @click="sortBy('role_name')"><i :class="sortIcon('role_name')"></i></a>
-          </th>
-          <th>{% trans %}Created at{% endtrans %}
-            <a href="#" @click="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a>
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-show="!itemsLoaded">
-          <td colspan="3">
-            <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-          </td>
-        </tr>
-        <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
-          <td colspan="3">{% trans %}No organization accessible for {{user}}{% endtrans %}</td>
-        </tr>
-        <tr :id="entry.slug" v-for="(entry, index) in items.results"
-           v-show="itemsLoaded && items.results.length > 0" v-cloak>
-          <td>
-            <a :href="'{{urls.profile_base}}' + entry.slug + '/'">[[entry.printable_name]]</a>
-          </td>
-          <td class="text-center">
-            [[entry.request_key ? "{% trans %}requested{% endtrans %}" : entry.role_description.title]]
-          </td>
-          <td class="text-center">
-            [[entry.created_at | formatDate]]
-          </td>
-          <td style="vertical-align:middle;">
-            <button class="btn btn-danger btn-sm"
-                    data-trip data-trip-index="3"
-                    data-trip-content="<p>{% trans %}Click here to cancel access request.{% endtrans %}</p>"
-                    data-trip-position="s"
-                    @click="remove(index)"><i class="fa fa-trash-o"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-      <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+  <div class="row">
+      <div class="col-12 col-md-6">
+        <div v-show="!itemsLoaded">
+            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
+        <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
+        </div>
+      </div>
+  </div>
+  <div class="row my-4">
+    <div class="col-lg-6 col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        {% include "saas/_organization_card.html" %}
     </div>
-    <div class="text-right">
-      <a href="{{urls.organization_create}}" class="btn btn-primary">{% trans %}Create new ...{% endtrans %}</a>
-    </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+        </div>
+      </div>
+  </div>
     <!-- modal dialog to add a request to add a role to a user
          on an organization. -->
     <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
