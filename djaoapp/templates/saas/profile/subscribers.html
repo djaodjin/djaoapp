@@ -1,19 +1,19 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-Subscriptions to {{organization.printable_name}}
+{% trans organization=organization.printable_name%}Subscriptions to {{organization}}{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <section id="subscribers">
 <div id="subscribers-list-container"
      data-trip data-trip-index="1"
-     data-trip-content="<h2>Active Subscribers</h2><p>List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+     data-trip-content="<h2>{% trans %}Active Subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.{% endtrans %}<br />{% trans %}You will find here the list of all active subscribers,{% endtrans %}<br />{% trans %}with the plans they are subscribed to, the date they first{% endtrans %}<br />{% trans %}subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
      data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       {% if registered %}
       <li @click="tabChanged" class="nav-item">
-          <a class="nav-link" href="#registered" data-toggle="tab">Registered</a>
+          <a class="nav-link" href="#registered" data-toggle="tab">{% trans %}Registered{% endtrans %}</a>
       </li>
       {% endif %}
       {% for tab in tabs %}
@@ -28,19 +28,19 @@ Subscriptions to {{organization.printable_name}}
           <div id="registered-tab-container">
             <div style="margin-top:10px;">
                 <div class="form-group" style="display:inline-block;">
-                    <input class="form-control" type="text" placeholder="Filter" v-model="params.q" @input="filterList"></input>
+                    <input class="form-control" type="text" placeholder="{% trans %}Filter{% endtrans %}" v-model="params.q" @input="filterList"></input>
                 </div>
                 <div class="pull-right" style="display:inline-block;">
                     <a id="download-registered"
                        class="btn btn-secondary pull-right" role="button"
-                       :href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                       :href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
                 </div>
             </div>
             <div class="table-responsive">
             <table class="table table-sm table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Full name</th>
+                        <th>{% trans %}Full name{% endtrans %}</th>
                         <th class="text-right">
                         </th>
                     </tr>
@@ -55,14 +55,14 @@ Subscriptions to {{organization.printable_name}}
                 <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
                     <tr>
                         <td colspan="2">
-                            <p class="text-center my-2"><em>No registered users<span v-show="params.q"> [[params.q]]</span></em></p>
+                            <p class="text-center my-2"><em>{% trans %}No registered users{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></p>
                         </td>
                     </tr>
                 </tbody>
                 <tbody class="has-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in items.results">
                         <td>
-                            <a :href="'{{urls.user.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
+                            <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
                         </td>
                         <td>
                         [[entry.created_at | relativeDate]]
@@ -85,109 +85,109 @@ Subscriptions to {{organization.printable_name}}
             <div style="margin-top:10px;">
                 <div class="form-group" style="display:inline-block;">
                     <input class="form-control" style="display:inline-block;"
-                       type="text" placeholder="Filter"
+                       type="text" placeholder="{% trans %}Filter{% endtrans %}"
                        v-model="params.q" @input="filterList"></input>
                 </div>
                 <div class="pull-right" style="display:inline-block;">
                   <a id="download-{{tab.slug}}"
                      class="btn btn-secondary pull-right" role="button"
-                     :href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                     :href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-sm table-striped">
     <thead>
       <tr v-show="params.o === 'organization'">
-        <th>Subscriber
+        <th>{% trans %}Subscriber{% endtrans %}
             <a href="#" @click.prevent="sortBy('organization')">
               <i :class="sortIcon('organization')"></i>
             </a>
         </th>
-        <th>Plan
+        <th>{% trans %}Plan{% endtrans %}
             <a href="#" @click.prevent="sortBy('plan')">
               <i :class="sortIcon('plan')"></i>
             </button>
         </th>
-        <th>Since
+        <th>{% trans %}Since{% endtrans %}
             <a href="#" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
             </button>
         </th>
-        <th>Ends At
+        <th>{% trans %}Ends At{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </button>
         </th>
-        <th>Description</th>
+        <th>{% trans %}Description{% endtrans %}</th>
       </tr>
       <tr v-show="params.o === 'plan'">
-        <th>Plan
+        <th>{% trans %}Plan{% endtrans %}
             <a href="#" @click.prevent="sortBy('plan')">
               <i :class="sortIcon('plan')"></i>
             </button>
         </th>
-        <th>Subscriber
+        <th>{% trans %}Subscriber{% endtrans %}
             <a href="#" @click.prevent="sortBy('organization')">
               <i :class="sortIcon('organization')"></i>
             </button>
         </th>
-        <th>Since
+        <th>{% trans %}Since{% endtrans %}
             <a href="#" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
             </button>
         </th>
-        <th>Ends At
+        <th>{% trans %}Ends At{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </button>
         </th>
-        <th>Description</th>
+        <th>{% trans %}Description{% endtrans %}</th>
       </tr>
       <tr v-show="params.o === 'created_at'">
-        <th>Since
+        <th>{% trans %}Since{% endtrans %}
             <a href="#" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
             </button>
         </th>
-        <th>Subscriber
+        <th>{% trans %}Subscriber{% endtrans %}
             <a href="#" @click.prevent="sortBy('organization')">
               <i :class="sortIcon('organization')"></i>
             </button>
         </th>
-        <th>Plan
+        <th>{% trans %}Plan{% endtrans %}
             <a href="#" @click.prevent="sortBy('plan')">
               <i :class="sortIcon('plan')"></i>
             </button>
         </th>
-        <th>Ends At
+        <th>{% trans %}Ends At{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </button>
         </th>
-        <th>Description</th>
+        <th>{% trans %}Description{% endtrans %}</th>
       </tr>
       <tr v-show="params.o === 'ends_at'">
-        <th>Ends At
+        <th>{% trans %}Ends At{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </button>
         </th>
-        <th>Subscriber
+        <th>{% trans %}Subscriber{% endtrans %}
             <a href="#" @click.prevent="sortBy('organization')">
               <i :class="sortIcon('organization')"></i>
             </button>
         </th>
-        <th>Plan
+        <th>{% trans %}Plan{% endtrans %}
             <a href="#" @click.prevent="sortBy('plan')">
               <i :class="sortIcon('plan')"></i>
             </button>
         </th>
-        <th>Since
+        <th>{% trans %}Since{% endtrans %}
             <a href="#" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
             </button>
         </th>
-        <th>Description</th>
+        <th>{% trans %}Description{% endtrans %}</th>
       </tr>
     </thead>
     <tbody class="fetching-results" v-show="!itemsLoaded">
@@ -201,7 +201,7 @@ Subscriptions to {{organization.printable_name}}
       <tr>
         <td colspan="5">
           <p class="text-center my-2">
-            <em>No subscribers <span v-show="params.q"> with filter: '[[params.q]]'</span></em>
+            <em>{% trans %}No subscribers{% endtrans %} <span v-show="params.q"> {% trans %}with filter:{% endtrans %} '[[params.q]]'</span></em>
           </p>
         </td>
       </tr>
@@ -210,7 +210,7 @@ Subscriptions to {{organization.printable_name}}
            v-show="params.o === 'organization' && itemsLoaded && items.results.length > 0" v-cloak>
       <tr v-for="entry in [group[0]]">
         <td colspan="5">
-          <a :id="entry.organization.slug" :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+          <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
         </td>
       </tr>
       <tr v-for="entry in group" :class="endsSoon(entry)">
@@ -242,7 +242,7 @@ Subscriptions to {{organization.printable_name}}
             <td></td>
             <td>
                 <a :id="entry.organization.slug"
-                   :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                   :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.created_at | formatDate]]</td>
             <td>[[entry.ends_at | formatDate]]</td>
@@ -271,7 +271,7 @@ Subscriptions to {{organization.printable_name}}
         <tr v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a :id="entry.organization.slug" :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.ends_at | formatDate]]</td>
@@ -300,7 +300,7 @@ Subscriptions to {{organization.printable_name}}
         <tr v-for="entry in group" :class="endsSoon(entry)">
             <td></td>
             <td>
-                <a :id="entry.organization.slug" :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.created_at | formatDate]]</td>
@@ -328,7 +328,7 @@ Subscriptions to {{organization.printable_name}}
     </div>
 </div>
 <div>
-    <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">New Billing Profile &raquo;</a>
+    <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">{% trans %}New Billing Profile{% endtrans %} &raquo;</a>
 </div>
 </section>
 {% endblock %}

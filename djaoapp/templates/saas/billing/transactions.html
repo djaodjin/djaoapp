@@ -1,64 +1,64 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Transactions{% endblock %}
+{% block saas_title %}{% trans %}Transactions{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
 <div class="col-md-12">
   <div id="transactions-container" class="row">
     <section id="total">
-      <strong>Balance</strong> <span>[[items.balance | humanizeCell('$', 0.01)]]</span>
+      <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[items.balance | humanizeCell('$', 0.01)]]</span>
     </section>
     <section id="transactions">
       <div>
         <form class="form my-3">
             <div class="form-row">
-              {% include "saas/_item_list_filter.html" %}
+              {% include "saas/_filter.html" %}
               <div class="col">
                     <a id="download" class="btn btn-secondary btn-sm" role="button"
-                       :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
+                       :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
               </div>
             </div>
         </form>
         <table class="table table-striped">
           <thead>
             <tr>
-                <th>Date
+                <th>{% trans %}Date{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('created_at')">
                     <i :class="sortIcon('created_at')"></i>
                   </a>
                 </th>
-                <th>Amount
+                <th>{% trans %}Amount{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('amount')">
                     <i :class="sortIcon('amount')"></i>
                   </a>
                 </th>
-                <th>Origin Organization
+                <th>{% trans %}Origin Organization{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('orig_organization')">
                     <i :class="sortIcon('orig_organization')"></i>
                   </a>
                 </th>
-                <th>Origin Account
+                <th>{% trans %}Origin Account{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('orig_account')">
                     <i :class="sortIcon('orig_account')"></i>
                   </a>
                 </th>
-                <th>Destination Organization
+                <th>{% trans %}Destination Organization{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('dest_organization')">
                     <i :class="sortIcon('dest_organization')"></i>
                   </a>
                 </th>
-                <th>Destination Account
+                <th>{% trans %}Destination Account{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('dest_account')">
                     <i :class="sortIcon('dest_account')"></i>
                   </a>
                 </th>
-                <th>Description
+                <th>{% trans %}Description{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('description')">
                     <i :class="sortIcon('description')"></i>
@@ -76,7 +76,7 @@
           <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <tr>
               <td colspan="7">
-                <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
+                <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
               </td>
             </tr>
           </tbody>

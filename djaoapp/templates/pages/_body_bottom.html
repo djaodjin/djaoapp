@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
   var addPlan = $(".plan").last() /* by convention */;
   addPlan.removeClass("plan");
   addPlan.find(".editable-plan").removeClass("editable-plan");
-  addPlan.find("[data-key='title']").html("Add Plan");
+  addPlan.find("[data-key='title']").html("{% trans %}Add Plan{% endtrans %}");
   addPlan.find("[data-key='period_amount']").html("");
   addPlan.find("[data-key='interval']").html("");
   addPlan.find("[data-key='description']").html('<p class="text-center"><i class="fa fa-plus fa-5x"></i></p>');
@@ -34,18 +34,18 @@ jQuery(document).ready(function($) {
     baseUrl: "{{urls.edit.api_plans}}/",
     uniqueIdentifier: "data-slug",
     rangeUpdate: function(editable, newVal){
-            var text = "per month";
+            var text = "{% trans %}per month{% endtrans %}";
             newVal = parseInt(newVal);
             if (newVal === 1){
-                text = "per hour";
+                text = "{% trans %}per hour{% endtrans %}";
             }else if (newVal === 2){
-                text = "per day";
+                text = "{% trans %}per day{% endtrans %}";
             }else if (newVal === 3){
-                text = "per week";
+                text = "{% trans %}per week{% endtrans %}";
             }else if (newVal === 4){
-                text = "per month";
+                text = "{% trans %}per month{% endtrans %}";
             }else if (newVal === 5){
-                text = "per year";
+                text = "{% trans %}per year{% endtrans %}";
             }
             editable.text(text);
      },

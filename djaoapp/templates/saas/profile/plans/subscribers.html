@@ -1,7 +1,7 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-    {{plan.title()}} plan subscribers
+    {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
@@ -9,36 +9,36 @@
 <div class="row">
     <div class="col">
     <div class="row my-3">
-        {% include "saas/_item_list_filter.html" %}
+        {% include "saas/_filter.html" %}
     </div>
       <table class="table">
         <thead>
           <tr>
-            <th>Subscriber <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
-            <th>Plan</th>
-            <th>Since <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
-            <th>Ends at <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
-            <th>Description</th>
+            <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
+            <th>{% trans %}Plan{% endtrans %}</th>
+            <th>{% trans %}Since{% endtrans %} <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
+            <th>{% trans %}Ends at{% endtrans %} <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
+            <th>{% trans %}Description{% endtrans %}</th>
           </tr>
         </thead>
         <tbody v-show="!itemsLoaded">
           <tr>
             <td colspan="5">
-              <h4>Loading ...</h4>
+              <h4>{% trans %}Loading ...{% endtrans %}</h4>
             </td>
           </tr>
         </tbody>
         <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0">
           <tr>
             <td colspan="5">
-              <h4>No subscribers<span v-show="params.q"> with filter: '[[params.q]]'</span></h4>
+              <h4>{% trans %}No subscribers{% endtrans %}<span v-show="params.q"> {% trans %}with filter:{% endtrans %} '[[params.q]]'</span></h4>
             </td>
           </tr>
         </tbody>
         <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0">
           <tr :class="endsSoon(entry)">
             <td>
-              <a :href="'{{urls.organization.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+              <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
             </td>
             <td>[[entry.plan.title]]</td>
             <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>
@@ -53,7 +53,7 @@
                        @keyup.13="saveDescription(entry)"
                        v-model="entry.description"
                        :ref="refId(entry, index)"
-                       tooltip="Edit description here"
+                       tooltip="{% trans %}Edit description here{% endtrans %}"
                        tooltip-trigger="focus"
                        tooltip-placement="top">
             </td>

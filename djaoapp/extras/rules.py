@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
@@ -26,8 +26,8 @@ class ExtraMixin(OrganizationMixinBase, AccountMixinBase):
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
-        urls = {
-            'user': {'profile_redirect': reverse('accounts_profile')},
-            'notifications': reverse('notification_base')}
-        self.update_context_urls(context, urls)
+        self.update_context_urls(context, {
+            'profile_redirect': reverse('accounts_profile'),
+            'notifications': reverse('notification_base')
+        })
         return context

@@ -1,29 +1,25 @@
 <section id="transactions">
-    <h3>Transactions</h3>
+    <h3>{% trans %}Transactions{% endtrans %}</h3>
     <form class="form my-3">
     <div class="form-row">
-        {% include "saas/_item_list_filter.html" %}
-        <div class="col">
-            <a id="download" class="btn btn-secondary btn-sm" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> CSV Download</a>
-        </div>
+        {% include "saas/_filter.html" %}
     </div>
     </form>
     <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Date
+          <th>{% trans %}Date{% endtrans %}
               <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('created_at')">
                 <i :class="sortIcon('created_at')"></i>
               </a>
           </th>
-          <th>Amount
+          <th>{% trans %}Amount{% endtrans %}
               <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('amount')">
                 <i :class="sortIcon('amount')"></i>
               </a>
           </th>
-          <th>Description
+          <th>{% trans %}Description{% endtrans %}
               <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('description')">
                 <i :class="sortIcon('description')"></i>
               </a>
@@ -41,7 +37,7 @@
       <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="4">
-            <h4 class="text-center"><em>No transactions<span v-show="params.q"> [[params.q]]</span></em></h4>
+            <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
           </td>
         </tr>
       </tbody>

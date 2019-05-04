@@ -8,7 +8,7 @@
                 <i class="fa fa-meh-o fa-4x"></i>
             </p>
             <p>
-400 Bad Request - Sorry, there was an error loading this page.
+{% trans %}400 Bad Request - Sorry, there was an error loading this page.{% endtrans %}
             </p>
             {% if messages %}
             <div class="alert alert-danger">
@@ -18,10 +18,10 @@
             </div>
             {% endif %}
             <p>
-If you think there is a mistake, please <a href="/contact/">contact us</a>.
+{% trans %}If you think there is a mistake, please{% endtrans %} <a href="/contact/">{% trans %}contact us{% endtrans %}</a>.
             </p>
             <p>
-We do our best to reply within 24 hours. Thank you!
+{% trans %}We do our best to reply within 24 hours. Thank you!{% endtrans %}
             </p>
         </div>
     </div>

@@ -44,28 +44,28 @@ border-top: 1px solid #dddddd;
 <body>
 
 <div>
-  <h1>{{provider.printable_name}} Charge Receipt</h1>
+  <h1>{% trans provider=provider.printable_name %}{{provider}} Charge Receipt{% endtrans %}</h1>
 </div>
 <div id="status">
     {% if charge.is_paid %}
     <p>
-      On {{charge.created_at}}, the credit card has been charged for an amount
-      of {{charge.price|humanize_money}}. Payment Information:
+      {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount
+      of {{price}}. Payment Information:{% endtrans %}
     </p>
     {% elif charge.is_failed %}
     <p>
-    On {{charge.created_at}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge failed.
+    {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge failed.{% endtrans %}
     </p>
     {% elif charge.is_disputed %}
     <p>
-    On {{charge.created_at}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge was disputed.
+    {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge was disputed.{% endtrans %}
     </p>
     {% elif charge.is_progress %}
     <p>
-    On {{charge.created_at}}, we attempted to charge your card for
-    {{charge.price|humanize_money}}. The charge is in progress...
+    {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
+    {{price}}. The charge is in progress...{% endtrans %}
     </p>
     {% endif %}
 </div>
@@ -73,19 +73,19 @@ border-top: 1px solid #dddddd;
   <table>
     <tbody>
       <tr>
-        <th class="info-row-header">REFERENCE&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}REFERENCE{% endtrans %}&nbsp;&nbsp;</th>
         <td>#{{charge.processor_key}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">AMOUNT&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}AMOUNT{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.price|humanize_money}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">CARD&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}CARD{% endtrans %}&nbsp;&nbsp;</th>
         <td>**** - {{charge.last4}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">EXPIRES&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.exp_date}}</td>
       </tr>
     </tbody>
@@ -96,8 +96,8 @@ border-top: 1px solid #dddddd;
     <table class="table table-striped">
       <thead>
         <tr>
-          <th style="text-align:left;">Amount</th>
-          <th style="text-align:left;">Description</th>
+          <th style="text-align:left;">{% trans %}Amount{% endtrans %}</th>
+          <th style="text-align:left;">{% trans %}Description{% endtrans %}</th>
           <th></th>
         </tr>
       </thead>
@@ -122,8 +122,8 @@ border-top: 1px solid #dddddd;
 <hr style="margin:15px 0;">
 <div id="support">
 <p>
-Thank you for your continued business. If you have any questions
-or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans email=provider.email %}Thank you for your continued business. If you have any questions
+or comments, email us at <a href="mailto:{{email}}">{{email}}</a>.{% endtrans %}
 </p>
 </div>
 </body>

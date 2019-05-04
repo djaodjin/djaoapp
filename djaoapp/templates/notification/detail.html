@@ -1,8 +1,99 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{{template}} Notification{% endblock %}
+{% block saas_title %}
+{% trans %}{{template}} Notification{% endtrans %}
+<button class="btn btn-sm btn-outline-secondary ml-3 send-test-email" data-template="{{template}}">{% trans %}Send test e-mail{% endtrans %}</button>
+{% endblock %}
 
 {% block saas_page_layout %}
-<iframe src="{{iframe_url}}" frameborder="0" style="height:100vh;width:80%">
-</iframe>
+
+<div id="email-tpl-editor" class="mt-4" style="height: 555px; overflow: hidden;">
+  <ul class="nav nav-tabs dashboard-tab" role="tablist">
+    <li class="nav-item"><a class="nav-link active" href="#tab-0" data-toggle="tab">{% trans %}Preview{% endtrans %}</a></li>
+    {# tabs are inserted here #}
+  </ul>
+  <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
+    <div id="tab-0" class="tab-pane active" role="tabpanel" style="width:100%;height:100%;">
+        <div id="tpl-spinner" class="mt-5">
+            <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
+        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0" style="height:100vh;width:80%;display: none;"></iframe>
+    </div>
+    {# panels are inserted here #}
+  </div>
+</div>
+{% endblock %}
+{% block dashboard_bodyscripts %}
+{# aggregated, minified scripts #}
+{% assets "js_theme_editors" %}
+<script type="text/javascript" src="{{ASSET_URL}}"></script>
+{% endassets %}
+{% if not show_edit_tools %}
+{#
+    when edit tools are disabled the required scripts are not included
+    however if we're serving assets via cdn I'm not sure if this is the best way
+#}
+<script type="text/javascript" src="/static/vendor/ace.js"></script>
+<script type="text/javascript" src="/static/vendor/ext-language_tools.js"></script>
+<script type="text/javascript" src="/static/vendor/ext-modelist.js"></script>
+<script type="text/javascript" src="/static/vendor/ext-emmet.js"></script>
+{% endif %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    var api_sources = "{{api_sources}}";
+    var templates = {{templates|safe}};
+    var $el = $("#email-tpl-iframe");
+    function addPanel(element, name, beforeElem) {
+        var tabsContainer = element.find("[role='tablist']");
+        var contentsContainer = element.find(".tab-content");
+        var idx = tabsContainer.find(">li").length;
+        var tab = $("<li class=\"nav-item\"><a class=\"nav-link" + (idx === 0 ? " active" : "") + "\" href=\"#tab-" + idx + "\" data-toggle=\"tab\">" + name + "</a></li>");
+        var content = $("<div id=\"tab-" + idx + "\" class=\"tab-pane" + (idx === 0 ? " active" : "") + " role=\"tabpanel\" style=\"width:100%;height:100%;\"><div class=\"content\" data-content=\"" + name + "\" style=\"width:100%;min-height:100%;\"></div></div>");
+        tabsContainer.append(tab);
+        contentsContainer.append(content);
+        content.find(".content").djtemplates({
+            api_source_code: api_sources,
+            iframe_view: $el[0]
+        });
+    };
+
+    if( templates.length > 0 ) {
+        for( var idx = 0; idx < templates.length; ++idx ) {
+            addPanel($("#email-tpl-editor"), templates[idx].name);
+        }
+    }
+
+    $el.on("load", function () {
+        var contents = $el.contents();
+        contents.find('#djDebug').remove();
+        $('#tpl-spinner').hide();
+        $el.show();
+    });
+
+    $('.tab-content .content').on("pages.save", function(event) {
+        $el.hide();
+        $('#tpl-spinner').show();
+    });
+
+    $('.tab-content .content').trigger('pages.loadresources');
+
+    $(".send-test-email").click(function(event) {
+        var self = this;
+        var id = $(self).attr("data-template");
+        $.ajax({
+            type: "POST",
+            url: "{{urls.send_test_email}}" + id + "/",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", getMetaCSRFToken());
+            },
+            data: null,
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(data) { showMessages([data.details], "info"); },
+            error: function(resp) { showErrorMessages(resp); },
+        });
+    });
+  });
+</script>
+
 {% endblock %}

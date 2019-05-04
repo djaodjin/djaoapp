@@ -1,7 +1,7 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{{title}} for {{organization.printable_name}}
+{% trans organization=organization.printable_name %}{{title}} for {{organization}}{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
@@ -13,7 +13,7 @@
 </style>
 <section id="metrics-container">
     <div data-trip data-trip data-trip-index="1"
-         data-trip-content="<p>Track monthly revenue and monthly subscribers.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+         data-trip-content="<p>{% trans %}Track monthly revenue and monthly subscribers.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
          data-trip-position="screen-center"
          >
         <ul class="nav nav-tabs dashboard-tab table-chooser">
@@ -29,11 +29,11 @@
                     <uiv-dropdown class="form-group" append-to-body menu-right>
                         <div class="input-group mr-2">
                             <div class="input-group-prepend">
-                                    <span class="input-group-text" id="to-inp">To</span>
+                                    <span class="input-group-text" id="to-inp">{% trans %}To{% endtrans %}</span>
                             </div>
                             <input class="form-control"
                                   data-trip data-trip data-trip-index="2"
-                                  data-trip-content="<p>Look back through time.</p>"
+                                  data-trip-content="<p>{% trans %}Look back through time.{% endtrans %}</p>"
                                   data-trip-position="s"
                                   v-model="ends_at"></input>
                               <div class="input-group-append">
@@ -44,8 +44,8 @@
                         <select class="form-control"
                                         v-model="timezone"
                                         @change="prepareCurrentTabData">
-                                    <option value="local">Local</option>
-                                    <option value="utc">UTC</option>
+                                    <option value="local">{% trans %}Local{% endtrans %}</option>
+                                    <option value="utc">{% trans %}UTC{% endtrans %}</option>
                                 </select>
                         <template slot="dropdown">
                             <li>

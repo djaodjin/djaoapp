@@ -3,11 +3,11 @@
 {% block subject %}
 {# We are putting |safe here because an e-mail's subject line shouldn't be
 HTML encoded. #}
-{{provider.printable_name|safe}} Order Confirmation
+{% trans provider=provider.printable_name|safe %}{{provider}} Order Confirmation{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{provider.printable_name}} Order Confirmation</h3>
+<h3>{% trans provider=provider.printable_name %}{{provider}} Order Confirmation{% endtrans %}</h3>
 {% if organization %}
 <div class="info">
   <table>
@@ -15,7 +15,7 @@ HTML encoded. #}
     </thead>
     <tbody>
       <tr>
-        <th class="info-row-header">NAME&nbsp;&nbsp;</th>
+        <th class="info-row-header">{% trans %}NAME{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{organization.printable_name}}</td>
       </tr>
     </tbody>
@@ -27,8 +27,8 @@ HTML encoded. #}
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="amount-header">Amount</th>
-          <th class="description-header">Description</th>
+          <th class="amount-header">{% trans %}Amount{% endtrans %}</th>
+          <th class="description-header">{% trans %}Description{% endtrans %}</th>
         </tr>
       </thead>
       <tbody>
@@ -45,21 +45,21 @@ HTML encoded. #}
 <div>
 {% if created_by %}
 <p>
-This order was initiated by <a href="{{urls.order.created_by}}">{{created_by.get_full_name()}}.</a>
+{% trans %}This order was initiated by{% endtrans %} <a href="{{urls.order.created_by}}">{{created_by.get_full_name()}}.</a>
 </p>
 {% endif %}
 </div>
 <div id="support">
 <p>
-This order confirmation only notifies that you intend to pay
-for this product(s).
-<span class="strong">You have not been charged.</span>
-A receipt will follow only after a credit card payment has been successfully
-made.
+{% trans %}This order confirmation only notifies that you intend to pay
+for this product(s).{% endtrans %}
+<span class="strong">{% trans %}You have not been charged.{% endtrans %}</span>
+{% trans %}A receipt will follow only after a credit card payment has been successfully
+made.{% endtrans %}
 </p>
 <p>
-Thank you for your continuous business. Any questions
-or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans %}Thank you for your continuous business. Any questions
+or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
 </p>
 </div>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-Provider Dashboard
+{% trans %}Provider Dashboard{% endtrans %}
 {% endblock %}
-{% block saas_descr %}A section short description{% endblock %}
+{% block saas_descr %}{% trans %}A section short description{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <section>
@@ -13,7 +13,7 @@ Provider Dashboard
             <div class="offset-sm-4 col-sm-4">
                 <div class="form-group">
                     <input class="form-control"
-                      type="text" placeholder="Search..."
+                      type="text" placeholder="{% trans %}Search...{% endtrans %}"
                       v-model="params.q" @input="filterList" />
                 </div>
             </div>
@@ -36,15 +36,15 @@ Provider Dashboard
 <div class="row">
     <div class="col-md-4">
         <div class="dashboard-home-title">
-            <h4>To do items</h4>
+            <h4>{% trans %}To do items{% endtrans %}</h4>
         </div>
         <p class="no-results">
-No items to take care of Today.
+{% trans %}No items to take care of Today.{% endtrans %}
         </p>
     </div>
     <div id="today-sales-container" class="col-md-4">
         <div class="dashboard-home-title">
-            <h4>Today Sales<span v-show="itemsLoaded" v-cloak>: [[humanizeTotal()]]</span></h4>
+            <h4>{% trans %}Today Sales{% endtrans %}<span v-show="itemsLoaded" v-cloak>: [[humanizeTotal()]]</span></h4>
         </div>
         <table class="table table-striped">
             <tbody v-show="!itemsLoaded">
@@ -57,7 +57,7 @@ No items to take care of Today.
             <tbody v-show="itemsLoaded && items.results.length === 0" v-cloak>
                 <tr class="empty-table">
                     <td colspan="2">
-                        <p class="no-results">No sales data yet</p>
+                        <p class="no-results">{% trans %}No sales data yet{% endtrans %}</p>
                     </td>
                 </tr>
             </tbody>
@@ -76,7 +76,7 @@ No items to take care of Today.
     </div>
     <div id="user-list-container" class="col-md-4">
         <div class="dashboard-home-title">
-            <h4>Recently registered</h4>
+            <h4>{% trans %}Recently registered{% endtrans %}</h4>
         </div>
         <table class="table table-striped">
             <tbody id="loading-registered" v-show="!itemsLoaded">

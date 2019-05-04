@@ -1,22 +1,22 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
-{% block saas_title %}Theme{% endblock %}
+{% block saas_title %}{% trans %}Theme{% endtrans %}{% endblock %}
 
 {% block saas_help %}
 <p>
-When you are modifying root templates (ex: <filename>base.html</filename>),
+{% trans %}When you are modifying root templates (ex: <filename>base.html</filename>),
 you may inadvertently break the dashboard and become unable to access this
-page to upload a fix.
+page to upload a fix.{% endtrans %}
 </p>
 <p>
-You can reset to the default theme, but you will need
-<a href="{{urls.user.profile_redirect}}">an API key</a> to trigger
-the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a>
-from the command line.
+{% trans %}You can reset to the default theme, but you will need{% endtrans %}
+<a href="{{urls.profile_redirect}}">an API key</a> {% trans %}to trigger{% endtrans %}
+the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">{% trans %}API end point{% endtrans %}</a>
+{% trans %}from the command line.{% endtrans %}
 </p>
 <pre class="code"><code>curl -i -u *api_key*: -X DELETE https://{{site_available_at_url}}/api/themes/</code></pre>
 <p>
-<a target="_blank" href="https://djaodjin.com/docs/themes/">Read more about theme customization ... &raquo;</a>
+<a target="_blank" href="https://djaodjin.com/docs/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
 </p>
 {% endblock %}
 
@@ -29,7 +29,7 @@ from the command line.
               name="show_edit_tools"
               v-model="showEditTools" @change="save">
           <label class="form-check-label" for="show_edit_tools">
-            Show inline template editor tools
+            {% trans %}Show inline template editor tools{% endtrans %}
           </label>
         </div>
     </form>
@@ -40,13 +40,63 @@ from the command line.
          data-complete-url="{{urls.pages.api_themes}}"
          djupload-success >
       <div class="dropzone-previews previewsContainer">
-        <span class="dz-default dz-message"><i class="fa fa-cloud"></i> Upload theme package (.zip)</span>
+        <span class="dz-default dz-message"><i class="fa fa-cloud"></i> {% trans %}Upload theme package (.zip){% endtrans %}</span>
       </div>
     </div>
     <div class="text-center">
-      <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> Download as .zip file</a>
-      <button id="reset-theme" class="btn btn-danger">Reset to default</button>
+      <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> {% trans %}Download as .zip file{% endtrans %}</a>
+      <button id="reset-theme" class="btn btn-danger">{% trans %}Reset to default{% endtrans %}</button>
     </div>
   </div>
 </div>
+
+<section id="notifications" class="mt-5">
+  <h1 class="mb-4">{% trans %}Notifications{% endtrans %}</h1>
+  {% for key, vals in notifications.items() %}
+  <div id="{{key}}" class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{urls.notifications}}{{key}}/">{{vals.title}}</a></h5>
+      <p class="card-text">
+{{vals.descr}}
+      </p>
+      <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
+      <button class="btn btn-outline-secondary send-test-email">{% trans %}Send test e-mail{% endtrans %}</button>
+    </div>
+  </div>
+  {% endfor %}
+  {% for role_descr in role_descriptions %}
+  <div id="{{role_descr.slug}}_role_added" class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
+      <p class="card-text">
+      </p>
+      <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
+      <button class="btn btn-outline-secondary send-test-email">{% trans %}Send test e-mail{% endtrans %}</button>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}
+
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  $(".send-test-email").click(function(event) {
+        var self = this;
+        var id = $(self).closest(".card").attr("id");
+        $.ajax({
+            type: "POST",
+            url: "{{urls.send_test_email}}" + id + "/",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", getMetaCSRFToken());
+            },
+            data: null,
+            datatype: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(data) { showMessages([data.details], "info"); },
+            error: function(resp) { showErrorMessages(resp); },
+        });
+    });
+  });
+</script>
 {% endblock %}

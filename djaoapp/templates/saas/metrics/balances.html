@@ -1,14 +1,14 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}<i class="fa fa-dollar"></i> Balances{% endblock %}
+{% block saas_title %}<i class="fa fa-dollar"></i> {% trans %}Balances{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <div id="balance-list-container">
 <div>
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-secondary" role="button"
-         :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> Download</a>
-      <span>To</span>
+         :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
+      <span>{% trans %}To{% endtrans %}</span>
       <div style="display:inline-block">
           <uiv-dropdown class="form-group" append-to-body>
               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
@@ -26,7 +26,7 @@
       </div>
       <span class="date" style="display: inline-block;"
         data-trip data-trip-index="2"
-        data-trip-content="<p>Look back through time.</p>"
+        data-trip-content="<p>{% trans %}Look back through time.{% endtrans %}</p>"
         data-trip-position="s"
         >
           [[params.ends_at | formatDate ]]
@@ -35,9 +35,9 @@
   <table class="table table-condensed table-striped">
       <thead>
           <tr>
-              <th>Rank</th>
-              <th>Delete</th>
-              <th>Title</th>
+              <th>{% trans %}Rank{% endtrans %}</th>
+              <th>{% trans %}Delete{% endtrans %}</th>
+              <th>{% trans %}Title{% endtrans %}</th>
               <td style="text-align:right;"
                   v-for="col in values" v-cloak>
                   [[col[0] | monthHeading]]
@@ -54,7 +54,7 @@
       <tbody v-show="itemsLoaded && items.table.length == 0" v-cloak>
           <tr>
               <td colspan="16">
-                  <h4 class="text-center"><em>No aggregated balances defined for this report. Add the first one with the form below.</em></h4>
+                  <h4 class="text-center"><em>{% trans %}No aggregated balances defined for this report. Add the first one with the form below.{% endtrans %}</em></h4>
               </td>
           </tr>
       </tbody>
@@ -83,17 +83,17 @@
   <div class="row">
       <div class="col-sm-3">
           <input type="text" class="form-control form-control-sm"
-            placeholder="Title"
+            placeholder="{% trans %}Title{% endtrans %}"
             v-model="balanceLine.title">
       </div>
       <div class="col-sm-3">
           <input type="text" class="form-control form-control-sm"
-            placeholder="Selector"
+            placeholder="{% trans %}Selector{% endtrans %}"
             v-model="balanceLine.selector">
       </div>
       <div class="col-sm-2">
           <button class="btn btn-primary btn-sm"
-            @click="create"><i class="fa fa-plus"></i> Add Line</button>
+            @click="create"><i class="fa fa-plus"></i> {% trans %}Add Line{% endtrans %}</button>
       </div>
   </div>
 </div>

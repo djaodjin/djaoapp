@@ -1,0 +1,23 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{% trans organization=organization.printable_name|safe %}You were added as a {{role}} to {{organization}}{% endtrans %}
+{% endblock %}
+
+{% block html_content %}
+<h3>{% trans organization=organization.printable_name %}You were added as a {{role}} to {{organization}}{% endtrans %}</h3>
+{% if reason %}
+<p>
+{{reason|md}}
+</p>
+{% else %}
+<p>{% trans user=user.printable_name %}Hi {{user}},{% endtrans %}</p>
+{% endif %}
+<p>
+{% trans organization=organization.printable_name %}You were added as a {{role}} to {{organization}}
+and can access the{% endtrans %} <a href="{{back_url}}">{% trans organization=organization.printable_name %}{{organization}} account{% endtrans %}</a>
+{% trans %}now by clicking on the previous link or copy/pasting the following link
+in your browser:{% endtrans %}
+{{back_url}}
+</p>
+{% endblock %}

@@ -10,9 +10,10 @@ from saas.api.serializers import (
     OrganizationSerializer as OrganizationBaseSerializer,
     OrganizationWithEndsAtByPlanSerializer,
     WithSubscriptionSerializer)
+from saas.api.serializers import RoleSerializer as BaseRoleSerializer
 from saas.models import get_broker, Role, ChargeItem
 from saas.utils import get_organization_model
-from signup.serializers import ActivitySerializer
+from signup.serializers import ActivitySerializer, UserSerializer
 from rules.api.serializers import AppSerializer as RulesAppSerializer
 
 
@@ -30,6 +31,11 @@ class ProfileSerializer(OrganizationSerializer):
     class Meta(OrganizationSerializer.Meta):
         fields = OrganizationSerializer.Meta.fields + (
             'activities', 'subscriptions',)
+
+
+class RoleSerializer(BaseRoleSerializer):
+
+    user = UserSerializer(read_only=True)
 
 
 class SessionSerializer(serializers.ModelSerializer):

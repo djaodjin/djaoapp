@@ -3,8 +3,9 @@
 $navbar-height: 50px; // XXX until we find a better fix.
 $dashboard-sidebar-width:    220px;
 $dashboard-sidebar-toggle:    20px;
-$dashboard-nav-footer-height: 91px;
+$dashboard-nav-footer-height: 94px;
 $dashboard-content-bg:       white;
+$dashboard-sidebar-logo-height:    72px;
 
 $dashboard-sidebar-bg:       theme-color(primary);
 $dashboard-sidebar-color:    white;
@@ -103,7 +104,7 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav-main {
     float: left;
     min-height: 100%;
-    padding-bottom: 76px; /* must be equal to .dashboard-nav-footer height
+    padding-bottom: $dashboard-nav-footer-height; /* must be equal to .dashboard-nav-footer height
                              in pixel */
 }
 
@@ -113,7 +114,7 @@ $dashboard-sidebar-color:    white;
 }
 
 .dashboard-nav-menu {
-  height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$navbar-height}));
+  height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$dashboard-sidebar-logo-height}));
   overflow-y: auto;
 }
 
@@ -457,4 +458,33 @@ $dashboard-sidebar-color:    white;
 .user-card-image
 {
     margin: 20px 0 20px 20px;
+}
+
+.user-password-modal .invalid-feedback
+{
+    display: block;
+}
+
+.organization-card .card-img-top
+{
+    width: 50%;
+    margin: 20px auto 0;
+}
+
+.organization-card .card-title a
+{
+    color: black;
+}
+
+.organization-card .badge
+{
+    font-weight: normal;
+}
+
+.organization-card .organization-buttons
+{
+    min-height: 110px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
 }

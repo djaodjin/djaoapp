@@ -1,0 +1,22 @@
+{% extends "users/base.html" %}
+
+{% block saas_title %}{% trans %}Change Public Key{% endtrans %}{% endblock %}
+
+{% block saas_content %}
+<section id="personal">
+<div id="update-pubkey-container">
+    <form @submit.prevent="modalShow">
+        <div class="form-group">
+            <label class="control-label requiredField">{% trans %}Pubkey{% endtrans %}<span class="asteriskField">*</span></label>
+            <div class="controls">
+                <textarea class="textarea form-control" cols="40" name="pubkey" rows="10" v-model="pubkey"></textarea>
+            </div>
+        </div>
+        <div class="form-action text-center">
+            <button class="btn btn-primary btn-lg" type="submit">{% trans %}Update{% endtrans %}</button>
+        </div>
+    </form>
+    {% include "users/_require_password.html" %}
+</div>
+</section>
+{% endblock %}

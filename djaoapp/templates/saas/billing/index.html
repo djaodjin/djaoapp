@@ -1,13 +1,13 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}Billing for {{organization.printable_name}}{% endblock %}
+{% block saas_title %}{% trans organization=organization.printable_name %}Billing for {{organization}}{% endtrans %}{% endblock %}
 
-{% block saas_lead_help %}Payments made on the platform.{% endblock %}
+{% block saas_lead_help %}{% trans %}Payments made on the platform.{% endtrans %}{% endblock %}
 
 {% block saas_help %}
 <p>
-You can manage the Credit Card on file for your subscription.
-You can also see the list of all payments made here.
+{% trans %}You can manage the Credit Card on file for your subscription.
+You can also see the list of all payments made here.{% endtrans %}
 </p>
 {% endblock %}
 
@@ -16,18 +16,13 @@ You can also see the list of all payments made here.
 <div class="col-sm-12">
   <div class="row"
          data-trip data-trip-index="1"
-         data-trip-content="<h2>Billing</h2><p>All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.</em>"
+         data-trip-content="<h2>{% trans %}Billing{% endtrans %}</h2><p>{% trans %}All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
          data-trip-position="screen-center">
       <section id="balance" class="col-sm-6">
-        <h1 class="text-primary">Balance{% if urls.organization.api_cancel_balance_due %}
-          <button id="cancel-balance-btn" class="btn btn-danger"
-             data-toggle="modal"
-             data-target="#cancel-balance"
-             v-if="items.balance > 0" v-cloak
-          >cancel balance due</button>{% endif %}</h1>
+        <h1 class="text-primary">{% trans %}Balance{% endtrans %}</h1>
         <dl class="dl-horizontal">
           <dt data-trip data-trip-index="2"
-              data-trip-content="<p>The amount you owe.</p>"
+              data-trip-content="<p>{% trans %}The amount you owe.{% endtrans %}</p>"
               data-trip-position="s">
             <i class="fa fa-refresh fa-spin"
                v-if="!itemsLoaded"></i>
@@ -35,31 +30,28 @@ You can also see the list of all payments made here.
                v-if="itemsLoaded" v-cloak>[[humanizeBalance()]]</span>
           </dt>
           <dd>
-            Balance
-            <span v-if="!itemsLoaded || items.balance == 0">due</span>
+            {% trans %}Balance{% endtrans %}
+            <span v-if="!itemsLoaded || items.balance == 0">{% trans %}due{% endtrans %}</span>
             <span
-               v-if="items.balance > 0" v-cloak>due (<a href="{{urls.organization.balance}}">pay now</a>)
+               v-if="items.balance > 0" v-cloak>{% trans %}due{% endtrans %} (<a href="{{urls.organization.balance}}">{% trans %}pay now{% endtrans %}</a>)
             </span>
-            <span v-if="items.balance < 0" v-cloak>credit</span>
+            <span v-if="items.balance < 0" v-cloak>{% trans %}credit{% endtrans %}</span>
           </dd>
         </dl>
-        {% if urls.organization.vtcharge %}
-        <a id="one-time-charge" href="{{urls.organization.vtcharge}}"><i class="fa fa-plus"></i> one-time charge ...</a>
-        {% endif %}
       </section>
       <section class="col-sm-6">
-        <h1 class="text-primary">Credit Card
+        <h1 class="text-primary">{% trans %}Credit Card{% endtrans %}
         <a class="btn" href="{{urls.organization.update_card}}"
-           data-trip data-trip-index="3" data-trip-content="<p>Update your credit card on file so you always pay promptly.</p>" data-trip-position="s">Update</a></h1>
+           data-trip data-trip-index="3" data-trip-content="<p>{% trans %}Update your credit card on file so you always pay promptly.{% endtrans %}</p>" data-trip-position="s">{% trans %}Update{% endtrans %}</a></h1>
         <dl class="dl-horizontal">
-          <dt>card</dt>
+          <dt>{% trans %}card{% endtrans %}</dt>
           <dd class="last4">
             <i class="fa fa-refresh fa-spin" v-if="!cardLoaded"></i>
             <span v-if="cardLoaded" v-cloak>[[last4]]</span>
           </dd>
         </dl>
         <dl class="dl-horizontal">
-          <dt>expires</dt>
+          <dt>{% trans %}expires{% endtrans %}</dt>
           <dd class="exp_date">
             <i class="fa fa-refresh fa-spin"
                v-if="!cardLoaded"></i>
@@ -71,33 +63,51 @@ You can also see the list of all payments made here.
       {% if urls.organization.api_cancel_balance_due %}
       <!-- modal dialog for cancelling balance due -->
       <form id="cancel-balance" class="modal fade"
-            tabindex="-1" role="dialog" aria-labelledby="Cancel balance due"
+            tabindex="-1" role="dialog" aria-labelledby="{% trans %}Cancel balance due{% endtrans %}"
             aria-hidden="true" method="post" action=".">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close"
                       data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Cancel balance due</h4>
+              <h4 class="modal-title">{% trans %}Cancel balance due{% endtrans %}</h4>
             </div>
             <div class="modal-body">
               <p>
-Are you sure you would like to cancel the whole balance of [[humanizeBalance()]] ?
+{% trans %}Are you sure you would like to cancel the whole balance of{% endtrans %} [[humanizeBalance()]] ?
               </p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary"
-                  data-dismiss="modal">Cancel</button>
+                  data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit"
                   class="btn btn-primary"
                   data-dismiss="modal"
-                  @click="cancelBalance">OK</button>
+                  @click="cancelBalance">{% trans %}OK{% endtrans %}</button>
             </div>
           </div>
         </div>
       </form>
       <!-- end of modal dialog -->
       {% endif %}
+    </div>
+    <div class="btn-actions text-right">
+      {% if urls.organization.api_cancel_balance_due %}
+      <button id="cancel-balance-btn"
+              class="btn btn-danger btn-sm"
+              data-toggle="modal" data-target="#cancel-balance"
+              v-if="items.balance > 0" v-cloak>{% trans %}cancel balance due{% endtrans %}</button>
+      {% endif %}
+      {% if urls.organization.vtcharge %}
+      <a id="one-time-charge"
+         class="btn btn-secondary btn-sm"
+         href="{{urls.organization.vtcharge}}">
+        <i class="fa fa-plus"></i> {% trans %}one-time charge ...{% endtrans %}
+      </a>
+      {% endif %}
+      <a id="download"
+         class="btn btn-secondary btn-sm" role="button"
+               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
     </div>
     <div class="row">
       <div class="col-12">

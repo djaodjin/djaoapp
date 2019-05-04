@@ -16,16 +16,17 @@ from ..api.custom_themes import ThemePackageListAPIView, AppUpdateAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
+from ..api.roles import RoleListAPIView
 from ..api.users import UserProfileAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
-     url_frictionless_self_provider, url_prefixed)
+     url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
-from ..views.notifications import (NotificationDetailView, NotificationListView,
+from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
 from ..views.users import (UserProfileView, UserNotificationsView,
-    UserAccessiblesView)
+    UserAccessiblesView, UserPasswordUpdateView, UserPublicKeyUpdateView)
 from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView)
 from ..views.redirects import OrganizationRedirectView
@@ -80,6 +81,9 @@ urlpatterns += site_patterns(
         OrganizationDetailAPIView.as_view(), name='saas_api_organization'),
     url_provider(r'^api/profile/$',
         OrganizationListAPIView.as_view(), name='saas_api_profile'),
+    url_provider(r'^api/profile/(?P<organization>%s)/roles/(?P<role>%s)/?$'
+        % (ACCT_REGEX, ACCT_REGEX),
+        RoleListAPIView.as_view(), name='saas_api_roles_by_descr'),
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_authenticated('^api/', include('saas.urls.api.search')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
@@ -99,12 +103,14 @@ urlpatterns += site_patterns(
         UserRedirectView.as_view(), name='accounts_profile'),
     url_self_provider(r'^users/(?P<user>%s)/roles/$' % USERNAME_PAT,
         UserAccessiblesView.as_view(), name='saas_user_product_list'),
+    url_self_provider(r'^(?P<user>%s)/password/' % USERNAME_PAT,
+        UserPasswordUpdateView.as_view(), name='password_change'),
+    url_self_provider(r'^(?P<user>%s)/pubkey/' % USERNAME_PAT,
+        UserPublicKeyUpdateView.as_view(), name='pubkey_update'),
     url_self_provider(r'^users/(?P<user>%s)/notifications/$' % USERNAME_PAT,
         UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
-    url_self_provider(r'^', include('saas.urls.users')),
-    url_self_provider(r'^users/', include('signup.urls.users')),
     url_direct(r'contacts/', include('signup.urls.contacts')),
 
     url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
@@ -120,12 +126,13 @@ urlpatterns += site_patterns(
     url_direct(r'^', include('saas.urls.provider')),
     url_provider(r'^', include('saas.urls.subscriber.billing')),
     url_provider(r'^', include('saas.urls.subscriber.profile')),
-    url_dashboard(r'^proxy/notifications/(?P<template>%s)/iframe/' % ACCT_REGEX,
-        NotificationInnerFrameView.as_view(), name='notification_inner_frame'),
+    url_dashboard_iframe(r'^proxy/notifications/(?P<template>%s)/iframe/' %
+        ACCT_REGEX, NotificationInnerFrameView.as_view(),
+        name='notification_inner_frame'),
     url_dashboard(r'^proxy/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationDetailView.as_view(), name='notification_detail'),
     url_dashboard(r'^proxy/notifications/',
-        NotificationListView.as_view(), name='notification_base'),
+        RedirectView.as_view(pattern_name='theme_update'), name='notification_base'),
     url_dashboard(r'^proxy/rules/',
         AppDashboardView.as_view(), name='rules_update'),
     url_dashboard(r'^', include('rules.urls.configure')),

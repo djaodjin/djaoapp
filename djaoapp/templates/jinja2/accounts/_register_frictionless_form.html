@@ -7,6 +7,6 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {{ input_field(form['full_name'], form.hide_labels) }}
     {{ input_field(form['email'], form.hide_labels) }}
-    <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+    <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
 </form>
 {% endblock %}

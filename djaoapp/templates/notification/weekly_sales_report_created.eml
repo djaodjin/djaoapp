@@ -1,11 +1,11 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-Weekly sales report
+{% trans %}Weekly sales report{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h4 id="sales-title">Sales report for the week ending {{date}}</h4>
+<h4 id="sales-title">{% trans %}Sales report for the week ending {{date}}{% endtrans %}</h4>
 
 <style>
     #sales-title
@@ -34,10 +34,10 @@ Weekly sales report
 <table id="sales-data">
     <thead>
         <tr>
-            <th>Description</th>
-            <th>Total in USD</th>
-            <th>vs. last week</th>
-            <th>vs. same week a year ago</th>
+            <th>{% trans %}Description{% endtrans %}</th>
+            <th>{% trans %}Total in USD{% endtrans %}</th>
+            <th>{% trans %}vs. last week{% endtrans %}</th>
+            <th>{% trans %}vs. same week a year ago{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -52,11 +52,11 @@ Weekly sales report
     </tbody>
 </table>
 <p>
-<a href="https://djaodjin.com/docs/#revenue-reports">Definitions for Total Sales, Payments, etc.</a>
+<a href="https://djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
 </p>
 <p>
-Thank you for your continuous business. Any questions
-or comments, email us at <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans %}Thank you for your continuous business. Any questions
+or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
 </p>
 
 {% endblock %}

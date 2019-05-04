@@ -4,7 +4,8 @@
       <tbody data-plan="{{invoicables.0.subscription.plan}}">
         <tr>
           <td colspan="3">
-            <em>{{invoicables.0.subscription.plan.title}} from {{invoicables.0.subscription.plan.organization.printable_name}}</em>
+            <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}
+            {{plan}} from {{organization}}{% endtrans %}</em>
           </td>
         </tr>
       {% for entry in invoicables %}
@@ -13,13 +14,13 @@
         <tr class="seat">
           <td colspan="3">
             <div class="col-sm-4">
-              <input class="form-control seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+              <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
             </div>
             <div class="col-sm-4">
-              <input class="form-control seat-email" type="text" placeholder="E-mail" />
+              <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail{% endtrans %}" />
             </div>
             <div class="col-sm-4">
-              <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+              <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
             </div>
           </td>
         </tr>
@@ -28,7 +29,8 @@
         <tbody data-plan="{{entry.subscription.plan}}">
           <tr>
             <td colspan="3">
-              <em>{{entry.subscription.plan.title}} from {{entry.subscription.plan.organization.printable_name}}</em>
+              <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %}
+                {{plan}} from {{organization}}{% endtrans %}</em>
             </td>
           </tr>
         {% endif %}
@@ -53,13 +55,13 @@
       <tr class="seat">
         <td colspan="3">
           <div class="col-sm-4">
-            <input class="form-control seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+            <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
           </div>
           <div class="col-sm-4">
-            <input class="form-control seat-email" type="text" placeholder="E-mail" />
+            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail{% endtrans %}" />
           </div>
           <div class="col-sm-4">
-            <button type="button" class="btn btn-primary add-seat" type="button">Add</button>
+            <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
           </div>
         </td>
       </tr>
@@ -70,7 +72,7 @@
       <tr>
         <th></th>
         <th class="total-amount">{{lines_price|humanize_money}}</th>
-        <th>Charged Today</th>
+        <th>{% trans %}Charged Today{% endtrans %}</th>
       </tr>
     </tfooter>
   </table>

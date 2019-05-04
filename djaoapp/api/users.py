@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import logging
 
 from saas.utils import get_role_model
-from signup.api.contacts import ContactDetailAPIView as UserProfileBaseAPIView
+from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,5 +37,6 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         # in place but we delete the roles on organizations
         # for that user to make sure access rights for the archive profile
         # are fully gone.
-        get_role_model().objects.filter(user=instance).delete()
+        if instance.user:
+            get_role_model().objects.filter(user=instance.user).delete()
         super(UserProfileAPIView, self).perform_destroy(instance)

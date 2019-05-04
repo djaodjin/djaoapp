@@ -112,7 +112,7 @@
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
       <select class="form-control{% if bound_field.errors %} is-invalid{% endif %}" name="{{bound_field.name}}">
         {% if not bound_field.value() %}
-        <option value="" disabled selected>Please choose one ...</option>
+        <option value="" disabled selected>{% trans %}Please choose one ...{% endtrans %}</option>
         {% endif %}
         {% for choice in choices %}
         <option {% if bound_field.value() == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
