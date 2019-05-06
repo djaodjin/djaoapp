@@ -20,7 +20,7 @@
 {{back_url}}{% if next %}?next={{next}}{% endif %}
 </p>
 <p>
-{% trans %}The link is valid for {{expiration_days}} days.{% trans %}
+{% trans expiration_days=expiration_days %}The link is valid for {{expiration_days}} days.{% endtrans %}
 </p>
 </div>
 <div id="support">
