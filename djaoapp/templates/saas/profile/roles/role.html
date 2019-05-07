@@ -92,14 +92,13 @@
       <form class="form-horizontal">
         <div class="modal-content">
           <div class="modal-header">
-              <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}} ...{% endtrans %}</h4>
+              <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %} ...</h4>
               <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <p class="text-danger">
-[[unregistered.slug]] {% trans role_descr=role_descr.title, organization=organization.printable_name %}is not yet registered. This is an opportunity to invite and
-add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
+{% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
             </p>
             <div class="row form-group">
                 <div class="col-sm-2">
@@ -120,9 +119,9 @@ add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
                     <textarea class="form-control"
                               name="message"
                               maxlength="255" type="text" rows="10">
-{% trans %}Hi{% endtrans %} [[unregistered.email]],
+{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
-{% trans role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}I am adding you as a {{role_descr}} to {{organization}}.
+I am adding you as a {{role_descr}} to {{organization}}.
 
 Thank you,
 - {{user}}{% endtrans %}</textarea>

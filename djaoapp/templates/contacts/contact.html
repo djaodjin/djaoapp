@@ -5,7 +5,7 @@
   <div class="row">
     <div id="contact-edit-container">
       <div class="page-header">
-        <h2>{% trans %}Contact profile{% endtrans %}</h2>
+        <h2>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h2>
       </div>
       <div class="col-sm-6">
         <dl>
@@ -17,7 +17,7 @@
           <dd>{{contact.full_name}}</dd>
         </dl>
         <dl>
-          <dt>{% trans %}Email{% endtrans %}</dt>
+          <dt>{% trans %}E-mail address{% endtrans %}</dt>
           <dd>{{contact.email}}</dd>
         </dl>
         <h3>{% trans %}Activities{% endtrans %}</h3>

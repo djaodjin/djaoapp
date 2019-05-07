@@ -1,0 +1,361 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-08 22:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
+"Language-Team: DjaoDjin <info@djaodjin.com>\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: pages/static/js/djaodjin-code-editor.js:35
+msgid "No editable templates"
+msgstr "Aucun modèle de thème éditable"
+
+#: pages/static/js/djaodjin-editor.js:132
+msgid "Editables modified"
+msgstr ""
+
+#: pages/static/js/djaodjin-editor.js:612
+msgid "placeholder, type to overwrite..."
+msgstr "espace réservé, écrire pour remplacer..."
+
+#: pages/static/js/djaodjin-pages.js:27
+msgid "reset to default theme"
+msgstr "ré-initialiser le thème par défault"
+
+#: pages/static/js/djaodjin-resources.js:59
+#: pages/static/js/djaodjin-resources.js:94
+#: pages/static/js/djaodjin-resources.js:104
+#: pages/static/js/djaodjin-resources.js:113
+#: pages/static/js/djaodjin-upload.js:48
+#: rules/static/js/djaodjin-resources.js:59
+#: rules/static/js/djaodjin-resources.js:94
+#: rules/static/js/djaodjin-resources.js:104
+#: rules/static/js/djaodjin-resources.js:113
+#: saas/static/js/djaodjin-resources.js:59
+#: saas/static/js/djaodjin-resources.js:94
+#: saas/static/js/djaodjin-resources.js:104
+#: saas/static/js/djaodjin-resources.js:113
+#: signup/static/js/djaodjin-resources.js:59
+#: signup/static/js/djaodjin-resources.js:94
+#: signup/static/js/djaodjin-resources.js:104
+#: signup/static/js/djaodjin-resources.js:113
+#, javascript-format
+msgid "Error %s: %s"
+msgstr "Erreur %s: %s"
+
+#: pages/static/js/djaodjin-resources.js:106
+#: rules/static/js/djaodjin-resources.js:106
+#: saas/static/js/djaodjin-resources.js:106
+#: signup/static/js/djaodjin-resources.js:106
+msgid "We have been notified and have started on fixing the error. We apologize for the inconvinience."
+msgstr "Nous avons reçus une notification et avons commencé à corriger l'erreur. Nous nous excusons pour le dérangement."
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:150
+#: pages/static/js/djaodjin-sidebar-gallery.js:160
+#, javascript-format
+msgid "This placeholder accepts only: %s files."
+msgstr "Cet espace réservé accepte seulement les type de fichiers suivants: %s"
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:183
+msgid "Click on an item to view more options"
+msgstr "Cliquez sur un élément pour voir plus d'options."
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:223
+#: pages/static/js/djaodjin-upload.js:33
+#, javascript-format
+msgid "\"%s\" uploaded sucessfully to \"%s\""
+msgstr "\"%s\" a été téléchargé correctement à \"%s\""
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:226
+#, javascript-format
+msgid "\"%s\" has previously been uploaded to \"%s\""
+msgstr "\"%s\" a été précédemment télécharger à \"%s\""
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:374
+msgid "Media correctly deleted."
+msgstr "Le media a été retiré"
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:408
+msgid "Tags correctly updated."
+msgstr "Les tags ont été sauvegardés"
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:459
+msgid "Media"
+msgstr ""
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:459
+msgid "Search..."
+msgstr "Chercher..."
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:460
+msgid "Delete"
+msgstr "Retirer"
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:460
+msgid "Preview"
+msgstr "Aperçu"
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:460
+msgid "Please enter tag."
+msgstr "Entrez un tag s'il vous plait."
+
+#: pages/static/js/djaodjin-sidebar-gallery.js:460
+msgid "Update tags"
+msgstr "Mettre à jour les tags"
+
+#: pages/static/js/djaodjin-upload.js:50
+#, javascript-format
+msgid "(while uploading '%s')"
+msgstr "(pendant le téléchargement de '%s')"
+
+#: pages/static/js/djaodjin-upload.js:127
+#: pages/static/js/djaodjin-upload.js:129
+msgid "instantiated djupload() with no uploadUrl specified."
+msgstr ""
+
+#: rules/static/js/djaodjin-rules-vue.js:189
+msgid "Generating..."
+msgstr ""
+
+#: rules/static/js/djaodjin-rules-vue.js:204
+msgid "ERROR"
+msgstr "ERREUR"
+
+#: rules/static/js/djaodjin-rules-vue.js:238
+msgid "Update successful."
+msgstr "Sauvegarde réussie."
+
+#: saas/static/js/djaodjin-saas-vue.js:79
+#, javascript-format
+msgid "%s ago"
+msgstr "il y a %s"
+
+#: saas/static/js/djaodjin-saas-vue.js:82
+#, javascript-format
+msgid "%s left"
+msgstr "encore %s"
+
+#: saas/static/js/djaodjin-saas-vue.js:936
+msgid ""
+"You are about to delete yourself from this role. it's possible that you no longer can manage this organization after performing this action.\n"
+"\n"
+"Do you want to remove yourself from this organization?"
+msgstr ""
+"Vous êtes sur le point de retirer votre accés à ce profil. Il est fort problable que vous ne puissiez plus accéder  à ce profil après cette operation.\n"
+"\n"
+"Voulez-vous retirer votre accés à ce profil?"
+
+#: saas/static/js/djaodjin-saas-vue.js:1288
+#, javascript-format
+msgid "Invite for %s has been sent"
+msgstr "Invitation pour %s a été envoyé."
+
+#: saas/static/js/djaodjin-saas-vue.js:1791
+msgid "select a subscription from dropdown"
+msgstr "Choisissez un abonnement"
+
+#: saas/static/js/djaodjin-saas-vue.js:1805
+#: saas/static/js/djaodjin-saas-vue.js:2074
+msgid "Profile was updated."
+msgstr "Profil sauvegardé."
+
+#: saas/static/js/djaodjin-saas-vue.js:1841
+#: saas/static/js/djaodjin-saas-vue.js:1842
+#: saas/static/js/djaodjin-saas-vue.js:1903
+#: saas/static/js/djaodjin-saas-vue.js:1904
+#: saas/static/js/djaodjin-saas-vue.js:1905
+msgid "N/A"
+msgstr ""
+
+#: saas/static/js/djaodjin-saas-vue.js:2316
+msgid "You haven't set a valid Stripe public key"
+msgstr "Vous n'avez pas connecter une clé publique Stripe"
+
+#: saas/static/js/djaodjin-saas-vue.js:2378
+msgid "This field shouldn't be empty"
+msgstr "Ce champ ne peut pas être vide."
+
+#: saas/static/js/djaodjin-saas-vue.js:2385
+#: saas/static/js/djaodjin-stripe.js:275
+msgid "Card Number"
+msgstr "Numéro de la carte"
+
+#: saas/static/js/djaodjin-saas-vue.js:2389
+#: saas/static/js/djaodjin-stripe.js:283
+#, fuzzy
+#| msgid "Card Security Code"
+msgid "Security Code"
+msgstr "Code de sécurité"
+
+#: saas/static/js/djaodjin-saas-vue.js:2394
+#: saas/static/js/djaodjin-stripe.js:293
+msgid "Expiration"
+msgstr "Expiration"
+
+#: saas/static/js/djaodjin-saas-vue.js:2398
+#: saas/static/js/djaodjin-stripe.js:304
+msgid "Card Holder"
+msgstr "Nom du porteur de la carte"
+
+#: saas/static/js/djaodjin-saas-vue.js:2402
+#: saas/static/js/djaodjin-stripe.js:312
+msgid "Street address"
+msgstr "Rue"
+
+#: saas/static/js/djaodjin-saas-vue.js:2406
+#: saas/static/js/djaodjin-stripe.js:321
+msgid "City/Town"
+msgstr "Ville"
+
+#: saas/static/js/djaodjin-saas-vue.js:2410
+#: saas/static/js/djaodjin-stripe.js:338
+msgid "Zip/Postal code"
+msgstr "Code postal"
+
+#: saas/static/js/djaodjin-saas-vue.js:2414
+#: saas/static/js/djaodjin-stripe.js:76 saas/static/js/djaodjin-stripe.js:346
+msgid "Country"
+msgstr "Etat"
+
+#: saas/static/js/djaodjin-saas-vue.js:2418
+#: saas/static/js/djaodjin-stripe.js:329
+msgid "State/Province/County"
+msgstr "Département/Région"
+
+#: saas/static/js/djaodjin-saas-vue.js:2422
+#: saas/static/js/djaodjin-stripe.js:101 saas/static/js/djaodjin-stripe.js:353
+#, javascript-format
+msgid "%s field(s) cannot be empty."
+msgstr "Les champs %s ne peuvent pas être vides."
+
+#: saas/static/js/djaodjin-saas-vue.js:2489
+msgid "Discount was successfully applied."
+msgstr "La promotion a été appliquée."
+
+#: saas/static/js/djaodjin-saas-vue.js:2539
+msgid "User was added."
+msgstr "Utilisateur a été ajouté."
+
+#: saas/static/js/djaodjin-saas-vue.js:2754
+msgid "Your credit card on file was sucessfully updated."
+msgstr "Votre carte bancaire a été mise à jour."
+
+#: saas/static/js/djaodjin-saas-vue.js:2768
+msgid "Your credit card is no longer on file with us."
+msgstr "Votre carte bancaire a été effacée de nos fichiers."
+
+#: saas/static/js/djaodjin-saas-vue.js:2843
+#, javascript-format
+msgid "Successfully updated plan titled '%s'."
+msgstr "Forfait '%s' sauvegardé."
+
+#: saas/static/js/djaodjin-saas.js:110
+msgid "Add to Cart"
+msgstr "Ajouter au panier"
+
+#: saas/static/js/djaodjin-saas.js:111
+msgid "Remove from Cart"
+msgstr "Retirer du panier"
+
+#: saas/static/js/djaodjin-saas.js:229
+#, javascript-format
+msgid "A copy of the receipt was sent to %s."
+msgstr "Une copie du reçu a été envoyé à %s."
+
+#: saas/static/js/djaodjin-saas.js:324
+msgid "Amount refunded."
+msgstr "Montant remboursé."
+
+#: saas/static/js/djaodjin-saas.js:330
+msgid "Refunded"
+msgstr "Remboursé."
+
+#: saas/static/js/djaodjin-saas.js:715
+msgid "New Plan"
+msgstr "Nouveau forfait"
+
+#: saas/static/js/djaodjin-saas.js:716
+msgid "Write the description of the plan here."
+msgstr "Ecrire la description du forfait ici."
+
+#: saas/static/js/djaodjin-saas.js:723
+msgid "Plan was created successfully."
+msgstr "Le forfait sauvegardé"
+
+#: saas/static/js/djaodjin-saas.js:762
+msgid "Plan was successfully deleted."
+msgstr "Le forfait a été supprimé."
+
+#: saas/static/js/djaodjin-stripe.js:86
+msgid "Account Number"
+msgstr "Numéro de compte"
+
+#: saas/static/js/djaodjin-stripe.js:94
+msgid "Routing Number"
+msgstr "Numéro de routage"
+
+#: signup/static/js/djaodjin-password-strength.js:330
+msgid "Too common"
+msgstr "Trop commun"
+
+#: signup/static/js/djaodjin-password-strength.js:332
+msgid "Very weak"
+msgstr "Très faible"
+
+#: signup/static/js/djaodjin-password-strength.js:333
+msgid "Weak"
+msgstr "Faible"
+
+#: signup/static/js/djaodjin-password-strength.js:334
+msgid "Good"
+msgstr "Bon"
+
+#: signup/static/js/djaodjin-password-strength.js:335
+msgid "Strong"
+msgstr "Fort"
+
+#: signup/static/js/djaodjin-password-strength.js:336
+msgid "Very strong"
+msgstr "Très fort"
+
+#: signup/static/js/djaodjin-password-strength.js:399
+msgid "Password confirmed."
+msgstr "Mot de pass confirmé."
+
+#: signup/static/js/djaodjin-password-strength.js:400
+#: signup/static/js/djaodjin-signup-vue.js:377
+msgid "Password and confirmation do not match."
+msgstr "Le mot de passe et sa confirmation ne colle pas."
+
+#: signup/static/js/djaodjin-signup-vue.js:139
+msgid "Generating ..."
+msgstr ""
+
+#: signup/static/js/djaodjin-signup-vue.js:151
+#, javascript-format
+msgid "Activation e-mail successfuly sent to %s"
+msgstr "L'e-mail d'activation a été envoyé à %s"
+
+#: signup/static/js/djaodjin-signup-vue.js:194
+msgid "Profile updated."
+msgstr "Profil sauvegardé."
+
+#: signup/static/js/djaodjin-signup-vue.js:399
+msgid "Password was updated."
+msgstr "Mot de passe sauvegardé."
+
+#: signup/static/js/djaodjin-signup-vue.js:430
+msgid "Public key was updated."
+msgstr "Clé publique sauvegardée."

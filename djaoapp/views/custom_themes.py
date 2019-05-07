@@ -31,7 +31,8 @@ class ThemePackageView(ThemePackageBaseView):
                 },
                 'claim_code_generated': {
                     'title': _("Claim code"),
-                    'descr': _("")
+                    'descr': _("This notification is sent to the user invited"\
+" through a groupBuy.")
                 },
                 'expires_soon': {
                     'title': _("Expires soon"),
@@ -60,15 +61,16 @@ class ThemePackageView(ThemePackageBaseView):
                 },
                 'user_contact': {
                     'title': _("User contact"),
-                    'descr': _("")
+                    'descr': _("This notification is sent to profile managers"\
+" of a domain when a user submits an inquiry on the contact-us page.")
                 },
                 'user_registered': {
                     'title': _("User registered"),
                     'descr': _("This notification is sent to profile managers"\
 " of a domain when a user has registered.")
                 },
-                'user_relation_requested': {
-                    'title': _("User relation requested"),
+                'role_requested': {
+                    'title': _("Role requested"),
                     'descr': _("This notification is sent to profile managers"\
 " of an organization when a user has requested a role on that organization.")
                 },

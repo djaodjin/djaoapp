@@ -4,8 +4,7 @@
       <tbody data-plan="{{invoicables.0.subscription.plan}}">
         <tr>
           <td colspan="3">
-            <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}
-            {{plan}} from {{organization}}{% endtrans %}</em>
+            <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
           </td>
         </tr>
       {% for entry in invoicables %}
@@ -17,7 +16,7 @@
               <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
             </div>
             <div class="col-sm-4">
-              <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail{% endtrans %}" />
+              <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
             </div>
             <div class="col-sm-4">
               <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
@@ -29,8 +28,7 @@
         <tbody data-plan="{{entry.subscription.plan}}">
           <tr>
             <td colspan="3">
-              <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %}
-                {{plan}} from {{organization}}{% endtrans %}</em>
+              <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
             </td>
           </tr>
         {% endif %}
@@ -58,7 +56,7 @@
             <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
           </div>
           <div class="col-sm-4">
-            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail{% endtrans %}" />
+            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
           </div>
           <div class="col-sm-4">
             <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>

@@ -1,10 +1,10 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Coupons{% endtrans %}{% endblock %}
+{% block saas_title %}{{organization.printable_name}} {% trans %}Coupons{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <div id="coupon-list-container">
-<div data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.{% endtrans %}<br />{% trans %}Create a coupon code with an associated discount percentage.{% endtrans %}<br />{% trans %}Distribute the coupon code to whoever is entitled{% endtrans %}<br />{% trans %}to a discount on their subscriptions. Users will be able to claim{% endtrans %}<br />{% trans %}the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
+<div data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
     <form class="form-inline mb-4">
         <div class="form-group my-3">
             <input type="text" class="form-control form-control-sm"

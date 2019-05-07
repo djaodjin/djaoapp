@@ -43,25 +43,25 @@ Implementation Note:
     </thead>
     <tbody>
       <tr>
-        <th class="info-row-header">{% trans %}REFERENCE{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header" style="text-transform:upper;">{% trans %}reference{% endtrans %}&nbsp;&nbsp;</th>
         <td>#{{charge.processor_key}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">{% trans %}AMOUNT{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header" style="text-transform:upper;">{% trans %}amount{% endtrans %}&nbsp;&nbsp;</th>
         <td>{% if refunded %}{% trans amount=charge.invoiced_total_after_refund|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge.price|humanize_money}}{% endif %}</td>
       </tr>
       {% if charge.card_name %}
       <tr>
-        <th class="info-row-header">{% trans %}NAME{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header "style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.card_name}}</td>
       </tr>
       {% endif %}
       <tr>
-        <th class="info-row-header">{% trans %}CARD{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header" style="text-transform:upper;">{% trans %}card{% endtrans %}&nbsp;&nbsp;</th>
         <td>**** - {{charge.last4}}</td>
       </tr>
       <tr>
-        <th class="info-row-header">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header" style="text-transform:upper;">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{charge.exp_date}}</td>
       </tr>
     </tbody>

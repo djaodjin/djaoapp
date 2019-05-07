@@ -56,9 +56,7 @@
     <div class="row">
     <div{% if not form.street_address %} class="offset-sm-4 col-sm-8"{% endif %}>
         <p>
-{% trans %}By clicking on the{% endtrans %} &quot;{% trans %}Register{% endtrans %}&quot; {% trans %}button below,{% endtrans %}
-<b>{% trans %}I signify that I have read and accept the{% endtrans %}
-<a target="_blank" href="/legal/terms-of-use/">{% trans %}terms of service{% endtrans %}</a></b>.
+{% trans %}By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
         </p>
         <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
     </div>

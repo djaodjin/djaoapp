@@ -38,11 +38,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                {% trans %}De-authorize ...{% endtrans %}
+                {% trans %}De-authorize{% endtrans %} ...
             </div>
             <div class="modal-body">
-                {% trans %}Please confirm you want to de-authorize access
-                to your Stripe account.{% endtrans %}
+{% trans %}Please confirm you want to de-authorize access to your Stripe account.{% endtrans %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -60,6 +59,5 @@
 {% endblock %}
 
 {% block saas_lead_help %}
-{% trans organization=organization.printable_name %}Please provide the information to deposit funds
-to the bank account of {{organization}}.{% endtrans %}
+{% trans organization=organization.printable_name %}Please provide the information to deposit funds to the bank account of {{organization}}.{% endtrans %}
 {% endblock %}
