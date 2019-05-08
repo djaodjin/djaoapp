@@ -48,6 +48,7 @@ register('js_saas', js_saas)
 
 
 js_auth = Bundle(
+    'js/djaoapp-i18n.js',
     'js/djaodjin-postal.js',
     'js/djaodjin-password-strength.js',
     filters='yui_js', output='cache/auth.js')
@@ -122,6 +123,7 @@ register('css_pages', css_pages)
 # must be previously included:
 #   - vendor/js/jquery.js (js_base)
 js_pages = Bundle(
+    'js/djaoapp-i18n.js',
     "vendor/dropzone.js",                  # pages
     "vendor/jquery-ui.js",                 # pages
     "vendor/jquery.selection.js",          # pages
