@@ -25,8 +25,16 @@ SQLITE        ?= sqlite3
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
 APP_NAME      ?= djaoapp
+ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
+# `make initdb` will install site.conf but only after `grep` is run
+# and DB_FILNAME set to "". We use the default value in the template site.conf
+# here to prevent that issue.
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
+else
+DB_FILENAME   := $(LOCALSTATEDIR)/db/djaodjin.sqlite
+endif
 DB_TEST_FILENAME := $(shell grep ^TEST_DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
+
 ifeq ($(dir $(DB_FILENAME)),./)
 MULTITIER_DB_FILENAME := cowork
 else
