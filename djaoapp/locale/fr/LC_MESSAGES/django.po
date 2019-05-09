@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-09 02:47+0000\n"
+"POT-Creation-Date: 2019-05-09 15:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
 "Language-Team: DjaoDjin <info@djaodjin.com>\n"
@@ -406,7 +406,7 @@ msgstr "Cliquer pour se déconnecter"
 
 #: djaoapp/templates/accounts/activate.html:8
 #: djaoapp/templates/saas/profile/index.html:56
-#: djaoapp/templates/saas/profile/plans/plan.html:62
+#: djaoapp/templates/saas/profile/plans/plan.html:64
 msgid "Activate"
 msgstr "Activer"
 
@@ -901,7 +901,7 @@ msgstr "URL de la page (ex: /hello) ..."
 #: djaoapp/templates/saas/profile/roles/index.html:148
 #: djaoapp/templates/saas/profile/roles/role.html:134
 #: djaoapp/templates/saas/profile/subscriptions.html:132
-#: djaoapp/templates/saas/users/roles.html:101
+#: djaoapp/templates/saas/users/roles.html:103
 #: djaoapp/templates/users/_require_password.html:28
 msgid "Cancel"
 msgstr "Annuler"
@@ -1212,7 +1212,7 @@ msgstr "De"
 #: djaoapp/templates/saas/profile/plans/subscribers.html:40
 #: djaoapp/templates/saas/profile/roles/index.html:92
 #: djaoapp/templates/saas/profile/roles/role.html:105
-#: djaoapp/templates/saas/users/roles.html:75
+#: djaoapp/templates/saas/users/roles.html:77
 msgid "To"
 msgstr "À"
 
@@ -1233,7 +1233,6 @@ msgstr "Nom complet (en fait le prénom suivi du nom de famille)"
 #: djaoapp/templates/saas/_invoiceables.html:22
 #: djaoapp/templates/saas/_invoiceables.html:62
 #: djaoapp/templates/saas/profile/roles/index.html:32
-#: djaoapp/templates/saas/users/roles.html:17
 msgid "Add"
 msgstr "Ajouter"
 
@@ -1368,11 +1367,11 @@ msgstr "Aucune transaction"
 msgid "Click here to revoke access to the user."
 msgstr "Cliquez ici pour retirer l'accès d'un utilisateur"
 
-#: djaoapp/templates/saas/_user_card.html:17
+#: djaoapp/templates/saas/_user_card.html:18
 msgid "invited"
 msgstr "invité"
 
-#: djaoapp/templates/saas/_user_card.html:17
+#: djaoapp/templates/saas/_user_card.html:18
 #: djaoapp/templates/saas/profile/plans/index.html:58
 msgid "active"
 msgstr "actif"
@@ -2052,8 +2051,9 @@ msgid "disabled"
 msgstr "désactivé"
 
 #: djaoapp/templates/saas/profile/plans/plan.html:4
-msgid "Update Plan"
-msgstr "Sauvegardez"
+#, python-format
+msgid "%(title)s Plan"
+msgstr "Forfait %(title)s"
 
 #: djaoapp/templates/saas/profile/plans/plan.html:13
 msgid "Set the title, description and price of a plan."
@@ -2072,15 +2072,15 @@ msgstr "Veuillez confirmez que vous souhaitez supprimer ce forfait."
 msgid "Plan Subscribers"
 msgstr "Abonnés a ce forfait"
 
-#: djaoapp/templates/saas/profile/plans/plan.html:59
+#: djaoapp/templates/saas/profile/plans/plan.html:61
 msgid "Toggle this plan between available for subscription or not."
 msgstr "Basculer ce forfait entre disponible pour abonnement ou non."
 
-#: djaoapp/templates/saas/profile/plans/plan.html:62
+#: djaoapp/templates/saas/profile/plans/plan.html:64
 msgid "Deactivate"
 msgstr "Désactiver"
 
-#: djaoapp/templates/saas/profile/plans/plan.html:63
+#: djaoapp/templates/saas/profile/plans/plan.html:65
 msgid "Users can only subscribe to active plans."
 msgstr "Les utilisateurs peuvent uniquement s'abonner aux forfaits actifs."
 
@@ -2106,7 +2106,7 @@ msgstr "Nous n'avons pas trouver %(invitee)s. C'est une opportunité pour l'invi
 #: djaoapp/templates/saas/profile/plans/subscribers.html:53
 #: djaoapp/templates/saas/profile/roles/index.html:104
 #: djaoapp/templates/saas/profile/roles/role.html:118
-#: djaoapp/templates/saas/users/roles.html:84
+#: djaoapp/templates/saas/users/roles.html:86
 msgid "The following invite message will be sent:"
 msgstr "Le message suivant sera envoyé avec l'invitation:"
 
@@ -2380,30 +2380,34 @@ msgstr "Utiliser votre code d'inscription"
 msgid "Accessible by %(user)s"
 msgstr "Accessible par %(user)s"
 
-#: djaoapp/templates/saas/users/roles.html:11
-msgid "Start typing the name or email of the organization you wish to add."
-msgstr "Commencez à saisir le nom ou l'e-mail de l'organisation que vous souhaitez ajouter."
+#: djaoapp/templates/saas/users/roles.html:13
+msgid "Start typing the name or email of the profile you want access to."
+msgstr "Commencez a taper le nom ou l'e-mail du profil que vous souhaitez accéder."
 
-#: djaoapp/templates/saas/users/roles.html:14
+#: djaoapp/templates/saas/users/roles.html:16
 msgid "Name or e-mail"
 msgstr "Nom d'utilisateur ou email"
 
-#: djaoapp/templates/saas/users/roles.html:42
+#: djaoapp/templates/saas/users/roles.html:19
+msgid "Add profile"
+msgstr "Ajouter Profil"
+
+#: djaoapp/templates/saas/users/roles.html:44
 msgid "No items"
 msgstr "Aucun éléments"
 
-#: djaoapp/templates/saas/users/roles.html:61
-#: djaoapp/templates/saas/users/roles.html:65
-#: djaoapp/templates/saas/users/roles.html:105
+#: djaoapp/templates/saas/users/roles.html:63
+#: djaoapp/templates/saas/users/roles.html:67
+#: djaoapp/templates/saas/users/roles.html:107
 msgid "Request access"
 msgstr "Demande accés"
 
-#: djaoapp/templates/saas/users/roles.html:72
+#: djaoapp/templates/saas/users/roles.html:74
 #, python-format
 msgid "%(full_name)s was not found. This is an opportunity to invite a profile manager for %(full_name)s to join %(site)s."
 msgstr "Nous n'avons pas trouver %(full_name)s. C'est une opportunité pour inviter %(full_name)s à joindre %(site)s."
 
-#: djaoapp/templates/saas/users/roles.html:88
+#: djaoapp/templates/saas/users/roles.html:90
 #, python-format
 msgid ""
 "Hello,\n"
@@ -3640,15 +3644,3 @@ msgstr "Le mot de passe a bien été sauvegardé."
 #: signup/views/users.py:221
 msgid "Public Key has been updated successfuly."
 msgstr "La clé publique a bien été sauvegardée."
-
-#~ msgid "Add Access Rule{"
-#~ msgstr "Ajouter une règle d'accès"
-
-#~ msgid "First name of the person that will benefit from the subscription (GroupBuy)"
-#~ msgstr "Prénom de la personne qui bénéficie de l'abonnement (GroupBuy)"
-
-#~ msgid "Last name of the person that will benefit from the subscription (GroupBuy)"
-#~ msgstr "Nom de famille de la personne qui bénéficie de l'abonnement (GroupBuy)"
-
-#~ msgid "Description for the Charge as appears on billing statements"
-#~ msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
