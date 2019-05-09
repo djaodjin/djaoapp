@@ -8,7 +8,7 @@
 
       Note:
       - CentOS 7 defaults to python2.7 with multiple prerequisites missing
-        a native package for Python 3 even in the extended repos.
+        a native package for Python3 (3.6) even in the EPEL repo.
     </description>
     <maintainer>
       <personname>DjaoDjin inc.</personname>
@@ -77,10 +77,15 @@
       <dep name="MarkupSafe" target="python" includes="1.1.0">
         <!-- By default version 0.11 is installed on CentOS7,
              which leads to an exception attempting to use jinja2 module. -->
-        <lib>.*/(jinja2)/__init__.py</lib>
+        <lib>.*/(markupsafe)/__init__.py</lib>
       </dep>
       <dep name="phonenumbers" target="python">
         <lib>.*/(phonenumbers)/__init__.py</lib>
+      </dep>
+      <dep name="pyOpenSSL" target="python">
+        <!-- couldn't find a native extension.
+             depends on python36-cryptography -->
+        <lib>.*/(OpenSSL)/__init__.py</lib>
       </dep>
       <dep name="python-social-auth" target="python">
         <lib>.*/(social_core)/__init__.py</lib>
@@ -108,33 +113,35 @@
       <!-- XXX impossible to find setproctitle in MacPorts -->
       <alternates>
         <alternate name="CentOS">
-          <dep name="python-cryptography">
-            <!-- Native code (used by python-social-auth) -->
-            <lib>.*/(cryptography)/__init__.py</lib>
-          </dep>
-          <dep name="pyOpenSSL">
-            <lib>.*/(OpenSSL)/__init__.py</lib>
-          </dep>
-          <dep name="python-coverage">
-            <bin>(coverage).*</bin>
-          </dep>
-          <dep name="python-billiard">
+          <!-- We couldn't find a native python36- package for those,
+               so we will have to rely on pip compiling them with gcc. -->
+          <dep name="billiard" target="python">
             <lib>.*/(billiard)/__init__.py</lib>
           </dep>
-          <dep name="python-lxml">
+          <dep name="lxml" target="python">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
-          <dep name="python-pillow">
+          <dep name="Pillow" target="python">
             <lib>.*/(PIL)/__init__.py</lib>
           </dep>
-          <dep name="python-psycopg2">
+          <!-- next dependencies: because python27 and python36 are both
+               installed, we make sure to look for a relevant v3 file.
+               We can't use `target=` here since we install a native package.
+          -->
+          <dep name="python36-cryptography">
+            <!-- Native code (used by python-social-auth) -->
+            <lib>.*/(cryptography)/hazmat/bindings/_openssl.abi3.so</lib>
+          </dep>
+          <dep name="python36-coverage">
+            <bin>(coverage)-3.6</bin>
+          </dep>
+          <dep name="python36-psycopg2">
             <!-- because we connect to postgresql and it is not automatically
                  pulled from Django. -->
-            <lib>.*/(psycopg2)/__init__.py</lib>
+            <lib>.*/(psycopg2)/_psycopg.cpython-36m-x86_64-linux-gnu.so</lib>
           </dep>
-          <dep name="python-setproctitle">
-            <!-- XXX seems we don't have a python36 package yet on CentOS -->
-            <lib>.*/setproctitle.*.so</lib>
+          <dep name="python36-setproctitle">
+            <lib>.*/setproctitle.cpython-36m-x86_64-linux-gnu.so</lib>
           </dep>
         </alternate>
         <alternate name="Darwin">
@@ -170,9 +177,6 @@
           <dep name="python3-cryptography">
             <!-- Native code (used by python-social-auth) -->
             <lib>.*/(cryptography)/__init__.py</lib>
-          </dep>
-          <dep name="python3-pyOpenSSL">
-            <lib>.*/(OpenSSL)/__init__.py</lib>
           </dep>
           <dep name="python3-coverage">
             <bin>(coverage).*</bin>
@@ -238,26 +242,28 @@
       </dep>
       <alternates>
         <alternate name="CentOS">
-          <dep name="WeasyPrint" target="python" includes="0.42.3">
-            <!-- WeasyPrint 0.42.3 is the last version supporting Python2. See
-                 comment about CentOS7 in the toplevel description field. -->
+          <dep name="WeasyPrint" target="python">
+            <!-- WeasyPrint 0.42.3 is the last version supporting Python2. -->
             <lib>.*/(weasyprint)/__init__.py</lib>
+          </dep>
+          <dep name="cairocffi" target="python" includes="0.9.0">
+            <!-- marked as a .noarch package yet will try to run gcc when
+                 installed through pip.
+                 CentOS7 (python-cairocffi) installs version 0.5.4 while
+                 WeasyPrint>=0.42.3 requires cairocffi>=0.9.0. WeasyPrint
+                 is though incompatible with cairocffi>=1.0.0 -->
+            <lib>.*/(cairocffi)/_generated/ffi.py</lib>
           </dep>
           <dep name="cairo">
             <lib>cairo</lib>
           </dep>
-          <dep name="python-cairocffi">
-            <!-- marked as a .noarch package yet will try to run gcc when
-                 installed through pip -->
-            <lib>.*/(cairocffi)/__init__.py</lib>
-          </dep>
           <dep name="pango">
             <lib>pango-1.0</lib>
           </dep>
-          <dep name="python-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
+          <dep name="python36-cffi">
+            <lib>.*/_cffi_backend.cpython-36m-x86_64-linux-gnu.so</lib>
           </dep>
-          <dep name="python-tinycss">
+          <dep name="tinycss" target="python">
             <lib>.*/(tinycss)/__init__.py</lib>
           </dep>
         </alternate>
@@ -488,18 +494,6 @@ TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/
       <dep name="Markdown" target="python">
         <lib>.*/(markdown)/__init__.py</lib>
       </dep>
-      <alternates>
-        <alternate name="CentOS">
-          <dep name="gcc">
-            <bin>gcc</bin>
-          </dep>
-        </alternate>
-        <alternate name="Fedora">
-          <dep name="gcc">
-            <bin>gcc</bin>
-          </dep>
-        </alternate>
-      </alternates>
     </repository>
   </project>
   <project name="djaodjin-rules">
@@ -579,11 +573,14 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <alternates>
         <!-- instead of pip install cryptography because there is a C module -->
         <alternate name="CentOS">
-          <dep name="python-cryptography">
-            <lib>.*/(cryptography)/__init__.py</lib>
+          <!-- because python27 and python36 are both installed, we make
+               sure to look for a relevant v3 file. We can't use `target=`
+               here since we install a native package. -->
+          <dep name="python36-cryptography">
+            <lib>.*/(cryptography)/hazmat/bindings/_openssl.abi3.so</lib>
           </dep>
-          <dep name="python-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
+          <dep name="python36-cffi">
+            <lib>.*/_cffi_backend.cpython-36m-x86_64-linux-gnu.so</lib>
           </dep>
         </alternate>
         <alternate name="Darwin">
