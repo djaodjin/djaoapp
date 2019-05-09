@@ -1,4 +1,4 @@
-<div :id="item.slug" class="card organization-card">
+<div :id="item.slug" :class="(item.grant_key || item.request_key) ? 'card organization-card card-inactive' : 'card organization-card'">
   <img :src="item.picture ? item.picture : '{{'/static/img/default-organization.png'|djasset}}'" class="card-img-top" :alt="item.printable_name">
   <div class="card-body">
     <h5 class="card-title">

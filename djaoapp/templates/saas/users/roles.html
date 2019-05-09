@@ -4,35 +4,37 @@
 
 {% block saas_content %}
 <section id="accessible-list-container">
-  <div class="row mt-4 mb-2">
-  <div class="col-6">
-    <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
-      <form class="form-inline" @submit.prevent="submit">
-        <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the organization you wish to add.{% endtrans %}</p>" data-trip-position="s">
-          <input id="userTypeahead"
-                 class="form-control form-control-sm"
-                 name="organization" type="text" placeholder="{% trans %}Name or e-mail{% endtrans %}"
-                 autocomplete="off">
-          <div class="input-group-append">
-            <button class="btn btn-primary btn-sm" type="submit">{% trans %}Add{% endtrans %}</button>
+  <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+    <form id="add-profile" class="form-inline mb-4" @submit.prevent="submit">
+      <div style="width:100%;">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="form-group"
+               data-trip data-trip-index="2"
+               data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>"
+               data-trip-position="s">
+              <input type="text" class="form-control" id="userTypeahead"
+                     name="user" type="text" placeholder="{% trans %}Name or e-mail{% endtrans %}"
+                     autocomplete="off">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">{% trans %}Add profile{% endtrans %}</button>
+              </div>
           </div>
-        </div>
-        <uiv-typeahead
-           v-model="itemSelected"
-           target="#userTypeahead"
-           :async-function="getUsers"
-           item-key="slug"
-           :open-on-focus="false"
-           />
-      </form>
-    </user-typeahead>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-row">
+          <uiv-typeahead
+               v-model="itemSelected"
+               target="#userTypeahead"
+               :async-function="getUsers"
+               item-key="slug"
+               :open-on-focus="false"
+               class="typeahead-dropdown"
+               />
+      </div>
+    </form>
+  </user-typeahead>
+  <hr />
+  <div class="row">
+      <div class="col-12">
             {% include "saas/_filter_match.html" %}
-        </div>
-    </div>
-    </div>
+  </div>
   <div class="row">
       <div class="col-12 col-md-6">
         <div v-show="!itemsLoaded">

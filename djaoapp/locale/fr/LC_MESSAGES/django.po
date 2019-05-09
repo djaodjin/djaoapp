@@ -957,7 +957,7 @@ msgstr "Ré-initialiser le thème par défault"
 #: djaoapp/templates/saas/_sidebar.html:33
 #: djaoapp/templates/users/notifications.html:3
 msgid "Notifications"
-msgstr "Notifications."
+msgstr "Notifications"
 
 #: djaoapp/templates/pages/theme.html:57 djaoapp/templates/pages/theme.html:68
 msgid "Edit"
