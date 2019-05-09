@@ -78,8 +78,8 @@
                                 <p>
 {% trans %}To forward HTTP requests to your application instead of showing the landing page:{% endtrans %}
 <ol>
-<li>{% trans %}Check <em>forward</em> for the /app/ rule in the <a href="{{urls.rules.app}}">rules dashboard</a>.{% endtrans %}</li>
-<li>{% trans %}Create a session encryption secret key in the <a href="{{urls.rules.app}}">rules dashboard</a>.{% endtrans %}</li>
+<li>{% trans rules_url=urls.rules.app %}Check <em>forward</em> for the /app/ rule in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}</li>
+<li>{% trans rules_url=urls.rules.app %}Create a session encryption secret key in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}</li>
 <li>{% trans %}<a href="https://djaodjin.com/docs/" target="_blank">Integrate session decryption code</a> at the front of your application request processing pipeline.{% endtrans %}</li>
 </ol>
                                 </p>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-08 21:00+0000\n"
+"POT-Creation-Date: 2019-05-09 02:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
 "Language-Team: DjaoDjin <info@djaodjin.com>\n"
@@ -196,7 +196,7 @@ msgstr "Nom de l'organisation"
 #: djaoapp/forms/custom_signup.py:114 djaoapp/forms/custom_signup.py:228
 #: saas/api/billing.py:88 saas/api/serializers.py:168
 #: saas/api/serializers.py:273 saas/api/serializers.py:333 saas/forms.py:98
-#: saas/forms.py:167 saas/migrations/0008_0_3_4.py:236 saas/models.py:235
+#: saas/forms.py:167 saas/models.py:235
 msgid "Street address"
 msgstr "Rue"
 
@@ -319,8 +319,6 @@ msgid "If you think there is a mistake, please <a href=\"/contact/\">contact us<
 msgstr "Si vous pensez qu'il y a erreur, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
 
 #: djaoapp/templates/400.html:24 djaoapp/templates/404.html:17
-#, fuzzy
-#| msgid "We do our best to reply to each request individually within 24 hours. Thank you!"
 msgid "We do our best to reply within 24 hours. Thank you!"
 msgstr "Nous faisons notre possible pour répondre dans les 24 heures. Merci."
 
@@ -329,10 +327,8 @@ msgid "403 Permission denied - Sorry, it seems you do not have permissions to ac
 msgstr "403 Permission refusée - Désolé, il semble que vous n'ayez pas les permissions requises pour accéder a cette page."
 
 #: djaoapp/templates/403.html:14 djaoapp/templates/accounts/disabled.html:10
-#, fuzzy
-#| msgid "If you think there is a mistake, please contact the administrator for your organization."
 msgid "If you think it is a mistake, please contact an administrator."
-msgstr "Si vous pensez qu'il y a erreur, contactez un administrateur pour votre organization s'il vous plaît."
+msgstr "Si vous pensez qu'il y a erreur, contactez un administrateur s'il vous plaît."
 
 #: djaoapp/templates/403.html:17
 msgid "If you are an administrator and think this is a mistake, please <a href=\"/contact/\">contact us</a>."
@@ -357,7 +353,6 @@ msgid "We have been notified and have started on fixing the error. We apologize 
 msgstr "Nous avons reçus une notification et avons commencé à corriger l'erreur. Nous nous excusons pour le dérangement."
 
 #: djaoapp/templates/500.html:127
-#, fuzzy
 msgid "If you would like to drop us a line, please <a href=\"/contact/\">get in touch</a>."
 msgstr "Si vous souhaitez nous laisser un message, <a href=\"/contact/\">contactez nous</a>."
 
@@ -445,10 +440,8 @@ msgid "Authentication disabled"
 msgstr "Authentification désactivée"
 
 #: djaoapp/templates/accounts/disabled.html:9
-#, fuzzy
-#| msgid "User login and registration has been currently disabled on your site. If you think it is a mistake, please contact the administrator."
 msgid "User login and registration has been currently disabled on your site."
-msgstr "Connexion et inscription ont momentanément été désactivées. Si vous pensez qu'il y a erreur, contactez un administrateur du site."
+msgstr "Connexion et inscription ont momentanément été désactivées."
 
 #: djaoapp/templates/accounts/disabled.html:13
 msgid "Thank you."
@@ -471,10 +464,8 @@ msgid "Submit"
 msgstr "Soumettre"
 
 #: djaoapp/templates/accounts/login.html:23
-#, fuzzy
-#| msgid "Confirm password"
 msgid "Forgot password?"
-msgstr "Verifier votre mot de passe"
+msgstr "Mot de pass oublié?"
 
 #: djaoapp/templates/accounts/login.html:23
 msgid "Recover"
@@ -510,7 +501,6 @@ msgid "Set/Reset Password"
 msgstr "Choisissez/Changez un mot de passe"
 
 #: djaoapp/templates/accounts/reset.html:14
-#, fuzzy
 msgid "You are about to activate your account and need to enter a password to secure it, or you have an account already and requested to change your password."
 msgstr "vous êtes sur le point d'activer votre compte ou avez demandé à changer votre mot de passe. Choisissez un mot de passe s'il vous plaît."
 
@@ -563,13 +553,13 @@ msgstr "Pour transférer des requêtes HTTP à votre application au lieu d'affic
 
 #: djaoapp/templates/app_proxy_help.html:81
 #, python-format
-msgid "Check <em>forward</em> for the /app/ rule in the <a href=\"%(urls.rules.app)s\">rules dashboard</a>."
-msgstr "Cocher <em>transférer</em> pour la règle /app/ dans <a href=\"%(urls.rules.app)s\">les règles du tableau de bord</a>"
+msgid "Check <em>forward</em> for the /app/ rule in the <a href=\"%(rules_url)s\">rules dashboard</a>."
+msgstr "Cocher <em>transférer</em> pour la règle /app/ dans <a href=\"%(rules_url)s\">les règles du tableau de bord</a>"
 
 #: djaoapp/templates/app_proxy_help.html:82
 #, python-format
-msgid "Create a session encryption secret key in the <a href=\"%(urls.rules.app)s\">rules dashboard</a>."
-msgstr "Créez une clé secrète de chiffrement de session dans <a href=\"%(urls.rules.app)s\">les règles du tableau de bord</a>"
+msgid "Create a session encryption secret key in the <a href=\"%(rules_url)s\">rules dashboard</a>."
+msgstr "Créez une clé secrète de chiffrement de session dans <a href=\"%(rules_url)s\">les règles du tableau de bord</a>"
 
 #: djaoapp/templates/app_proxy_help.html:83
 msgid "<a href=\"https://djaodjin.com/docs/\" target=\"_blank\">Integrate session decryption code</a> at the front of your application request processing pipeline."
@@ -593,10 +583,9 @@ msgid "Please leave your name and email address."
 msgstr "Laissez votre nom et addresse e-mail s'il vous plaît."
 
 #: djaoapp/templates/contacts/contact.html:8
-#, fuzzy, python-format
-#| msgid "%(user)s Profile"
+#, python-format
 msgid "%(name)s Profile"
-msgstr "Profil de %(user)s"
+msgstr "Profil de %(name)s"
 
 #: djaoapp/templates/contacts/contact.html:12
 #: djaoapp/templates/contacts/index.html:34 signup/models.py:256
@@ -842,10 +831,9 @@ msgid "TESTING MODE - No funds will be transfered and <a href=\"https://stripe.c
 msgstr "MODE TEST - Aucun fonds ne sera transférer et <a href=\"https://stripe.com/docs/testing#cards\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">les numéros de cartes test</a> peuvent etre utilisées."
 
 #: djaoapp/templates/pages/_body_top_testing_manager.html:1
-#, fuzzy, python-format
-#| msgid "LIVE MODE - To create live charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connect a Stripe account &raquo;</a>"
+#, python-format
 msgid "TESTING MODE - To create live charges and remove this banner: <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">Switch to production mode &raquo;</a>."
-msgstr "LIVE MODE - <b>erreur</b>: pour créer des charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connectez un compte marchant &raquo;</a>"
+msgstr "MODE TEST - pour créer des charges, et retirer cette bannière <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">passer en mode production &raquo;</a>"
 
 #: djaoapp/templates/pages/_body_top_testing_no_processor.html:1
 msgid "TESTING MODE - You can register test accounts but a site administrator will have to connect a Stripe account to create test charges."
@@ -874,8 +862,6 @@ msgid "Upload completed"
 msgstr "Téléchargement complet"
 
 #: djaoapp/templates/pages/_edit_tools.html:73
-#, fuzzy
-#| msgid "tags..."
 msgid "tags"
 msgstr "tags..."
 
@@ -1050,11 +1036,6 @@ msgid "Engage tags"
 msgstr "tags d'engagement"
 
 #: djaoapp/templates/rules/app_dashboard.html:73
-#, fuzzy
-#| msgid "Add Access Rule"
-msgid "Add Access Rule{"
-msgstr "Ajouter une règle d'accès"
-
 #: djaoapp/templates/rules/app_dashboard.html:84
 msgid "Add Access Rule"
 msgstr "Ajouter une règle d'accès"
@@ -1195,10 +1176,8 @@ msgid "The service behind the firewall cannot be reached."
 msgstr "Le service derrière le pare-feu n'est pas joinable."
 
 #: djaoapp/templates/rules/forward_error_manager_help.html:17
-#, fuzzy
-#| msgid "If you are an administrator and think this is a mistake, please <a href=\"/contact/\">contact us</a>."
 msgid "You are a manager for this product. If you need help to setup your service, please <a href=\"/contact/\">contact us</a>."
-msgstr "Si vous êtes un administrateur et pensez qu'il y a erreur, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
+msgstr "Vous êtes un administrateur pour ce produit. Si vous avez besoin d'aide, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
 
 #: djaoapp/templates/saas/_bank_use.html:4
 msgid "Bank Information"
@@ -1242,17 +1221,14 @@ msgid "Match"
 msgstr "Filtre"
 
 #: djaoapp/templates/saas/_invoiceables.html:7
-#, fuzzy, python-format
-#| msgid "%(title)s for %(organization)s"
+#, python-format
 msgid "%(plan)s from %(organization)s"
-msgstr "%(title)s pour %(organization)s"
+msgstr "%(plan)s pour %(organization)s"
 
 #: djaoapp/templates/saas/_invoiceables.html:16
 #: djaoapp/templates/saas/_invoiceables.html:56
-#, fuzzy
-#| msgid "Full name for the contact (effectively first name followed by last name)"
 msgid "Full name (i.e. first and last names)"
-msgstr "Nom complet pour le contact (en fait le prénom suivi du nom de famille)"
+msgstr "Nom complet (en fait le prénom suivi du nom de famille)"
 
 #: djaoapp/templates/saas/_invoiceables.html:22
 #: djaoapp/templates/saas/_invoiceables.html:62
@@ -1262,20 +1238,17 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: djaoapp/templates/saas/_invoiceables.html:31
-#, fuzzy, python-format
-#| msgid "%(title)s for %(organization)s"
+#, python-format
 msgid " %(plan)s from %(organization)s"
-msgstr "%(title)s pour %(organization)s"
+msgstr "%(plan)s pour %(organization)s"
 
 #: djaoapp/templates/saas/_invoiceables.html:73
 msgid "Charged Today"
 msgstr "A payer aujourd'hui"
 
 #: djaoapp/templates/saas/_organization_card.html:8
-#, fuzzy
-#| msgid "Role requested"
 msgid "pending request"
-msgstr "role requis"
+msgstr "requête pour role"
 
 #: djaoapp/templates/saas/_organization_card.html:12
 #: djaoapp/templates/saas/_sidebar.html:57
@@ -1448,10 +1421,9 @@ msgid "Thank you for your business."
 msgstr "Merci."
 
 #: djaoapp/templates/saas/billing/bank.html:4
-#, fuzzy, python-format
-#| msgid "Profile %(organization)s does not exist."
+#, python-format
 msgid "Update %(organization)s Deposit Information"
-msgstr "Le profil %(organization)s n'existe pas."
+msgstr "Mettre à jour le compte de depot pour %(organization)s"
 
 #: djaoapp/templates/saas/billing/bank.html:11
 #: djaoapp/templates/saas/billing/transfers.html:38
@@ -1469,26 +1441,22 @@ msgid "De-authorize"
 msgstr "Dé-authoriser"
 
 #: djaoapp/templates/saas/billing/bank.html:44
-#, fuzzy
-#| msgid "Please confirm you want to delete this plan."
 msgid "Please confirm you want to de-authorize access to your Stripe account."
-msgstr "Veuillez confirmez que vous souhaitez supprimer ce forfait."
+msgstr "Veuillez confirmez que vous souhaitez retirer l'accès a votre compte Stripe."
 
 #: djaoapp/templates/saas/billing/bank.html:51
 msgid "OOPS"
 msgstr "OOPS"
 
 #: djaoapp/templates/saas/billing/bank.html:62
-#, fuzzy, python-format
-#| msgid "You have been invited to create an account to join %(organization)s."
+#, python-format
 msgid "Please provide the information to deposit funds to the bank account of %(organization)s."
-msgstr "Vous avez été invité a créer un compte pour joindre %(organization)s."
+msgstr "S'il vous plait, ajoutez les informations pour connecter le compte depot de %(organization)s."
 
 #: djaoapp/templates/saas/billing/card.html:4
-#, fuzzy, python-format
-#| msgid "E-mail address for the organization"
+#, python-format
 msgid "Update Card for %(organization)s"
-msgstr "Adresse e-mail de l'organisation"
+msgstr "Mettre à jour la carte bancaire pour %(organization)s"
 
 #: djaoapp/templates/saas/billing/cart-periods.html:3
 #: djaoapp/templates/saas/billing/cart.html:6
@@ -1789,10 +1757,8 @@ msgid "Update your bank information so funds can be transfered to you."
 msgstr "Mettez à jour vos informations bancaires afin que les fonds puissent vous être transférés."
 
 #: djaoapp/templates/saas/billing/withdraw.html:4
-#, fuzzy
-#| msgid "Used to deposit funds to the organization bank account"
 msgid "Withdraw funds to your bank account"
-msgstr "Utilisé pour déposer les fonds dans le compte en banque d'une organisation"
+msgstr "Transferer les fonds dans votre compte bancaire"
 
 #: djaoapp/templates/saas/metrics/balances.html:3
 msgid "Balances"
@@ -1951,8 +1917,7 @@ msgstr "Nous avons chargé votre carte au %(created_at)s pour un montant de %(pr
 #: djaoapp/templates/saas/printable_charge_receipt.html:57
 #: djaoapp/templates/saas/printable_charge_receipt.html:62
 #: djaoapp/templates/saas/printable_charge_receipt.html:67
-#, fuzzy, python-format
-#| msgid "On %(created_at)s, we attempted to charge your card for the amount of %(price)s."
+#, python-format
 msgid "On %(created_at)s, we attempted to charge your card for an amount of %(price)s."
 msgstr "Nous avons essayé de charger votre carte au %(created_at)s pour un montant de %(price)s."
 
@@ -2050,8 +2015,6 @@ msgid "API Key"
 msgstr "Clé API"
 
 #: djaoapp/templates/saas/profile/index.html:183
-#, fuzzy
-#| msgid "Password with which a user can authenticate with the service"
 msgid "This is the API key you can use to authenticate with the service."
 msgstr "Voici la clé API que vous pouvez utiliser pour vous authentifier avec le service."
 
@@ -2127,21 +2090,18 @@ msgid "%(plan)s plan subscribers"
 msgstr "Abonnés au forfait %(plan)s"
 
 #: djaoapp/templates/saas/profile/plans/subscribers.html:15
-#, fuzzy
-#| msgid "Start typing the username or email of the person you want to add."
 msgid "Start typing the name or email of the profile you want to add."
-msgstr "Commencez a taper le nom d'utilisateur ou l'e-mail de la personne que vous voulez ajouter."
+msgstr "Commencez a taper le nom ou l'e-mail du profil que vous souhaitez ajouter."
 
 #: djaoapp/templates/saas/profile/plans/subscribers.html:21
 #: djaoapp/templates/saas/profile/plans/subscribers.html:65
-#, fuzzy
-#| msgid "No subscribers"
 msgid "Add subscriber"
-msgstr "Aucun abonné"
+msgstr "Ajouter un abonné"
 
 #: djaoapp/templates/saas/profile/plans/subscribers.html:36
-msgid "is not yet registered. This is an opportunity to invite and add her/him."
-msgstr ""
+#, python-format
+msgid "%(invitee)s is not yet registered. This is an opportunity to invite and add her/him."
+msgstr "Nous n'avons pas trouver %(invitee)s. C'est une opportunité pour l'inviter."
 
 #: djaoapp/templates/saas/profile/plans/subscribers.html:53
 #: djaoapp/templates/saas/profile/roles/index.html:104
@@ -2151,14 +2111,7 @@ msgid "The following invite message will be sent:"
 msgstr "Le message suivant sera envoyé avec l'invitation:"
 
 #: djaoapp/templates/saas/profile/plans/subscribers.html:57
-#, fuzzy, python-format
-#| msgid ""
-#| "Hi %(invitee)s,\n"
-#| "\n"
-#| "I am adding you as a %(role_descr)s to %(organization)s.\n"
-#| "\n"
-#| "Thank you,\n"
-#| "- %(user)s"
+#, python-format
 msgid ""
 "Hi %(invitee)s,\n"
 "\n"
@@ -2169,7 +2122,7 @@ msgid ""
 msgstr ""
 "Boujour %(invitee)s,\n"
 "\n"
-"Je vous ajoute a la liste des %(role_descr)s pour %(organization)s.\n"
+"Je vous abonne au plan %(plan)s.\n"
 "\n"
 "Merci,\n"
 "- %(user)s"
@@ -2264,10 +2217,9 @@ msgstr "Ajouter %(role_descr)s"
 
 #: djaoapp/templates/saas/profile/roles/index.html:88
 #: djaoapp/templates/saas/profile/roles/role.html:101
-#, fuzzy, python-format
-#| msgid "%(full_name)s was not found. This is an opportunity to invite a profile manager for %(full_name)s to join %(site)s."
+#, python-format
 msgid "%(invitee)s is not yet registered. This is an opportunity to invite and add her/him as a %(role_descr)s for %(organization)s."
-msgstr "Nous n'avons pas trouver %(full_name)s. C'est une opportunité pour inviter %(full_name)s à joindre %(site)s."
+msgstr "Nous n'avons pas trouver %(invitee)s. C'est une opportunité pour l'inviter a prendre un role de  %(role_descr)s pour %(organization)s."
 
 #: djaoapp/templates/saas/profile/roles/index.html:108
 #: djaoapp/templates/saas/profile/roles/role.html:122
@@ -2385,8 +2337,6 @@ msgid "No subcriptions"
 msgstr "Aucun abonnement"
 
 #: djaoapp/templates/saas/profile/subscriptions.html:86
-#, fuzzy
-#| msgid "Subscribe"
 msgid "Unsubscribe Now"
 msgstr "Se désabonner maintenant"
 
@@ -2409,10 +2359,9 @@ msgid "Unsubscribe"
 msgstr "Se désabonner"
 
 #: djaoapp/templates/saas/profile/subscriptions.html:123
-#, fuzzy, python-format
-#| msgid "You are about to delete the profile and account for %(profile_name)s."
+#, python-format
 msgid "You are about to delete the profile and account for <em>%(organization_name)s</em>"
-msgstr "Vous êtes sur le point de supprimer le profil et le compte pour <em>%(profile_name)s</em>. Cette opération ne peut pas être annulée."
+msgstr "Vous êtes sur le point de supprimer le profil et le compte pour <em>%(organization_name)s</em>. Cette opération ne peut pas être annulée."
 
 #: djaoapp/templates/saas/profile/subscriptions.html:146
 msgid "Expired subscriptions"
@@ -2436,8 +2385,6 @@ msgid "Start typing the name or email of the organization you wish to add."
 msgstr "Commencez à saisir le nom ou l'e-mail de l'organisation que vous souhaitez ajouter."
 
 #: djaoapp/templates/saas/users/roles.html:14
-#, fuzzy
-#| msgid "Username or e-mail"
 msgid "Name or e-mail"
 msgstr "Nom d'utilisateur ou email"
 
@@ -2899,8 +2846,6 @@ msgid "Processor token to retrieve the payment method"
 msgstr ""
 
 #: saas/api/serializers.py:164
-#, fuzzy
-#| msgid "E-mail address for the contact"
 msgid "E-mail address for the account"
 msgstr "Adresse e-mail du contact"
 
@@ -2929,10 +2874,7 @@ msgstr "Force l'invitation d'un utilisateur ou une organisation qui n'a pas enco
 msgid "Unique key in the table for the data series"
 msgstr "Clé unique dans le tableau pour la série de données."
 
-#: saas/api/serializers.py:220 saas/migrations/0008_0_3_4.py:46
-#: saas/models.py:3941
-#, fuzzy
-#| msgid "Filter on the Transaction accounts"
+#: saas/api/serializers.py:220 saas/models.py:3941
 msgid "Filter on the Transaction accounts"
 msgstr "Filtre sur les comptes d'une Transaction"
 
@@ -2986,10 +2928,9 @@ msgstr "Titre pour le plan"
 
 #: saas/api/serializers.py:423 saas/api/serializers.py:503
 #: saas/api/transactions.py:426 saas/models.py:2173
-#, fuzzy, python-format
-#| msgid "Free-form text description for the Coupon"
+#, python-format
 msgid "Free-form text description for the %(object)s"
-msgstr "Texte libre pour la description du Coupon"
+msgstr "Texte libre pour la description de %(object)s"
 
 #: saas/api/serializers.py:426
 msgid "True when customers can subscribe to the plan"
@@ -3004,10 +2945,8 @@ msgid "Amount billed every period"
 msgstr "Montant à payer à chaque période"
 
 #: saas/api/serializers.py:433 saas/api/serializers.py:435
-#, fuzzy
-#| msgid "Free-form text description for the subscription"
 msgid "Natural period for the subscription"
-msgstr "Texte libre pour la description de l'abonnement"
+msgstr "periode naturelle de l'abonnement"
 
 #: saas/api/serializers.py:439
 msgid "Provider of the plan"
@@ -3045,17 +2984,14 @@ msgstr "Le nom d'utilisateur. Cette variable est nommée `slug` de façon à ce 
 msgid "E-mail address for the user"
 msgstr "L'adresse e-mail pour l'utilisateur"
 
-#: saas/api/serializers.py:556 saas/api/transactions.py:422
-#: saas/migrations/0008_0_3_4.py:61 saas/migrations/0008_0_3_4.py:106
-#: saas/models.py:226 saas/models.py:1069 saas/models.py:1400
-#: saas/models.py:2169 saas/models.py:2665 saas/models.py:2832
-#: saas/models.py:3861 signup/models.py:251 signup/models.py:365
+#: saas/api/serializers.py:556 saas/api/transactions.py:422 saas/models.py:226
+#: saas/models.py:1069 saas/models.py:1400 saas/models.py:2169
+#: saas/models.py:2665 saas/models.py:2832 saas/models.py:3861
+#: signup/models.py:251 signup/models.py:365
 msgid "Date/time of creation (in ISO format)"
 msgstr "Date/heure de creation (en format ISO)"
 
 #: saas/api/serializers.py:558
-#, fuzzy
-#| msgid "Full name for the contact (effectively first name followed by last name)"
 msgid "Full name for the contact (effectively first name followed by last name)"
 msgstr "Nom complet pour le contact (en fait le prénom suivi du nom de famille)"
 
@@ -3072,8 +3008,6 @@ msgid "Describes the reason for the error in plain text"
 msgstr "Décrit la raison de l'erreur en texte lisible"
 
 #: saas/api/serializers.py:719
-#, fuzzy
-#| msgid "I agree with <a href=\"%s\">terms and conditions</a>"
 msgid "I have read and understand these terms and conditions"
 msgstr "J'accepte les <a href=\"%s\">termes et conditions</a>."
 
@@ -3094,10 +3028,8 @@ msgid "Invalid subscription/plan field format"
 msgstr "format erroné pour l'abonnement/plan"
 
 #: saas/api/transactions.py:466 saas/views/billing.py:1123
-#, fuzzy
-#| msgid "Subscribe"
 msgid "Invalid subscriber"
-msgstr "Abonnez-vous"
+msgstr "Abonné invalid"
 
 #: saas/api/transactions.py:470 saas/views/billing.py:1127
 msgid "Invalid plan"
@@ -3118,8 +3050,7 @@ msgstr "Votre carte a été rejetée. Nous prennons votre sécurité très au s�
 #: saas/backends/stripe_processor/base.py:128
 #: saas/backends/stripe_processor/base.py:140
 #: saas/backends/stripe_processor/base.py:262
-#, fuzzy, python-format
-#| msgid "%(organization)s is not connected to a Stripe account."
+#, python-format
 msgid "%(organization)s is not connected to a Stripe account."
 msgstr "%(organization)s n'est pas connecté a un compte Stripe."
 
@@ -3132,8 +3063,6 @@ msgid "Remember this card"
 msgstr "Se souvenir de cette carte"
 
 #: saas/forms.py:94
-#, fuzzy
-#| msgid "Card Holder"
 msgid "Card Holder"
 msgstr "Nom du porteur de la carte"
 
@@ -3185,109 +3114,32 @@ msgstr "Code pour s'enregistrer"
 msgid "Amount (in %(unit)s)"
 msgstr "Montant (in %(unit)s)"
 
-#: saas/migrations/0008_0_3_4.py:41 saas/models.py:3944
-msgid "Absolute position of the row in the list of rows for the table"
-msgstr "Position absolue de la ligne dans la liste de ligne du tableau"
-
-#: saas/migrations/0008_0_3_4.py:51 saas/models.py:3939
-msgid "Title for the row"
-msgstr "Titre de la ligne"
-
-#: saas/migrations/0008_0_3_4.py:56 saas/models.py:2679
-msgid "Coupon to apply to the order"
-msgstr "Coupon à appliquer au passage en caisse"
-
-#: saas/migrations/0008_0_3_4.py:66
-msgid "First name of the person that will benefit from the subscription (GroupBuy)"
-msgstr "Prénom de la personne qui bénéficie de l'abonnement (GroupBuy)"
-
-#: saas/migrations/0008_0_3_4.py:71
-msgid "Last name of the person that will benefit from the subscription (GroupBuy)"
-msgstr "Nom de famille de la personne qui bénéficie de l'abonnement (GroupBuy)"
-
-#: saas/migrations/0008_0_3_4.py:76 saas/models.py:2673
-msgid "Item added to the cart (if plan)"
-msgstr "Produit ajouté au panier (si plan)"
-
-#: saas/migrations/0008_0_3_4.py:81 saas/models.py:2686
-msgid "Number of periods to be paid in advance"
-msgstr "Nombre de périodes payées en avance"
-
-#: saas/migrations/0008_0_3_4.py:86 saas/models.py:2681
-msgid "Whever the item has been checked out or not"
-msgstr "Si le produit est passé en caisse ou non"
-
-#: saas/migrations/0008_0_3_4.py:91 saas/models.py:2676
-msgid "Item added to the cart (if use charge)"
-msgstr "Produit ajouté au panier (si frais d'usage)"
-
-#: saas/migrations/0008_0_3_4.py:96 saas/models.py:2669
-msgid "User who added the item to the cart (``None`` means the item could be claimed)"
-msgstr "L'utilisateur qui a ajouté ce produit dans son panier (``None`` veut dire que le produit peut être attaché à un profil dans le futur)"
-
-#: saas/migrations/0008_0_3_4.py:101 saas/models.py:1405
-msgid "Total amount in currency unit"
-msgstr "Montant total en unité monétaire"
-
-#: saas/migrations/0008_0_3_4.py:111 saas/models.py:1409
-#, fuzzy
-#| msgid "Organization name"
-msgid "Organization charged"
-msgstr "Nom de l'organisation"
-
-#: saas/migrations/0008_0_3_4.py:116
-msgid "Description for the Charge as appears on billing statements"
-msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
-
-#: saas/migrations/0008_0_3_4.py:121 saas/models.py:1416
-msgid "Expiration date of the credit card used"
-msgstr "La date d'expiration de la carte de paiement utilisée"
-
-#: saas/migrations/0008_0_3_4.py:131 saas/models.py:1414
-msgid "Last 4 digits of the credit card used"
-msgstr "Les 4 derniers chiffres de la carte de paiement utilisée"
-
-#: saas/migrations/0008_0_3_4.py:146 saas/models.py:1975
-msgid "Transaction invoiced through this charge"
-msgstr "La Transaction facturée à travers cette charge"
-
-#: saas/migrations/0008_0_3_4.py:151 saas/models.py:1984
-msgid "Transaction recording the distribution from processor to provider."
-msgstr "Transaction enregistrée pour la distribution du processeur au fournisseur."
-
 #: saas/mixins.py:224
 msgid "free"
 msgstr "Gratuit"
 
 #: saas/mixins.py:438
-#, fuzzy
-#| msgid "More ..."
 msgid "More ..."
 msgstr "Plus ..."
 
 #: saas/mixins.py:927
-#, fuzzy, python-format
-#| msgid "RoleDescription '%s' does not exist."
+#, python-format
 msgid "RoleDescription '%(role)s' does not exist."
-msgstr "RoleDescription '%s' n'existe pas."
+msgstr "RoleDescription '%(role)s' n'existe pas."
 
 #: saas/models.py:246
 msgid "The organization can fulfill the provider side of a subscription."
 msgstr "L'organisation peut être utilisée comme un fournisseur dans un abonnement."
 
 #: saas/models.py:254 saas/models.py:255 signup/models.py:263
-#, fuzzy
-#| msgid "Profile updated."
 msgid "Profile picture"
-msgstr "Profil sauvegardé."
+msgstr "photo du profil"
 
 #: saas/models.py:271
 msgid "Funds escrowed in currency unit"
 msgstr "Les fonds sous écrous en unité monétaire"
 
 #: saas/models.py:278
-#, fuzzy
-#| msgid "Used to deposit funds to the organization bank account"
 msgid "Used to deposit funds to the organization bank account"
 msgstr "Utilisé pour déposer les fonds dans le compte en banque d'une organisation"
 
@@ -3304,11 +3156,25 @@ msgstr "Description synthétique du rôle. Les règles grammaticales pour les fo
 msgid "%(organization)s is not associated to an account on the processor and no token was passed."
 msgstr "%(organization)s n'est pas associée à un compte processeur et aucun token n'a été passé."
 
+#: saas/models.py:1405
+msgid "Total amount in currency unit"
+msgstr "Montant total en unité monétaire"
+
+#: saas/models.py:1409
+msgid "Organization charged"
+msgstr "Nom de l'organisation qui a payée"
+
 #: saas/models.py:1411
-#, fuzzy
-#| msgid "Description for the Charge as appears on billing statements"
 msgid "Description for the charge as appears on billing statements"
 msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
+
+#: saas/models.py:1414
+msgid "Last 4 digits of the credit card used"
+msgstr "Les 4 derniers chiffres de la carte de paiement utilisée"
+
+#: saas/models.py:1416
+msgid "Expiration date of the credit card used"
+msgstr "La date d'expiration de la carte de paiement utilisée"
 
 #: saas/models.py:1490
 #, python-format
@@ -3320,9 +3186,17 @@ msgstr "La charge et les remboursements ont différentes unités (%(unit)s vs. %
 msgid "Cannot refund %(refund_required)s while there is only %(refund_available)s available on the line item."
 msgstr "Impossible de rembourser %(refund_required)s alors qu'il n'y a que %(refund_available)s disponible pour la ligne."
 
+#: saas/models.py:1975
+msgid "Transaction invoiced through this charge"
+msgstr "La Transaction facturée à travers cette charge"
+
 #: saas/models.py:1979
 msgid "Fee transaction to process the transaction invoiced through this charge"
 msgstr "Transaction enregistrant les frais pour la transaction facturée a travers cette charge"
+
+#: saas/models.py:1984
+msgid "Transaction recording the distribution from processor to provider."
+msgstr "Transaction enregistrée pour la distribution du processeur au fournisseur."
 
 #: saas/models.py:2087
 #, python-format
@@ -3387,11 +3261,33 @@ msgstr "Nombre de périodes avant que l'abonnement au plan se termine (1 par dé
 msgid "period type %d is not defined."
 msgstr "Le type de période %d n'est pas défini."
 
+#: saas/models.py:2669
+msgid "User who added the item to the cart (``None`` means the item could be claimed)"
+msgstr "L'utilisateur qui a ajouté ce produit dans son panier (``None`` veut dire que le produit peut être attaché à un profil dans le futur)"
+
+#: saas/models.py:2673
+msgid "Item added to the cart (if plan)"
+msgstr "Produit ajouté au panier (si plan)"
+
+#: saas/models.py:2676
+msgid "Item added to the cart (if use charge)"
+msgstr "Produit ajouté au panier (si frais d'usage)"
+
+#: saas/models.py:2679
+msgid "Coupon to apply to the order"
+msgstr "Coupon à appliquer au passage en caisse"
+
+#: saas/models.py:2681
+msgid "Whever the item has been checked out or not"
+msgstr "Si le produit est passé en caisse ou non"
+
+#: saas/models.py:2686
+msgid "Number of periods to be paid in advance"
+msgstr "Nombre de périodes payées en avance"
+
 #: saas/models.py:2706
-#, fuzzy
-#| msgid "First name of the person that will benefit from the subscription (GroupBuy)"
 msgid "Full name of the person that will benefit from the subscription (GroupBuy)"
-msgstr "Prénom de la personne qui bénéficie de l'abonnement (GroupBuy)"
+msgstr "Nom de la personne qui bénéficie de l'abonnement (GroupBuy)"
 
 #: saas/models.py:2829
 msgid "The subscription is set to auto-renew at the end of the period"
@@ -3406,14 +3302,10 @@ msgid "Free-form text description for the subscription"
 msgstr "Texte libre pour la description de l'abonnement"
 
 #: saas/models.py:2839
-#, fuzzy
-#| msgid "Organization subscribed to the plan"
 msgid "Organization subscribed to the plan"
 msgstr "Organisation abonnée au plan"
 
 #: saas/models.py:2841
-#, fuzzy
-#| msgid "Plan the organization is subscribed to"
 msgid "Plan the organization is subscribed to"
 msgstr "Plan auquel l'organisation est abonnée"
 
@@ -3448,6 +3340,14 @@ msgstr "Texte libre pour la description de la Transaction"
 #: saas/models.py:3890
 msgid "Event at the origin of this transaction (ex. subscription, charge, etc.)"
 msgstr "L'événement à l'origine de la transaction (ex. abonnement, charge, etc.)"
+
+#: saas/models.py:3939
+msgid "Title for the row"
+msgstr "Titre de la ligne"
+
+#: saas/models.py:3944
+msgid "Absolute position of the row in the list of rows for the table"
+msgstr "Position absolue de la ligne dans la liste de ligne du tableau"
 
 #: saas/templatetags/saas_tags.py:115
 msgid "per ?"
@@ -3493,26 +3393,22 @@ msgid "A receipt will be sent to %(email)s once the charge has been processed. T
 msgstr "Un reçu va être envoyé à %(email)s une fois le paiement accepté. Merci."
 
 #: saas/views/billing.py:421
-#, fuzzy
-#| msgid "Connection to your deposit account was successfully updated."
 msgid "Your credit card on file was sucessfully updated"
-msgstr "La connection de votre compte de dépôt a été sauvegardée avec succès."
+msgstr "Votre carte bancaire a été sauvegardée avec succès."
 
 #: saas/views/billing.py:670
 msgid "Your Cart is empty. Please add some items to your cart before you check out."
 msgstr "Votre panier est vide. S'il vous plait, ajoutez quelques produits avant de passer en caisse."
 
 #: saas/views/optins.py:83
-#, fuzzy, python-format
-#| msgid "%(role)s role to %(organization)s accepted."
+#, python-format
 msgid "%(role)s role to %(organization)s accepted."
 msgstr "Le rôle %(role)s pour l'organisation %(organization)s a été accepté."
 
 #: saas/views/optins.py:126 saas/views/optins.py:161
-#, fuzzy, python-format
-#| msgid "Request from %s accepted."
+#, python-format
 msgid "Request from %(organization)s accepted."
-msgstr "Requête pour %s acceptée."
+msgstr "Requête pour %(organization)s acceptée."
 
 #: saas/views/plans.py:178
 #, python-format
@@ -3525,10 +3421,8 @@ msgid "Successfully updated plan titled '%(title)s'."
 msgstr "Un plan avec le titre '%(title)s' a été sauvegardé avec succès."
 
 #: signup/api/auth.py:122
-#, fuzzy
-#| msgid "Missing processor token."
 msgid "missing MFA token"
-msgstr "Un token processeur est manquant"
+msgstr "Un token MFA est manquant"
 
 #: signup/api/auth.py:129 signup/views/auth.py:478
 msgid "You have exceeded the number of attempts to enter the MFA code. Please start again."
@@ -3606,10 +3500,8 @@ msgid "Unique identifier shown in the URL bar, effectively the username for prof
 msgstr ""
 
 #: signup/models.py:255 signup/serializers.py:150
-#, fuzzy
-#| msgid "Full name for the contact (effectively first name followed by last name)"
 msgid "Full name (effectively first name followed by last name)"
-msgstr "Nom complet pour le contact (en fait le prénom suivi du nom de famille)"
+msgstr "Nom complet (en fait le prénom suivi du nom de famille)"
 
 #: signup/models.py:257
 msgid "Short casual name used to address the contact"
@@ -3620,8 +3512,6 @@ msgid "URL to a profile picture"
 msgstr ""
 
 #: signup/models.py:266
-#, fuzzy
-#| msgid "Verification key"
 msgid "Verification key"
 msgstr "Clé de vérification"
 
@@ -3675,10 +3565,8 @@ msgid "One-time code. This field will be checked against an expected code when m
 msgstr ""
 
 #: signup/serializers.py:145
-#, fuzzy
-#| msgid "Password with which a user can authenticate with the service"
 msgid "Password with which a user can authenticate with the service"
-msgstr "Voici la clé API que vous pouvez utiliser pour vous authentifier avec le service."
+msgstr "Mot de passe que l'utilisateur peut utiliser pour se connecter avec le service."
 
 #: signup/serializers.py:148 signup/serializers.py:172
 #: signup/serializers.py:221
@@ -3726,8 +3614,6 @@ msgid "A user with that e-mail address already exists."
 msgstr "Un utilisateur avec cet e-mail existe déjà."
 
 #: signup/views/auth.py:402
-#, fuzzy
-#| msgid "Thank you. Your account is now active."
 msgid "Thank you. Your account is now active."
 msgstr "Merci. Votre compte est maitenant actif."
 
@@ -3740,16 +3626,12 @@ msgid "Profile updated."
 msgstr "Profil sauvegardé."
 
 #: signup/views/users.py:149
-#, fuzzy
-#| msgid "Notifications updated."
 msgid "Notifications updated."
 msgstr "Notifications sauvegardées."
 
 #: signup/views/users.py:170 signup/views/users.py:201
-#, fuzzy
-#| msgid "Confirm password"
 msgid "Your password is incorrect."
-msgstr "Verifier votre mot de passe"
+msgstr "Votre mot de passe est incorrect."
 
 #: signup/views/users.py:183
 msgid "Password has been updated successfuly."
@@ -3759,89 +3641,14 @@ msgstr "Le mot de passe a bien été sauvegardé."
 msgid "Public Key has been updated successfuly."
 msgstr "La clé publique a bien été sauvegardée."
 
-#, fuzzy
-#~| msgid "Delete Profile"
-#~ msgid "New Billing Profile"
-#~ msgstr "Supprimer le profil"
+#~ msgid "Add Access Rule{"
+#~ msgstr "Ajouter une règle d'accès"
 
-#~ msgid "One-time code"
-#~ msgstr "Code ponctuel"
+#~ msgid "First name of the person that will benefit from the subscription (GroupBuy)"
+#~ msgstr "Prénom de la personne qui bénéficie de l'abonnement (GroupBuy)"
 
-#, fuzzy
-#~| msgid "Card Holder"
-#~ msgid "Card number"
-#~ msgstr "Nom du porteur de la carte"
+#~ msgid "Last name of the person that will benefit from the subscription (GroupBuy)"
+#~ msgstr "Nom de famille de la personne qui bénéficie de l'abonnement (GroupBuy)"
 
-#, fuzzy
-#~| msgid "per ?"
-#~ msgid "per"
-#~ msgstr "par ?"
-
-#~ msgid "Charge Receipt"
-#~ msgstr "Accusé de réception"
-
-#, fuzzy
-#~| msgid "Used to deposit funds to the organization bank account"
-#~ msgid "transfer funds to the organization bank account, issue refunds, etc."
-#~ msgstr "Utilisé pour déposer les fonds dans le compte en banque d'une organisation"
-
-#, fuzzy
-#~| msgid "%(organization)s is not connected to a Stripe account."
-#~ msgid "connect a Stripe account"
-#~ msgstr "%(organization)s n'est pas connecté a un compte Stripe."
-
-#, fuzzy
-#~| msgid "E-mail address for the contact"
-#~ msgid "E-mail address for the organization"
-#~ msgstr "Adresse e-mail du contact"
-
-#, fuzzy
-#~| msgid "Free-form text description for the Coupon"
-#~ msgid "Free-form text description for the plan"
-#~ msgstr "Texte libre pour la description du Coupon"
-
-#~ msgid "Free-form text description for the transaction"
-#~ msgstr "Texte libre pour la description de la transaction."
-
-#~ msgid "E-mail address for the contact"
-#~ msgstr "Adresse e-mail du contact"
-
-#, fuzzy
-#~| msgid "Sign in"
-#~ msgid "Sign In"
-#~ msgstr "Se connecter"
-
-#, fuzzy
-#~| msgid "User inactive or deleted."
-#~ msgid "User relation requested"
-#~ msgstr "Utilisateur inactif ou effacé"
-
-#~ msgid "First name"
-#~ msgstr "Prénom"
-
-#~ msgid "First name may only contain letters and dot (.) or apostrophe (') characters."
-#~ msgstr "Le prénom ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
-
-#~ msgid "Last name"
-#~ msgstr "Nom de famille"
-
-#~ msgid "Last name may only contain letters and dot (.) or apostrophe (') characters."
-#~ msgstr "Le nom de famille ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
-
-#~ msgid "Full name may only contain letters and dot (.) or apostrophe (') characters."
-#~ msgstr "Le nom complet ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
-
-#~ msgid "The first name is identical to last name."
-#~ msgstr "Le prénom est identique au nom de famille."
-
-#~ msgid "The last name is identical to first name."
-#~ msgstr "Le nom de famille est identique au prénom."
-
-#~ msgid "First and last names should not be identical."
-#~ msgstr "Le prénom et le nom de famille ne doivent pas être identiques."
-
-#~ msgid "Please follow the instructions in the email that has just been sent to you to verify the e-mail address."
-#~ msgstr "S'il vous plait suivez les instructions que nous venons juste de vous envoyer pour verifier votre adresse e-mail."
-
-#~ msgid "This email address has already been verified."
-#~ msgstr "Cette adresse e-mail a déjà été vérifiée."
+#~ msgid "Description for the Charge as appears on billing statements"
+#~ msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
