@@ -930,8 +930,8 @@ msgstr "Lorsque vous modifiez des modèles de base, comme <filename>base.html</f
 
 #: djaoapp/templates/pages/theme.html:10
 #, python-format
-msgid "You can reset to the default theme, but you will need <a href=\"%(urls.profile_redirect)s\">an API key</a> to trigger the <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">API end point</a> from the command line."
-msgstr "Vous pouvez restaurer le thème par défaut, mais pour cela vous aurez besoin d'une <a href=\"%(urls.profile_redirect)s\">clé API</a> pour pouvoir <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">appeler l'API</a> de la ligne de commande."
+msgid "You can reset to the default theme, but you will need <a href=\"%(profile_url)s\">an API key</a> to trigger the <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">API end point</a> from the command line."
+msgstr "Vous pouvez restaurer le thème par défaut, mais pour cela vous aurez besoin d'une <a href=\"%(profile_url)s\">clé API</a> pour pouvoir <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">appeler l'API</a> de la ligne de commande."
 
 #: djaoapp/templates/pages/theme.html:14
 msgid "Read more about theme customization ..."
