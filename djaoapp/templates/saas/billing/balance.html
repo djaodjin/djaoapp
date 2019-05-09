@@ -12,7 +12,7 @@
   <section id="charge">
     {% if last_charge.is_failed or last_charge.is_disputed %}
     <p>
-      {% trans created_at=last_charge.created_at %}On {{created_at}} we attempted to charge your card{% endtrans %}
+      {% trans created_at=last_charge.created_at %}On {{created_at}}, we attempted to charge your card{% endtrans %}
     </p>
     <div>
       <dl class="dl-horizontal">
@@ -25,18 +25,13 @@
       </dl>
     </div>
     <p>
-{% trans %}The charge{% endtrans %}
-{% if last_charge.is_failed %}{% trans %}failed{% endtrans %}
-{% else %}
-{% if last_charge.is_disputed %}{% trans %}was disputed{% endtrans %}
-{% endif %}
+{% if last_charge.is_failed %}{% trans %}The charge failed{% endtrans %}
+{% elif last_charge.is_disputed %}{% trans %}The charge was disputed{% endtrans %}
 {% endif %}
 {% trans key=last_charge.processor_key %}(ref: #{{key}}).{% endtrans %}
     </p>
     <p>
-{% trans price=lines_price|humanize_money %}Please enter a valid credit card.
-A new charge of {{price}} will be created.
-Thank you.{% endtrans %}
+{% trans price=lines_price|humanize_money %}Please enter a valid credit card. A new charge of {{price}} will be created. Thank you.{% endtrans %}
     </p>
     {% endif %}
   </section>

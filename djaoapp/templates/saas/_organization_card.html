@@ -1,11 +1,11 @@
-<div :id="item.slug" class="card organization-card">
+<div :id="item.slug" :class="(item.grant_key || item.request_key) ? 'card organization-card card-inactive' : 'card organization-card'">
   <img :src="item.picture ? item.picture : '{{'/static/img/default-organization.png'|djasset}}'" class="card-img-top" :alt="item.printable_name">
   <div class="card-body">
     <h5 class="card-title">
         <a :href="'{{urls.profile_base}}' + item.slug + '/'">[[item.printable_name]]</a>
     </h5>
     <p class="card-text">
-        <span class="badge badge-primary">[[ (item.request_key || !item.role_description) ? {% trans %}"pending request"{% endtrans %} : item.role_description.title]]</span></p>
+        <span class="badge badge-primary">[[ (item.request_key || !item.role_description) ? "{% trans %}pending request{% endtrans %}" : item.role_description.title]]</span></p>
   </div>
   <div class="list-group list-group-flush">
     <a :href="item.home_url" class="list-group-item list-group-item-action">{% trans %}Home{% endtrans %}</a>

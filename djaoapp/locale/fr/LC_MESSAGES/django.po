@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.0\n"
-"Report-Msgid-Bugs-To: support@djaodjin.com\n"
-"POT-Creation-Date: 2018-09-30 03:18+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-09 15:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
 "Language-Team: DjaoDjin <info@djaodjin.com>\n"
@@ -18,594 +18,3037 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: deployutils/apps/django/mixins.py:168
+#: deployutils/apps/django/mixins.py:152
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr "Aucun %(verbose_name)s correspondant au critères n'a été trouvé."
 
-#: djagent/models.py:105 djaoapp/forms/custom_signup.py:90
-#: djaoapp/forms/custom_signup.py:177 djaoapp/forms/custom_signup.py:230
-#: djaoapp/forms/custom_signup.py:329 signup/backends/auth.py:62
-#: signup/forms.py:113 signup/forms.py:114 signup/forms.py:149
-#: signup/forms.py:150
-msgid "Password"
-msgstr "Mot de passe"
+#: djagent/models.py:88 djagent/models.py:122 multitier/models.py:88
+#: rules/models.py:148
+msgid "unique identifier for the site (also serves as subdomain)"
+msgstr "identifieur unique pour le site (sert aussi pour nom de sous-domain)"
 
-#: djaoapp/api/notifications.py:91
+#: djaoapp/api/auth.py:33
+msgid "Organization name that owns the billing, registered with the user as profile manager"
+msgstr ""
+
+#: djaoapp/api/auth.py:36
+msgid "Street address for the billing profile"
+msgstr "Rue pour le profil"
+
+#: djaoapp/api/auth.py:38
+msgid "City/Town for the billing profile"
+msgstr "Ville pour le profil"
+
+#: djaoapp/api/auth.py:40
+msgid "State/Province/County for the billing profile"
+msgstr "Département/Région pour le profil"
+
+#: djaoapp/api/auth.py:42
+msgid "Zip/Postal Code for the billing profile"
+msgstr ""
+
+#: djaoapp/api/auth.py:44
+msgid "Country for the billing profile"
+msgstr ""
+
+#: djaoapp/api/auth.py:46
+msgid "Phone number for the billing profile"
+msgstr ""
+
+#: djaoapp/api/auth.py:126
+msgid "URL to upload files"
+msgstr ""
+
+#: djaoapp/api/auth.py:128
+msgid "Access key"
+msgstr ""
+
+#: djaoapp/api/auth.py:130
+msgid "ACL (i.e. private or public-read)"
+msgstr ""
+
+#: djaoapp/api/auth.py:132
+msgid "Policy"
+msgstr ""
+
+#: djaoapp/api/auth.py:134
+msgid "Signature"
+msgstr "Signature"
+
+#: djaoapp/api/auth.py:136
+msgid "Security token"
+msgstr ""
+
+#: djaoapp/api/auth.py:138
+msgid "AMZ Credential"
+msgstr ""
+
+#: djaoapp/api/auth.py:140
+msgid "AMZ Date"
+msgstr ""
+
+#: djaoapp/api/notifications.py:108
 msgid "Problem with template. Could not send test email."
 msgstr "Il y a eu un probleme avec le message modèle et nous ne pouvons envoyer l'e-mail test."
 
-#: djaoapp/api/notifications.py:94
+#: djaoapp/api/notifications.py:111
 #, python-format
 msgid "Test email sent to %(email)s"
 msgstr "Le message test a été envoyé à %(email)s."
 
-#: djaoapp/decorators.py:144 saas/decorators.py:669 saas/decorators.py:698
+#: djaoapp/decorators.py:155 saas/decorators.py:671 saas/decorators.py:700
 #, python-format
 msgid "%(auth)s is not a direct manager of %(organization)s."
 msgstr "%(auth)s n'est pas un manager direct de %(organization)s."
 
-#: djaoapp/decorators.py:193 saas/decorators.py:594 saas/decorators.py:632
-#: saas/decorators.py:735 saas/decorators.py:772
+#: djaoapp/decorators.py:204 saas/decorators.py:596 saas/decorators.py:634
+#: saas/decorators.py:737 saas/decorators.py:774
 #, python-format
-msgid ""
-"%(auth)s is neither a manager of %(organization)s nor a manager of one of "
-"%(organization)s providers."
+msgid "%(auth)s is neither a manager of %(organization)s nor a manager of one of %(organization)s providers."
 msgstr "%(auth)s n'est ni un manager de %(organization)s ni un manager d'un des fournisseurs de %(organization)s."
 
-#: djaoapp/decorators.py:243 saas/decorators.py:809 saas/decorators.py:843
+#: djaoapp/decorators.py:254 saas/decorators.py:811 saas/decorators.py:845
 #, python-format
 msgid "%(auth)s is not a manager of one of %(organization)s providers."
 msgstr "%(auth)s n'est pas un manager d'un des fournisseurs de %(organization)s."
 
-#: djaoapp/decorators.py:289 saas/decorators.py:879 saas/decorators.py:914
+#: djaoapp/decorators.py:300 saas/decorators.py:881 saas/decorators.py:916
 #, python-format
-msgid ""
-"%(auth)s has neither a direct relation to an organization connected to "
-"%(user)s nor a connection to one of the providers to such organization."
+msgid "%(auth)s has neither a direct relation to an organization connected to %(user)s nor a connection to one of the providers to such organization."
 msgstr "%(auth)s n'a pas de relation directe avec une organisation connectèe à %(user)s ni de connection à un des fournisseurs d'une telle organisation."
 
-#: djaoapp/forms/custom_signup.py:44
+#: djaoapp/forms/custom_signup.py:47
 #, python-format
 msgid "These input fields are missing: %(identifiers)s."
 msgstr "Ces champs d'entrèes sont manquants: %(identifiers)s."
 
-#: djaoapp/forms/custom_signup.py:60
+#: djaoapp/forms/custom_signup.py:63
 #, python-format
 msgid "I agree with <a href=\"%s\">terms and conditions</a>"
 msgstr "J'accepte les <a href=\"%s\">termes et conditions</a>."
 
-#: djaoapp/forms/custom_signup.py:66
+#: djaoapp/forms/custom_signup.py:69
 msgid "You must agree to terms and conditions."
 msgstr "Vous devez accepter les termes et conditions."
 
-#: djaoapp/forms/custom_signup.py:74
-msgid "Sign up"
-msgstr "S'inscrire"
-
-#: djaoapp/forms/custom_signup.py:81 djaoapp/forms/custom_signup.py:207
-#: djaoapp/forms/custom_signup.py:308
-msgid "Register"
-msgstr "S'inscrire"
-
-#: djaoapp/forms/custom_signup.py:85 djaoapp/forms/custom_signup.py:86
-#: djaoapp/forms/custom_signup.py:223 djaoapp/forms/custom_signup.py:319
-#: signup/forms.py:108 signup/forms.py:109 signup/forms.py:166
-#: signup/forms.py:167
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: djaoapp/forms/custom_signup.py:87 djaoapp/forms/custom_signup.py:224
-#: djaoapp/forms/custom_signup.py:320 signup/forms.py:110 signup/forms.py:168
-msgid ""
-"Username may only contain letters, digits and -/_ characters. Spaces are not "
-"allowed."
-msgstr "Le nom d'utilisateur peut seulement contenir des lettres, des chiffres et les caractères -/_. Les espaces ne sont pas acceptés."
-
-#: djaoapp/forms/custom_signup.py:92
-msgid "Type password again"
-msgstr "Entrez de nouveau votre mot de passe"
-
-#: djaoapp/forms/custom_signup.py:93 djaoapp/forms/custom_signup.py:179
-#: djaoapp/forms/custom_signup.py:232 djaoapp/forms/custom_signup.py:331
-#: signup/forms.py:119 signup/forms.py:122
-msgid "Confirm password"
-msgstr "Verifier votre mot de passe"
-
-#: djaoapp/forms/custom_signup.py:110 djaoapp/forms/custom_signup.py:284
-#: djaoapp/forms/custom_signup.py:449
-msgid "A user with that username already exists."
-msgstr "Un utilisateur avec ce nom d'utilisateur existe déjà."
-
-#: djaoapp/forms/custom_signup.py:118 djaoapp/forms/custom_signup.py:273
-#: djaoapp/forms/custom_signup.py:412
-msgid "A user with that e-mail address already exists."
-msgstr "Un utilisateur avec cet e-mail existe déjà."
-
-#: djaoapp/forms/custom_signup.py:131 djaoapp/forms/custom_signup.py:191
-#: djaoapp/forms/custom_signup.py:252 djaoapp/forms/custom_signup.py:377
-msgid "This field does not match password confirmation."
-msgstr "Cette valeur ne correspond pas à la verification de votre mot de passe."
-
-#: djaoapp/forms/custom_signup.py:133 djaoapp/forms/custom_signup.py:193
-#: djaoapp/forms/custom_signup.py:254 djaoapp/forms/custom_signup.py:379
-msgid "This field does not match password."
-msgstr "Cette valeur ne correspond pas à votre mot de passe."
-
-#: djaoapp/forms/custom_signup.py:139 djaoapp/forms/custom_signup.py:199
-#: djaoapp/forms/custom_signup.py:260 djaoapp/forms/custom_signup.py:385
-#: signup/forms.py:94
-msgid "Password and password confirmation do not match."
-msgstr "Le mot de passe et sa confirmation ne sont pas identiques."
-
-#: djaoapp/forms/custom_signup.py:145
-msgid "Sign in"
-msgstr "Se connecter"
-
-#: djaoapp/forms/custom_signup.py:151
+#: djaoapp/forms/custom_signup.py:75
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: djaoapp/forms/custom_signup.py:166 djaoapp/forms/custom_signup.py:167
-#: djaoapp/forms/custom_signup.py:228 djaoapp/forms/custom_signup.py:324
-#: signup/forms.py:55 signup/forms.py:100 signup/models.py:231
-msgid "E-mail address"
-msgstr "Adresse e-mail"
+#: djaoapp/forms/custom_signup.py:83
+#: djaoapp/templates/accounts/activate.html:20
+#: djaoapp/templates/accounts/activate.html:31
+#: djaoapp/templates/accounts/login.html:7
+#: djaoapp/templates/accounts/register.html:10
+#: djaoapp/templates/accounts/register.html:21
+#: djaoapp/templates/accounts/register/frictionless.html:10
+#: djaoapp/templates/accounts/register/frictionless.html:21
+#: djaoapp/templates/base.html:119
+msgid "Sign in"
+msgstr "Se connecter"
 
-#: djaoapp/forms/custom_signup.py:169 djaoapp/forms/custom_signup.py:333
-#: saas/models.py:2625
-msgid "First name"
-msgstr "Prénom"
+#: djaoapp/forms/custom_signup.py:95 djaoapp/templates/accounts/login.html:26
+#: djaoapp/templates/accounts/recover.html:19
+#: djaoapp/templates/accounts/register.html:7
+#: djaoapp/templates/accounts/register/frictionless.html:7
+msgid "Sign up"
+msgstr "S'inscrire"
 
-#: djaoapp/forms/custom_signup.py:170 djaoapp/forms/custom_signup.py:334
-msgid ""
-"First name may only contain letters and dot (.) or apostrophe (') characters."
-msgstr "Le prénom ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
+#: djaoapp/forms/custom_signup.py:99 djaoapp/forms/custom_signup.py:100
+#: djaoapp/forms/custom_signup.py:205
+#: djaoapp/templates/saas/profile/roles/index.html:39 signup/forms.py:181
+#: signup/forms.py:182 signup/forms.py:223 signup/forms.py:224
+msgid "Username"
+msgstr "Nom d'utilisateur"
 
-#: djaoapp/forms/custom_signup.py:173 djaoapp/forms/custom_signup.py:337
-#: saas/models.py:2628
-msgid "Last name"
-msgstr "Nom de famille"
+#: djaoapp/forms/custom_signup.py:101 djaoapp/forms/custom_signup.py:206
+#: signup/forms.py:183 signup/forms.py:225
+msgid "Username may only contain letters, digits and -/_ characters. Spaces are not allowed."
+msgstr "Le nom d'utilisateur peut seulement contenir des lettres, des chiffres et les caractères -/_. Les espaces ne sont pas acceptés."
 
-#: djaoapp/forms/custom_signup.py:174 djaoapp/forms/custom_signup.py:338
-msgid ""
-"Last name may only contain letters and dot (.) or apostrophe (') characters."
-msgstr "Le nom de famille ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
+#: djaoapp/forms/custom_signup.py:104 djaoapp/forms/custom_signup.py:105
+#: djaoapp/forms/custom_signup.py:215 djaoapp/forms/custom_signup.py:216
+#: djaoapp/templates/saas/profile/index.html:136
+#: djaoapp/templates/saas/profile/index.html:178
+#: djaoapp/templates/users/_require_password.html:8 multitier/models.py:122
+#: multitier/models.py:135 signup/backends/auth.py:61 signup/forms.py:186
+#: signup/forms.py:187 signup/forms.py:206 signup/forms.py:207
+msgid "Password"
+msgstr "Mot de passe"
 
-#: djaoapp/forms/custom_signup.py:209 saas/models.py:232
+#: djaoapp/forms/custom_signup.py:107 djaoapp/forms/custom_signup.py:218
+#: djaoapp/templates/users/password.html:24 signup/forms.py:73
+#: signup/forms.py:115 signup/forms.py:190 signup/forms.py:192
+msgid "Confirm password"
+msgstr "Verifier votre mot de passe"
+
+#: djaoapp/forms/custom_signup.py:109 djaoapp/forms/custom_signup.py:220
+#: djaoapp/templates/users/password.html:26 signup/forms.py:75
+#: signup/forms.py:117
+msgid "Type password again"
+msgstr "Entrez de nouveau votre mot de passe"
+
+#: djaoapp/forms/custom_signup.py:112 saas/models.py:228
 msgid "Organization name"
 msgstr "Nom de l'organisation"
 
-#: djaoapp/forms/custom_signup.py:219 saas/api/serializers.py:226
-#: signup/forms.py:49 signup/forms.py:104 signup/models.py:233
-#: signup/serializers.py:118 signup/serializers.py:150
-msgid "Full name"
-msgstr "Nom complet"
-
-#: djaoapp/forms/custom_signup.py:220
-msgid ""
-"Full name may only contain letters and dot (.) or apostrophe (') characters."
-msgstr "Le nom complet ne peut contenir que des lettres, le caractère point (.) ou apostrophe (')."
-
-#: djaoapp/forms/custom_signup.py:299
-msgid "Your organization might already be registered."
-msgstr "Votre organisation est peut-être déjà enregister."
-
-#: djaoapp/forms/custom_signup.py:327
-msgid "E-mail confirmation"
-msgstr "verifier votre e-mail"
-
-#: djaoapp/forms/custom_signup.py:340 saas/api/serializers.py:234
-#: saas/forms.py:97 saas/models.py:239
+#: djaoapp/forms/custom_signup.py:114 djaoapp/forms/custom_signup.py:228
+#: saas/api/billing.py:88 saas/api/serializers.py:168
+#: saas/api/serializers.py:273 saas/api/serializers.py:333 saas/forms.py:98
+#: saas/forms.py:167 saas/models.py:235
 msgid "Street address"
 msgstr "Rue"
 
-#: djaoapp/forms/custom_signup.py:341 saas/api/serializers.py:236
-#: saas/forms.py:95 saas/models.py:240
+#: djaoapp/forms/custom_signup.py:115 djaoapp/forms/custom_signup.py:229
+#: saas/api/billing.py:90 saas/api/serializers.py:170
+#: saas/api/serializers.py:275 saas/api/serializers.py:335 saas/forms.py:96
+#: saas/models.py:236
 msgid "City/Town"
 msgstr "Ville"
 
-#: djaoapp/forms/custom_signup.py:342 saas/api/serializers.py:238
-#: saas/forms.py:75 saas/models.py:241
+#: djaoapp/forms/custom_signup.py:116 djaoapp/forms/custom_signup.py:230
+#: saas/api/billing.py:92 saas/api/serializers.py:172
+#: saas/api/serializers.py:277 saas/api/serializers.py:337 saas/forms.py:76
+#: saas/models.py:237
 msgid "State/Province/County"
 msgstr "Département/Région"
 
-#: djaoapp/forms/custom_signup.py:344 saas/api/serializers.py:240
-#: saas/forms.py:100 saas/models.py:242
+#: djaoapp/forms/custom_signup.py:118 djaoapp/forms/custom_signup.py:232
+#: saas/api/billing.py:94 saas/api/serializers.py:174
+#: saas/api/serializers.py:279 saas/api/serializers.py:339 saas/forms.py:101
+#: saas/models.py:238
 msgid "Zip/Postal code"
 msgstr "Code postal"
 
-#: djaoapp/forms/custom_signup.py:345
-msgid ""
-"The postal code may contain only letters, digits, spaces and '-' characters."
+#: djaoapp/forms/custom_signup.py:119 djaoapp/forms/custom_signup.py:233
+msgid "The postal code may contain only letters, digits, spaces and '-' characters."
 msgstr "Le code postal ne peut contenir que des lettres, des chiffres, des espaces et le caractère '-'."
 
-#: djaoapp/forms/custom_signup.py:348 saas/api/serializers.py:242
-#: saas/forms.py:63
+#: djaoapp/forms/custom_signup.py:122 djaoapp/forms/custom_signup.py:236
+#: djaoapp/templates/saas/_bank_use.html:34 saas/api/billing.py:96
+#: saas/api/serializers.py:176 saas/api/serializers.py:281
+#: saas/api/serializers.py:341 saas/forms.py:64 saas/models.py:239
 msgid "Country"
 msgstr "Etat"
 
-#: djaoapp/forms/custom_signup.py:349 saas/api/serializers.py:232
+#: djaoapp/forms/custom_signup.py:123 djaoapp/forms/custom_signup.py:237
+#: saas/api/serializers.py:166 saas/api/serializers.py:271
+#: saas/api/serializers.py:331 saas/forms.py:168
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: djaoapp/forms/custom_signup.py:362
+#: djaoapp/forms/custom_signup.py:163 djaoapp/forms/custom_signup.py:278
+msgid "A user with that username already exists."
+msgstr "Un utilisateur avec ce nom d'utilisateur existe déjà."
+
+#: djaoapp/forms/custom_signup.py:172 djaoapp/mixins.py:185
+msgid "The organization name must contain some alphabetical characters."
+msgstr "Le nom de l'organization doit contenir plusieurs caractères alphabetiques."
+
+#: djaoapp/forms/custom_signup.py:182
+msgid "Your organization might already be registered."
+msgstr "Votre organisation est peut-être déjà enregister."
+
+#: djaoapp/forms/custom_signup.py:202 djaoapp/templates/index.html:23
+msgid "Register"
+msgstr "S'inscrire"
+
+#: djaoapp/forms/custom_signup.py:210
+#: djaoapp/templates/contacts/contact.html:20
+#: djaoapp/templates/contacts/index.html:39
+#: djaoapp/templates/saas/_invoiceables.html:19
+#: djaoapp/templates/saas/_invoiceables.html:59
+#: djaoapp/templates/saas/profile/roles/index.html:40
+#: saas/api/serializers.py:269 saas/api/serializers.py:329 signup/forms.py:57
+#: signup/forms.py:173 signup/models.py:252 signup/models.py:253
+msgid "E-mail address"
+msgstr "Adresse e-mail"
+
+#: djaoapp/forms/custom_signup.py:213
+msgid "E-mail confirmation"
+msgstr "verifier votre e-mail"
+
+#: djaoapp/forms/custom_signup.py:225
+#: djaoapp/templates/contacts/contact.html:16
+#: djaoapp/templates/contacts/index.html:29
+#: djaoapp/templates/saas/profile/subscribers.html:43
+#: saas/api/serializers.py:162 saas/api/serializers.py:265
+#: saas/api/serializers.py:325 saas/models.py:2705 signup/forms.py:51
+#: signup/forms.py:177 signup/models.py:254 signup/serializers.py:217
+#: signup/serializers.py:232
+msgid "Full name"
+msgstr "Nom complet"
+
+#: djaoapp/forms/custom_signup.py:227 signup/forms.py:53 signup/forms.py:179
+msgid "Sorry we do not recognize some characters in your full name."
+msgstr "Désolé, il y a des caractères dans votre nom que nous ne reconnaissons pas."
+
+#: djaoapp/forms/custom_signup.py:251
 msgid "This field does not match e-mail confirmation."
 msgstr "Cette valeur ne correspond pas à la vérification de votre e-mail."
 
-#: djaoapp/forms/custom_signup.py:364
+#: djaoapp/forms/custom_signup.py:253
 msgid "This field does not match e-mail."
 msgstr "Cetter valeur ne correspond pas à votre e-mail."
 
-#: djaoapp/forms/custom_signup.py:370
+#: djaoapp/forms/custom_signup.py:259
 msgid "E-mail and e-mail confirmation do not match."
 msgstr "L'e-mail et sa confirmation n'ont pas une valeur identique."
 
-#: djaoapp/forms/custom_signup.py:391
-msgid "The first name is identical to last name."
-msgstr "Le prénom est identique au nom de famille."
-
-#: djaoapp/forms/custom_signup.py:393
-msgid "The last name is identical to first name."
-msgstr "Le nom de famille est identique au prénom."
-
-#: djaoapp/forms/custom_signup.py:399
-msgid "First and last names should not be identical."
-msgstr "Le prénom et le nom de famille ne doivent pas être identiques."
-
-#: djaoapp/forms/custom_signup.py:455
+#: djaoapp/forms/custom_signup.py:284
 msgid "A profile with that identifier already exists."
 msgstr "Un profil avec cet identifiant existe déjà."
 
 #: djaoapp/forms/fields.py:18
-msgid ""
-"Enter a valid phone number. If you still get an error, please try to enter "
-"it as an international phone number (start by typing +, then the country "
-"code, then the number. Ex: +14155145544)"
+msgid "Enter a valid phone number. If you still get an error, please try to enter it as an international phone number (start by typing +, then the country code, then the number. Ex: +14155145544)"
 msgstr "Entrez un numéro de téléphone valide. Si vous obtenez toujours une erreur, essayez un numero international s'il vous plait (commencez avec +, puis l'indicatif du pays, puis le numéro. Ex: +14155145544)"
 
-#: djaoapp/signals.py:347
+#: djaoapp/signals.py:379
 #, python-format
 msgid "You have been invited to create an account to join %(organization)s."
 msgstr "Vous avez été invité a créer un compte pour joindre %(organization)s."
 
-#: djaoapp/views/contact.py:126
+#: djaoapp/templates/400.html:11
+msgid "400 Bad Request - Sorry, there was an error loading this page."
+msgstr "400 Mauvaise requête - Désolé, il y a eu une erreur pendant le chargement de la page."
+
+#: djaoapp/templates/400.html:21 djaoapp/templates/404.html:14
+#: djaoapp/templates/rules/forward_error.html:15
+msgid "If you think there is a mistake, please <a href=\"/contact/\">contact us</a>."
+msgstr "Si vous pensez qu'il y a erreur, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
+
+#: djaoapp/templates/400.html:24 djaoapp/templates/404.html:17
+msgid "We do our best to reply within 24 hours. Thank you!"
+msgstr "Nous faisons notre possible pour répondre dans les 24 heures. Merci."
+
+#: djaoapp/templates/403.html:11
+msgid "403 Permission denied - Sorry, it seems you do not have permissions to access this page."
+msgstr "403 Permission refusée - Désolé, il semble que vous n'ayez pas les permissions requises pour accéder a cette page."
+
+#: djaoapp/templates/403.html:14 djaoapp/templates/accounts/disabled.html:10
+msgid "If you think it is a mistake, please contact an administrator."
+msgstr "Si vous pensez qu'il y a erreur, contactez un administrateur s'il vous plaît."
+
+#: djaoapp/templates/403.html:17
+msgid "If you are an administrator and think this is a mistake, please <a href=\"/contact/\">contact us</a>."
+msgstr "Si vous êtes un administrateur et pensez qu'il y a erreur, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
+
+#: djaoapp/templates/403.html:20 djaoapp/templates/contact.html:11
+#: djaoapp/templates/rules/forward_error.html:18
+#: djaoapp/templates/rules/forward_error_manager_help.html:20
+msgid "We do our best to reply to each request individually within 24 hours. Thank you!"
+msgstr "Nous faisons notre possible pour répondre dans les 24 heures. Merci."
+
+#: djaoapp/templates/404.html:11
+msgid "404 Error - Sorry, this page could not be found."
+msgstr "Erreur 404 - Désolé, cette page n'existe pas."
+
+#: djaoapp/templates/500.html:9 djaoapp/templates/500.html:122
+msgid "500 Internal Server Error"
+msgstr "500 Erreur interne au site"
+
+#: djaoapp/templates/500.html:124
+msgid "We have been notified and have started on fixing the error. We apologize for the inconvinience."
+msgstr "Nous avons reçus une notification et avons commencé à corriger l'erreur. Nous nous excusons pour le dérangement."
+
+#: djaoapp/templates/500.html:127
+msgid "If you would like to drop us a line, please <a href=\"/contact/\">get in touch</a>."
+msgstr "Si vous souhaitez nous laisser un message, <a href=\"/contact/\">contactez nous</a>."
+
+#: djaoapp/templates/500.html:130
+msgid "Please come back later."
+msgstr "Revenez plus tard s'il vous plaît"
+
+#: djaoapp/templates/500.html:133
+msgid "Go back to the homepage"
+msgstr "Allez a la page d'Accueil"
+
+#: djaoapp/templates/500.html:140 djaoapp/templates/base.html:85
+#: djaoapp/templates/base.html:165
+#: djaoapp/templates/saas/base_dashboard.html:44
+msgid "Powered by &copy; 2019 DjaoDjin. All rights reserved."
+msgstr "Powered by &copy; 2019 DjaoDjin. Tous droits réservés."
+
+#: djaoapp/templates/500.html:140 djaoapp/templates/base.html:88
+#: djaoapp/templates/base.html:165
+#: djaoapp/templates/saas/base_dashboard.html:47
+msgid "Legal"
+msgstr "Juridique"
+
+#: djaoapp/templates/_generic_navbar.html:3 djaoapp/templates/_menubar.html:31
+#: djaoapp/templates/saas/_organization_card.html:11
+msgid "Home"
+msgstr "Accueil"
+
+#: djaoapp/templates/_generic_navbar.html:7
+#: djaoapp/templates/jinja2/saas/profile/plans/_form.html:11
+msgid "Pricing"
+msgstr "Prix"
+
+#: djaoapp/templates/_menubar.html:25 djaoapp/templates/saas/_sidebar.html:6
+#: djaoapp/templates/saas/_sidebar.html:12
+#: djaoapp/templates/saas/profile/index.html:9
+msgid "Profile"
+msgstr "Profil"
+
+#: djaoapp/templates/_menubar.html:26 djaoapp/templates/_menubar.html:38
+msgid "Sign out"
+msgstr "Déconnexion"
+
+#: djaoapp/templates/_menubar.html:32
+msgid "Settings"
+msgstr "Paramètres"
+
+#: djaoapp/templates/_menubar.html:38
+msgid "Click Here to sign out"
+msgstr "Cliquer pour se déconnecter"
+
+#: djaoapp/templates/accounts/activate.html:8
+#: djaoapp/templates/saas/profile/index.html:56
+#: djaoapp/templates/saas/profile/plans/plan.html:64
+msgid "Activate"
+msgstr "Activer"
+
+#: djaoapp/templates/accounts/activate.html:14
+msgid "You are about to activate your account. Please set a password to secure it."
+msgstr "vous êtes sur le point d'activer votre compte. Choisissez un mot de passe s'il vous plaît."
+
+#: djaoapp/templates/accounts/activate.html:20
+#: djaoapp/templates/accounts/activate.html:31
+#: djaoapp/templates/accounts/register.html:10
+#: djaoapp/templates/accounts/register.html:21
+#: djaoapp/templates/accounts/register/frictionless.html:10
+#: djaoapp/templates/accounts/register/frictionless.html:21
+msgid "You already have an account?"
+msgstr "Vous avez déjà un compte utilisateur?"
+
+#: djaoapp/templates/accounts/activate.html:28
+#: djaoapp/templates/accounts/recover.html:22
+#: djaoapp/templates/accounts/register.html:18
+#: djaoapp/templates/accounts/register/frictionless.html:18
+#: djaoapp/templates/accounts/reset.html:27
+msgid "* required fields"
+msgstr "* champs requis"
+
+#: djaoapp/templates/accounts/activate.html:36
+msgid "This activation token is invalid or has expired."
+msgstr "Le code d'activation est invalide ou a expiré."
+
+#: djaoapp/templates/accounts/disabled.html:6
+msgid "Authentication disabled"
+msgstr "Authentification désactivée"
+
+#: djaoapp/templates/accounts/disabled.html:9
+msgid "User login and registration has been currently disabled on your site."
+msgstr "Connexion et inscription ont momentanément été désactivées."
+
+#: djaoapp/templates/accounts/disabled.html:13
+msgid "Thank you."
+msgstr "Merci."
+
+#: djaoapp/templates/accounts/login.html:16
+#: djaoapp/templates/accounts/reset.html:23
+#: djaoapp/templates/django/_form.html:9
+#: djaoapp/templates/django/accounts/_recover_form.html:9
+#: djaoapp/templates/django/accounts/_register_form.html:38
+#: djaoapp/templates/django/saas/_card_use.html:92
+#: djaoapp/templates/jinja2/_form.html:8
+#: djaoapp/templates/jinja2/accounts/_recover_form.html:10
+#: djaoapp/templates/jinja2/accounts/_register_form.html:61
+#: djaoapp/templates/jinja2/accounts/_register_frictionless_form.html:10
+#: djaoapp/templates/jinja2/saas/_card_use.html:108
+#: djaoapp/templates/jinja2/saas/profile/plans/_form.html:26
+#: djaoapp/templates/saas/profile/index.html:150
+msgid "Submit"
+msgstr "Soumettre"
+
+#: djaoapp/templates/accounts/login.html:23
+msgid "Forgot password?"
+msgstr "Mot de pass oublié?"
+
+#: djaoapp/templates/accounts/login.html:23
+msgid "Recover"
+msgstr "Recouvrir"
+
+#: djaoapp/templates/accounts/login.html:26
+#: djaoapp/templates/accounts/recover.html:19
+msgid "Don't have an account?"
+msgstr "Pas de compte utilisateur?"
+
+#: djaoapp/templates/accounts/login.html:32
+msgid "TIP: You are advised to verify the domain and certificate in the URL bar before signing in."
+msgstr "TIP: Nous vous invitons à verifier le nom de domaine et certificat de sécurité dans la bar URL avant de vous connecter."
+
+#: djaoapp/templates/accounts/logout.html:10
+msgid "You successfully signed out. Thank you for your business, have a good day!"
+msgstr "Vous êtes maintenant deconnecté. Merci d'utiliser nos services. Bonne journée!"
+
+#: djaoapp/templates/accounts/recover.html:8
+msgid "Forgotten password"
+msgstr "Mot de passe oublié"
+
+#: djaoapp/templates/accounts/recover.html:11
+msgid "Please enter your e-mail address. Your password will be reset and you will get a chance to choose a new password."
+msgstr "S'il vous plait, entrez votre addresse e-mail, Votre mot de passe sera ré-initialiser et vous pourrez en choisir un nouveau."
+
+#: djaoapp/templates/accounts/recover.html:26
+msgid "TIP: You are advised to verify the domain and certificate in the URL bar before submitting your e-mail address."
+msgstr "TIP: Nous vous invitons à verifier le nom de domaine et certificat de sécurité dans la bar URL avant de soumettre votre addresse e-mail."
+
+#: djaoapp/templates/accounts/reset.html:11
+msgid "Set/Reset Password"
+msgstr "Choisissez/Changez un mot de passe"
+
+#: djaoapp/templates/accounts/reset.html:14
+msgid "You are about to activate your account and need to enter a password to secure it, or you have an account already and requested to change your password."
+msgstr "vous êtes sur le point d'activer votre compte ou avez demandé à changer votre mot de passe. Choisissez un mot de passe s'il vous plaît."
+
+#: djaoapp/templates/accounts/reset.html:20
+msgid "By clicking on the &quot;Submit&quot; button below, <b>I signify that I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of service</a></b>."
+msgstr "En cliquant sur le bouton &quot;Soumettre&quot; ci-dessous, <b>Je certifie avoir lu et accepter les <a target=\"_blank\" href=\"/legal/terms-of-use/\">termes du service</a></b>."
+
+#: djaoapp/templates/accounts/reset.html:30
+msgid "Password reset failed"
+msgstr "La ré-initialisation du mot de passe n'a pas fonctionner."
+
+#: djaoapp/templates/app_proxy_help.html:12
+msgid "What is this page?"
+msgstr "A quoi sert cette page?"
+
+#: djaoapp/templates/app_proxy_help.html:14
+msgid "By default a newly subscribed user or a user signing back in will land on this page. You can easily edit this landling page."
+msgstr "Par défaut, un utilisateur nouvellement inscrit ou un utilisateur qui se connecte atterrira sur cette page. Vous pouvez facilement éditer cette page de destination."
+
+#: djaoapp/templates/app_proxy_help.html:29
+msgid "Upload Paid Content"
+msgstr "Télécharger du contenu payant"
+
+#: djaoapp/templates/app_proxy_help.html:34
+msgid "Drag-n-drop or click to upload the paid content you wish to distribute here (PDF file)."
+msgstr "Glisser-Déposer ou cliquer pour télécharger le contenu payant que vous souhaitez distribuer ici (fichier PDF)."
+
+#: djaoapp/templates/app_proxy_help.html:55
+msgid "Go further. Run a full-fledge session proxy"
+msgstr "Aller plus loin. Exécuter un proxy de session à part entière"
+
+#: djaoapp/templates/app_proxy_help.html:60
+#: djaoapp/templates/rules/app_dashboard.html:240
+#: djaoapp/templates/rules/forward_error_manager_help.html:29
+msgid "Session Data"
+msgstr "Données de session"
+
+#: djaoapp/templates/app_proxy_help.html:68
+#: djaoapp/templates/rules/forward_error_manager_help.html:39
+msgid "As HTTP Cookie Header"
+msgstr "En-tête de cookie HTTP"
+
+#: djaoapp/templates/app_proxy_help.html:77
+msgid "Forwarding requests"
+msgstr "Transfert des requêtes"
+
+#: djaoapp/templates/app_proxy_help.html:79
+msgid "To forward HTTP requests to your application instead of showing the landing page:"
+msgstr "Pour transférer des requêtes HTTP à votre application au lieu d'afficher la page de destination:"
+
+#: djaoapp/templates/app_proxy_help.html:81
+#, python-format
+msgid "Check <em>forward</em> for the /app/ rule in the <a href=\"%(rules_url)s\">rules dashboard</a>."
+msgstr "Cocher <em>transférer</em> pour la règle /app/ dans <a href=\"%(rules_url)s\">les règles du tableau de bord</a>"
+
+#: djaoapp/templates/app_proxy_help.html:82
+#, python-format
+msgid "Create a session encryption secret key in the <a href=\"%(rules_url)s\">rules dashboard</a>."
+msgstr "Créez une clé secrète de chiffrement de session dans <a href=\"%(rules_url)s\">les règles du tableau de bord</a>"
+
+#: djaoapp/templates/app_proxy_help.html:83
+msgid "<a href=\"https://djaodjin.com/docs/\" target=\"_blank\">Integrate session decryption code</a> at the front of your application request processing pipeline."
+msgstr "<a href=\"https://djaodjin.com/docs/\" target=\"_blank\">Intégrez le code de décryptage de session</a> à l'avant du pipeline de traitement des demandes de votre application."
+
+#: djaoapp/templates/app_proxy_help.html:87
+msgid "For any questions, please, feel free to <a href=\"/contact/\">contact us</a>."
+msgstr "Pour toute question, n'hésitez pas à <a href=\"/contact/\">nous contacter</a>."
+
+#: djaoapp/templates/base.html:9
+msgid "Accounts & Billing Workflows"
+msgstr "Flux de travail pour comptes utilisateurs et facturation"
+
+#: djaoapp/templates/contact.html:7 djaoapp/templates/saas/_plan_short.html:21
+#: djaoapp/templates/saas/_plan_short.html:58
+msgid "Contact us"
+msgstr "Contactez nous"
+
+#: djaoapp/templates/contact.html:10
+msgid "Please leave your name and email address."
+msgstr "Laissez votre nom et addresse e-mail s'il vous plaît."
+
+#: djaoapp/templates/contacts/contact.html:8
+#, python-format
+msgid "%(name)s Profile"
+msgstr "Profil de %(name)s"
+
+#: djaoapp/templates/contacts/contact.html:12
+#: djaoapp/templates/contacts/index.html:34 signup/models.py:256
+msgid "Nick name"
+msgstr "Surnom"
+
+#: djaoapp/templates/contacts/contact.html:23
+msgid "Activities"
+msgstr "Activitées"
+
+#: djaoapp/templates/contacts/contact.html:28
+msgid "No activity"
+msgstr "Aucune activitée"
+
+#: djaoapp/templates/contacts/contact.html:34
+msgid "by"
+msgstr "par"
+
+#: djaoapp/templates/contacts/contact.html:42
+msgid "Account"
+msgstr "Compte"
+
+#: djaoapp/templates/contacts/contact.html:44
+#: djaoapp/templates/saas/profile/plans/subscribers.html:18
+#: djaoapp/templates/saas/profile/roles/index.html:28
+#: djaoapp/templates/saas/profile/roles/role.html:22 signup/backends/auth.py:58
+#: signup/backends/auth.py:59
+msgid "Username or e-mail"
+msgstr "Nom d'utilisateur ou email"
+
+#: djaoapp/templates/contacts/contact.html:49
+#: djaoapp/templates/saas/_transactions.html:22
+#: djaoapp/templates/saas/billing/cart.html:19
+#: djaoapp/templates/saas/billing/coupons.html:61
+#: djaoapp/templates/saas/billing/import.html:72
+#: djaoapp/templates/saas/billing/import.html:75
+#: djaoapp/templates/saas/billing/receipt.html:61
+#: djaoapp/templates/saas/billing/transactions.html:61
+#: djaoapp/templates/saas/printable_charge_receipt.html:100
+#: djaoapp/templates/saas/profile/plans/subscribers.html:79
+#: djaoapp/templates/saas/profile/subscribers.html:121
+#: djaoapp/templates/saas/profile/subscribers.html:144
+#: djaoapp/templates/saas/profile/subscribers.html:167
+#: djaoapp/templates/saas/profile/subscribers.html:190
+msgid "Description"
+msgstr "Description"
+
+#: djaoapp/templates/contacts/contact.html:53
+msgid "Create activity"
+msgstr "Créez une activitée"
+
+#: djaoapp/templates/contacts/index.html:8
+msgid "Contacts"
+msgstr "Contacts"
+
+#: djaoapp/templates/contacts/index.html:15
+msgid "No contacts"
+msgstr "Aucun contact"
+
+#: djaoapp/templates/contacts/index.html:43
+msgid "Create Contact"
+msgstr "Créez un contact"
+
+#: djaoapp/templates/django/accounts/_register_form.html:9
+#: djaoapp/templates/jinja2/accounts/_register_form.html:9
+#: djaoapp/templates/jinja2/accounts/_register_form.html:28
+msgid "Login Credentials"
+msgstr "Identifiants de connexion"
+
+#: djaoapp/templates/django/accounts/_register_form.html:17
+#: djaoapp/templates/jinja2/accounts/_register_form.html:36
+msgid "Contact Information"
+msgstr "Coordonnées"
+
+#: djaoapp/templates/django/accounts/_register_form.html:34
+#: djaoapp/templates/jinja2/accounts/_register_form.html:59
+msgid "By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of service</a></b>."
+msgstr "En cliquant sur le bouton &quot;S'enregister&quot; ci-dessous, <b>Je certifie avoir lu et accepter les <a target=\"_blank\" href=\"/legal/terms-of-use/\">termes du service</a></b>."
+
+#: djaoapp/templates/django/saas/_card_use.html:8
+#: djaoapp/templates/jinja2/saas/_card_use.html:8
+msgid "Credit Card Information"
+msgstr "Informations de carte bancaire"
+
+#: djaoapp/templates/django/saas/_card_use.html:8
+#: djaoapp/templates/django/saas/_card_use.html:92
+#: djaoapp/templates/jinja2/saas/_card_use.html:8
+#: djaoapp/templates/jinja2/saas/_card_use.html:108
+#: djaoapp/templates/rules/app_dashboard.html:158
+#: djaoapp/templates/saas/_bank_use.html:4
+#: djaoapp/templates/saas/_bank_use.html:42
+#: djaoapp/templates/saas/billing/index.html:44
+#: djaoapp/templates/saas/billing/transfers.html:36
+#: djaoapp/templates/users/_require_password.html:29
+#: djaoapp/templates/users/password.html:30
+#: djaoapp/templates/users/pubkey.html:16 saas/forms.py:166 saas/forms.py:240
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: djaoapp/templates/django/saas/_card_use.html:13
+#: djaoapp/templates/jinja2/saas/_card_use.html:13
+#: djaoapp/templates/saas/billing/balance.html:19
+#: djaoapp/templates/saas/billing/index.html:46
+#: djaoapp/templates/saas/billing/receipt.html:47
+#: djaoapp/templates/saas/printable_charge_receipt.html:84
+msgid "card"
+msgstr "carte"
+
+#: djaoapp/templates/django/saas/_card_use.html:17
+#: djaoapp/templates/jinja2/saas/_card_use.html:17
+#: djaoapp/templates/saas/billing/balance.html:23
+#: djaoapp/templates/saas/billing/index.html:53
+#: djaoapp/templates/saas/billing/receipt.html:51
+#: djaoapp/templates/saas/printable_charge_receipt.html:88
+msgid "expires"
+msgstr "expire à"
+
+#: djaoapp/templates/django/saas/_card_use.html:34
+#: djaoapp/templates/django/saas/_card_use.html:37
+#: djaoapp/templates/jinja2/saas/_card_use.html:35
+#: djaoapp/templates/jinja2/saas/_card_use.html:39
+msgid "Card Number"
+msgstr "Numéro de la carte"
+
+#: djaoapp/templates/django/saas/_card_use.html:42
+#: djaoapp/templates/jinja2/saas/_card_use.html:46
+msgid "Expiration"
+msgstr "Expiration"
+
+#: djaoapp/templates/django/saas/_card_use.html:46
+#: djaoapp/templates/jinja2/saas/_card_use.html:52
+msgid "MM"
+msgstr "MM"
+
+#: djaoapp/templates/django/saas/_card_use.html:48
+#: djaoapp/templates/jinja2/saas/_card_use.html:58
+msgid "YYYY"
+msgstr "AAAA"
+
+#: djaoapp/templates/django/saas/_card_use.html:53
+#: djaoapp/templates/jinja2/saas/_card_use.html:63
+msgid "Security Code"
+msgstr "Code de sécurité"
+
+#: djaoapp/templates/django/saas/_card_use.html:55
+#: djaoapp/templates/jinja2/saas/_card_use.html:65
+msgid "What is CVV/CVC ?"
+msgstr "Qu'est-ce qu'un CVV/CVC ?"
+
+#: djaoapp/templates/django/saas/_card_use.html:57
+#: djaoapp/templates/jinja2/saas/_card_use.html:67
+msgid "Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure established by credit card companies to reduce fraud for internet transactions. On a Visa, MasterCard and Discover, this 3 digit code is located on the back of the card. American Express, however, displays a 4 digit code on the front of the card. Both 3 or 4 digit codes are verification numbers used in the authentication process."
+msgstr "Le Code de Vérification (CVV ou CVC) est une procédure mise en place par les companies de carte de crédit pour réduire la fraude sur internet. Sur une carte Visa, MasterCard et Discover, les 3 chiffres sont situés au dos de la carte. American Express, par contre, a un code  à 4 chiffres sur le devant de la carte."
+
+#: djaoapp/templates/django/saas/_card_use.html:61
+#: djaoapp/templates/jinja2/saas/_card_use.html:71
+msgid "The CVV/CVC code is the last 3 digits printed in the signature area on the back of the card."
+msgstr "Le code CVV/CVC corresponds au 3 chiffres inscrits dans la zone de signature au dos de la carte."
+
+#: djaoapp/templates/django/saas/_card_use.html:65
+#: djaoapp/templates/jinja2/saas/_card_use.html:75
+msgid "The CVV/CVC code is the last 4 digits on the front of your card right above your credit card number."
+msgstr "Le code CVV/CVC corresponds au 4 chiffres sur le devant de la carte just au dessus du numéro de la carte."
+
+#: djaoapp/templates/django/saas/_card_use.html:76
+#: djaoapp/templates/jinja2/saas/_card_use.html:92
+msgid "Billing Address"
+msgstr "Adresse de facturation"
+
+#: djaoapp/templates/jinja2/_form_fields.html:115
+msgid "Please choose one ..."
+msgstr "Faites un choix, s'il vous plait ..."
+
+#: djaoapp/templates/jinja2/accounts/_register_form.html:17
+msgid "Organization Information"
+msgstr "Informations liées a l'organisation"
+
+#: djaoapp/templates/jinja2/saas/_card_use.html:88
+msgid "We keep on top of all best practices to secure the information you provide us. See the <a href=\"/legal/security/\" target=\"_blank\">security policy</a> for details."
+msgstr "Nous nous tenons au courant de toutes les meilleures pratiques pour sécuriser les informations que vous nous fournissez. Voir la <a href=\"/legal/security/\" target=\"_blank\">politique de sécurité</a> pour plus de détails."
+
+#: djaoapp/templates/jinja2/saas/profile/plans/_form.html:21
+msgid "Extra Options"
+msgstr "Options supplémentaires"
+
+#: djaoapp/templates/notification/detail.html:4
+#, python-format
+msgid "%(template)s Notification"
+msgstr "Notification %(template)s"
+
+#: djaoapp/templates/notification/detail.html:5
+#: djaoapp/templates/pages/theme.html:58 djaoapp/templates/pages/theme.html:69
+msgid "Send test e-mail"
+msgstr "Envoyez un e-mail test"
+
+#: djaoapp/templates/notification/detail.html:12
+#: djaoapp/templates/pages/_edit_tools.html:36
+msgid "Preview"
+msgstr "Aperçu"
+
+#: djaoapp/templates/pages/_body_bottom.html:15
+#: djaoapp/templates/saas/metrics/plans.html:6
+msgid "Add Plan"
+msgstr "Ajouter un plan"
+
+#: djaoapp/templates/pages/_body_bottom.html:37
+#: djaoapp/templates/pages/_body_bottom.html:46
+#: saas/templatetags/saas_tags.py:123
+msgid "per month"
+msgstr "par mois"
+
+#: djaoapp/templates/pages/_body_bottom.html:40
+#: saas/templatetags/saas_tags.py:117
+msgid "per hour"
+msgstr "par heure"
+
+#: djaoapp/templates/pages/_body_bottom.html:42
+#: saas/templatetags/saas_tags.py:119
+msgid "per day"
+msgstr "par jour"
+
+#: djaoapp/templates/pages/_body_bottom.html:44
+#: saas/templatetags/saas_tags.py:121
+msgid "per week"
+msgstr "par semaine"
+
+#: djaoapp/templates/pages/_body_bottom.html:48
+#: saas/templatetags/saas_tags.py:125
+msgid "per year"
+msgstr "par année"
+
+#: djaoapp/templates/pages/_body_top_no_processor.html:1
+msgid "LIVE MODE - <b>error</b>: a site administrator will have to connect a Stripe account to process payments."
+msgstr "LIVE MODE - <b>erreur</b>: un administrateur du site doit connecter un compte marchant pour pouvoir effectuer des paiments."
+
+#: djaoapp/templates/pages/_body_top_no_processor_manager.html:1
+#, python-format
+msgid "LIVE MODE - To create live charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connect a Stripe account &raquo;</a>"
+msgstr "LIVE MODE - <b>erreur</b>: pour créer des charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connectez un compte marchant &raquo;</a>"
+
+#: djaoapp/templates/pages/_body_top_testing.html:1
+msgid "TESTING MODE - No funds will be transfered and <a href=\"https://stripe.com/docs/testing#cards\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">Stripe test cards</a> can be used to make payments."
+msgstr "MODE TEST - Aucun fonds ne sera transférer et <a href=\"https://stripe.com/docs/testing#cards\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">les numéros de cartes test</a> peuvent etre utilisées."
+
+#: djaoapp/templates/pages/_body_top_testing_manager.html:1
+#, python-format
+msgid "TESTING MODE - To create live charges and remove this banner: <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">Switch to production mode &raquo;</a>."
+msgstr "MODE TEST - pour créer des charges, et retirer cette bannière <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">passer en mode production &raquo;</a>"
+
+#: djaoapp/templates/pages/_body_top_testing_no_processor.html:1
+msgid "TESTING MODE - You can register test accounts but a site administrator will have to connect a Stripe account to create test charges."
+msgstr "MODE TEST - Vous pouvez enregistrer des comptes test mais un administrateur du site devra connecter un compte marchant pour créer des charges."
+
+#: djaoapp/templates/pages/_body_top_testing_no_processor_manager.html:1
+#, python-format
+msgid "TESTING MODE - To remove this banner: <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">Switch to production mode</a>. To create test and live charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connect a Stripe account &raquo;</a>"
+msgstr "MODE TEST - Pour retirer cette bannière <a id=\"streetside-app-link\" href=\"%(urls.djaodjin.app)s\" target=\"_blank\" style=\"color:#e43;text-decoration:underline;\">passer en mode production</a>. Pour tester et créer des charges, <a id=\"connect-link\" href=\"%(urls.provider.bank)s\" style=\"color:#e43;text-decoration:underline;\">connecter un compte marchant &raquo;</a>."
+
+#: djaoapp/templates/pages/_edit_tools.html:13
+#: djaoapp/templates/saas/metrics/dashboard.html:16
+msgid "Search..."
+msgstr "Chercher..."
+
+#: djaoapp/templates/pages/_edit_tools.html:24
+msgid "Drag'n'drop or click here."
+msgstr "Drag'n'drop ou cliquez ici."
+
+#: djaoapp/templates/pages/_edit_tools.html:35
+msgid "Close"
+msgstr "Fermer"
+
+#: djaoapp/templates/pages/_edit_tools.html:66
+msgid "Upload completed"
+msgstr "Téléchargement complet"
+
+#: djaoapp/templates/pages/_edit_tools.html:73
+msgid "tags"
+msgstr "tags..."
+
+#: djaoapp/templates/pages/_edit_tools.html:73
+msgid "Tag"
+msgstr "Tag"
+
+#: djaoapp/templates/pages/_edit_tools.html:73
+msgid "Tags must be separated by a comma. ex: video, title"
+msgstr "Les tags doivent être séparés par une virgule. ex: video, titre"
+
+#: djaoapp/templates/pages/_edit_tools.html:73
+#: djaoapp/templates/saas/metrics/balances.html:39
+#: djaoapp/templates/saas/profile/index.html:76
+#: djaoapp/templates/saas/profile/index.html:116
+#: djaoapp/templates/saas/profile/plans/plan.html:23
+#: djaoapp/templates/saas/profile/plans/plan.html:42
+msgid "Delete"
+msgstr "Supprimer"
+
+#: djaoapp/templates/pages/_edit_tools.html:106
+msgid "New source text"
+msgstr "Nouveau text source"
+
+#: djaoapp/templates/pages/_edit_tools.html:112
+msgid "URL of the page (ex: /hello) ..."
+msgstr "URL de la page (ex: /hello) ..."
+
+#: djaoapp/templates/pages/_edit_tools.html:124
+#: djaoapp/templates/rules/app_dashboard.html:107
+#: djaoapp/templates/saas/billing/bank.html:48
+#: djaoapp/templates/saas/billing/index.html:81
+#: djaoapp/templates/saas/billing/receipt.html:124
+#: djaoapp/templates/saas/profile/index.html:112
+#: djaoapp/templates/saas/profile/plans/plan.html:38
+#: djaoapp/templates/saas/profile/roles/index.html:119
+#: djaoapp/templates/saas/profile/roles/index.html:148
+#: djaoapp/templates/saas/profile/roles/role.html:134
+#: djaoapp/templates/saas/profile/subscriptions.html:132
+#: djaoapp/templates/saas/users/roles.html:103
+#: djaoapp/templates/users/_require_password.html:28
+msgid "Cancel"
+msgstr "Annuler"
+
+#: djaoapp/templates/pages/_edit_tools.html:127
+#: djaoapp/templates/rules/app_dashboard.html:111 saas/forms.py:179
+#: saas/forms.py:271
+msgid "Create"
+msgstr "Créez"
+
+#: djaoapp/templates/pages/_edit_tools.html:212
+msgid "Image gallery"
+msgstr "Galleries d'images"
+
+#: djaoapp/templates/pages/_edit_tools.html:218
+msgid "Code Editor"
+msgstr "Editeur de code"
+
+#: djaoapp/templates/pages/theme.html:3 djaoapp/templates/saas/_sidebar.html:85
+msgid "Theme"
+msgstr "Thème"
+
+#: djaoapp/templates/pages/theme.html:7
+msgid "When you are modifying root templates (ex: <filename>base.html</filename>), you may inadvertently break the dashboard and become unable to access this page to upload a fix."
+msgstr "Lorsque vous modifiez des modèles de base, comme <filename>base.html</filename>, par exemple, vous risquez de corrompre le tableau de bord par inadvertance et devenir ainsi incapable d'accéder à cette page pour télécharger un paquet de valide."
+
+#: djaoapp/templates/pages/theme.html:10
+#, python-format
+msgid "You can reset to the default theme, but you will need <a href=\"%(profile_url)s\">an API key</a> to trigger the <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">API end point</a> from the command line."
+msgstr "Vous pouvez restaurer le thème par défaut, mais pour cela vous aurez besoin d'une <a href=\"%(profile_url)s\">clé API</a> pour pouvoir <a href=\"https://djaodjin.com/docs/djaoapp-api/#themes_delete\">appeler l'API</a> de la ligne de commande."
+
+#: djaoapp/templates/pages/theme.html:14
+msgid "Read more about theme customization ..."
+msgstr "Lire un peu plus sur la customization de thème ..."
+
+#: djaoapp/templates/pages/theme.html:27
+msgid "Show inline template editor tools"
+msgstr "Afficher les outils pour l'édition des modèles"
+
+#: djaoapp/templates/pages/theme.html:38
+msgid "Upload theme package (.zip)"
+msgstr "Remplacer le thème (.zip)"
+
+#: djaoapp/templates/pages/theme.html:42
+msgid "Download as .zip file"
+msgstr "Télécharger le thème (.zip)"
+
+#: djaoapp/templates/pages/theme.html:43
+msgid "Reset to default"
+msgstr "Ré-initialiser le thème par défault"
+
+#: djaoapp/templates/pages/theme.html:49
+#: djaoapp/templates/saas/_sidebar.html:33
+#: djaoapp/templates/users/notifications.html:3
+msgid "Notifications"
+msgstr "Notifications"
+
+#: djaoapp/templates/pages/theme.html:57 djaoapp/templates/pages/theme.html:68
+msgid "Edit"
+msgstr "Editer"
+
+#: djaoapp/templates/pages/theme.html:65
+#, python-format
+msgid "%(role_descr)s added"
+msgstr "%(role_descr)s ajouté"
+
+#: djaoapp/templates/rules/app_dashboard.html:3
+msgid "HTTP Request Pipeline"
+msgstr "Pipeline de requêtes HTTP"
+
+#: djaoapp/templates/rules/app_dashboard.html:8
+msgid "Configure the request pipeline"
+msgstr "Configurer le pipeline de requêtes"
+
+#: djaoapp/templates/rules/app_dashboard.html:8
+msgid "Set URL access rules and where authorized requests are forwared to..."
+msgstr "Créez les règles d'accès et où les requêtes sont envoyées ensuite..."
+
+#: djaoapp/templates/rules/app_dashboard.html:8
+#: djaoapp/templates/saas/billing/coupons.html:7
+#: djaoapp/templates/saas/billing/index.html:18
+#: djaoapp/templates/saas/billing/transfers.html:9
+#: djaoapp/templates/saas/metrics/base.html:16
+#: djaoapp/templates/saas/profile/plans/plan.html:13
+#: djaoapp/templates/saas/profile/roles/index.html:8
+#: djaoapp/templates/saas/profile/roles/role.html:10
+#: djaoapp/templates/saas/profile/subscribers.html:11
+#: djaoapp/templates/saas/profile/subscriptions.html:11
+msgid "Use keyboard navigation or click 'Next' to move forward."
+msgstr "Utilisez la navigation au clavier ou cliquez sur 'Suivant' pour continuer."
+
+#: djaoapp/templates/rules/app_dashboard.html:9
+msgid "Domain"
+msgstr "Nom de domaine"
+
+#: djaoapp/templates/rules/app_dashboard.html:10
+#, python-format
+msgid "Check the domain for which the access rules apply. All HTTP requests to %(site_available_at_url)s<br />will be checked against the access rules defined below."
+msgstr "Vérifiez le domaine pour lequel les règles d'accès s'appliquent. Toutes les requêtes HTTP vers %(site_available_at_url)s<br />seront vérifiées par rapport aux règles d'accès définies ci-dessous."
+
+#: djaoapp/templates/rules/app_dashboard.html:12
+msgid "The site is available at"
+msgstr "Le site est disponible à"
+
+#: djaoapp/templates/rules/app_dashboard.html:17
+msgid "Access Rules"
+msgstr "Règles d'accès"
+
+#: djaoapp/templates/rules/app_dashboard.html:19
+msgid "Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself."
+msgstr "Définir une <em>règle d'accès</em> par <em>chemin</em> et si les requêtes autorisées<br /> seront transmises à l'application Web ou servies par le pare-feu lui-même."
+
+#: djaoapp/templates/rules/app_dashboard.html:22
+#: djaoapp/templates/saas/metrics/balances.html:38
+msgid "Rank"
+msgstr "Rang"
+
+#: djaoapp/templates/rules/app_dashboard.html:23
+msgid "Path"
+msgstr "Chemain"
+
+#: djaoapp/templates/rules/app_dashboard.html:24
+msgid "Access Rule"
+msgstr "Règles d'accès"
+
+#: djaoapp/templates/rules/app_dashboard.html:25
+msgid "Forward"
+msgstr "Faire suivre"
+
+#: djaoapp/templates/rules/app_dashboard.html:26
+msgid "Engage tags"
+msgstr "tags d'engagement"
+
+#: djaoapp/templates/rules/app_dashboard.html:73
+#: djaoapp/templates/rules/app_dashboard.html:84
+msgid "Add Access Rule"
+msgstr "Ajouter une règle d'accès"
+
+#: djaoapp/templates/rules/app_dashboard.html:88
+msgid "Path accessed ..."
+msgstr "Chemin accédé ..."
+
+#: djaoapp/templates/rules/app_dashboard.html:101
+msgid "Your path should end with '/'. If not it will be automatically added."
+msgstr "Votre chemin devrait se terminer par '/'. Sinon, il sera automatiquement ajouté."
+
+#: djaoapp/templates/rules/app_dashboard.html:119
+msgid "Web application"
+msgstr "Application Web"
+
+#: djaoapp/templates/rules/app_dashboard.html:122
+msgid "Authentication"
+msgstr "Authentification"
+
+#: djaoapp/templates/rules/app_dashboard.html:124
+msgid "Registration enabled"
+msgstr "Inscriptions permises"
+
+#: djaoapp/templates/rules/app_dashboard.html:125
+msgid "Login-only"
+msgstr "Connexion seulement"
+
+#: djaoapp/templates/rules/app_dashboard.html:126
+msgid "Only site managers can login"
+msgstr "Seulement les administrateurs peuvent se connecter"
+
+#: djaoapp/templates/rules/app_dashboard.html:138
+msgid "Send welcome e-mail to newly registered users"
+msgstr "Envoyer un message de bienvenue"
+
+#: djaoapp/templates/rules/app_dashboard.html:147
+msgid "Forward HTTP requests to entry point *"
+msgstr "Faire suivre les requêtes HTTP au point d'entrée *"
+
+#: djaoapp/templates/rules/app_dashboard.html:157
+msgid "Set the entry point where authorized requests should be forwarded to."
+msgstr "Définir le point d'entrée où les requêtes autorisées doivent être envoyées."
+
+#: djaoapp/templates/rules/app_dashboard.html:163
+msgid "Forwarded session encoding *"
+msgstr "Données de session transmises *"
+
+#: djaoapp/templates/rules/app_dashboard.html:169
+msgid "No session forwarded"
+msgstr "Aucune données de session transmise"
+
+#: djaoapp/templates/rules/app_dashboard.html:170
+msgid "Cookie-based session backend"
+msgstr "Session basée sur un cookie"
+
+#: djaoapp/templates/rules/app_dashboard.html:171
+msgid "JWT-based session backend"
+msgstr "Session basée sur JWT"
+
+#: djaoapp/templates/rules/app_dashboard.html:176
+msgid "Download the API key used to encrypt"
+msgstr "Téléchargez la clé API utilisée pour chiffrer"
+
+#: djaoapp/templates/rules/app_dashboard.html:176
+msgid "sessions forwarded to your web application."
+msgstr "données de session transmise à votre application."
+
+#: djaoapp/templates/rules/app_dashboard.html:176
+msgid "more..."
+msgstr "plus..."
+
+#: djaoapp/templates/rules/app_dashboard.html:176
+msgid "Generate Key"
+msgstr "Genérer une clé"
+
+#: djaoapp/templates/rules/app_dashboard.html:182
+#: djaoapp/templates/rules/app_dashboard.html:186
+msgid "Encrypted Session Key"
+msgstr "données de session encryptées"
+
+#: djaoapp/templates/rules/app_dashboard.html:195
+#: djaoapp/templates/saas/profile/index.html:141
+#: djaoapp/templates/saas/profile/index.html:171
+msgid "Generating"
+msgstr ""
+
+#: djaoapp/templates/rules/app_dashboard.html:200
+msgid "This is the AES key used to encrypt the session cookie passed to your application when a request was authorized."
+msgstr "C'est la clé AES utilisée pour chiffrer le cookie de session transmise à votre demande lorsqu'une demande a été autorisée."
+
+#: djaoapp/templates/rules/app_dashboard.html:203
+#: djaoapp/templates/saas/profile/index.html:186
+msgid "The key will only be displayed once. Keep it secure."
+msgstr "La clé ne sera affichée qu'une fois. Gardez-la en sécurité."
+
+#: djaoapp/templates/rules/app_dashboard.html:210
+#: djaoapp/templates/saas/profile/index.html:193
+msgid "Generate"
+msgstr "Genérer"
+
+#: djaoapp/templates/rules/app_dashboard.html:212
+#: djaoapp/templates/saas/billing/index.html:85
+#: djaoapp/templates/saas/billing/receipt.html:126
+#: djaoapp/templates/saas/profile/index.html:195
+msgid "OK"
+msgstr "OK"
+
+#: djaoapp/templates/rules/app_dashboard.html:218
+msgid "Testing"
+msgstr "Tester"
+
+#: djaoapp/templates/rules/app_dashboard.html:220
+msgid "Enter a username and check the token that will be passed to your backend service."
+msgstr "Entrez un nom d'utilisateur et vérifier le token qui sera passé à votre service backend."
+
+#: djaoapp/templates/rules/app_dashboard.html:231
+msgid "Check"
+msgstr "Vérifier"
+
+#: djaoapp/templates/rules/app_dashboard.html:246
+msgid "As HTTP Header"
+msgstr "Comme entête HTTP"
+
+#: djaoapp/templates/rules/app_dashboard.html:252
+#: djaoapp/templates/rules/forward_error_manager_help.html:49
+msgid "Forwarding requests to"
+msgstr "Faire suivre les requêtes à"
+
+#: djaoapp/templates/rules/forward_error.html:11
+#: djaoapp/templates/rules/forward_error_manager_help.html:11
+msgid "503 Service Unavailable"
+msgstr "503 Le service n'est pas disponible"
+
+#: djaoapp/templates/rules/forward_error.html:14
+#: djaoapp/templates/rules/forward_error_manager_help.html:14
+msgid "The service behind the firewall cannot be reached."
+msgstr "Le service derrière le pare-feu n'est pas joinable."
+
+#: djaoapp/templates/rules/forward_error_manager_help.html:17
+msgid "You are a manager for this product. If you need help to setup your service, please <a href=\"/contact/\">contact us</a>."
+msgstr "Vous êtes un administrateur pour ce produit. Si vous avez besoin d'aide, <a href=\"/contact/\">contactez nous</a> s'il vous plaît."
+
+#: djaoapp/templates/saas/_bank_use.html:4
+msgid "Bank Information"
+msgstr "Information bancaire"
+
+#: djaoapp/templates/saas/_bank_use.html:8
+msgid "Bank"
+msgstr "Banque"
+
+#: djaoapp/templates/saas/_bank_use.html:12
+#: djaoapp/templates/saas/_bank_use.html:22
+#: djaoapp/templates/saas/billing/bank.html:15
+#: djaoapp/templates/saas/billing/transfers.html:42
+msgid "Account Number"
+msgstr "Numéro de compte"
+
+#: djaoapp/templates/saas/_bank_use.html:28
+msgid "Routing Number"
+msgstr "Numéro de routage"
+
+#: djaoapp/templates/saas/_bank_use.html:42 saas/forms.py:361
+msgid "Withdraw"
+msgstr "Retirez"
+
+#: djaoapp/templates/saas/_filter.html:5
+msgid "From"
+msgstr "De"
+
+#: djaoapp/templates/saas/_filter.html:29
+#: djaoapp/templates/saas/metrics/balances.html:11
+#: djaoapp/templates/saas/metrics/base.html:32
+#: djaoapp/templates/saas/profile/plans/subscribers.html:40
+#: djaoapp/templates/saas/profile/roles/index.html:92
+#: djaoapp/templates/saas/profile/roles/role.html:105
+#: djaoapp/templates/saas/users/roles.html:77
+msgid "To"
+msgstr "À"
+
+#: djaoapp/templates/saas/_filter_match.html:3
+msgid "Match"
+msgstr "Filtre"
+
+#: djaoapp/templates/saas/_invoiceables.html:7
+#, python-format
+msgid "%(plan)s from %(organization)s"
+msgstr "%(plan)s pour %(organization)s"
+
+#: djaoapp/templates/saas/_invoiceables.html:16
+#: djaoapp/templates/saas/_invoiceables.html:56
+msgid "Full name (i.e. first and last names)"
+msgstr "Nom complet (en fait le prénom suivi du nom de famille)"
+
+#: djaoapp/templates/saas/_invoiceables.html:22
+#: djaoapp/templates/saas/_invoiceables.html:62
+#: djaoapp/templates/saas/profile/roles/index.html:32
+msgid "Add"
+msgstr "Ajouter"
+
+#: djaoapp/templates/saas/_invoiceables.html:31
+#, python-format
+msgid " %(plan)s from %(organization)s"
+msgstr "%(plan)s pour %(organization)s"
+
+#: djaoapp/templates/saas/_invoiceables.html:73
+msgid "Charged Today"
+msgstr "A payer aujourd'hui"
+
+#: djaoapp/templates/saas/_organization_card.html:8
+msgid "pending request"
+msgstr "requête pour role"
+
+#: djaoapp/templates/saas/_organization_card.html:12
+#: djaoapp/templates/saas/_sidebar.html:57
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: djaoapp/templates/saas/_organization_card.html:16
+msgid "Accept Role"
+msgstr "Accepter role"
+
+#: djaoapp/templates/saas/_organization_card.html:21
+msgid "Remove"
+msgstr "Retirer"
+
+#: djaoapp/templates/saas/_plan_short.html:8
+msgid "Avalaible soon!"
+msgstr "Bientôt disponible"
+
+#: djaoapp/templates/saas/_plan_short.html:25
+#, python-format
+msgid "(was %(price)s)"
+msgstr "(avant %(price)s)"
+
+#: djaoapp/templates/saas/_plan_short.html:40
+#, python-format
+msgid "%(price)s one-time setup"
+msgstr "%(price)s coût initial de configuration"
+
+#: djaoapp/templates/saas/_plan_short.html:46
+msgid "(+Stripe per transaction costs)"
+msgstr "(+surcoût par transaction de Stripe)"
+
+#: djaoapp/templates/saas/_plan_short.html:61
+#: djaoapp/templates/saas/profile/subscriptions.html:38
+#: saas/views/billing.py:603
+msgid "Subscribe"
+msgstr "Abonnez-vous"
+
+#: djaoapp/templates/saas/_sidebar.html:27
+msgid "Connected profiles"
+msgstr "Profils connectés"
+
+#: djaoapp/templates/saas/_sidebar.html:41
+#: djaoapp/templates/saas/billing/index.html:18
+msgid "Billing"
+msgstr "Facturation"
+
+#: djaoapp/templates/saas/_sidebar.html:46
+#: djaoapp/templates/saas/profile/subscriptions.html:11
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+#: djaoapp/templates/saas/_sidebar.html:55
+msgid "Pricing, billing and metrics"
+msgstr "Prix, facturation et métriques"
+
+#: djaoapp/templates/saas/_sidebar.html:60
+#: djaoapp/templates/saas/billing/coupons.html:3
+#: djaoapp/templates/saas/billing/coupons.html:7
+msgid "Coupons"
+msgstr "Coupons"
+
+#: djaoapp/templates/saas/_sidebar.html:63
+#: djaoapp/templates/saas/billing/transfers.html:3
+#: djaoapp/templates/saas/billing/transfers.html:9
+msgid "Funds"
+msgstr "Fonds"
+
+#: djaoapp/templates/saas/_sidebar.html:66
+msgid "Revenue"
+msgstr "Revenu"
+
+#: djaoapp/templates/saas/_sidebar.html:69
+#: djaoapp/templates/saas/profile/plans/index.html:3
+msgid "Plans"
+msgstr "Forfaits"
+
+#: djaoapp/templates/saas/_sidebar.html:72
+msgid "Subscribers"
+msgstr "Abonnés"
+
+#: djaoapp/templates/saas/_sidebar.html:81
+msgid "Roles and permissions"
+msgstr "Roles et permissions"
+
+#: djaoapp/templates/saas/_sidebar.html:92
+msgid "Rules"
+msgstr "Règles"
+
+#: djaoapp/templates/saas/_transactions.html:2
+#: djaoapp/templates/saas/billing/transactions.html:3
+msgid "Transactions"
+msgstr "Transactions"
+
+#: djaoapp/templates/saas/_transactions.html:12
+#: djaoapp/templates/saas/billing/transactions.html:25
+msgid "Date"
+msgstr "Date"
+
+#: djaoapp/templates/saas/_transactions.html:17
+#: djaoapp/templates/saas/billing/cart.html:29
+#: djaoapp/templates/saas/billing/import.html:63
+#: djaoapp/templates/saas/billing/import.html:65
+#: djaoapp/templates/saas/billing/receipt.html:60
+#: djaoapp/templates/saas/billing/transactions.html:31
+#: djaoapp/templates/saas/printable_charge_receipt.html:99
+msgid "Amount"
+msgstr "Montant"
+
+#: djaoapp/templates/saas/_transactions.html:40
+#: djaoapp/templates/saas/billing/transactions.html:79
+msgid "No transactions"
+msgstr "Aucune transaction"
+
+#: djaoapp/templates/saas/_user_card.html:12
+#: djaoapp/templates/saas/profile/roles/index.html:64
+msgid "Click here to revoke access to the user."
+msgstr "Cliquez ici pour retirer l'accès d'un utilisateur"
+
+#: djaoapp/templates/saas/_user_card.html:18
+msgid "invited"
+msgstr "invité"
+
+#: djaoapp/templates/saas/_user_card.html:18
+#: djaoapp/templates/saas/profile/plans/index.html:58
+msgid "active"
+msgstr "actif"
+
+#: djaoapp/templates/saas/_user_card.html:23
+msgid "Grant"
+msgstr "Accorder"
+
+#: djaoapp/templates/saas/_user_card.html:25
+msgid "Resend Invite"
+msgstr "Re-envoyer l'invitation"
+
+#: djaoapp/templates/saas/billing/balance.html:3
+msgid "Unlock your subscriptions"
+msgstr "Débloquer vos abonnements"
+
+#: djaoapp/templates/saas/billing/balance.html:6
+msgid "You have no balance due."
+msgstr "Vous n'avez pas de solde dû"
+
+#: djaoapp/templates/saas/billing/balance.html:15
+#, python-format
+msgid "On %(created_at)s, we attempted to charge your card"
+msgstr "Nous avons essayé de charger votre carte au %(created_at)s"
+
+#: djaoapp/templates/saas/billing/balance.html:28
+msgid "The charge failed"
+msgstr "La transaction a échoué."
+
+#: djaoapp/templates/saas/billing/balance.html:29
+msgid "The charge was disputed"
+msgstr "La transaction a été contestée."
+
+#: djaoapp/templates/saas/billing/balance.html:31
+#, python-format
+msgid "(ref: #%(key)s)."
+msgstr "(ref: #%(key)s)."
+
+#: djaoapp/templates/saas/billing/balance.html:34
+#, python-format
+msgid "Please enter a valid credit card. A new charge of %(price)s will be created. Thank you."
+msgstr "Veuillez entrer une carte de crédit valide. Une nouvelle transaction de %(price)s va être créée. Merci."
+
+#: djaoapp/templates/saas/billing/balance.html:40
+msgid "Thank you for your business."
+msgstr "Merci."
+
+#: djaoapp/templates/saas/billing/bank.html:4
+#, python-format
+msgid "Update %(organization)s Deposit Information"
+msgstr "Mettre à jour le compte de depot pour %(organization)s"
+
+#: djaoapp/templates/saas/billing/bank.html:11
+#: djaoapp/templates/saas/billing/transfers.html:38
+msgid "Institution"
+msgstr "Institution"
+
+#: djaoapp/templates/saas/billing/bank.html:22
+msgid "Connected to a Stripe account."
+msgstr "Connecté a un compte Stripe."
+
+#: djaoapp/templates/saas/billing/bank.html:25
+#: djaoapp/templates/saas/billing/bank.html:41
+#: djaoapp/templates/saas/billing/bank.html:53
+msgid "De-authorize"
+msgstr "Dé-authoriser"
+
+#: djaoapp/templates/saas/billing/bank.html:44
+msgid "Please confirm you want to de-authorize access to your Stripe account."
+msgstr "Veuillez confirmez que vous souhaitez retirer l'accès a votre compte Stripe."
+
+#: djaoapp/templates/saas/billing/bank.html:51
+msgid "OOPS"
+msgstr "OOPS"
+
+#: djaoapp/templates/saas/billing/bank.html:62
+#, python-format
+msgid "Please provide the information to deposit funds to the bank account of %(organization)s."
+msgstr "S'il vous plait, ajoutez les informations pour connecter le compte depot de %(organization)s."
+
+#: djaoapp/templates/saas/billing/card.html:4
+#, python-format
+msgid "Update Card for %(organization)s"
+msgstr "Mettre à jour la carte bancaire pour %(organization)s"
+
+#: djaoapp/templates/saas/billing/cart-periods.html:3
+#: djaoapp/templates/saas/billing/cart.html:6
+msgid "Place order"
+msgstr "Placer une commande"
+
+#: djaoapp/templates/saas/billing/cart-periods.html:7
+#: djaoapp/templates/saas/billing/cart-seats.html:7
+#: djaoapp/templates/saas/billing/receipt.html:94
+msgid "Next"
+msgstr "Suivant"
+
+#: djaoapp/templates/saas/billing/cart-seats.html:3
+msgid "Place order on behalf of ..."
+msgstr "Placer une commande de la part de ..."
+
+#: djaoapp/templates/saas/billing/cart.html:17
+msgid "Extra Charge"
+msgstr "Charge additionnelle"
+
+#: djaoapp/templates/saas/billing/cart.html:22
+msgid "Description for the charge"
+msgstr "Texte libre pour la description de la charge"
+
+#: djaoapp/templates/saas/billing/cart.html:42
+msgid "Your subscription cart is empty."
+msgstr "Votre caddie d'abonnements est vide."
+
+#: djaoapp/templates/saas/billing/cart.html:47
+msgid "Have a registration code?"
+msgstr "Avez-vous un code d'enregistrement?"
+
+#: djaoapp/templates/saas/billing/cart.html:52
+msgid "Enter Code"
+msgstr "Entrez le code"
+
+#: djaoapp/templates/saas/billing/cart.html:54
+msgid "Apply"
+msgstr "Utiliser"
+
+#: djaoapp/templates/saas/billing/cart.html:58
+msgid "If you received a registration code, please enter it here."
+msgstr "Si vous avez reçu un code d'enregistrement, entrez-le ici s'il vous plaît."
+
+#: djaoapp/templates/saas/billing/coupons.html:7
+msgid "Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code."
+msgstr "Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code."
+
+#: djaoapp/templates/saas/billing/coupons.html:11
+#: djaoapp/templates/saas/billing/coupons.html:40
+msgid "Code"
+msgstr "Code"
+
+#: djaoapp/templates/saas/billing/coupons.html:16
+#: djaoapp/templates/saas/billing/coupons.html:49
+msgid "Percent"
+msgstr "Pourcentage"
+
+#: djaoapp/templates/saas/billing/coupons.html:21
+msgid "Add a coupon by entering a code, percentage and click 'Create Coupon'."
+msgstr "Ajouter un coupon en entrant un code, un pourcentage et cliquez sur 'Crééz un Coupon'."
+
+#: djaoapp/templates/saas/billing/coupons.html:23
+msgid "Create Coupon"
+msgstr "Créez un coupon"
+
+#: djaoapp/templates/saas/billing/coupons.html:28
+msgid "Download the list of coupons if necessary."
+msgstr "Téléchargez la liste des coupons si nécessaire."
+
+#: djaoapp/templates/saas/billing/coupons.html:29
+#: djaoapp/templates/saas/billing/index.html:109
+#: djaoapp/templates/saas/billing/transactions.html:18
+#: djaoapp/templates/saas/billing/transfers.html:57
+#: djaoapp/templates/saas/profile/plans/index.html:70
+#: djaoapp/templates/saas/profile/subscribers.html:36
+#: djaoapp/templates/saas/profile/subscribers.html:94
+msgid "CSV Download"
+msgstr "Téléchargement CSV"
+
+#: djaoapp/templates/saas/billing/coupons.html:43
+msgid "Sort coupons by ascending and descending order."
+msgstr "Trier les coupons par ordre croissant et décroissant."
+
+#: djaoapp/templates/saas/billing/coupons.html:55
+msgid "Expires At"
+msgstr "Expire à"
+
+#: djaoapp/templates/saas/billing/coupons.html:67
+#: djaoapp/templates/saas/billing/import.html:37
+msgid "Created At"
+msgstr "Créé à"
+
+#: djaoapp/templates/saas/billing/coupons.html:83
+msgid "No Coupons"
+msgstr "Aucun coupons"
+
+#: djaoapp/templates/saas/billing/coupons.html:107
+#: djaoapp/templates/saas/profile/subscriptions.html:76
+#: djaoapp/templates/saas/profile/subscriptions.html:161
+msgid "Never"
+msgstr "Jamais"
+
+#: djaoapp/templates/saas/billing/coupons.html:128
+msgid "Click on a coupon code to see who has redeem it."
+msgstr "Cliquez sur un code promo pour voir qui l'a échangé."
+
+#: djaoapp/templates/saas/billing/coupons.html:132
+msgid "Set the expiration date on a coupon."
+msgstr "Changer la date d'expiration du coupon"
+
+#: djaoapp/templates/saas/billing/coupons.html:134
+msgid "Add a description for you to easily remember."
+msgstr "Ajouter une description pour vous en rappeler facilement."
+
+#: djaoapp/templates/saas/billing/import.html:3
+#: djaoapp/templates/saas/billing/transfers.html:54
+msgid "Add offline transaction"
+msgstr "Ajouter une transaction hors ligne"
+
+#: djaoapp/templates/saas/billing/import.html:12
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: djaoapp/templates/saas/billing/import.html:18
+msgid "Subscriber name or email"
+msgstr "Nom ou e-mail de l'abonné"
+
+#: djaoapp/templates/saas/billing/import.html:84
+msgid "Import"
+msgstr "Importer"
+
+#: djaoapp/templates/saas/billing/index.html:3
+#, python-format
+msgid "Billing for %(organization)s"
+msgstr "Facturation pour %(organization)s"
+
+#: djaoapp/templates/saas/billing/index.html:5
+msgid "Payments made on the platform."
+msgstr "Paiements effectués sur la platforme"
+
+#: djaoapp/templates/saas/billing/index.html:9
+msgid "You can manage the Credit Card on file for your subscription. You can also see the list of all payments made here."
+msgstr "Vous pouvez gérer la carte de crédit enregistrée pour votre abonnement.Vous pouvez également voir la liste de tous les paiements effectués ici."
+
+#: djaoapp/templates/saas/billing/index.html:18
+msgid "All services you bought and the current balance due."
+msgstr "Tous les services que vous avez achetés et le solde actuel dû."
+
+#: djaoapp/templates/saas/billing/index.html:21
+#: djaoapp/templates/saas/billing/index.html:32
+#: djaoapp/templates/saas/billing/transactions.html:9
+msgid "Balance"
+msgstr "Solde"
+
+#: djaoapp/templates/saas/billing/index.html:24
+msgid "The amount you owe."
+msgstr "Le montant que vous devez."
+
+#: djaoapp/templates/saas/billing/index.html:33
+#: djaoapp/templates/saas/billing/index.html:35
+msgid "due"
+msgstr "solde dû"
+
+#: djaoapp/templates/saas/billing/index.html:35
+msgid "pay now"
+msgstr "Payér maintenant"
+
+#: djaoapp/templates/saas/billing/index.html:37
+msgid "credit"
+msgstr "crédit"
+
+#: djaoapp/templates/saas/billing/index.html:42
+msgid "Credit Card"
+msgstr "Carte de crédit"
+
+#: djaoapp/templates/saas/billing/index.html:44
+msgid "Update your credit card on file so you always pay promptly."
+msgstr "Mettez à jour votre carte de crédit enregistrée afin de toujours payer rapidement."
+
+#: djaoapp/templates/saas/billing/index.html:65
+#: djaoapp/templates/saas/billing/index.html:72
+#: djaoapp/templates/saas/billing/index.html:98
+msgid "Cancel balance due"
+msgstr "annuler le solde dû"
+
+#: djaoapp/templates/saas/billing/index.html:76
+msgid "Are you sure you would like to cancel the whole balance of"
+msgstr "Etes-vous sûr de vouloir annuler tout le solde de"
+
+#: djaoapp/templates/saas/billing/index.html:104
+msgid "one-time charge ..."
+msgstr "charge ponctuelle ..."
+
+#: djaoapp/templates/saas/billing/receipt.html:3
+#: djaoapp/views/custom_themes.py:28
+msgid "Charge receipt"
+msgstr "Accusé de réception"
+
+#: djaoapp/templates/saas/billing/receipt.html:9
+msgid "Email Again"
+msgstr "Renvoyer par mail"
+
+#: djaoapp/templates/saas/billing/receipt.html:11
+msgid "Printable"
+msgstr "Imprimable"
+
+#: djaoapp/templates/saas/billing/receipt.html:19
+#, python-format
+msgid "On %(created_at)s, we attempted to charge your card for the amount of %(price)s."
+msgstr "Nous avons essayé de charger votre carte au %(created_at)s pour un montant de %(price)s."
+
+#: djaoapp/templates/saas/billing/receipt.html:22
+#: djaoapp/templates/saas/billing/receipt.html:27
+msgid "The charge succeeded."
+msgstr "La transaction a réussi."
+
+#: djaoapp/templates/saas/billing/receipt.html:23
+#: djaoapp/templates/saas/billing/receipt.html:29
+#: djaoapp/templates/saas/printable_charge_receipt.html:58
+msgid "The charge failed."
+msgstr "La transaction a échoué."
+
+#: djaoapp/templates/saas/billing/receipt.html:24
+#: djaoapp/templates/saas/billing/receipt.html:31
+#: djaoapp/templates/saas/printable_charge_receipt.html:63
+msgid "The charge was disputed."
+msgstr "La transaction a été contestée."
+
+#: djaoapp/templates/saas/billing/receipt.html:25
+#: djaoapp/templates/saas/billing/receipt.html:33
+#: djaoapp/templates/saas/printable_charge_receipt.html:68
+msgid "The charge is in progress..."
+msgstr "La transaction est en cours..."
+
+#: djaoapp/templates/saas/billing/receipt.html:39
+msgid "REFERENCE"
+msgstr "REFERENCE"
+
+#: djaoapp/templates/saas/billing/receipt.html:43
+#: djaoapp/templates/saas/printable_charge_receipt.html:80
+msgid "amount"
+msgstr "montant"
+
+#: djaoapp/templates/saas/billing/receipt.html:75
+#: djaoapp/templates/saas/billing/receipt.html:99
+#: djaoapp/templates/saas/billing/receipt.html:106
+msgid "Refund"
+msgstr "Rembourser"
+
+#: djaoapp/templates/saas/billing/receipt.html:118
+#, python-format
+msgid "Please specify the amount you would like refunded (in %(unit)s)."
+msgstr "Veuillez spécifier le montant que vous souhaitez être remboursé (en %(unit)s)."
+
+#: djaoapp/templates/saas/billing/transactions.html:37
+msgid "Origin Organization"
+msgstr "Organisation d'origine"
+
+#: djaoapp/templates/saas/billing/transactions.html:43
+msgid "Origin Account"
+msgstr "Compte d'origine"
+
+#: djaoapp/templates/saas/billing/transactions.html:49
+msgid "Destination Organization"
+msgstr "Organisation destinataire"
+
+#: djaoapp/templates/saas/billing/transactions.html:55
+msgid "Destination Account"
+msgstr "Compte destinataire"
+
+#: djaoapp/templates/saas/billing/transfers.html:9
+msgid "Transfer earned income to the organization bank account. All paid subscriptions<br />accumulate in the organization's Funds balance. You can see all deposits<br />into the organization Funds balance and transfer available funds to a bank account here."
+msgstr "Transférer le revenu gagné sur le compte bancaire de l'organisation. Tous les abonnements payés<br />s'accumulent dans le solde des fonds de l'organisation. Vous pouvez voir tous les dépôts<br />aux fonds d'une organisation ainsi que les fonds disponibles de transfert à un compte bancaire ici."
+
+#: djaoapp/templates/saas/billing/transfers.html:12
+msgid "Available"
+msgstr "Disponible"
+
+#: djaoapp/templates/saas/billing/transfers.html:16 saas/api/serializers.py:139
+msgid "Amount available to transfer to the provider deposit account"
+msgstr "Le montant disponible qui peut être transférer sur le compte de dépôt."
+
+#: djaoapp/templates/saas/billing/transfers.html:21
+msgid "Withdraw up to the available amount."
+msgstr "Retirer jusqu'à la quantité disponible."
+
+#: djaoapp/templates/saas/billing/transfers.html:23
+msgid "withdraw"
+msgstr "retirer"
+
+#: djaoapp/templates/saas/billing/transfers.html:31
+msgid "Deposit Information"
+msgstr "Informations de dépôt"
+
+#: djaoapp/templates/saas/billing/transfers.html:35
+msgid "Update your bank information so funds can be transfered to you."
+msgstr "Mettez à jour vos informations bancaires afin que les fonds puissent vous être transférés."
+
+#: djaoapp/templates/saas/billing/withdraw.html:4
+msgid "Withdraw funds to your bank account"
+msgstr "Transferer les fonds dans votre compte bancaire"
+
+#: djaoapp/templates/saas/metrics/balances.html:3
+msgid "Balances"
+msgstr "Soldes"
+
+#: djaoapp/templates/saas/metrics/balances.html:10
+msgid "Download"
+msgstr "Télécharger"
+
+#: djaoapp/templates/saas/metrics/balances.html:29
+#: djaoapp/templates/saas/metrics/base.html:36
+msgid "Look back through time."
+msgstr "Consulter l'historique."
+
+#: djaoapp/templates/saas/metrics/balances.html:40
+#: djaoapp/templates/saas/metrics/balances.html:86
+#: djaoapp/templates/saas/profile/plans/index.html:17
+#: djaoapp/templates/saas/profile/roles/index.html:135
+msgid "Title"
+msgstr "Titre"
+
+#: djaoapp/templates/saas/metrics/balances.html:57
+msgid "No aggregated balances defined for this report. Add the first one with the form below."
+msgstr "Pas de soldes agrégés définis pour ce rapport. Ajoutez le premier avec le formulaire ci-dessous."
+
+#: djaoapp/templates/saas/metrics/balances.html:91
+msgid "Selector"
+msgstr "Sélecteur"
+
+#: djaoapp/templates/saas/metrics/balances.html:96
+msgid "Add Line"
+msgstr "Ajouter un ligne"
+
+#: djaoapp/templates/saas/metrics/base.html:4
+#, python-format
+msgid "%(title)s for %(organization)s"
+msgstr "%(title)s pour %(organization)s"
+
+#: djaoapp/templates/saas/metrics/base.html:16
+msgid "Track monthly revenue and monthly subscribers."
+msgstr "Suivre les revenus mensuels et les abonnés mensuels."
+
+#: djaoapp/templates/saas/metrics/base.html:47
+msgid "Local"
+msgstr "Locale"
+
+#: djaoapp/templates/saas/metrics/base.html:48
+msgid "UTC"
+msgstr "UTC"
+
+#: djaoapp/templates/saas/metrics/coupons.html:4
+#, python-format
+msgid "%(coupon)s Performance"
+msgstr "Performance de %(coupon)s"
+
+#: djaoapp/templates/saas/metrics/coupons.html:17
+#, python-format
+msgid "%(coupon)s was used"
+msgstr "%(coupon)s a été utilisé"
+
+#: djaoapp/templates/saas/metrics/coupons.html:17
+msgid "times"
+msgstr "fois"
+
+#: djaoapp/templates/saas/metrics/coupons.html:17
+msgid "time"
+msgstr "fois"
+
+#: djaoapp/templates/saas/metrics/coupons.html:22
+msgid "User"
+msgstr "Nom d'utilisateur"
+
+#: djaoapp/templates/saas/metrics/coupons.html:25
+#: djaoapp/templates/saas/metrics/coupons.html:34
+#: djaoapp/templates/saas/metrics/coupons.html:43
+msgid "Sort coupon use by ascending and descending order."
+msgstr "Trier l'utilisation des coupons par ordre croissant et décroissant."
+
+#: djaoapp/templates/saas/metrics/coupons.html:31
+#: djaoapp/templates/saas/profile/plans/plan.html:13
+#: djaoapp/templates/saas/profile/plans/subscribers.html:76
+#: djaoapp/templates/saas/profile/subscribers.html:106
+#: djaoapp/templates/saas/profile/subscribers.html:124
+#: djaoapp/templates/saas/profile/subscribers.html:157
+#: djaoapp/templates/saas/profile/subscribers.html:180
+#: djaoapp/templates/saas/profile/subscriptions.html:18
+#: djaoapp/templates/saas/profile/subscriptions.html:151
+msgid "Plan"
+msgstr "Abonné à"
+
+#: djaoapp/templates/saas/metrics/coupons.html:40
+msgid "Used at"
+msgstr "Utilisé à"
+
+#: djaoapp/templates/saas/metrics/coupons.html:59
+#, python-format
+msgid "No use of %(coupon)s coupon"
+msgstr "Pas d'utilisation du coupon %(coupon)s"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:4
+#, python-format
+msgid "%(organization_name)s Dashboard"
+msgstr "Tableau de bord pour %(organization_name)s"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:6
+msgid "A section short description"
+msgstr "Une courte description de la section"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:39
+msgid "To do items"
+msgstr "Choses à faire"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:42
+msgid "No items to take care of Today."
+msgstr "Aucun élément à prendre en charge aujourd'hui."
+
+#: djaoapp/templates/saas/metrics/dashboard.html:47
+msgid "Today Sales"
+msgstr "Ventes du jour"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:60
+msgid "No sales data yet"
+msgstr "Pas encore de données de vente"
+
+#: djaoapp/templates/saas/metrics/dashboard.html:79
+msgid "Recently registered"
+msgstr "Récemment enregistré"
+
+#: djaoapp/templates/saas/metrics/plans.html:6
+#: djaoapp/templates/saas/profile/plans/index.html:10
+msgid "Create plan"
+msgstr "Créez un plan"
+
+#: djaoapp/templates/saas/metrics/revenue.html:5
+msgid "Definitions for Total Sales, Payments, etc."
+msgstr "Définitions pour les ventes totales, les paiements, etc."
+
+#: djaoapp/templates/saas/organization_redirects.html:7
+msgid "Please choose an organization ..."
+msgstr "Veuillez choisir une organisation ..."
+
+#: djaoapp/templates/saas/organization_redirects.html:16
+msgid "New ..."
+msgstr "Nouveau ..."
+
+#: djaoapp/templates/saas/printable_charge_receipt.html:48
+#, python-format
+msgid "%(provider)s Charge Receipt"
+msgstr "Accusé de réception de %(provider)s"
+
+#: djaoapp/templates/saas/printable_charge_receipt.html:53
+#, python-format
+msgid "On %(created_at)s, the credit card has been charged for an amount of %(price)s. Payment Information:"
+msgstr "Nous avons chargé votre carte au %(created_at)s pour un montant de %(price)s. Reçu:"
+
+#: djaoapp/templates/saas/printable_charge_receipt.html:57
+#: djaoapp/templates/saas/printable_charge_receipt.html:62
+#: djaoapp/templates/saas/printable_charge_receipt.html:67
+#, python-format
+msgid "On %(created_at)s, we attempted to charge your card for an amount of %(price)s."
+msgstr "Nous avons essayé de charger votre carte au %(created_at)s pour un montant de %(price)s."
+
+#: djaoapp/templates/saas/printable_charge_receipt.html:76
+msgid "reference"
+msgstr "reference"
+
+#: djaoapp/templates/saas/printable_charge_receipt.html:125
+#, python-format
+msgid "Thank you for your continued business. If you have any questions or comments, email us at <a href=\"mailto:%(email)s\">%(email)s</a>."
+msgstr "Merci. Si vous avez des questions ou commentaires, écrivez-nous à <a href=\"mailto:%(email)s\">%(email)s</a>."
+
+#: djaoapp/templates/saas/profile/index.html:5
+#, python-format
+msgid "%(organization)s Profile"
+msgstr "Profil de %(organization)s"
+
+#: djaoapp/templates/saas/profile/index.html:7
+#, python-format
+msgid "%(user)s Profile"
+msgstr "Profil de %(user)s"
+
+#: djaoapp/templates/saas/profile/index.html:13
+msgid "Information about the profile"
+msgstr "Informations sur le profil"
+
+#: djaoapp/templates/saas/profile/index.html:17
+msgid "Update your profile, contact information, password, etc."
+msgstr "Mettez à jour votre profil, vos coordonnées, votre mot de passe, etc."
+
+#: djaoapp/templates/saas/profile/index.html:32
+#: djaoapp/templates/users/password.html:3
+msgid "Change Password"
+msgstr "Changer mot de passe"
+
+#: djaoapp/templates/saas/profile/index.html:35
+msgid "Use a new password to login."
+msgstr "Utilisez un nouveau mot de passe pour vous connecter."
+
+#: djaoapp/templates/saas/profile/index.html:44
+msgid "Reset API Key"
+msgstr "Réinitialiser la clé de l'API"
+
+#: djaoapp/templates/saas/profile/index.html:47
+msgid "Obtain a new API Key to authenticate."
+msgstr "Obtenir une nouvelle clé API pour s'authentifier."
+
+#: djaoapp/templates/saas/profile/index.html:59
+msgid "Send an activation e-mail to the user."
+msgstr "Envoyer un e-mail d'activation à l'utilisateur."
+
+#: djaoapp/templates/saas/profile/index.html:68
+#: djaoapp/templates/saas/profile/plans/plan.html:20
+msgid "Danger Zone"
+msgstr "Zone dangereuse"
+
+#: djaoapp/templates/saas/profile/index.html:79
+#: djaoapp/templates/saas/profile/index.html:103
+#: djaoapp/templates/saas/profile/plans/plan.html:23
+#: djaoapp/templates/saas/profile/subscriptions.html:124
+msgid "This operation cannot be reversed."
+msgstr "Cette opération ne peut pas être annulée."
+
+#: djaoapp/templates/saas/profile/index.html:88
+#: djaoapp/templates/saas/profile/index.html:92
+msgid "Delete Profile"
+msgstr "Supprimer le profil"
+
+#: djaoapp/templates/saas/profile/index.html:99
+#: djaoapp/templates/saas/profile/index.html:101
+#, python-format
+msgid "You are about to delete the profile and account for %(profile_name)s."
+msgstr "Vous êtes sur le point de supprimer le profil et le compte pour <em>%(profile_name)s</em>. Cette opération ne peut pas être annulée."
+
+#: djaoapp/templates/saas/profile/index.html:106
+#: djaoapp/templates/saas/profile/subscriptions.html:127
+msgid "Are you sure you want to continue?"
+msgstr "Etes-vous sûr de vouloir continuer ?"
+
+#: djaoapp/templates/saas/profile/index.html:125
+msgid "Ask for password"
+msgstr "Demander mot de passe"
+
+#: djaoapp/templates/saas/profile/index.html:129
+msgid "Please re-enter your password ..."
+msgstr "S'il vous plait, entrez votre mot de passe de nouveau ..."
+
+#: djaoapp/templates/saas/profile/index.html:144
+msgid "This is your secret API key."
+msgstr "Ceci est votre clé API."
+
+#: djaoapp/templates/saas/profile/index.html:158
+#: djaoapp/templates/saas/profile/index.html:164
+msgid "API Key"
+msgstr "Clé API"
+
+#: djaoapp/templates/saas/profile/index.html:183
+msgid "This is the API key you can use to authenticate with the service."
+msgstr "Voici la clé API que vous pouvez utiliser pour vous authentifier avec le service."
+
+#: djaoapp/templates/saas/profile/new.html:8
+msgid "Create profile"
+msgstr "Créer un profil"
+
+#: djaoapp/templates/saas/profile/new.html:11
+msgid "If you are creating an organization, plan to have multiple managers, etc., please enter a shortID different from your username. Otherwise we will merge the profile with your user account."
+msgstr "Si vous créez une organization, plannifiez d'avoir plusieurs profile managers, utilisez un shortID different de votre nom d'utilisateur. Sinon nous allons combiner le profil avec votre compte utilisateur."
+
+#: djaoapp/templates/saas/profile/plans/index.html:10
+msgid "New Plan"
+msgstr "Nouveau plan"
+
+#: djaoapp/templates/saas/profile/plans/index.html:23
+msgid "Status"
+msgstr "Status"
+
+#: djaoapp/templates/saas/profile/plans/index.html:29
+msgid "Period price"
+msgstr "Prix par période"
+
+#: djaoapp/templates/saas/profile/plans/index.html:35
+msgid "Created at"
+msgstr "Crée à"
+
+#: djaoapp/templates/saas/profile/plans/index.html:51
+msgid "No Plans"
+msgstr "Aucun plans"
+
+#: djaoapp/templates/saas/profile/plans/index.html:58 saas/models.py:319
+#: saas/models.py:320
+msgid "disabled"
+msgstr "désactivé"
+
+#: djaoapp/templates/saas/profile/plans/plan.html:4
+#, python-format
+msgid "%(title)s Plan"
+msgstr "Forfait %(title)s"
+
+#: djaoapp/templates/saas/profile/plans/plan.html:13
+msgid "Set the title, description and price of a plan."
+msgstr "Définir le titre, la description et le prix d'un forfait."
+
+#: djaoapp/templates/saas/profile/plans/plan.html:27
+#: djaoapp/templates/saas/profile/plans/plan.html:31
+msgid "Delete Plan"
+msgstr "Supprimer le plan"
+
+#: djaoapp/templates/saas/profile/plans/plan.html:34
+msgid "Please confirm you want to delete this plan."
+msgstr "Veuillez confirmez que vous souhaitez supprimer ce forfait."
+
+#: djaoapp/templates/saas/profile/plans/plan.html:52
+msgid "Plan Subscribers"
+msgstr "Abonnés a ce forfait"
+
+#: djaoapp/templates/saas/profile/plans/plan.html:61
+msgid "Toggle this plan between available for subscription or not."
+msgstr "Basculer ce forfait entre disponible pour abonnement ou non."
+
+#: djaoapp/templates/saas/profile/plans/plan.html:64
+msgid "Deactivate"
+msgstr "Désactiver"
+
+#: djaoapp/templates/saas/profile/plans/plan.html:65
+msgid "Users can only subscribe to active plans."
+msgstr "Les utilisateurs peuvent uniquement s'abonner aux forfaits actifs."
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:4
+#, python-format
+msgid "%(plan)s plan subscribers"
+msgstr "Abonnés au forfait %(plan)s"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:15
+msgid "Start typing the name or email of the profile you want to add."
+msgstr "Commencez a taper le nom ou l'e-mail du profil que vous souhaitez ajouter."
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:21
+#: djaoapp/templates/saas/profile/plans/subscribers.html:65
+msgid "Add subscriber"
+msgstr "Ajouter un abonné"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:36
+#, python-format
+msgid "%(invitee)s is not yet registered. This is an opportunity to invite and add her/him."
+msgstr "Nous n'avons pas trouver %(invitee)s. C'est une opportunité pour l'inviter."
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:53
+#: djaoapp/templates/saas/profile/roles/index.html:104
+#: djaoapp/templates/saas/profile/roles/role.html:118
+#: djaoapp/templates/saas/users/roles.html:86
+msgid "The following invite message will be sent:"
+msgstr "Le message suivant sera envoyé avec l'invitation:"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:57
+#, python-format
+msgid ""
+"Hi %(invitee)s,\n"
+"\n"
+"I am subscribing you to %(plan)s.\n"
+"\n"
+"Thank you,\n"
+"- %(user)s"
+msgstr ""
+"Boujour %(invitee)s,\n"
+"\n"
+"Je vous abonne au plan %(plan)s.\n"
+"\n"
+"Merci,\n"
+"- %(user)s"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:75
+#: djaoapp/templates/saas/profile/subscribers.html:101
+#: djaoapp/templates/saas/profile/subscribers.html:129
+#: djaoapp/templates/saas/profile/subscribers.html:152
+#: djaoapp/templates/saas/profile/subscribers.html:175
+msgid "Subscriber"
+msgstr "Abonné"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:77
+#: djaoapp/templates/saas/profile/subscribers.html:111
+#: djaoapp/templates/saas/profile/subscribers.html:134
+#: djaoapp/templates/saas/profile/subscribers.html:147
+#: djaoapp/templates/saas/profile/subscribers.html:185
+msgid "Since"
+msgstr "Depuis"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:78
+#: djaoapp/templates/saas/profile/subscribers.html:116
+msgid "Ends at"
+msgstr "Se termine le"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:85
+msgid "Loading ..."
+msgstr "Chargement"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:92
+#: djaoapp/templates/saas/profile/subscribers.html:204
+msgid "No subscribers"
+msgstr "Aucun abonné"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:92
+#: djaoapp/templates/saas/profile/subscribers.html:204
+msgid "with filter:"
+msgstr "avec filtre:"
+
+#: djaoapp/templates/saas/profile/plans/subscribers.html:114
+msgid "Edit description here"
+msgstr "Ajouter un description"
+
+#: djaoapp/templates/saas/profile/roles/index.html:3
+msgid "Roles"
+msgstr "Roles"
+
+#: djaoapp/templates/saas/profile/roles/index.html:8
+msgid "Add/Remove roles"
+msgstr "Ajouter/Retirer roles"
+
+#: djaoapp/templates/saas/profile/roles/index.html:8
+msgid "Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers.."
+msgstr ""
+
+#: djaoapp/templates/saas/profile/roles/index.html:11
+#: djaoapp/templates/saas/profile/roles/index.html:149
+msgid "Create role"
+msgstr "Créez un role"
+
+#: djaoapp/templates/saas/profile/roles/index.html:27
+#: djaoapp/templates/saas/profile/roles/role.html:19
+msgid "Start typing the username or email of the person you want to add."
+msgstr "Commencez a taper le nom d'utilisateur ou l'e-mail de la personne que vous voulez ajouter."
+
+#: djaoapp/templates/saas/profile/roles/index.html:52
+msgid "No"
+msgstr "Non"
+
+#: djaoapp/templates/saas/profile/roles/index.html:60
+msgid "grant"
+msgstr "accorder"
+
+#: djaoapp/templates/saas/profile/roles/index.html:75
+#: djaoapp/templates/saas/profile/roles/index.html:84
+#: djaoapp/templates/saas/profile/roles/index.html:121
+#: djaoapp/templates/saas/profile/roles/index.html:128
+#: djaoapp/templates/saas/profile/roles/role.html:88
+#: djaoapp/templates/saas/profile/roles/role.html:95
+#: djaoapp/templates/saas/profile/roles/role.html:138
+#, python-format
+msgid "Invite %(role_descr)s"
+msgstr "Inviter %(role_descr)s"
+
+#: djaoapp/templates/saas/profile/roles/index.html:77
+#: djaoapp/templates/saas/profile/roles/index.html:130
+#: djaoapp/templates/saas/profile/roles/role.html:25
+#: djaoapp/templates/saas/profile/roles/role.html:90
+#, python-format
+msgid "Add %(role_descr)s"
+msgstr "Ajouter %(role_descr)s"
+
+#: djaoapp/templates/saas/profile/roles/index.html:88
+#: djaoapp/templates/saas/profile/roles/role.html:101
+#, python-format
+msgid "%(invitee)s is not yet registered. This is an opportunity to invite and add her/him as a %(role_descr)s for %(organization)s."
+msgstr "Nous n'avons pas trouver %(invitee)s. C'est une opportunité pour l'inviter a prendre un role de  %(role_descr)s pour %(organization)s."
+
+#: djaoapp/templates/saas/profile/roles/index.html:108
+#: djaoapp/templates/saas/profile/roles/role.html:122
+#, python-format
+msgid ""
+"Hi %(invitee)s,\n"
+"\n"
+"I am adding you as a %(role_descr)s to %(organization)s.\n"
+"\n"
+"Thank you,\n"
+"- %(user)s"
+msgstr ""
+"Boujour %(invitee)s,\n"
+"\n"
+"Je vous ajoute a la liste des %(role_descr)s pour %(organization)s.\n"
+"\n"
+"Merci,\n"
+"- %(user)s"
+
+#: djaoapp/templates/saas/profile/roles/index.html:141
+msgid "ex: Sales associate"
+msgstr "ex: Vendeurs"
+
+#: djaoapp/templates/saas/profile/roles/role.html:4
+#, python-format
+msgid "%(organization)s %(role_descr)ss"
+msgstr ""
+
+#: djaoapp/templates/saas/profile/roles/role.html:10
+#, python-format
+msgid "Add/Remove %(role_descr)s"
+msgstr "Ajouter/Retirer %(role_descr)s"
+
+#: djaoapp/templates/saas/profile/roles/role.html:10
+msgid "When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role."
+msgstr "Quand un utilisateur appartient a la liste des roles pour un organisation, il sera capable de voir et executer les actions associé à ce role."
+
+#: djaoapp/templates/saas/profile/roles/role.html:44
+#: djaoapp/templates/saas/profile/subscribers.html:31
+#: djaoapp/templates/saas/profile/subscribers.html:88
+msgid "Filter"
+msgstr "Filtre"
+
+#: djaoapp/templates/saas/profile/roles/role.html:53
+msgid "Group of buttons to show or hide invited and requested roles"
+msgstr "Goupe de boutons pour voir ou cacher les invitations et requêtes pour un role"
+
+#: djaoapp/templates/saas/profile/roles/role.html:55
+msgid "Show Pending Invites"
+msgstr "Voir les invitations"
+
+#: djaoapp/templates/saas/profile/roles/role.html:58
+msgid "Show Roles Requested"
+msgstr "Voir les Requêtes"
+
+#: djaoapp/templates/saas/profile/roles/role.html:69
+#, python-format
+msgid "No %(role_descr)ss yet"
+msgstr "Aucun %(role_descr)s"
+
+#: djaoapp/templates/saas/profile/subscribers.html:4
+#, python-format
+msgid "Subscriptions to %(organization)s"
+msgstr "Les abonnements de %(organization)s"
+
+#: djaoapp/templates/saas/profile/subscribers.html:11 saas/api/metrics.py:594
+msgid "Active subscribers"
+msgstr "Les abonnés actifs"
+
+#: djaoapp/templates/saas/profile/subscribers.html:11
+msgid "List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due."
+msgstr "Liste les abonnés actifs."
+
+#: djaoapp/templates/saas/profile/subscribers.html:16
+msgid "Registered"
+msgstr "Inscrits"
+
+#: djaoapp/templates/saas/profile/subscribers.html:58
+msgid "No registered users"
+msgstr "Aucun utilisateurs inscrits"
+
+#: djaoapp/templates/saas/profile/subscribers.html:139
+#: djaoapp/templates/saas/profile/subscribers.html:162
+#: djaoapp/templates/saas/profile/subscribers.html:170
+msgid "Ends At"
+msgstr "Se termine le"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:4
+#, python-format
+msgid "%(organization)s Subscriptions"
+msgstr "Abonnements pour %(organization)s"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:11
+msgid "List of all your active subscriptions."
+msgstr "Liste de tous vos abonnements actifs."
+
+#: djaoapp/templates/saas/profile/subscriptions.html:11
+msgid "You can manage all your active subscriptions here."
+msgstr "Vous pouvez gérer tous vos abonnements actifs ici."
+
+#: djaoapp/templates/saas/profile/subscriptions.html:13
+msgid "Active subscriptions"
+msgstr "Abonnements en cours"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:19
+msgid "Until"
+msgstr "Jusqu'à"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:32
+msgid "Select a plan..."
+msgstr "Sélectionnez un forfait..."
+
+#: djaoapp/templates/saas/profile/subscriptions.html:50
+msgid "No subcriptions"
+msgstr "Aucun abonnement"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:86
+msgid "Unsubscribe Now"
+msgstr "Se désabonner maintenant"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:93
+msgid "Deny"
+msgstr "Refuser"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:97
+msgid "Accept subscription"
+msgstr "Accepter l'abonnement"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:101
+msgid "Request pending approval ..."
+msgstr "Demande en attente d'approbation ..."
+
+#: djaoapp/templates/saas/profile/subscriptions.html:113
+#: djaoapp/templates/saas/profile/subscriptions.html:117
+#: djaoapp/templates/saas/profile/subscriptions.html:136
+msgid "Unsubscribe"
+msgstr "Se désabonner"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:123
+#, python-format
+msgid "You are about to delete the profile and account for <em>%(organization_name)s</em>"
+msgstr "Vous êtes sur le point de supprimer le profil et le compte pour <em>%(organization_name)s</em>. Cette opération ne peut pas être annulée."
+
+#: djaoapp/templates/saas/profile/subscriptions.html:146
+msgid "Expired subscriptions"
+msgstr "Abonnements passés"
+
+#: djaoapp/templates/saas/profile/subscriptions.html:152
+msgid "Expired"
+msgstr "Passé"
+
+#: djaoapp/templates/saas/redeem.html:7
+msgid "Redeem your registration code"
+msgstr "Utiliser votre code d'inscription"
+
+#: djaoapp/templates/saas/users/roles.html:3
+#, python-format
+msgid "Accessible by %(user)s"
+msgstr "Accessible par %(user)s"
+
+#: djaoapp/templates/saas/users/roles.html:13
+msgid "Start typing the name or email of the profile you want access to."
+msgstr "Commencez a taper le nom ou l'e-mail du profil que vous souhaitez accéder."
+
+#: djaoapp/templates/saas/users/roles.html:16
+msgid "Name or e-mail"
+msgstr "Nom d'utilisateur ou email"
+
+#: djaoapp/templates/saas/users/roles.html:19
+msgid "Add profile"
+msgstr "Ajouter Profil"
+
+#: djaoapp/templates/saas/users/roles.html:44
+msgid "No items"
+msgstr "Aucun éléments"
+
+#: djaoapp/templates/saas/users/roles.html:63
+#: djaoapp/templates/saas/users/roles.html:67
+#: djaoapp/templates/saas/users/roles.html:107
+msgid "Request access"
+msgstr "Demande accés"
+
+#: djaoapp/templates/saas/users/roles.html:74
+#, python-format
+msgid "%(full_name)s was not found. This is an opportunity to invite a profile manager for %(full_name)s to join %(site)s."
+msgstr "Nous n'avons pas trouver %(full_name)s. C'est une opportunité pour inviter %(full_name)s à joindre %(site)s."
+
+#: djaoapp/templates/saas/users/roles.html:90
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"I would like to request access to %(organization_name)s\n"
+"\n"
+"Thank you,\n"
+"- %(user)s"
+msgstr ""
+"Bonjour,\n"
+"\n"
+"J'aimera acceder à %(organization_name)s\n"
+"\n"
+"Merci,\n"
+"- %(user)s"
+
+#: djaoapp/templates/users/_require_password.html:1
+#: djaoapp/templates/users/_require_password.html:3
+#: djaoapp/templates/users/_require_password.html:14
+msgid "Please enter your current password"
+msgstr "Entrez votre mot de passe s'il vous plaît."
+
+#: djaoapp/templates/users/_require_password.html:18 signup/forms.py:145
+#: signup/forms.py:147
+msgid "Your password"
+msgstr "Votre mot de passe"
+
+#: djaoapp/templates/users/_require_password.html:20
+msgid "The password your provided is incorrect."
+msgstr "Le mot de passe que vous avez entré est incorrect."
+
+#: djaoapp/templates/users/password.html:5
+msgid "Change a user password."
+msgstr "Changer un mot de passe"
+
+#: djaoapp/templates/users/password.html:9
+msgid "You can change the password for a user here."
+msgstr "Vous pouvez changer le mot de passe ici."
+
+#: djaoapp/templates/users/password.html:18
+#: djaoapp/templates/users/password.html:20 signup/forms.py:68
+#: signup/forms.py:70 signup/forms.py:110 signup/forms.py:112
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: djaoapp/templates/users/pubkey.html:3
+msgid "Change Public Key"
+msgstr "Changer la clé publique"
+
+#: djaoapp/templates/users/pubkey.html:10
+msgid "Pubkey"
+msgstr "Clé publique"
+
+#: djaoapp/views/contact.py:128
 msgid "Your request has been sent. We will reply within 24 hours. Thank you."
 msgstr "Votre requête a bien été envoyée. Nous allons y répondre dans les 24 heures. Merci."
 
-#: djaoapp/views/contact.py:131
+#: djaoapp/views/contact.py:133
 #, python-format
-msgid ""
-"Sorry, there was an issue sending your request for information to "
-"'%(full_name)s &lt;%(email)s&gt;'."
+msgid "Sorry, there was an issue sending your request for information to '%(full_name)s &lt;%(email)s&gt;'."
 msgstr "Désolé, il y a eu une erreur durant l'envoi de votre requête à '%(full_name)s &lt;%(email)s&gt;'."
 
-#: djaoapp/views/contact.py:136
-msgid ""
-"Thank you for the feedback. Please feel free to leave your contact "
-"information next time so we can serve you better."
+#: djaoapp/views/contact.py:138
+msgid "Thank you for the feedback. Please feel free to leave your contact information next time so we can serve you better."
 msgstr "Merci pour le retour d'information. De façon à pouvoir mieux vous servirla prochaine fois, laissez nous, s'il vous plaît, un moyen de vous contacter."
 
-#: djaoapp/views/custom_signup.py:113 signup/views/auth.py:195
+#: djaoapp/views/custom_signup.py:102 signup/views/auth.py:206
 msgid "Your password has been reset sucessfully."
 msgstr "Votre mot de passe a été changé avec succès."
 
-#: djaoapp/views/product.py:195
+#: djaoapp/views/custom_themes.py:23
+msgid "Card updated"
+msgstr "Carte sauvegardé."
+
+#: djaoapp/views/custom_themes.py:24
+msgid "This notification is sent when a credit card on file is updated."
+msgstr "Cette notification est envoyée quand une carte bancaire à été mise à jour."
+
+#: djaoapp/views/custom_themes.py:29
+msgid "This notification is sent when a charge is created on a credit card. It is also sent when the charge is refunded."
+msgstr "Cette notification est envoyée quand une charge à été créée. Elle est aussi envoyée quand une charge est remboursé."
+
+#: djaoapp/views/custom_themes.py:33
+msgid "Claim code"
+msgstr "code accés"
+
+#: djaoapp/views/custom_themes.py:34
+msgid "This notification is sent to the user invited through a groupBuy."
+msgstr "Cette notification est envoyée quand un utilisateur est invité à travers un groupBuy."
+
+#: djaoapp/views/custom_themes.py:38
+msgid "Expires soon"
+msgstr "Expire bientôt"
+
+#: djaoapp/views/custom_themes.py:39
+msgid "This notification is sent when a subscription is about to expire."
+msgstr "Cette notification est envoyée quand un abonnement va bientôt se terminer."
+
+#: djaoapp/views/custom_themes.py:43
+msgid "Order confirmation"
+msgstr "Confirmation du bon de commande"
+
+#: djaoapp/views/custom_themes.py:44
+msgid "This notification is sent when an order has been confirmed but a charge has been successfuly processed yet."
+msgstr "Cette notification est envoyée quand un bon de commande à été créée mais aucune charge n'a encore eue lieu."
+
+#: djaoapp/views/custom_themes.py:48
+msgid "Profile updated"
+msgstr "Profil sauvegardé."
+
+#: djaoapp/views/custom_themes.py:49
+msgid "This notification is sent when a profile is updated."
+msgstr "Cette notification est envoyée quand les informations d'un profil ont été mise à jour."
+
+#: djaoapp/views/custom_themes.py:53
+msgid "Password reset"
+msgstr "Ré-initialiser un mot de passe"
+
+#: djaoapp/views/custom_themes.py:54
+msgid "This notification is sent to a user that has requested to reset their password through a \"forgot password?\" link."
+msgstr "Cette notification est envoyée quand un utilisateur a fait la demande de ré-initialiser un mot de passe."
+
+#: djaoapp/views/custom_themes.py:58
+msgid "User activated"
+msgstr "Utilisateur activé"
+
+#: djaoapp/views/custom_themes.py:59
+msgid "This notification is sent to profile managers of a domain when a user has activated his/her account."
+msgstr "Cette notification est envoyée aux administrateurs du site quand un utilisateur a activé son compte."
+
+#: djaoapp/views/custom_themes.py:63
+msgid "User contact"
+msgstr "Contact d'un utilisateur"
+
+#: djaoapp/views/custom_themes.py:64
+msgid "This notification is sent to profile managers of a domain when a user submits an inquiry on the contact-us page."
+msgstr "Cette notification est envoyée aux administrateurs du site quand un utilisateur a entré un message à travers le formulaire sur la page de contact."
+
+#: djaoapp/views/custom_themes.py:68
+msgid "User registered"
+msgstr "Utilisateur inscrit"
+
+#: djaoapp/views/custom_themes.py:69
+msgid "This notification is sent to profile managers of a domain when a user has registered."
+msgstr "Cette notification est envoyée aux administrateurs du site quand un utilisateur vient de s'enregistrer."
+
+#: djaoapp/views/custom_themes.py:73
+msgid "Role requested"
+msgstr "role requis"
+
+#: djaoapp/views/custom_themes.py:74
+msgid "This notification is sent to profile managers of an organization when a user has requested a role on that organization."
+msgstr "Cette notification est envoyée aux administrateurs d'une organization quand un utilisateur requiert un role pour cette organization."
+
+#: djaoapp/views/custom_themes.py:78
+msgid "Verification"
+msgstr "Clé de vérification"
+
+#: djaoapp/views/custom_themes.py:79
+msgid "This notification is sent to verify an e-mail address of a user."
+msgstr "Cette notification est envoyée pour vérifier l'addresse e-mail d'un utilisateur."
+
+#: djaoapp/views/custom_themes.py:83
+msgid "Weekly sales report"
+msgstr "Rapport hebdomadaire sur les ventes"
+
+#: djaoapp/views/custom_themes.py:84
+msgid "This notification is sent to profile managers. It contains the weekly sales results."
+msgstr "Cette notification est envoyée aux administrateurs du site aux début de chaque semaine."
+
+#: djaoapp/views/product.py:193
 msgid "No Plans yet. Click the 'Add Plan' button to create one."
 msgstr "Pas de plans pour l'instant. Ajoutez en un en clickant sur 'Add Plan'."
 
-#: djaoapp/views/users.py:42
+#: djaoapp/views/users.py:61
 msgid "This user does not support updates through POST request."
 msgstr "Les informations de cet utilisateur ne peuvent pas être changées a travers une requête POST."
 
-#: multitier/models.py:45 rules/models.py:57
+#: multitier/models.py:49 rules/models.py:56
 msgid "Enter a valid subdomain consisting of letters, digits or hyphens."
 msgstr "Entrez un sous-domaine valide, constitué de lettres, chiffres ou le caractère '-'."
 
-#: multitier/models.py:60 rules/models.py:72
+#: multitier/models.py:59
+msgid "Enter a valid host, optionally followed by a port and resource path."
+msgstr "Entrez un host valide, éventuellement suivi d'un numéro de port et d'un chemin."
+
+#: multitier/models.py:73
 msgid "The domain name cannot contain any spaces or tabs."
 msgstr "Le nom de domaine ne peut pas contenir d'espaces ou de tabs."
 
+#: multitier/models.py:93
+msgid "Enter a valid 'domain', ex: example.com"
+msgstr "Entrez un nom de domaine valide, ex: example.com"
+
+#: multitier/models.py:95
+msgid "fully qualified domain name at which the site is available"
+msgstr "nom de domaine ou le site se trouve"
+
+#: multitier/models.py:97
+msgid "use slug as a prefix for URL paths instead of domain field."
+msgstr "utilise slug comme prefix au lieu d'un nom de domaine."
+
+#: multitier/models.py:99
+msgid "Location of the TLS certificate for HTTPS connections"
+msgstr "Location du certificat TLS pour les connexions HTTPS"
+
+#: multitier/models.py:105
+msgid "The Site is active or not"
+msgstr "Le site est actif ou non"
+
+#: multitier/models.py:107
+msgid "Tags can be used by the project to filter sites"
+msgstr "Les tags peuvent être utilisés par un projet pour filtrer les sites"
+
+#: multitier/models.py:110
+msgid "The site is a derivative of this parent."
+msgstr "Ce site est un dérivatif du parent."
+
+#: multitier/models.py:114
+msgid "name of database to connect to for the site"
+msgstr "nom de la base de données connectée au site"
+
+#: multitier/models.py:117
+msgid "host to connect to the database"
+msgstr "host pour se connecter a la base de données"
+
+#: multitier/models.py:119
+msgid "port to connect to the database host"
+msgstr "numéro de port pour se connecter a la base de données"
+
+#: multitier/models.py:121
+msgid "username authorized to connect to the database"
+msgstr "username autorisé à se connecter a la base de données"
+
+#: multitier/models.py:124
+msgid "password to authenticate user connecting to the database"
+msgstr "password pour l'utilisateur autorisé à se connecter a la base de données"
+
+#: multitier/models.py:130
+msgid "host to connect to the SMTP server"
+msgstr "host pour se connecter au serveur SMTP"
+
+#: multitier/models.py:132
+msgid "port to connect to the SMTP server"
+msgstr "numéro de port pour se connecter au serveur SMTP"
+
+#: multitier/models.py:134
+msgid "username authorized to send e-mails on the SMTP server"
+msgstr "username autorisé à se connecter au serveur SMTP"
+
+#: multitier/models.py:137
+msgid "password to authenticate the user with the SMTP server"
+msgstr "password pour l'utilisateur autorisé à se connecter au serveur SMTP"
+
+#: pages/api/themes.py:47
+msgid "Content of the theme package as a zip file."
+msgstr "Fichiers du thème dans une archive zip."
+
+#: pages/api/themes.py:53
+msgid "URL where the theme package was uploaded."
+msgstr "ULR ou l'archive zip du thème a été téléchargé."
+
+#: pages/serializers.py:165
+msgid "URL where the asset content is stored."
+msgstr "URL ou le contenu des assets se trouve."
+
+#: pages/serializers.py:167
+msgid "Last date/time the asset content was updated."
+msgstr "Derniere date de modification des assets."
+
+#: pages/serializers.py:169
+msgid "Tags associated to the asset."
+msgstr "Tags associés a un asset."
+
 #: pages/utils.py:49
-msgid ""
-"Enter a valid title consisting of letters, numbers, space, underscores or "
-"hyphens."
+msgid "Enter a valid title consisting of letters, numbers, space, underscores or hyphens."
 msgstr "Entrez un titre valide, constitué de lettres, chiffres ou les caractères _/-."
 
-#: saas/api/billing.py:59
+#: rules/api/serializers.py:86
+msgid "Restricted authentication and registration"
+msgstr "Authentification et enregistrement restreint"
+
+#: rules/api/serializers.py:112
+msgid "Key used to decrypt the encoded session information."
+msgstr "Clé pour décrypter la session."
+
+#: rules/api/serializers.py:122 rules/models.py:259
+msgid "Method applied to grant or deny access"
+msgstr ""
+
+#: rules/api/serializers.py:124 rules/models.py:263
+msgid "When access is granted, should the request be forwarded"
+msgstr ""
+
+#: rules/api/serializers.py:126 rules/models.py:265
+msgid "Tags to check if it is the first time a user engages"
+msgstr ""
+
+#: rules/api/serializers.py:162
+msgid "The session being forwarded"
+msgstr ""
+
+#: rules/api/serializers.py:164
+msgid "The HTTP header that encodes the session"
+msgstr ""
+
+#: rules/api/serializers.py:166
+msgid "The URL end point where the request is forwarded"
+msgstr ""
+
+#: rules/models.py:155
+msgid "Entry point to which requests will be redirected to"
+msgstr ""
+
+#: rules/models.py:158
+msgid "Encryption key used to sign proxyed requests"
+msgstr ""
+
+#: rules/models.py:161
+msgid "Format to encode session in the forwarded HTTP request"
+msgstr ""
+
+#: rules/models.py:170
+msgid "Send a welcome e-mail to newly registered users"
+msgstr ""
+
+#: rules/models.py:256
+msgid "OpenAPI path against which requests are matched"
+msgstr ""
+
+#: rules/models.py:261
+msgid "Arguments to pass to the method to grant or deny access"
+msgstr ""
+
+#: rules/models.py:267
+msgid "Determines the order in which rules are considered"
+msgstr ""
+
+#: saas/api/billing.py:58
 msgid "The plan to add into the request.user cart."
 msgstr "Le plan à ajouter au panier du request.user."
 
-#: saas/api/billing.py:78
-msgid "Attaches the payment card to the Organization when true"
+#: saas/api/billing.py:74
+msgid "selected plan option during checkout"
+msgstr "Option d'abonnement selectionnée lors du passage en caisse"
+
+#: saas/api/billing.py:83
+msgid "attaches the payment card to the Organization when true"
 msgstr "Quand la valeur est vrai, attache une carte de paiement de l'organisation."
 
-#: saas/api/billing.py:80
-msgid "One-time token generated by the processor from the payment card"
+#: saas/api/billing.py:85
+msgid "one-time token generated by the processorfrom the payment card."
 msgstr "code généré par le processeur de la carte de paiement utilisable une fois."
 
-#: saas/api/billing.py:321
+#: saas/api/billing.py:349
 msgid "Coupon code to redeem"
-msgstr "Le code du coupon à utiliser"
+msgstr "Coupon à appliquer au passage en caisse"
 
-#: saas/api/billing.py:365
+#: saas/api/billing.py:395
 #, python-format
-msgid "Coupon '%s' was successfully applied."
-msgstr "Le coupon '%s' a été utilisé avec succes."
+msgid "Coupon '%(code)s' was successfully applied."
+msgstr "Le coupon '%(code)s' a été utilisé avec succes."
 
-#: saas/api/billing.py:376
+#: saas/api/billing.py:407
 #, python-format
 msgid "No items can be discounted using this coupon: %(code)s."
 msgstr "Il n'y a pas d'articles en promotion avec ce coupon: %(code)s."
 
-#: saas/api/charges.py:265
+#: saas/api/charges.py:273
 msgid "You cannot refund a disputed charge."
 msgstr "Vous ne pouvez pas rembourser un paiement qui a été contesté."
 
-#: saas/api/charges.py:267
+#: saas/api/charges.py:275
 msgid "You cannot refund a pending charge."
 msgstr "Vous ne pouvez pas rembourser un paiement qui est en cours."
 
-#: saas/api/charges.py:269
+#: saas/api/charges.py:277
 msgid "You cannot refund a failed charge."
 msgstr "Vous ne pouvez pas rembourser un paiement qui a échouée."
 
-#: saas/api/charges.py:281
+#: saas/api/charges.py:289
 #, python-format
 msgid "Unable to retrieve line '%(lineno)s' in %(charge)s"
 msgstr "Impossible de trouver la ligne '%(lineno)s' dans %(charge)s."
 
-#: saas/api/roles.py:87
-msgid "Forces invite of user/organization that could not be found"
-msgstr "Force l'invitation d'un utilisateur ou une organisation qui n'a pas encore de compte."
-
-#: saas/api/roles.py:96
+#: saas/api/roles.py:145
 msgid "Enter a valid organization slug."
 msgstr "Entrez un identifiant d'organisation valide."
 
-#: saas/api/roles.py:106 saas/api/serializers.py:413 signup/serializers.py:100
-#: signup/serializers.py:145
+#: saas/api/roles.py:155 saas/api/serializers.py:548 signup/serializers.py:127
+#: signup/serializers.py:214 signup/serializers.py:229
 msgid "Enter a valid username."
 msgstr "Entrez un nom d'utilisateur valide."
 
-#: saas/api/roles.py:194
+#: saas/api/roles.py:259
 #, python-format
 msgid "Profile %(organization)s does not exist."
-msgstr "Le profil %(organization)s n'existe pas."
+msgstr "Profil %(organization)s n'existe pas."
 
-#: saas/api/serializers.py:70
+#: saas/api/roles.py:263
+msgid "We cannot invite an organization without an e-mail address."
+msgstr "Nous ne pouvons pas inviter une organization sans address e-mail."
+
+#: saas/api/roles.py:1203 saas/views/optins.py:59
+#, python-format
+msgid "You already have a %(existing_role)s role on %(organization)s. Please drop this role first if you want to accept a role of %(role)s instead."
+msgstr "Vous avez déjà un rôle %(existing_role)s pour l'organisation %(organization)s. S'il vous plait, retirez ce rôle avant de pouvoir accepter un nouveau rôle %(role)s."
+
+#: saas/api/serializers.py:78
 msgid "This field cannot be blank."
 msgstr "Cet valeur ne peut pas être vide."
 
-#: saas/api/serializers.py:71
+#: saas/api/serializers.py:79
 #, python-format
 msgid "'%(data)s' is not a valid choice. Expected one of %(choices)s."
 msgstr "'%(data)s' n'est pas un choix valide. Les choix possible sont %(choices)s."
 
-#: saas/api/serializers.py:127
+#: saas/api/serializers.py:135
 msgid "Name of the deposit account"
 msgstr "Nom du compte de dépôt"
 
-#: saas/api/serializers.py:129
+#: saas/api/serializers.py:137
 msgid "Last 4 characters of the deposit account identifier"
 msgstr "Les 4 derniers caractères de l'identifiant du compte de dépôt."
 
-#: saas/api/serializers.py:131
-msgid "Amount available to transfer to the provider deposit account"
-msgstr "Le montant disponible qui peut être transférer sur le compte de dépôt."
-
-#: saas/api/serializers.py:134 saas/api/serializers.py:192 saas/models.py:1384
+#: saas/api/serializers.py:142 saas/api/serializers.py:231 saas/models.py:1407
 msgid "Three-letter ISO 4217 code for currency unit (ex: usd)"
 msgstr "Le code à trois lettres ISO 4217 pour l'unitée monétaire (ex: eur)."
 
-#: saas/api/serializers.py:142
+#: saas/api/serializers.py:150
 msgid "Last 4 digits of the credit card on file"
 msgstr "Les 4 derniers chiffres de la carte de paiement enregistrée."
 
-#: saas/api/serializers.py:144
+#: saas/api/serializers.py:152
 msgid "Expiration date of the credit card on file"
 msgstr "La date d'expiration de carte de paiement enregistrée."
 
-#: saas/api/serializers.py:150 saas/models.py:1400
+#: saas/api/serializers.py:160
+msgid "Processor token to retrieve the payment method"
+msgstr ""
+
+#: saas/api/serializers.py:164
+msgid "E-mail address for the account"
+msgstr "Adresse e-mail du contact"
+
+#: saas/api/serializers.py:182 saas/models.py:1423
 msgid "Current state (i.e. created, done, failed, disputed)"
 msgstr "L'état courant de la charge (i.e. created, done, failed, disputed)."
 
-#: saas/api/serializers.py:152
+#: saas/api/serializers.py:184
 msgid "Amount and unit in a commonly accepted readable format"
 msgstr "Montant et unitée monétaire dans un format courant."
 
-#: saas/api/serializers.py:169
+#: saas/api/serializers.py:201
 #, python-brace-format
 msgid "Charge identifier (i.e. matches the URL {charge} parameter)"
 msgstr "L'identifiant du paiement (corresponds au paramètre {charge} de l'URL)"
 
-#: saas/api/serializers.py:172
+#: saas/api/serializers.py:204
 msgid "E-mail address to which the receipt was sent."
 msgstr "L'adresse e-mail à laquelle le ticket de caisse a été envoyé."
 
-#: saas/api/serializers.py:179
+#: saas/api/serializers.py:210
+msgid "Forces invite of user/organization that could not be found"
+msgstr "Force l'invitation d'un utilisateur ou une organisation qui n'a pas encore de compte."
+
+#: saas/api/serializers.py:218
 msgid "Unique key in the table for the data series"
 msgstr "Clé unique dans le tableau pour la série de données."
 
-#: saas/api/serializers.py:181 saas/models.py:3843
+#: saas/api/serializers.py:220 saas/models.py:3941
 msgid "Filter on the Transaction accounts"
 msgstr "Filtre sur les comptes d'une Transaction"
 
-#: saas/api/serializers.py:183
+#: saas/api/serializers.py:222
 msgid "Datapoints in the serie"
 msgstr "Les données dans une série"
 
-#: saas/api/serializers.py:189
-msgid ""
-"The scale of the number reported in the tables (ex: 1000 when numbers are "
-"reported in thousands of dollars)"
+#: saas/api/serializers.py:228
+msgid "The scale of the number reported in the tables (ex: 1000 when numbers are reported in thousands of dollars)"
 msgstr "L'échelle des nombres reportés dans les tableaux (ex: 1000 quand les nombres raportés sont en milliers d'euros)"
 
-#: saas/api/serializers.py:194
+#: saas/api/serializers.py:233
 msgid "Title for the table"
 msgstr "Titre du tableau"
 
-#: saas/api/serializers.py:203
+#: saas/api/serializers.py:242
 msgid "Line item index counting from zero."
 msgstr "L'index de la ligne à partir de zéro"
 
-#: saas/api/serializers.py:205
-msgid ""
-"The amount to refund cannot be higher than the amount of the line item minus "
-"the total amount already refunded on that line item."
+#: saas/api/serializers.py:244
+msgid "The amount to refund cannot be higher than the amount of the line item minus the total amount already refunded on that line item."
 msgstr "Le montant à rembourser ne peut pas être plus grand que le montant total de la ligne diminué du montant déjà remboursé."
 
-#: saas/api/serializers.py:224 saas/forms.py:211 saas/models.py:227
-#: saas/models.py:1048 signup/models.py:228 signup/models.py:320
+#: saas/api/serializers.py:263 saas/api/serializers.py:323 saas/forms.py:220
+#: saas/models.py:223 saas/models.py:1071 signup/models.py:390
 msgid "Unique identifier shown in the URL bar"
 msgstr "L'identifiant unique visible dans la barre URL"
 
-#: saas/api/serializers.py:228 saas/models.py:253
+#: saas/api/serializers.py:267 saas/api/serializers.py:327 saas/models.py:250
 msgid "Timezone to use when reporting metrics"
 msgstr "Le fuseau horaire utilisé dans les graphes et tableaux d'analyse"
 
-#: saas/api/serializers.py:230
-msgid "E-mail address for the organization"
-msgstr "Adresse e-mail de l'organisation"
-
-#: saas/api/serializers.py:244 saas/models.py:283 saas/models.py:1057
-#: saas/models.py:1132 saas/models.py:1402 saas/models.py:2140
-#: saas/models.py:2306 saas/models.py:2519 saas/models.py:2767
-#: signup/models.py:242
+#: saas/api/serializers.py:283 saas/api/serializers.py:343 saas/models.py:285
+#: saas/models.py:1080 saas/models.py:1155 saas/models.py:1425
+#: saas/models.py:2191 saas/models.py:2367 saas/models.py:2595
+#: saas/models.py:2845 signup/models.py:275
 msgid "Extra meta data (can be stringify JSON)"
 msgstr "Meta-donnée additionnelle (potentiellement en format JSON)"
 
-#: saas/api/serializers.py:307
+#: saas/api/serializers.py:315 saas/api/serializers.py:353
+msgid "One of 'organization', 'personal' or 'user'"
+msgstr ""
+
+#: saas/api/serializers.py:348
+msgid "type must be one of 'personal' or 'organization'."
+msgstr ""
+
+#: saas/api/serializers.py:421
 msgid "Title for the plan"
 msgstr "Titre pour le plan"
 
-#: saas/api/serializers.py:309
-msgid "Free-form text description for the plan"
-msgstr "Texte libre pour la description du plan"
+#: saas/api/serializers.py:423 saas/api/serializers.py:503
+#: saas/api/transactions.py:426 saas/models.py:2173
+#, python-format
+msgid "Free-form text description for the %(object)s"
+msgstr "Texte libre pour la description de %(object)s"
 
-#: saas/api/serializers.py:311
+#: saas/api/serializers.py:426
 msgid "True when customers can subscribe to the plan"
 msgstr "Vrai quand les utilisateurs peuvent souscrire au plan"
 
-#: saas/api/serializers.py:313
+#: saas/api/serializers.py:428
 msgid "One-time amount to pay when the subscription starts"
 msgstr "Montant à payer une fois quand l'abonnement démarre"
 
-#: saas/api/serializers.py:315
+#: saas/api/serializers.py:430
 msgid "Amount billed every period"
 msgstr "Montant à payer à chaque période"
 
-#: saas/api/serializers.py:318
+#: saas/api/serializers.py:433 saas/api/serializers.py:435
 msgid "Natural period for the subscription"
-msgstr "Période naturelle pour l'abonnement"
+msgstr "periode naturelle de l'abonnement"
 
-#: saas/api/serializers.py:322
+#: saas/api/serializers.py:439
 msgid "Provider of the plan"
 msgstr "fournisseur du plan"
 
-#: saas/api/serializers.py:341
-msgid ""
-"True if the request user is able to update the subscription. Typically a "
-"manager for the plan provider."
+#: saas/api/serializers.py:463 saas/forms.py:330
+msgid "A plan with this title already exists."
+msgstr "Un plan avec ce titre existe déjà."
+
+#: saas/api/serializers.py:475
+msgid "True if the request user is able to update the subscription. Typically a manager for the plan provider."
 msgstr "Vrai si l'utilisateur authentifié est autorisé à modifier l'abonnement. En général si l'utilisateur est un manageur du fournisseur du plan."
 
-#: saas/api/serializers.py:363 saas/models.py:3770
+#: saas/api/serializers.py:497 saas/models.py:3868
 msgid "Source organization from which funds are withdrawn"
 msgstr "L'organisation source de laquelle les fonds sont retirés"
 
-#: saas/api/serializers.py:366 saas/models.py:3781
+#: saas/api/serializers.py:500 saas/models.py:3879
 msgid "Target organization to which funds are deposited"
 msgstr "L'organisation destinataire à laquelle les fonds sont déposés"
 
-#: saas/api/serializers.py:369
-msgid "Free-form text description for the transaction"
-msgstr "Texte libre pour la description de la transaction."
-
-#: saas/api/serializers.py:371
+#: saas/api/serializers.py:506
 msgid "Amount being transfered"
 msgstr "Montant transféré"
 
-#: saas/api/serializers.py:373
+#: saas/api/serializers.py:508
 msgid "True if the transaction is indentified as a debit in the API context"
 msgstr "Vrai si la transaction est identifiée comme un débit dans le contexte de l'API"
 
-#: saas/api/serializers.py:415
-msgid ""
-"Effectively the username. The variable is named `slug` such that front-end "
-"code can be re-used between Organization and User records."
+#: saas/api/serializers.py:550
+msgid "Effectively the username. The variable is named `slug` such that front-end code can be re-used between Organization and User records."
 msgstr "Le nom d'utilisateur. Cette variable est nommée `slug` de façon à ce que le source code du front-end puisse être utilisé sans changement entre des objets Organization et User."
 
-#: saas/api/serializers.py:419
+#: saas/api/serializers.py:554
 msgid "E-mail address for the user"
 msgstr "L'adresse e-mail pour l'utilisateur"
 
-#: saas/api/serializers.py:421 saas/api/transactions.py:410 saas/models.py:230
-#: saas/models.py:1046 saas/models.py:1377 saas/models.py:2119
-#: saas/models.py:2589 saas/models.py:2754 saas/models.py:3763
-#: signup/models.py:230 signup/models.py:295
+#: saas/api/serializers.py:556 saas/api/transactions.py:422 saas/models.py:226
+#: saas/models.py:1069 saas/models.py:1400 saas/models.py:2169
+#: saas/models.py:2665 saas/models.py:2832 saas/models.py:3861
+#: signup/models.py:251 signup/models.py:365
 msgid "Date/time of creation (in ISO format)"
 msgstr "Date/heure de creation (en format ISO)"
 
-#: saas/api/serializers.py:423 signup/models.py:234
-msgid ""
-"Full name for the contact (effectively first name followed by last name)"
+#: saas/api/serializers.py:558
+msgid "Full name for the contact (effectively first name followed by last name)"
 msgstr "Nom complet pour le contact (en fait le prénom suivi du nom de famille)"
 
-#: saas/api/serializers.py:454
+#: saas/api/serializers.py:589
 msgid "Subscription lines and options refer to."
 msgstr "Référence de l'abonnement utilisé dans les lignes et options"
 
-#: saas/api/serializers.py:456
+#: saas/api/serializers.py:591
 msgid "Line items to charge on checkout."
 msgstr "Les lignes à payer lors du réglement"
 
-#: saas/api/serializers.py:515 signup/serializers.py:164
+#: saas/api/serializers.py:713 signup/serializers.py:187
 msgid "Describes the reason for the error in plain text"
 msgstr "Décrit la raison de l'erreur en texte lisible"
 
-#: saas/api/transactions.py:98 saas/models.py:1250 saas/models.py:1277
-#: saas/models.py:1443 saas/models.py:1500 saas/models.py:1843
-#: saas/models.py:3327 saas/models.py:3934
+#: saas/api/serializers.py:719
+msgid "I have read and understand these terms and conditions"
+msgstr "J'accepte les <a href=\"%s\">termes et conditions</a>."
+
+#: saas/api/transactions.py:102 saas/models.py:1273 saas/models.py:1300
+#: saas/models.py:1466 saas/models.py:1483 saas/models.py:1545
+#: saas/models.py:1893 saas/models.py:3424 saas/models.py:3997
 #, python-format
 msgid "balances with multiple currency units (%s)"
 msgstr "balances avec multiples unités monétaire (%s)"
 
-#: saas/api/transactions.py:400
+#: saas/api/transactions.py:412
 #, python-format
-msgid ""
-"The latest transfers might not be shown because there was an error with the "
-"backend processor (ie. %(err)s)."
+msgid "The latest transfers might not be shown because there was an error with the backend processor (ie. %(err)s)."
 msgstr "Les derniers transferts peuvent ne pas être visible à cause d'une erreur avec le processeur (ie. %(err)s)."
 
-#: saas/api/transactions.py:414 saas/models.py:3790
-msgid "Free-form text description for the Transaction"
-msgstr "Texte libre pour la description de la Transaction"
-
-#: saas/api/transactions.py:446
+#: saas/api/transactions.py:461
 msgid "Invalid subscription/plan field format"
 msgstr "format erroné pour l'abonnement/plan"
 
-#: saas/api/transactions.py:451 saas/views/billing.py:1082
+#: saas/api/transactions.py:466 saas/views/billing.py:1123
 msgid "Invalid subscriber"
-msgstr "Abonné non validé"
+msgstr "Abonné invalid"
 
-#: saas/api/transactions.py:455 saas/views/billing.py:1086
+#: saas/api/transactions.py:470 saas/views/billing.py:1127
 msgid "Invalid plan"
 msgstr "plan non validé"
 
-#: saas/api/transactions.py:460 saas/views/billing.py:1090
-msgid ""
-"Invalid combination of subscriber and plan, or the subscription is no longer "
-"active."
+#: saas/api/transactions.py:475 saas/views/billing.py:1131
+msgid "Invalid combination of subscriber and plan, or the subscription is no longer active."
 msgstr "Combinaison erronée de l'abonné et du plan, ou l'abonnement n'est plus actif. "
 
+#: saas/api/users.py:131
+msgid "You have to agree with the terms"
+msgstr "Vous devez accepter les termes"
+
 #: saas/backends/__init__.py:64
-msgid ""
-"Your card was declined. We are taking your security seriously. When we "
-"submit a charge to your bank, they have automated systems that determine "
-"whether or not to accept the charge. Check you entered the card  number, "
-"expiration date, CVC and address correctly. If problems persist, please "
-"contact your bank."
+msgid "Your card was declined. We are taking your security seriously. When we submit a charge to your bank, they have automated systems that determine whether or not to accept the charge. Check you entered the card  number, expiration date, CVC and address correctly. If problems persist, please contact your bank."
 msgstr "Votre carte a été rejetée. Nous prennons votre sécurité très au sérieux. Quand nous envoyons une requête de paiement a votre banque, elle dispose de systèmes automatisés pour décider d'accepter ou de rejeter un paiement. Vérifiez que vous avez entré correctement le numero de la carte, la date d'expiration, le CVC et l'adresse. Si les problèmes persistent, veuillez contacter votre banque, s'il vous plait."
 
 #: saas/backends/stripe_processor/base.py:128
@@ -615,70 +3058,67 @@ msgstr "Votre carte a été rejetée. Nous prennons votre sécurité très au s�
 msgid "%(organization)s is not connected to a Stripe account."
 msgstr "%(organization)s n'est pas connecté a un compte Stripe."
 
-#: saas/extras.py:67
+#: saas/extras.py:73
 msgid "It seems a broker was not defined, or defined incorrectly."
 msgstr "Il semble que le courtier n'a pas été défini, ou définit de façon incorrect."
 
-#: saas/forms.py:86
+#: saas/forms.py:87
 msgid "Remember this card"
 msgstr "Se souvenir de cette carte"
 
-#: saas/forms.py:93
+#: saas/forms.py:94
 msgid "Card Holder"
 msgstr "Nom du porteur de la carte"
 
-#: saas/forms.py:125
+#: saas/forms.py:126
 #, python-format
 msgid "'%(amount)s' is an invalid amount (%(err)s)"
 msgstr "'%(amount)s' n'est pas un montant valide (%(err)s)"
 
-#: saas/forms.py:150
+#: saas/forms.py:151
 msgid "Subscription should be of the form subscriber:plan."
 msgstr "Abonnement doit être de la forme abonné:plan"
 
-#: saas/forms.py:158
+#: saas/forms.py:159
 msgid "Invalid amount"
 msgstr "Montant erroné"
 
-#: saas/forms.py:197 saas/models.py:246
-msgid ""
-"Enable GroupBuy (<a href=\"/docs/#group-billing\" target=\"_blank\">what is "
-"it?</a>)"
+#: saas/forms.py:198 saas/migrations/0001_initial.py:99 saas/models.py:242
+msgid "Enable GroupBuy (<a href=\"https://djaodjin.com/docs/#group-billing\" target=\"_blank\">what is it?</a>)"
 msgstr "Permettre GroupBuy (<a href=\"/docs/#group-billing\" target=\"_blank\">qu'est-ce que c'est?</a>)"
 
-#: saas/forms.py:210
+#: saas/forms.py:206
+msgid "Enable creation of subscription plans"
+msgstr "Activer la création de forfaits"
+
+#: saas/forms.py:219
 msgid "ShortID"
-msgstr ""
+msgstr "Identifiant"
 
-#: saas/forms.py:231
-msgid "Update"
-msgstr "Sauvegardez"
+#: saas/forms.py:298
+#, python-format
+msgid "period must be one of %(period)s"
+msgstr "La periode doit être une valeur de la liste %(period)s"
 
-#: saas/forms.py:254
-msgid "Create"
-msgstr "Créez"
+#: saas/forms.py:316
+#, python-format
+msgid "renewal must be one of %(type)s"
+msgstr "le renouvellement doit être une valeur de la liste %(type)s"
 
-#: saas/forms.py:288
-msgid "A plan with this title already exists."
-msgstr "Un plan avec ce titre existe déjà."
-
-#: saas/forms.py:303
+#: saas/forms.py:345
 msgid "Redeem"
 msgstr "Utiliser"
 
-#: saas/forms.py:305
+#: saas/forms.py:347
 msgid "Registration code"
 msgstr "Code pour s'enregistrer"
 
-#: saas/forms.py:319
-msgid "Withdraw"
-msgstr "Retirez"
+#: saas/forms.py:367
+#, python-format
+msgid "Amount (in %(unit)s)"
+msgstr "Montant (in %(unit)s)"
 
-#: saas/forms.py:320
-msgid "Amount (in $)"
-msgstr "Montant (in Eur)"
-
-#: saas/mixins.py:206
+#: saas/mixins.py:224
 msgid "free"
 msgstr "Gratuit"
 
@@ -686,317 +3126,283 @@ msgstr "Gratuit"
 msgid "More ..."
 msgstr "Plus ..."
 
-#: saas/mixins.py:861
+#: saas/mixins.py:927
 #, python-format
-msgid "RoleDescription '%s' does not exist."
-msgstr "RoleDescription '%s' n'existe pas."
+msgid "RoleDescription '%(role)s' does not exist."
+msgstr "RoleDescription '%(role)s' n'existe pas."
 
-#: saas/models.py:249
+#: saas/models.py:246
 msgid "The organization can fulfill the provider side of a subscription."
 msgstr "L'organisation peut être utilisée comme un fournisseur dans un abonnement."
 
-#: saas/models.py:269
+#: saas/models.py:254 saas/models.py:255 signup/models.py:263
+msgid "Profile picture"
+msgstr "photo du profil"
+
+#: saas/models.py:271
 msgid "Funds escrowed in currency unit"
 msgstr "Les fonds sous écrous en unité monétaire"
 
-#: saas/models.py:276
+#: saas/models.py:278
 msgid "Used to deposit funds to the organization bank account"
 msgstr "Utilisé pour déposer les fonds dans le compte en banque d'une organisation"
 
-#: saas/models.py:1053
-msgid ""
-"Short description of the role. Grammatical rules to pluralize the title "
-"might be used in User Interfaces."
+#: saas/models.py:319 saas/models.py:320
+msgid "enabled"
+msgstr "actif"
+
+#: saas/models.py:1076
+msgid "Short description of the role. Grammatical rules to pluralize the title might be used in User Interfaces."
 msgstr "Description synthétique du rôle. Les règles grammaticales pour les formes plurielles peuvent être utilisées dans l'interface utilisateur."
 
-#: saas/models.py:1311
+#: saas/models.py:1334
 #, python-format
-msgid ""
-"%(organization)s is not associated to an account on the processor and no "
-"token was passed."
+msgid "%(organization)s is not associated to an account on the processor and no token was passed."
 msgstr "%(organization)s n'est pas associée à un compte processeur et aucun token n'a été passé."
 
-#: saas/models.py:1382
+#: saas/models.py:1405
 msgid "Total amount in currency unit"
 msgstr "Montant total en unité monétaire"
 
-#: saas/models.py:1386
+#: saas/models.py:1409
 msgid "Organization charged"
-msgstr "L'organisation destinataire de la facture"
+msgstr "Nom de l'organisation qui a payée"
 
-#: saas/models.py:1388
-msgid "Description for the Charge as appears on billing statements"
+#: saas/models.py:1411
+msgid "Description for the charge as appears on billing statements"
 msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
 
-#: saas/models.py:1391
+#: saas/models.py:1414
 msgid "Last 4 digits of the credit card used"
 msgstr "Les 4 derniers chiffres de la carte de paiement utilisée"
 
-#: saas/models.py:1393
+#: saas/models.py:1416
 msgid "Expiration date of the credit card used"
 msgstr "La date d'expiration de la carte de paiement utilisée"
 
-#: saas/models.py:1850
+#: saas/models.py:1490
 #, python-format
-msgid ""
-"Cannot refund %(refund_required)s while there is only %(refund_available)s "
-"available on the line item."
+msgid "charge and refunds have different units (%(unit)s vs. %(refund_unit)s)"
+msgstr "La charge et les remboursements ont différentes unités (%(unit)s vs. %(refund_unit)s)"
+
+#: saas/models.py:1900
+#, python-format
+msgid "Cannot refund %(refund_required)s while there is only %(refund_available)s available on the line item."
 msgstr "Impossible de rembourser %(refund_required)s alors qu'il n'y a que %(refund_available)s disponible pour la ligne."
 
-#: saas/models.py:1925
+#: saas/models.py:1975
 msgid "Transaction invoiced through this charge"
 msgstr "La Transaction facturée à travers cette charge"
 
-#: saas/models.py:1929
+#: saas/models.py:1979
 msgid "Fee transaction to process the transaction invoiced through this charge"
 msgstr "Transaction enregistrant les frais pour la transaction facturée a travers cette charge"
 
-#: saas/models.py:1934
+#: saas/models.py:1984
 msgid "Transaction recording the distribution from processor to provider."
 msgstr "Transaction enregistrée pour la distribution du processeur au fournisseur."
 
-#: saas/models.py:2037
+#: saas/models.py:2087
 #, python-format
-msgid ""
-"%(provider)s has %(funds_available)s of funds available. %(funds_required)s "
-"are required to refund '%(descr)s'"
+msgid "%(provider)s has %(funds_available)s of funds available. %(funds_required)s are required to refund '%(descr)s'"
 msgstr "%(provider)s a %(funds_available)s de fonds disponibles. %(funds_required)s sont requis pour rembourser '%(descr)s'"
 
-#: saas/models.py:2121
+#: saas/models.py:2171
 msgid "Unique identifier per provider, typically used in URLs"
 msgstr "Identifiant unique par fournisseur, en général utilisé dans les URLs"
 
-#: saas/models.py:2123
-msgid "Free-form text description for the Coupon"
-msgstr "Texte libre pour la description du Coupon"
-
-#: saas/models.py:2126
+#: saas/models.py:2177
 msgid "Percentage discounted"
 msgstr "Le pourcentage de réduction"
 
-#: saas/models.py:2129
+#: saas/models.py:2180
 msgid "Coupon will only apply to purchased plans from this provider"
 msgstr "Coupon ne sera appliqué que pour les plans de ce fournisseur"
 
-#: saas/models.py:2132
+#: saas/models.py:2183
 msgid "Coupon will only apply to this plan"
 msgstr "Coupon ne sera appliqué que pour ce plan"
 
-#: saas/models.py:2135
+#: saas/models.py:2186
 msgid "Date/time at which the coupon code expires (in ISO format)"
 msgstr "Date/heure à laquelle le coupon expire (en format ISO)"
 
-#: saas/models.py:2138
+#: saas/models.py:2189
 msgid "Number of times the coupon can be used"
 msgstr "Nombre de fois que le coupon peut être utilisé"
 
-#: saas/models.py:2280
+#: saas/models.py:2340
 msgid "One-time charge amount in currency unit"
 msgstr "Montant en unité monétaire a payer une seule fois"
 
-#: saas/models.py:2283
+#: saas/models.py:2343
 msgid "Recurring amount per period in currency unit"
 msgstr "Montant en unité monétaire à payer à chaque période"
 
-#: saas/models.py:2285
+#: saas/models.py:2345
 msgid "Fee per transaction (in per 10000)."
 msgstr "Frais par transaction (en pour 10000)"
 
-#: saas/models.py:2289
-msgid ""
-"Natural period length of a subscription to the plan (monthly, yearly, etc.)"
+#: saas/models.py:2349
+msgid "Natural period length of a subscription to the plan (monthly, yearly, etc.)"
 msgstr "Période naturelle pour un abonnement au plan (mois, année, etc.)"
 
-#: saas/models.py:2292
+#: saas/models.py:2352
 msgid "Payment required to access full service"
 msgstr "Vous devez payer pour accèder au service complet"
 
-#: saas/models.py:2295
+#: saas/models.py:2355
 #, python-format
 msgid "Incremental discount for payment of multiple periods (in %%)."
 msgstr "rabais incrémental pour le paiement de plusieurs périodes en avance (en %%)."
 
-#: saas/models.py:2299
-msgid ""
-"Number of natural periods before a subscription to the plan ends (default to "
-"1)"
+#: saas/models.py:2359
+msgid "Number of natural periods before a subscription to the plan ends (default to 1)"
 msgstr "Nombre de périodes avant que l'abonnement au plan se termine (1 par défaut)"
 
-#: saas/models.py:2441 saas/models.py:2818
+#: saas/models.py:2517 saas/models.py:2896
 #, python-format
 msgid "period type %d is not defined."
 msgstr "Le type de période %d n'est pas défini."
 
-#: saas/models.py:2593
-msgid ""
-"User who added the item to the cart (``None`` means the item could be "
-"claimed)"
+#: saas/models.py:2669
+msgid "User who added the item to the cart (``None`` means the item could be claimed)"
 msgstr "L'utilisateur qui a ajouté ce produit dans son panier (``None`` veut dire que le produit peut être attaché à un profil dans le futur)"
 
-#: saas/models.py:2597
+#: saas/models.py:2673
 msgid "Item added to the cart (if plan)"
 msgstr "Produit ajouté au panier (si plan)"
 
-#: saas/models.py:2600
+#: saas/models.py:2676
 msgid "Item added to the cart (if use charge)"
 msgstr "Produit ajouté au panier (si frais d'usage)"
 
-#: saas/models.py:2603
+#: saas/models.py:2679
 msgid "Coupon to apply to the order"
 msgstr "Coupon à appliquer au passage en caisse"
 
-#: saas/models.py:2605
+#: saas/models.py:2681
 msgid "Whever the item has been checked out or not"
 msgstr "Si le produit est passé en caisse ou non"
 
-#: saas/models.py:2610
+#: saas/models.py:2686
 msgid "Number of periods to be paid in advance"
 msgstr "Nombre de périodes payées en avance"
 
-#: saas/models.py:2626
-msgid ""
-"First name of the person that will benefit from the subscription (GroupBuy)"
-msgstr "Prénom de la personne qui bénéficie de l'abonnement (GroupBuy)"
+#: saas/models.py:2706
+msgid "Full name of the person that will benefit from the subscription (GroupBuy)"
+msgstr "Nom de la personne qui bénéficie de l'abonnement (GroupBuy)"
 
-#: saas/models.py:2629
-msgid ""
-"Last name of the person that will benefit from the subscription (GroupBuy)"
-msgstr "Nom de famille de la personne qui bénéficie de l'abonnement (GroupBuy)"
-
-#: saas/models.py:2751
+#: saas/models.py:2829
 msgid "The subscription is set to auto-renew at the end of the period"
 msgstr "L'abonnement est renouvellé automatiquement à la fin de la période"
 
-#: saas/models.py:2756
+#: saas/models.py:2834
 msgid "Date/time when the subscription period currently ends (in ISO format)"
 msgstr "Date/heure a laquelle l'abonnement se termine (en format ISO)"
 
-#: saas/models.py:2759
+#: saas/models.py:2837
 msgid "Free-form text description for the subscription"
 msgstr "Texte libre pour la description de l'abonnement"
 
-#: saas/models.py:2761
+#: saas/models.py:2839
 msgid "Organization subscribed to the plan"
 msgstr "Organisation abonnée au plan"
 
-#: saas/models.py:2763
+#: saas/models.py:2841
 msgid "Plan the organization is subscribed to"
 msgstr "Plan auquel l'organisation est abonnée"
 
-#: saas/models.py:3766
+#: saas/models.py:3864
 msgid "Source account from which funds are withdrawn"
 msgstr "Compte source duquel les fonds sont retirés"
 
-#: saas/models.py:3772
+#: saas/models.py:3870
 msgid "Amount withdrawn from source in orig_unit"
 msgstr "Montant en orig_unit retiré de la source"
 
-#: saas/models.py:3774
+#: saas/models.py:3872
 msgid "Three-letter ISO 4217 code for source currency unit (ex: usd)"
 msgstr "Le code à trois lettres ISO 4217 pour l'unité monétaire source (ex: eur)."
 
-#: saas/models.py:3777
+#: saas/models.py:3875
 msgid "Target account to which funds are deposited"
 msgstr "Compte destinataire sur lequel les fonds sont déposés"
 
-#: saas/models.py:3783
+#: saas/models.py:3881
 msgid "Amount deposited into target in dest_unit"
 msgstr "Montant en dest_unit versé au destinataire"
 
-#: saas/models.py:3785
+#: saas/models.py:3883
 msgid "Three-letter ISO 4217 code for target currency unit (ex: usd)"
 msgstr "Le code à trois lettres ISO 4217 pour l'unité monétaire destinataire (ex: eur)."
 
-#: saas/models.py:3792
-msgid ""
-"Event at the origin of this transaction (ex. subscription, charge, etc.)"
+#: saas/models.py:3888
+msgid "Free-form text description for the Transaction"
+msgstr "Texte libre pour la description de la Transaction"
+
+#: saas/models.py:3890
+msgid "Event at the origin of this transaction (ex. subscription, charge, etc.)"
 msgstr "L'événement à l'origine de la transaction (ex. abonnement, charge, etc.)"
 
-#: saas/models.py:3841
+#: saas/models.py:3939
 msgid "Title for the row"
 msgstr "Titre de la ligne"
 
-#: saas/models.py:3846
+#: saas/models.py:3944
 msgid "Absolute position of the row in the list of rows for the table"
 msgstr "Position absolue de la ligne dans la liste de ligne du tableau"
 
-#: saas/templatetags/saas_tags.py:86
+#: saas/templatetags/saas_tags.py:115
 msgid "per ?"
 msgstr "par ?"
 
-#: saas/templatetags/saas_tags.py:88
-msgid "per hour"
-msgstr "par heure"
+#: saas/utils.py:260 signup/utils.py:128
+#, python-format
+msgid "No field '%(field)s': %(msg)s"
+msgstr "Pas de champ '%(field)s': %(msg)s"
 
-#: saas/templatetags/saas_tags.py:90
-msgid "per day"
-msgstr "par jour"
+#: saas/utils.py:298 signup/utils.py:166
+#, python-format
+msgid "This %(field)s is already taken."
+msgstr "Ce %(field)s est déjà pris."
 
-#: saas/templatetags/saas_tags.py:92
-msgid "per week"
-msgstr "par semaine"
-
-#: saas/templatetags/saas_tags.py:94
-msgid "per month"
-msgstr "par mois"
-
-#: saas/templatetags/saas_tags.py:96
-msgid "per year"
-msgstr "par année"
-
-#: saas/views/__init__.py:235
+#: saas/views/__init__.py:225
 msgid "No organizations are accessible by user."
 msgstr "Aucune organisations n'est accessible à l'utilisateur"
 
-#: saas/views/billing.py:123
-msgid ""
-"The payment processor is currently unreachable. Sorry for the inconvienience."
+#: saas/views/billing.py:124 saas/views/billing.py:784
+msgid "The payment processor is currently unreachable. Sorry for the inconvienience."
 msgstr "Le processeur de paiement n'est pas accessible actuellement. Désolé pour le dérangement"
 
-#: saas/views/billing.py:150 saas/views/billing.py:219
+#: saas/views/billing.py:151 saas/views/billing.py:220
 msgid "Connection to your deposit account was successfully updated."
 msgstr "La connection de votre compte de dépôt a été sauvegardée avec succès."
 
-#: saas/views/billing.py:189
+#: saas/views/billing.py:190
 msgid "Missing processor token."
 msgstr "Un token processeur est manquant"
 
-#: saas/views/billing.py:225
+#: saas/views/billing.py:226
 msgid "An error occured while saving your deposit account settings."
 msgstr "Une erreur est survenue pendant la sauvegarde de la connection de votre compte de dépôt."
 
-#: saas/views/billing.py:326
-msgid ""
-"There are no items invoicable at this point. Please select an item before "
-"checking out."
+#: saas/views/billing.py:333
+msgid "There are no items invoicable at this point. Please select an item before checking out."
 msgstr "Il n'y a pas de produit dans votre panier. S'il vous plait choisissez un produit avant de passer en caisse."
 
-#: saas/views/billing.py:360 saas/views/billing.py:795
+#: saas/views/billing.py:366 saas/views/billing.py:835
 #, python-format
-msgid ""
-"A receipt will be sent to %(email)s once the charge has been processed. "
-"Thank you."
+msgid "A receipt will be sent to %(email)s once the charge has been processed. Thank you."
 msgstr "Un reçu va être envoyé à %(email)s une fois le paiement accepté. Merci."
 
-#: saas/views/billing.py:415
+#: saas/views/billing.py:421
 msgid "Your credit card on file was sucessfully updated"
-msgstr "Votre carte de paiement a été correctement sauvegardée"
+msgstr "Votre carte bancaire a été sauvegardée avec succès."
 
-#: saas/views/billing.py:589
-msgid "Subscribe"
-msgstr "Abonnez-vous"
-
-#: saas/views/billing.py:658
-msgid ""
-"Your Cart is empty. Please add some items to your cart before you check out."
+#: saas/views/billing.py:670
+msgid "Your Cart is empty. Please add some items to your cart before you check out."
 msgstr "Votre panier est vide. S'il vous plait, ajoutez quelques produits avant de passer en caisse."
-
-#: saas/views/optins.py:59
-#, python-format
-msgid ""
-"You already have a %(existing_role)s role on %(organization)s. Please drop "
-"this role first if you want to accept a role of %(role)s instead."
-msgstr "Vous avez déjà un rôle %(existing_role)s pour l'organisation %(organization)s. S'il vous plait, retirez ce rôle avant de pouvoir accepter un nouveau rôle %(role)s."
 
 #: saas/views/optins.py:83
 #, python-format
@@ -1005,32 +3411,59 @@ msgstr "Le rôle %(role)s pour l'organisation %(organization)s a été accepté.
 
 #: saas/views/optins.py:126 saas/views/optins.py:161
 #, python-format
-msgid "Request from %s accepted."
-msgstr "Requête pour %s acceptée."
+msgid "Request from %(organization)s accepted."
+msgstr "Requête pour %(organization)s acceptée."
 
-#: saas/views/plans.py:169
+#: saas/views/plans.py:178
 #, python-format
 msgid "Successfully created plan titled '%(title)s'."
 msgstr "Un plan avec le titre '%(title)s' a été créé avec succès."
 
-#: saas/views/plans.py:196
+#: saas/views/plans.py:204
 #, python-format
 msgid "Successfully updated plan titled '%(title)s'."
 msgstr "Un plan avec le titre '%(title)s' a été sauvegardé avec succès."
 
-#: signup/api/auth.py:145 signup/views/auth.py:261
+#: signup/api/auth.py:122
+msgid "missing MFA token"
+msgstr "Un token MFA est manquant"
+
+#: signup/api/auth.py:129 signup/views/auth.py:478
+msgid "You have exceeded the number of attempts to enter the MFA code. Please start again."
+msgstr "Vous avez dépassé le nombre de tentative pour entrer le code MFA. essayez a nouveau s'il vous plait."
+
+#: signup/api/auth.py:134 signup/forms.py:262
+msgid "MFA code does not match."
+msgstr "Cetter valeur ne correspond pas au code MFA."
+
+#: signup/api/auth.py:184 signup/views/auth.py:284
 #, python-format
-msgid ""
-"This email address has already been registered! Please <a href=\"%s\">login</"
-"a> with your credentials. Thank you."
+msgid "This email address has already been registered! Please <a href=\"%s\">login</a> with your credentials. Thank you."
 msgstr "Cette adresse e-mail a déjà été enregistrée! S'il vous plait <a href=\"%s\">connectez-vous avec vos identifiants</a>. Merci."
 
-#: signup/api/auth.py:150 signup/views/auth.py:266
-msgid ""
-"This email address has already been registered! You should now secure and "
-"activate your account following  the instructions we just emailed you. Thank "
-"you."
+#: signup/api/auth.py:189 signup/views/auth.py:293
+msgid "This email address has already been registered! You should now secure and activate your account following  the instructions we just emailed you. Thank you."
 msgstr "Cette adresse e-mail a déjà été enregistrée! Vous devez maitenant activer et sécuriser votre compte en suivant les instructions que nous venons juste de vous envoyer. Merci."
+
+#: signup/api/auth.py:291
+msgid "Please activate your account first. You should receive an email shortly."
+msgstr "Activer votre compte avant de continuer s'il vous plait. Vous devriez bientôt recevoir un message e-mail."
+
+#: signup/api/auth.py:296 signup/views/auth.py:165
+msgid "We cannot find an account for this e-mail address. Please verify the spelling."
+msgstr "Nous ne trouvons pas de compte lié à cette adresse e-mail. Veuillez vérifier l'ortographe s'il vous plait."
+
+#: signup/api/keys.py:75 signup/api/keys.py:131 signup/api/users.py:472
+msgid "Incorrect credentials"
+msgstr "Identifiants incorrects"
+
+#: signup/api/keys.py:145
+msgid "Public key updated successfully."
+msgstr "La clé publique a bien été sauvegardée."
+
+#: signup/api/users.py:116
+msgid "User is already active"
+msgstr "Utilisateur est déjà actif."
 
 #: signup/authentication.py:46 signup/authentication.py:49
 #: signup/authentication.py:69
@@ -1041,54 +3474,73 @@ msgstr "Token erroné"
 msgid "User inactive or deleted."
 msgstr "Utilisateur inactif ou effacé"
 
-#: signup/backends/auth.py:59 signup/backends/auth.py:60
-msgid "Username or e-mail"
-msgstr "Nom d'utilisateur ou email"
-
-#: signup/backends/auth.py:68
+#: signup/backends/auth.py:67
+#, python-format
 msgid "%(username)s or e-mail"
-msgstr "%(username)s ou e-mail"
+msgstr "%(username)s ou email"
 
-#: signup/decorators.py:146 signup/views/auth.py:149
-msgid ""
-"You should now secure and activate your account following the instructions "
-"we just emailed you. Thank you."
+#: signup/decorators.py:146 signup/views/auth.py:159
+msgid "You should now secure and activate your account following the instructions we just emailed you. Thank you."
 msgstr "Vous devez maitenant activer et sécuriser votre compte en suivant les instructions que nous venons juste de vous envoyer. Merci."
 
-#: signup/forms.py:51 signup/forms.py:106
-msgid "Sorry we do not recognize some characters in your full name."
-msgstr "Désolé, il y a des caractères dans votre nom que nous ne reconnaissons pas."
+#: signup/forms.py:95
+msgid "This field does not match password confirmation."
+msgstr "Cette valeur ne correspond pas à la verification de votre mot de passe."
 
-#: signup/models.py:232
-msgid "E-mail address for the contact"
-msgstr "Adresse e-mail du contact"
+#: signup/forms.py:97
+msgid "This field does not match password."
+msgstr "Cette valeur ne correspond pas à votre mot de passe."
 
-#: signup/models.py:236
-msgid "Nick name"
-msgstr "Surnom"
+#: signup/forms.py:103 signup/forms.py:167
+msgid "Password and password confirmation do not match."
+msgstr "Le mot de passe et sa confirmation ne sont pas identiques."
 
-#: signup/models.py:237
+#: signup/forms.py:253 signup/forms.py:255 signup/models.py:271
+msgid "One-time authentication code"
+msgstr "Code d'authentification ponctuel"
+
+#: signup/models.py:248
+msgid "Unique identifier shown in the URL bar, effectively the username for profiles with login credentials."
+msgstr ""
+
+#: signup/models.py:255 signup/serializers.py:150
+msgid "Full name (effectively first name followed by last name)"
+msgstr "Nom complet (en fait le prénom suivi du nom de famille)"
+
+#: signup/models.py:257
 msgid "Short casual name used to address the contact"
 msgstr "Nom usuel pour le contact"
 
-#: signup/models.py:240
+#: signup/models.py:261
+msgid "URL to a profile picture"
+msgstr ""
+
+#: signup/models.py:266
 msgid "Verification key"
 msgstr "Clé de vérification"
 
-#: signup/models.py:278
-#, python-format
-msgid "Unable to create a unique URL slug from email '%s'"
-msgstr "Impossible de créer un slug URL unique à partir de cet e-mail '%s'"
+#: signup/models.py:269
+msgid "Backend to use for multi-factor authentication"
+msgstr ""
 
-#: signup/models.py:298 signup/serializers.py:50
+#: signup/models.py:273
+msgid "Number of attempts to pass the MFA code"
+msgstr ""
+
+#: signup/models.py:348
+#, python-format
+msgid "Unable to create a unique URL slug with a base of '%(base)s'"
+msgstr "Impossible de créer un slug URL unique à partir de '%(base)s'"
+
+#: signup/models.py:368 signup/serializers.py:50
 msgid "User that created the activity"
 msgstr "Utilisateur à l'origine de de l'activitée"
 
-#: signup/models.py:301
+#: signup/models.py:371
 msgid "Free form text description of the activity"
 msgstr "Texte libre pour la description de l'activitée"
 
-#: signup/models.py:305 signup/serializers.py:47
+#: signup/models.py:375 signup/serializers.py:47
 msgid "Account the activity is associated to"
 msgstr "Compte auquel l'activité est liée"
 
@@ -1096,91 +3548,99 @@ msgstr "Compte auquel l'activité est liée"
 msgid "Secret API Key used to authenticate user on every HTTP request"
 msgstr "Clé secrète pour l'API utilisé pour identifier l'utilisateur à chaque requête HTTP"
 
-#: signup/serializers.py:102
+#: signup/serializers.py:67 signup/serializers.py:161 signup/serializers.py:195
+msgid "Password of the user making the HTTP request"
+msgstr "Mot de passe de l'utilisateur faisant la requête HTTP"
+
+#: signup/serializers.py:81 signup/serializers.py:224
+msgid "True if the user has valid login credentials"
+msgstr ""
+
+#: signup/serializers.py:129 signup/serializers.py:143
 msgid "Username to identify the account"
 msgstr "Nom d'utilisateur pour identifier le compte"
 
-#: signup/serializers.py:105
+#: signup/serializers.py:132
 msgid "Secret password for the account"
 msgstr "Mot de passe secret pour le compte"
 
-#: signup/serializers.py:113
-msgid "Password with which a user can authenticate with the service"
-msgstr "Mot de passe avec lequel un utilisateur peut s'identifier avec le service"
+#: signup/serializers.py:135
+msgid "One-time code. This field will be checked against an expected code when multi-factor authentication (MFA) is enabled."
+msgstr ""
 
-#: signup/serializers.py:116 signup/serializers.py:148
+#: signup/serializers.py:145
+msgid "Password with which a user can authenticate with the service"
+msgstr "Mot de passe que l'utilisateur peut utiliser pour se connecter avec le service."
+
+#: signup/serializers.py:148 signup/serializers.py:172
+#: signup/serializers.py:221
 msgid "Primary e-mail to contact user"
 msgstr "E-mail principal pour contacter l'utilisateur"
 
-#: signup/serializers.py:136
+#: signup/serializers.py:164
+msgid "New password for the user referenced in the URL"
+msgstr ""
+
+#: signup/serializers.py:180
 msgid "Token used to authenticate user on every HTTP request"
 msgstr "Token utilisé pour identifier l'utilisateur à chaque requête HTTP"
 
-#: signup/utils.py:84 signup/utils.py:92
-#, python-format
-msgid "This %(field)s is already taken."
-msgstr "Ce %(field)s est déjà pris."
+#: signup/serializers.py:198
+msgid "New public key for the user referenced in the URL"
+msgstr ""
 
-#: signup/utils.py:108
+#: signup/serializers.py:219
+msgid "Picture"
+msgstr ""
+
+#: signup/utils.py:180
 msgid "Signature has expired."
 msgstr "La signature a expiré"
 
-#: signup/utils.py:111
+#: signup/utils.py:183
 msgid "Error decoding signature."
 msgstr "Erreur durant le décodage de la signature."
 
-#: signup/utils.py:115
+#: signup/utils.py:187
 msgid "Missing username in payload"
 msgstr "Le nom d'utilisateur est manquant du payload"
 
-#: signup/utils.py:120
+#: signup/utils.py:193
 msgid "User does not exist."
 msgstr "L'utilisateur n'existe pas."
 
-#: signup/views/auth.py:144
-msgid ""
-"Please follow the instructions in the email that has just been sent to you "
-"to reset your password."
+#: signup/views/auth.py:154
+msgid "Please follow the instructions in the email that has just been sent to you to reset your password."
 msgstr "S'il vous plait, suivez les instructions que nous venons juste de vous envoyer pour changer votre mot de passe."
 
-#: signup/views/auth.py:155
-msgid ""
-"We cannot find an account for this e-mail address. Please verify the "
-"spelling."
-msgstr "Nous ne trouvons pas de compte lié à cette adresse e-mail. Veuillez vérifier l'ortographe s'il vous plait."
+#: signup/views/auth.py:281 signup/views/auth.py:290
+msgid "A user with that e-mail address already exists."
+msgstr "Un utilisateur avec cet e-mail existe déjà."
 
-#: signup/views/auth.py:363
+#: signup/views/auth.py:402
 msgid "Thank you. Your account is now active."
 msgstr "Merci. Votre compte est maitenant actif."
 
-#: signup/views/auth.py:380
-msgid ""
-"Activation failed. You may have already activated your account previously. "
-"In that case, just login. Thank you."
+#: signup/views/auth.py:419
+msgid "Activation failed. You may have already activated your account previously. In that case, just login. Thank you."
 msgstr "Erreur lors de l'activation du compte. Vous avez peut-être déjà activé votre compte. Dans ce cas, connectez-vous simplement. Merci."
 
-#: signup/views/users.py:88
+#: signup/views/users.py:100
 msgid "Profile updated."
 msgstr "Profil sauvegardé."
 
-#: signup/views/users.py:137
+#: signup/views/users.py:149
 msgid "Notifications updated."
 msgstr "Notifications sauvegardées."
 
-#: signup/views/users.py:154
+#: signup/views/users.py:170 signup/views/users.py:201
+msgid "Your password is incorrect."
+msgstr "Votre mot de passe est incorrect."
+
+#: signup/views/users.py:183
 msgid "Password has been updated successfuly."
 msgstr "Le mot de passe a bien été sauvegardé."
 
-#: signup/views/users.py:171
-msgid ""
-"Please follow the instructions in the email that has just been sent to you "
-"to verify the e-mail address."
-msgstr "S'il vous plait suivez les instructions que nous venons juste de vous envoyer pour verifier votre adresse e-mail."
-
-#: signup/views/users.py:176
-msgid "This email address has already been verified."
-msgstr "Cette adresse e-mail a déjà été vérifiée."
-
-#: signup/views/users.py:210
+#: signup/views/users.py:221
 msgid "Public Key has been updated successfuly."
 msgstr "La clé publique a bien été sauvegardée."

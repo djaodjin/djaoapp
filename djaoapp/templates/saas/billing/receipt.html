@@ -1,6 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Charge Receipt{% endtrans %}{% endblock %}
+{% block saas_title %}{% trans %}Charge receipt{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <div class="row" style="margin-bottom: 15px;">
@@ -16,8 +16,7 @@
   <div id="{{charge}}">
     <section id="status">
       <p>
-        {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for
-        the amount of {{price}}.{% endtrans %}
+{% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for the amount of {{price}}.{% endtrans %}
       </p>
       <p class="charge-status"
          data-charge-done="{% trans %}The charge succeeded.{% endtrans %}"

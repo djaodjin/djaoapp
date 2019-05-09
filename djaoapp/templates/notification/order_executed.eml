@@ -15,7 +15,7 @@ HTML encoded. #}
     </thead>
     <tbody>
       <tr>
-        <th class="info-row-header">{% trans %}NAME{% endtrans %}&nbsp;&nbsp;</th>
+        <th class="info-row-header" style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
         <td>{{organization.printable_name}}</td>
       </tr>
     </tbody>

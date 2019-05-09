@@ -36,7 +36,7 @@
                 <div class="controls">
                     <input id="card-number"
                            class="form-control" type="text"
-                           size="16" placeholder="{% trans %}Card number{% endtrans %}"
+                           size="16" placeholder="{% trans %}Card Number{% endtrans %}"
                            autocomplete="off"
                            v-model="cardNumber" />
                 </div>
@@ -64,38 +64,28 @@
                     <div id="cvc-detail" style="display: none;">
                         <h3>{% trans %}What is CVV/CVC ?{% endtrans %}</h3>
                         <p>
-{% trans %}Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure
-established by credit card companies to reduce fraud for internet transactions.
-On a Visa, MasterCard and Discover, this 3 digit code is located on the back of
-the card. American Express, however, displays a 4 digit code on the front of
-the card. Both 3 or 4 digit codes are verification numbers used in the
-authentication process.{% endtrans %}
+{% trans %}Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure established by credit card companies to reduce fraud for internet transactions. On a Visa, MasterCard and Discover, this 3 digit code is located on the back of the card. American Express, however, displays a 4 digit code on the front of the card. Both 3 or 4 digit codes are verification numbers used in the authentication process.{% endtrans %}
                         </p>
-                        <h4>{% trans %}MasterCard, Visa{% endtrans %} &amp; {% trans %}Discover{% endtrans %}</h4>
+                        <h4>MasterCard, Visa &amp; Discover</h4>
                         <p>
-{% trans %}The CVV/CVC code is the last 3 digits printed in the signature area on the
-back of the card.{% endtrans %}
+{% trans %}The CVV/CVC code is the last 3 digits printed in the signature area on the back of the card.{% endtrans %}
                         </p>
-                        <h4>{% trans %}American Express{% endtrans %}</h4>
+                        <h4>American Express</h4>
                         <p>
-{% trans %}The CVV/CVC code is the last 4 digits on the front of your card right above
-your credit card number.{% endtrans %}
+{% trans %}The CVV/CVC code is the last 4 digits on the front of your card right above your credit card number.{% endtrans %}
                         </p>
                     </div>
                     <div class="controls">
                         <input id="card-cvc"
                         class="form-control"
                         type="text" maxlength="4" size="3"
-                        placeholder="{% trans %}CVC{% endtrans %}" autocomplete="off"
+                        placeholder="CVC" autocomplete="off"
                         v-model="cardCvc" />
                     </div>
                 </div>
             </div>
             <p class="form-group" style="font-size:0.8em;">
-{% trans %}We keep on top of all best practices to secure the information you
-provide us.
-See the{% endtrans %} <a href="/legal/security/" target="_blank">{% trans %}security policy{% endtrans %}</a>
-{% trans %}for details.{% endtrans %}
+{% trans %}We keep on top of all best practices to secure the information you provide us. See the <a href="/legal/security/" target="_blank">security policy</a> for details.{% endtrans %}
             </p>
         </fieldset>
         <fieldset class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">

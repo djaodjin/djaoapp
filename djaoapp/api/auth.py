@@ -30,8 +30,8 @@ LOGGER = logging.getLogger(__name__)
 class RegisterSerializer(CreateUserSerializer):
 
     organization_name = serializers.CharField(required=False,
-        help_text=_("Organization name that owns the billing, registered with"\
-            " the user as manager"))
+        help_text=_("Organization name that owns the billing,"\
+            " registered with the user as profile manager"))
     street_address = serializers.CharField(required=False,
         help_text=_("Street address for the billing profile"))
     locality = serializers.CharField(required=False,

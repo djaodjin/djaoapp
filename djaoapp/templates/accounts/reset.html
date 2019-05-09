@@ -11,16 +11,13 @@
             <h1><i class="fa fa-pencil"></i> {% trans %}Set/Reset Password{% endtrans %}</h1>
         </div>
         <p>
-{% trans %}You are about to activate your account and need to enter a password to secure
-it, or you have an account already and requested to change your password.{% endtrans %}
+{% trans %}You are about to activate your account and need to enter a password to secure it, or you have an account already and requested to change your password.{% endtrans %}
         </p>
         <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
                 method="post" action=".{% if next %}/?next={{next}}{% endif %}">
             {% include "_form_fields.html" %}
             <p>
-{% trans %}By clicking on the{% endtrans %} &quot;{% trans %}Submit{% endtrans %}&quot; {% trans %}button below,{% endtrans %}
-<b>{% trans %}I signify that I have read and accept the{% endtrans %}
-<a target="_blank" href="/legal/terms-of-use/">{% trans %}terms of service{% endtrans %}</a></b>.
+{% trans %}By clicking on the &quot;Submit&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
             </p>
             <div class="form-action">
                 <button type="submit" class="btn btn-primary btn-lg">{% trans %}Submit{% endtrans %}</button>

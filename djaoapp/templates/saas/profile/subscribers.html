@@ -8,7 +8,7 @@
 <section id="subscribers">
 <div id="subscribers-list-container"
      data-trip data-trip-index="1"
-     data-trip-content="<h2>{% trans %}Active Subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.{% endtrans %}<br />{% trans %}You will find here the list of all active subscribers,{% endtrans %}<br />{% trans %}with the plans they are subscribed to, the date they first{% endtrans %}<br />{% trans %}subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+     data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
      data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       {% if registered %}
@@ -113,7 +113,7 @@
               <i :class="sortIcon('created_at')"></i>
             </button>
         </th>
-        <th>{% trans %}Ends At{% endtrans %}
+        <th>{% trans %}Ends at{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </button>
@@ -326,9 +326,6 @@
         </div>
         {% endfor %}
     </div>
-</div>
-<div>
-    <a id="new-subscriber" class="btn btn-primary pull-right" href="{{urls.organization_create}}">{% trans %}New Billing Profile{% endtrans %} &raquo;</a>
 </div>
 </section>
 {% endblock %}

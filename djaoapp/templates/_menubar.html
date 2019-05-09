@@ -23,7 +23,7 @@
     <li class="dropdown-label" role="presentation">{{request.user.username}}</li>
     {% endif %}
     <li role="presentation"><a id="authenticated-user" class="dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">{% trans %}Profile{% endtrans %}</a></li>
-    <li role="presentation"><a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">{% trans %}Sign Out{% endtrans %}</a></li>
+    <li role="presentation"><a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">{% trans %}Sign out{% endtrans %}</a></li>
     {% if top_accessibles|length > 0 %}
     {% for accessible in top_accessibles %}
     <li class="dropdown-divider" role="separator"></li>

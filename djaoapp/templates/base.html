@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2019 DjaoDjin inc.">
-    <title>{% block title %}{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Bootstrap a Subscription Business Today{% endtrans %}{% endif %} | DjaoDjin{% endblock %}</title>
+    <title>{% block title %}{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %} | DjaoDjin{% endblock %}</title>
     <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
@@ -116,7 +116,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
                 </div>
                 <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
                     <li class="nav-item">
-                    <a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> {% trans %}Sign In{% endtrans %}</a>
+                    <a class="nav-link" id="login" href="{{request|url_login}}"><i class="fa fa-lock fa-lg"></i> {% trans %}Sign in{% endtrans %}</a>
                     </li>
                     <!-- this area will be populated by _menubar.html -->
                 </ul>

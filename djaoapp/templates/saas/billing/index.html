@@ -6,8 +6,7 @@
 
 {% block saas_help %}
 <p>
-{% trans %}You can manage the Credit Card on file for your subscription.
-You can also see the list of all payments made here.{% endtrans %}
+{% trans %}You can manage the Credit Card on file for your subscription. You can also see the list of all payments made here.{% endtrans %}
 </p>
 {% endblock %}
 
@@ -16,7 +15,7 @@ You can also see the list of all payments made here.{% endtrans %}
 <div class="col-sm-12">
   <div class="row"
          data-trip data-trip-index="1"
-         data-trip-content="<h2>{% trans %}Billing{% endtrans %}</h2><p>{% trans %}All services you bought and the current balance due.</p><em>Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+         data-trip-content="<h2>{% trans %}Billing{% endtrans %}</h2><p>{% trans %}All services you bought and the current balance due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
          data-trip-position="screen-center">
       <section id="balance" class="col-sm-6">
         <h1 class="text-primary">{% trans %}Balance{% endtrans %}</h1>
@@ -96,7 +95,7 @@ You can also see the list of all payments made here.{% endtrans %}
       <button id="cancel-balance-btn"
               class="btn btn-danger btn-sm"
               data-toggle="modal" data-target="#cancel-balance"
-              v-if="items.balance > 0" v-cloak>{% trans %}cancel balance due{% endtrans %}</button>
+              v-if="items.balance > 0" v-cloak>{% trans %}Cancel balance due{% endtrans %}</button>
       {% endif %}
       {% if urls.organization.vtcharge %}
       <a id="one-time-charge"

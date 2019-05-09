@@ -18,7 +18,7 @@ be positive and/or the setup fee will. -->
                 <h2 class="text-center editable-plan edit-currency" data-key="period_amount" data-slug="{{plan.slug}}">
                 {% if not plan or plan.is_not_priced %}
 {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
-                {% trans %}Contact Us{% endtrans %}
+                {% trans %}Contact us{% endtrans %}
                 {% else %}
                   {% if plan.discounted_period_price %}
                     {{plan.discounted_period_price|humanize_money}}
@@ -55,7 +55,7 @@ be positive and/or the setup fee will. -->
     <footer class="plan-footer">
         <div style="margin:5px;">
             {% if plan.is_not_priced %}
-            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
+            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact us{% endtrans %}</a>
             {% else %}
             <button class="btn btn-primary"
                     type="submit" name="submit" value="{{plan.slug}}">{% trans %}Subscribe{% endtrans %}</button>

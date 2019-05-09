@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2019 DjaoDjin inc.">
-    <title>{% trans %}Server error{% endtrans %} | DjaoDjin</title>
+    <title>{% trans %}500 Internal Server Error{% endtrans %} | DjaoDjin</title>
     <style>
 html, body {
     height: 100%;
@@ -119,13 +119,16 @@ a {
     </header>
     <div class="container">
         <div style="display:inline-block;text-align:left;margin:auto;">
-        <h1>{% trans %}500 - Internal Server Error{% endtrans %}</h1>
-        <p>{% trans %}We have been notified and have started on fixing the error.
-            We apologize for the inconvinience.{% endtrans %}</p>
-        <p>{% trans %}If you would like to drop us a line, please{% endtrans %}
-            <a href="/contact/">{% trans %}get in touch{% endtrans %}</a>.
+        <h1>{% trans %}500 Internal Server Error{% endtrans %}</h1>
+        <p>
+{% trans %}We have been notified and have started on fixing the error. We apologize for the inconvinience.{% endtrans %}
         </p>
-        <p>{% trans %}Please come back later.{% endtrans %}</p>
+        <p>
+{% trans %}If you would like to drop us a line, please <a href="/contact/">get in touch</a>.{% endtrans %}
+        </p>
+        <p>
+{% trans %}Please come back later.{% endtrans %}
+        </p>
         <p style="text-align:center;">
             <a href="/">{% trans %}Go back to the homepage{% endtrans %} &raquo;</a>
         </p>
@@ -134,12 +137,12 @@ a {
    </div>
   </div>
     <footer class="footer">
-        <div class="copyr">{% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %} - <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
-            &nbsp;&nbsp;
-            <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-            <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-            <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
-        </div>
+      <div class="copyr">{% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %} - <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
+        &nbsp;&nbsp;
+        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+        <a href="https://plus.google.com/+Djaodjin" target="_blank" rel="publisher"><i class="fa fa-google-plus fa-sm"></i></a>
+      </div>
     </footer>
 </body>
 </html>

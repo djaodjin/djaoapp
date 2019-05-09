@@ -4,35 +4,37 @@
 
 {% block saas_content %}
 <section id="accessible-list-container">
-  <div class="row mt-4 mb-2">
-  <div class="col-6">
-    <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
-      <form class="form-inline" @submit.prevent="submit">
-        <div class="input-group input-group-sm" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the organization you wish to add.{% endtrans %}</p>" data-trip-position="s">
-          <input id="userTypeahead"
-                 class="form-control form-control-sm"
-                 name="organization" type="text" placeholder="{% trans %}Name or email{% endtrans %}"
-                 autocomplete="off">
-          <div class="input-group-append">
-            <button class="btn btn-primary btn-sm" type="submit">{% trans %}Add{% endtrans %}</button>
+  <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+    <form id="add-profile" class="form-inline mb-4" @submit.prevent="submit">
+      <div style="width:100%;">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="form-group"
+               data-trip data-trip-index="2"
+               data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>"
+               data-trip-position="s">
+              <input type="text" class="form-control" id="userTypeahead"
+                     name="organization" type="text" placeholder="{% trans %}Name or e-mail{% endtrans %}"
+                     autocomplete="off">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">{% trans %}Add profile{% endtrans %}</button>
+              </div>
           </div>
-        </div>
-        <uiv-typeahead
-           v-model="itemSelected"
-           target="#userTypeahead"
-           :async-function="getUsers"
-           item-key="slug"
-           :open-on-focus="false"
-           />
-      </form>
-    </user-typeahead>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-row">
+          <uiv-typeahead
+               v-model="itemSelected"
+               target="#userTypeahead"
+               :async-function="getUsers"
+               item-key="slug"
+               :open-on-focus="false"
+               class="typeahead-dropdown"
+               />
+      </div>
+    </form>
+  </user-typeahead>
+  <hr />
+  <div class="row">
+      <div class="col-12">
             {% include "saas/_filter_match.html" %}
-        </div>
-    </div>
-    </div>
+  </div>
   <div class="row">
       <div class="col-12 col-md-6">
         <div v-show="!itemsLoaded">
@@ -62,15 +64,14 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{% trans %}Request access ...{% endtrans %}</h5>
+            <h5 class="modal-title">{% trans %}Request access{% endtrans %} ...</h5>
             <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <form>
             <div class="modal-body">
               <p class="text-danger">
-[[unregistered.full_name]] {% trans %}was not found. This is an opportunity to invite
-a manager for{% endtrans %} [[unregistered.full_name]] {% trans site=site.printable_name%}to join {{site}}{% endtrans %}.
+{% trans full_name='[[unregistered.full_name]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite a profile manager for {{full_name}} to join {{site}}.{% endtrans %}
               </p>
               <div class="form-group" style="margin-bottom: 15px;">
                   <label>{% trans %}To{% endtrans %}</label>
@@ -80,17 +81,17 @@ a manager for{% endtrans %} [[unregistered.full_name]] {% trans site=site.printa
                          style="width:100%;" autofocus
                          v-model="unregistered.email" />
               </div>
-              <div id="div_id_new_user_relation" class="form-group">
+              <div class="form-group">
                 <div class="controls">
                   <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
                   <textarea class="form-control"
                             name="message"
                             maxlength="255" type="text" rows="10">
-{% trans %}Hello,
+{% trans organization_name="[[unregistered.full_name]]", user=request.user.first_name %}Hello,
 
-I would like to request access to{% endtrans %} [[unregistered.full_name]].
+I would like to request access to {{organization_name}}
 
-{% trans user=request.user.first_name %}Thank you,
+Thank you,
 - {{user}}{% endtrans %}
                   </textarea>
                 </div>

@@ -5,12 +5,12 @@
 {% block saas_content %}
 <section id="role-list-container"
     data-trip data-trip-index="1"
-    data-trip-content="<h2>{% trans %}Add/Remove roles{% endtrans %}</h2><p>{% trans %}Managers can view the revenue and subscription metrics. They can{% endtrans %}<br />{% trans %}transfer funds to the organization bank account, issue refunds, etc.{% endtrans %}<br />{% trans %}They can add discount coupons and of course, other roles. Contributors have more permissions than normal users{% endtrans %}<br />{% trans %}but restricted access compared to managers..{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+    data-trip-content="<h2>{% trans %}Add/Remove roles{% endtrans %}</h2><p>{% trans %}Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
   <div>
-      <button class="btn btn-primary" @click="modalOpen=true">{% trans %}Create role ...{% endtrans %}</button>
+      <button class="btn btn-primary" @click="modalOpen=true">{% trans %}Create role{% endtrans %} ...</button>
     <div v-show="!itemsLoaded">
-        <h2>{% trans %}Please wait...{% endtrans %}</h2>
+        <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
     </div>
     <div v-show="itemsLoaded">
       <div v-for="roleDescription in items.results">
@@ -37,7 +37,7 @@
             <thead>
               <tr>
                 <th>{% trans %}Username{% endtrans %}</th>
-                <th>{% trans %}Email{% endtrans %}</th>
+                <th>{% trans %}E-mail address{% endtrans %}</th>
                 <th></th>
               </tr>
             </thead>
@@ -81,12 +81,11 @@
           <div class="modal-header">
               <button type="button" class="close"
                   data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}} ...{% endtrans %}</h4>
+              <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %} ...</h4>
           </div>
           <div class="modal-body">
             <p class="text-danger">
-[[unregistered.slug]] {% trans role_descr=role_descr.title, organization=organization.printable_name %}is not yet registered. This is an opportunity to invite and
-add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
+{% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
             </p>
             <div class="row form-group">
                 <div class="col-sm-2">
@@ -106,9 +105,9 @@ add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
                     <textarea class="form-control"
                               name="message"
                               maxlength="255" type="text" rows="10">
-{% trans %}Hi{% endtrans %} [[unregistered.email]],
+{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
-{% trans role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}I am adding you as a {{role_descr}} to {{organization}}.
+I am adding you as a {{role_descr}} to {{organization}}.
 
 Thank you,
 - {{user}}{% endtrans %}</textarea>

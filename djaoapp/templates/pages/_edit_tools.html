@@ -63,14 +63,14 @@ jQuery(document).ready(function($) {
       progress = progress.toFixed();
       $(".progress-bar").css("width", progress + "%");
       if (progress == 100){
-        $(".progress-bar").text("{% trans %}Upload completed {% endtrans %}");
+        $(".progress-bar").text("{% trans %}Upload completed{% endtrans %}");
         setTimeout(function(){
           $(".gallery-upload-progress").slideUp();
           $(".progress-bar").text("").css("width", "0%");
         }, 2000);
       }
     },
-    galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"{% trans %}tags...{% endtrans %}\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">{% trans %}Tag{% endtrans %}</button></span></div><span class=\"dj-help-block\">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> {% trans %}Delete{% endtrans %}</button>\n",
+    galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"{% trans %}tags{% endtrans %} ...\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">{% trans %}Tag{% endtrans %}</button></span></div><span class=\"dj-help-block\">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> {% trans %}Delete{% endtrans %}</button>\n",
     galleryMessage: function(message, type){
       if (!type){
         type = "success";
