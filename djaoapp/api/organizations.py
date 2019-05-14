@@ -8,10 +8,7 @@ from rest_framework import filters
 from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
     OrganizationListAPIView as OrganizationListBaseAPIView)
-# XXX Temporary import of OrganizationSerializer until a new version
-#     of djaodjin-saas is published.
-from saas.api.serializers import (
-    OrganizationSerializer as CreateOrganizationSerializer)
+from saas.api.serializers import OrganizationCreateSerializer
 from saas.docs import swagger_auto_schema
 from saas.utils import get_organization_model
 
@@ -141,7 +138,7 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 #    ordering = ('full_name',)
     serializer_class = OrganizationSerializer
 
-    @swagger_auto_schema(request_body=CreateOrganizationSerializer)
+    @swagger_auto_schema(request_body=OrganizationCreateSerializer)
     def post(self, request, *args, **kwargs):
         """
         Creates an``Organization``
