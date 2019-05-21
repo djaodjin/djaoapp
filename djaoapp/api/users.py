@@ -68,7 +68,8 @@ class RecentActivityAPIView(GenericAPIView):
                 descr = _('charge failed')
             else:
                 continue
-            data.append({'printable_name': '%s: %s' % (charge.customer,
-                charge.description), 'descr': descr,
+            data.append({'printable_name':
+                charge.customer.printable_name, 'descr': descr,
                 'created_at': user.last_login})
-        return Response({'results': self.get_serializer(data, many=True).data})
+        return Response({'results':
+            self.get_serializer(data, many=True).data})
