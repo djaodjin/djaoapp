@@ -17,7 +17,7 @@ from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
 from ..api.roles import RoleListAPIView
-from ..api.users import UserProfileAPIView
+from ..api.users import UserProfileAPIView, RecentActivityAPIView
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_provider_only, url_self_provider,
      url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
@@ -61,6 +61,8 @@ urlpatterns += site_patterns(
         name='api_notification_send_test_email'),
     url_direct(r'^api/notifications/',
         NotificationAPIView.as_view(), name='api_notification_base'),
+    url_direct(r'^api/proxy/recent/',
+        RecentActivityAPIView.as_view(), name='api_recent_activity'),
     url_direct(r'^api/proxy/$',
         AppUpdateAPIView.as_view(), name='api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),

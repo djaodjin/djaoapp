@@ -112,3 +112,12 @@ class SessionSerializer(serializers.ModelSerializer):
 class AppSerializer(RulesAppSerializer):
     class Meta(RulesAppSerializer.Meta):
         fields = RulesAppSerializer.Meta.fields + ('show_edit_tools',)
+
+
+class ActivitySerializer(serializers.Serializer):
+    printable_name = serializers.CharField()
+    descr = serializers.CharField()
+    created_at = serializers.DateTimeField()
+
+class ActivitiesSerializer(serializers.Serializer):
+    activities = ActivitySerializer(many=True)

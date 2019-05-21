@@ -4,8 +4,15 @@ from __future__ import unicode_literals
 
 import logging
 
+from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+
 from saas.utils import get_role_model
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
+
+from .serializers import ActivitiesSerializer
 
 LOGGER = logging.getLogger(__name__)
 
@@ -40,3 +47,28 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         if instance.user:
             get_role_model().objects.filter(user=instance.user).delete()
         super(UserProfileAPIView, self).perform_destroy(instance)
+
+from saas.models import Charge
+
+class RecentActivityAPIView(GenericAPIView):
+    serializer_class = ActivitiesSerializer
+
+    def get(self, request, *args, **kwargs):
+        users = get_user_model().objects.order_by('-last_login')[:5]
+        charges = Charge.objects.order_by('-created_at')[:5]
+        data = []
+        for user in users:
+            data.append({'printable_name': user.get_full_name(),
+                'descr': _('recently logged in'),
+                'created_at': user.last_login})
+        for charge in charges:
+            if charge.state == charge.DONE:
+                descr = _('charge paid')
+            elif charge.state == charge.FAILED:
+                descr = _('charge failed')
+            else:
+                continue
+            data.append({'printable_name': '%s: %s' % (charge.customer,
+                charge.description), 'descr': descr,
+                'created_at': user.last_login})
+        return Response(self.get_serializer({'activities': data}).data)
