@@ -13,7 +13,7 @@ from saas.utils import get_role_model
 from saas.models import Charge
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
 
-from .serializers import ActivitiesSerializer
+from .serializers import ActivitySerializer
 
 LOGGER = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ class UserProfileAPIView(UserProfileBaseAPIView):
 
 
 class RecentActivityAPIView(GenericAPIView):
-    serializer_class = ActivitiesSerializer
+    serializer_class = ActivitySerializer
 
     def get(self, request, *args, **kwargs):
         users = get_user_model().objects.order_by('-last_login')[:5]
@@ -71,4 +71,4 @@ class RecentActivityAPIView(GenericAPIView):
             data.append({'printable_name': '%s: %s' % (charge.customer,
                 charge.description), 'descr': descr,
                 'created_at': user.last_login})
-        return Response(self.get_serializer({'activities': data}).data)
+        return Response({'results': self.get_serializer(data, many=True).data})
