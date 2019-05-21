@@ -10,6 +10,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from saas.utils import get_role_model
+from saas.models import Charge
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
 
 from .serializers import ActivitiesSerializer
@@ -48,7 +49,6 @@ class UserProfileAPIView(UserProfileBaseAPIView):
             get_role_model().objects.filter(user=instance.user).delete()
         super(UserProfileAPIView, self).perform_destroy(instance)
 
-from saas.models import Charge
 
 class RecentActivityAPIView(GenericAPIView):
     serializer_class = ActivitiesSerializer
