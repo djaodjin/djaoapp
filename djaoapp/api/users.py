@@ -56,11 +56,11 @@ class RecentActivityAPIView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         users = get_user_model().objects.order_by('-last_login')[:5]
         charges = Charge.objects.order_by('-created_at')[:5]
-        data = []
+        data = {}
         for user in users:
-            data.append({'printable_name': user.get_full_name(),
+            data[user.username] = {'printable_name': user.get_full_name(),
                 'descr': _('recently logged in'),
-                'created_at': user.last_login})
+                'created_at': user.last_login}
         for charge in charges:
             if charge.state == charge.DONE:
                 descr = _('charge paid')
@@ -68,8 +68,8 @@ class RecentActivityAPIView(GenericAPIView):
                 descr = _('charge failed')
             else:
                 continue
-            data.append({'printable_name':
+            data[charge.customer.slug] = {'printable_name':
                 charge.customer.printable_name, 'descr': descr,
-                'created_at': user.last_login})
+                'created_at': user.last_login}
         return Response({'results':
-            self.get_serializer(data, many=True).data})
+            self.get_serializer(data.values(), many=True).data})
