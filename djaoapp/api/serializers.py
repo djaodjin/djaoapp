@@ -118,3 +118,4 @@ class ActivitySerializer(serializers.Serializer):
     printable_name = serializers.CharField()
     descr = serializers.CharField()
     created_at = serializers.DateTimeField()
+    slug = serializers.CharField()

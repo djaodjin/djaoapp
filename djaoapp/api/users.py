@@ -2,14 +2,16 @@
 # see LICENSE
 from __future__ import unicode_literals
 
-import logging
+import logging, datetime
+from operator import itemgetter
 
 from django.contrib.auth import get_user_model
+from django.utils.timezone import utc
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from saas.utils import get_role_model
+from saas.utils import get_role_model, parse_tz
 from saas.models import Charge
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
 
@@ -54,12 +56,22 @@ class RecentActivityAPIView(GenericAPIView):
     serializer_class = ActivitySerializer
 
     def get(self, request, *args, **kwargs):
-        users = get_user_model().objects.order_by('-last_login')[:5]
-        charges = Charge.objects.order_by('-created_at')[:5]
+        start_at_dt = datetime.date.today() - datetime.timedelta(2)
+        start_at = datetime.datetime(year=start_at_dt.year, month=start_at_dt.month,
+            day=start_at_dt.day)
+        timezone = self.request.GET.get('timezone')
+        tz_ob = parse_tz(timezone)
+        if not tz_ob:
+            tz_ob = utc
+        start_at = tz_ob.localize(start_at)
+        users = get_user_model().objects.filter(
+            last_login__gt=start_at).order_by('-last_login')[:5]
+        charges = Charge.objects.filter(
+            created_at__gt=start_at).order_by('-created_at')[:5]
         data = {}
         for user in users:
             data[user.username] = {'printable_name': user.get_full_name(),
-                'descr': _('recently logged in'),
+                'descr': _('recently logged in'), 'slug': user.username,
                 'created_at': user.last_login}
         for charge in charges:
             if charge.state == charge.DONE:
@@ -70,6 +82,9 @@ class RecentActivityAPIView(GenericAPIView):
                 continue
             data[charge.customer.slug] = {'printable_name':
                 charge.customer.printable_name, 'descr': descr,
-                'created_at': user.last_login}
+                'created_at': user.last_login,
+                # TODO 404 for some of the slugs
+                'slug': charge.customer.slug}
+        data = sorted(data.values(), key=itemgetter('printable_name'))
         return Response({'results':
-            self.get_serializer(data.values(), many=True).data})
+            self.get_serializer(data, many=True).data})

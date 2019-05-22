@@ -29,3 +29,21 @@ var app = new Vue({
     },
 })
 }
+
+if($('#recent-activity-container').length > 0){
+var app = new Vue({
+    el: "#recent-activity-container",
+    mixins: [itemListMixin],
+    data: function(){
+        return {
+            url: djaodjinSettings.urls.recent_activity,
+            params: {
+                timezone: moment.tz.guess(),
+            },
+        }
+    },
+    mounted: function(){
+        this.get();
+    },
+})
+}

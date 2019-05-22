@@ -492,3 +492,20 @@ $dashboard-sidebar-color:    white;
     display: flex;
     flex-wrap: wrap;
 }
+
+#recent-activity-container .item-name
+{
+    /* TODO need to divide into three columns (a grid or smth similar) */
+    width: 200px;
+    color: #333;
+}
+
+#recent-activity-container a:hover
+{
+    text-decoration: none;
+}
+
+#recent-activity-container a:hover .item-name
+{
+    text-decoration: underline;
+}

@@ -8,95 +8,88 @@
 {% block saas_content %}
 <section>
 <div class="row">
-    <div id="search-list-container" class="col-md-10">
-        <div class="row">
-            <div class="offset-sm-4 col-sm-4">
-                <div class="form-group">
-                    <input class="form-control"
-                      type="text" placeholder="{% trans %}Search...{% endtrans %}"
-                      v-model="params.q" @input="filterList" />
+    <div class="col-lg-8 col-12">
+        <div id="search-list-container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                                <input class="form-control"
+                                  type="text" placeholder="{% trans %}Search...{% endtrans %}"
+                                  v-model="params.q" @input="filterList" />
+                        </div>
+                    </div>
+                    <table class="table table-striped mt-4" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                        <tbody id="search-results">
+                            <tr v-for="entry in items.results">
+                                <td>
+                                  <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
+                                </td>
+                                <td>[[entry.full_name]]</td>
+                                <td>[[entry.email]]</td>
+                                <td>[[entry.created_at | relativeDate]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <table class="table table-striped">
-            <tbody id="search-results"
-              v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <tr v-for="entry in items.results">
-                    <td>
-                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
-                    </td>
-                    <td>[[entry.full_name]]</td>
-                    <td>[[entry.email]]</td>
-                    <td>[[entry.created_at | relativeDate]]</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <div class="dashboard-home-title">
-            <h4>{% trans %}To do items{% endtrans %}</h4>
-        </div>
-        <p class="no-results">
-{% trans %}No items to take care of Today.{% endtrans %}
-        </p>
-    </div>
-    <div id="today-sales-container" class="col-md-4">
-        <div class="dashboard-home-title">
-            <h4>{% trans %}Today Sales{% endtrans %}<span v-show="itemsLoaded" v-cloak>: [[humanizeTotal()]]</span></h4>
-        </div>
-        <table class="table table-striped">
-            <tbody v-show="!itemsLoaded">
-                <tr class="empty-table">
-                    <td colspan="2">
-                        <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody v-show="itemsLoaded && items.results.length === 0" v-cloak>
-                <tr class="empty-table">
-                    <td colspan="2">
-                        <p class="no-results">{% trans %}No sales data yet{% endtrans %}</p>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <tr v-for="entry in items.results">
-                    <td :class="entry.is_debit ? 'text-danger' : ''">
-                        <a :href="'{{urls.organization.billing_base}}' + entry.dest_organization + '/'">[[entry.amount]]</a>
-                    </td>
-                    <td>[[entry.created_at | relativeDate]]</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-            <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+        <div id="recent-activity-container" class="mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Recently active users</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item  d-flex justify-content-between align-items-center" v-for="item in items.results"
+                        :href="'{{urls.profile_redirect}}' + item.slug + '/'" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                        <span>
+                            <span class="d-inline-block item-name">[[item.printable_name]]</span>
+                            <span class="badge" :class="{
+                                'badge-success': item.descr === 'charge paid',
+                                'badge-danger': item.descr === 'charge failed',
+                                'badge-secondary': item.descr === 'recently logged in'
+                            }">[[item.descr]]</span>
+                            </span>
+                        <small class="text-muted ml-2">[[item.created_at | relativeDate]]</small>
+                    </a>
+                </div>
+                <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
+                    <p class="card-text text-muted">
+                        No recent activity
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="user-list-container" class="col-md-4">
-        <div class="dashboard-home-title">
-            <h4>{% trans %}Recently registered{% endtrans %}</h4>
+    <div class="col-lg-4 col-12">
+        <div id="monthly-revenue-container">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">MRR</h5>
+                    <h2 class="text-center" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+                </div>
+            </div>
         </div>
-        <table class="table table-striped">
-            <tbody id="loading-registered" v-show="!itemsLoaded">
-                <tr class="empty-table">
-                    <td colspan="2">
-                        <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody id="has-registered" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <tr v-for="entry in items.results">
-                    <td>
-                        <a :href="'{{urls.accounts_base}}' + entry.slug + '/'">[[entry.slug]]</a>
-                    </td>
-                    <td>[[entry.created_at | relativeDate]]</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+        <div id="engagement-users-container">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Daily active users</h5>
+                    <h2 class="text-center" v-cloak>[[item.activeUsers]]</h2>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Engagement</h5>
+                </div>
+                <div class="card-body" v-show="itemLoaded && item.engagements.length > 0">
+                    <svg ref="engagementChart"></svg>
+                </div>
+                <div class="card-body" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
+                    <p class="card-text text-muted">
+                        No engagement data
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
