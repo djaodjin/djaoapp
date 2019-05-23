@@ -288,6 +288,7 @@ if FEATURES_REVERT_TO_DJANGO:
             'loaders': TEMPLATES_LOADERS,
             'libraries': {},
             'builtins': [
+                'django.templatetags.i18n',# XXX Format incompatible with Jinja2
                 'django_assets.templatetags.assets',
                 'multitier.templatetags.multitier_tags',
                 'deployutils.apps.django.templatetags.deployutils_extratags',
@@ -669,6 +670,8 @@ PAGES = {
         'pages/_body_top_testing_no_processor_manager.html',
         'pages/_edit_tools.html',
         'static/directory_index.html',
+        'demo/frictionless.html',
+        'demo/frictionless-iframe.html'
     ],
     'THEME_DIR_CALLABLE': theme_dir
 }
