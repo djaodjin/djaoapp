@@ -492,3 +492,91 @@ $dashboard-sidebar-color:    white;
     display: flex;
     flex-wrap: wrap;
 }
+
+/* https://css-tricks.com/accessible-simple-responsive-tables/ */
+
+/* Responsive tables
+================================== */
+.rtable
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.rtable-cell
+{
+    flex-grow: 1;
+    width: 100%;
+    padding: 10px 15px;
+    overflow: hidden;
+}
+
+.rtable-header
+{
+    font-weight: bold;
+    order: 1;
+}
+
+.is-striped
+{
+    background-image: linear-gradient(0,rgba(0,0,0,0.07),rgba(0,0,0,0.07));
+}
+
+@media all and (max-width: 600)
+{
+    .rtable--stripe .is-striped
+    {
+        background-image: none;
+    }
+
+    .rtable--stripe .rtable-cell:nth-child(even)
+    {
+        background-image: linear-gradient(0,rgba(0,0,0,0.07),rgba(0,0,0,0.07));
+    }
+}
+
+/* Table column sizing
+================================== */
+.rtable--2cols > .rtable-cell
+{
+    width: 50%;
+}
+
+.rtable--3cols > .rtable-cell
+{
+    width: 33.33%;
+}
+
+.rtable--4cols > .rtable-cell
+{
+    width: 25%;
+}
+
+.rtable--5cols > .rtable-cell
+{
+    width: 20%;
+}
+
+.rtable--6cols > .rtable-cell
+{
+    width: 16.6%;
+}
+
+@media all and (max-width: 600px)
+{
+    .rtable--collapse
+    {
+        display: block;
+    }
+
+    .rtable--collapse .rtable-cell
+    {
+        width: 100% !important;
+    }
+
+    .rtable--collapse .rtable-cell--foot
+    {
+        margin-bottom: 1em;
+    }
+}
