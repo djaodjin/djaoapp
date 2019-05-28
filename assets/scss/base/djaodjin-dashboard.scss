@@ -523,7 +523,7 @@ $dashboard-sidebar-color:    white;
     background-image: linear-gradient(0,rgba(0,0,0,0.07),rgba(0,0,0,0.07));
 }
 
-@media all and (max-width: 600)
+@include media-breakpoint-down(sm)
 {
     .rtable--stripe .is-striped
     {
@@ -563,7 +563,7 @@ $dashboard-sidebar-color:    white;
     width: 16.6%;
 }
 
-@media all and (max-width: 600px)
+@include media-breakpoint-down(sm)
 {
     .rtable--collapse
     {
