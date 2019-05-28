@@ -353,7 +353,7 @@
     "fields": {
         "app": 1,
         "rank": 1,
-        "path": "/app",
+        "path": "/app/",
         "rule_op": 1,
         "is_forward": false,
         "engaged": "app"
@@ -364,7 +364,7 @@
     "fields": {
         "app": 1,
         "rank": 2,
-        "path": "/forward/",
+        "path": "/forward/:organization/",
         "rule_op": 1,
         "is_forward": true
     },
