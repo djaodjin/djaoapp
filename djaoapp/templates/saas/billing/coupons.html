@@ -48,68 +48,23 @@
               <i :class="sortIcon('code')"></i>
             </a>
         </div>
-        <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            <a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a>
-        </div>
-        <div class="rtable-cell" :style="{order: items.results.length + 2}" data-trip data-trip-index="8"
-            data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s">
-        </div>
         <div class="rtable-cell rtable-header">{% trans %}Percent{% endtrans %}
             <a href="#" class="btn-sort"
               @click.prevent="sortBy('percent')">
               <i :class="sortIcon('percent')"></i>
             </a>
         </div>
-        <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            [[coupon.percent]]
-        </div>
-        <div :style="{order: items.results.length + 2}"></div>
         <div class="rtable-cell rtable-header">{% trans %}Expires At{% endtrans %}
             <a href="#" class="btn-sort"
               @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
             </a>
         </div>
-        <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            <div style="display:inline-block">
-                <uiv-dropdown class="form-group mb-0" append-to-body>
-                  <btn class="dropdown-toggle btn-outline-secondary btn-sm"><i class="fa fa-calendar"></i></btn>
-                  <template slot="dropdown">
-                    <li>
-                      <uiv-date-picker
-                        v-model="coupon.ends_at"
-                        @input="selected(index)"
-                        icon-control-left="fa fa-caret-left"
-                        icon-control-right="fa fa-caret-right" />
-                    </li>
-                  </template>
-                </uiv-dropdown>
-            </div>
-            <span style="display: inline-block;" class="date">
-                [[coupon.ends_at ? ($options.filters.formatDate(coupon.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
-            </span>
-        </div>
-        <div class="rtable-cell date" :style="{order: items.results.length + 2}" data-trip data-trip-index="3"
-            data-trip-content="<p>{% trans %}Set the expiration date on a coupon.{% endtrans %}</p>" data-trip-position="s"></div>
         <div class="rtable-cell rtable-header">{% trans %}Description{% endtrans %}
             <a href="#" class="btn-sort"
               @click.prevent="sortBy('description')">
               <i :class="sortIcon('description')"></i>
             </a>
-        </div>
-        <div class="rtable-cell description" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            <span @click="editDescription(index)"
-              v-show="!edit_description[index]">[[coupon.description]] <i class="fa fa-pencil"></i></span>
-            <input id="input_description" type="text" class="form-control"
-              ref="edit_description_input"
-              @keydown="saveDescription(coupon, index, $event)"
-              @blur="saveDescription(coupon, index, $event)"
-              v-model="coupon.description"
-              v-show="edit_description[index]">
-        </div>
-        <div class="rtable-cell description" :style="{order: items.results.length + 2}" data-trip data-trip-index="4"
-            data-trip-content="<p>{% trans %}Add a description for you to easily remember.{% endtrans %}</p>"
-            data-trip-position="s">
         </div>
         <div class="rtable-cell rtable-header">{% trans %}Created At{% endtrans %}
             <a href="#" class="btn-sort"
@@ -117,17 +72,63 @@
               <i :class="sortIcon('created_at')"></i>
             </a>
         </div>
-        <div class="rtable-cell date" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            [[coupon.created_at | formatDate]]
-        </div>
-
-        <div class="rtable-cell" :style="{order: items.results.length + 2}"></div>
         <div class="rtable-cell rtable-header"></div>
-        <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}" :style="{order: index + 2}" v-for="(coupon, index) in items.results">
-            <button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i>
-            </button>
-        </div>
-        <div class="rtable-cell" :style="{order: items.results.length + 2}"></div>
+        <template v-for="(coupon, index) in items.results">
+            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
+                <a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a>
+            </div>
+            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
+                [[coupon.percent]]
+            </div>
+            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
+                <div style="display:inline-block">
+                    <uiv-dropdown class="form-group mb-0" append-to-body>
+                      <btn class="dropdown-toggle btn-outline-secondary btn-sm"><i class="fa fa-calendar"></i></btn>
+                      <template slot="dropdown">
+                        <li>
+                          <uiv-date-picker
+                            v-model="coupon.ends_at"
+                            @input="selected(index)"
+                            icon-control-left="fa fa-caret-left"
+                            icon-control-right="fa fa-caret-right" />
+                        </li>
+                      </template>
+                    </uiv-dropdown>
+                </div>
+                <span style="display: inline-block;" class="date">
+                    [[coupon.ends_at ? ($options.filters.formatDate(coupon.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
+                </span>
+            </div>
+            <div class="rtable-cell description" :class="{'is-striped': (index + 2) % 2 === 0}">
+                <span @click="editDescription(index)"
+                  v-show="!edit_description[index]">[[coupon.description]] <i class="fa fa-pencil"></i></span>
+                <input id="input_description" type="text" class="form-control"
+                  ref="edit_description_input"
+                  @keydown="saveDescription(coupon, index, $event)"
+                  @blur="saveDescription(coupon, index, $event)"
+                  v-model="coupon.description"
+                  v-show="edit_description[index]">
+            </div>
+            <div class="rtable-cell date" :class="{'is-striped': (index + 2) % 2 === 0}">
+                [[coupon.created_at | formatDate]]
+            </div>
+            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
+                <button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i>
+                </button>
+            </div>
+        </template>
+            <div class="rtable-cell" data-trip data-trip-index="8"
+                data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s">
+            </div>
+            <div></div>
+            <div class="rtable-cell date" data-trip data-trip-index="3"
+                data-trip-content="<p>{% trans %}Set the expiration date on a coupon.{% endtrans %}</p>" data-trip-position="s"></div>
+            <div class="rtable-cell description" data-trip data-trip-index="4"
+                data-trip-content="<p>{% trans %}Add a description for you to easily remember.{% endtrans %}</p>"
+                data-trip-position="s">
+            </div>
+            <div class="rtable-cell"></div>
+            <div class="rtable-cell"></div>
     </div>
     <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
         <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
