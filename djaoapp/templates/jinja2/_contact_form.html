@@ -1,0 +1,16 @@
+{% extends "_form.html" %}
+
+{% block form_block %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal"
+    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {{input_field(form["full_name"], form.hide_labels)}}
+    {{input_field(form["email"], form.hide_labels)}}
+    {{select_input_field([("Other", "Other"), ("Certificate", "Certificate"), ("Log In", "Log In"), ("Payment", "Payment"), ("Refund", "Refund")], "Category", True, "Category", help_text="", value="Other", disabled=False, errors=[], hide_labels=form.hide_labels)}}
+    {{input_field(form["message"], form.hide_labels)}}
+    {% if 'captcha' in form.fields %}
+      {{input_field(form["captcha"], form.hide_labels)}}
+    {% endif %}
+    <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+</form>
+{% endblock %}

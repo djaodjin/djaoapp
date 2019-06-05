@@ -2,17 +2,17 @@
 
 {% block content %}
 <div class="container" style="margin-bottom: 50px;">
-    <div class="col-md-6 offset-md-3 col-lg-6">
-        <div class="page-header">
-            <h1 class="text-center"><i class="fa fa-envelope"></i> {% trans %}Contact us{% endtrans %}</h1>
-        </div>
-        <p>
+  <div class="col-md-6 offset-md-3 col-lg-6">
+    <div class="page-header">
+      <h1 class="text-center"><i class="fa fa-envelope"></i> {% trans %}Contact us{% endtrans %}</h1>
+    </div>
+    <p>
 {% trans %}Please leave your name and email address.{% endtrans %}
 {% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
-        </p>
-        {% if form %}
-        {% include "_form.html" %}
-        {% endif %}
-    </div>
+    </p>
+    {% if form %}
+    {% include "_contact_form.html" %}
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

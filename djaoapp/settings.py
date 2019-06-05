@@ -71,7 +71,6 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'pages',
     'multitier',
     'rules',
-    'survey',     # XXX for contact page
     'djaoapp'
 )
 
@@ -553,7 +552,7 @@ MULTITIER = {
     'ACCOUNT_URL_KWARG': 'organization',
 #    'DEFAULT_URLS': ['login'], # XXX can't do reverse in multitier middleware.
     'ROUTER_APPS': (
-        'social_django', 'signup', 'saas', 'pages', 'rules', 'survey'),
+        'social_django', 'signup', 'saas', 'pages', 'rules'),
     'ROUTER_TABLES': ('rules_app', 'rules_rules', 'rules_engagement',
         'django_admin_log', 'django_session', 'auth_user'),
     'THEMES_DIRS': [
@@ -674,11 +673,6 @@ PAGES = {
         'demo/frictionless-iframe.html'
     ],
     'THEME_DIR_CALLABLE': theme_dir
-}
-
-# Surveys (contact page)
-SURVEY = {
-    'BELONGS_MODEL': 'saas.Organization'
 }
 
 
