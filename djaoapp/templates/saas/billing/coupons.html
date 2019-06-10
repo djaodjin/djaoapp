@@ -38,100 +38,58 @@
     <div class="text-center" v-show="itemsLoaded && items.results.length === 0" v-cloak>
         <h4 class="text-center"><em>{% trans %}No Coupons{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
     </div>
-    <div id="coupon-list" class="rtable rtable--6cols rtable--collapse rtable--stripe" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <div class="rtable-cell rtable-header">{% trans %}Code{% endtrans %}
-            <a href="#" class="btn-sort"
-              data-trip data-trip-index="5"
-              data-trip-content="<p>{% trans %}Sort coupons by ascending and descending order.{% endtrans %}</p>"
-              data-trip-position="s"
-              @click.prevent="sortBy('code')">
-              <i :class="sortIcon('code')"></i>
-            </a>
-        </div>
-        <div class="rtable-cell rtable-header">{% trans %}Percent{% endtrans %}
-            <a href="#" class="btn-sort"
-              @click.prevent="sortBy('percent')">
-              <i :class="sortIcon('percent')"></i>
-            </a>
-        </div>
-        <div class="rtable-cell rtable-header">{% trans %}Expires At{% endtrans %}
-            <a href="#" class="btn-sort"
-              @click.prevent="sortBy('ends_at')">
-              <i :class="sortIcon('ends_at')"></i>
-            </a>
-        </div>
-        <div class="rtable-cell rtable-header">{% trans %}Description{% endtrans %}
-            <a href="#" class="btn-sort"
-              @click.prevent="sortBy('description')">
-              <i :class="sortIcon('description')"></i>
-            </a>
-        </div>
-        <div class="rtable-cell rtable-header">{% trans %}Created At{% endtrans %}
-            <a href="#" class="btn-sort"
-              @click.prevent="sortBy('created_at')">
-              <i :class="sortIcon('created_at')"></i>
-            </a>
-        </div>
-        <div class="rtable-cell rtable-header"></div>
-        <template v-for="(coupon, index) in items.results">
-            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
-                <a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a>
-            </div>
-            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
-                [[coupon.percent]]
-            </div>
-            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
-                <div style="display:inline-block">
-                    <uiv-dropdown class="form-group mb-0" append-to-body>
-                      <btn class="dropdown-toggle btn-outline-secondary btn-sm"><i class="fa fa-calendar"></i></btn>
-                      <template slot="dropdown">
-                        <li>
-                          <uiv-date-picker
-                            v-model="coupon.ends_at"
-                            @input="selected(index)"
-                            icon-control-left="fa fa-caret-left"
-                            icon-control-right="fa fa-caret-right" />
-                        </li>
-                      </template>
-                    </uiv-dropdown>
+    <div class="row" id="coupon-list">
+        <div class="col-12 col-lg-3 my-1" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <div class="card">
+              <div class="card-body">
+                <div style="display: flex; justify-content: space-between;">
+                    <h5 class="card-title" style="word-break: break-word;" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></h5>
+                    <button class="btn btn-danger btn-sm remove ml-1" style="align-self: flex-start;" @click="remove(index)"><i class="fa fa-remove"></i></button>
                 </div>
-                <span style="display: inline-block;" class="date">
-                    [[coupon.ends_at ? ($options.filters.formatDate(coupon.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
-                </span>
-            </div>
-            <div class="rtable-cell description" :class="{'is-striped': (index + 2) % 2 === 0}">
-                <span @click="editDescription(index)"
-                  v-show="!edit_description[index]">[[coupon.description]] <i class="fa fa-pencil"></i></span>
-                <input id="input_description" type="text" class="form-control"
-                  ref="edit_description_input"
-                  @keydown="saveDescription(coupon, index, $event)"
-                  @blur="saveDescription(coupon, index, $event)"
-                  v-model="coupon.description"
-                  v-show="edit_description[index]">
-            </div>
-            <div class="rtable-cell date" :class="{'is-striped': (index + 2) % 2 === 0}">
-                [[coupon.created_at | formatDate]]
-            </div>
-            <div class="rtable-cell" :class="{'is-striped': (index + 2) % 2 === 0}">
-                <button class="btn btn-danger btn-sm" @click="remove(index)"><i class="fa fa-trash-o"></i>
-                </button>
-            </div>
-        </template>
-            <div class="rtable-cell" data-trip data-trip-index="8"
-                data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s">
-            </div>
-            <div></div>
-            <div class="rtable-cell date" data-trip data-trip-index="3"
-                data-trip-content="<p>{% trans %}Set the expiration date on a coupon.{% endtrans %}</p>" data-trip-position="s"></div>
-            <div class="rtable-cell description" data-trip data-trip-index="4"
+              </div>
+              <div class="list-group list-group-flush">
+                <div class="list-group-item"><span class="text-muted">Percent:</span> [[coupon.percent]]%</div>
+                <uiv-dropdown class="" append-to-body>
+                  <btn class="dropdown-toggle btn-link list-group-item text-left" data-trip data-trip-index="3"
+                data-trip-content="<p>{% trans %}Set the expiration date on a coupon.{% endtrans %}</p>" data-trip-position="s"><span class="text-muted">Expires at:</span> [[coupon.ends_at ? ($options.filters.formatDate(coupon.ends_at)) : "{% trans %}Never{% endtrans %}" ]]</btn>
+                  <template slot="dropdown">
+                    <li>
+                      <uiv-date-picker
+                        v-model="coupon.ends_at"
+                        @input="selected(index)"
+                        icon-control-left="fa fa-caret-left"
+                        icon-control-right="fa fa-caret-right" />
+                    </li>
+                  </template>
+                </uiv-dropdown>
+              </div>
+              <div class="card-body">
+                <p class="card-text" data-trip data-trip-index="4"
                 data-trip-content="<p>{% trans %}Add a description for you to easily remember.{% endtrans %}</p>"
                 data-trip-position="s">
+                    <span @click="editDescription(index)"
+                      v-show="!edit_description[index]">
+                        <i class="fa fa-pencil"></i>
+                        <span class="text-muted" v-if="!coupon.description">click to edit description</span>
+                        [[coupon.description]]
+                    </span>
+                    <input id="input_description" type="text" class="form-control"
+                      ref="edit_description_input"
+                      @keydown="saveDescription(coupon, index, $event)"
+                      @blur="saveDescription(coupon, index, $event)"
+                      v-model="coupon.description"
+                      v-show="edit_description[index]">
+                </p>
+              </div>
             </div>
-            <div class="rtable-cell"></div>
-            <div class="rtable-cell"></div>
+        </div>
     </div>
-    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
+          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+        </div>
+      </div>
     </div>
 </div>
 </div>
