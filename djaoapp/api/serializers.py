@@ -12,8 +12,8 @@ from saas.api.serializers import (
     WithSubscriptionSerializer)
 from saas.api.serializers import RoleSerializer as BaseRoleSerializer
 from saas.models import get_broker, Role, ChargeItem
-from saas.utils import get_organization_model
-from signup.serializers import ActivitySerializer, UserSerializer
+from signup.serializers import (ActivitySerializer as UserActivitySerializer,
+    UserSerializer)
 from rules.api.serializers import AppSerializer as RulesAppSerializer
 
 
@@ -24,7 +24,7 @@ class OrganizationSerializer(OrganizationBaseSerializer):
 
 class ProfileSerializer(OrganizationSerializer):
 
-    activities = ActivitySerializer(many=True, read_only=True)
+    activities = UserActivitySerializer(many=True, read_only=True)
     subscriptions = WithSubscriptionSerializer(
         source='subscription_set', many=True, read_only=True)
 
@@ -112,3 +112,10 @@ class SessionSerializer(serializers.ModelSerializer):
 class AppSerializer(RulesAppSerializer):
     class Meta(RulesAppSerializer.Meta):
         fields = RulesAppSerializer.Meta.fields + ('show_edit_tools',)
+
+
+class ActivitySerializer(serializers.Serializer):
+    printable_name = serializers.CharField()
+    descr = serializers.CharField()
+    created_at = serializers.DateTimeField()
+    slug = serializers.CharField()

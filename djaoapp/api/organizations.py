@@ -4,13 +4,11 @@ from __future__ import unicode_literals
 
 import logging
 
-from rest_framework import filters
 from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
     OrganizationListAPIView as OrganizationListBaseAPIView)
 from saas.api.serializers import OrganizationCreateSerializer
 from saas.docs import swagger_auto_schema
-from saas.utils import get_organization_model
 
 from .serializers import (OrganizationSerializer, ProfileSerializer)
 

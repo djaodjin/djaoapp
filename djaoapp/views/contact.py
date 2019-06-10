@@ -9,7 +9,6 @@ from captcha.fields import ReCaptchaField
 from django import forms, http
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.db.utils import ProgrammingError
 from django.shortcuts import get_object_or_404
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
