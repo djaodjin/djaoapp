@@ -3,9 +3,19 @@
 from __future__ import unicode_literals
 
 import logging
+from operator import itemgetter
 
+from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+
+from saas.models import Charge
+from saas.managers.metrics import day_periods
 from saas.utils import get_role_model
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
+
+from .serializers import ActivitySerializer
 
 LOGGER = logging.getLogger(__name__)
 
@@ -40,3 +50,34 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         if instance.user:
             get_role_model().objects.filter(user=instance.user).delete()
         super(UserProfileAPIView, self).perform_destroy(instance)
+
+
+class RecentActivityAPIView(GenericAPIView):
+    serializer_class = ActivitySerializer
+
+    def get(self, request, *args, **kwargs):
+        start_at = day_periods()[0]
+        users = get_user_model().objects.filter(
+            last_login__gt=start_at).order_by('-last_login')[:5]
+        charges = Charge.objects.filter(
+            created_at__gt=start_at).order_by('-created_at')[:5]
+        data = {}
+        for user in users:
+            data[user.username] = {'printable_name': user.get_full_name(),
+                'descr': _('recently logged in'), 'slug': user.username,
+                'created_at': user.last_login}
+        for charge in charges:
+            if charge.state == charge.DONE:
+                descr = _('charge paid')
+            elif charge.state == charge.FAILED:
+                descr = _('charge failed')
+            else:
+                continue
+            data[charge.customer.slug] = {'printable_name':
+                charge.customer.printable_name, 'descr': descr,
+                'created_at': charge.created_at,
+                # TODO 404 for some of the slugs
+                'slug': charge.customer.slug}
+        data = sorted(data.values(), key=itemgetter('printable_name'))
+        return Response({'results':
+            self.get_serializer(data, many=True).data})

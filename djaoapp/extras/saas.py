@@ -20,6 +20,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
         context.update({'site': get_current_site()})
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
+            'recent_activity': reverse('api_recent_activity'),
         })
         # `ExtraMixin.get_context_data` is called before
         # `OrganizationMixin.get_context_data` had an opportunity to

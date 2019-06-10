@@ -9,14 +9,12 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
-from saas.mixins import ProviderMixin
 from saas.models import Organization, get_broker
 from signup.models import Notification
 from signup.views.users import (
     UserProfileView as UserProfileBaseView,
     UserNotificationsView as UserNotificationsBaseView,
-    PasswordChangeView as UserPasswordUpdateBaseView,
-    UserPublicKeyUpdateView as UserPublicKeyUpdateBaseView)
+    PasswordChangeView as UserPasswordUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 from saas.utils import update_context_urls
 
