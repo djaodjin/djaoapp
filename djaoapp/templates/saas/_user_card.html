@@ -1,29 +1,34 @@
 <div :id="item.user.slug" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
-  <div class="row no-gutters">
+  <div>
+    <button class="btn btn-danger btn-sm remove" style="float: right; margin:0.2em 0.25em -2.42em 0;"
+            data-trip data-trip-index="3"
+            data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
+            data-trip-position="s"
+            @click="remove(index)"><i class="fa fa-remove"></i></button>
+  </div>
+  <div class="card-body">
+    <div class="row">
       <div class="col-3">
-          <div class="user-card-image">
-            <a :href="'/users/' + item.user.slug + '/'"><img v-bind:src="item.user.picture ? item.user.picture : '{{'/static/img/default-user.png'|djasset}}'" class="card-img-top" alt=""></a>
+          <div>
+            <a :href="'/users/' + item.user.slug + '/'"><img class="card-img-top rounded-circle" v-bind:src="item.user.picture ? item.user.picture : '{{'/static/img/default-user.png'|djasset}}'" alt=""></a>
           </div>
       </div>
       <div class="col-9">
-          <div class="card-body">
-            <button class="btn btn-danger btn-sm remove" style="float: right;"
-                data-trip data-trip-index="3"
-                data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
-                data-trip-position="s"
-                @click="remove(index)"><i class="fa fa-remove"></i></button>
-            <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.printable_name]]</a></h5>
-            <p class="card-text">[[item.user.email]]</p>
-            <h6 class="card-subtitle mb-2 text-muted">
-                [[item.grant_key ? "{% trans %}invited{% endtrans %}" : (item.request_key ? "requested" : "{% trans %}active{% endtrans %}")]]
-                <span v-if="item.grant_key || item.request_key">[[item.created_at | formatDate]]</span>
-            </h6>
-            <button class="btn btn-secondary btn-sm"
-                @click="save(item.user)"
-                v-if="item.accept_request_api_url">{% trans %}Grant{% endtrans %}</button>
-            <button class="btn btn-secondary btn-sm"
-                v-if="item.grant_key" @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
-          </div>
+        <h5 class="card-title"><a :href="'/users/' + item.user.slug + '/'">[[item.user.printable_name]]</a></h5>
+        <h6 class="card-subtitle">[[item.user.email]]</h6>
+        <div class="text-left" v-if="item.accept_request_api_url">
+          <hr style="margin-top:0.25rem;margin-bottom:0.5rem" />
+          <small class="text-muted">{% trans %}requested{% endtrans %} [[item.created_at | formatDate]]</small>
+          <button class="btn btn-secondary btn-sm" style="float: right;"
+                  @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
+        </div>
+        <div class="text-left" v-if="item.grant_key">
+          <hr  style="margin-top:0.25rem;margin-bottom:0.5rem;" />
+          <small class="text-muted">{% trans %}invited{% endtrans %} [[item.created_at | formatDate]]</small>
+          <button class="btn btn-secondary btn-sm" style="float: right;"
+                  @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
+        </div>
       </div>
+    </div>
   </div>
 </div>

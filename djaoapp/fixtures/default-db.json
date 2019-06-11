@@ -353,7 +353,7 @@
     "fields": {
         "app": 1,
         "rank": 1,
-        "path": "/app",
+        "path": "/app/",
         "rule_op": 1,
         "is_forward": false,
         "engaged": "app"
@@ -364,7 +364,7 @@
     "fields": {
         "app": 1,
         "rank": 2,
-        "path": "/forward/",
+        "path": "/forward/:organization/",
         "rule_op": 1,
         "is_forward": true
     },
@@ -907,7 +907,7 @@
       "date_joined": "2016-03-18T00:00:00-09:00",
       "email": "melissa@localhost.localdomain",
       "first_name": "Melissa",
-      "last_name": "NoOrg",
+      "last_name": "Xia NoOrg",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,

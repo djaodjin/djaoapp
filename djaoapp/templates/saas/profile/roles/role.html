@@ -12,42 +12,32 @@
 <div id="user-relation-list-container">
   <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
     <form id="add-user" class="form-inline mb-4" @submit.prevent="submit">
+      {# The following div is required for the typeahead dropbox to show under the input field. #}
       <div style="width:100%;">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-          <div class="form-group"
-               data-trip data-trip-index="2"
-               data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
-               data-trip-position="s">
-              <input type="text" class="form-control" id="userTypeahead"
-                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                     autocomplete="off">
-              <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
-              </div>
+        <div class="input-group"
+           data-trip data-trip-index="2"
+           data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
+           data-trip-position="s">
+          <input type="text" class="form-control" id="userTypeahead"
+                 name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
+                 autocomplete="off">
+          <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
           </div>
-          <uiv-typeahead
-               v-model="itemSelected"
-               target="#userTypeahead"
-               :async-function="getUsers"
-               item-key="slug"
-               :open-on-focus="false"
-               class="typeahead-dropdown"
-               />
+        </div>
+        <uiv-typeahead
+           v-model="itemSelected"
+           target="#userTypeahead"
+           :async-function="getUsers"
+           item-key="slug"
+           :open-on-focus="false"
+           class="typeahead-dropdown"
+           />
       </div>
     </form>
   </user-typeahead>
   <hr />
-  <div class="row">
-      <div class="col-12">
-          <div class="input-group input-group-sm mb-3">
-              <div class="input-group-prepend">
-                  <span class="input-group-text" id="search-inp">{% trans %}Filter{% endtrans %}</span>
-              </div>
-              <input class="form-control" type="text" id="search-inp"
-                     v-model="params.q" @input="filterList" />
-          </div>
-      </div>
-  </div>
   <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
       <div class="col-12">
         <div class="btn-group" role="group" aria-label="{% trans %}Group of buttons to show or hide invited and requested roles{% endtrans %}" v-cloak>
@@ -58,6 +48,17 @@
             <i class="fa mr-2" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Show Roles Requested{% endtrans %} <span class="badge" :class="showRequested ? 'badge-light' : 'badge-primary'">[[items.requested_count]]</span>
           </button>
         </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+          <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text" id="search-inp">{% trans %}Filter{% endtrans %}</span>
+              </div>
+              <input class="form-control" type="text" id="search-inp"
+                     v-model="params.q" @input="filterList" />
+          </div>
       </div>
   </div>
   <div class="row">

@@ -71,7 +71,6 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'pages',
     'multitier',
     'rules',
-    'survey',     # XXX for contact page
     'djaoapp'
 )
 
@@ -288,6 +287,7 @@ if FEATURES_REVERT_TO_DJANGO:
             'loaders': TEMPLATES_LOADERS,
             'libraries': {},
             'builtins': [
+                'django.templatetags.i18n',# XXX Format incompatible with Jinja2
                 'django_assets.templatetags.assets',
                 'multitier.templatetags.multitier_tags',
                 'deployutils.apps.django.templatetags.deployutils_extratags',
@@ -552,7 +552,7 @@ MULTITIER = {
     'ACCOUNT_URL_KWARG': 'organization',
 #    'DEFAULT_URLS': ['login'], # XXX can't do reverse in multitier middleware.
     'ROUTER_APPS': (
-        'social_django', 'signup', 'saas', 'pages', 'rules', 'survey'),
+        'social_django', 'signup', 'saas', 'pages', 'rules'),
     'ROUTER_TABLES': ('rules_app', 'rules_rules', 'rules_engagement',
         'django_admin_log', 'django_session', 'auth_user'),
     'THEMES_DIRS': [
@@ -669,13 +669,10 @@ PAGES = {
         'pages/_body_top_testing_no_processor_manager.html',
         'pages/_edit_tools.html',
         'static/directory_index.html',
+        'demo/frictionless.html',
+        'demo/frictionless-iframe.html'
     ],
     'THEME_DIR_CALLABLE': theme_dir
-}
-
-# Surveys (contact page)
-SURVEY = {
-    'BELONGS_MODEL': 'saas.Organization'
 }
 
 

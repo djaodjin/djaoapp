@@ -263,9 +263,6 @@
           <dep name="python36-cffi">
             <lib>.*/_cffi_backend.cpython-36m-x86_64-linux-gnu.so</lib>
           </dep>
-          <dep name="tinycss" target="python">
-            <lib>.*/(tinycss)/__init__.py</lib>
-          </dep>
         </alternate>
         <alternate name="Darwin">
           <dep name="WeasyPrint" target="python">
@@ -279,10 +276,6 @@
           </dep>
           <dep name="py36-cffi">
             <lib>.*/_cffi_backend.*.so</lib>
-          </dep>
-          <dep name="tinycss" target="python">
-            <!-- XXX impossible to find tinycss in MacPorts -->
-            <lib>.*/(tinycss)/__init__.py</lib>
           </dep>
         </alternate>
         <alternate name="Fedora">
@@ -302,9 +295,6 @@
           </dep>
           <dep name="python3-cffi">
             <lib>.*/_cffi_backend.*.so</lib>
-          </dep>
-          <dep name="python3-tinycss">
-            <lib>.*/(tinycss)/__init__.py</lib>
           </dep>
         </alternate>
       </alternates>
@@ -522,7 +512,7 @@ Flexible framework to validate access to URIs and forward HTTP requests
       <email>support@djaodjin.com</email>
     </maintainer>
     <repository>
-      <dep name="djangorestframework" target="python" includes="3.7.0">
+      <dep name="djangorestframework" target="python" includes="3.8.2">
         <lib>.*/(rest_framework)/__init__.py</lib>
       </dep>
       <dep name="django-extra-views" target="python">

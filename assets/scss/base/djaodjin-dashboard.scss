@@ -224,7 +224,7 @@ $dashboard-sidebar-color:    white;
 
 @include media-breakpoint-down(xs) {
     .dashboard-content {
-      margin-top: $navbar-height + 10px;
+      margin-top: $navbar-height;
     }
 
     .dashboard-content > header {
@@ -319,12 +319,13 @@ $dashboard-sidebar-color:    white;
 {
     vertical-align: middle;
     line-height: 1;
-    padding: 5px 10px;
+    padding: 9px 10px;
     border-radius: 3px;
-    border: 1px solid #ccc;
-    color: #666;
     z-index: 1000;
-    background: #fff;
+    border-right: 1px solid $dashboard-sidebar-color;
+    border-bottom: 1px solid $dashboard-sidebar-color;
+    color: $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
 }
 
 .typeahead-dropdown.open>.dropdown-menu
@@ -459,11 +460,6 @@ $dashboard-sidebar-color:    white;
     background-color: #ddd;
 }
 
-.user-card-image
-{
-    margin: 20px 0 20px 20px;
-}
-
 .user-password-modal .invalid-feedback
 {
     display: block;
@@ -491,4 +487,21 @@ $dashboard-sidebar-color:    white;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+}
+
+#recent-activity-container .item-name
+{
+    /* TODO need to divide into three columns (a grid or smth similar) */
+    width: 200px;
+    color: #333;
+}
+
+#recent-activity-container a:hover
+{
+    text-decoration: none;
+}
+
+#recent-activity-container a:hover .item-name
+{
+    text-decoration: underline;
 }
