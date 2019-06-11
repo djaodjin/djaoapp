@@ -34,17 +34,22 @@ if settings.DEBUG:
     import debug_toolbar
 
     # admin doc and panel
-    admin.autodiscover()
     try:
-        urlpatterns = [
-            url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-            url(r'^admin/', admin.site.urls),
-        ]
-    except ImproperlyConfigured: # Django <= 1.9
-        urlpatterns = [
-            url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-            url(r'^admin/', include(admin.site.urls)),
-        ]
+        # We cannot include admin panels because a `check` for DjangoTemplates
+        # will fail when we are using Jinja2 templates.
+        admin.autodiscover()
+        try:
+            urlpatterns = [
+                url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                url(r'^admin/', admin.site.urls),
+            ]
+        except ImproperlyConfigured: # Django <= 1.9
+            urlpatterns = [
+                url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                url(r'^admin/', include(admin.site.urls)),
+            ]
+    except LookupError:
+        pass
 
     urlpatterns = staticfiles_urlpatterns() \
         + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

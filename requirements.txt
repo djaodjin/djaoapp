@@ -34,7 +34,7 @@ yuicompressor==2.4.8
 jsmin==2.2.2
 django-extensions==2.1.4
 django-debug-panel==0.8.3
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11 # XXX does not support Django 2.2
 
 # development
 drf-yasg==1.8.0

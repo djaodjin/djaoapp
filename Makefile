@@ -33,7 +33,6 @@ DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"'
 else
 DB_FILENAME   := $(LOCALSTATEDIR)/db/djaodjin.sqlite
 endif
-DB_TEST_FILENAME := $(shell grep ^TEST_DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
 
 ifeq ($(dir $(DB_FILENAME)),./)
 MULTITIER_DB_FILENAME := cowork
@@ -75,7 +74,7 @@ require: require-pip require-resources initdb
 
 # We add a `load_test_transactions` because the command will set the current
 # site and thus need the rules.App table.
-initdb: install-default-themes initdb-testing initdb-cowork
+initdb: install-default-themes initdb-cowork
 	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
 	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 	cd $(srcDir) && \
@@ -86,14 +85,6 @@ initdb: install-default-themes initdb-testing initdb-cowork
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
 	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set show_edit_tools=1;"
-
-
-initdb-testing: install-conf
-	-[ -f $(DB_TEST_FILENAME) ] && rm -f $(DB_TEST_FILENAME)
-	cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --database testing --noinput
-	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_TEST_FILENAME)
-	cd $(srcDir) && \
-		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database testing djaoapp/fixtures/testing-db.json
 
 
 initdb-cowork: install-conf

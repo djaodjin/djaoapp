@@ -2,6 +2,7 @@
 # see LICENSE
 
 from django import template
+from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
@@ -13,7 +14,7 @@ from saas.templatetags.saas_tags import attached_organization
 from django.utils.six.moves.urllib.parse import urljoin
 
 from ..compat import reverse
-from ..thread_locals import is_streetside
+from ..thread_locals import is_domain_site
 
 
 register = template.Library()
@@ -49,9 +50,9 @@ def pluralize(text):
 
 @register.filter()
 def site_printable_name(request):
-    if hasattr(request, 'site') and is_streetside(request.site):
+    if hasattr(request, 'site') and is_domain_site(request.site):
         return request.site.printable_name
-    return "DjaoDjin"
+    return settings.APP_NAME
 
 
 @register.filter()

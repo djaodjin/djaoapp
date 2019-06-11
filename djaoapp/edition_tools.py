@@ -24,7 +24,7 @@ from saas.models import Organization, get_broker
 from saas.utils import is_broker
 
 from .compat import csrf, is_authenticated, reverse
-from .thread_locals import is_streetside, is_testing
+from .thread_locals import is_domain_site, is_testing
 
 
 LOGGER = logging.getLogger(__name__)
@@ -130,12 +130,9 @@ def inject_edition_tools(response, request, context=None,
             edit_urls.update({'media_upload': reverse('api_credentials')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-        # XXX ``is_streetside(site)`` shouldn't disable all edit functionality.
-        # Just the edition of templates.
-        # XXX Temporarily disable edits of pages on testing because
-        # djaojdin-pages does not handle multiple slug on different accounts
-        # in same db.
-        enable_code_editor = (is_streetside(site) and not is_testing(site))
+        # XXX sites which are hosted on a same domain shouldn't disable
+        # all edit functionality, just the edition of base templates.
+        enable_code_editor = is_domain_site(site)
         if enable_code_editor:
             dj_urls = djaoapp_urls(
                 request, account=provider, base=site.as_base())

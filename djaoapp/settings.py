@@ -4,6 +4,7 @@
 # Django settings for Djaoapp project.
 import logging, os.path, sys
 
+from django import VERSION as DJANGO_VERSION
 from django.contrib.messages import constants as messages
 
 from deployutils.configs import load_config, update_settings
@@ -36,12 +37,22 @@ else:
     RULES_APPS = tuple([])
 
 if DEBUG:
-    DEBUG_APPS = RULES_APPS + (
-        'django.contrib.admin',
-        'django.contrib.admindocs',
-        'debug_toolbar',
-        'debug_panel',
-        'django_extensions',
+    if (not FEATURES_REVERT_TO_DJANGO and
+        DJANGO_VERSION[0] == 2 and DJANGO_VERSION[1] == 2):
+        # We cannot include admin panels because a `check` for DjangoTemplates
+        # will fail when we are using Jinja2 templates.
+        DEBUG_APPS = RULES_APPS + (
+            'debug_toolbar',
+            'debug_panel',
+            'django_extensions',
+        )
+    else:
+        DEBUG_APPS = RULES_APPS + (
+            'django.contrib.admin',
+            'django.contrib.admindocs',
+            'debug_toolbar',
+            'debug_panel',
+            'django_extensions',
         )
 else:
     DEBUG_APPS = RULES_APPS
@@ -105,8 +116,6 @@ WSGI_APPLICATION = 'djaoapp.wsgi.application'
 EMAIL_SUBJECT_PREFIX = '[%s] ' % APP_NAME
 EMAILER_BACKEND = 'extended_templates.backends.TemplateEmailBackend'
 
-DB_TEST = 'testing'
-
 DATABASES = {
     'default': {
         'ENGINE':DB_ENGINE,
@@ -119,17 +128,6 @@ DATABASES = {
             'NAME': None,
         }
     },
-    DB_TEST: {
-        'ENGINE':DB_ENGINE,
-        'NAME': TEST_DB_NAME,
-        'USER': DB_USER,                 # Not used with sqlite3.
-        'PASSWORD': DB_PASSWORD,         # Not used with sqlite3.
-        'HOST': DB_HOST,                 # Not used with sqlite3.
-        'PORT': DB_PORT,                 # Not used with sqlite3.
-        'TEST': {
-            'NAME': None,
-        }
-    }
 }
 
 MESSAGE_TAGS = {

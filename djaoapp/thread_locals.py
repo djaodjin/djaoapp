@@ -19,19 +19,13 @@ from .compat import reverse
 
 LOGGER = logging.getLogger(__name__)
 
-
-def is_streetside(site):
-    if site.tag:
-        return 'streetside' in site.tag
-    return False
-
+def is_domain_site(site):
+    return 'streetside' in site.tag # XXX should be not site.is_path_prefix
+                                    # but we are using is_path_prefix for local
+                                    # dev.
 
 def is_testing(site):
-    if site.slug in [settings.APP_NAME, '%s-master' % settings.APP_NAME]:
-        return False
-    if site.db_name == settings.DB_TEST:
-        return True
-    return False
+    return 'testing' in site.tag
 
 
 def dynamic_processor_keys(provider):#pylint:disable=unused-argument
@@ -44,7 +38,7 @@ def dynamic_processor_keys(provider):#pylint:disable=unused-argument
             'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
         }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
     site = get_current_site()
-    if is_streetside(site):
+    if not is_domain_site(site):
         processor_backend.mode = processor_backend.REMOTE
     if is_testing(site):
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
