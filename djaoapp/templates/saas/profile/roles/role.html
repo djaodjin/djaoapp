@@ -72,16 +72,10 @@
       </div>
   </div>
   <div class="row">
-    <div class="col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+    <div class="col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak infinite-wrapper>
         {% include "saas/_user_card.html" %}
     </div>
-  </div>
-  <div class="row">
-      <div class="col-12">
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-        </div>
-      </div>
+    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
   </div>
 
   <!-- modal dialog for adding a userRelation
