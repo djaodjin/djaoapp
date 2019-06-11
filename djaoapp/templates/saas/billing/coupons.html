@@ -5,28 +5,34 @@
 {% block saas_content %}
 <div id="coupon-list-container">
 <div data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
-    <form class="form-inline mb-4" @submit.prevent="save">
-        <div class="form-group my-3">
-            <input type="text" class="form-control form-control-sm"
-                   placeholder="{% trans %}Code{% endtrans %}"
-                   v-model="newCoupon.code">
+    <div class="row mt-3">
+        <div class="col-lg-8">
+            <form class="form-inline" @submit.prevent="save">
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control form-control-sm"
+                           placeholder="{% trans %}Code{% endtrans %}"
+                           v-model="newCoupon.code">
+                </div>
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control form-control-sm"
+                          placeholder="{% trans %}Percent{% endtrans %}"
+                          v-model="newCoupon.percent">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm"
+                        data-trip data-trip-index="2"
+                        data-trip-content="<p>{% trans %}Add a coupon by entering a code, percentage and click 'Create Coupon'.{% endtrans %}</p>"
+                        data-trip-position="s">{% trans %}Create Coupon{% endtrans %}</button>
+            </form>
         </div>
-        <div class="form-group my-3">
-            <input type="text" class="form-control form-control-sm"
-                  placeholder="{% trans %}Percent{% endtrans %}"
-                  v-model="newCoupon.percent">
+        <div class="col-lg-4">
+        <div class="btn-actions text-right">
+            <a id="download" class="btn btn-secondary btn-sm" role="button"
+               :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
+               data-trip data-trip-index="7" data-trip-content="<p>{% trans %}Download the list of coupons if necessary.{% endtrans %}</p>" data-trip-position="s">
+                <i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}
+            </a>
         </div>
-        <button type="submit" class="btn btn-primary btn-sm"
-                data-trip data-trip-index="2"
-                data-trip-content="<p>{% trans %}Add a coupon by entering a code, percentage and click 'Create Coupon'.{% endtrans %}</p>"
-                data-trip-position="s">{% trans %}Create Coupon{% endtrans %}</button>
-    </form>
-    <div class="btn-actions text-right">
-        <a id="download" class="btn btn-secondary btn-sm" role="button"
-           :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
-           data-trip data-trip-index="7" data-trip-content="<p>{% trans %}Download the list of coupons if necessary.{% endtrans %}</p>" data-trip-position="s">
-            <i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}
-        </a>
+        </div>
     </div>
     <hr />
     <div class="row my-3">
@@ -42,9 +48,9 @@
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-1" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <div class="card">
               <div class="card-body">
-                <div style="display: flex; justify-content: space-between;">
-                    <h5 class="card-title" style="word-break: break-word;" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></h5>
-                    <button class="btn btn-danger btn-sm remove ml-1" style="align-self: flex-start;" @click="remove(index)"><i class="fa fa-remove"></i></button>
+                <div class="coupon-title">
+                    <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></h5>
+                    <button class="btn btn-danger btn-sm remove ml-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
                 </div>
               </div>
               <div class="list-group list-group-flush">
