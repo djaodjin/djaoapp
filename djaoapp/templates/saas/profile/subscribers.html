@@ -97,7 +97,7 @@
             <div class="table-responsive">
                 <table class="table table-sm table-striped">
     <thead>
-      <tr v-show="params.o === 'organization'">
+      <tr v-show="sortDir('organization')">
         <th>{% trans %}Subscriber{% endtrans %}
             <a href="#" @click.prevent="sortBy('organization')">
               <i :class="sortIcon('organization')"></i>
@@ -120,7 +120,7 @@
         </th>
         <th>{% trans %}Description{% endtrans %}</th>
       </tr>
-      <tr v-show="params.o === 'plan'">
+      <tr v-show="sortDir('plan')">
         <th>{% trans %}Plan{% endtrans %}
             <a href="#" @click.prevent="sortBy('plan')">
               <i :class="sortIcon('plan')"></i>
@@ -143,7 +143,7 @@
         </th>
         <th>{% trans %}Description{% endtrans %}</th>
       </tr>
-      <tr v-show="params.o === 'created_at'">
+      <tr v-show="sortDir('created_at')">
         <th>{% trans %}Since{% endtrans %}
             <a href="#" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
@@ -166,7 +166,7 @@
         </th>
         <th>{% trans %}Description{% endtrans %}</th>
       </tr>
-      <tr v-show="params.o === 'ends_at'">
+      <tr v-show="sortDir('ends_at')">
         <th>{% trans %}Ends At{% endtrans %}
             <a href="#" @click.prevent="sortBy('ends_at')">
               <i :class="sortIcon('ends_at')"></i>
@@ -207,7 +207,7 @@
       </tr>
     </tbody>
     <tbody class="has-results" v-for="(group, key) in groupBy(items.results, 'organization.printable_name')"
-           v-show="params.o === 'organization' && itemsLoaded && items.results.length > 0" v-cloak>
+           v-show="sortDir('organization') && itemsLoaded && items.results.length > 0" v-cloak>
       <tr v-for="entry in [group[0]]">
         <td colspan="5">
           <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
@@ -232,7 +232,7 @@
     </tbody>
     <tbody class="has-results"
            v-for="(group, key) in groupBy(items.results, 'plan.title')"
-           v-show="params.o === 'plan' && itemsLoaded && items.results.length > 0" v-cloak>
+           v-show="sortDir('plan') && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.plan.title]]
@@ -262,7 +262,7 @@
     </tbody>
     <tbody class="has-results"
            v-for="(group, key) in groupBy(items.results, 'created_at')"
-           v-show="params.o === 'created_at' && itemsLoaded && items.results.length > 0" v-cloak>
+           v-show="sortDir('created_at') && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.created_at | formatDate]]
@@ -291,7 +291,7 @@
     </tbody>
     <tbody class="has-results"
            v-for="(group, key) in groupBy(items.results, 'ends_at')"
-           v-show="params.o === 'ends_at' && itemsLoaded && items.results.length > 0" v-cloak>
+           v-show="sortDir('ends_at') && itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="entry in [group[0]]">
             <td colspan="5">
                 [[entry.ends_at | formatDate]]

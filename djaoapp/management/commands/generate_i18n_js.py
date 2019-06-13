@@ -24,7 +24,7 @@
 
 """Command to generate JavaScript file used for i18n on the frontend"""
 
-import json, os
+import json, os, six
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -161,6 +161,8 @@ class Command(BaseCommand):
                     if _catalog:
                         catalog[code] = _catalog
                     if _plural:
+                        if six.PY2:
+                            _plural = _plural.__str__()
                         plural[code] = _plural
                 template = Engine().from_string(js_catalog_template)
                 context = {
