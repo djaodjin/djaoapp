@@ -14,14 +14,12 @@
         <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
           <h4><em>{% trans %}No contacts{% endtrans %}</em></h4>
         </div>
-        <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak infinite-wrapper>
           <div v-for="entry in items.results">
             <p><a :href="'{{urls.contacts}}' + entry.slug + '/'">[[entry.full_name]] - [[entry.email]]</a></p>
           </div>
         </div>
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-        </div>
+        <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
       </div>
       <div class="col-sm-6">
         <form id="create-contact" class="form" @submit.prevent="createContact">

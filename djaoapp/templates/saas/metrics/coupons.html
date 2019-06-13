@@ -14,60 +14,59 @@
         {% include "saas/_filter.html" %}
     </div>
     <p v-show="itemsLoaded" v-cloak>
-{% trans coupon=coupon.code %}{{coupon}} was used{% endtrans %} [[totalItems]] [[totalItems > 0 ? "{% trans %}times{% endtrans %}" : "{% trans %}time{% endtrans %}"]].
-        </p>
-        <table class="table table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>{% trans %}User{% endtrans %}
-                        <a href="#" class="btn-link btn-sort"
-                          data-trip data-trip-index="5"
-                          data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
-                          data-trip-position="s"
-                          @click.prevent="sortBy('slug')">
-                          <i :class="sortIcon('slug')"></i>
-                        </a>
-                    </th>
-                    <th>{% trans %}Plan{% endtrans %}
-                        <a href="#" class="btn-link btn-sort"
-                          data-trip data-trip-index="5"
-                          data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
-                          data-trip-position="s"
-                          @click.prevent="sortBy('plan')">
-                          <i :class="sortIcon('plan')"></i>
-                        </a>
-                    </th>
-                    <th>{% trans %}Used at{% endtrans %}
-                        <a href="#" class="btn-link btn-sort"
-                          data-trip data-trip-index="5"
-                          data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
-                          data-trip-position="s"
-                          @click.prevent="sortBy('created_at')">
-                            <i :class="sortIcon('created_at')"></i>
-                        </a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-show="!itemsLoaded">
-                    <td colspan="3">
-                        <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-                    </td>
-                </tr>
-                <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
-                    <td colspan="3">
-                        <p class="text-center my-2"><em>{% trans coupon=coupon.code %}No use of {{coupon}} coupon{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></p>
-                    </td>
-                </tr>
-                <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                    <td><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
-                    <td>[[item.plan]]</td>
-                    <td>[[item.created_at | formatDate ]]</td>
-                </tr>
-        </table>
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-            <b-pagination align="center" size="md" :total-rows="totalItems" :per-page="itemsPerPage" v-model="params.page" @input="get">
-        </div>
-    </div>
-</section>
+        {% trans coupon=coupon.code %}{{coupon}} was used{% endtrans %} [[totalItems]] [[totalItems > 0 ? "{% trans %}times{% endtrans %}" : "{% trans %}time{% endtrans %}"]].
+    </p>
+    <table class="table table-sm table-striped" infinite-wrapper>
+        <thead>
+            <tr>
+                <th>{% trans %}User{% endtrans %}
+                    <a href="#" class="btn-link btn-sort"
+                      data-trip data-trip-index="5"
+                      data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
+                      data-trip-position="s"
+                      @click.prevent="sortBy('slug')">
+                      <i :class="sortIcon('slug')"></i>
+                    </a>
+                </th>
+                <th>{% trans %}Plan{% endtrans %}
+                    <a href="#" class="btn-link btn-sort"
+                      data-trip data-trip-index="5"
+                      data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
+                      data-trip-position="s"
+                      @click.prevent="sortBy('plan')">
+                      <i :class="sortIcon('plan')"></i>
+                    </a>
+                </th>
+                <th>{% trans %}Used at{% endtrans %}
+                    <a href="#" class="btn-link btn-sort"
+                      data-trip data-trip-index="5"
+                      data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
+                      data-trip-position="s"
+                      @click.prevent="sortBy('created_at')">
+                        <i :class="sortIcon('created_at')"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-show="!itemsLoaded">
+                <td colspan="3">
+                    <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                </td>
+            </tr>
+            <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>
+                <td colspan="3">
+                    <p class="text-center my-2"><em>{% trans coupon=coupon.code %}No use of {{coupon}} coupon{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></p>
+                </td>
+            </tr>
+            <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                <td><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
+                <td>[[item.plan]]</td>
+                <td>[[item.created_at | formatDate ]]</td>
+            </tr>
+        </tbody>
+    </table>
+    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+  </div>
+</div>
 {% endblock %}

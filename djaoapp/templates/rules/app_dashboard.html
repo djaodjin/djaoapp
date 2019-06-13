@@ -16,7 +16,7 @@
     <div id="rules-table" class="col-md-12">
       <h3>{% trans %}Access Rules{% endtrans %}</h3>
       <div class="table-responsive">
-      <table class="table table-sm table-striped" data-trip data-trip-index="3" data-trip-content="{% trans %}Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself.{% endtrans %}" data-trip-position="s">
+      <table class="table table-sm table-striped" data-trip data-trip-index="3" data-trip-content="{% trans %}Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself.{% endtrans %}" data-trip-position="s" infinite-wrapper>
         <thead>
           <tr>
             <th>{% trans %}Rank{% endtrans %}</th>
@@ -75,9 +75,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-      </div>
+      <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
       </div>
       <!-- modal dialog for Adding a rule -->
       <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
