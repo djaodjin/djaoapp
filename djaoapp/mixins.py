@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import logging
 
+from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
@@ -69,7 +70,7 @@ class DjaoAppMixin(object):
                     organization=self.organization).exists():
                 context.update({'next_url': reverse('saas_cart_plan_list')})
         # URLs for user
-        if self.request.user.is_authenticated():
+        if is_authenticated(self.request):
             urls = {'user': {
                 'logout': reverse('logout'),
                 'profile': reverse('users_profile', args=(self.request.user,)),

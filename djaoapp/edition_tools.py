@@ -8,6 +8,7 @@ import logging
 from collections import namedtuple
 
 from bs4 import BeautifulSoup
+from deployutils.apps.django.compat import is_authenticated
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
@@ -23,7 +24,7 @@ from saas.decorators import _valid_manager
 from saas.models import Organization, get_broker
 from saas.utils import is_broker
 
-from .compat import csrf, is_authenticated, reverse
+from .compat import csrf, reverse
 from .thread_locals import is_domain_site, is_testing
 
 

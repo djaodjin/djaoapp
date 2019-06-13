@@ -1,6 +1,7 @@
 # Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
+from deployutils.apps.django.compat import is_authenticated
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -34,7 +35,7 @@ from ..views.redirects import OrganizationRedirectView
 
 def is_anonymous(func, next_url):
     def wrapped(request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if is_authenticated(request):
             return HttpResponseRedirect(next_url)
         return func(request, *args, **kwargs)
     return wrapped

@@ -1,6 +1,8 @@
 # Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
+from deployutils.apps.django.compat import (
+    is_authenticated as base_is_authenticated)
 from django import template
 from django.conf import settings
 from django.contrib.messages.api import get_messages
@@ -70,7 +72,7 @@ def is_active(path, urls, *args, **kwargs): #pylint: disable=unused-argument
 
 @register.filter()
 def is_authenticated(request):
-    return hasattr(request, 'user') and request.user.is_authenticated()
+    return base_is_authenticated(request)
 
 
 @register.filter()
@@ -190,7 +192,7 @@ def url_pricing(request): #pylint:disable=unused-argument
 
 @register.filter()
 def url_profile(request): #pylint:disable=unused-argument
-    if hasattr(request, 'user') and request.user.is_authenticated():
+    if base_is_authenticated(request):
         organization = attached_organization(request.user)
         if organization:
             return reverse('saas_organization_profile', args=(organization,))

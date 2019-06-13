@@ -6,6 +6,7 @@ import logging, socket
 from smtplib import SMTPException
 
 from captcha.fields import ReCaptchaField
+from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -52,14 +53,14 @@ class ContactView(ProviderMixin, FormView):
 
     def get_initial(self):
         kwargs = super(ContactView, self).get_initial()
-        if self.request.user.is_authenticated():
+        if is_authenticated(self.request):
             kwargs.update({
                 'email': self.request.user.email,
                 'full_name': self.request.user.get_full_name()})
         return kwargs
 
     def form_valid(self, form):
-        if self.request.user.is_authenticated():
+        if is_authenticated(self.request):
             user = self.request.user
         else:
             user_model = get_user_model()

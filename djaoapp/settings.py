@@ -37,15 +37,20 @@ else:
     RULES_APPS = tuple([])
 
 if DEBUG:
-    if (not FEATURES_REVERT_TO_DJANGO and
-        DJANGO_VERSION[0] == 2 and DJANGO_VERSION[1] == 2):
-        # We cannot include admin panels because a `check` for DjangoTemplates
-        # will fail when we are using Jinja2 templates.
-        DEBUG_APPS = RULES_APPS + (
-            'debug_toolbar',
-            'debug_panel',
-            'django_extensions',
-        )
+    if not FEATURES_REVERT_TO_DJANGO:
+        # (Django2.2) We cannot include admin panels because a `check`
+        # for DjangoTemplates will fail when we are using Jinja2 templates
+        if DJANGO_VERSION[0] >= 2:
+            # django-debug-toolbar==1.11 does not support Django2.2
+            DEBUG_APPS = RULES_APPS + (
+                'django_extensions',
+            )
+        else:
+            DEBUG_APPS = RULES_APPS + (
+                'debug_toolbar',
+                'debug_panel',
+                'django_extensions',
+            )
     else:
         DEBUG_APPS = RULES_APPS + (
             'django.contrib.admin',
@@ -85,7 +90,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'djaoapp'
 )
 
-if DEBUG:
+if DEBUG and 'debug_toolbar' in INSTALLED_APPS:
     MIDDLEWARE = tuple([
         'debug_panel.middleware.DebugPanelMiddleware',
     ])

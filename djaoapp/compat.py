@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 #pylint:disable=no-name-in-module,unused-import
@@ -20,8 +20,3 @@ except ImportError: # <= Django 1.10, Python<3.6
 except ModuleNotFoundError: #pylint:disable=undefined-variable
     # <= Django 1.10, Python>=3.6
     from django.core.urlresolvers import NoReverseMatch, reverse, reverse_lazy
-
-def is_authenticated(request):
-    if callable(request.user.is_authenticated):
-        return request.user.is_authenticated()
-    return request.user.is_authenticated

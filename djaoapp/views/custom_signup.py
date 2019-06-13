@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import logging
 
+from deployutils.apps.django.compat import is_authenticated
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
@@ -35,7 +36,7 @@ class AuthMixin(object):
     def get_context_data(self, **kwargs):
         context = super(AuthMixin, self).get_context_data(**kwargs)
         # URLs for user
-        if not self.request.user.is_authenticated():
+        if not is_authenticated(self.request):
             user_urls = {
                'login_github': reverse('social:begin', args=('github',)),
                'login_google': reverse('social:begin', args=('google-oauth2',)),
