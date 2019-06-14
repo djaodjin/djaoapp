@@ -11,7 +11,7 @@ djangorestframework==3.9.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.13
 djaodjin-extended-templates==0.2.4
-djaodjin-multitier==0.1.12
+djaodjin-multitier==0.1.13
 djaodjin-pages==0.2.7
 djaodjin-rules==0.1.10
 djaodjin-saas==0.6.0
