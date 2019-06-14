@@ -1,6 +1,6 @@
 <div :id="item.user.slug" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
   <div>
-    <button class="btn btn-danger btn-sm remove" style="float: right; margin:0.2em 0.25em -2.42em 0;"
+    <button class="btn btn-danger btn-sm remove" style="float: right;"
             data-trip data-trip-index="3"
             data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
             data-trip-position="s"
