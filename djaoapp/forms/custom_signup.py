@@ -174,12 +174,12 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
 #XXX disabled until we figure out why it raises a KeyError in production (!dev)
 #XXX        user = self.user_model(email=self.cleaned_data['email'])
 #XXX uses None in ``find_candidates`` for now.
-        organization_name = self.cleaned_data['organization_name']
-        candidates = Organization.objects.find_candidates(
-                organization_name, user=None)
-        if candidates.exists():
-            raise forms.ValidationError(
-                _("Your organization might already be registered."))
+            organization_name = self.cleaned_data['organization_name']
+            candidates = Organization.objects.find_candidates(
+                    organization_name, user=None)
+            if candidates.exists():
+                raise forms.ValidationError(
+                    _("Your organization might already be registered."))
         return self.cleaned_data['organization_name']
 
     def clean_new_password(self):

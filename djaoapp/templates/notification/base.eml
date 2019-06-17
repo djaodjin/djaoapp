@@ -9,6 +9,15 @@
 {% endassets %}
 </head>
 <body>
+    {% if errors %}
+    <div style="margin:15px;color:#721c24;background-color:#f8d7da;border-color:#f5c6cb;">
+        {% for error in errors %}
+        <p>
+            {{error}}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
     <table class="body-wrap">
         <tr>
             <td></td>
