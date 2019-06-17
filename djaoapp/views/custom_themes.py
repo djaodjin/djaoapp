@@ -69,7 +69,7 @@ class ThemePackageView(ThemePackageBaseView):
                     'descr': _("This notification is sent to profile managers"\
 " of a domain when a user has registered.")
                 },
-                'role_requested': {
+                'role_request_created': {
                     'title': _("Role requested"),
                     'descr': _("This notification is sent to profile managers"\
 " of an organization when a user has requested a role on that organization.")
