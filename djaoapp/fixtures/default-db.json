@@ -204,6 +204,15 @@
 },
 {
     "fields": {
+      "slug": "alice",
+      "created_at": "2016-03-18T00:00:00-09:00",
+      "user": 2,
+      "picture": "/static/img/alice.jpg"
+    },
+    "model": "signup.Contact", "pk": 2
+},
+{
+    "fields": {
       "date_joined": "2015-01-14T14:16:55-09:00",
       "email": "yan@localhost.localdomain",
       "first_name": "Yan",
@@ -289,7 +298,7 @@
     "fields": {
       "slug": "cowork",
       "email": "cowork@localhost.localdomain",
-      "full_name": "Chamoix Coworking",
+      "full_name": "Cowork",
       "created_at": "2012-09-14T14:16:55-09:00",
       "processor": 1,
       "is_provider": 0,
@@ -387,7 +396,7 @@
       "email": "marie@localhost.localdomain",
       "slug": "marie"
     },
-    "model": "signup.Contact", "pk": 2
+    "model": "signup.Contact", "pk": 3
 },
 {
     "fields": {
@@ -534,9 +543,19 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
+      "is_active": 1,
+      "picture": "/static/img/amelie.jpg"
     },
     "model": "saas.Organization", "pk": 8
+},
+{
+    "fields": {
+      "slug": "asmith",
+      "created_at": "2016-03-18T00:00:00-09:00",
+      "user": 7,
+      "picture": "/static/img/amelie.jpg"
+    },
+    "model": "signup.Contact", "pk": 7
 },
 {
     "fields": {
@@ -688,7 +707,7 @@
       "user": 9,
       "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
     },
-    "model": "signup.Contact", "pk": 1
+    "model": "signup.Contact", "pk": 9
 },
 {
     "fields": {
@@ -929,7 +948,7 @@
       "date_joined": "2019-01-01T00:00:00-00:00",
       "email": "brett@localhost.localdomain",
       "first_name": "Brett",
-      "last_name": "Invited",
+      "last_name": "",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
