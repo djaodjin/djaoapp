@@ -47,8 +47,14 @@ class UserProfileView(UserMixin, UserProfileBaseView):
     @property
     def attached_organization(self):
         if not hasattr(self, '_attached_organization'):
-            self._attached_organization = Organization.objects.attached(
-                self.kwargs.get(self.slug_url_kwarg))
+            try:
+                # We use `get` instead of `attached` here because we want
+                # to redirect to the profle page regardless if an organization
+                # with the lookup slug is found.
+                self._attached_organization = Organization.objects.get(
+                    slug=self.kwargs.get(self.slug_url_kwarg))
+            except Organization.DoesNotExist:
+                self._attached_organization = None
         return self._attached_organization
 
     def form_valid(self, form):

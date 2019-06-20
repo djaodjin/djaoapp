@@ -99,10 +99,10 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           {% endblock %}
           <div class="dashboard-content">
             <header>
-              <a href="" class="sidebar-toggle d-inline-block d-sm-none" style="position:absolute;">
-                <i class="fa fa-2x closed"></i>
-              </a>
               <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
+                 <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
+                    <i class="fa closed"></i>
+                </a>
                 {% block content_navbarbrand %}
                 <div class="navbar-brand-container">
                     {% include "_navbarbrand.html" %}

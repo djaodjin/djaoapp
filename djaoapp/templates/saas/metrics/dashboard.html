@@ -19,8 +19,8 @@
                                   v-model="params.q" @input="filterList" />
                         </div>
                     </div>
-                    <table class="table table-striped mt-4" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                        <tbody id="search-results">
+                    <table class="table table-striped mt-4">
+                        <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                             <tr v-for="entry in items.results">
                                 <td>
                                   <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
@@ -39,9 +39,19 @@
                 <div class="card-body">
                     <h5 class="card-title mb-0">Recently active users</h5>
                 </div>
-                <div class="list-group list-group-flush">
+                <div class="card-body" v-show="!itemsLoaded">
+                  <p>
+                    <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+                  </p>
+                </div>
+                <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
+                    <p class="card-text text-muted">
+                        {% trans %}No recently active users{% endtrans %}
+                    </p>
+                </div>
+                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                     <a class="list-group-item  d-flex justify-content-between align-items-center" v-for="item in items.results"
-                        :href="'{{urls.profile_redirect}}' + item.slug + '/'" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                        :href="'{{urls.profile_redirect}}' + item.slug + '/'">
                         <span>
                             <span class="d-inline-block item-name">[[item.printable_name]]</span>
                             <span class="badge" :class="{
@@ -53,12 +63,7 @@
                         <small class="text-muted ml-2">[[item.created_at | relativeDate]]</small>
                     </a>
                 </div>
-                <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
-                    <p class="card-text text-muted">
-                        No recent activity
-                    </p>
-                </div>
-            </div>
+             </div>
         </div>
     </div>
     <div class="col-lg-4 col-12">
@@ -66,7 +71,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">MRR</h5>
-                    <h2 class="text-center" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
                 </div>
             </div>
         </div>
@@ -74,20 +80,24 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title text-center">Daily active users</h5>
-                    <h2 class="text-center" v-cloak>[[item.activeUsers]]</h2>
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
                 </div>
             </div>
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title text-center">Engagement</h5>
                 </div>
-                <div class="card-body" v-show="itemLoaded && item.engagements.length > 0">
-                    <svg ref="engagementChart"></svg>
+                <div class="card-body" v-show="!itemLoaded">
+                    <h2 class="text-center"><i class="fa fa-refresh fa-spin"></i></h2>
                 </div>
                 <div class="card-body" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
-                    <p class="card-text text-muted">
+                    <p class="card-text text-center text-muted">
                         No engagement data
                     </p>
+                </div>
+                <div class="card-body" v-show="itemLoaded && item.engagements.length > 0" v-cloak>
+                    <svg ref="engagementChart"></svg>
                 </div>
             </div>
         </div>
