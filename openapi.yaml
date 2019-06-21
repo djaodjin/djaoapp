@@ -603,7 +603,7 @@ paths:
     parameters: []
   "/auth/tokens/realms/{organization}/":
     get:
-      operationId: auth_tokens_realms_read
+      operationId: auth_tokens_realms_org_read
       description: |-
         Gets temporary credentials to access S3 directly from the browser.
 
@@ -2839,7 +2839,7 @@ paths:
       tags:
         - metrics
     patch:
-      operationId: metrics_balances_lines_partial_update
+      operationId: metrics_balances_lines_partial_update_2
       description: |-
         Describes a row reported on a balance sheet named `{report}`.
 
@@ -5432,7 +5432,7 @@ paths:
           type: string
   "/profile/{organization}/roles/{role}/{user}/":
     post:
-      operationId: profile_roles_create
+      operationId: profile_roles_resend_email
       description: |-
         Re-sends the invite e-mail that the user was granted a role
         on the organization.
@@ -6350,7 +6350,7 @@ paths:
     parameters: []
   "/proxy/rules{rule}":
     get:
-      operationId: proxy_read
+      operationId: proxy_rule_read
       description: |-
         Retrieves details on a ``Rule``.
 
@@ -6383,7 +6383,7 @@ paths:
       tags:
         - proxy
     put:
-      operationId: proxy_update
+      operationId: proxy_rule_update
       description: |-
         Updates a ``Rule``.
 
@@ -6428,7 +6428,7 @@ paths:
       tags:
         - proxy
     patch:
-      operationId: proxy_partial_update
+      operationId: proxy_rule_partial_update
       description: |-
         Retrieves details on a ``Rule``.
 
@@ -6613,7 +6613,7 @@ paths:
       tags:
         - themes
     post:
-      operationId: themes_create
+      operationId: themes_assets_create
       description: |-
         Uploads a static asset file.
 
@@ -6670,7 +6670,7 @@ paths:
       tags:
         - themes
     delete:
-      operationId: themes_delete
+      operationId: themes_assets_delete
       description: |-
         Deletes static assets file
 
@@ -6753,7 +6753,7 @@ paths:
     parameters: []
   "/themes/editables/alias{path}/":
     post:
-      operationId: themes_editables_create
+      operationId: themes_editables_alias_create
       description: Alias the content of a PageElement at another node.
       requestBody:
         $ref: "#/components/requestBodies/EdgeCreate"
@@ -6774,7 +6774,7 @@ paths:
           type: string
   "/themes/editables/attach{path}":
     post:
-      operationId: themes_editables_create
+      operationId: themes_editables_attach_create
       description: Move an PageElement from one attachement to another.
       requestBody:
         $ref: "#/components/requestBodies/EdgeCreate"
@@ -6795,7 +6795,7 @@ paths:
           type: string
   "/themes/editables/mirror{path}/":
     post:
-      operationId: themes_editables_create
+      operationId: themes_editables_mirror_create
       description: |-
         Mirror the content of a PageElement and attach the mirror
         under another node.
@@ -7249,7 +7249,7 @@ paths:
       tags:
         - themes
     put:
-      operationId: themes_sitecss_variables_update
+      operationId: themes_sitecss_variables_var_update
       description: Create or update the value of a ``LessVariable``.
       requestBody:
         $ref: "#/components/requestBodies/LessVariable"
@@ -7888,7 +7888,7 @@ paths:
       tags:
         - users
     post:
-      operationId: users_accessibles_create
+      operationId: users_accessibles_role_create
       description: |-
         Lists all relations where a ``User`` has a specified ``Role``
         on an ``Organization``.
@@ -7946,7 +7946,7 @@ paths:
           type: string
   "/users/{user}/accessibles/{role}/{organization}/":
     post:
-      operationId: users_accessibles_create
+      operationId: users_accessibles_role_org_create
       description: |-
         Re-sends the request e-mail that the user is requested a role
         on the organization.
