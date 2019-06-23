@@ -12,6 +12,7 @@
       "slug": "cowork",
       "account": 3,
       "entry_point": "http://localhost:8024",
+      "authentication": 0,
       "registration": 1
     },
     "model": "rules.App", "pk": 3

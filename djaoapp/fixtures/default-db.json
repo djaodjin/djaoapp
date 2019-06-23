@@ -354,6 +354,7 @@
     "fields": {
       "slug": "djaoapp",
       "account": 2,
+      "authentication": 0,
       "registration": 3
     },
     "model": "rules.App", "pk": 1

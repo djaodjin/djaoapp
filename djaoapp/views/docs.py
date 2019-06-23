@@ -5,7 +5,7 @@
 Default start page for a djaodjin-hosted product.
 """
 
-import logging, os, re
+import json, logging, os, re
 from collections import OrderedDict, defaultdict
 
 from django.conf import settings
@@ -141,6 +141,64 @@ class NoHeaderHTMLWriter(Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
+
+def format_examples(examples):
+    """
+    Returns an example is a structured format easily useable
+    by mechanical tests.
+    """
+    # in_request_params
+    # in_respoonse
+    IN_URL_STATE = 0
+    IN_REQUEST_PARAMS_STATE = 1
+    IN_RESPONSE_STATE = 2
+    IN_RESPONSE_EXAMPLE_STATE = 3
+
+    formatted_examples = []
+    state = IN_URL_STATE
+    func = None
+    path = None
+    request_params = ""
+    resp = ""
+    for line in examples.splitlines():
+        line = line.strip()
+        look = re.match(r'(GET|POST|PUT|PATCH)\s+(\S+)\s+HTTP', line)
+        if look:
+            func = look.group(1)
+            path = look.group(2)
+            request_params = ""
+            resp = ""
+            state = IN_REQUEST_PARAMS_STATE
+            continue
+        look = re.match('responds', line)
+        if look:
+            state = IN_RESPONSE_STATE
+            continue
+        look = re.match('.. code-block::', line)
+        if look:
+            if state == IN_RESPONSE_STATE:
+                state = IN_RESPONSE_EXAMPLE_STATE
+            continue
+        if state == IN_REQUEST_PARAMS_STATE:
+            request_params += line
+        elif state == IN_RESPONSE_EXAMPLE_STATE:
+            resp += line
+    formatted_example = {'func': func, 'path': path}
+    if request_params:
+        try:
+            formatted_example.update({
+                'request_params': json.loads(request_params)})
+        except json.JSONDecodeError:
+            LOGGER.error("error: toJSON(%s)", request_params)
+    if resp:
+        try:
+            formatted_example.update({'resp': json.loads(resp)})
+        except json.JSONDecodeError:
+            LOGGER.error("error: toJSON(%s)", resp)
+    formatted_examples += [formatted_example]
+    return formatted_examples
+
+
 def rst_to_html(string):
     result = core.publish_string(string,
         writer=NoHeaderHTMLWriter())
@@ -174,6 +232,42 @@ def endpoint_ordering(endpoint):
         'DELETE': 4
     }.get(method, 5)
     return (path, method_priority)
+
+
+def split_descr_and_examples(func_details, api_base_url=None):
+    """
+    Split a docstring written for API documentation into tags,
+    a generic description and concrete examples.
+    """
+    sep = ""
+    func_tags = None
+    in_examples = False
+    description = ""
+    examples = ""
+    for line in func_details.description.splitlines():
+        line = transform_links(line)
+        look = re.match(r'\*\*Tags:(.*)', line)
+        if look:
+            func_tags = set([tag.strip()
+                for tag in look.group(1).split(',')])
+        elif re.match(r'\*\*Example', line):
+            in_examples = True
+            sep = ""
+        elif in_examples:
+            for method in ('GET', 'POST', 'PUT', 'PATCH'):
+                look = re.match(r'.* (%s /api)' % method, line)
+                if look:
+                    line = line.replace(look.group(1),
+                        '%s %s' % (method, api_base_url))
+                    break
+            examples += sep + line
+            sep = "\n"
+        else:
+            description += sep + line
+            sep = "\n"
+    if not func_tags:
+        func_tags = func_details.tags
+    return func_tags, description, examples
 
 
 class APIDocEndpointEnumerator(EndpointEnumerator):
@@ -311,36 +405,10 @@ class APIDocView(TemplateView):
                     # We merge PUT and PATCH together.
                     continue
                 try:
-                    sep = ""
-                    func_tags = None
-                    in_examples = False
-                    description = ""
-                    examples = ""
-                    for line in func_details.description.splitlines():
-                        line = transform_links(line)
-                        look = re.match(r'\*\*Tags:(.*)', line)
-                        if look:
-                            func_tags = set([tag.strip()
-                                for tag in look.group(1).split(',')])
-                        elif re.match(r'\*\*Example', line):
-                            in_examples = True
-                            sep = ""
-                        elif in_examples:
-                            for method in ('GET', 'POST', 'PUT', 'PATCH'):
-                                look = re.match(r'.* (%s /api)' % method, line)
-                                if look:
-                                    line = line.replace(look.group(1),
-                                        '%s %s' % (method, api_base_url))
-                                    break
-                            examples += sep + line
-                            sep = "\n"
-                        else:
-                            description += sep + line
-                            sep = "\n"
+                    func_tags, description, examples = split_descr_and_examples(
+                        func_details, api_base_url=api_base_url)
                     description = rst_to_html(description)
                     examples = rst_to_html(examples)
-                    if not func_tags:
-                        func_tags = func_details.tags
                     tags |= set(func_tags)
                     api_end_points += [{
                         'operationId': func_details.operationId,
