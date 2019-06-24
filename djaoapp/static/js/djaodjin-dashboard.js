@@ -18,21 +18,21 @@ $(document).ready(function(){
                 $t.animate({left: 205});
                 $('.navbar-brand-container').fadeOut();
                 $('.dashboard-nav').css('left', '-220px').show().animate({left: 0}, function(){
-                    i.attr('class', 'fa opened');
+                    i.removeClass('closed').addClass('opened');
                 });
             } else {
                 $t.animate({left: 0});
                 $('.navbar-brand-container').fadeIn();
                 $('.dashboard-nav').animate({left: '-220px'}, function(){
                     $(this).hide();
-                    i.attr('class', 'fa closed');
+                    i.removeClass('opened').addClass('closed');
                 });
             }
         });
 
         $(window).resize(function(){
             $('.dashboard-nav, .sidebar-toggle').attr('style', '');
-            $('.sidebar-toggle').find('i').attr('class', 'fa closed');
+            $('.sidebar-toggle').find('i').removeClass('opened').addClass('closed');
             $('.navbar-brand-container').attr('style', '');
         });
     })();

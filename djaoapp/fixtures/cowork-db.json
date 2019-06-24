@@ -8,19 +8,11 @@
     "model": "saas.RoleDescription", "pk": 1
 },
 {
-    "fields":{
-        "name": "balme",
-        "slug":"balme",
-        "created_at": "2012-09-14T14:16:55-09:00",
-        "updated_at": "2012-09-14T14:16:55-09:00"
-    },
-    "model" : "pages.ThemePackage", "pk":1
-},
-{
     "fields": {
       "slug": "cowork",
       "account": 3,
       "entry_point": "http://localhost:8024",
+      "authentication": 0,
       "registration": 1
     },
     "model": "rules.App", "pk": 3
@@ -235,7 +227,7 @@
 {
     "fields": {
       "slug": "cowork",
-      "full_name": "Chamoix Coworking",
+      "full_name": "Cowork",
       "created_at": "2012-08-14T14:16:55-09:00",
       "email": "cowork@localhost.localdomain",
       "phone": "555-555-5555",
@@ -367,6 +359,14 @@
 },
 {
     "fields": {
+      "slug": "alice",
+      "created_at": "2016-03-18T00:00:00-09:00",
+      "user": 1
+    },
+    "model": "signup.Contact", "pk": 1
+},
+{
+    "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
       "email": "xia@localhost.localdomain",
       "first_name": "Xia",
@@ -436,12 +436,67 @@
 },
 {
     "fields": {
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "amelie@localhost.localdomain",
+      "first_name": "Amelie",
+      "last_name": "Beetle",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "amelie"
+    },
+    "model": "auth.User", "pk": 5
+},
+{
+    "fields": {
+      "last_signed": "2014-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 5
+    },
+    "model": "saas.signature", "pk": 5
+},
+{
+    "fields": {
+      "slug": "amelie",
+      "created_at": "2016-03-18T00:00:00-09:00",
+      "user": 5
+    },
+    "model": "signup.Contact", "pk": 5
+},
+{
+    "fields": {
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "john@localhost.localdomain",
+      "first_name": "John",
+      "last_name": "Kramer",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "john"
+    },
+    "model": "auth.User", "pk": 6
+},
+{
+    "fields": {
       "created_at": "2012-09-14T14:16:55-09:00",
       "role_description": 1,
       "organization": 3,
       "user": 1
     },
     "model": "saas.Role", "pk": 1
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "role_description": 1,
+      "organization": 2,
+      "user": 2
+    },
+    "model": "saas.Role", "pk": 2
 },
 {
     "fields": {
@@ -463,6 +518,25 @@
 },
 {
     "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "organization": 3,
+      "user": 5,
+      "request_key": "b0e0000000ed0123456789012345678901234578"
+    },
+    "model": "saas.Role", "pk": 5
+},
+{
+    "fields": {
+      "created_at": "2012-09-14T14:16:55-09:00",
+      "role_description": 1,
+      "organization": 3,
+      "user": 6,
+      "grant_key": "b0e0000000ed0123456789012345678901234578"
+    },
+    "model": "saas.Role", "pk": 6
+},
+{
+    "fields": {
       "slug": "xia",
       "full_name": "Xia Lee",
       "created_at": "2012-09-14T14:16:55-09:00",
@@ -477,15 +551,6 @@
       "is_active": 1
     },
     "model": "saas.Organization", "pk": 2
-},
-{
-    "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
-      "role_description": 1,
-      "organization": 2,
-      "user": 2
-    },
-    "model": "saas.Role", "pk": 2
 },
 {
     "fields": {

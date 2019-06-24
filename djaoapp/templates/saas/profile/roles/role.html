@@ -42,10 +42,10 @@
       <div class="col-12">
         <div class="btn-group" role="group" aria-label="{% trans %}Group of buttons to show or hide invited and requested roles{% endtrans %}" v-cloak>
           <button type="button" class="btn" :class="showInvited ? 'btn-primary' : 'btn-outline-primary'" @click="showInvited = !showInvited" v-if="items.invited_count > 0">
-            <i class="fa mr-2" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Show Pending Invites{% endtrans %} <span class="badge" :class="showInvited ? 'badge-light' : 'badge-primary'">[[items.invited_count]]</span>
+            <i class="fa" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Pending Invites{% endtrans %} <span class="badge" :class="showInvited ? 'badge-light' : 'badge-primary'">[[items.invited_count]]</span>
           </button>
           <button type="button" class="btn" :class="showRequested ? 'btn-primary' : 'btn-outline-primary'" @click="showRequested = !showRequested" v-if="items.requested_count > 0">
-            <i class="fa mr-2" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Show Roles Requested{% endtrans %} <span class="badge" :class="showRequested ? 'badge-light' : 'badge-primary'">[[items.requested_count]]</span>
+            <i class="fa" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Roles Requested{% endtrans %} <span class="badge" :class="showRequested ? 'badge-light' : 'badge-primary'">[[items.requested_count]]</span>
           </button>
         </div>
       </div>
