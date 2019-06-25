@@ -29,6 +29,7 @@ from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
+from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 
@@ -187,10 +188,15 @@ class PricingView(DjaoAppMixin, PageMixin, CartPlanListView):
     def get_context_data(self, **kwargs):
         context = super(PricingView, self).get_context_data(**kwargs)
         if self.edit_perm:
-            context.update({'plan': Plan()})
-            if not self.object_list.exists():
-                messages.info(self.request,
-                  _("No Plans yet. Click the 'Add Plan' button to create one."))
+            app = get_current_app()
+            if app.show_edit_tools:
+                context.update({
+                    'show_show_edit_tools': app.show_edit_tools,
+                    'plan': Plan()
+                })
+                if not self.object_list.exists():
+                    messages.info(self.request, _("No Plans yet."\
+                        " Click the 'Add Plan' button to create one."))
         return context
 
 

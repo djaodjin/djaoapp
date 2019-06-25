@@ -1,6 +1,6 @@
 <!-- We assume that either the monthly recuring amount will
 be positive and/or the setup fee will. -->
-<div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 plan" data-slug="{{plan.slug}}">
+<div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 plan" data-plan="{{plan.slug}}">
 <div class="plan-short">
     <div class="plan-main">
         <div class="text-center">
@@ -8,14 +8,12 @@ be positive and/or the setup fee will. -->
                 <p>{% trans %}Avalaible soon!{% endtrans %}</p>
             {% endif %}
             <div class="page-header">
-                <h2 class="editable-plan" data-key="title" data-slug="{{plan.slug}}">
-                    {{plan.title}}
-                </h2>
+                <h2 class="editable-plan" data-key="title">{{plan.title}}</h2>
             </div>
         </div>
         <div class="plan-test">
             <div class="plan-pricing">
-                <h2 class="text-center editable-plan edit-currency" data-key="period_amount" data-slug="{{plan.slug}}">
+                <h2 class="text-center editable-plan edit-currency" data-key="period_amount">
                 {% if not plan or plan.is_not_priced %}
 {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
                 {% trans %}Contact us{% endtrans %}
@@ -32,7 +30,7 @@ be positive and/or the setup fee will. -->
                   {% if plan.is_not_priced %}
                     &nbsp;
                   {% else %}
-                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}" data-slug="{{plan.slug}}">{{plan.interval|humanize_period}}</span>
+                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}">{{plan.interval|humanize_period}}</span>
                   {% endif %}
                 </p>
                 <p class="text-center">
@@ -49,7 +47,7 @@ be positive and/or the setup fee will. -->
                 {% endif %}
                 </p>
             </div>
-        <div class="plan-desc editable-plan edit-markdown" data-key="description" data-slug="{{plan.slug}}">{{plan.description|md}}</div>
+        <div class="plan-desc editable-plan edit-markdown" data-key="description">{{plan.description|md}}</div>
         </div>
     </div>
     <footer class="plan-footer">

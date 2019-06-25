@@ -1,15 +1,15 @@
-/* Copyright (c) 2018, Djaodjin Inc.
+/* Copyright (c) 2019, Djaodjin Inc.
    see LICENSE
 */
 
-/* global jQuery window confirm Plan showMessages:true */
+/* global jQuery window confirm Plan showErrorMessages:true */
 
 (function ($){
     "use strict";
 
     function EditPlan(el, options){
         var self = this;
-        self.$el = $(el);
+        self.element = $(el);
         self.options = options;
         self.init();
         return self;
@@ -21,38 +21,55 @@
             var editionTool = "<button class=\"text-danger trash-plan close\" style=\"position:absolute;top:50px; left:20px;\"><i class=\"fa fa-trash-o icon_edition\"></i></button> \
                                 <button class=\"text-danger edit-plan close\" style=\"position:absolute;top:80px; left:20px;\"><i class=\"fa fa-pencil icon_edition\"></i></button>";
 
-            this.$el.append(editionTool);
-            this.$el.on("click", ".trash-plan", function(event){
+            this.element.append(editionTool);
+            this.element.on("click", ".trash-plan", function(event){
                 self.deletePlan(event);
             });
-            this.$el.on("click", ".edit-plan", function(event){
+            this.element.on("click", ".edit-plan", function(event){
                 self.editPlanElement(event);
             });
-            this.$el.on("click", self.documentClick);
+            this.element.on("click", self.documentClick);
+        },
+
+        _getCSRFToken: function() {
+            var self = this;
+            var crsfNode = self.element.find("[name='csrfmiddlewaretoken']");
+            if( crsfNode.length > 0 ) {
+                return crsfNode.val();
+            }
+            return getMetaCSRFToken();
         },
 
         deletePlan: function(event){
             var self = this;
             event.preventDefault();
-            var plan = new Plan(self.$el.data("slug"),
-                {"saas_api_plan": self.options.baseUrl});
-            plan.destroy(
-                function(){
-                    self.$el.remove();
-                },
-                function(response){
-                    if (response.status === 403){
-                        showMessages([response.responseJSON.detail], "error");
-                    }
-                }
-            );
+            // XXX following is matching statement in djaodjin-saas.js
+            // We do this here because the slug might have been updated.
+            self.id = self.element.attr("data-plan");
+            $.ajax({ type: "DELETE",
+                 url: self.options.baseUrl + "/" + self.id + "/",
+                 beforeSend: function(xhr) {
+                     xhr.setRequestHeader("X-CSRFToken", self._getCSRFToken());
+                 },
+                 async: false,
+                 success: function(data) {
+                     // XXX We cannot just do a `self.element.remove();`
+                     // otherwise the layout is incorrect.
+                     location.reload(true);
+                 },
+                 error: function(resp) {
+                     showErrorMessages(resp);
+                 }
+            });
         },
 
         editPlanElement: function(event){
             var self = this;
             event.preventDefault();
-            var planSlug = self.$el.data("slug");
-            window.location = self.options.baseEditPlanUrl + planSlug + "/";
+            // XXX following is matching statement in djaodjin-saas.js
+            // We do this here because the slug might have been updated.
+            self.id = self.element.attr("data-plan");
+            window.location = self.options.baseEditPlanUrl + self.id + "/";
         }
 
     };

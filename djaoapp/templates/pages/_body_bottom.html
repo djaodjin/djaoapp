@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
 
   $(".editable-plan").editor({
     baseUrl: "{{urls.edit.api_plans}}/",
-    uniqueIdentifier: "data-slug",
+    uniqueIdentifier: "data-plan",
     rangeUpdate: function(editable, newVal){
             var text = "{% trans %}per month{% endtrans %}";
             newVal = parseInt(newVal);
@@ -51,9 +51,9 @@ jQuery(document).ready(function($) {
      },
      onSuccess: function(self, response){
             // Update slug of plan for new request.
-            var initialSlug = self.$el.attr("data-slug");
+            var initialSlug = self.$el.attr("data-plan");
             if (response.slug !== initialSlug){
-                $("[data-slug=\"" + initialSlug + "\"]").attr("data-slug", response.slug);
+                $("[data-plan=\"" + initialSlug + "\"]").attr("data-plan", response.slug);
             }
         },
         rangePosition: "bottom",
