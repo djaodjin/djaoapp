@@ -20,12 +20,13 @@ from .compat import reverse
 LOGGER = logging.getLogger(__name__)
 
 def is_domain_site(site):
-    return 'streetside' in site.tag # XXX should be not site.is_path_prefix
+    return site.tag and 'streetside' in site.tag
+                                    # XXX should be not site.is_path_prefix
                                     # but we are using is_path_prefix for local
                                     # dev.
 
 def is_testing(site):
-    return 'testing' in site.tag
+    return site.tag and 'testing' in site.tag
 
 
 def dynamic_processor_keys(provider):#pylint:disable=unused-argument
