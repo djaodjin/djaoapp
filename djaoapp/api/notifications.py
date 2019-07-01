@@ -33,6 +33,8 @@ def get_test_email_context():
             'email': "{{charge.email_by.email}}",
             'first_name': "{{charge.email_by.first_name}}",
             'printable_name': "{{charge.email_by.printable_name}}"},
+        # specific to expires_at
+        'plan': {'printable_name': "{{plan.printable_name}}"},
         # specific to organization_updated
         'changes': {},
         # specific to claim_code_generated
