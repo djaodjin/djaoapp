@@ -505,3 +505,19 @@ $dashboard-sidebar-color:    white;
 {
     text-decoration: underline;
 }
+
+.coupon-title
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.coupon-title .card-title
+{
+    word-break: break-word;
+}
+
+.coupon-title .btn-danger
+{
+    align-self: flex-start;
+}
