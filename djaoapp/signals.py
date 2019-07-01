@@ -394,7 +394,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
                     'organization': {
                         'profile': site.as_absolute_uri(reverse(
                             'saas_organization_profile', args=(organization,)))}
-                }}, **kwargs)
+                }})
 
 
 # We insure the method is only bounded once no matter how many times
