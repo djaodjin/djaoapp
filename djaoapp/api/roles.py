@@ -15,7 +15,9 @@ LOGGER = logging.getLogger(__name__)
 
 class RoleListAPIView(RoleListBaseAPIView):
     """
-    ``GET`` lists the specified role assignments for an organization.
+    Lists roles of a specific type
+
+    Lists the specified role assignments for an organization.
 
     **Tags: rbac
 

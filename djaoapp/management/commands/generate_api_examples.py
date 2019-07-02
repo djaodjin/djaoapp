@@ -32,8 +32,9 @@ class Command(BaseCommand):
         for path, path_details in schema.paths.items():
             for func, func_details in path_details.items():
                 try:
-                    func_tags, description, examples = split_descr_and_examples(
-                        func_details, api_base_url=api_base_url)
+                    func_tags, summary, description, examples = \
+                        split_descr_and_examples(func_details,
+                            api_base_url=api_base_url)
                     formatted_examples += format_examples(examples)
                 except AttributeError:
                     pass

@@ -86,7 +86,7 @@ class NotificationDetailAPIView(AppMixin, APIView):
 
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         """
-        Sends a test notification e-mail.
+        Sends a test notification e-mail
 
         **Tags: themes
 

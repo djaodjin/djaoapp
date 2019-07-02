@@ -241,7 +241,9 @@ def split_descr_and_examples(func_details, api_base_url=None):
     """
     sep = ""
     func_tags = None
+    first_line = True
     in_examples = False
+    summary = "(XXX no summary)"
     description = ""
     examples = ""
     for line in func_details.description.splitlines():
@@ -262,12 +264,15 @@ def split_descr_and_examples(func_details, api_base_url=None):
                     break
             examples += sep + line
             sep = "\n"
+        elif first_line:
+            summary = line
+            first_line = False
         else:
             description += sep + line
             sep = "\n"
     if not func_tags:
         func_tags = func_details.tags
-    return func_tags, description, examples
+    return func_tags, summary, description, examples
 
 
 class APIDocEndpointEnumerator(EndpointEnumerator):
@@ -405,8 +410,9 @@ class APIDocView(TemplateView):
                     # We merge PUT and PATCH together.
                     continue
                 try:
-                    func_tags, description, examples = split_descr_and_examples(
-                        func_details, api_base_url=api_base_url)
+                    func_tags, summary, description, examples = \
+                        split_descr_and_examples(func_details,
+                            api_base_url=api_base_url)
                     description = rst_to_html(description)
                     examples = rst_to_html(examples)
                     tags |= set(func_tags)
@@ -415,6 +421,7 @@ class APIDocView(TemplateView):
                         'func': func,
                         'path': '/api%s' % path,
                         'tags': ''.join(func_tags),
+                        'summary': summary,
                         'description': description,
                         'parameters': func_details.parameters,
                         'responses': func_details.responses,

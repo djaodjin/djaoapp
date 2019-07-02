@@ -54,6 +54,8 @@ class RegisterSerializer(CreateUserSerializer):
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
     """
+    Registers a user
+
     Creates a new user and optionally an associated billing
     or organization profile.
 
@@ -148,6 +150,8 @@ class AuthRealmsSerializer(serializers.Serializer):
 
 class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
     """
+    Retrieves temporary credentials
+
     Gets temporary credentials to access S3 directly from the browser.
 
     **Examples

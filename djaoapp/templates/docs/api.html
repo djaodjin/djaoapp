@@ -118,8 +118,8 @@ All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
         </p>
         {% elif api_end_point.tags == 'profile' %}
         <p>
-This section contains APIs to manage identity of organizations, users
-and contacts such as name or email address.
+This section contains APIs to manage the identity, such as name or email
+address, of users and organizations registered to the site.
         </p>
         {% elif api_end_point.tags == 'subscriptions' %}
         <p>
@@ -149,6 +149,13 @@ a <a href="https://djaodjin.com/docs/#business-performance">balances
 dashboard</a> for example.
         </p>
         {% endif %}
+        <ul>
+        {% for summary_end_point in api_end_points %}
+        {% if summary_end_point.tags == api_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+        {% endif %}
+        {% endfor %}
+        </ul>
         {% set variable_watcher = api_end_point.tags %}
       </div>
       <div class="col-sm-5 code">
@@ -157,7 +164,10 @@ dashboard</a> for example.
     {% endif %}
     <section class="row">
       <div class="col-sm-7">
-        <a name="{{api_end_point.operationId}}"></a><h3 style="margin-top:20px;">{{api_end_point.func|upper}} {{api_end_point.path}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+        <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+        <pre>
+{{api_end_point.func|upper}} {{api_end_point.path}}
+        </pre>
         <div>
             {{api_end_point.description}}
         </div>
