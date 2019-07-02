@@ -94,6 +94,13 @@ class NotificationDetailAPIView(AppMixin, APIView):
 
             POST /api/notifications/contact_requested_notice/ HTTP/1.1
 
+        responds
+
+        .. code-block:: json
+
+            {
+                "details": "Test email sent to xia@example.com"
+            }
         """
         try:
             app = get_current_app()

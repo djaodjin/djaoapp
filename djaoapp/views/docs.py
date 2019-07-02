@@ -162,7 +162,7 @@ def format_examples(examples):
     resp = ""
     for line in examples.splitlines():
         line = line.strip()
-        look = re.match(r'(GET|POST|PUT|PATCH)\s+(\S+)\s+HTTP', line)
+        look = re.match(r'(GET|POST|PUT|PATCH|DELETE)\s+(\S+)\s+HTTP', line)
         if look:
             func = look.group(1)
             path = look.group(2)
@@ -254,7 +254,7 @@ def split_descr_and_examples(func_details, api_base_url=None):
             in_examples = True
             sep = ""
         elif in_examples:
-            for method in ('GET', 'POST', 'PUT', 'PATCH'):
+            for method in ('GET', 'POST', 'PUT', 'PATCH', 'DELETE'):
                 look = re.match(r'.* (%s /api)' % method, line)
                 if look:
                     line = line.replace(look.group(1),

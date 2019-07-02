@@ -63,6 +63,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
             PUT /api/profile/xia/ HTTP/1.1
 
+        responds
+
         .. code-block:: json
 
             {
