@@ -10,7 +10,7 @@
             {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
         </div>
         {% if form %}
-        {% include "accounts/register/_frictionless_register_form.html" %}
+        {% include "accounts/register/_organization_register_form.html" %}
         {% endif %}
         <hr />
         <div class="row">

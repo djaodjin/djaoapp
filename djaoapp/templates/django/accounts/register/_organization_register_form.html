@@ -1,0 +1,34 @@
+{% extends "_form.html" %}
+
+{% block form_block %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal"
+    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    <fieldset>
+        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
+        {% include "_field.html" with bound_field=form|get_bounded_field:'username' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'email' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'email2' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'new_password' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'new_password2' hide_labels=form.hide_labels %}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}Organization Information{% endtrans %}</legend>
+        {% include "_field.html" with bound_field=form|get_bounded_field:'organization_name' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'street_address' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'locality' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'region' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'postal_code' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'country' hide_labels=form.hide_labels %}
+        {% include "_field.html" with bound_field=form|get_bounded_field:'phone' hide_labels=form.hide_labels %}
+    </fieldset>
+    <div>
+        <p>
+{% trans %}By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
+        </p>
+    </div>
+    <div class="form-action text-center">
+        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+    </div>
+</form>
+{% endblock %}

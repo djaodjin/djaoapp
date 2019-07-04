@@ -1,19 +1,16 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
 from django.conf.urls import url
 
+from saas.settings import ACCT_REGEX
 from signup import settings
 from djaoapp.views.custom_signup import (ActivationView, PasswordResetView,
     PasswordResetConfirmView, SigninView, SignoutView, SignupView)
 
 
 urlpatterns = [
-    url(r'^register/frictionless/',
-        SignupView.as_view(template_name='accounts/register/frictionless.html'),
-        name='registration_frictionless'),
-    # Normal sign up of a user
-    url(r'^register/',
+    url(r'^register/((?P<path>%s)/)?' % ACCT_REGEX,
         SignupView.as_view(),
         name='registration_register'),
     url(r'^activate/(?P<verification_key>%s)/'

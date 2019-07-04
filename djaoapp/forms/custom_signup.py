@@ -87,14 +87,17 @@ class SigninForm(MissingFieldsMixin, UsernameOrEmailAuthenticationForm):
 class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
                  NameEmailForm):
     """
-    Form to Register a user and (optionally) an organization accounts.
+    Form to Register a user and (optionally) a personal or organization
+    profiles.
 
     All fields except for the full_name and e-mail are optional.
     """
-    user_registration = True #  because USER_REGISTRATION == 0
     submit_title = _("Sign up")
     user_model = get_user_model()
 
+    email2 = forms.EmailField(required=False,
+        widget=forms.TextInput(attrs={'maxlength': 75}),
+        label=_("E-mail confirmation"))
     username = forms.SlugField(required=False,
         widget=forms.TextInput(attrs={'placeholder': _("Username")}),
         max_length=30, label=_("Username"),
@@ -124,6 +127,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('instance', None)
+        force_required = kwargs.pop('force_required', False)
         super(SignupForm, self).__init__(*args, **kwargs)
         if getattr(get_current_app(), 'registration_requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
@@ -143,6 +147,34 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             # define extra fields dynamically:
             self.fields[extra_field[0]] = forms.CharField(
                 label=_(extra_field[1]), required=extra_field[2])
+        if force_required:
+            for field in six.itervalues(self.fields):
+                field.required = True
+
+    def clean(self):
+        """
+        Validates that both emails as well as both passwords respectively match.
+        """
+        self.cleaned_data = super(SignupForm, self).clean()
+        if not ('email' in self._errors or 'email2' in self._errors):
+            # If there are already errors reported for email or email2,
+            # let's not override them with a confusing message here.
+            if 'email2' in self.data:
+                # If `email2` wasn't passed in the POST request, we ignore it.
+                email = self.cleaned_data.get('email', 'A')
+                email2 = self.cleaned_data.get('email2', 'B')
+                if email != email2:
+                    self._errors['email'] = self.error_class([
+                        _("This field does not match e-mail confirmation.")])
+                    self._errors['email2'] = self.error_class([
+                        _("This field does not match e-mail.")])
+                    if 'email' in self.cleaned_data:
+                        del self.cleaned_data['email']
+                    if 'email2' in self.cleaned_data:
+                        del self.cleaned_data['email2']
+                    raise forms.ValidationError(
+                        _("E-mail and e-mail confirmation do not match."))
+        return self.cleaned_data
 
     def clean_email(self):
         """
@@ -152,6 +184,14 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             self.cleaned_data['email'] = self.cleaned_data['email'].lower()
         return self.cleaned_data['email']
 
+    def clean_email2(self):
+        """
+        Normalizes emails in all lowercase.
+        """
+        if 'email2' in self.cleaned_data:
+            self.cleaned_data['email2'] = self.cleaned_data['email2'].lower()
+        return self.cleaned_data['email2']
+
     def clean_username(self):
         """
         Validate that the username is not already taken.
@@ -160,7 +200,18 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             username__iexact=self.cleaned_data['username'])
         if user.exists():
             raise forms.ValidationError(
-                _("A user with that username already exists."))
+                _("A user with that %(username)s already exists.") % {
+                    'username': self.username.label.lower()
+                })
+        organization = Organization.objects.filter(
+            slug__iexact=self.cleaned_data['username'])
+        if organization.exists():
+            # If an `Organization` with slug == username exists,
+            # it is bound to create problems later on.
+            raise forms.ValidationError(
+                _("A profile with that %(username)s already exists.") % {
+                    'username': self.username.label.lower()
+                })
         return self.cleaned_data['username']
 
     def clean_organization_name(self):
@@ -186,100 +237,3 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         if 'new_password' in self.data:
             return super(SignupForm, self).clean_new_password()
         return ""
-
-
-class TogetherRegistrationForm(SignupForm):
-
-    together_registration = get_app_model().TOGETHER_REGISTRATION
-
-
-class PersonalRegistrationForm(SignupForm):
-    """
-    Form to register a user and organization at the same time with the added
-    constraint that both will behave as a single billing profile.
-    """
-    personal_registration = get_app_model().PERSONAL_REGISTRATION
-    submit_title = _("Register")
-
-    username = forms.SlugField(
-        label=_("Username"), max_length=30,
-        error_messages={'invalid': _("Username may only contain letters,"\
-            " digits and -/_ characters. Spaces are not allowed.")})
-    email = forms.EmailField(
-        widget=forms.TextInput(attrs={'maxlength': 75}),
-        label=_("E-mail address"))
-    email2 = forms.EmailField(
-        widget=forms.TextInput(attrs={'maxlength': 75}),
-        label=_("E-mail confirmation"))
-    new_password = forms.CharField(strip=False,
-        label=_("Password"),
-        widget=forms.PasswordInput(attrs={'placeholder': _("Password")}))
-    new_password2 = forms.CharField(strip=False,
-        label=_("Confirm password"),
-        widget=forms.PasswordInput(
-            attrs={'placeholder': _("Type password again")}))
-    full_name = forms.RegexField(
-        regex=FULL_NAME_PAT, max_length=60,
-        widget=forms.TextInput(attrs={
-            'placeholder':'Ex: first name and last name'}),
-        label=_("Full name"),
-        error_messages={'invalid':
-            _("Sorry we do not recognize some characters in your full name.")})
-    street_address = forms.CharField(label=_("Street address"))
-    locality = forms.CharField(label=_("City/Town"))
-    region = forms.CharField(label=_("State/Province/County"))
-    postal_code = forms.RegexField(regex=r'^[\w\s-]+$',
-        label=_("Zip/Postal code"), max_length=30,
-        error_messages={'invalid': _("The postal code may contain only"\
-            " letters, digits, spaces and '-' characters.")})
-    country = forms.RegexField(regex=r'^[a-zA-Z ]+$',
-        widget=forms.widgets.Select(choices=countries), label=_("Country"))
-    phone = PhoneNumberField(label=_('Phone number'))
-
-    def clean(self):
-        """
-        Validates that both emails as well as both passwords respectively match.
-        """
-        self.cleaned_data = super(PersonalRegistrationForm, self).clean()
-        if not ('email' in self._errors or 'email2' in self._errors):
-            # If there are already errors reported for email or email2,
-            # let's not override them with a confusing message here.
-            email = self.cleaned_data.get('email', 'A')
-            email2 = self.cleaned_data.get('email2', 'B')
-            if email != email2:
-                self._errors['email'] = self.error_class([
-                    _("This field does not match e-mail confirmation.")])
-                self._errors['email2'] = self.error_class([
-                    _("This field does not match e-mail.")])
-                if 'email' in self.cleaned_data:
-                    del self.cleaned_data['email']
-                if 'email2' in self.cleaned_data:
-                    del self.cleaned_data['email2']
-                raise forms.ValidationError(
-                    _("E-mail and e-mail confirmation do not match."))
-        return self.cleaned_data
-
-    def clean_email2(self):
-        """
-        Normalizes emails in all lowercase.
-        """
-        if 'email2' in self.cleaned_data:
-            self.cleaned_data['email2'] = self.cleaned_data['email2'].lower()
-        return self.cleaned_data['email2']
-
-    def clean_username(self):
-        """
-        Validate that the username is not already taken.
-        """
-        user = self.user_model.objects.filter(
-            username__iexact=self.cleaned_data['username'])
-        if user.exists():
-            raise forms.ValidationError(
-                _("A user with that username already exists."))
-        organization = Organization.objects.filter(
-            slug=self.cleaned_data['username'])
-        if organization.exists():
-            raise forms.ValidationError(
-                # XXX use username_label? profile vs. User?
-                _("A profile with that identifier already exists."))
-        return self.cleaned_data['username']

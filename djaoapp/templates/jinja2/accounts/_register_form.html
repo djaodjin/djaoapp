@@ -4,62 +4,18 @@
 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal"
     method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    {% if form.together_registration %}
-    <fieldset>
-        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
-        {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['new_password'], form.hide_labels) }}
-        {{ input_field(form['new_password2'], form.hide_labels) }}
-        {{ input_field(form['full_name'], form.hide_labels) }}
-        {{ input_field(form['email'], form.hide_labels) }}
-    </fieldset>
-    <fieldset>
-        <legend>{% trans %}Organization Information{% endtrans %}</legend>
-        {{ input_field(form['organization_name'], form.hide_labels) }}
-        {{ input_field(form['street_address'], form.hide_labels) }}
-        {{ input_field(form['country'], form.hide_labels) }}
-        {{ input_field(form['region'], form.hide_labels) }}
-        {{ input_field(form['locality'], form.hide_labels) }}
-        {{ input_field(form['postal_code'], form.hide_labels) }}
-        {{ input_field(form['phone'], form.hide_labels) }}
-    </fieldset>
-    {% elif form.personal_registration %}
-    <fieldset>
-        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
-        {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['email'], form.hide_labels) }}
-        {{ input_field(form['email2'], form.hide_labels) }}
-        {{ input_field(form['new_password'], form.hide_labels) }}
-        {{ input_field(form['new_password2'], form.hide_labels) }}
-    </fieldset>
-    <fieldset>
-        <legend>{% trans %}Contact Information{% endtrans %}</legend>
-        {{ input_field(form['full_name'], form.hide_labels) }}
-        {{ input_field(form['street_address'], form.hide_labels) }}
-        {{ input_field(form['country'], form.hide_labels) }}
-        {{ input_field(form['region'], form.hide_labels) }}
-        {{ input_field(form['locality'], form.hide_labels) }}
-        {{ input_field(form['postal_code'], form.hide_labels) }}
-        {{ input_field(form['phone'], form.hide_labels) }}
-    </fieldset>
-    {% elif form.user_registration %}
-        {{ input_field(form['full_name'], form.hide_labels) }}
-        {{ input_field(form['email'], form.hide_labels) }}
-        {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['new_password'], form.hide_labels) }}
-        {{ input_field(form['new_password2'], form.hide_labels) }}
-    {% else %}
-    {% for name, field in form|iterfields %}
-      {{ input_field(form[name], form.hide_labels, extra_label_classes="col-sm-4", extra_control_classes="col-sm-8") }}
-    {% endfor %}
-    {% endif %}
+    {{ input_field(form['full_name'], form.hide_labels) }}
+    {{ input_field(form['email'], form.hide_labels) }}
+    {{ input_field(form['username'], form.hide_labels) }}
+    {{ input_field(form['new_password'], form.hide_labels) }}
+    {{ input_field(form['new_password2'], form.hide_labels) }}
     <div class="row">
-    <div{% if not form.street_address %} class="offset-sm-4 col-sm-8"{% endif %}>
+      <div>
         <p>
 {% trans %}By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
         </p>
         <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
-    </div>
+      </div>
     </div>
 </form>
 {% endblock %}

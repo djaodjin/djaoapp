@@ -22,8 +22,7 @@ from signup.views.auth import (
 from rules.mixins import AppMixin
 
 from ..compat import reverse
-from ..forms.custom_signup import (ActivationForm, PersonalRegistrationForm,
-    SigninForm, SignupForm, TogetherRegistrationForm)
+from ..forms.custom_signup import ActivationForm, SigninForm, SignupForm
 from ..thread_locals import get_current_broker
 from ..mixins import RegisterMixin
 
@@ -118,11 +117,6 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     form_class = SignupForm
     user_model = get_user_model()
-    role_extra_fields = (('role_function', 'Function', False),)
-    organization_extra_fields = (
-        ('organization_parent_corporation', 'Parent corporation', False),
-        ('organization_dba_name', 'Doing Business As', False),
-    )
 
     def form_invalid(self, form):
         #pylint:disable=protected-access
@@ -152,24 +146,29 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     def get_initial(self):
         kwargs = super(SignupView, self).get_initial()
-        if self.app:
-            if self.app.registration in [self.app.PERSONAL_REGISTRATION,
-                                         self.app.TOGETHER_REGISTRATION]:
-                broker = get_current_broker()
-                kwargs.update({'country': broker.country,
-                               'region': broker.region})
-                if self.app.registration == self.app.TOGETHER_REGISTRATION:
-                    kwargs.update({'extra_fields': (self.role_extra_fields
-                        + self.organization_extra_fields)})
+        broker = get_current_broker()
+        kwargs.update({
+            'country': broker.country,
+            'region': broker.region
+        })
         return kwargs
 
-    def get_form_class(self):
-        if self.app:
+    def get_form_kwargs(self):
+        kwargs = super(SignupView, self).get_form_kwargs()
+        if self.app and self.app.registration == self.app.PERSONAL_REGISTRATION:
+            kwargs.update({'force_required': True})
+        return kwargs
+
+    def get_template_names(self):
+        register_path = self.kwargs.get('path', None)
+        if not register_path and self.app:
             if self.app.registration == self.app.PERSONAL_REGISTRATION:
-                return PersonalRegistrationForm
+                register_path = 'personal'
             elif self.app.registration == self.app.TOGETHER_REGISTRATION:
-                return TogetherRegistrationForm
-        return super(SignupView, self).get_form_class()
+                register_path = 'organization'
+        if register_path:
+            return ['accounts/register/%s.html' % register_path]
+        return super(SignupView, self).get_template_names()
 
     def register(self, **cleaned_data):
         #pylint:disable=too-many-boolean-expressions

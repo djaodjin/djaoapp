@@ -823,6 +823,18 @@
 },
 {
     "fields": {
+      "slug": "registration-card3",
+      "email": "registration+card3@localhost.localdomain",
+      "full_name": "Registration Card 3",
+      "created_at": "2019-01-01T00:00:00-09:00",
+      "processor": 1,
+      "is_active": 1,
+      "extra": "Register and personal/organization profile already exists (Failures)"
+    },
+    "model": "saas.Organization", "pk": 16
+},
+{
+    "fields": {
       "created_at": "2012-09-14T14:16:55-09:00",
       "role_description": 1,
       "organization": 14,
