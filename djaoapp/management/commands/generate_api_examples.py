@@ -2,6 +2,7 @@
 # see LICENSE
 
 import json, logging, re
+from hashlib import sha256
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -23,18 +24,44 @@ class Command(BaseCommand):
         parser.add_argument('--provider',
             action='store', dest='provider', default=settings.APP_NAME,
             help='create sample subscribers on this provider')
+        parser.add_argument('--errors', action='store_true', default=False,
+            help='toggle errors')
 
     def handle(self, *args, **options):
         formatted_examples = []
-        api_base_url = getattr(settings, 'API_BASE_URL', '/api')
+        api_base_url = getattr(settings, 'API_BASE_URL', 'https://djaodjin.com/api')
         generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
         schema = generator.get_schema(request=None, public=True)
+        descr_hashes = []
         for path, path_details in schema.paths.items():
             for func, func_details in path_details.items():
                 try:
                     func_tags, description, examples = split_descr_and_examples(
                         func_details, api_base_url=api_base_url)
-                    formatted_examples += format_examples(examples)
+                    fe = format_examples(examples)
+                    hsh = sha256(func_details.description.encode()).hexdigest()
+                    errors = []
+                    if fe[0]['path']:
+                        if 'responds' not in func_details.description and func != 'DELETE':
+                            errors.append('missing-response')
+                    else:
+                        fe[0]['path'] = path
+                        fe[0]['func'] = func
+                        if not description and not examples:
+                            errors.append('undocumented')
+                        else:
+                            errors.append('parsing')
+                    if hsh in descr_hashes:
+                        errors.append('duplicate-description')
+                    else:
+                        descr_hashes.append(hsh)
+                    if options['errors']:
+                        if errors:
+                            fe[0]['errors'] = errors
+                            formatted_examples += fe
+                    else:
+                        if not errors:
+                            formatted_examples += fe
                 except AttributeError:
                     pass
         self.stdout.write(json.dumps(formatted_examples, indent=2))
