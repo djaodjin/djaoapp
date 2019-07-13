@@ -1,98 +1,103 @@
 {% extends "app.html" %}
 
 {% block help_content %}
-<div class="container">
-    <div class="about-us">
-        <div class="row">
-            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
-                <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
+    <div class="container">
+        <div class="about-us">
+            <div class="row">
+                <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
+                    <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
+                </div>
+                <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
+                    <dl>
+                        <dt>{% trans %}What is this page?{% endtrans %}</dt>
+                        <dd>
+                            {% trans %}By default a newly subscribed user or a user signing back in will land on this page. You can easily edit this landling page.{% endtrans %}
+                        </dd>
+                    </dl>
+                </div>
             </div>
-            <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
-                <dl>
-                    <dt>{% trans %}What is this page?{% endtrans %}</dt>
-                    <dd>
-{% trans %}By default a newly subscribed user or a user signing back in will land on this page. You can easily edit this landling page.{% endtrans %}
-                    </dd>
-                </dl>
+        </div>
+
+        {% if FEATURES_DEBUG %}
+            <div class="about-us">
+                <div class="row">
+                    <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
+                        <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
+                    </div>
+                    <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
+                        <dl>
+                            <dt>{% trans %}Upload Paid Content{% endtrans %}</dt>
+                            <dd>
+                                <div class="dj-upload">
+                                    <div class="documentation dropzone-previews previewsContainer">
+                                        <span class="dz-default dz-message">
+                                            {% trans %}Drag-n-drop or click to upload the paid content you wish to distribute here (PDF file).{% endtrans %}
+                                        </span>
+                                        <div class="fallback">
+                                            <input name="file" type="file" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="about-us">
+            <div class="row">
+                <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
+                    <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
+                </div>
+                <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
+                    <dl>
+                        <dt>{% trans %}Go further. Run a full-fledge session proxy{% endtrans %}</dt>
+                        <dd>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div>
+                                        <h4>{% trans %}Session Data{% endtrans %}</h4>
+                                        <pre class="code">
+                                            <code>
+                                                {{forward_session}}
+                                            </code>
+                                        </pre>
+                                    </div>
+                                    <div>
+                                        <h4>{% trans %}As HTTP Cookie Header{% endtrans %}</h4>
+                                        <pre class="code">
+                                            <code>
+                                                {{forward_session_cookie}}
+                                            </code>
+                                        </pre>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{% trans %}Forwarding requests{% endtrans %}</h4>
+                                    <p>
+                                        {% trans %}To forward HTTP requests to your application instead of showing the landing page:{% endtrans %}
+                                        <ol>
+                                            <li>
+                                                {% trans rules_url=urls.rules.app %}Check <em>forward</em> for the /app/ rule in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}
+                                            </li>
+                                            <li>
+                                                {% trans rules_url=urls.rules.app %}Create a session encryption secret key in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}
+                                            </li>
+                                            <li>
+                                                {% trans %}<a href="https://djaodjin.com/docs/" target="_blank">Integrate session decryption code</a> at the front of your application request processing pipeline.{% endtrans %}
+                                            </li>
+                                        </ol>
+                                    </p>
+                                    <p>
+                                        {% trans %}For any questions, please, feel free to <a href="/contact/">contact us</a>.{% endtrans %}
+                                    </p>
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
             </div>
         </div>
     </div>
-
-    {% if FEATURES_DEBUG %}
-    <div class="about-us">
-        <div class="row">
-            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
-                <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
-            </div>
-            <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
-                <dl>
-                    <dt>{% trans %}Upload Paid Content{% endtrans %}</dt>
-                    <dd>
-                        <div class="dj-upload">
-                            <div class="documentation dropzone-previews previewsContainer">
-                                <span class="dz-default dz-message">
-{% trans %}Drag-n-drop or click to upload the paid content you wish to distribute here (PDF file).{% endtrans %}
-                                </span>
-                                <div class="fallback">
-                                    <input name="file" type="file" />
-                                </div>
-                            </div>
-                        </div>
-                    </dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <div class="about-us">
-        <div class="row">
-            <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2">
-                <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
-            </div>
-            <div class="col-xs-11 col-sm-10 col-md-10 col-lg-10">
-                <dl>
-                    <dt>{% trans %}Go further. Run a full-fledge session proxy{% endtrans %}</dt>
-                    <dd>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div>
-                                    <h4>{% trans %}Session Data{% endtrans %}</h4>
-                                    <pre class="code">
-                                        <code>
-                                            {{forward_session}}
-                                        </code>
-                                    </pre>
-                                </div>
-                                <div>
-                                    <h4>{% trans %}As HTTP Cookie Header{% endtrans %}</h4>
-                                    <pre class="code">
-                                        <code>
-                                            {{forward_session_cookie}}
-                                        </code>
-                                    </pre>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>{% trans %}Forwarding requests{% endtrans %}</h4>
-                                <p>
-{% trans %}To forward HTTP requests to your application instead of showing the landing page:{% endtrans %}
-<ol>
-<li>{% trans rules_url=urls.rules.app %}Check <em>forward</em> for the /app/ rule in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}</li>
-<li>{% trans rules_url=urls.rules.app %}Create a session encryption secret key in the <a href="{{rules_url}}">rules dashboard</a>.{% endtrans %}</li>
-<li>{% trans %}<a href="https://djaodjin.com/docs/" target="_blank">Integrate session decryption code</a> at the front of your application request processing pipeline.{% endtrans %}</li>
-</ol>
-                                </p>
-                                <p>
-{% trans %}For any questions, please, feel free to <a href="/contact/">contact us</a>.{% endtrans %}
-                                </p>
-                            </div>
-                        </div>
-                    </dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-
-</div>
 {% endblock %}
