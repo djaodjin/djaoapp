@@ -68,12 +68,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in slug, full_name, email, phone,
@@ -82,24 +84,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by u, r
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -184,12 +190,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in slug, full_name, email, phone,
@@ -198,24 +206,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by u, r
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -296,36 +308,42 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: o
           in: query
           description: sort by first_name, last_name, email, created_at
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in first_name, last_name, email
           required: false
           schema:
             type: string
+          example: query
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -642,6 +660,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   /auth/tokens/verify/:
     post:
       operationId: auth_tokens_verify_create
@@ -758,24 +777,28 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: o
           in: query
           description: sort by description, amount, Full name, created_at
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in description, processor_key,
@@ -783,12 +806,14 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -866,6 +891,7 @@ paths:
         required: true
         schema:
           type: string
+        example: ch_XAb124EF
   "/billing/charges/{charge}/email/":
     post:
       operationId: billing_charges_email_create
@@ -912,6 +938,7 @@ paths:
         required: true
         schema:
           type: string
+        example: ch_XAb124EF
   "/billing/charges/{charge}/refund/":
     post:
       operationId: billing_charges_refund_create
@@ -990,6 +1017,7 @@ paths:
         required: true
         schema:
           type: string
+        example: ch_XAb124EF
   /billing/transactions/:
     get:
       operationId: billing_transactions_list
@@ -1057,12 +1085,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in descr, orig_organization__full_name,
@@ -1070,6 +1100,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by description, amount, dest_organization, dest_account,
@@ -1077,18 +1108,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -1159,6 +1193,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/bank/":
     get:
       operationId: billing_bank_read
@@ -1210,6 +1245,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/card/":
     get:
       operationId: billing_card_read
@@ -1330,6 +1366,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/checkout/":
     get:
       operationId: billing_checkout_read
@@ -1482,6 +1519,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/billing/{organization}/coupons/":
     get:
       operationId: billing_coupons_list
@@ -1548,12 +1586,14 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in code, description, percent,
@@ -1561,24 +1601,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: start_at
           in: query
           description: date/time in ISO format after which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -1643,6 +1687,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/coupons/{coupon}/":
     get:
       operationId: billing_coupons_read
@@ -1767,11 +1812,13 @@ paths:
         required: true
         schema:
           type: string
+        example: DIS100
       - name: organization
         in: path
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/history/":
     get:
       operationId: billing_history_list
@@ -1840,12 +1887,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in descr, orig_organization__full_name,
@@ -1853,6 +1902,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by description, amount, dest_organization, dest_account,
@@ -1860,18 +1910,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -1903,6 +1956,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/billing/{organization}/receivables/":
     get:
       operationId: billing_receivables_list
@@ -1973,12 +2027,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in descr, orig_organization__full_name,
@@ -1986,6 +2042,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by description, amount, dest_organization, dest_account,
@@ -1993,18 +2050,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -2036,6 +2096,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/transfers/":
     get:
       operationId: billing_transfers_list
@@ -2104,12 +2165,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in descr, orig_organization__full_name,
@@ -2117,6 +2180,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by description, amount, dest_organization, dest_account,
@@ -2124,18 +2188,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -2167,6 +2234,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/billing/{organization}/transfers/import/":
     post:
       operationId: billing_transfers_import_create
@@ -2213,6 +2281,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   /cart/:
     post:
       operationId: cart_create
@@ -2390,7 +2459,7 @@ paths:
 
         .. code-block:: http
 
-            POST /api/cart/:plan/upload/ HTTP/1.1
+            POST /api/cart/basic/upload/ HTTP/1.1
 
             Content-Disposition: form-data; name="file"; filename="names.csv"
             Content-Type: text/csv
@@ -2436,6 +2505,7 @@ paths:
         required: true
         schema:
           type: string
+        example: basic
   "/contacts/{user}/activities/":
     get:
       operationId: contacts_activities_list
@@ -2477,18 +2547,21 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: Which field to use when ordering the results.
           required: false
           schema:
             type: string
+          example: created_at
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -2554,6 +2627,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/legal/{agreement}/sign/":
     post:
       operationId: legal_sign_create
@@ -2579,6 +2653,7 @@ paths:
         required: true
         schema:
           type: string
+        example: slug
   "/metrics/balances/{report}/":
     get:
       operationId: metrics_balances_read
@@ -2633,6 +2708,7 @@ paths:
         required: true
         schema:
           type: string
+        example: taxes
   "/metrics/balances/{report}/lines/":
     get:
       operationId: metrics_balances_lines_list
@@ -2670,6 +2746,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -2765,6 +2842,7 @@ paths:
           type: string
           format: slug
           pattern: ^[-a-zA-Z0-9_]+$
+        example: taxes
   "/metrics/balances/{report}/lines/{rank}/":
     get:
       operationId: metrics_balances_lines_read
@@ -2894,11 +2972,13 @@ paths:
         required: true
         schema:
           type: string
+        example: 1
       - name: report
         in: path
         required: true
         schema:
           type: string
+        example: taxes
   /metrics/registered/:
     get:
       operationId: metrics_registered_list
@@ -2955,36 +3035,42 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: o
           in: query
           description: sort by first_name, last_name, email, created_at
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in first_name, last_name, email
           required: false
           schema:
             type: string
+          example: query
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3088,12 +3174,14 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -3104,24 +3192,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: start_at
           in: query
           description: date/time in ISO format after which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3153,6 +3245,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/balances/":
     get:
       operationId: metrics_balances_list
@@ -3237,18 +3330,21 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3280,6 +3376,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/churned/":
     get:
       operationId: metrics_churned_list
@@ -3348,12 +3445,14 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -3364,12 +3463,14 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3401,6 +3502,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/coupons/{coupon}/":
     get:
       operationId: metrics_coupons_read
@@ -3464,11 +3566,13 @@ paths:
         required: true
         schema:
           type: string
+        example: DIS100
       - name: organization
         in: path
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/customers/":
     get:
       operationId: metrics_customers_list
@@ -3584,18 +3688,21 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3627,6 +3734,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/funds/":
     get:
       operationId: metrics_funds_list
@@ -3742,18 +3850,21 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3785,6 +3896,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/metrics/{organization}/plans/":
     get:
       operationId: metrics_plans_list
@@ -3893,18 +4005,21 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -3936,6 +4051,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/notifications/{template}/":
     post:
       operationId: notifications_create
@@ -3960,6 +4076,7 @@ paths:
         required: true
         schema:
           type: string
+        example: contact_requested_notice
   /profile/:
     get:
       operationId: profile_list
@@ -4017,12 +4134,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in slug, full_name, email, phone,
@@ -4031,24 +4150,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by u, r
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -4247,6 +4370,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/profile/{organization}/plans/":
     get:
       operationId: profile_plans_list
@@ -4289,30 +4413,35 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: o
           in: query
           description: sort by title, period_amount, is_active, created_at
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -4389,6 +4518,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/profile/{organization}/plans/{plan}/":
     get:
       operationId: profile_plans_read
@@ -4542,11 +4672,13 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: plan
         in: path
         required: true
         schema:
           type: string
+        example: open-space
   "/profile/{organization}/plans/{plan}/subscriptions/":
     get:
       operationId: profile_plans_subscriptions_list
@@ -4583,12 +4715,14 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -4599,24 +4733,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: start_at
           in: query
           description: date/time in ISO format after which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -4697,6 +4835,7 @@ paths:
           required: false
           schema:
             type: boolean
+          example: true
       requestBody:
         content:
           application/json:
@@ -4718,11 +4857,13 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: plan
         in: path
         required: true
         schema:
           type: string
+        example: premium
   "/profile/{organization}/plans/{plan}/subscriptions/{subscriber}/":
     get:
       operationId: profile_plans_subscriptions_read
@@ -4843,16 +4984,19 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: plan
         in: path
         required: true
         schema:
           type: string
+        example: open-space
       - name: subscriber
         in: path
         required: true
         schema:
           type: string
+        example: xia
   "/profile/{organization}/roles/":
     get:
       operationId: profile_roles_list
@@ -4907,12 +5051,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -4921,6 +5067,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by full_name, username, role_name, grant_key, request_key,
@@ -4928,18 +5075,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -4971,6 +5121,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/profile/{organization}/roles/describe/":
     get:
       operationId: profile_roles_describe_list
@@ -5031,6 +5182,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -5131,6 +5283,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/profile/{organization}/roles/describe/{role}/":
     get:
       operationId: profile_roles_describe_read
@@ -5308,11 +5461,13 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: role
         in: path
         required: true
         schema:
           type: string
+        example: manager
   "/profile/{organization}/roles/{role}/":
     get:
       operationId: profile_roles_read
@@ -5404,6 +5559,7 @@ paths:
           required: false
           schema:
             type: boolean
+          example: true
       requestBody:
         content:
           application/json:
@@ -5425,11 +5581,13 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: role
         in: path
         required: true
         schema:
           type: string
+        example: manager
   "/profile/{organization}/roles/{role}/{user}/":
     post:
       operationId: profile_roles_resend_email
@@ -5509,16 +5667,19 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: role
         in: path
         required: true
         schema:
           type: string
+        example: manager
       - name: user
         in: path
         required: true
         schema:
           type: string
+        example: xia
   "/profile/{organization}/subscribers/":
     get:
       operationId: profile_subscribers_list
@@ -5555,12 +5716,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in slug, full_name, email, phone,
@@ -5569,24 +5732,28 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by u, r
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -5618,6 +5785,7 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
   "/profile/{organization}/subscribers/accept/{request_key}/":
     put:
       operationId: profile_subscribers_accept_update
@@ -5662,11 +5830,13 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
       - name: request_key
         in: path
         required: true
         schema:
           type: string
+        example: abcdef12
   "/profile/{organization}/subscriptions/":
     get:
       operationId: profile_subscriptions_list
@@ -5727,12 +5897,14 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -5743,12 +5915,14 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -5809,6 +5983,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/profile/{organization}/subscriptions/{subscribed_plan}/":
     get:
       operationId: profile_subscriptions_read
@@ -5929,11 +6104,13 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: subscribed_plan
         in: path
         required: true
         schema:
           type: string
+        example: open-space
   /proxy/:
     get:
       operationId: proxy_read
@@ -6063,6 +6240,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -6100,6 +6278,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -6203,6 +6382,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -6268,6 +6448,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -6485,6 +6666,7 @@ paths:
         required: true
         schema:
           type: string
+        example: app
   "/proxy/sessions/{user}/":
     get:
       operationId: proxy_sessions_read
@@ -6524,6 +6706,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   /themes/:
     post:
       operationId: themes_create
@@ -6700,6 +6883,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   /themes/editables/:
     get:
       operationId: themes_editables_list
@@ -6711,6 +6895,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -6772,6 +6957,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   "/themes/editables/attach{path}":
     post:
       operationId: themes_editables_attach_create
@@ -6793,6 +6979,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   "/themes/editables/mirror{path}/":
     post:
       operationId: themes_editables_mirror_create
@@ -6816,6 +7003,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   /themes/editables/relationship/:
     get:
       operationId: themes_editables_relationship_list
@@ -6911,6 +7099,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   "/themes/editables/{slug}/add-tags/":
     put:
       operationId: themes_editables_add-tags_update
@@ -6986,6 +7175,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   "/themes/editables/{slug}/remove-tags/":
     put:
       operationId: themes_editables_remove-tags_update
@@ -7065,6 +7255,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   /themes/sitecss:
     get:
       operationId: themes_sitecss_list
@@ -7076,6 +7267,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -7195,6 +7387,7 @@ paths:
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -7290,6 +7483,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   "/themes/sources/{page}":
     get:
       operationId: themes_sources_read
@@ -7351,6 +7545,7 @@ paths:
         required: true
         schema:
           type: string
+        example: "TODO"
   /users/:
     get:
       operationId: users_list
@@ -7417,18 +7612,21 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: Which field to use when ordering the results.
           required: false
           schema:
             type: string
+          example: created_at
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -7631,6 +7829,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/users/{user}/accessibles/":
     get:
       operationId: users_accessibles_list
@@ -7675,12 +7874,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: ends_at
           in: query
           description: date/time in ISO format before which records were created.
           required: false
           schema:
             type: string
+          example: "2014-01-01T00:00:00Z"
         - name: q
           in: query
           description: search for matching text in organization__slug,
@@ -7689,6 +7890,7 @@ paths:
           required: false
           schema:
             type: string
+          example: query
         - name: o
           in: query
           description: sort by full_name, username, role_name, grant_key, request_key,
@@ -7696,18 +7898,21 @@ paths:
           required: false
           schema:
             type: string
+          example: created_at
         - name: ot
           in: query
           description: sort by natural ascending or descending order
           required: false
           schema:
             type: string
+          example: desc
         - name: page
           in: query
           description: A page number within the paginated result set.
           required: false
           schema:
             type: integer
+          example: 1
       responses:
         "200":
           description: ""
@@ -7778,6 +7983,7 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
   "/users/{user}/accessibles/accept/{verification_key}/":
     put:
       operationId: users_accessibles_accept_update
@@ -7837,11 +8043,13 @@ paths:
         required: true
         schema:
           type: string
+        example: xia
       - name: verification_key
         in: path
         required: true
         schema:
           type: string
+        example: 0123456789abcef
   "/users/{user}/accessibles/{role}/":
     get:
       operationId: users_accessibles_read
@@ -7939,11 +8147,13 @@ paths:
         required: true
         schema:
           type: string
+        example: manager
       - name: user
         in: path
         required: true
         schema:
           type: string
+        example: xia
   "/users/{user}/accessibles/{role}/{organization}/":
     post:
       operationId: users_accessibles_role_org_create
@@ -8023,16 +8233,19 @@ paths:
         required: true
         schema:
           type: string
+        example: cowork
       - name: role
         in: path
         required: true
         schema:
           type: string
+        example: manager
       - name: user
         in: path
         required: true
         schema:
           type: string
+        example: xia
   "/users/{user}/activate/":
     post:
       operationId: users_activate_create
@@ -8088,6 +8301,7 @@ paths:
         required: true
         schema:
           type: string
+        example: donny
   "/users/{user}/api-keys/":
     post:
       operationId: users_api-keys_create
@@ -8136,6 +8350,7 @@ paths:
         required: true
         schema:
           type: string
+        example: donny
   "/users/{user}/notifications/":
     put:
       operationId: users_notifications_update
@@ -8217,6 +8432,7 @@ paths:
         required: true
         schema:
           type: string
+        example: donny
   "/users/{user}/password/":
     put:
       operationId: users_password_update
@@ -8286,6 +8502,7 @@ paths:
         required: true
         schema:
           type: string
+        example: donny
   "/users/{user}/ssh-keys/":
     put:
       operationId: users_ssh-keys_update
@@ -8335,6 +8552,7 @@ paths:
         required: true
         schema:
           type: string
+        example: donny
 servers:
   - url: /api
 components:
