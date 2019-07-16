@@ -7,7 +7,7 @@ from operator import itemgetter
 
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
 from saas.models import Charge
@@ -37,9 +37,9 @@ class UserProfileAPIView(UserProfileBaseAPIView):
     .. code-block:: json
 
         {
-         "username": "donny",
-         "email": "donny.smith@example.com"
-         "full_name": "Donny Smith"
+          "username": "donny",
+          "email": "donny.smith@locahost.localdomain",
+          "full_name": "Donny Smith"
         }
     """
     def perform_destroy(self, instance):
@@ -52,10 +52,39 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         super(UserProfileAPIView, self).perform_destroy(instance)
 
 
-class RecentActivityAPIView(GenericAPIView):
+class RecentActivityAPIView(ListAPIView):
+    """
+    Retrieves recently active users
+
+    **Tags: metrics
+
+    **Example
+
+    .. code-block:: http
+
+        GET /api/proxy/recent/ HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+        {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+            {
+              "printable_name": "Alice Cooper",
+              "descr": "recently logged in",
+              "created_at": "2019-07-15T20:40:29.509572Z",
+              "slug": "alice"
+            }
+          ]
+        }
+    """
     serializer_class = ActivitySerializer
 
-    def get(self, request, *args, **kwargs):
+    def get_queryset(self):
         start_at = day_periods()[0]
         users = get_user_model().objects.filter(
             last_login__gt=start_at).order_by('-last_login')[:5]
@@ -79,5 +108,4 @@ class RecentActivityAPIView(GenericAPIView):
                 # TODO 404 for some of the slugs
                 'slug': charge.customer.slug}
         data = sorted(data.values(), key=itemgetter('printable_name'))
-        return Response({'results':
-            self.get_serializer(data, many=True).data})
+        return data

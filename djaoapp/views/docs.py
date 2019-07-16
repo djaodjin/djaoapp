@@ -151,8 +151,9 @@ def format_examples(examples):
     # in_respoonse
     IN_URL_STATE = 0
     IN_REQUEST_PARAMS_STATE = 1
-    IN_RESPONSE_STATE = 2
-    IN_RESPONSE_EXAMPLE_STATE = 3
+    IN_REQUEST_PARAMS_EXAMPLE_STATE = 2
+    IN_RESPONSE_STATE = 3
+    IN_RESPONSE_EXAMPLE_STATE = 4
 
     formatted_examples = []
     state = IN_URL_STATE
@@ -162,7 +163,7 @@ def format_examples(examples):
     resp = ""
     for line in examples.splitlines():
         line = line.strip()
-        look = re.match(r'(GET|POST|PUT|PATCH)\s+(\S+)\s+HTTP', line)
+        look = re.match(r'(GET|POST|PUT|PATCH|DELETE)\s+(\S+)\s+HTTP', line)
         if look:
             func = look.group(1)
             path = look.group(2)
@@ -176,13 +177,21 @@ def format_examples(examples):
             continue
         look = re.match('.. code-block::', line)
         if look:
+            if state == IN_REQUEST_PARAMS_STATE:
+                state = IN_REQUEST_PARAMS_EXAMPLE_STATE
             if state == IN_RESPONSE_STATE:
                 state = IN_RESPONSE_EXAMPLE_STATE
             continue
-        if state == IN_REQUEST_PARAMS_STATE:
-            request_params += line
+        if state == IN_REQUEST_PARAMS_EXAMPLE_STATE:
+            if not request_params or line.strip():
+                request_params += line
+            else:
+                state = IN_REQUEST_PARAMS_STATE
         elif state == IN_RESPONSE_EXAMPLE_STATE:
-            resp += line
+            if not resp or line.strip():
+                resp += line
+            else:
+                state = IN_RESPONSE_STATE
     formatted_example = {'func': func, 'path': path}
     if request_params:
         try:
@@ -256,7 +265,7 @@ def split_descr_and_examples(func_details, api_base_url=None):
             in_examples = True
             sep = ""
         elif in_examples:
-            for method in ('GET', 'POST', 'PUT', 'PATCH'):
+            for method in ('GET', 'POST', 'PUT', 'PATCH', 'DELETE'):
                 look = re.match(r'.* (%s /api)' % method, line)
                 if look:
                     line = line.replace(look.group(1),
