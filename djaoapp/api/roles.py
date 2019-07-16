@@ -57,7 +57,7 @@ class RoleListAPIView(RoleListBaseAPIView):
                     },
                     "request_key": "1",
                     "grant_key": null
-                },
+                }
             ]
         }
     """
