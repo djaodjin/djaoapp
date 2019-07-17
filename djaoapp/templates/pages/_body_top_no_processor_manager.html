@@ -1,1 +1,8 @@
-<div id="testing-banner" style="position:relative;width: 100%;background: #d4dae0 url('/static/img/construction-banner.png') 50% 0 repeat-x;text-align: center;padding:12px 10px 10px 10px;color: #444;z-index:99999;opacity:0.9;border-bottom:1px solid #444;font-size:11px;">{% trans %}LIVE MODE - To create live charges, <a id="connect-link" href="{{urls.provider.bank}}" style="color:#e43;text-decoration:underline;">connect a Stripe account &raquo;</a>{% endtrans %}</div>
+<div id="testing-banner" style="position:relative;width: 100%;background: #d4dae0 url('/static/img/construction-banner.png') 50% 0 repeat-x;text-align: center;padding:12px 10px 10px 10px;color: #444;z-index:99999;opacity:0.9;border-bottom:1px solid #444;font-size:11px;">
+    {% trans %}
+        LIVE MODE - To create live charges, 
+        <a id="connect-link" href="{{urls.provider.bank}}" style="color:#e43;text-decoration:underline;">
+            connect a Stripe account &raquo;
+        </a>
+    {% endtrans %}
+</div>

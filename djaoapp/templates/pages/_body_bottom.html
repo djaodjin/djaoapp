@@ -1,5 +1,5 @@
 {% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+    <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
 
 {# Scripts that need to be injected into the page actually being edited #}
@@ -69,29 +69,29 @@ jQuery(document).ready(function($) {
 
 {# For the template code editors #}
 {% if templates %}
-<script type="text/javascript">
-templateNames = {{templates|safe}};
-</script>
+    <script type="text/javascript">
+        templateNames = {{templates|safe}};
+    </script>
 {% endif %}
 
 {# For the style editors #}
 <script type="text/javascript">
-less = {
-    env: "development",
-    async: false,
-    fileAsync: false,
-    functions: {},
-    dumpLineNumbers: "comments",
-    onReady: false,
-    relativeUrls: false,
-    {% if access_key %}
-    rootpath: "{{urls.edit.api_medias}}{{media_prefix}}{% if media_prefix %}/{% endif %}"
-    {% else %}
-    rootpath: "/static/cache/"
-    {% endif %}
-};
+    less = {
+        env: "development",
+        async: false,
+        fileAsync: false,
+        functions: {},
+        dumpLineNumbers: "comments",
+        onReady: false,
+        relativeUrls: false,
+        {% if access_key %}
+            rootpath: "{{urls.edit.api_medias}}{{media_prefix}}{% if media_prefix %}/{% endif %}"
+        {% else %}
+            rootpath: "/static/cache/"
+        {% endif %}
+    };
 </script>
 
 {% assets "js_pages" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
+    <script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}
