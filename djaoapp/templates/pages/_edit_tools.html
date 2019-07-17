@@ -1,5 +1,5 @@
 {% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+  <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
 {% endassets %}
 
 {# media editors #}
@@ -32,7 +32,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4>{% trans %}Preview{% endtrans %}</h4>
         </div>
         <div class="modal-body" style="padding:0;">
@@ -41,53 +43,53 @@
     </div>
   </div>
   <script type="text/javascript">
-jQuery(document).ready(function($) {
-  $(".dj-upload").djupload({
-    uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
-  });
+    jQuery(document).ready(function($) {
+      $(".dj-upload").djupload({
+        uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
+      });
 
-  $(".dj-gallery").djgallery({
-    mediaUrl: "{{urls.edit.api_medias}}",
-    {% if urls.edit.media_upload %}
-    S3DirectUploadUrl: "{{urls.edit.media_upload}}",
-    {% endif %}
-    loadImageEvent: "gallery-opened",
+      $(".dj-gallery").djgallery({
+        mediaUrl: "{{urls.edit.api_medias}}",
+        {% if urls.edit.media_upload %}
+        S3DirectUploadUrl: "{{urls.edit.media_upload}}",
+        {% endif %}
+        loadImageEvent: "gallery-opened",
 
-    saveDroppedMediaUrl: "{{urls.edit.api_page_elements}}",
-    buttonClass: "btn btn-block btn-primary",
-    mediaClass: "card thumbnail-gallery",
-    selectedMediaClass: "thumbnail-active",
-    clickableArea: ".clickable-area",
-    itemUploadProgress: function(progress){
-      $(".gallery-upload-progress").slideDown();
-      progress = progress.toFixed();
-      $(".progress-bar").css("width", progress + "%");
-      if (progress == 100){
-        $(".progress-bar").text("{% trans %}Upload completed{% endtrans %}");
-        setTimeout(function(){
-          $(".gallery-upload-progress").slideUp();
-          $(".progress-bar").text("").css("width", "0%");
-        }, 2000);
-      }
-    },
-    galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"{% trans %}tags{% endtrans %} ...\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">{% trans %}Tag{% endtrans %}</button></span></div><span class=\"dj-help-block\">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> {% trans %}Delete{% endtrans %}</button>\n",
-    galleryMessage: function(message, type){
-      if (!type){
-        type = "success";
-      }
-      showMessages([message], type);
-    },
-    previewMediaItem: function(src, type){
-      $("#modal-preview-media .modal-body").empty();
-      if (type == "video"){
-        $("#modal-preview-media .modal-body").append("<video src=\"" + src + "\" controls style=\"max-width:100%\"></video>");
-      }else{
-        $("#modal-preview-media .modal-body").append("<img src=\"" + src + "\" style=\"max-width:100%\">");
-      }
-      $("#modal-preview-media").modal('show');
-    }
-  });
-});
+        saveDroppedMediaUrl: "{{urls.edit.api_page_elements}}",
+        buttonClass: "btn btn-block btn-primary",
+        mediaClass: "card thumbnail-gallery",
+        selectedMediaClass: "thumbnail-active",
+        clickableArea: ".clickable-area",
+        itemUploadProgress: function(progress){
+          $(".gallery-upload-progress").slideDown();
+          progress = progress.toFixed();
+          $(".progress-bar").css("width", progress + "%");
+          if (progress == 100){
+            $(".progress-bar").text("{% trans %}Upload completed{% endtrans %}");
+            setTimeout(function(){
+              $(".gallery-upload-progress").slideUp();
+              $(".progress-bar").text("").css("width", "0%");
+            }, 2000);
+          }
+        },
+        galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"{% trans %}tags{% endtrans %} ...\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">{% trans %}Tag{% endtrans %}</button></span></div><span class=\"dj-help-block\">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> {% trans %}Delete{% endtrans %}</button>\n",
+        galleryMessage: function(message, type){
+          if (!type){
+            type = "success";
+          }
+          showMessages([message], type);
+        },
+        previewMediaItem: function(src, type){
+          $("#modal-preview-media .modal-body").empty();
+          if (type == "video"){
+            $("#modal-preview-media .modal-body").append("<video src=\"" + src + "\" controls style=\"max-width:100%\"></video>");
+          }else{
+            $("#modal-preview-media .modal-body").append("<img src=\"" + src + "\" style=\"max-width:100%\">");
+          }
+          $("#modal-preview-media").modal('show');
+        }
+      });
+    });
   </script>
 </div>
 
@@ -98,7 +100,7 @@ jQuery(document).ready(function($) {
   <ul class="nav nav-tabs dashboard-tab" role="tablist">
     {# tabs are inserted here #}
   </ul>
-  <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
+  <div class="tab-content" style="width: 100%; min-height:100%; display:inline;">
     {# panels are inserted here #}
   </div>
   <div id="new-source" class="modal fade"
@@ -130,9 +132,9 @@ jQuery(document).ready(function($) {
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
   <script type="text/javascript">
-jQuery(document).ready(function($) {
-    initCodeEditors("{{urls.edit.api_sources}}");
-});
+    jQuery(document).ready(function($) {
+        initCodeEditors("{{urls.edit.api_sources}}");
+    });
   </script>
 </div>
 
@@ -157,45 +159,45 @@ jQuery(document).ready(function($) {
   <div class="ace_editor ace-monokai ace_dark" style="padding-left:20px;">
   <form id="editable-styles-form" class="form-horizontal content">
     {% for section_name,section_attributes in editable_styles %}
-    <fieldset>
-      <h3>{{section_name}}</h3>
-      {% for attribute in section_attributes %}
-      <div class="row">
-        <label for="style_attribute_{{section_name}}_{{loop.index}}"
-               class="dj-style-label">{{attribute.property}}</label>
-        <div class="dj-style-input-wrap">
-          <input id="style_attribute_{{section_name}}_{{loop.index}}"
-                 name="{{attribute.property}}"
-                 type="text"
-                 class="dj-input"
-                 {% if attribute.editor %}
-                 data-dj-style-variable-editor="{{attribute.editor}}"
-                 {% else %}
-                 data-dj-style-variable-editor=""
-                 {% endif %}
-                 value="{{attribute.value}}" />
-        </div>
-        <div class="dj-style-button-wrap">
-          <button class="btn btn-secondary style-reset-button"
-                  title="reset to default"
-                  data-target="style_attribute_{{section_name}}_{{loop.index}}"
-                  data-reset-value="{{attribute.default}}"
-                  type="button"><i class="fa fa-undo"></i></button>
-        </div>
-      </div>
-      {% endfor %}
-    </fieldset>
+      <fieldset>
+        <h3>{{section_name}}</h3>
+        {% for attribute in section_attributes %}
+          <div class="row">
+            <label for="style_attribute_{{section_name}}_{{loop.index}}"
+                  class="dj-style-label">{{attribute.property}}</label>
+            <div class="dj-style-input-wrap">
+              <input id="style_attribute_{{section_name}}_{{loop.index}}"
+                    name="{{attribute.property}}"
+                    type="text"
+                    class="dj-input"
+                    {% if attribute.editor %}
+                    data-dj-style-variable-editor="{{attribute.editor}}"
+                    {% else %}
+                    data-dj-style-variable-editor=""
+                    {% endif %}
+                    value="{{attribute.value}}" />
+            </div>
+            <div class="dj-style-button-wrap">
+              <button class="btn btn-secondary style-reset-button"
+                      title="reset to default"
+                      data-target="style_attribute_{{section_name}}_{{loop.index}}"
+                      data-reset-value="{{attribute.default}}"
+                      type="button"><i class="fa fa-undo"></i></button>
+            </div>
+          </div>
+        {% endfor %}
+      </fieldset>
     {% endfor  %}
   </form>
   </div>
   <script type="text/javascript">
-jQuery(document).ready(function($) {
-  $("#style-editor").djstyles({
-      api_less_overrides: "{{urls.edit.api_less_overrides}}",
-      api_sitecss: "{{urls.edit.api_sitecss}}",
-      iframe_view: $("iframe.edited-page").get(0)
-  });
-});
+    jQuery(document).ready(function($) {
+      $("#style-editor").djstyles({
+          api_less_overrides: "{{urls.edit.api_less_overrides}}",
+          api_sitecss: "{{urls.edit.api_sitecss}}",
+          iframe_view: $("iframe.edited-page").get(0)
+      });
+    });
   </script>
 </div>
 {% endif %}
@@ -206,41 +208,46 @@ jQuery(document).ready(function($) {
 {# that transit through the proxy. The CSS must thus be self-contained.       #}
 {# Classes are solely used by the Javascript code to pick HTML nodes to layer #}
 {# UI functionality, and not for layout purposes.                             #}
+
 <div style="display:inline-block;vertical-align:middle;position:fixed;top:200px;right:-1px;z-index:10000;color: #fff;background-color: #337ab7;" class="btn-group-vertical btn-group-sm btn-tools" role="group" aria-label="...">
   <a id="toggle-media-gallery" class="btn btn-primary"
           style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: 0;border-top-right-radius:4px;border-top-left-radius:4px;border-bottom-right-radius:0;border-bottom-left-radius:0;"
           data-target="#media-gallery" data-default-width="300" data-intro="{% trans %}Image gallery{% endtrans %}" data-position="left">
     <img src="{{'/static/img/fa-picture.png'|djasset}}" width="22" height="22" />
   </a>
+
   {% if ENABLE_CODE_EDITOR %}
-  <a id="toggle-code-editor" class="btn btn-primary"
-          style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
-          data-target="#code-editor" data-default-width="800" data-intro="{% trans %}Code Editor{% endtrans %}" data-position="left">
-    <img src="{{'/static/img/fa-code.png'|djasset}}" width="22" height="22" />
-  </a>
+    <a id="toggle-code-editor" class="btn btn-primary"
+            style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
+            data-target="#code-editor" data-default-width="800" data-intro="{% trans %}Code Editor{% endtrans %}" data-position="left">
+      <img src="{{'/static/img/fa-code.png'|djasset}}" width="22" height="22" />
+    </a>
   {% endif %}
+
   {% if FEATURES_DEBUG %}
-  <a id="take_screenshot" href="" class="btn btn-primary screenshot"
-     style="border-radius: 0;margin: -1px 0 0 0;display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;white-space: nowrap;text-decoration: none;box-sizing: border-box;"
-     title="Report todo...">
-    <img src="{{'/static/img/fa-ambulance.png'|djasset}}" width="22" height="22" />
-  </a>
+    <a id="take_screenshot" href="" class="btn btn-primary screenshot"
+      style="border-radius: 0;margin: -1px 0 0 0;display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;white-space: nowrap;text-decoration: none;box-sizing: border-box;"
+      title="Report todo...">
+      <img src="{{'/static/img/fa-ambulance.png'|djasset}}" width="22" height="22" />
+    </a>
   {% endif %}
+
   <script type="text/javascript">
-jQuery(document).ready(function($) {
-    if( window.location !== window.top.location ) {
-        $(".btn-tools").hide();
-    } else {
-        $(".btn-tools .btn").panelButton();
-    }
-});
+    jQuery(document).ready(function($) {
+        if( window.location !== window.top.location ) {
+            $(".btn-tools").hide();
+        } else {
+            $(".btn-tools .btn").panelButton();
+        }
+    });
   </script>
 </div>
 
 {# aggregated, minified scripts #}
 {% assets "js_theme_editors" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
+  <script type="text/javascript" src="{{ASSET_URL}}"></script>
 {% endassets %}
+
 {# XXX not included in assets because issue with jsmin #}
 {#     as well as loading Ace plugins in DEBUG=0       #}
 <script type="text/javascript" src="/static/vendor/ace.js"></script>
