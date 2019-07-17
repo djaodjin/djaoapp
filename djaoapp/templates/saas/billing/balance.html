@@ -3,41 +3,41 @@
 {% block order_title %}{% trans %}Unlock your subscriptions{% endtrans %}{% endblock %}
 
 {% block no_invoicables %}
-<p class="text-center">{% trans %}You have no balance due.{% endtrans %}</p>
+  <p class="text-center">{% trans %}You have no balance due.{% endtrans %}</p>
 {% endblock %}
 
 {% block order_footer %}
-<div>
-  {% if last_charge %}
-  <section id="charge">
-    {% if last_charge.is_failed or last_charge.is_disputed %}
-    <p>
-      {% trans created_at=last_charge.created_at %}On {{created_at}}, we attempted to charge your card{% endtrans %}
-    </p>
-    <div>
-      <dl class="dl-horizontal">
-        <dt>{% trans %}card{% endtrans %}</dt>
-        <dd>{{last_charge.last4}}</dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>{% trans %}expires{% endtrans %}</dt>
-        <dd>{{last_charge.exp_date}}</dd>
-      </dl>
-    </div>
-    <p>
-{% if last_charge.is_failed %}{% trans %}The charge failed{% endtrans %}
-{% elif last_charge.is_disputed %}{% trans %}The charge was disputed{% endtrans %}
-{% endif %}
-{% trans key=last_charge.processor_key %}(ref: #{{key}}).{% endtrans %}
-    </p>
-    <p>
-{% trans price=lines_price|humanize_money %}Please enter a valid credit card. A new charge of {{price}} will be created. Thank you.{% endtrans %}
-    </p>
+  <div>
+    {% if last_charge %}
+      <section id="charge">
+        {% if last_charge.is_failed or last_charge.is_disputed %}
+        <p>
+          {% trans created_at=last_charge.created_at %}On {{created_at}}, we attempted to charge your card{% endtrans %}
+        </p>
+        <div>
+          <dl class="dl-horizontal">
+            <dt>{% trans %}card{% endtrans %}</dt>
+            <dd>{{last_charge.last4}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>{% trans %}expires{% endtrans %}</dt>
+            <dd>{{last_charge.exp_date}}</dd>
+          </dl>
+        </div>
+        <p>
+          {% if last_charge.is_failed %}{% trans %}The charge failed{% endtrans %}
+          {% elif last_charge.is_disputed %}{% trans %}The charge was disputed{% endtrans %}
+          {% endif %}
+          {% trans key=last_charge.processor_key %}(ref: #{{key}}).{% endtrans %}
+        </p>
+        <p>
+          {% trans price=lines_price|humanize_money %}Please enter a valid credit card. A new charge of {{price}} will be created. Thank you.{% endtrans %}
+        </p>
+        {% endif %}
+      </section>
     {% endif %}
-  </section>
-{% endif %}
-  <div class="text-center">
-{% trans %}Thank you for your business.{% endtrans %}
+    <div class="text-center">
+      {% trans %}Thank you for your business.{% endtrans %}
+    </div>
   </div>
-</div>
 {% endblock %}

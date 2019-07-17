@@ -1,9 +1,9 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-{% assets "css_dashboard" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
+  {% assets "css_dashboard" %}
+    <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
+  {% endassets %}
 {% endblock %}
 
 {% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
@@ -14,97 +14,105 @@
 {% block footer %}{% endblock %}
 
 {% block dashboard_nav %}
-{# This code is copy/pasted from base.html with the additional changes #}
-{# to `block sidebar` such that we are able to deploy to production    #}
-{# with minimal global changes.                                        #}
-<div class="dashboard-nav nav-main-frnt">
+  {# This code is copy/pasted from base.html with the additional changes #}
+  {# to `block sidebar` such that we are able to deploy to production    #}
+  {# with minimal global changes.                                        #}
+  <div class="dashboard-nav nav-main-frnt">
     <div class="dashboard-nav-inner-container">
-        <div class="dashboard-nav-main dashboard-nav-color-theme">
-            <div>
-                <header>
-                    <nav class="navbar navbar-light">
-                        <div class="navbar-header">
-                            {% include "_navbarbrand.html" %}
-                        </div>
-                    </nav>
-                </header>
-                <div class="dashboard-nav-menu">
-                    {% block sidebar %}
-                    {% include "saas/_sidebar.html" %}
-                    <hr class="d-md-none" />
-                    <ul class="nav flex-column d-md-none">
-                        {% include "_generic_navbar.html" %}
-                    </ul>
-                    {% endblock %}
-                </div>
-            </div>
-            {% block dashboard_footer %}
-            <div class="dashboard-nav-footer dashboard-nav-color-theme">
-                <div>
-{% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %}
-                </div>
-                <div class="footer-links">
-                    <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
-                    &middot;
-                    <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-                    <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-                    <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-                </div>
-            </div>
+      <div class="dashboard-nav-main dashboard-nav-color-theme">
+        <div>
+          <header>
+            <nav class="navbar navbar-light">
+              <div class="navbar-header">
+                {% include "_navbarbrand.html" %}
+              </div>
+            </nav>
+          </header>
+          <div class="dashboard-nav-menu">
+            {% block sidebar %}
+            {% include "saas/_sidebar.html" %}
+            <hr class="d-md-none" />
+            <ul class="nav flex-column d-md-none">
+                {% include "_generic_navbar.html" %}
+            </ul>
             {% endblock %}
+          </div>
         </div>
+        {% block dashboard_footer %}
+          <div class="dashboard-nav-footer dashboard-nav-color-theme">
+            <div>
+              {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %}
+            </div>
+            <div class="footer-links">
+              <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
+              &middot;
+              <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
+              <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+              <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+            </div>
+          </div>
+        {% endblock %}
+      </div>
     </div><!-- /.dashboard-nav-inner-container -->
-</div>
+  </div>
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{% block saas_title %}{% endblock %}<div style="display: inline-block;"><sup style="display: none;font-size:0.5em;cursor:pointer;"><i id="help-request" class="fa fa-question-circle"></i></sup></div></h1>
-</div>
-{% block saas_page_layout %}
-<p class="lead">
-    {% block saas_lead_help %}{% endblock %}
-</p>
-<div class="row">
-    <div class="col-md-12">
-        {% block saas_help %}{% endblock %}
-        {% block saas_content %}{% endblock %}
+  <div class="page-header">
+    <h1>{% block saas_title %}{% endblock %}
+      <div style="display: inline-block;">
+        <sup style="display: none;font-size:0.5em;cursor:pointer;"><i id="help-request" class="fa fa-question-circle"></i></sup>
+      </div>
+    </h1>
+  </div>
+
+  {% block saas_page_layout %}
+    <p class="lead">
+      {% block saas_lead_help %}{% endblock %}
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            {% block saas_help %}{% endblock %}
+            {% block saas_content %}{% endblock %}
+        </div>
     </div>
-</div>
-{% endblock %}
+  {% endblock %}
 {% endblock %}
 
 {% block saas_bodyscripts %}
-<script type="text/javascript">
-var djaodjinSettings = {
-    urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-    tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
-    date_range: {
-      start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
-      ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-    },
-    user: {
-      username: "{{request.user.username}}",
-      slug: "{{request.user.username}}",
-      first_name: "{{request.user.first_name}}",
-      last_name: "{{request.user.last_name}}"
-    },
-    csrf: '{{csrf_token}}',
-    {% if STRIPE_PUB_KEY %}
-        stripePubKey: "{{ STRIPE_PUB_KEY }}",
-    {% endif %}
-};
-</script>
-{% assets "js_vue" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-<script type="text/javascript">
-Vue.use(uiv, {prefix: 'uiv'});
-</script>
-{% assets "js_djaodjin_vue" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
+  <script type="text/javascript">
+    var djaodjinSettings = {
+        urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+        itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+        tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
+        date_range: {
+          start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+          ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+        },
+        user: {
+          username: "{{request.user.username}}",
+          slug: "{{request.user.username}}",
+          first_name: "{{request.user.first_name}}",
+          last_name: "{{request.user.last_name}}"
+        },
+        csrf: '{{csrf_token}}',
+        {% if STRIPE_PUB_KEY %}
+            stripePubKey: "{{ STRIPE_PUB_KEY }}",
+        {% endif %}
+    };
+  </script>
 
-{% block dashboard_bodyscripts %}{% endblock %}
+  {% assets "js_vue" %}
+    <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+  {% endassets %}
+
+  <script type="text/javascript">
+    Vue.use(uiv, {prefix: 'uiv'});
+  </script>
+
+  {% assets "js_djaodjin_vue" %}
+    <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+  {% endassets %}
+
+  {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}
