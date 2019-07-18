@@ -15,6 +15,7 @@ import multitier.templatetags.multitier_tags
 from pages import signals as pages_signals
 import saas.templatetags.saas_tags
 from webassets.ext.jinja2 import AssetsExtension
+from webpack_loader.templatetags.webpack_loader import render_bundle
 
 from .compat import import_string, reverse
 import djaoapp.assets
@@ -101,7 +102,8 @@ def environment(**options):
         env.globals.update({
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
             'url': reverse,
-            'cycle': django.template.defaulttags.cycle
+            'cycle': django.template.defaulttags.cycle,
+            'render_bundle': render_bundle
         })
     if settings.API_DEBUG:
         env.filters['query_parameters'] = \

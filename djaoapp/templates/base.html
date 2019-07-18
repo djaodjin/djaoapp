@@ -29,11 +29,8 @@
     <meta name="twitter:site" content="@djaodjin" />
 
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
+    {{ render_bundle('main') }}
 
-    {% assets "css_base" %}
-      <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
-    {% endassets %}
-    
     <style media="screen">
 
     [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {

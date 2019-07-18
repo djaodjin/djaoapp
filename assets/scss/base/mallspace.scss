@@ -162,16 +162,6 @@ ol.tutorials > .active, ul.tutorials > .active {
 }
 
 
-@font-face {
-  font-family: 'Open Sans';
-  src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Open Sans Semibold';
-  src: url('../fonts/OpenSans-Semibold.ttf') format('truetype');
-}
-
 /* used only in templates/base.html */
 html, body {
     height: 100%;
