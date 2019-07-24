@@ -5,9 +5,11 @@ from __future__ import unicode_literals
 import logging
 
 from deployutils.apps.django.compat import is_authenticated
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
 from saas.models import Organization, Signature
@@ -135,6 +137,15 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
                     self.already_present_candidate = \
                         Organization.objects.find_candidates(
                             organization_name, user=user).first()
+
+        found_non_field_errors = False
+        for field_name in six.iterkeys(form._errors):
+            if field_name == NON_FIELD_ERRORS:
+                found_non_field_errors = True
+                break
+        if not found_non_field_errors:
+            form.add_error(None, _("There were invalid fields while"\
+                " registering. See below."))
         return super(SignupView, self).form_invalid(form)
 
     def get_context_data(self, **kwargs):
