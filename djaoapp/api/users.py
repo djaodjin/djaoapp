@@ -22,7 +22,7 @@ LOGGER = logging.getLogger(__name__)
 
 class UserProfileAPIView(UserProfileBaseAPIView):
     """
-    Retrieves, updates or deletes the profile information of a user.
+    Retrieves a login profile
 
     **Tags: profile
 

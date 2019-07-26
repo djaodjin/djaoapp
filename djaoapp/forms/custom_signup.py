@@ -148,8 +148,9 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             self.fields[extra_field[0]] = forms.CharField(
                 label=_(extra_field[1]), required=extra_field[2])
         if force_required:
-            for field in six.itervalues(self.fields):
-                field.required = True
+            for field_name, field in six.iteritems(self.fields):
+                if field_name != 'organization_name':
+                    field.required = True
 
     def clean(self):
         """
@@ -201,7 +202,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         if user.exists():
             raise forms.ValidationError(
                 _("A user with that %(username)s already exists.") % {
-                    'username': self.username.label.lower()
+                    'username': self.fields['username'].label.lower()
                 })
         organization = Organization.objects.filter(
             slug__iexact=self.cleaned_data['username'])
@@ -210,7 +211,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             # it is bound to create problems later on.
             raise forms.ValidationError(
                 _("A profile with that %(username)s already exists.") % {
-                    'username': self.username.label.lower()
+                    'username': self.fields['username'].label.lower()
                 })
         return self.cleaned_data['username']
 

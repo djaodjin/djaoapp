@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     hsh = sha256(func_details.description.encode()).hexdigest()
                     errors = []
                     if func_examples[0]['path']:
-                        if ('responds' not in examples and func != 'DELETE'):
+                        if ('responds' not in examples and func != 'delete'):
                             errors.append('missing-response')
                     else:
                         func_examples[0]['path'] = path

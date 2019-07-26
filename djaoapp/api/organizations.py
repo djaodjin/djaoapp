@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
     """
-    Retrieves profile information on an ``Organization``.
+    Retrieves a billing profile
 
     **Tags: profile
 
@@ -65,7 +65,7 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
     def put(self, request, *args, **kwargs):
         """
-        Updates profile information for an ``Organization``
+        Updates a billing profile
 
         **Tags: profile
 
@@ -89,7 +89,7 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
     def delete(self, request, *args, **kwargs):
         """
-        Deletes an `Organization``.
+        Deletes a billing profile
 
         We anonymize the organization instead of purely deleting
         it from the database because we don't want to loose history
@@ -109,6 +109,8 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
 class OrganizationListAPIView(OrganizationListBaseAPIView):
     """
+    Lists billing profiles
+
     Queries a page (``PAGE_SIZE`` records) of organization and user profiles.
 
     The queryset can be filtered for at least one field to match a search
@@ -153,7 +155,7 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
     @swagger_auto_schema(request_body=OrganizationCreateSerializer)
     def post(self, request, *args, **kwargs):
         """
-        Creates an``Organization``
+        Creates a billing profile
 
         **Tags: profile
 
@@ -161,7 +163,7 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 
         .. code-block:: http
 
-            POST /api/profile/xia/ HTTP/1.1
+            POST /api/profile/ HTTP/1.1
 
         .. code-block:: json
 
