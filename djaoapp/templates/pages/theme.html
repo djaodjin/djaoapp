@@ -33,8 +33,8 @@
       <form method="post">
           <div class="form-group form-check">
             <input id="show_edit_tools" class="form-check-input" type="checkbox"
-                name="show_edit_tools"
-                v-model="showEditTools" @change="save">
+              name="show_edit_tools"
+              v-model="showEditTools" @change="save">
             <label class="form-check-label" for="show_edit_tools">
               {% trans %}Show inline template editor tools{% endtrans %}
             </label>
@@ -52,7 +52,11 @@
       </div>
       <div class="text-center">
         <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download"></i> {% trans %}Download as .zip file{% endtrans %}</a>
-        <button id="reset-theme" class="btn btn-danger">{% trans %}Reset to default{% endtrans %}</button>
+        <button id="reset-theme" class="btn btn-danger">
+          {% trans %}
+            Reset to default
+          {% endtrans %}
+        </button>
       </div>
     </div>
   </div>
@@ -67,12 +71,24 @@
     {% for key, vals in notifications.items() %}
       <div id="{{key}}" class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title"><a href="{{urls.notifications}}{{key}}/">{{vals.title}}</a></h5>
+          <h5 class="card-title">
+            <a href="{{urls.notifications}}{{key}}/">
+              {{vals.title}}
+            </a>
+          </h5>
           <p class="card-text">
             {{vals.descr}}
           </p>
-          <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
-          <button class="btn btn-outline-secondary send-test-email">{% trans %}Send test e-mail{% endtrans %}</button>
+          <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">
+            {% trans %}
+              Edit
+            {% endtrans %}
+          </a>
+          <button class="btn btn-outline-secondary send-test-email">
+            {% trans %}
+              Send test e-mail
+            {% endtrans %}
+          </button>
         </div>
       </div>
     {% endfor %}
@@ -80,11 +96,24 @@
     {% for role_descr in role_descriptions %}
       <div id="{{role_descr.slug}}_role_added" class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
-          <p class="card-text">
-          </p>
-          <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
-          <button class="btn btn-outline-secondary send-test-email">{% trans %}Send test e-mail{% endtrans %}</button>
+          <h5 class="card-title">
+            <a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">
+              {% trans role_descr=role_descr.title %}
+                {{role_descr}} added
+              {% endtrans %}
+            </a>
+          </h5>
+          <p class="card-text"></p>
+          <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">
+            {% trans %}
+              Edit
+            {% endtrans %}
+          </a>
+          <button class="btn btn-outline-secondary send-test-email">
+            {% trans %}
+              Send test e-mail
+            {% endtrans %}
+          </button>
         </div>
       </div>
     {% endfor %}

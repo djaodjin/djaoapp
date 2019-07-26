@@ -1,9 +1,17 @@
 {% extends "saas/billing/cart.html" %}
 
-{% block order_title %}{% trans %}Unlock your subscriptions{% endtrans %}{% endblock %}
+{% block order_title %}
+  {% trans %}
+    Unlock your subscriptions
+  {% endtrans %}
+{% endblock %}
 
 {% block no_invoicables %}
-  <p class="text-center">{% trans %}You have no balance due.{% endtrans %}</p>
+  <p class="text-center">
+    {% trans %}
+      You have no balance due.
+    {% endtrans %}
+  </p>
 {% endblock %}
 
 {% block order_footer %}
