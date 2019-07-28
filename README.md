@@ -18,7 +18,7 @@ It integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
 - [djaodjin-saas](https://github.com/djaodjin/djaodjin-saas/) for subscription-based payment pages and APIs
 - [djaodjin-rules](https://github.com/djaodjin/djaodjin-rules/) for role-based access control and HTTP request forwarding
-- [djaodjin-pages](https://github.com/djaodjin/djaodjin-pages/) for live editingof self-hosted HTML pages
+- [djaodjin-pages](https://github.com/djaodjin/djaodjin-pages/) for live editing of self-hosted HTML pages
 
 Tested with
 
@@ -29,7 +29,7 @@ Tested with
 Install
 -------
 
-First you will need to create a workspace environment, downlaod the 3rd party
+First you will need to create a workspace environment, download the 3rd party
 vendor prerequisite packages and build the static assets.
 
 <pre><code>

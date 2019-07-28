@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
-    <title>
-      {% block title %}
-        {% if request and request.site %}
-          {{request.site.printable_name}}
-        {% else %}
-          {% trans %}
-            Accounts & Billing Workflows
-          {% endtrans %}
-        {% endif %} | DjaoDjin
-      {% endblock %}
-    </title>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2019 DjaoDjin inc.">
+    <title>{% block title %}{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %} | DjaoDjin{% endblock %}</title>
     <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
@@ -27,43 +16,36 @@
     <meta name="twitter:domain" content="https://djaodjin.com" />
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
-
-    <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
-
     {% assets "css_base" %}
-      <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
+    <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
     {% endassets %}
-    
     <style media="screen">
+      [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
+        display: none !important;
+      }
 
-    [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
-      display: none !important;
-    }
+      /* Override Bootstrap 4 styling on Django Debug Toolbar */
+      #djDebug[hidden], #djDebug [hidden] {
+        display: block !important;
+      }
 
-    /* Override Bootstrap 4 styling on Django Debug Toolbar */
-    #djDebug[hidden], #djDebug [hidden] {
-      display: block !important;
-    }
-
-    #djDebug [hidden][style='display: none;'] {
-      display: none !important;
-    }
+      #djDebug [hidden][style='display: none;'] {
+        display: none !important;
+      }
     </style>
-
+    <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
+    
     {% if csrf_token %}
       <meta name="csrf-token" content="{{csrf_token}}">
     {% endif %}
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--
-      [if lt IE 9]>
+    <!--[if lt IE 9]>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]
-    -->
+        <![endif]-->
 
     {% block localheader %}{% endblock %}
-    
     {% if request and 'djaoapp.com' in request|host %}
       <!-- Google Analytics -->
       <script type="text/javascript">
@@ -81,55 +63,42 @@
     <div id="main">
       <div class="dashboard-container">
         <div class="{% block dashboard_inner_container_classes %}{% endblock %}">
+
           {% block dashboard_nav %}
             <div class="dashboard-nav nav-main-frnt">
-              <div class="dashboard-nav-inner-container">
-                <div class="dashboard-nav-main dashboard-nav-color-theme">
-                  <div>
-                    <header>
-                      <nav class="navbar navbar-light">
-                        <div class="navbar-header">
-                          {% include "_navbarbrand.html" %}
+                <div class="dashboard-nav-inner-container">
+                    <div class="dashboard-nav-main dashboard-nav-color-theme">
+                        <div>
+                            <!-- <header>
+                                <nav class="navbar navbar-light">
+                                    <div class="navbar-header">
+                                        {% include "_navbarbrand.html" %}
+                                    </div>
+                                </nav>
+                            </header> -->
+                            <!-- <div class="dashboard-nav-menu">
+                                {% block sidebar %}
+                                  <hr />
+                                  <ul class="nav flex-column d-md-none">
+                                      {% include "_generic_navbar.html" %}
+                                  </ul>
+                                {% endblock %}
+                            </div> -->
                         </div>
-                      </nav>
-                    </header>
-                    <div class="dashboard-nav-menu">
-                      {% block sidebar %}
-                        <hr />
-                        <ul class="nav flex-column d-md-none">
-                            {% include "_generic_navbar.html" %}
-                        </ul>
-                      {% endblock %}
                     </div>
-                  </div>
-                  {% block dashboard_footer %}
-                    <div class="dashboard-nav-footer dashboard-nav-color-theme">
-                      <div>
-                        {% trans %}
-                          Powered by &copy; 2019 DjaoDjin. All rights reserved.
-                        {% endtrans %}
-                      </div>
-                      <div class="footer-links">
-                        <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
-                        &middot;
-                        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-                        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-                      </div>
-                    </div>
-                  {% endblock %}
-                </div>
-              </div><!-- /.dashboard-nav-inner-container -->
+                </div><!-- /.dashboard-nav-inner-container -->
             </div>
           {% endblock %}
 
           <div class="dashboard-content">
             <header>
               <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
+                <!-- Toggle Sidebar Button -->
                 <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
                   <i class="fa closed"></i>
                 </a>
 
+                <!-- Logo Space (not always visible in dashboard) -->
                 {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
                     {% include "_navbarbrand.html" %}
@@ -138,48 +107,50 @@
 
                 {% block header_navbar_large %}
                   <div class="navbar-collapse collapse navbar-right">
+                    <!-- Show 'Home' and 'Pricing' links -->
                     <ul class="nav navbar-nav ml-auto mt-lg-0">
-                      {% include "_generic_navbar.html" %}
+                        {% include "_generic_navbar.html" %}
                     </ul>
                   </div>
+
                   <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
-                    <li class="nav-item">
-                      <a class="nav-link" id="login" href="{{request|url_login}}">
-                        <i class="fa fa-lock fa-lg"></i>
-                        {% trans %}Sign in{% endtrans %}
-                      </a>
-                    </li>
-                    <!-- this area will be populated by _menubar.html -->
+                      <li class="nav-item">
+                        <a class="nav-link" id="login" href="{{request|url_login}}">
+                          {% trans %}
+                            Sign In
+                          {% endtrans %}
+                        </a>
+                      </li>
+                      <!-- this area will be populated by _menubar.html -->
                   </ul>
                 {% endblock %}
               </nav>
               {% block fullviewport %}
               {% endblock %}
             </header>
+
             <div{% block content_area_classes %} class="content-area-container"{% endblock %}>
               <div id="messages">
                 <div id="messages-content">
                   {% if request %}
-                    {% for message in request|messages %}
-                      <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {% if 'safe' in message.tags %}
-                          <div>
-                            {{message|safe}}
-                          </div>
-                        {% else %}
-                          <div>{{message}}</div>
-                        {% endif %}
-                      </div>
-                    {% endfor %}
+                  {% for message in request|messages %}
+                  <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% if 'safe' in message.tags %}
+                    <div>{{message|safe}}</div>
+                    {% else %}
+                    <div>{{message}}</div>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
                   {% endif %}
                   {% if form %}
-                    {% for message in form|messages %}
-                      <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <div>{{message}}</div>
-                      </div>
-                    {% endfor %}
+                  {% for message in form|messages %}
+                  <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <div>{{message}}</div>
+                  </div>
+                  {% endfor %}
                   {% endif %}
                 </div>
               </div>
@@ -191,56 +162,65 @@
       </div><!-- /.dashboard-container -->
     </div><!-- /#main -->
   </div><!-- /.wrap -->
-  {% block footer %}
-    <footer class="footer">
-      {% block localfooter %}
-      {% endblock %}
-      <div class="copyr">
-        {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %} - 
-        <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>&nbsp;&nbsp;
-        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-      </div>
-    </footer>
-  {% endblock footer %}
 
-  {% block _bodyscripts %}
-    {% assets "js_base" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+      {% block footer %}
+        <footer class="footer bg-dark py-5 text-white">
+          {% block localfooter %}
+          {% endblock %}
+          <div class="copyr">
+            <div class="footer-logos pb-2">
+              <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm text-white px-2"></i></a>
+              <a href="https://twitter.com/djaodjin" target="_blank"><i class="fa fa-twitter fa-sm text-white px-2"></i></a>
+              <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher">
+                <i class="fa fa-linkedin fa-sm text-white px-2"></i></a>
+            </div>
+            {% trans %}
+              Powered by &copy; 2019 DjaoDjin. <br>
+              All rights reserved.
+            {% endtrans %}
+            <br>
+            <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
+          </div>
+        </footer>
+      {% endblock footer %}
 
-    <script type="text/javascript">
-      jQuery(document).ready(function($) {
-        toastr.options = {
-          "closeButton": true,
-          "debug": false,
-          "newestOnTop": false,
-          "progressBar": false,
-          "positionClass": "toast-top-full-width",
-          "preventDuplicates": false,
-          "onclick": null,
-          "showDuration": 200,
-          "hideDuration": 200,
-          "timeOut": "0",
-          "extendedTimeOut": "0",
-          "showEasing": "linear",
-          "hideEasing": "linear",
-          "showMethod": "slideDown",
-          "hideMethod": "slideUp",
-          containerId: "messages-content",
-          toastClass: "alert",
-          iconClasses: {
-            error: "alert-danger",
-            info: "alert-info",
-            success: "alert-success",
-            warning: "alert-warning"
-          },
-        };
-      });
-    </script>
-  {% block bodyscripts %}
-  {% endblock %}
+      {% block _bodyscripts %}
+        {% assets "js_base" %}
+          <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+      
+        <script type="text/javascript">
+          jQuery(document).ready(function($) {
+              toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-full-width",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": 200,
+                  "hideDuration": 200,
+                  "timeOut": "0",
+                  "extendedTimeOut": "0",
+                  "showEasing": "linear",
+                  "hideEasing": "linear",
+                  "showMethod": "slideDown",
+                  "hideMethod": "slideUp",
+                  containerId: "messages-content",
+                  toastClass: "alert",
+                  iconClasses: {
+                      error: "alert-danger",
+                      info: "alert-info",
+                      success: "alert-success",
+                      warning: "alert-warning"
+                  },
+              };
+          });
+        </script>
+      {% block bodyscripts %}
+
+    {% endblock %}
   {% endblock %}
 </body>
 </html>
