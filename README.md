@@ -5,7 +5,7 @@ This repository contains the code for DjaoDjin subscription-based session proxy.
 To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
 
 The session proxy is built on [Django](https://www.djangoproject.com/),
-[Vue.js](https://vuejs.org/), [Bootstrap4](https://getbootstrap.com/)
+[Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
 frameworks and many more Open Source projects. Thank you for the support!
 
 <p align="center">
@@ -29,7 +29,7 @@ Tested with
 Install
 -------
 
-First you will need to create a workspace environment, downlaod the 3rd party
+First you will need to create a workspace environment, download the 3rd party
 vendor prerequisite packages and build the static assets.
 
 <pre><code>
