@@ -1,142 +1,224 @@
 {# Profile menu items #}
-<ul class="nav flex-column" data-intro="Profile" data-position="right">
 
+<ul class="nav flex-column" data-intro="Profile" data-position="right">
   {% if urls.user and urls.user.profile %}
-    <li {% if request.path == urls.user.profile %} class="nav-item active"{% endif %}>
+    <li {% if request.path.split('/')[3] == 'contact' %} class="nav-item sidebar-active rounded" {% endif %}>
       <a id="profile" class="nav-link" href="{{urls.user.profile}}">
-        <i class="fa fa-user"></i> <span>&#09;{% trans %}Profile{% endtrans %}</span>
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/user.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            {% trans %}My Profile{% endtrans %}
+          </div>
+        </div>
       </a>
     </li>
   {% elif urls.organization and urls.organization.profile %}
-    <li {% if urls.organization.profile == request.path %} class="nav-item active"{% endif %}>
-      <a id="profile" class="nav-link" href="{{urls.organization.profile}}">
-        <i class="fa fa-user"></i><span>{% trans %}Profile{% endtrans %}</span></a>
+    <li {% if urls.organization.profile == request.path %} class="nav-item sidebar-active" {% endif %}>
+      <a id="profile" class="nav-link pl-3" href="{{urls.organization.profile}}">
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/user.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            <span>{% trans %}My Profile{% endtrans %}</span>
+          </div>
+        </div>
+      </a>
     </li>
   {% endif %}
 
   {% if urls.organization and urls.organization.roles %}
     {% for role_title, role_url in urls.organization.roles|iteritems %}
-      <li{% if role_url == request.path %} class="nav-item active"{% endif %}>
-        <a class="nav-link" href="{{role_url}}">
-          <i class="fa fa-users"></i><span class="">{{role_title|pluralize}}</span>
+      <li {% if role_url == request.path %} class="nav-item sidebar-active" {% endif %}>
+        <a class="nav-link pl-3" href="{{role_url}}">
+          <div class="d-flex">
+            <div class="pr-2 d-flex align-items-middle">
+              <object type="image/svg+xml" data="/static/img/dash-icons/user.svg"></object>
+            </div>
+            <div class="d-inline-block">
+              <span>{{role_title|pluralize}}</span>
+            </div>
+          </div>
         </a>
       </li>
     {% endfor %}
   {% endif %}
 
   {% if urls.user and urls.user.accessibles %}
-    <li class="nav-item">
-      <a id="users_accessibles" class="nav-link" href="{{urls.user.accessibles}}">
-        <i class="fa fa-users"></i> <span>&#09;{% trans %}Connected profiles{% endtrans %}</span></a>
+    <li {% if request.path.split('/')[3] == 'roles' %} class="nav-item sidebar-active rounded" {% endif %}>
+      <a id="users_accessibles" class="nav-link pl-3 pr-0" href="{{urls.user.accessibles}}">
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/connected.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            {% trans %}Connected Profiles{% endtrans %}
+          </div>
+        </div>
+      </a>
     </li>
   {% endif %}
 
   {% if urls.user and urls.user.notifications %}
-  <li {% if request.path == urls.user.notifications %} class="nav-item active"{% endif %}>
-    <a id="users_notifications" class="nav-link" href="{{urls.user.notifications}}">
-      <i class="fa fa-envelope"></i> <span>&#09;{% trans %}Notifications{% endtrans %}</span>
-    </a>
-  </li>
+    <li {% if request.path.split('/')[3] == 'notifications' %} class="nav-item sidebar-active rounded" {% endif %}>
+      <a id="users_notifications" class="nav-link pl-3" href="{{urls.user.notifications}}">
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/notifications.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            {% trans %}Notifications{% endtrans %}
+          </div>
+        </div>
+      </a>
+    </li>
   {% endif %}
 
   {# Subscriber menu items  #}
+  
   {% if urls.organization and urls.organization.billing %}
-    <li {% if urls.organization.billing == request.path %} class="nav-item active"{% endif %}>
-      <a id="saas_billing_info" class="nav-link" href="{{urls.organization.billing}}"><i class="fa fa-credit-card"></i><span>{% trans %}Billing{% endtrans %}</span></a>
+    <li {% if request.path == urls.organization.billing %} class="nav-item sidebar-active rounded" {% endif %}>
+      <a id="saas_billing_info" class="nav-link pl-3" href="{{urls.organization.billing}}">
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/billing.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            {% trans %}Billing{% endtrans %}
+          </div>
+        </div>
+      </a>
     </li>
   {% endif %}
 
   {% if urls.organization and urls.organization.subscriptions %}
-    <li {% if urls.organization.subscriptions == request.path %} class="nav-item active"{% endif %}>
-      <a id="saas_subscription_list" class="nav-link" href="{{urls.organization.subscriptions}}"><i class="fa fa-exchange"></i><span>{% trans %}Subscriptions{% endtrans %}</span></a>
+    <li {% if request.path == urls.organization.subscriptions %} class="nav-item sidebar-active rounded" {% endif %}>
+      <a id="saas_subscription_list" class="nav-link pl-3" href="{{urls.organization.subscriptions}}">
+        <div class="d-flex">
+          <div class="pr-2 d-flex align-items-middle">
+            <object type="image/svg+xml" data="/static/img/dash-icons/subscriptions.svg"></object>
+          </div>
+          <div class="d-inline-block">
+            {% trans %}Subscriptions{% endtrans %}
+          </div>
+        </div>
+      </a>
     </li>
   {% endif %}
 </ul>
 
 {# Provider menu items #}
+
 {% if urls.provider %}
-  <hr />
-  <ul class="nav flex-column" data-intro="{% trans %}Pricing, billing and metrics{% endtrans %}" data-position="right">
-    <li {% if urls.provider.dashboard == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_dashboard" href="{{urls.provider.dashboard}}">
-        <i class="fa fa-wrench"></i>
-        <span class="">
-          {% trans %}
-            Dashboard
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-    <li {% if urls.provider.coupons == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_coupon_list" href="{{urls.provider.coupons}}">
-        <i class="fa fa-ticket"></i>
-        <span class="">
-          {% trans %}
-            Coupons
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-    <li {% if urls.provider.transfers == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_transfer_info" href="{{urls.provider.transfers}}">
-        <i class="fa fa-usd"></i>
-        <span class="">
-          {% trans %}
-            Funds
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-    <li {% if urls.provider.metrics_sales == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}">
-        <i class="fa fa-bar-chart-o"></i>
-        <span class="">
-          {% trans %}
-            Revenue
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-    <li {% if urls.provider.metrics_plans == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}">
-        <i class="fa fa-bar-chart-o"></i>
-        <span class="">
-          {% trans %}
-            Plans
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-    <li {% if urls.provider.subscribers == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_subscriber_list" href="{{urls.provider.subscribers}}">
-        <i class="fa fa-users"></i>
-        <span class="">
-          {% trans %}
-            Subscribers
-          {% endtrans %}
-        </span>
-      </a>
-    </li>
-  </ul>
+<ul class="nav flex-column" data-intro="{% trans %}Pricing, billing and metrics{% endtrans %}" data-position="right">
+  <li {% if urls.provider.dashboard == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_dashboard" href="{{urls.provider.dashboard}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/dashboard.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Dashboard{% endtrans %}
+        </div>
+      </div>
+    </a>
+  </li>
+  <li {% if urls.provider.coupons == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_coupon_list" href="{{urls.provider.coupons}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/coupons.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Coupons{% endtrans %}
+        </div>
+      </div>
+    </a>
+  </li>
+  <li {% if urls.provider.transfers == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_transfer_info" href="{{urls.provider.transfers}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/funds.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Funds{% endtrans %}
+        </div>
+      </div>
+    </a>
+  </li>
+  <li {% if urls.provider.metrics_sales == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/revenue.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Revenue{% endtrans %}
+        </div>
+      </div>
+    </a>
+  </li>
+  <li {% if urls.provider.metrics_plans == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/plans.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Plans{% endtrans %}
+        </div>
+      </div>
+    </a>
+  </li>
+  <li {% if urls.provider.subscribers == request.path %} class="nav-item sidebar-active" {% endif %}>
+    <a class="nav-link pl-3" id="saas_subscriber_list" href="{{urls.provider.subscribers}}">
+      <div class="d-flex">
+        <div class="pr-2 d-flex align-items-middle">
+          <object type="image/svg+xml" data="/static/img/dash-icons/subscribers.svg"></object>
+        </div>
+        <div class="d-inline-block">
+          {% trans %}Subscribers{% endtrans %}
+        </div>
+      </div>  
+    </a>
+  </li>
+</ul>
 {% endif %}
 
 {# Broker menu items #}
 {% if urls.pages or urls.rules %}
-<hr />
-<ul class="nav flex-column" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
+  <ul class="nav flex-column" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
     {% if urls.pages.theme_base %}
-      <li {% if urls.pages.theme_base == request.path %} class="nav-item active"{% endif %}>
-          <a id="pages_theme" class="nav-link" href="{{urls.pages.theme_base}}">
-            <i class="fa fa-wrench"></i><span class="">{% trans %}Theme{% endtrans %}</span>
-          </a>
+      <li {% if urls.pages.theme_base == request.path %} class="nav-item sidebar-active" {% endif %}>
+        <a id="pages_theme" class="nav-link pl-3" href="{{urls.pages.theme_base}}">
+          <div class="d-flex">
+            <div class="pr-2 d-flex align-items-middle">
+              <object type="image/svg+xml" stroke="white" fill="white" data="/static/img/dash-icons/themes.svg"></object>
+            </div>
+            <div class="d-inline-block">
+              {% trans %}Themes{% endtrans %}
+            </div>
+          </div>
+        </a>
       </li>
     {% endif %}
+
     {% if urls.rules and urls.rules.app %}
-      <li {% if urls.rules.app == request.path %} class="nav-item active"{% endif %}>
-          <a id="rules_update" class="nav-link" href="{{urls.rules.app}}">
-            <i class="fa fa-wrench"></i><span class="">{% trans %}Rules{% endtrans %}</span>
-          </a>
+      <li {% if urls.rules.app == request.path %} class="nav-item sidebar-active" {% endif %}>
+        <a id="rules_update" class="nav-link pl-3" href="{{urls.rules.app}}">
+          <div class="d-flex">
+            <div class="pr-2 d-flex align-items-middle">
+              <object type="image/svg+xml" fill="white" data="/static/img/dash-icons/rules.svg"></object>
+            </div>
+            <div class="d-inline-block">
+              {% trans %}Rules{% endtrans %}
+            </div>
+          </div>
+        </a>
       </li>
     {% endif %}
-</ul>
+  </ul>
 {% endif %}

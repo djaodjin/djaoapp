@@ -521,3 +521,15 @@ $dashboard-sidebar-color:    white;
 {
     align-self: flex-start;
 }
+
+// Updated 07/11/19
+
+// BG color for active sidebar pages
+.sidebar-active {
+    background-color: #FFF;
+    text-decoration: none;
+}
+
+.nav-link {
+    font-size: 14px;
+}

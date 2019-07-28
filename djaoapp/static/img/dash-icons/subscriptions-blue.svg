@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="42px" viewBox="0 0 35 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Flag Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flag-Copy" fill="#0079FC">
+            <path d="M30.12,14.49 L34.43,6.88 C34.9567651,5.95121311 34.9501594,4.81243947 34.4126547,3.88982615 C33.8751501,2.96721283 32.8877671,2.39982952 31.82,2.4 L3.72,2.4 C3.72,1.57157288 3.04842712,0.9 2.22,0.9 C1.39157288,0.9 0.72,1.57157288 0.72,2.4 L0.72,40.4 C0.72,41.2284271 1.39157288,41.9 2.22,41.9 C3.04842712,41.9 3.72,41.2284271 3.72,40.4 L3.72,27.4 L31.72,27.4 C32.7586766,27.3985805 33.7227177,26.8599894 34.2684487,25.976231 C34.8141797,25.0924726 34.8639436,23.9893048 34.4,23.06 L30.12,14.49 Z M3.72,24.4 L3.72,5.4 L31.72,5.4 L26.65,14.4 L31.65,24.4 L3.72,24.4 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
