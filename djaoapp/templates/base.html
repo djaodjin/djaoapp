@@ -145,8 +145,9 @@
                   <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
                     <li class="nav-item">
                       <a class="nav-link" id="login" href="{{request|url_login}}">
-                        <i class="fa fa-lock fa-lg"></i>
-                        {% trans %}Sign in{% endtrans %}
+                        {% trans %}
+                          Sign in
+                        {% endtrans %}
                       </a>
                     </li>
                     <!-- this area will be populated by _menubar.html -->
@@ -191,7 +192,7 @@
       </div><!-- /.dashboard-container -->
     </div><!-- /#main -->
   </div><!-- /.wrap -->
-  
+
   {% block footer %}
     <footer class="footer bg-dark py-5 text-white">
       {% block localfooter %}

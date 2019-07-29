@@ -3,8 +3,9 @@
     {% if active_organization %}
       <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
         aria-haspopup="true" aria-expanded="false">
-        <span class="menubar-label-title">
-            <span data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span> <span class="caret"></span>
+        <span class="menubar-label-title d-inline-block">
+            <span data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span> 
+            <span class="caret"></span>
         </span>
         <span class="menubar-label-subtitle">
             {{request.user.username}}
@@ -14,7 +15,8 @@
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
         aria-haspopup="true" aria-expanded="false">
         <span class="menubar-label">
-          {{request.user.username}} <span class="caret"></span>
+          {{request.user.username}} 
+          <span class="caret"></span>
         </span>
       </a>
     {% endif %}
@@ -27,12 +29,16 @@
       {% endif %}
       <li role="presentation">
         <a id="authenticated-user" class="dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
-          {% trans %}Profile{% endtrans %}
+          {% trans %}
+            Profile
+          {% endtrans %}
         </a>
       </li>
       <li role="presentation">
         <a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">
-          {% trans %}Sign out{% endtrans %}
+          {% trans %}
+            Sign out
+          {% endtrans %}
         </a>
       </li>
       {% if top_accessibles|length > 0 %}
@@ -44,12 +50,16 @@
           </li>
           <li role="presentation">
             <a class="dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
-              {% trans %}Home{% endtrans %}
+              {% trans %}
+                Home
+              {% endtrans %}
             </a>
           </li>
           <li role="presentation">
             <a class="dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">
-              {% trans %}Settings{% endtrans %}
+              {% trans %}
+                Settings
+              {% endtrans %}
             </a>
           </li>
         {% endfor %}
@@ -59,9 +69,10 @@
   <li class="nav-item align-self-center">
       <a class="nav-link" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_prefixed}}">
         <span class="d-none d-sm-inline-block mr-sm-2">
-          {% trans %}Sign out{% endtrans %}
+          {% trans %}
+            Sign out
+          {% endtrans %}
         </span>
-        <span class="fa fa-sign-out fa-lg"></span>
       </a>
   </li>
 </ul>
