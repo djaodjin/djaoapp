@@ -1,6 +1,4 @@
-{% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
+{{ render_bundle('css_pages') }}
 
 {# media editors #}
 {# ------------- #}
@@ -238,9 +236,7 @@ jQuery(document).ready(function($) {
 </div>
 
 {# aggregated, minified scripts #}
-{% assets "js_theme_editors" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_theme_editors') }}
 {# XXX not included in assets because issue with jsmin #}
 {#     as well as loading Ace plugins in DEBUG=0       #}
 <script type="text/javascript" src="/static/vendor/ace.js"></script>

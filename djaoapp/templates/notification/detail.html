@@ -25,9 +25,7 @@
 {% endblock %}
 {% block dashboard_bodyscripts %}
 {# aggregated, minified scripts #}
-{% assets "js_theme_editors" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_theme_editors') }}
 {% if not show_edit_tools %}
 {#
     when edit tools are disabled the required scripts are not included

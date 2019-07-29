@@ -12,13 +12,13 @@ css_base = Bundle(
     os.path.join(settings.HTDOCS, 'static', 'cache', '_base.css'),
     filters=[],
     output='cache/base.css', debug=False)
-register('css_base', css_base)
+#register('css_base', css_base)
 
 css_email = Bundle(
     os.path.join(settings.HTDOCS, 'static', 'cache', '_email.css'),
     filters=[],
     output='cache/email.css', debug=False)
-register('css_email', css_email)
+#register('css_email', css_email)
 
 # Minimal: jquery and bootstrap always active on the site
 js_base = Bundle('vendor/jquery.js',
@@ -30,7 +30,7 @@ js_base = Bundle('vendor/jquery.js',
                  'js/djaodjin-dashboard.js',
                  'js/djaodjin-menubar.js',
             filters='yui_js', output='cache/base.js')
-register('js_base', js_base)
+#register('js_base', js_base)
 
 
 # User cart and payment processing (also includes ``showErrorMessages``).
@@ -44,7 +44,7 @@ js_saas = Bundle(
     'js/djaodjin-resources.js', # At the end to avoid errors in browser
                                 # after all files are concatenated together
     filters='jsmin', output='cache/saas.js') # XXX yuv_js produces errors.
-register('js_saas', js_saas)
+#register('js_saas', js_saas)
 
 
 js_auth = Bundle(
@@ -52,7 +52,7 @@ js_auth = Bundle(
     'js/djaodjin-postal.js',
     'js/djaodjin-password-strength.js',
     filters='yui_js', output='cache/auth.js')
-register('js_auth', js_auth)
+#register('js_auth', js_auth)
 
 # Related to djaodjin-saas manager dasboard
 # -----------------------------------------
@@ -64,7 +64,7 @@ css_dashboard = Bundle(
     'vendor/trip.css',
     'vendor/chardinjs.css', # XXX duplicated from snaplines.css
     filters='cssmin', output='cache/dashboard.css')
-register('css_dashboard', css_dashboard)
+#register('css_dashboard', css_dashboard)
 
 
 js_vue = Bundle(
@@ -77,7 +77,7 @@ js_vue = Bundle(
     'vendor/uiv.min.js', # XXX uiv is loaded from the vue.use in djaodjin-saas
     'vendor/vue2-filters.js',
     filters='jsmin', output='cache/vue.js')
-register('js_vue', js_vue)
+#register('js_vue', js_vue)
 
 
 js_djaodjin_vue = Bundle(
@@ -98,13 +98,13 @@ js_djaodjin_vue = Bundle(
     'js/djaodjin-djaoapp-vue.js',
     'js/djaodjin-metrics.js',
     filters='jsmin', output='cache/djaodjin-vue.js')
-register('js_djaodjin_vue', js_djaodjin_vue)
+#register('js_djaodjin_vue', js_djaodjin_vue)
 
 # Used in docs/api.html
 js_dashboard = Bundle(
     'js/djaodjin-dashboard.js',
     filters='jsmin', output='cache/djaodjin-dashboard.js')
-register('js_dashboard', js_dashboard)
+#register('js_dashboard', js_dashboard)
 
 # Related to djaodjin-pages edition tools
 # ---------------------------------------
@@ -118,7 +118,7 @@ css_pages = Bundle(
     'css/djaodjin-editor.css',
     'css/djaodjin-sidebar-gallery.css',
     filters='cssmin', output='cache/pages.css')
-register('css_pages', css_pages)
+#register('css_pages', css_pages)
 
 # must be previously included:
 #   - vendor/js/jquery.js (js_base)
@@ -143,7 +143,7 @@ js_pages = Bundle(
     "js/djaodjin-plan-edition.js",
     "js/wizard.js",
     filters='jsmin', output='cache/pages.js')
-register('js_pages', js_pages)
+#register('js_pages', js_pages)
 
 
 js_theme_editors = Bundle(
@@ -155,4 +155,4 @@ js_theme_editors = Bundle(
     "js/djaodjin-code-editor.js",      # pages
     "js/djaodjin-style-editor.js",     # pages
     filters='jsmin', output='cache/theme-editors.js')
-register('js_theme_editors', js_theme_editors)
+#register('js_theme_editors', js_theme_editors)

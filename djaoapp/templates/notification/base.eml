@@ -4,9 +4,7 @@
 <meta name="viewport" content="width=device-width">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>{% block subject %}{% trans %}Djaodjin Notification{% endtrans %}{% endblock %}</title>
-{% assets "css_email" %}
-<link rel="stylesheet" media="screen" href="{{ ASSET_URL|no_cache }}" />
-{% endassets %}
+{{ render_bundle('css_email') }}
 </head>
 <body>
     {% if errors %}

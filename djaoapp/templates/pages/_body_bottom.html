@@ -1,6 +1,4 @@
-{% assets "css_pages" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
+{{ render_bundle('css_pages') }}
 
 {# Scripts that need to be injected into the page actually being edited #}
 {# (i.e. iframe or current page).                                       #}
@@ -92,6 +90,4 @@ less = {
 };
 </script>
 
-{% assets "js_pages" %}
-<script type="text/javascript" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_pages') }}
