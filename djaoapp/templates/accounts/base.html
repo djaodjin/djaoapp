@@ -9,8 +9,6 @@
 {% endblock %}
 
 {% block bodyscripts %}
-{% assets "js_auth" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_auth') }}
 {% block accounts_scripts %}{% endblock %}
 {% endblock %}

@@ -22,9 +22,7 @@ var djaodjinSettings = {
     csrf: '{{csrf_token}}',
 };
 </script>
-{% assets "js_vue" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_vue') }}
 {% assets "js_djaodjin_vue" %}
 <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
 {% endassets %}

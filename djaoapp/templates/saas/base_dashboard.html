@@ -1,9 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-{% assets "css_dashboard" %}
-<link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-{% endassets %}
+{{ render_bundle('css_dashboard') }}
 {% endblock %}
 
 {% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
@@ -96,9 +94,7 @@ var djaodjinSettings = {
     {% endif %}
 };
 </script>
-{% assets "js_vue" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_vue') }}
 <script type="text/javascript">
 Vue.use(uiv, {prefix: 'uiv'});
 </script>

@@ -29,7 +29,7 @@
     <meta name="twitter:site" content="@djaodjin" />
 
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
-    {{ render_bundle('main') }}
+    {{ render_bundle('css_base') }}
 
     <style media="screen">
 
@@ -204,10 +204,7 @@
   {% endblock footer %}
 
   {% block _bodyscripts %}
-    {% assets "js_base" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
+    {{ render_bundle('js_base') }}
     <script type="text/javascript">
       jQuery(document).ready(function($) {
         toastr.options = {
