@@ -7,3 +7,4 @@ htdocs
 htdocs/media/
 htdocs/static/.webassets-cache/
 themes/
+installTop/
