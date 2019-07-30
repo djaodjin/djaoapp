@@ -10,7 +10,6 @@ import 'script-loader!vendor/hallo';
 import 'script-loader!vendor/jquery.textarea_autosize';
 import 'script-loader!jquery-ui-touch-punch';
 import 'script-loader!chardin.js';
-import 'script-loader!less/dist/less';
 import 'script-loader!js/djaodjin-resources';
 import 'script-loader!js/djaodjin-editor';
 import 'script-loader!js/djaodjin-upload';

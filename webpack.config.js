@@ -4,15 +4,10 @@ const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-var dirs = [];
+var module_prefixes = [];
 try {
-    dirs = JSON.parse(fs.readFileSync('webpack_dirs.json').toString())
+    module_prefixes = JSON.parse(fs.readFileSync('webpack_dirs.json').toString())
 } catch {}
-
-const module_prefixes = dirs.concat([
-    path.resolve(__dirname, 'node_modules'),
-    path.resolve(__dirname, 'htdocs/static')
-])
 
 module.exports = {
     entry: {
@@ -28,6 +23,7 @@ module.exports = {
         js_dashboard: './djaoapp/static/js_dashboard.js',
         js_pages: './djaoapp/static/js_pages.js',
         js_theme_editors: './djaoapp/static/js_theme_editors.js',
+        js_edit_tools: './djaoapp/static/js_edit_tools.js',
     },
     output: {
         filename: '[name]-[hash].js',
@@ -88,4 +84,5 @@ module.exports = {
     resolve: {
         modules: module_prefixes
     },
+    mode: 'development'
 };

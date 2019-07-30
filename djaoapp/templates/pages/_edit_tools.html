@@ -237,9 +237,4 @@ jQuery(document).ready(function($) {
 
 {# aggregated, minified scripts #}
 {{ render_bundle('js_theme_editors') }}
-{# XXX not included in assets because issue with jsmin #}
-{#     as well as loading Ace plugins in DEBUG=0       #}
-<script type="text/javascript" src="/static/vendor/ace.js"></script>
-<script type="text/javascript" src="/static/vendor/ext-language_tools.js"></script>
-<script type="text/javascript" src="/static/vendor/ext-modelist.js"></script>
-<script type="text/javascript" src="/static/vendor/ext-emmet.js"></script>
+{{ render_bundle('js_edit_tools') }}

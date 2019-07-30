@@ -1,7 +1,7 @@
 # Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
-import logging, json
+import logging, json, os
 
 from django.apps import apps
 from django.core.management.base import BaseCommand
@@ -14,8 +14,16 @@ class Command(BaseCommand):
     help = "Generate assets paths for webpack to consume"
     file_name = 'webpack_dirs.json'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--node_modules', action='store',
+        default='node_modules', help='use the specified database')
+
     def handle(self, *args, **options):
-        dirs = []
+        prefix = options.get('node_modules')
+        if prefix and prefix[0] != '/':
+            prefix = os.path.join(os.getcwd(), prefix)
+        htdocs = os.path.join(os.getcwd(), 'htdocs', 'static')
+        dirs = [prefix, htdocs]
         ign = apps.get_app_config('staticfiles').ignore_patterns
         djaodjin_apps = ['djaoapp', 'saas', 'signup', 'rules', 'pages']
         for finder in get_finders():

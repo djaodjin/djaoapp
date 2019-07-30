@@ -1,1 +1,1 @@
-import '../../assets/scss/email/email.scss';
+import 'scss/email/email.scss';
