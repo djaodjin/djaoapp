@@ -55,7 +55,10 @@ urlpatterns = [
     url_provider(r'^api/', include('saas.urls.api.subscriber')),
     url_authenticated('^api/', include('saas.urls.api.search')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
-    url_self_provider(r'^api/', include('signup.urls.api.tokens')),
+    # `{user}` is not a url parameter, hence we cannot use `url_self_provider`.
+    # Furthermore we restrict verification and refresh of JWT
+    # to the request.user itself.
+    url_authenticated(r'^api/', include('signup.urls.api.tokens')),
     url_self_provider(r'^api/users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileAPIView.as_view(), name='api_user_profile'),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
