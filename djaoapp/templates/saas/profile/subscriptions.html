@@ -12,7 +12,7 @@
      data-trip-position="screen-center">
 <h4>{% trans %}Active subscriptions{% endtrans %}</h4>
 <div class="table-responsive mb-4">
-<table class="table">
+<table class="table" infinite-wrapper>
  <thead>
   <tr>
    <th>{% trans %}Plan{% endtrans %}</th>
@@ -104,9 +104,7 @@
  </tbody>
 </table>
 </div>
-<div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-</div>
+<infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
      id="unsubscribe-action" tabindex="-1" role="dialog"
@@ -145,7 +143,7 @@
 <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
 <h4>{% trans %}Expired subscriptions{% endtrans %}</h4>
 <div class="table-responsive" style="min-height: 400px;">
-<table class="table">
+<table class="table" infinite-wrapper>
  <thead>
   <tr>
    <th>{% trans %}Plan{% endtrans %}</th>
@@ -164,9 +162,7 @@
  </tbody>
 </table>
 </div>
-<div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-    <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-</div>
+<infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
 </div>
 </div> <!-- /controller -->
 </section>

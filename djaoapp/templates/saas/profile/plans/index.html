@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="table-responsive">
-    <table id="coupon-list" class="table table table-sm table-striped" >
+    <table id="coupon-list" class="table table table-sm table-striped" infinite-wrapper>
         <thead>
         <tr>
             <th>{% trans %}Title{% endtrans %}
@@ -60,9 +60,7 @@
             <td class="date">[[item.created_at | formatDate]]</td>
         </tr>
     </table>
-    </div>
-    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
     </div>
     <div class="row mt-3">
         <div class="col text-right">

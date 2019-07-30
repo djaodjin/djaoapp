@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-            <table class="table table-sm table-striped" style="width:100%">
+            <table class="table table-sm table-striped" style="width:100%" infinite-wrapper>
                 <thead>
                     <tr>
                         <th>{% trans %}Full name{% endtrans %}</th>
@@ -71,9 +71,7 @@
                 </tbody>
             </table>
             </div>
-            <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-                <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-            </div>
+            <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
           </div>
         </div>
         {% endif %}
@@ -95,7 +93,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-striped">
+                <table class="table table-sm table-striped" infinite-wrapper>
     <thead>
       <tr v-show="sortDir('organization')">
         <th>{% trans %}Subscriber{% endtrans %}
@@ -319,9 +317,7 @@
     </tbody>
             </table>
           </div>
-          <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-              <b-pagination align="center" size="sm" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-            </div>
+          <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
           </div>
         </div>
         {% endfor %}

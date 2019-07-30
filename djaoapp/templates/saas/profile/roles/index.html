@@ -33,7 +33,7 @@
               </div>
             </div>
           </form>
-          <table class="table table-sm table-striped">
+          <table class="table table-sm table-striped" infinite-wrapper>
             <thead>
               <tr>
                 <th>{% trans %}Username{% endtrans %}</th>
@@ -67,9 +67,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-            <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-          </div>
+          <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
   <div title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}" v-model="modalOpen" v-cloak

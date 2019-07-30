@@ -6,7 +6,7 @@
     </div>
     </form>
     <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped" infinite-wrapper>
       <thead>
         <tr>
           <th>{% trans %}Date{% endtrans %}
@@ -49,8 +49,6 @@
         </tr>
       </tbody>
     </table>
-    </div>
-    <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-        <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
     </div>
 </section>

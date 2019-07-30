@@ -189,6 +189,7 @@ $(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js.map $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/vue-infinite-loading/dist/vue-infinite-loading.js $(ASSETS_DIR)/vendor
 	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
 	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 

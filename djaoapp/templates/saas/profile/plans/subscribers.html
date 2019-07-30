@@ -69,7 +69,7 @@ Thank you,
   <div class="row">
       {% include "saas/_filter.html" %}
   </div>
-  <table class="table">
+  <table class="table" infinite-wrapper>
     <thead>
       <tr>
         <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
@@ -118,8 +118,6 @@ Thank you,
           </tr>
     </tbody>
   </table>
-  <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage">
-    <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-  </div>
+  <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
 </section>
 {% endblock %}
