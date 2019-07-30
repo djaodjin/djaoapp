@@ -89,6 +89,7 @@ js_djaodjin_vue = Bundle(
     'vendor/trip.js',
     'vendor/chardinjs.js',
     'vendor/vue-croppa.min.js',
+    'vendor/vue-infinite-loading.js',
     'js/djaodjin-upload.js',
     'js/djaodjin-pages.js',
     'js/djaodjin-dashboard.js',

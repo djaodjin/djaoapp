@@ -46,18 +46,12 @@
         </div>
       </div>
   </div>
-  <div class="row my-4">
+  <div class="row my-4" infinite-wrapper>
     <div class="col-lg-6 col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         {% include "saas/_organization_card.html" %}
     </div>
   </div>
-  <div class="row">
-      <div class="col-12">
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-        </div>
-      </div>
-  </div>
+  <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
     <!-- modal dialog to add a request to add a role to a user
          on an organization. -->
     <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
