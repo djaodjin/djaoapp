@@ -65,6 +65,15 @@
                 </div>
              </div>
         </div>
+        <div id="todos-container" class="mt-4">
+            <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Todo items</h5>
+                    <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-lg-4 col-12">
         <div id="monthly-revenue-container">

@@ -11,6 +11,7 @@ from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
 from ..api.roles import RoleListAPIView
+from ..api.todos import TodosAPIView
 from ..api.users import UserProfileAPIView, RecentActivityAPIView
 from ..urlbuilders import (url_authenticated,
      url_direct, url_provider, url_provider_only, url_self_provider)
@@ -66,4 +67,5 @@ urlpatterns = [
     url(r'^api/auth/register/',
         DjaoAppJWTRegister.as_view(), name='api_register'),
     url(r'^api/', include('signup.urls.api.auth')),
+    url_self_provider(r'^api/todos/', TodosAPIView.as_view(), 'api_todos'),
 ]

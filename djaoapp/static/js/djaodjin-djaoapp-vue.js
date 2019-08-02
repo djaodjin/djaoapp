@@ -47,3 +47,21 @@ var app = new Vue({
     },
 })
 }
+
+if($('#todos-container').length > 0){
+var app = new Vue({
+    el: "#todos-container",
+    mixins: [itemListMixin],
+    data: function(){
+        return {
+            url: djaodjinSettings.urls.api_todos,
+            params: {
+                timezone: moment.tz.guess(),
+            },
+        }
+    },
+    mounted: function(){
+        this.get();
+    },
+})
+}
