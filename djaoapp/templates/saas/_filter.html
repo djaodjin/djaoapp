@@ -1,12 +1,13 @@
-<div class="col">
-    <uiv-dropdown append-to-body>
+<div class="col-md-4">
+    <uiv-dropdown append-to-body class="w-100 pb-3">
       <div class="input-group input-group-sm">
         <div class="input-group-prepend">
             <span class="input-group-text" id="from-inp">{% trans %}From{% endtrans %}</span>
         </div>
         <input class="form-control" type="text" v-model="params.start_at" v-cloak>
         <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle">
+              <i class="fa fa-calendar"></i>
             </button>
         </div>
       </div>
@@ -22,8 +23,8 @@
       </template>
     </uiv-dropdown>
   </div>
-  <div class="col">
-    <uiv-dropdown append-to-body>
+  <div class="col-md-4">
+    <uiv-dropdown append-to-body class="w-100 pb-3">
       <div class="input-group input-group-sm">
         <div class="input-group-prepend">
             <span class="input-group-text" id="to-inp">{% trans %}To{% endtrans %}</span>
