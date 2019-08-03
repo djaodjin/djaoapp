@@ -10,7 +10,9 @@ from django.template.defaultfilters import slugify
 from django.utils.timezone import utc
 from multitier.thread_locals import set_current_site
 from multitier.utils import get_site_model
-from saas.models import Transaction
+from saas.models import (Charge, ChargeItem, Coupon, Organization, Plan,
+    Subscription, Transaction)
+
 from saas.utils import datetime_or_now
 from saas.settings import PROCESSOR_ID
 from saas import signals as saas_signals
@@ -187,11 +189,6 @@ class Command(BaseCommand):
             self._handle(*args, **options)
 
     def _handle(self, *args, **options):
-        #pylint: disable=too-many-locals,too-many-statements
-        from saas.managers.metrics import month_periods # avoid import loop
-        from saas.models import (Charge, ChargeItem, Organization, Plan,
-            Subscription)
-
         if 'database' in options:
             db_name = options['database']
             set_current_site(get_site_model().objects.get(
@@ -205,9 +202,29 @@ class Command(BaseCommand):
         if args:
             from_date = datetime.datetime.strptime(
                 args[0], '%Y-%m-%d')
-        # Create Income transactions that represents a growing bussiness.
         provider = Organization.objects.get(slug=options['provider'])
         processor = Organization.objects.get(pk=PROCESSOR_ID)
+        self.generate_coupons(provider)
+        self.generate_transactions(provider, processor, from_date, now)
+
+    def generate_coupons(self, provider, nb_coupons=None):
+        if nb_coupons is None:
+            nb_coupons = settings.REST_FRAMEWORK['PAGE_SIZE'] * 4
+        self.stdout.write("%d coupons\n" % nb_coupons)
+        for _ in range(0, nb_coupons):
+            coupon_percent = random.randint(1, 100)
+            coupon_code = "%s%d" % ("".join([
+                random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                for _ in range(0, 3)]), coupon_percent)
+            Coupon.objects.create(code=coupon_code, percent=coupon_percent,
+                organization=provider)
+
+    def generate_transactions(self, provider, processor, from_date, ends_at):
+        """
+        Create Income transactions that represents a growing bussiness.
+        """
+        #pylint: disable=too-many-locals
+        from saas.managers.metrics import month_periods # avoid import loop
         for end_period in month_periods(from_date=from_date):
             nb_new_customers = random.randint(0, 9)
             for _ in range(nb_new_customers):
@@ -236,7 +253,7 @@ class Command(BaseCommand):
                     created_at=end_period)
                 subscription = Subscription.objects.create(
                     organization=customer, plan=plan,
-                    ends_at=now + datetime.timedelta(days=31))
+                    ends_at=ends_at + datetime.timedelta(days=31))
                 Subscription.objects.filter(
                     pk=subscription.id).update(created_at=end_period)
             # Insert some churn in %
