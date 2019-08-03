@@ -70,7 +70,7 @@
                         <td v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
                       </tr>
                       <tr :id="row.key" v-for="row in currentTableData.data" :key="row.key">
-                        <td v-if="row.location">
+                        <td v-if="row.location" class="text-nowrap">
                             <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span>
                             <a :href="row.location">[[row.title ? row.title : row.key]]</a>
                         </td>
