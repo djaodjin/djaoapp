@@ -60,7 +60,9 @@
             <td class="date">[[item.created_at | formatDate]]</td>
         </tr>
     </table>
-    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+    <div v-show="pageCount > 1">
+        <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+    </div>
     </div>
     <div class="row mt-3">
         <div class="col text-right">

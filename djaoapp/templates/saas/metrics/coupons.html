@@ -66,7 +66,9 @@
             </tr>
         </tbody>
     </table>
-    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+    <div v-show="pageCount > 1">
+        <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+    </div>
   </div>
 </div>
 {% endblock %}

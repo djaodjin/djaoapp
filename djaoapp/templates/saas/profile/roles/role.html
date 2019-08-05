@@ -76,7 +76,9 @@
         {% include "saas/_user_card.html" %}
     </div>
   </div>
-  <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+  <div v-show="pageCount > 1">
+      <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+  </div>
 
   <!-- modal dialog for adding a userRelation
        when the user must register later. -->

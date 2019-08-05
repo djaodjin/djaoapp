@@ -71,7 +71,9 @@
                 </tbody>
             </table>
             </div>
-            <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+            <div v-show="pageCount > 1">
+                <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+            </div>
           </div>
         </div>
         {% endif %}
@@ -317,7 +319,9 @@
     </tbody>
             </table>
           </div>
-          <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+          <div v-show="pageCount > 1">
+              <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+          </div>
           </div>
         </div>
         {% endfor %}

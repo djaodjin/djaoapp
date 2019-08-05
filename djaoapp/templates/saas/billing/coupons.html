@@ -90,12 +90,8 @@
             </div>
         </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="text-center" v-show="itemsLoaded && totalItems > itemsPerPage" v-cloak>
-          <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
-        </div>
-      </div>
+    <div v-show="pageCount > 1">
+        <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
     </div>
 </div>
 </div>
