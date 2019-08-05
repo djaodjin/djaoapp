@@ -81,7 +81,7 @@ module.exports = {
     },
     plugins: [
         new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['!djaoapp-i18n.js']}),
     ],
 	// used in resolution of modules inside all js and css files,
 	// also in webpack entry points declared in the begging of this config
