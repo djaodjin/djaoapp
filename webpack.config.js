@@ -1,4 +1,5 @@
-// these modules are resolved in node_modules relative to the current directory
+// these modules are resolved in node_modules relative to the directory
+// in which this file is located
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -84,7 +85,7 @@ module.exports = {
         new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['!djaoapp-i18n.js']}),
     ],
 	// used in resolution of modules inside all js and css files,
-	// also in webpack entry points declared in the begging of this config
+	// also in webpack entry points declared in the beginning of this config
     resolve: {
         modules: djaodjin.djaodjin_modules,
     },
