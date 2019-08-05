@@ -6,7 +6,6 @@ from __future__ import absolute_import
 from django.conf import settings
 import django.template.defaulttags
 from django.utils.translation import gettext, ngettext
-from django_assets.env import get_env
 from deployutils.apps.django.themes import get_template_search_path
 from deployutils.apps.django.templatetags import deployutils_extratags
 from jinja2.ext import i18n
@@ -14,11 +13,9 @@ from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment
 import multitier.templatetags.multitier_tags
 from pages import signals as pages_signals
 import saas.templatetags.saas_tags
-from webassets.ext.jinja2 import AssetsExtension
 from webpack_loader.templatetags.webpack_loader import render_bundle
 
 from .compat import import_string, reverse
-import djaoapp.assets
 import djaoapp.templatetags.djaoapp_tags
 
 
@@ -42,14 +39,13 @@ def environment(**options):
     user_class.objects = ActivatedUserManager()
     user_class.objects.model = user_class
 
-    assets_env = get_env()
     # If we don't force ``auto_reload`` to True, in DEBUG=0, the templates
     # would only be compiled on the first edit.
     options.update({'auto_reload': True})
     if 'loader' in options:
         options['loader'] = import_string(options['loader'])(
             get_template_search_path())
-    env = DjaoappEnvironment(extensions=[AssetsExtension, i18n], **options)
+    env = DjaoappEnvironment(extensions=[i18n], **options)
     # i18n
     env.install_gettext_callables(gettext=gettext, ngettext=ngettext,
         newstyle=True)
@@ -117,5 +113,4 @@ def environment(**options):
         env.filters['schema_name'] = \
             djaoapp.templatetags.djaoapp_tags.schema_name
 
-    env.assets_environment = assets_env
     return env

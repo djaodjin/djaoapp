@@ -48,7 +48,6 @@ EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 all:
 	@echo "Nothing to be done for 'make'."
 
-# Remove cache directories (htdocs/media/ are uploaded files, cannot be rebuilt)
 clean: clean-themes
 
 clean-themes:
@@ -135,16 +134,15 @@ vendor-assets-prerequisites: $(installTop)/.npm
 $(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
-	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --node_modules=$(installTop)/node_modules
+
+build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
+	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
+	$(installFiles) $(srcDir)/webpack.config.js $(installTop)
+	cd $(installTop) && $(installTop)/node_modules/.bin/webpack --config $(installTop)/webpack.config.js
 
 
-build-assets: generate-i18n $(installTop)/.npm $(ASSETS_DIR)/js/djaoapp-i18n.js
-	$(installTop)/node_modules/webpack/bin/webpack.js
-
-
-generate-i18n $(ASSETS_DIR)/js/djaoapp-i18n.js: \
+$(ASSETS_DIR)/djaoapp-i18n.js: \
 				$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
-	$(installDirs) $(ASSETS_DIR)/js
 	cd $(srcDir) && $(PYTHON) manage.py generate_i18n_js $@
 
 $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo: \

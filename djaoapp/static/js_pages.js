@@ -1,4 +1,4 @@
-import 'script-loader!js/djaoapp-i18n';
+import 'script-loader!djaoapp-i18n';
 import 'script-loader!dropzone';
 import 'script-loader!vendor/jquery-ui';
 import 'script-loader!jquery.selection';

@@ -4,30 +4,29 @@ const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-var module_prefixes = [];
-try {
-    module_prefixes = JSON.parse(fs.readFileSync('webpack_dirs.json').toString())
-} catch {}
+var djaodjin = JSON.parse(fs.readFileSync('djaodjin-webpack.json').toString())
+
+console.log(djaodjin)
 
 module.exports = {
     entry: {
-        css_base: './djaoapp/static/css_base.js',
-        css_email: './djaoapp/static/css_email.js',
-        css_dashboard: './djaoapp/static/css_dashboard.js',
-        css_pages: './djaoapp/static/css_pages.js',
-        js_base: './djaoapp/static/js_base.js',
-        js_saas: './djaoapp/static/js_saas.js',
-        js_auth: './djaoapp/static/js_auth.js',
-        js_vue: './djaoapp/static/js_vue.js',
-        js_djaodjin_vue: './djaoapp/static/js_djaodjin_vue.js',
-        js_dashboard: './djaoapp/static/js_dashboard.js',
-        js_pages: './djaoapp/static/js_pages.js',
-        js_theme_editors: './djaoapp/static/js_theme_editors.js',
-        js_edit_tools: './djaoapp/static/js_edit_tools.js',
+        css_base: 'css_base.js',
+        css_email: 'css_email.js',
+        css_dashboard: 'css_dashboard.js',
+        css_pages: 'css_pages.js',
+        js_base: 'js_base.js',
+        js_saas: 'js_saas.js',
+        js_auth: 'js_auth.js',
+        js_vue: 'js_vue.js',
+        js_djaodjin_vue: 'js_djaodjin_vue.js',
+        js_dashboard: 'js_dashboard.js',
+        js_pages: 'js_pages.js',
+        js_theme_editors: 'js_theme_editors.js',
+        js_edit_tools: 'js_edit_tools.js',
     },
     output: {
         filename: '[name]-[hash].js',
-        path: path.resolve(__dirname, 'htdocs', 'static', 'webpack_bundles')
+        path: djaodjin.htdocs,
     },
     module: {
         rules: [
@@ -59,7 +58,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            publicPath: '/static/webpack_bundles/'
+                            publicPath: '/static/'
                         }
                     }
                 ]
@@ -70,7 +69,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            publicPath: '/static/webpack_bundles/'
+                            publicPath: '/static/'
                         }
                     }
                 ]
@@ -78,11 +77,14 @@ module.exports = {
         ]
     },
     plugins: [
-        new BundleTracker({filename: './webpack-stats.json'}),
+        new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
         new CleanWebpackPlugin(),
     ],
     resolve: {
-        modules: module_prefixes
+        modules: djaodjin.djaodjin_modules,
     },
+	resolveLoader: {
+		modules: djaodjin.node_modules,
+	},
     mode: 'development'
 };

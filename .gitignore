@@ -6,9 +6,4 @@
 .timestamp
 htdocs
 htdocs/media/
-htdocs/static/.webassets-cache/
 themes/
-node_modules
-package-lock.json
-webpack-stats.json
-webpack_dirs.json

@@ -76,7 +76,6 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_assets',
     'webpack_loader',
     'rest_framework',
     'captcha',
@@ -224,7 +223,6 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 STATICFILES_FINDERS = (
     'multitier.finders.MultitierFileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django_assets.finders.AssetsFinder',
 )
 
 ASSETS_DEBUG = DEBUG
@@ -292,7 +290,6 @@ if FEATURES_REVERT_TO_DJANGO:
             'libraries': {},
             'builtins': [
                 'django.templatetags.i18n',# XXX Format incompatible with Jinja2
-                'django_assets.templatetags.assets',
                 'multitier.templatetags.multitier_tags',
                 'deployutils.apps.django.templatetags.deployutils_extratags',
                     # for |host
@@ -697,8 +694,9 @@ REUSABLE_PRODUCTS = ('demo',)
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'webpack_bundles/', # must end with slash
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'BUNDLE_DIR_NAME': '/', # must end with slash
+		# TODO how to get virtualenv directory name from Django?
+        'STATS_FILE': os.path.join(BASE_DIR, 'venv', 'webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
         'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
