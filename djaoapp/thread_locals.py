@@ -179,12 +179,9 @@ def _provider_as_site(provider):
     return site
 
 
-def get_authorize_processor_url(processor, provider):
-    #pylint:disable=line-too-long
-    return "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=%(client_id)s&scope=read_write&state=%(site)s" % {
-        'client_id': processor.client_id,
-        'site': str(_provider_as_site(provider))
-    }
+def get_authorize_processor_state(processor, provider):
+    # returns site slug as `state` for redirects.
+    return str(_provider_as_site(provider))
 
 
 def processor_redirect(request, site=None):
