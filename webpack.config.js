@@ -1,3 +1,4 @@
+// these modules are resolved in node_modules relative to the current directory
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -10,19 +11,21 @@ console.log(djaodjin)
 
 module.exports = {
     entry: {
-        css_base: 'css_base.js',
-        css_email: 'css_email.js',
-        css_dashboard: 'css_dashboard.js',
-        css_pages: 'css_pages.js',
-        js_base: 'js_base.js',
-        js_saas: 'js_saas.js',
-        js_auth: 'js_auth.js',
-        js_vue: 'js_vue.js',
-        js_djaodjin_vue: 'js_djaodjin_vue.js',
-        js_dashboard: 'js_dashboard.js',
-        js_pages: 'js_pages.js',
-        js_theme_editors: 'js_theme_editors.js',
-        js_edit_tools: 'js_edit_tools.js',
+		// these modules are resolved based on the values provided
+		// in `resolve` setting
+        css_base: 'base.scss',
+        css_email: 'email.scss',
+        css_dashboard: 'dashboard.scss',
+        css_pages: 'pages.scss',
+        js_base: 'base.js',
+        js_saas: 'saas.js',
+        js_auth: 'auth.js',
+        js_vue: 'vue.js',
+        js_djaodjin_vue: 'djaodjin_vue.js',
+        js_dashboard: 'dashboard.js',
+        js_pages: 'pages.js',
+        js_theme_editors: 'theme_editors.js',
+        js_edit_tools: 'edit_tools.js',
     },
     output: {
         filename: '[name]-[hash].js',
@@ -80,9 +83,12 @@ module.exports = {
         new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
         new CleanWebpackPlugin(),
     ],
+	// used in resolution of modules inside all js and css files,
+	// also in webpack entry points declared in the begging of this config
     resolve: {
         modules: djaodjin.djaodjin_modules,
     },
+	// needed for webpack modules resolution
 	resolveLoader: {
 		modules: djaodjin.node_modules,
 	},

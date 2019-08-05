@@ -7,3 +7,8 @@
 htdocs
 htdocs/media/
 themes/
+# we don't use package.json in root dir, however it is convenient
+# to ingore these files when making modifications to package.json via
+# npm install --save <package-name>
+package-lock.json
+node_modules
