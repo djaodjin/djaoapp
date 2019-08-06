@@ -104,9 +104,7 @@
  </tbody>
 </table>
 </div>
-<div v-show="pageCount > 1">
-    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
-</div>
+{% include "_pagination.html" %}
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
      id="unsubscribe-action" tabindex="-1" role="dialog"
@@ -164,9 +162,7 @@
  </tbody>
 </table>
 </div>
-<div v-show="pageCount > 1">
-    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
-</div>
+{% include "_pagination.html" %}
 </div>
 </div> <!-- /controller -->
 </section>

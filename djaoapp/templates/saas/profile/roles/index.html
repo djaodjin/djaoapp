@@ -67,9 +67,7 @@
               </tr>
             </tbody>
           </table>
-          <div v-show="pageCount > 1">
-              <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
-          </div>
+          {% include "_pagination.html" %}
           <!-- modal dialog for adding a userRelation
                when the user must register later. -->
   <div title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}" v-model="modalOpen" v-cloak
