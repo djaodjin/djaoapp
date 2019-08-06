@@ -42,7 +42,7 @@
         </tr>
       </tbody>
       <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        <tr v-for="entry in items.results">
+        <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
           <td>[[entry.created_at | formatDate]]</td>
           <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
           <td colspan="2" v-html="entry.description"></td>
