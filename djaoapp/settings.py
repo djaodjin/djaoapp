@@ -696,7 +696,7 @@ WEBPACK_LOADER = {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': '/', # must end with slash
 		# TODO how to get virtualenv directory name from Django?
-        'STATS_FILE': os.path.join(BASE_DIR, 'venv', 'webpack-stats.json'),
+        'STATS_FILE': WEBPACK_LOADER_STATS_FILE,
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
         'IGNORE': [r'.+\.hot-update.js', r'.+\.map']

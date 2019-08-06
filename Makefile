@@ -194,6 +194,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/site.conf: $(srcDir)/etc/site.conf
 			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
 			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
+			-e 's,%(installTop)s,$(installTop),' \
 			-e "s,%(DB_NAME)s,djaodjin," \
 			-e "s,%(binDir)s,$(binDir)," $< > $@
 
