@@ -87,6 +87,9 @@ You will want to toggle `DEBUG` on in the site.conf file.
 
     # To generate some sample data, disable emailing of receipts and run:
     $ python manage.py load_test_transactions
+
+    # To watch for changes to CSS or JS files and rebuild frontend code
+    $ make watch=true build-assets
 </code></pre>
 
 

@@ -98,6 +98,8 @@ module.exports = {
 	resolveLoader: {
 		modules: djaodjin.node_modules,
 	},
+    // for performance improvements might be useful to compare other options
+    // https://webpack.js.org/configuration/devtool/
     devtool: 'source-map',
     mode: 'development'
 };
