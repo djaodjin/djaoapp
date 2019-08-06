@@ -50,5 +50,9 @@
         "webpack": "^4.39.1",
         "webpack-bundle-tracker": "^0.4.2-beta",
         "webpack-cli": "^3.3.6"
+    },
+    "engines": {
+        "node": ">=v10.16.1",
+        "npm": ">=6.9.0"
     }
 }

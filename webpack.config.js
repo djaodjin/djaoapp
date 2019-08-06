@@ -38,7 +38,12 @@ module.exports = {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
                     "style-loader", // creates style nodes from JS strings
-                    "css-loader", // translates CSS into CommonJS
+                    {
+                        loader: "css-loader", // translates CSS into CommonJS
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
                     // resolve relative references
                     {
                         loader: 'resolve-url-loader',
@@ -51,7 +56,7 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true,
-                            sourceMapContents: false
+                            sourceMapContents: true
                         }
                     },
                 ]
@@ -93,5 +98,6 @@ module.exports = {
 	resolveLoader: {
 		modules: djaodjin.node_modules,
 	},
+    devtool: 'source-map',
     mode: 'development'
 };
