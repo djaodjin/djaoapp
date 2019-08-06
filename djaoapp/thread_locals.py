@@ -39,7 +39,7 @@ def dynamic_processor_keys(provider):#pylint:disable=unused-argument
             'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
         }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
     site = get_current_site()
-    if not is_domain_site(site):
+    if is_domain_site(site):
         processor_backend.mode = processor_backend.REMOTE
     if is_testing(site):
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
