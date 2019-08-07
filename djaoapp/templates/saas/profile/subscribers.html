@@ -71,7 +71,7 @@
                 </tbody>
             </table>
             </div>
-            <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+            {% include "_pagination.html" %}
           </div>
         </div>
         {% endif %}
@@ -317,7 +317,7 @@
     </tbody>
             </table>
           </div>
-          <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+          {% include "_pagination.html" %}
           </div>
         </div>
         {% endfor %}
