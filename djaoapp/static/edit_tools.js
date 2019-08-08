@@ -9,3 +9,8 @@ import 'script-loader!ace-builds/src/mode-javascript';
 import 'script-loader!ace-builds/src/worker-html';
 import 'script-loader!ace-builds/src/worker-css';
 import 'script-loader!ace-builds/src/worker-javascript';
+
+// required for hot module replacement
+if (module.hot){
+    module.hot.accept();
+}

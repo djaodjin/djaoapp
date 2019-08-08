@@ -14,11 +14,6 @@ module.exports = merge(common, {
                     // extracts CSS into separate files
                     {
                         loader: MiniCssExtractPlugin.loader,
-                        /*
-                            XXX maybe useful for dev config?
-                            options: {
-                            hmr: process.env.NODE_ENV === 'development',
-                        },*/
                     },
                     // handle css via webpack
                     {
@@ -28,6 +23,7 @@ module.exports = merge(common, {
                     {
                         loader: 'resolve-url-loader',
                         options: {
+                            // for webfonts mostly
                             keepQuery: true
                         }
                     },
@@ -61,6 +57,10 @@ module.exports = merge(common, {
         new FixStyleOnlyEntriesPlugin(),
     ],
     mode: 'production',
+    output: {
+        // TODO probably something that needs to be changed
+        publicPath: '/static/',
+    },
     optimization: {
         minimizer: [
             // minify js

@@ -35,26 +35,12 @@ module.exports = {
             // handle images via webpack
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
+                loader: 'file-loader',
             },
             // handle fonts via webpack
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
+                loader: 'file-loader',
             }
         ]
     },

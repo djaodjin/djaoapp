@@ -14,3 +14,8 @@ import 'script-loader!js/djaodjin-saas-vue';
 import 'script-loader!js/djaodjin-rules-vue';
 import 'script-loader!js/djaodjin-djaoapp-vue';
 import 'script-loader!js/djaodjin-metrics';
+
+// required for hot module replacement
+if (module.hot){
+    module.hot.accept();
+}

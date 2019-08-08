@@ -16,3 +16,8 @@ import 'script-loader!js/djaodjin-upload';
 import 'script-loader!js/djaodjin-sidebar-gallery';
 import 'script-loader!js/djaodjin-plan-edition';
 import 'script-loader!js/wizard';
+
+// required for hot module replacement
+if (module.hot){
+    module.hot.accept();
+}

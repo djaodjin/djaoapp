@@ -135,14 +135,15 @@ $(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
 
+
+
+ifeq ($(mode),production)
 ifeq ($(watch),true)
 webpack_watch = '-w'
 endif
-
-ifeq ($(mode),production)
-webpack_config = --config $(installTop)/webpack.production.js
+webpack = $(installTop)/node_modules/.bin/webpack --config $(installTop)/webpack.production.js $(webpack_watch)
 else
-webpack_config = --config $(installTop)/webpack.development.js
+webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
 endif
 
 build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
@@ -150,7 +151,7 @@ build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
-	cd $(installTop) && $(installTop)/node_modules/.bin/webpack $(webpack_config) $(webpack_watch)
+	cd $(installTop) && $(webpack)
 
 
 $(ASSETS_DIR)/djaoapp-i18n.js: \
