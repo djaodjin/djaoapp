@@ -136,13 +136,21 @@ $(installTop)/.npm: $(srcDir)/package.json
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
 
 ifeq ($(watch),true)
-webpack_args = '-w'
+webpack_watch = '-w'
+endif
+
+ifeq ($(mode),production)
+webpack_config = --config $(installTop)/webpack.production.js
+else
+webpack_config = --config $(installTop)/webpack.development.js
 endif
 
 build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
-	$(installFiles) $(srcDir)/webpack.config.js $(installTop)
-	cd $(installTop) && $(installTop)/node_modules/.bin/webpack --config $(installTop)/webpack.config.js $(webpack_args)
+	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
+	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
+	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
+	cd $(installTop) && $(installTop)/node_modules/.bin/webpack $(webpack_config) $(webpack_watch)
 
 
 $(ASSETS_DIR)/djaoapp-i18n.js: \

@@ -1,61 +1,28 @@
-// these modules are resolved in node_modules relative to the directory
-// in which this file is located
-const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
-const BundleTracker = require('webpack-bundle-tracker');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 
-var djaodjin = JSON.parse(fs.readFileSync('djaodjin-webpack.json').toString())
-
-console.log(djaodjin)
-
-module.exports = {
-    entry: {
-		// these modules are resolved based on the values provided
-		// in `resolve` setting
-        css_base: 'base.scss',
-        css_email: 'email.scss',
-        css_dashboard: 'dashboard.scss',
-        css_pages: 'pages.scss',
-        js_base: 'base.js',
-        js_saas: 'saas.js',
-        js_auth: 'auth.js',
-        js_vue: 'vue.js',
-        js_djaodjin_vue: 'djaodjin_vue.js',
-        js_dashboard: 'dashboard.js',
-        js_pages: 'pages.js',
-        js_theme_editors: 'theme_editors.js',
-        js_edit_tools: 'edit_tools.js',
-    },
-    output: {
-        filename: '[name]-[hash].js',
-        path: djaodjin.htdocs,
-    },
+module.exports = merge(common, {
     module: {
         rules: [
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
-                    // creates style nodes from JS strings
-                    // disabled in production
-                    //"style-loader",
                     // extracts CSS into separate files
                     {
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
+                        /*
+                            XXX maybe useful for dev config?
+                            options: {
                             hmr: process.env.NODE_ENV === 'development',
-                        },
+                        },*/
                     },
+                    // handle css via webpack
                     {
-                        loader: "css-loader", // translates CSS into CommonJS
-                        options: {
-                            sourceMap: true,
-                        },
+                        loader: "css-loader",
                     },
                     // resolve relative references (ex: url('./img.png'))
                     {
@@ -69,41 +36,17 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             // source maps required for another loader to work
+                            // https://github.com/bholloway/resolve-url-loader/
+                            // blob/master/packages/resolve-url-loader/README.md#configure-webpack
                             sourceMap: true,
-                            sourceMapContents: true
+                            sourceMapContents: false
                         }
                     },
                 ]
             },
-            // handle images via webpack
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
-            },
-            // handle fonts via webpack
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            publicPath: '/static/'
-                        }
-                    }
-                ]
-            }
         ]
     },
     plugins: [
-        // used by Django to look up a bundle file
-        new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
         // this plugin extracts css into separate files, however it still leaves
         // the empty js files that correspond to the css bundles. It is supposed
         // to be fixed in webpack 5.0
@@ -113,43 +56,17 @@ module.exports = {
             filename: '[name]-[hash].css',
             chunkFilename: '[name]-[hash].css',
         }),
-        // removes artifacts from previous builds
-        new CleanWebpackPlugin({
-            // clean everything except i18n code -- needed if we develop in
-            // watch mode
-            cleanOnceBeforeBuildPatterns: ['**/*', '!djaoapp-i18n.js']
-        }),
         // removes empty js files (left from CSS bundles) - temp fix
         // until webpack 5 is released
-        new FixStyleOnlyEntriesPlugin(/*{extensions:['bundle.js']}*/),
+        new FixStyleOnlyEntriesPlugin(),
     ],
-	// used in resolution of modules inside all js and css files,
-	// also in webpack entry points declared in the beginning of this config
-    resolve: {
-        modules: djaodjin.djaodjin_modules,
-    },
-	// needed for webpack modules resolution
-	resolveLoader: {
-		modules: djaodjin.node_modules,
-	},
-    // for performance improvements might be useful to compare other options
-    // https://webpack.js.org/configuration/devtool/
-    devtool: 'source-map',
     mode: 'production',
     optimization: {
         minimizer: [
-            new TerserJSPlugin({
-                sourceMap: true
-            }),
-            // to minify css
-            new OptimizeCSSAssetsPlugin({
-                cssProcessorOptions: {
-                    map: {
-                        inline: false,
-                        annotation: true,
-                    }
-                }
-            })
+            // minify js
+            new TerserJSPlugin(),
+            // minify css
+            new OptimizeCSSAssetsPlugin()
         ],
         /*
           // can be used to concatenate all CSS files into a single CSS file
@@ -163,7 +80,7 @@ module.exports = {
                 },
             },
         },*/
-        // otherwise Vue & vue-bootstrap don't work
+        // disabling tree shaking otherwise Vue & vue-bootstrap don't work
         sideEffects: false,
     }
-};
+});

@@ -1,8 +1,6 @@
 // these modules are resolved in node_modules relative to the directory
 // in which this file is located
 const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -34,33 +32,7 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.(sa|sc|c)ss$/,
-                use: [
-                    "style-loader", // creates style nodes from JS strings
-                    {
-                        loader: "css-loader", // translates CSS into CommonJS
-                        options: {
-                            sourceMap: true,
-                        },
-                    },
-                    // resolve relative references
-                    {
-                        loader: 'resolve-url-loader',
-                        options: {
-                            keepQuery: true
-                        }
-                    },
-                    // compiles Sass to CSS, using Node Sass by default
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true,
-                            sourceMapContents: true
-                        }
-                    },
-                ]
-            },
+            // handle images via webpack
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
@@ -72,6 +44,7 @@ module.exports = {
                     }
                 ]
             },
+            // handle fonts via webpack
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: [
@@ -86,8 +59,14 @@ module.exports = {
         ]
     },
     plugins: [
+        // used by Django to look up a bundle file
         new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
-        new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['**/*', '!djaoapp-i18n.js']}),
+        // removes artifacts from previous builds
+        new CleanWebpackPlugin({
+            // clean everything except i18n code -- needed if we develop in
+            // watch mode
+            cleanOnceBeforeBuildPatterns: ['**/*', '!djaoapp-i18n.js']
+        }),
     ],
 	// used in resolution of modules inside all js and css files,
 	// also in webpack entry points declared in the beginning of this config
@@ -98,8 +77,4 @@ module.exports = {
 	resolveLoader: {
 		modules: djaodjin.node_modules,
 	},
-    // for performance improvements might be useful to compare other options
-    // https://webpack.js.org/configuration/devtool/
-    devtool: 'source-map',
-    mode: 'development'
 };
