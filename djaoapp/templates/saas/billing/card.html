@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="payment-form">
+<section>
   <div class="col-md-12">
-    <form action=".{% if next %}/?next={{next}}{% endif %}"
+    <form id="payment-form" action=".{% if next %}/?next={{next}}{% endif %}"
       method="post" v-on:submit.prevent="save">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       {% include "saas/_card_use.html" %}
@@ -44,7 +44,7 @@
         </div>
         <div class="modal-body">
           <p>
-{% trans profile_name=organization.printable_name %}You are about to delete the card on file for {{profile_name}} that ends in{% endtrans %} [[savedCard.last4]].
+{% trans profile_name=organization.printable_name %}You are about to delete the card on file for {{profile_name}}.{% endtrans %}
 {% trans %}This operation cannot be reversed.{% endtrans %}
           </p>
           <p>
