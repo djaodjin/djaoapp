@@ -1,15 +1,15 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{% trans organization=organization.printable_name %}{{title}} for {{organization}}{% endtrans %}
+    {% trans organization=organization.printable_name %}{{title}} for {{organization}}{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <style>
-.chart-area{
-  height: 400px !important;
-  width: 100%;
-}
+    .chart-area{
+    height: 400px !important;
+    width: 100%;
+    }
 </style>
 <section id="metrics-container">
     <div data-trip data-trip data-trip-index="1"
@@ -18,7 +18,7 @@
          >
         <ul class="nav nav-tabs dashboard-tab table-chooser">
             <li v-for="(table, index) in tables" class="nav-item">
-                <a data-toggle="tab" :href="'#' + table.key" :class="activeClass(index)" @click="tabClicked(index)">
+                <a data-toggle="tab" :href="'#' + table.key" :class="activeClass(index)" @click="tabClicked(index)" v-cloak>
                     [[tabTitle(table)]]
                 </a>
             </li>
@@ -60,22 +60,32 @@
                     </uiv-dropdown>
                 </form>
                 <div class="chart-content">
-                  <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                    <h3  class="text-center">
+                        <i class="fa fa-refresh fa-spin fa-2x"></i>
+                    </h3>
                 </div>
                 <!-- Display as a table -->
                 <div class="table-responsive">
                     <table class="table" style="font-size:0.7em;">
                       <tr>
                         <td></td>
-                        <td v-for="col in currentTableDates">[[col[0] | monthHeading]]</td>
+                        <td v-for="col in currentTableDates" v-cloak>
+                            [[col[0] | monthHeading]]
+                        </td>
                       </tr>
                       <tr :id="row.key" v-for="row in currentTableData.data" :key="row.key">
                         <td v-if="row.location" class="text-nowrap">
-                            <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }"><i class="fa fa-circle"></i></span>
-                            <a :href="row.location">[[row.title ? row.title : row.key]]</a>
+                            <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }">
+                                <i class="fa fa-circle"></i>
+                            </span>
+                            <a :href="row.location" v-cloak>[[row.title ? row.title : row.key]]</a>
                         </td>
-                        <td v-if="!row.location">[[row.title ? row.title : row.key]]</td>
-                        <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)">[[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]</td>
+                        <td v-if="!row.location" class="text-nowrap" v-cloak>
+                            [[row.title ? row.title : row.key]]
+                        </td>
+                        <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)" v-cloak>
+                            [[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]
+                        </td>
                       </tr>
                       {% block metrics_extra_data %}
                       {% endblock %}
@@ -88,15 +98,15 @@
 {% endblock %}
 
 {% block dashboard_bodyscripts %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-    // Copy/Paste from vendor/js/bootstrap.js and inserted
-    // a forced trigger of 'resize' for NVD3 to redraw the chart
-    // using correct dimensions.
-    $(document).on('shown.bs.tab', '[data-toggle="tab"], [data-toggle="pill"]',
-        function (e) {
-        window.dispatchEvent(new Event('resize'));
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        // Copy/Paste from vendor/js/bootstrap.js and inserted
+        // a forced trigger of 'resize' for NVD3 to redraw the chart
+        // using correct dimensions.
+        $(document).on('shown.bs.tab', '[data-toggle="tab"], [data-toggle="pill"]',
+            function (e) {
+            window.dispatchEvent(new Event('resize'));
+        });
     });
-});
-</script>
+    </script>
 {% endblock %}
