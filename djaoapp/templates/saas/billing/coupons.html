@@ -46,7 +46,7 @@
       <div class="text-center" v-show="itemsLoaded && items.results.length === 0" v-cloak>
         <h4 class="text-center"><em>{% trans %}No Coupons{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
       </div>
-      <div class="row mb-5" id="coupon-list">
+      <div class="row mb-4" id="coupon-list">
         <div :id="coupon.code" class="col-12 col-md-6 col-lg-4 col-xl-3 my-1" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <div class="card">
             <div class="card-body">
