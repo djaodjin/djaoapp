@@ -8,14 +8,14 @@
 {% trans %}Credit Card Information{% endtrans %}{% if last4 and not force_update %}<a id="card-update" class="btn" href="{{urls.organization.update_card}}">{% trans %}Update{% endtrans %}</a>{% endif %}
             </legend>
             {% if last4 or force_update %}
-            <div v-show="haveCardData">
+            <div v-show="haveCardData" v-cloak>
                 <dl class="dl-horizontal">
                     <dt>{% trans %}card{% endtrans %}</dt>
-                    <dd data-last4="{{last4}}" v-text="savedCard.last4">{{last4}}</dd>
+                    <dd data-last4="{% if last4 %}{{last4}}{% endif %}" v-text="savedCard.last4">{% if last4 %}{{last4}}{% endif %}</dd>
                 </dl>
                 <dl class="dl-horizontal">
                     <dt>{% trans %}expires{% endtrans %}</dt>
-                  <dd data-exp-date="{{exp_date}}" v-text="savedCard.exp_date">{{exp_date}}</dd>
+                  <dd data-exp-date="{% if exp_date %}{{exp_date}}{% endif %}" v-text="savedCard.exp_date">{% if exp_date %}{{exp_date}}{% endif %}</dd>
                 </dl>
             </div>
             {% endif %}
