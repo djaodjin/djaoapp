@@ -36,11 +36,17 @@
                                    data-trip-position="s">{% trans %}Update{% endtrans %}</a></h3>
         <dl class="dl-horizontal">
           <dt>{% trans %}Institution{% endtrans %}</dt>
-          <dd v-cloak>[[bank_name]]</dd>
+          <dd class="bank-name">
+            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+            <span v-if="balanceLoaded" v-cloak>[[bank_name]]</span>
+          </dd>
         </dl>
         <dl class="dl-horizontal">
           <dt>{% trans %}Account Number{% endtrans %}</dt>
-          <dd v-cloak>[[last4]]</dd>
+          <dd class="last4">
+            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+            <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
+          </dd>
         </dl>
       </section>
     </div>

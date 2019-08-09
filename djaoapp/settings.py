@@ -589,8 +589,8 @@ SAAS = {
         'PRIV_KEY': STRIPE_PRIV_KEY,
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
         'CLIENT_ID': STRIPE_CLIENT_ID,
-        'AUTHORIZE_CALLABLE':
-            'djaoapp.thread_locals.get_authorize_processor_url',
+        'CONNECT_STATE_CALLABLE':
+            'djaoapp.thread_locals.get_authorize_processor_state',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },
