@@ -26,6 +26,7 @@ class DashboardView(BaseDashboardView):
         context = super(DashboardView, self).get_context_data(**kwargs)
         if is_broker(self.organization):
             update_context_urls(context, {
+                'recent_activity': reverse('api_recent_activity'),
                 'api_todos': reverse('api_todos')
             })
         return context

@@ -34,6 +34,7 @@
                 </div>
             </div>
         </div>
+        {% if urls and urls.recent_activity %}
         <div id="recent-activity-container" class="mt-4">
             <div class="card">
                 <div class="card-body">
@@ -65,6 +66,7 @@
                 </div>
              </div>
         </div>
+        {% endif %}
         <div id="todos-container" class="mt-4">
             <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <div class="card-body">
@@ -85,6 +87,7 @@
                 </div>
             </div>
         </div>
+        {% if urls and urls.rules and urls.rules.api_engagement %}
         <div id="engagement-users-container">
             <div class="card mt-4">
                 <div class="card-body">
@@ -110,6 +113,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 </section>
