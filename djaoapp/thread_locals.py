@@ -181,7 +181,11 @@ def _provider_as_site(provider):
 
 def get_authorize_processor_state(processor, provider):
     # returns site slug as `state` for redirects.
-    return str(_provider_as_site(provider))
+    site = _provider_as_site(provider)
+    if not site:
+        # We force a valid state instead of `None`.
+        site = provider
+    return str(site)
 
 
 def processor_redirect(request, site=None):
