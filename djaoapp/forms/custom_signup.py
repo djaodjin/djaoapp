@@ -152,7 +152,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
                 label=_(extra_field[1]), required=extra_field[2])
         if force_required:
             for field_name, field in six.iteritems(self.fields):
-                if field_name != 'organization_name':
+                if field_name not in ('organization_name', 'type'):
                     field.required = True
 
     def clean(self):
@@ -197,15 +197,17 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         return self.cleaned_data['email2']
 
     def clean_type(self):
-        type = self.cleaned_data['type']
-        for type_choice in  Organization.ACCOUNT_TYPE:
-            if type == slugify(type_choice[1]):
-                self.cleaned_data['type'] = type_choice[0]
-                return self.cleaned_data['type']
-        raise forms.ValidationError(
-            _("account type must be one of %(type)s") % {
-                'type': [type_choice[1]
-            for type_choice in Organization.ACCOUNT_TYPE]})
+        account_type = self.cleaned_data['type']
+        if account_type:
+            for type_choice in  Organization.ACCOUNT_TYPE:
+                if account_type == slugify(type_choice[1]):
+                    self.cleaned_data['type'] = type_choice[0]
+                    return self.cleaned_data['type']
+            raise forms.ValidationError(
+                _("account type must be one of %(type)s") % {
+                    'type': [type_choice[1]
+                for type_choice in Organization.ACCOUNT_TYPE]})
+        return Organization.ACCOUNT_UNKNOWN
 
     def clean_username(self):
         """
