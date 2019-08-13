@@ -129,6 +129,9 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         self.user = kwargs.pop('instance', None)
         force_required = kwargs.pop('force_required', False)
         super(SignupForm, self).__init__(*args, **kwargs)
+        self.fields['type'] = forms.ChoiceField(choices=[
+            (slugify(choice[1]), choice[1])
+            for choice in Organization.ACCOUNT_TYPE], required=False)
         if getattr(get_current_app(), 'registration_requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
             # of fields. We overwrite it here to set the theme.
@@ -192,6 +195,17 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         if 'email2' in self.cleaned_data:
             self.cleaned_data['email2'] = self.cleaned_data['email2'].lower()
         return self.cleaned_data['email2']
+
+    def clean_type(self):
+        type = self.cleaned_data['type']
+        for type_choice in  Organization.ACCOUNT_TYPE:
+            if type == slugify(type_choice[1]):
+                self.cleaned_data['type'] = type_choice[0]
+                return self.cleaned_data['type']
+        raise forms.ValidationError(
+            _("account type must be one of %(type)s") % {
+                'type': [type_choice[1]
+            for type_choice in Organization.ACCOUNT_TYPE]})
 
     def clean_username(self):
         """
