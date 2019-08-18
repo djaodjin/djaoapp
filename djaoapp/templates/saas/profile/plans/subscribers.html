@@ -1,7 +1,7 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-    {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
+  {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
@@ -52,15 +52,13 @@
       <div class="form-group">
         <div class="controls">
           <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-          <textarea class="form-control"
-                    name="message"
-                    maxlength="255" type="text" rows="10">
-{% trans invitee='[[newProfile.email]]' %}Hi {{invitee}},
+          <textarea class="form-control" name="message" maxlength="255" type="text" rows="10">{% trans invitee='[[newProfile.email]]' %}Hi {{invitee}},
 
 I am subscribing you to {{plan}}.
 
 Thank you,
-- {{user}}{% endtrans %}</textarea>
+- {{user}}{% endtrans %}
+          </textarea>
         </div>
       </div>
       <button class="btn btn-primary" type="submit">{% trans %}Add subscriber{% endtrans %}</button>
