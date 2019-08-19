@@ -53,6 +53,20 @@ def url_direct(regex, view, name=None):
                ])
 
 
+def url_frictionless_direct(regex, view, name=None):
+    """
+    Builds URLs for a direct decorator that does not require
+    an activated account.
+    """
+    return url(regex % {
+            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+               view, name=name,
+               decorators=['djaoapp.decorators.requires_authenticated',
+                           'djaoapp.decorators.requires_direct',
+                           'djaoapp.decorators.inject_edition_tools'
+               ])
+
+
 def url_dashboard(regex, view, name=None):
     """
     Same as ``url_direct``, yet override template loader behavior
@@ -97,6 +111,23 @@ def url_provider(regex, view, name=None):
                decorators=['djaoapp.decorators.requires_authenticated',
                            'signup.decorators.active_required',
                            'saas.decorators.requires_agreement',
+                           'djaoapp.decorators.requires_provider',
+                           'djaoapp.decorators.inject_edition_tools'
+               ])
+
+
+def url_frictionless_provider(regex, view, name=None):
+    """
+    Direct managers for the organization and managers for a provider
+    of a plan the organization is subscribed to have permission
+    to access the urlpattern built from *regex*.
+
+    The request user is not require to have activated their account yet.
+    """
+    return url(regex % {
+            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+               view, name=name,
+               decorators=['djaoapp.decorators.requires_authenticated',
                            'djaoapp.decorators.requires_provider',
                            'djaoapp.decorators.inject_edition_tools'
                ])

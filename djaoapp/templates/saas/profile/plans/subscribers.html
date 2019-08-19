@@ -1,34 +1,35 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-    {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
+  {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <section id="plan-subscribers-container">
   <form id="add-subscriber" class="form-inline mb-4" @submit.prevent="submit">
     <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+      {# The following div is required for the typeahead dropbox to show under the input field. #}
       <div style="width:100%;">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-          <div class="form-group"
-               data-trip data-trip-index="2"
-               data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want to add.{% endtrans %}</p>"
-               data-trip-position="s">
-              <input type="text" class="form-control" id="userTypeahead"
-                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                     autocomplete="off">
-              <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit">{% trans %}Add subscriber{% endtrans %}</button>
-              </div>
+        <div class="input-group"
+             data-trip data-trip-index="2"
+             data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want to add.{% endtrans %}</p>"
+             data-trip-position="s">
+          <input type="text" class="form-control" id="userTypeahead"
+                 name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
+                 autocomplete="off">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">{% trans %}Add subscriber{% endtrans %}</button>
           </div>
-          <uiv-typeahead
-               v-model="itemSelected"
-               target="#userTypeahead"
-               :async-function="getUsers"
-               item-key="slug"
-               :open-on-focus="false"
-               class="typeahead-dropdown"
-               />
+        </div>
+        <uiv-typeahead
+           v-model="itemSelected"
+           target="#userTypeahead"
+           :async-function="getUsers"
+           item-key="slug"
+           :open-on-focus="false"
+           class="typeahead-dropdown"
+           />
       </div>
     </user-typeahead>
     <div v-show="newProfile.slug">
@@ -51,15 +52,13 @@
       <div class="form-group">
         <div class="controls">
           <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-          <textarea class="form-control"
-                    name="message"
-                    maxlength="255" type="text" rows="10">
-{% trans invitee='[[newProfile.email]]' %}Hi {{invitee}},
+          <textarea class="form-control" name="message" maxlength="255" type="text" rows="10">{% trans invitee='[[newProfile.email]]' %}Hi {{invitee}},
 
 I am subscribing you to {{plan}}.
 
 Thank you,
-- {{user}}{% endtrans %}</textarea>
+- {{user}}{% endtrans %}
+          </textarea>
         </div>
       </div>
       <button class="btn btn-primary" type="submit">{% trans %}Add subscriber{% endtrans %}</button>
@@ -69,55 +68,57 @@ Thank you,
   <div class="row">
       {% include "saas/_filter.html" %}
   </div>
-  <table class="table" infinite-wrapper>
-    <thead>
-      <tr>
-        <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></button></th>
-        <th>{% trans %}Plan{% endtrans %}</th>
-        <th>{% trans %}Since{% endtrans %} <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></button></th>
-        <th>{% trans %}Ends at{% endtrans %} <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></button></th>
-        <th>{% trans %}Description{% endtrans %}</th>
-      </tr>
-    </thead>
-    <tbody v-show="!itemsLoaded">
-          <tr>
-            <td colspan="5">
-              <h4>{% trans %}Loading ...{% endtrans %}</h4>
-            </td>
-          </tr>
-        </tbody>
-        <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0">
-          <tr>
-            <td colspan="5">
-              <h4>{% trans %}No subscribers{% endtrans %}<span v-show="params.q"> {% trans %}with filter:{% endtrans %} '[[params.q]]'</span></h4>
-            </td>
-          </tr>
-        </tbody>
-        <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0">
-          <tr :class="endsSoon(entry)">
-            <td>
-              <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
-            </td>
-            <td>[[entry.plan.title]]</td>
-            <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>
-            <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
-            <td>
-                <span v-show="!entry.edit_description" @click="editDescription(entry, index)">
-                    [[entry.description]] <i class="fa fa-pencil"></i>
-                </span>
-                <input v-show="entry.edit_description" type="text"
-                       class="form-control"
-                       @blur="saveDescription(entry)"
-                       @keyup.13="saveDescription(entry)"
-                       v-model="entry.description"
-                       :ref="refId(entry, index)"
-                       tooltip="{% trans %}Edit description here{% endtrans %}"
-                       tooltip-trigger="focus"
-                       tooltip-placement="top">
-            </td>
-          </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table" infinite-wrapper>
+      <thead>
+        <tr>
+          <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></a></th>
+          <th>{% trans %}Plan{% endtrans %}</th>
+          <th>{% trans %}Since{% endtrans %} <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a></th>
+          <th>{% trans %}Ends at{% endtrans %} <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></a></th>
+          <th>{% trans %}Description{% endtrans %}</th>
+        </tr>
+      </thead>
+      <tbody v-show="!itemsLoaded">
+        <tr>
+          <td colspan="5">
+            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+          </td>
+        </tr>
+      </tbody>
+      <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
+        <tr>
+          <td colspan="5">
+            <h4>{% trans %}No subscribers{% endtrans %}<span v-show="params.q"> {% trans %}with filter:{% endtrans %} '[[params.q]]'</span></h4>
+          </td>
+        </tr>
+      </tbody>
+      <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr :class="endsSoon(entry)">
+          <td>
+            <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+          </td>
+          <td>[[entry.plan.title]]</td>
+          <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>
+          <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+          <td>
+            <span v-show="!entry.edit_description" @click="editDescription(entry, index)">
+              [[entry.description]] <i class="fa fa-pencil"></i>
+            </span>
+            <input v-show="entry.edit_description" type="text"
+                   class="form-control"
+                   @blur="saveDescription(entry)"
+                   @keyup.13="saveDescription(entry)"
+                   v-model="entry.description"
+                   :ref="refId(entry, index)"
+                   tooltip="{% trans %}Edit description here{% endtrans %}"
+                   tooltip-trigger="focus"
+                   tooltip-placement="top">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   {% include "_pagination.html" %}
 </section>
 {% endblock %}

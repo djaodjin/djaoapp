@@ -16,6 +16,7 @@ from multitier.settings import SLUG_RE
 from multitier.urlresolvers import url_sites
 
 from ..compat import reverse_lazy
+from ..views.custom_saas import StripeProcessorRedirectView
 from ..urlbuilders import (url_authenticated, url_active, url_direct,
     url_provider, url_provider_only, url_self_provider,
     url_frictionless_self_provider)
@@ -76,7 +77,10 @@ if settings.API_DEBUG:
 
 urlpatterns += [
     url(r'^api/', include('saas.backends.urls.api')),
-    url(r'^', include('saas.backends.urls.views')),
+    url(r'^stripe/billing/connected/',
+        StripeProcessorRedirectView.as_view(
+            pattern_name='saas_update_bank'),
+        name='saas_processor_connected_hook'),
     url('', include('social_django.urls', namespace='social')),
 
     # Proxy application firewall for all.

@@ -150,7 +150,7 @@
                      name="entry_point"
                      type="text"
                      ref="entryPoint"
-                     value="{{form.instance.entry_point}}"
+                     value="{% if form.instance.entry_point %}{{form.instance.entry_point}}{% endif %}"
                      data-trip data-trip-index="4"
                      data-trip-content="<p>{% trans %}Set the entry point where authorized requests should be forwarded to.{% endtrans %}</p>" data-trip-position="s">
               <button type="submit" class="input-group-append btn btn-primary">{% trans %}Update{% endtrans %}</button>

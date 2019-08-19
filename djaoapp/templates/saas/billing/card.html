@@ -7,10 +7,61 @@
 {% block saas_content %}
 <section id="update-card-container">
   <div class="col-md-12">
-    <form id="payment-form" action=".{% if next %}/?next={{next}}{% endif %}"
+    <form id="update-card" action=".{% if next %}/?next={{next}}{% endif %}"
       method="post" v-on:submit.prevent="save">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       {% include "saas/_card_use.html" %}
     </form>
+    <div class="card border-danger" v-show="haveCardData" vcloak>
+      <div class="card-header">
+        {% trans %}Danger Zone{% endtrans %}
+      </div>
+      <div class="card-body text-danger">
+        <div class="row align-items-center">
+          <div class="col-sm-5">
+            <button id="delete-action-open"
+                  class="btn btn-danger btn-block"
+                  data-toggle="modal"
+                  data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+          </div>
+          <div class="col-sm-7">
+            {% trans %}This operation cannot be reversed.{% endtrans %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal dialog to delete card. -->
+  <div class="modal fade"
+       id="delete-action" tabindex="-1" role="dialog"
+       aria-labelledby="{% trans %}Delete Card{% endtrans %}" aria-hidden="true">
+    <form class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans %}Delete Card{% endtrans %} ...</h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+{% trans profile_name=organization.printable_name %}You are about to delete the card on file for {{profile_name}}.{% endtrans %}
+{% trans %}This operation cannot be reversed.{% endtrans %}
+          </p>
+          <p>
+{% trans %}Are you sure you want to continue?{% endtrans %}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete"
+                  data-dismiss="modal"
+                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+          <button type="button" id="delete-card-btn"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
+                  @click="remove">{% trans %}Delete{% endtrans %}</button>
+        </div>
+      </div>
+    </form>
+  </div><!-- end modal to delete card -->
 </section>
 {% endblock %}

@@ -199,6 +199,10 @@ class RegisterMixin(object):
                     saas_settings.TERMS_OF_USE, user)
 
                 # Create an ``Organization`` and set the user as its manager.
+                organization_kwargs = {}
+                if ('type' in cleaned_data and
+                    cleaned_data['type'] == Organization.ACCOUNT_PROVIDER):
+                    organization_kwargs = {'is_provider': True}
                 account = Organization.objects.create(
                     slug=organization_slug,
                     full_name=organization_name,
@@ -210,7 +214,8 @@ class RegisterMixin(object):
                     region=_clean_field(cleaned_data, 'region'),
                     postal_code=_clean_field(cleaned_data, 'postal_code'),
                     country=_clean_field(cleaned_data, 'country'),
-                    extra=organization_extra)
+                    extra=organization_extra,
+                    **organization_kwargs)
                 account.add_manager(user, extra=role_extra)
                 LOGGER.info("created organization '%s' with"\
                     " full name: '%s', email: '%s', phone: '%s',"\

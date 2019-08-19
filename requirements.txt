@@ -14,8 +14,8 @@ djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.13
 djaodjin-pages==0.2.7
 djaodjin-rules==0.1.12
-djaodjin-saas==0.6.2
-djaodjin-signup==0.3.3
+djaodjin-saas==0.6.3
+djaodjin-signup==0.3.4
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)

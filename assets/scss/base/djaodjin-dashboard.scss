@@ -10,7 +10,6 @@ $dashboard-sidebar-logo-height:    72px;
 $dashboard-sidebar-bg:       theme-color(primary);
 $dashboard-sidebar-color:    white;
 
-
 // Icons to show credit card provider
 // ----------------------------------
 .card-icons {
@@ -54,8 +53,7 @@ $dashboard-sidebar-color:    white;
 // --------
 
 /* subscriber pipeline */
-
-.date-chooser{
+.date-chooser {
   padding-top: 5px;
   font-size: 0.8em;
 }
@@ -63,7 +61,7 @@ $dashboard-sidebar-color:    white;
 .date-chooser .dropdown-menu {
    left: auto !important;
    right: 0px;
- }
+}
 
 .dashboard-container {
     clear: left;
@@ -104,12 +102,10 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav-main {
     float: left;
     min-height: 100%;
-    padding-bottom: $dashboard-nav-footer-height; 
-    /* must be equal to .dashboard-nav-footer height in pixel */
+    padding-bottom: $dashboard-nav-footer-height; /* must be equal to .dashboard-nav-footer height in pixel */
 }
 
-.dashboard-nav-main .navbar
-{
+.dashboard-nav-main .navbar {
     width: $dashboard-sidebar-width;
 }
 
@@ -118,8 +114,7 @@ $dashboard-sidebar-color:    white;
   overflow-y: auto;
 }
 
-.dashboard-nav-footer
-{
+.dashboard-nav-footer {
     position: absolute;
     clear:both;
     bottom: 0;
@@ -129,23 +124,19 @@ $dashboard-sidebar-color:    white;
     border-top: 1px solid;
 }
 
-.dashboard-nav-footer .footer-links
-{
+.dashboard-nav-footer .footer-links {
     margin-top: 5px;
 }
 
-.dashboard-nav-footer .footer-links a
-{
+.dashboard-nav-footer .footer-links a {
     margin: 0 3px;
 }
 
-.dashboard-nav-footer .footer-links a:first-child
-{
+.dashboard-nav-footer .footer-links a:first-child {
     margin-left: 0;
 }
 
-.dashboard-nav-footer .footer-links a:last-child
-{
+.dashboard-nav-footer .footer-links a:last-child {
     margin-right: 0;
 }
 
@@ -173,7 +164,7 @@ $dashboard-sidebar-color:    white;
   margin-right: $dashboard-sidebar-toggle;
 }
 
-.dashboard-nav-menu > .nav{
+.dashboard-nav-menu > .nav {
    margin-left: $dashboard-sidebar-toggle;
    margin-right: $dashboard-sidebar-toggle;
 }
@@ -193,8 +184,7 @@ $dashboard-sidebar-color:    white;
    text-align:center;
 }
 
-.no-results
-{
+.no-results {
     color: #888;
     text-align: center;
     padding: 20px 10px;
@@ -202,13 +192,15 @@ $dashboard-sidebar-color:    white;
     font-size: 14px;
 }
 
-.dashboard-home-title
-{
+.dashboard-home-title {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.navbar .nav-item
-{
+.navbar {
+    height: 64px;
+}
+
+.navbar .nav-item {
     margin: 0 10px;
 }
 
@@ -241,33 +233,28 @@ $dashboard-sidebar-color:    white;
         display: none;
     }
 
-    .navbar-brand-container
-    {
+    .navbar-brand-container {
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0);
         z-index: 10;
     }
 
-    .navbar-brand-container .navbar-brand > img
-    {
+    .navbar-brand-container .navbar-brand > img {
         max-height: 36px;
     }
 
     // always display djaoapp name inside sidebar
     // otherwise need to have two partial brand templates
-    .dashboard-nav .navbar-brand .d-none
-    {
+    .dashboard-nav .navbar-brand .d-none {
         display: inline-block !important;
     }
 
-    .header-menubar .dropdown
-    {
+    .header-menubar .dropdown {
         position: static;
     }
 
-    .header-menubar .dropdown-menu
-    {
+    .header-menubar .dropdown-menu {
         left: auto;
         right: 5px;
     }
@@ -280,8 +267,7 @@ $dashboard-sidebar-color:    white;
     width: inherit;
   }
 
-  .dashboard-inner-container .dashboard-content
-  {
+  .dashboard-inner-container .dashboard-content {
     margin-left: $dashboard-sidebar-width;
     width: calc(100vw - #{$dashboard-sidebar-width});
   }
@@ -294,20 +280,18 @@ $dashboard-sidebar-color:    white;
 }
 
 .sidebar-toggle > .closed:before  {
-      content: "\f101"; /* .fa-angle-double-right:before */
+    content: "\f101"; /* .fa-angle-double-right:before */
 }
 
 .sidebar-toggle > .opened:before  {
-      content: "\f100"; /* .fa-angle-double-left:before */
+    content: "\f100"; /* .fa-angle-double-left:before */
 }
 
-.dashboard-inner-container .content-area-container
-{
+.dashboard-inner-container .content-area-container {
     padding: 20px;
 }
 
-.navbar-nav .dropdown-menu
-{
+.navbar-nav .dropdown-menu {
     position: absolute;
 }
 
@@ -315,8 +299,7 @@ $dashboard-sidebar-color:    white;
     flex-direction: row;
 }
 
-.sidebar-toggle
-{
+.sidebar-toggle {
     vertical-align: middle;
     line-height: 1;
     padding: 9px 10px;
@@ -328,12 +311,11 @@ $dashboard-sidebar-color:    white;
     background: $dashboard-sidebar-bg;
 }
 
-.typeahead-dropdown.open>.dropdown-menu
-{
+.typeahead-dropdown.open>.dropdown-menu {
     display: block;
 }
 
-.typeahead-dropdown .dropdown-menu>li>a {
+.typeahead-dropdown .dropdown-menu > li > a {
     display: block;
     padding: 3px 20px;
     clear: both;
@@ -346,14 +328,13 @@ $dashboard-sidebar-color:    white;
 
 // colors for sidebar
 // ------------------
-
 .dashboard-nav-color-theme {
     background-color: $dashboard-sidebar-bg;
     color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-color-theme .navbar-light {
-  background-color: $dashboard-sidebar-bg;
+    background-color: $dashboard-sidebar-bg;
 }
 
 .dashboard-nav a,
@@ -361,7 +342,7 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav a:hover,
 .dashboard-nav a:focus,
 .dashboard-nav a:visited {
-  color: $dashboard-sidebar-color;
+    color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav .navbar-light a.navbar-brand,
@@ -369,90 +350,81 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav .navbar-light a.navbar-brand:hover,
 .dashboard-nav .navbar-light a.navbar-brand:focus,
 .dashboard-nav .navbar-light a.navbar-brand:visited {
-  color: $dashboard-sidebar-color;
+    color: $dashboard-sidebar-color;
 }
 
 .opened .dashboard-nav-main {
-  box-shadow: 10px 0 100px #ccc;
+    box-shadow: 10px 0 100px #ccc;
 }
 
 .dashboard-nav-footer {
-  border-top-color: $dashboard-sidebar-color;
+    border-top-color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-footer .footer-links a
-{
+.dashboard-nav-footer .footer-links a {
     color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-menu > hr {
-  border-top: 1px solid $dashboard-sidebar-color;
+    border-top: 1px solid $dashboard-sidebar-color;
 }
 
 .dashboard-nav-menu > .nav > li > a {
-   background-color:transparent;
-   color: $dashboard-sidebar-color;
+    background-color:transparent;
+    color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-menu > .nav > li.active > a {
-  background-color: $dashboard-sidebar-color;
-  color: $dashboard-sidebar-bg;
-  border-radius: 0px;
-  text-decoration: underline;
+    background-color: $dashboard-sidebar-color;
+    color: $dashboard-sidebar-bg;
+    border-radius: 0px;
+    text-decoration: underline;
 }
 
-.dashboard-nav-menu > .nav > li:not(.active) > a:hover{
-   color: $dashboard-sidebar-color;
-   text-decoration: underline;
+.dashboard-nav-menu > .nav > li:not(.active) > a:hover {
+    color: $dashboard-sidebar-color;
+    text-decoration: underline;
 }
 
 .dashboard-nav .footer {
-   color: $dashboard-sidebar-color;
+    color: $dashboard-sidebar-color;
 }
 
-.dropdown-menu .dropdown-label
-{
+.dropdown-menu .dropdown-label {
     color: $dashboard-sidebar-bg;
 }
 
-.dropdown-menu .dropdown-label .dropdown-label-role
-{
+.dropdown-menu .dropdown-label .dropdown-label-role {
     color: $dashboard-sidebar-color;
     background: $dashboard-sidebar-bg;
 }
 
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle
-{
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle {
     border: 1px solid $dashboard-sidebar-color;
     background: $dashboard-sidebar-bg;
 }
 
 .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover
-{
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover {
     color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
-.dashboard-nav-color-theme .dropdown-toggle
-{
+.dashboard-nav-color-theme .dropdown-toggle {
     color: $dashboard-sidebar-color;
 }
 
-#subscriptions table td
-{
+#subscriptions table td {
     vertical-align: middle !important;
 }
 
-.pending-users-container
-{
+.pending-users-container {
     background: #f3f3f3;
     padding: 10px 20px;
     border-radius: 3px;
 }
 
-.pending-users-container h4
-{
+.pending-users-container h4 {
     color: #333;
 }
 
@@ -460,64 +432,53 @@ $dashboard-sidebar-color:    white;
     background-color: #ddd;
 }
 
-.user-password-modal .invalid-feedback
-{
+.user-password-modal .invalid-feedback {
     display: block;
 }
 
-.organization-card .card-img-top
-{
+.organization-card .card-img-top {
     width: 50%;
     margin: 20px auto 0;
 }
 
-.organization-card .card-title a
-{
+.organization-card .card-title a {
     color: black;
 }
 
-.organization-card .badge
-{
+.organization-card .badge {
     font-weight: normal;
 }
 
-.organization-card .organization-buttons
-{
+.organization-card .organization-buttons {
     min-height: 110px;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
 }
 
-#recent-activity-container .item-name
-{
+#recent-activity-container .item-name {
     /* TODO need to divide into three columns (a grid or smth similar) */
     width: 200px;
     color: #333;
 }
 
-#recent-activity-container a:hover
-{
+#recent-activity-container a:hover {
     text-decoration: none;
 }
 
-#recent-activity-container a:hover .item-name
-{
+#recent-activity-container a:hover .item-name {
     text-decoration: underline;
 }
 
-.coupon-title
-{
+.coupon-title {
     display: flex;
     justify-content: space-between;
 }
 
-.coupon-title .card-title
-{
+.coupon-title .card-title {
     word-break: break-word;
 }
 
-.coupon-title .btn-danger
-{
+.coupon-title .btn-danger {
     align-self: flex-start;
 }
