@@ -27,7 +27,10 @@ module.exports = {
         js_edit_tools: 'edit_tools.js',
     },
     output: {
-        filename: '[name]-[hash].js',
+        filename: (chunkData) => {
+            var name = chunkData.chunk.name.replace('js_', '').replace('css_', '');
+            return name + '-[id]' + chunkData.chunk.contentHash.javascript + '.js';
+        },
         path: djaodjin.htdocs,
     },
     module: {
