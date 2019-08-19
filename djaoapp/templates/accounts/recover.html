@@ -3,28 +3,27 @@
 {% block accounts_content %}
 <div class="container">
     <div class="row">
-        <div class="offset-md-3 col-md-6 col-xs-12">
-            <div class="page-header">
-                <h1 class="text-center"><i class="fa fa-ellipsis-h"></i> {% trans %}Forgotten password{% endtrans %}</h1>
+        <div class="offset-sm-2 col-sm-8">
+            <div class="page-header my-4">
+                <h1 class="text-center">
+                    {% trans %}Forgot Password{% endtrans %}
+                </h1>
             </div>
-            <p>
-                {% trans %}Please enter your e-mail address. Your password will be reset and you will get a chance to choose a new password.{% endtrans %}
+            <p class="text-center">
+                {% trans %}Enter your e-mail address to reset and create a new password.{% endtrans %}
             </p>
-            {% if form %}
-            {% include "accounts/_recover_form.html" %}
-            {% endif %}
-            <hr />
-            <div class="row">
-                <div class="col-md-8">
-                {% trans %}Don't have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="/register/{% if next %}?next={{next}}{% endif %}">{% trans %}Sign up{% endtrans %}</a>
-                </div>
-                <div class="col-md-4">
-                    <span class="text-danger pull-right">{% trans %}* required fields{% endtrans %}</span>
-                </div>
+
+            <div class="offset-sm-2 col-sm-8">
+                {% if form %}
+                    {% include "accounts/_recover_form.html" %}
+                {% endif %}
+
+                <p class="text-center mt-3">
+                    <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+                    or
+                    <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign up{% endtrans %}</a>
+                </p>
             </div>
-            <p style="margin-top: 25px;">
-{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before submitting your e-mail address.{% endtrans %}
-            </p>
         </div>
     </div>
 </div>
