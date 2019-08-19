@@ -104,8 +104,8 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav-main {
     float: left;
     min-height: 100%;
-    padding-bottom: $dashboard-nav-footer-height; /* must be equal to .dashboard-nav-footer height
-                             in pixel */
+    padding-bottom: $dashboard-nav-footer-height; 
+    /* must be equal to .dashboard-nav-footer height in pixel */
 }
 
 .dashboard-nav-main .navbar
@@ -131,7 +131,7 @@ $dashboard-sidebar-color:    white;
 
 .dashboard-nav-footer .footer-links
 {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .dashboard-nav-footer .footer-links a

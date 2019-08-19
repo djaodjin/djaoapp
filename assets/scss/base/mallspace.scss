@@ -197,18 +197,22 @@ body{
 
 .footer {
     position: relative;
-    height: 22px;      /* must be in pixel (see comment abolve) */
-    margin:0;
-    margin-top:-22px;  /* stick to bottom (see comment above) */
+    height: 150px;      /* must be in pixel (see comment abolve) */
+    margin-top: -150px;  /* stick to bottom (see comment above) */
     clear:both;
     bottom: 0;
-    text-align:center;
-    font-size:12px;
-    width: 100%;
+    font-size: 12px;
     flex-shrink: 0;
-    color: #333;
-    padding: 10px;
-    border-top: 1px solid #e9e9e9;
+    color: #FFF;
+    background-color: #337AB7;
+}
+
+.footer a {
+  color: #FFFFFF;
+}
+
+.footer a i {
+  font-size: 24px;
 }
 
 .content-block-wrapper{
@@ -664,15 +668,17 @@ section#hosting{
 
 }
 
-.footer-links
-{
-    margin-bottom: 10px;
+.footer-links {
+  margin-bottom: 10px;
 }
 
-.footer-links a
-{
-    margin: 0 5px;
-    font-size: 14px;
+.footer-links a {
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+.footer-links a i {
+  font-size: 24px;
 }
 
 #leaderboard
