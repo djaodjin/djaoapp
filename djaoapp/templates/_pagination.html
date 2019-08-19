@@ -1,0 +1,12 @@
+<div v-show="pageCount > 1" class="d-md-none">
+    <infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper>
+        <div slot="no-more">
+            <div class="back-to-top my-4 text-center">
+                <a href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i> Back to Top</a>
+            </div>
+        </div>
+    </infinite-loading>
+</div>
+<div v-show="pageCount > 1" class="text-center d-none d-md-block" v-if="!isInfiniteScroll" v-cloak>
+    <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+</div>

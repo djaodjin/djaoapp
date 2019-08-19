@@ -104,7 +104,7 @@
  </tbody>
 </table>
 </div>
-<infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+{% include "_pagination.html" %}
 <!-- modal dialog to confirm unsubscribe -->
 <div class="modal fade"
      id="unsubscribe-action" tabindex="-1" role="dialog"
@@ -162,7 +162,7 @@
  </tbody>
 </table>
 </div>
-<infinite-loading @infinite="paginationHandler" ref="infiniteLoading" force-use-infinite-wrapper></infinite-loading>
+{% include "_pagination.html" %}
 </div>
 </div> <!-- /controller -->
 </section>

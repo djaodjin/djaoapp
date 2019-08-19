@@ -14,8 +14,9 @@ from rest_framework.response import Response
 from rules.mixins import AppMixin
 from rules.utils import get_current_app
 from saas import settings as saas_settings
-from saas.models import Signature
+from saas.models import Organization, Signature
 from saas.mixins import OrganizationMixin
+from saas.api.serializers import EnumField
 from signup.api.auth import JWTRegister as JWTRegisterBase
 from signup.backends.sts_credentials import aws_bucket_context
 from signup.serializers import CreateUserSerializer
@@ -49,7 +50,11 @@ class RegisterSerializer(CreateUserSerializer):
         model = get_user_model()
         fields = ('username', 'password', 'email', 'full_name',
             'organization_name', 'street_address', 'locality',
-            'region', 'postal_code', 'country', 'phone')
+            'region', 'postal_code', 'country', 'phone', 'type')
+
+RegisterSerializer._declared_fields["type"] = \
+    EnumField(choices=Organization.ACCOUNT_TYPE, required=False,
+        help_text=_("Type of the accounts being registered"))
 
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):

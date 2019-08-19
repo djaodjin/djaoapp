@@ -15,7 +15,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_self_provider,
      url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
-from ..views.custom_saas import DashboardView
+from ..views.custom_saas import DashboardView, ProcessorAuthorizeView
 from ..views.custom_signup import (ActivationView, PasswordResetView,
     PasswordResetConfirmView, SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
@@ -78,6 +78,8 @@ urlpatterns = [
     url_authenticated(r'^', include('saas.urls.redirects')),
     url_direct(r'^metrics/(?P<organization>%s)/dashboard/$' % ACCT_REGEX,
         DashboardView.as_view(), name='saas_dashboard'),
+    url_direct(r'^billing/(?P<organization>%s)/bank/$' % ACCT_REGEX,
+        ProcessorAuthorizeView.as_view(), name='saas_update_bank'),
     url_direct(r'^', include('saas.urls.provider')),
     url_provider(r'^', include('saas.urls.subscriber.billing')),
     url_provider(r'^', include('saas.urls.subscriber.profile')),

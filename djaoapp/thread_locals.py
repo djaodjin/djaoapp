@@ -39,7 +39,7 @@ def dynamic_processor_keys(provider):#pylint:disable=unused-argument
             'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
         }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
     site = get_current_site()
-    if not is_domain_site(site):
+    if is_domain_site(site):
         processor_backend.mode = processor_backend.REMOTE
     if is_testing(site):
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
@@ -179,12 +179,13 @@ def _provider_as_site(provider):
     return site
 
 
-def get_authorize_processor_url(processor, provider):
-    #pylint:disable=line-too-long
-    return "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=%(client_id)s&scope=read_write&state=%(site)s" % {
-        'client_id': processor.client_id,
-        'site': str(_provider_as_site(provider))
-    }
+def get_authorize_processor_state(processor, provider):
+    # returns site slug as `state` for redirects.
+    site = _provider_as_site(provider)
+    if not site:
+        # We force a valid state instead of `None`.
+        site = provider
+    return str(site)
 
 
 def processor_redirect(request, site=None):

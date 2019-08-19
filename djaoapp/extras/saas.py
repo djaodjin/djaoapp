@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from multitier.thread_locals import get_current_site
 from pages.extras import AccountMixinBase
 from rules.extras import AppMixinBase
-#from saas.utils import is_broker
+from saas.utils import is_broker
 
 from ..compat import reverse
 
@@ -15,12 +15,17 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
+        if not is_broker(self.organization):
+            if 'urls' in context:
+                if 'pages' in context['urls']:
+                    del context['urls']['pages']
+                if 'rules' in context['urls']:
+                    del context['urls']['rules']
         # XXX might be overkill to always add ``site`` even though
         # it is only used in ``templates/saas/users/roles.html`` at this point.
         context.update({'site': get_current_site()})
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
-            'recent_activity': reverse('api_recent_activity'),
         })
         # `ExtraMixin.get_context_data` is called before
         # `OrganizationMixin.get_context_data` had an opportunity to
