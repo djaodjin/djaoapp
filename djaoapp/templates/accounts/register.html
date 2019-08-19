@@ -12,13 +12,16 @@
                 {% trans %}Already have an account?{% endtrans %} 
                 <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
             </div>
-
             <div class="row">
                 <div class="offset-sm-2 col-sm-8">
                     {% if form %}
                         {% include "accounts/_register_form.html" %}
                     {% endif %}
                 </div>
+            </div>
+            <div class="text-center mt-3">
+                {% trans %}Already have an account?{% endtrans %} 
+                <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
             </div>
         </div>
     </div>

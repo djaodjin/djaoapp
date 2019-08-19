@@ -19,7 +19,7 @@
                 {% endif %}
 
                 <p class="text-center mt-3">
-                    <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+                    <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Go back to Login?{% endtrans %}</a>
                     or
                     <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign up{% endtrans %}</a>
                 </p>
