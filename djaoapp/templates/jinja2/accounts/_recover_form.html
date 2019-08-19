@@ -10,6 +10,12 @@
             {% include "_django_field.html" with bound_field=form|get_bounded_field:'email' hide_labels=form.hide_labels %} 
         ##}
         
+        <p class="text-center">
+            <small><em>
+                {% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before signing in.{% endtrans %}
+            </em></small>
+        </p>
+
         <div class="form-action text-center">
             <button type="submit" class="btn btn-block btn-primary btn-lg">
                 {% if form.submit_title %}
