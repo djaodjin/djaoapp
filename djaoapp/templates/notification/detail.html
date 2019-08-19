@@ -25,13 +25,13 @@
 {% endblock %}
 {% block dashboard_bodyscripts %}
 {# aggregated, minified scripts #}
-{{ render_bundle('js_theme_editors') }}
+{{ render_bundle('js_theme-editors') }}
 {% if not show_edit_tools %}
 {#
     when edit tools are disabled the required scripts are not included
     however if we're serving assets via cdn I'm not sure if this is the best way
 #}
-{{ render_bundle('js_edit_tools') }}
+{{ render_bundle('js_edit-tools') }}
 {% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {

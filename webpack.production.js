@@ -60,7 +60,7 @@ module.exports = merge(common, {
     mode: 'production',
     output: {
         // TODO probably something that needs to be changed
-        publicPath: '/static/',
+        publicPath: '/static/cache/',
     },
     optimization: {
         minimizer: [

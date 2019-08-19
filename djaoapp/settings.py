@@ -694,8 +694,7 @@ REUSABLE_PRODUCTS = ('demo',)
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': '/', # must end with slash
-		# TODO how to get virtualenv directory name from Django?
+        'BUNDLE_DIR_NAME': 'cache/', # must end with slash
         'STATS_FILE': WEBPACK_LOADER_STATS_FILE,
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,

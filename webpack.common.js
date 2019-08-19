@@ -20,18 +20,18 @@ module.exports = {
         js_saas: 'saas.js',
         js_auth: 'auth.js',
         js_vue: 'vue.js',
-        js_djaodjin_vue: 'djaodjin_vue.js',
         js_dashboard: 'dashboard.js',
         js_pages: 'pages.js',
-        js_theme_editors: 'theme_editors.js',
-        js_edit_tools: 'edit_tools.js',
+        'js_djaodjin-vue': 'djaodjin_vue.js',
+        'js_theme-editors': 'theme_editors.js',
+        'js_edit-tools': 'edit_tools.js',
     },
     output: {
         filename: (chunkData) => {
             var name = chunkData.chunk.name.replace('js_', '').replace('css_', '');
             return name + '-[id]' + chunkData.chunk.contentHash.javascript + '.js';
         },
-        path: djaodjin.htdocs,
+        path: djaodjin.htdocs + '/cache',
     },
     module: {
         rules: [
