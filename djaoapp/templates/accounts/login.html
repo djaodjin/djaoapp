@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="offset-sm-2 col-sm-8">
-        <div class="page-header">
+        <div class="page-header my-4">
             <h1 class="text-center"> 
                 {% trans %}Sign in{% endtrans %}
             </h1>
@@ -21,7 +21,13 @@
                             </em></small>
                         </p>
                         <div class="form-action text-center">
-                            <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg">
+                                {% if form.submit_title %}
+                                    {{form.submit_title}}
+                                {% else %}
+                                    {% trans %}Submit{% endtrans %}
+                                {% endif %}
+                            </button>
                         </div>
                     </form>
                 {% endif %}
