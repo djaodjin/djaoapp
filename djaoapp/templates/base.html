@@ -100,20 +100,23 @@
                       {% endblock %}
                     </div>
                   </div>
+
+                  <!-- Start Dashboard Footer -->
                   {% block dashboard_footer %}
-                    <div class="dashboard-nav-footer dashboard-nav-color-theme">
-                      <div>
-                        {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %}
+                      <div class="dashboard-nav-footer dashboard-nav-color-theme">
+                          <div class="footer-links">
+                              <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-2"></i></a>
+                              <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-2"></i></a>
+                              <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+                          </div>
+
+                          <div>
+                          {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved. <a href="/legal/" target="_blank">Legal</a>.{% endtrans %}
+                          </div>
                       </div>
-                      <div class="footer-links">
-                        <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
-                        &middot;
-                        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-                        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-                      </div>
-                    </div>
                   {% endblock %}
+                  <!-- End Dashboard Footer -->
+
                 </div>
               </div><!-- /.dashboard-nav-inner-container -->
             </div>
@@ -187,19 +190,27 @@
       </div><!-- /.dashboard-container -->
     </div><!-- /#main -->
   </div><!-- /.wrap -->
+
+  <!-- Start Main Footer -->
   {% block footer %}
-    <footer class="footer">
+    <footer class="footer text-center w-100 d-flex align-items-center justify-content-center">
+
       {% block localfooter %}
       {% endblock %}
-      <div class="copyr">
-        {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %} - 
-        <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>&nbsp;&nbsp;
-        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
+
+      <div class="copyr mt-2">
+        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-3"></i></a>
+        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-3"></i></a>
         <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+        <br><br>
+        {% trans %} 
+          Powered by &copy; 2019 DjaoDjin. <br>
+          All rights reserved. <a href="/legal/" target="_blank">Legal</a>.
+        {% endtrans %}
       </div>
     </footer>
   {% endblock footer %}
+  <!-- End Main Footer -->
 
   {% block _bodyscripts %}
     {% assets "js_base" %}
