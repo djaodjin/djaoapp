@@ -13,7 +13,7 @@
 
 .navbar-light .navbar-brand
 {
-  color: #337ab7;
+  color: theme-color(primary);
 }
 
 
@@ -204,7 +204,7 @@ body{
     font-size: 12px;
     flex-shrink: 0;
     color: #FFF;
-    background-color: #337AB7;
+    background-color: theme-color(primary);
 }
 
 .footer a {
@@ -565,7 +565,7 @@ section#hosting{
 .plan-short{
   cursor: pointer;
   margin-top: 40px;
-  border: 1px solid #337ab7;
+  border: 1px solid theme-color(primary);
   border-radius: 4px;
   margin-bottom: 20px;
   position:relative;
