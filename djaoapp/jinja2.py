@@ -92,6 +92,7 @@ def environment(**options):
 
     env.globals.update({
         'DATETIME_FORMAT': "MMM dd, yyyy",
+        'render_bundle': render_bundle
     })
     if settings.DEBUG:
         env.filters['addslashes'] = django.template.defaultfilters.addslashes
@@ -99,7 +100,6 @@ def environment(**options):
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
             'url': reverse,
             'cycle': django.template.defaulttags.cycle,
-            'render_bundle': render_bundle
         })
     if settings.API_DEBUG:
         env.filters['query_parameters'] = \
