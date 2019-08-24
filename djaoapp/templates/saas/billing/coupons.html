@@ -79,6 +79,37 @@
                   </li>
                 </template>
               </uiv-dropdown>
+              <div class="list-group-item">
+                  <span class="text-muted" v-show="!coupon._editAttempts">Use limit:</span>
+                  <span @click="editAttempts(coupon)"
+                    v-show="!coupon._editAttempts">
+                    [[coupon.nb_attempts ? coupon.nb_attempts : 'No limit']]
+                  </span>
+                  <input type="text" class="form-control"
+                      @blur="saveAttempts(coupon)"
+                      @keyup.13="saveAttempts(coupon)"
+                      v-model="coupon.nb_attempts"
+                      :ref="'editAttempts_' + coupon.code"
+                      v-show="coupon._editAttempts">
+              </div>
+              <div class="list-group-item">
+                  <span class="text-muted" v-show="!coupon._editPlan">Plan:</span>
+                  <span @click="editPlan(coupon)"
+                    v-show="!coupon._editPlan">
+                    [[coupon.plan ? coupon.plan.title : 'No plan']]
+                  </span>
+                  <select class="form-control" v-if="coupon.plan"
+                      @blur="savePlan(coupon)"
+                      @keyup.13="savePlan(coupon)"
+                      v-model="coupon.plan.id"
+                      :ref="'editPlan_' + coupon.code"
+                      v-show="coupon._editPlan">
+                        <option value="">Select plan</option>
+                        {% for plan in plans %}
+                          <option value="{{plan.id}}">{{plan.title}}</option>
+                        {% endfor %}
+                  </select>
+              </div>
             </div>
             <div class="card-body">
               <p class="card-text" data-trip data-trip-index="4"
