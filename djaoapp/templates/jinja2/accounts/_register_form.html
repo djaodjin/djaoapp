@@ -1,21 +1,34 @@
 {% extends "_form.html" %}
 
 {% block form_block %}
-<form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal"
-    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    {{ input_field(form['full_name'], form.hide_labels) }}
-    {{ input_field(form['email'], form.hide_labels) }}
-    {{ input_field(form['username'], form.hide_labels) }}
-    {{ input_field(form['new_password'], form.hide_labels) }}
-    {{ input_field(form['new_password2'], form.hide_labels) }}
-    <div class="row">
-      <div>
-        <p>
-{% trans %}By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
-        </p>
-        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal" method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+
+      {{ input_field(form['full_name'], form.hide_labels) }}
+      {{ input_field(form['email'], form.hide_labels) }}
+      {{ input_field(form['username'], form.hide_labels) }}
+      {{ input_field(form['new_password'], form.hide_labels) }}
+      {{ input_field(form['new_password2'], form.hide_labels) }}
+
+      <div class="w-100 mb-4">
+        <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
       </div>
-    </div>
-</form>
+
+      <div class="w-100">
+        <p class="text-center">
+          <small><em>
+            {% trans %}By clicking on the &quot;Register&quot; button below, <br>
+            <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
+          </em></small>
+        </p>
+
+        <button type="submit" class="btn btn-block btn-primary btn-lg">
+          {% if form.submit_title %}
+            {{form.submit_title}}
+          {% else %}
+            {% trans %}Register{% endtrans %}
+          {% endif %}
+        </button>
+      </div>
+  </form>
 {% endblock %}

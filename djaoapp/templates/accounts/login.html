@@ -3,34 +3,44 @@
 {% block content %}
 <div class="container">
     <div class="offset-sm-2 col-sm-8">
-        <div class="page-header">
-            <h1 class="text-center"><i class="fa fa-sign-in fa-lg"></i> {% trans %}Sign in{% endtrans %}</h1>
+        <div class="page-header my-4">
+            <h1 class="text-center">
+                {% trans %}Sign in{% endtrans %}
+            </h1>
         </div>
         <div class="signup-group row">
             <div class="offset-sm-2 col-sm-8">
+
                 {% if form %}
-                <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-                    method="post" action=".{% if next %}/?next={{next}}{% endif %}">
-                    {% include "_form_fields.html" %}
-                    <div class="form-action text-center">
-                        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
-                    </div>
-                </form>
+                    <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+                        {% include "_form_fields.html" %}
+
+                        <p class="text-center">
+                            <small><em>
+                                {% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before signing in.{% endtrans %}
+                            </em></small>
+                        </p>
+                        <div class="form-action text-center">
+                            <button type="submit" class="btn btn-block btn-primary btn-lg">
+                                {% if form.submit_title %}
+                                    {{form.submit_title}}
+                                {% else %}
+                                    {% trans %}Submit{% endtrans %}
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
                 {% endif %}
-                <hr />
+
                 <div>
-                    <p>
-{% trans %}Forgot password?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Recover{% endtrans %}</a>
-                    </p>
-                    <p>
-{% trans %}Don't have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign up{% endtrans %}</a>
+                    <p class="text-center mt-3">
+                        <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+                        or
+                        <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign up{% endtrans %}</a>
                     </p>
                 </div>
             </div>
         </div>
-        <p class="text-center">
-{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before signing in.{% endtrans %}
-        </p>
     </div>
 </div>
 {% endblock %}
