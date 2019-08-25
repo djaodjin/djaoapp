@@ -3,23 +3,29 @@
 {% block content %}
     <section class="light-background">
         <div class="container container-margered">
-            <p>
-                <strong>Please sign:</strong>
-            </p>
-            {{page|safe}}
-            <div class="col-md-12 text-center pt-4 pb-5">
-                <form class="form-horizontal" method="post" action=".{% if next %}?next={{next}}{% endif %}">
-                    <div class="form-group">
-                        <div class="">
-                            {{form.read_terms}} 
-                            <label class="col-form-label">I have read and accept these terms and conditions.</label>
+            <div class="row">
+                <div class="col-md-12 pl-0 pt-4">
+                    <p>
+                        <em>Please accept the terms.</em>
+                    </p>
+                </div>
+
+                {{page|safe}}
+                
+                <div class="col-md-12 text-center pt-0 pb-5">
+                    <form class="form-horizontal" method="post" action=".{% if next %}?next={{next}}{% endif %}">
+                        <div class="form-group">
+                            <div class="">
+                                {{form.read_terms}} 
+                                <label class="col-form-label">I have read and accept these terms and conditions.</label>
+                            </div>
                         </div>
-                    </div>
-                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="I Agree" />
-                    </div>
-                </form>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="I Agree" />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
