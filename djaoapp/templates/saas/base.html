@@ -1,83 +1,95 @@
 {% extends "base.html" %}
 
 {% block localheader %}
-{% if STRIPE_PUB_KEY %}
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-{% endif %}
-{% block saas_localheader %}{% endblock %}
+    {% if STRIPE_PUB_KEY %}
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    {% endif %}
+    
+    {% block saas_localheader %}{% endblock %}
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{% block saas_title %}{% endblock %}<div style="display: inline-block;"><sup style="display: none;font-size:0.5em;cursor:pointer;"><i id="help-request" class="fa fa-question-circle"></i></sup></div></h1>
-</div>
-{% block saas_page_layout %}
-<p class="lead">
-    {% block saas_lead_help %}{% endblock %}
-</p>
-<div class="row">
-    <div class="col-md-12">
-        {% block saas_help %}{% endblock %}
-        {% block saas_content %}{% endblock %}
+    <div class="page-header">
+        <h1>{% block saas_title %}{% endblock %}
+            <div style="display: inline-block;">
+                <sup style="display: none;font-size:0.5em;cursor:pointer;">
+                    <i id="help-request" class="fa fa-question-circle"></i>
+                </sup>
+            </div>
+        </h1>
     </div>
-</div>
-{% endblock %}
+
+    {% block saas_page_layout %}
+        <p class="lead">
+            {% block saas_lead_help %}{% endblock %}
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+                {% block saas_help %}{% endblock %}
+                {% block saas_content %}{% endblock %}
+            </div>
+        </div>
+    {% endblock %}
 {% endblock %}
 
 {% block bodyscripts %}
-{% assets "js_saas" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-{% if urls and urls.provider %}
-    $("[data-plan]").plan({
-        saas_api_plan: "{{ urls.provider.api_plans }}",
-        saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
-    });
-{% endif %}
-{% if urls and urls.api_redeem %}
-    $("#redeem-code").redeem(
-        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
-{% endif %}
-{% if charge %}
-    $(".charge-refund").click(function () {
-        var self = $(this);
-        $("#charge-refund").refund({
-            availableAmount: self.attr("data-available-amount"),
-            linenum: self.attr("data-linenum"),
-            saas_api_charge_refund: "{{ urls.charge.api_refund }}",
-            refundButton: self
-        });
-    });
-    $("#email-charge-receipt").chargeEmailReceipt({
-        initialState: "{{charge.state_string}}",
-        saas_api_email_charge_receipt:
-            "{{ urls.charge.api_email_receipt }}"
-    });
+    {% assets "js_saas" %}
+        <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
+    {% endassets %}
+        
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            {% if urls and urls.provider %}
+                $("[data-plan]").plan({
+                    saas_api_plan: "{{ urls.provider.api_plans }}",
+                    saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+                });
+            {% endif %}
 
-    $("#{{charge}}").chargeMonitor({
-       initialState: "{{charge.state_string}}",
-       saas_api_charge: "{{ urls.charge.api_base }}"
-    });
-{% endif %}
-});
+            {% if urls and urls.api_redeem %}
+                $("#redeem-code").redeem(
+                    {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
+            {% endif %}
+            
+            {% if charge %}
+                $(".charge-refund").click(function () {
+                    var self = $(this);
+                    $("#charge-refund").refund({
+                        availableAmount: self.attr("data-available-amount"),
+                        linenum: self.attr("data-linenum"),
+                        saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+                        refundButton: self
+                    });
+                });
+                $("#email-charge-receipt").chargeEmailReceipt({
+                    initialState: "{{charge.state_string}}",
+                    saas_api_email_charge_receipt:
+                        "{{ urls.charge.api_email_receipt }}"
+                });
 
-jQuery(document).ready(function($) {
-    if ($('[data-trip]').length > 0){
-        $("#help-request").parent().show();
-        $("#help-request").click(function(){
-            var trip = new Trip({
-                enableAnimation: false,
-                showCloseBox: true,
-                showNavigation: true,
-                delay:10000,
-                tripTheme:'black',
-            });
-            trip.start();
+                $("#{{charge}}").chargeMonitor({
+                initialState: "{{charge.state_string}}",
+                saas_api_charge: "{{ urls.charge.api_base }}"
+                });
+            {% endif %}
         });
-    }
-});
-</script>
-{% block saas_bodyscripts %}{% endblock %}
+
+        jQuery(document).ready(function($) {
+            if ($('[data-trip]').length > 0){
+                $("#help-request").parent().show();
+                $("#help-request").click(function(){
+                    var trip = new Trip({
+                        enableAnimation: false,
+                        showCloseBox: true,
+                        showNavigation: true,
+                        delay:10000,
+                        tripTheme:'black',
+                    });
+                    trip.start();
+                });
+            }
+        });
+    </script>
+
+    {% block saas_bodyscripts %}{% endblock %}
 {% endblock %}
