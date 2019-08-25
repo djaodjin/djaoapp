@@ -1,64 +1,66 @@
 <!-- We assume that either the monthly recuring amount will
 be positive and/or the setup fee will. -->
 <div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 plan" data-plan="{{plan.slug}}">
-<div class="plan-short">
-    <div class="plan-main">
-        <div class="text-center">
-            {% if plan.created_at|date_in_future %}
-                <p>{% trans %}Avalaible soon!{% endtrans %}</p>
-            {% endif %}
-            <div class="page-header">
-                <h2 class="editable-plan" data-key="title">{{plan.title}}</h2>
+    <div class="plan-short">
+        <div class="plan-main">
+            <div class="text-center">
+                {% if plan.created_at|date_in_future %}
+                    <p>{% trans %}Avalaible soon!{% endtrans %}</p>
+                {% endif %}
+                <div class="page-header">
+                    <h2 class="editable-plan" data-key="title">{{plan.title}}</h2>
+                </div>
+            </div>
+            <div class="plan-test">
+                <div class="plan-pricing">
+                    <h2 class="text-center editable-plan edit-currency" data-key="period_amount">
+                    
+                    {% if not plan or plan.is_not_priced %}
+                        {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
+                        {% trans %}Contact us{% endtrans %}
+                    {% else %}
+                    {% if plan.discounted_period_price %}
+                        {{plan.discounted_period_price|humanize_money}}
+                        <span class="text-danger" style="font-size:0.33em;">{% trans price=plan.period_price|humanize_money %}(was {{price}}){% endtrans %}</span>
+                    {% else %}
+                        {{plan.period_price|humanize_money}}
+                    {% endif %}
+                    {% endif %}
+
+                    </h2>
+                    <p class="text-center">
+                    {% if plan.is_not_priced %}
+                        &nbsp;
+                    {% else %}
+                        <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}">{{plan.interval|humanize_period}}</span>
+                    {% endif %}
+                    </p>
+                    <p class="text-center">
+                        {% if plan.setup_price.amount > 0 %}
+                            {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+
+                        {% if plan.transaction_fee > 0 %}
+                            {# XXX hard-coded here #}
+                            {% trans %}(+Stripe per transaction costs){% endtrans %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </p>
+                </div>
+            <div class="plan-desc editable-plan edit-markdown" data-key="description">{{plan.description|md}}</div>
             </div>
         </div>
-        <div class="plan-test">
-            <div class="plan-pricing">
-                <h2 class="text-center editable-plan edit-currency" data-key="period_amount">
-                {% if not plan or plan.is_not_priced %}
-{# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
-                {% trans %}Contact us{% endtrans %}
+        <footer class="plan-footer">
+            <div style="margin:5px;">
+                {% if plan.is_not_priced %}
+                    <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact us{% endtrans %}</a>
                 {% else %}
-                  {% if plan.discounted_period_price %}
-                    {{plan.discounted_period_price|humanize_money}}
-                    <span class="text-danger" style="font-size:0.33em;">{% trans price=plan.period_price|humanize_money %}(was {{price}}){% endtrans %}</span>
-                  {% else %}
-                    {{plan.period_price|humanize_money}}
-                  {% endif %}
+                    <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Subscribe{% endtrans %}</button>
                 {% endif %}
-                </h2>
-                <p class="text-center">
-                  {% if plan.is_not_priced %}
-                    &nbsp;
-                  {% else %}
-                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}">{{plan.interval|humanize_period}}</span>
-                  {% endif %}
-                </p>
-                <p class="text-center">
-                {% if plan.setup_price.amount > 0 %}
-                    {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
-                {% else %}
-                    &nbsp;
-                {% endif %}
-                {% if plan.transaction_fee > 0 %}
-                    {# XXX hard-coded here #}
-                    {% trans %}(+Stripe per transaction costs){% endtrans %}
-                {% else %}
-                    &nbsp;
-                {% endif %}
-                </p>
             </div>
-        <div class="plan-desc editable-plan edit-markdown" data-key="description">{{plan.description|md}}</div>
-        </div>
+        </footer>
     </div>
-    <footer class="plan-footer">
-        <div style="margin:5px;">
-            {% if plan.is_not_priced %}
-            <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact us{% endtrans %}</a>
-            {% else %}
-            <button class="btn btn-primary"
-                    type="submit" name="submit" value="{{plan.slug}}">{% trans %}Subscribe{% endtrans %}</button>
-            {% endif %}
-        </div>
-    </footer>
-</div>
 </div>
