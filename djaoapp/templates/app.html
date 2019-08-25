@@ -12,9 +12,6 @@
         </div>
       </div>
       <div class="text-center">
-        <p>
-          Any questions?
-        </p>
         {% if provider.email %}
           <span class="email"><a href="mailto:{{provider.email}}">{{provider.email}}</a></span>
         {% endif %}
@@ -25,10 +22,10 @@
       </div>
     </div>
     <div class="text-center" style="margin-bottom:25px;">
-      Quick links:
-      <a href="{{request|url_profile}}">My profile</a>
-      <a href="{{urls.organization.subscriptions}}" style="padding-left:5px;border-left:1px solid #000">My subscriptions</a>
-      <a href="{{urls.organization.billing}}" style="padding-left:5px;border-left:1px solid #000">My billing</a>
+      Quick links: 
+      <a href="{{request|url_profile}}">My Profile</a> | 
+      <a href="{{urls.organization.subscriptions}}">My Subscriptions</a> |
+      <a href="{{urls.organization.billing}}">My Billing</a>
     </div>
     {% block help_content %}
     {% endblock %}
