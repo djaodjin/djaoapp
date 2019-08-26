@@ -482,3 +482,33 @@ $dashboard-sidebar-color:    white;
 .coupon-title .btn-danger {
     align-self: flex-start;
 }
+
+.graph-legend-dot
+{
+    height: 12px;
+    width: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.nv-legendWrap
+{
+    display: none;
+}
+
+@include media-breakpoint-down(xs) {
+    .row-header
+    {
+        position: absolute;
+        background: white;
+        width: 115px;
+        height: 36px;
+        left: 0;
+    }
+
+    .row-body:nth-child(2)
+    {
+        padding-left: 115px;
+    }
+}

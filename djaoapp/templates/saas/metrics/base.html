@@ -66,31 +66,32 @@
         <!-- Display as a table -->
         <div class="table-responsive">
           <table class="table" style="font-size:0.7em;">
-            <tr>
-              <td></td>
-              <td v-for="col in currentTableDates" v-cloak>
+            <tr class="position-relative">
+              <td class="row-header"></td>
+              <td v-for="col in currentTableDates" class="row-body" v-cloak>
                   [[col[0] | monthHeading]]
               </td>
             </tr>
-            <tr :id="row.key" v-for="row in currentTableData.data" :key="row.key">
-              <td v-if="row.location" class="text-nowrap">
-                <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }">
-                  <i class="fa fa-circle"></i>
-                </span>
-                <a :href="row.location" v-cloak>[[row.title ? row.title : row.key]]</a>
+            <tr :id="row.key" v-for="(row, index) in currentTableData.data" :key="row.key" class="position-relative">
+              <td class="text-nowrap row-header" v-cloak>
+                <div v-if="row.location">
+                    <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }">
+                      <i class="fa fa-circle"></i>
+                    </span>
+                    <a :href="row.location" v-cloak>[[row.title ? row.title : row.key]]</a>
+                </div>
+                <div v-if="!row.location">
+                  <span class="graph-legend-dot align-middle" :style="'background: ' + colorFn(index)"></span>
+                  <span class="align-middle">[[row.title ? row.title : row.key]]</span>
+                </div>
               </td>
-              <td v-if="!row.location" class="text-nowrap" v-cloak>
-                  [[row.title ? row.title : row.key]]
-              </td>
-              <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)" v-cloak>
+              <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
                   [[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]
               </td>
             </tr>
             {% block metrics_extra_data %}
             {% endblock %}
           </table>
-          {% block metrics_extra_data %}
-          {% endblock %}
         </div>
       </div>
     </div>
