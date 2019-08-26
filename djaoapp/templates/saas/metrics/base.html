@@ -75,13 +75,11 @@
             <tr :id="row.key" v-for="(row, index) in currentTableData.data" :key="row.key" class="position-relative">
               <td class="text-nowrap row-header" v-cloak>
                 <div v-if="row.location">
-                    <span :class="{ 'text-success': row.is_active, 'text-danger': !row.is_active }">
-                      <i class="fa fa-circle"></i>
-                    </span>
                     <a :href="row.location" v-cloak>[[row.title ? row.title : row.key]]</a>
+                    <span class="badge" :class="{ 'badge-success': row.is_active, 'badge-secondary': !row.is_active }">[[row.is_active ? 'active' : 'inactive']]</span>
                 </div>
                 <div v-if="!row.location">
-                  <span class="graph-legend-dot align-middle" :style="'background: ' + colorFn(index)"></span>
+                  <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
                   <span class="align-middle">[[row.title ? row.title : row.key]]</span>
                 </div>
               </td>
