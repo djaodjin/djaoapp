@@ -7,3 +7,7 @@ htdocs
 htdocs/media/
 htdocs/static/.webassets-cache/
 themes/
+.vscode/
+djaoapp/locale/fr/LC_MESSAGES/django.mo
+djaoapp/locale/fr/LC_MESSAGES/djangojs.mo
+installTop/
