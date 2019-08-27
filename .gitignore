@@ -7,3 +7,6 @@ htdocs
 htdocs/media/
 htdocs/static/.webassets-cache/
 themes/
+.vscode/
+djaoapp/locale/*/LC_MESSAGES/*.mo
+installTop/
