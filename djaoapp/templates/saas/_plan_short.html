@@ -30,18 +30,12 @@ be positive and/or the setup fee will. -->
                   {% if plan.is_not_priced %}
                     &nbsp;
                   {% else %}
-                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.interval}}" data-key="interval" value="{{plan.interval}}">{{plan.interval|humanize_period}}</span>
+                  <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.period_type}}" data-key="period_type" value="{{plan.period_type}}">{{plan.period_type|humanize_period}}</span>
                   {% endif %}
                 </p>
                 <p class="text-center">
                 {% if plan.setup_price.amount > 0 %}
                     {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
-                {% else %}
-                    &nbsp;
-                {% endif %}
-                {% if plan.transaction_fee > 0 %}
-                    {# XXX hard-coded here #}
-                    {% trans %}(+Stripe per transaction costs){% endtrans %}
                 {% else %}
                     &nbsp;
                 {% endif %}

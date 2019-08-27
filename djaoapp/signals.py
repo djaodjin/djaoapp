@@ -272,7 +272,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             app = get_current_app()
             site = get_current_site()
             context.update({
-                'broker': get_broker(), 'app': app,
+                'broker': broker, 'app': app,
                 'urls': {'charge': {'created_by':
                     reverse('users_profile', args=(charge.created_by,))}}})
             reply_to = None
