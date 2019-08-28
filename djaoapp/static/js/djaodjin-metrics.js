@@ -360,3 +360,5 @@ function updateBarChart(container, data, unit, dataScale, extra) {
         return chart;
     });
 }
+
+var metricsLegendColors = nv.utils.defaultColor;
