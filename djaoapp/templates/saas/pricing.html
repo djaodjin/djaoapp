@@ -1,30 +1,34 @@
 {% extends "saas/base.html" %}
 
 {% block content %}
-<section id="plans">
-    <div class="container container-margered">
-        <form method="post" action=".">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="row row-flex">
-            {% for plan in plan_list %}
-                {% if plan.is_line_break %}
-                </div>
+    <section id="plans">
+        <div class="container container-margered">
+            <form method="post" action=".">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                 <div class="row row-flex">
-                    {% if plan_list|length == 1 %}
-                    <div class="col-sm-4"></div>
+
+                    {% for plan in plan_list %}
+                        {% if plan.is_line_break %}
+                            </div>
+                            <div class="row row-flex">
+                                {% if plan_list|length == 1 %}
+                                <div class="col-sm-4"></div>
+                                {% endif %}
+                        {% endif %}
+
+                        {% include "saas/_plan_short.html" %}
+                    {% endfor %}
+
+                    {% if plan_list.is_line_break %}
+                        </div>
+                        <div class="row row-flex">
                     {% endif %}
-                {% endif %}
-                {% include "saas/_plan_short.html" %}
-            {% endfor %}
-            {% if plan_list.is_line_break %}
-            </div>
-            <div class="row row-flex">
-            {% endif %}
-            {% if show_show_edit_tools and plan %}
-            {% include "saas/_plan_short.html" %}
-            {% endif %}
-            </div>
-        </form>
-    </div>
-</section>
+
+                    {% if show_show_edit_tools and plan %}
+                        {% include "saas/_plan_short.html" %}
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}
