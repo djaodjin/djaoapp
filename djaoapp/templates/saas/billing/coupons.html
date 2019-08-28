@@ -98,16 +98,14 @@
                     v-show="!coupon._editPlan">
                     [[coupon.plan ? coupon.plan.title : 'No plan']]
                   </span>
-                  <select class="form-control" v-if="coupon.plan"
+                  <select class="form-control"
                       @blur="savePlan(coupon)"
                       @keyup.13="savePlan(coupon)"
-                      v-model="coupon.plan.id"
+                      v-model="coupon.plan_slug"
                       :ref="'editPlan_' + coupon.code"
                       v-show="coupon._editPlan">
                         <option value="">Select plan</option>
-                        {% for plan in plans %}
-                          <option value="{{plan.id}}">{{plan.title}}</option>
-                        {% endfor %}
+                        <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
                   </select>
               </div>
             </div>
