@@ -1,14 +1,17 @@
 // CSS specific to the DjaoDjin dashboard
 
-$navbar-height: 50px; // XXX until we find a better fix.
-$dashboard-sidebar-width:    220px;
-$dashboard-sidebar-toggle:    20px;
-$dashboard-nav-footer-height: 94px;
-$dashboard-content-bg:       white;
-$dashboard-sidebar-logo-height:    72px;
+$navbar-height:                 50px; // XXX until we find a better fix.
+$dashboard-sidebar-width:      220px;
+$dashboard-sidebar-toggle:      20px;
+$dashboard-nav-footer-height:   94px;
+$dashboard-sidebar-logo-height: 72px;
 
-$dashboard-sidebar-bg:       theme-color(primary);
-$dashboard-sidebar-color:    white;
+$dashboard-content-bg:          white;
+$dashboard-sidebar-bg:          theme-color(primary);
+$dashboard-sidebar-color:       white;
+$dashboard-icon-color:          $dashboard-sidebar-color;
+$dashboard-icon-color-active:   $dashboard-sidebar-bg;
+
 
 // Icons to show credit card provider
 // ----------------------------------
@@ -377,13 +380,13 @@ $dashboard-sidebar-color:    white;
 .dashboard-nav-menu > .nav > li.active > a {
     background-color: $dashboard-sidebar-color;
     color: $dashboard-sidebar-bg;
-    border-radius: 0px;
-    text-decoration: underline;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
 .dashboard-nav-menu > .nav > li:not(.active) > a:hover {
     color: $dashboard-sidebar-color;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .dashboard-nav .footer {
@@ -481,4 +484,107 @@ $dashboard-sidebar-color:    white;
 
 .coupon-title .btn-danger {
     align-self: flex-start;
+}
+
+// Dashboard Sidebar Icons
+.icon-billing {
+    mask-image: url('/static/img/dash-icons/billing.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/billing.svg');
+    width: 20px;
+    height: 20px;
+}
+
+.icon-connected {
+    mask-image: url('/static/img/dash-icons/connected.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/connected.svg');
+    width: 20px;
+    height: 20px;
+}
+
+.icon-coupons {
+    mask-image: url('/static/img/dash-icons/coupons.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/coupons.svg');
+    width: 20px;
+    height: 20px;
+}
+
+.icon-dashboard {
+    mask-image: url('/static/img/dash-icons/dashboard.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/dashboard.svg');
+    width: 20px;
+    height: 19px;
+}
+
+.icon-funds {
+    mask-image: url('/static/img/dash-icons/funds.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/funds.svg');
+    width: 20px;
+    height: 17px;
+}
+
+.icon-notifications {
+    mask-image: url('/static/img/dash-icons/notifications.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/notifications.svg');
+    width: 20px;
+    height: 23px;
+}
+
+.icon-plans {
+    mask-image: url('/static/img/dash-icons/plans.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/plans.svg');
+    width: 20px;
+    height: 23px;
+}
+
+.icon-revenue {
+    mask-image: url('/static/img/dash-icons/revenue.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/revenue.svg');
+    width: 20px;
+    height: 20px;
+}
+
+.icon-rules {
+    mask-image: url('/static/img/dash-icons/rules.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/rules.svg');
+    width: 20px;
+    height: 23px;
+}
+
+.icon-subscriptions {
+    mask-image: url('/static/img/dash-icons/subscriptions.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/subscriptions.svg');
+    width: 20px;
+    height: 20px;
+}
+
+.icon-subscribers {
+    mask-image: url('/static/img/dash-icons/subscribers.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/subscribers.svg');
+    width: 20px;
+    height: 13px;
+}
+
+.icon-themes {
+    mask-image: url('/static/img/dash-icons/themes.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/themes.svg');
+    width: 20px;
+    height: 22px;
+}
+
+.icon-user {
+    mask-image: url('/static/img/dash-icons/user.svg');
+    -webkit-mask-image: url('/static/img/dash-icons/user.svg');
+    width: 20px;
+    height: 19px;
+}
+
+.icon {
+    display: inline-block;
+    background: $dashboard-icon-color;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+}
+
+.icon-active {
+    background: $dashboard-icon-color-active;
 }
