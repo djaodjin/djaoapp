@@ -30,11 +30,7 @@
     <link rel="icon" type="image/png" href="{{'/static/img/favicon.ico'|djasset}}">
 
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
-
-    {% assets "css_base" %}
-      <link rel="stylesheet" media="screen" href="{{ ASSET_URL }}" />
-    {% endassets %}
-
+    {{ render_bundle('css_base') }}
     <style media="screen">
 
     [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
@@ -216,10 +212,7 @@
   <!-- End Main Footer -->
 
   {% block _bodyscripts %}
-    {% assets "js_base" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
+    {{ render_bundle('js_base') }}
     <script type="text/javascript">
       jQuery(document).ready(function($) {
         toastr.options = {

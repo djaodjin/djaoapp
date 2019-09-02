@@ -1,9 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-    {% assets "css_dashboard" %}
-        <link rel="stylesheet" media="screen" href="{{ASSET_URL}}" />
-    {% endassets %}
+{{ render_bundle('css_dashboard') }}
 {% endblock %}
 
 {% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
@@ -79,39 +77,35 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-    <script type="text/javascript">
-        var djaodjinSettings = {
-            urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-            itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-            tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
-            date_range: {
-            start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
-            ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-            },
-            user: {
-            username: "{{request.user.username}}",
-            slug: "{{request.user.username}}",
-            first_name: "{{request.user.first_name}}",
-            last_name: "{{request.user.last_name}}"
-            },
-            csrf: '{{csrf_token}}',
-            {% if STRIPE_PUB_KEY %}
-                stripePubKey: "{{ STRIPE_PUB_KEY }}",
-            {% endif %}
-        };
-    </script>
+{{ render_bundle('js_vue') }}
 
-    {% assets "js_vue" %}
-        <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-    {% endassets %}
+<script type="text/javascript">
+Vue.use(uiv, {prefix: 'uiv'});
+</script>
 
-    <script type="text/javascript">
-        Vue.use(uiv, {prefix: 'uiv'});
-    </script>
+<script type="text/javascript">
+var djaodjinSettings = {
+    urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
+    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
+    tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
+    date_range: {
+        start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+        ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+    },
+    user: {
+        username: "{{request.user.username}}",
+        slug: "{{request.user.username}}",
+        first_name: "{{request.user.first_name}}",
+        last_name: "{{request.user.last_name}}"
+    },
+    csrf: '{{csrf_token}}',
+    {% if STRIPE_PUB_KEY %}
+    stripePubKey: "{{ STRIPE_PUB_KEY }}",
+    {% endif %}
+};
+</script>
 
-    {% assets "js_djaodjin_vue" %}
-        <script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-    {% endassets %}
+{{ render_bundle('js_djaodjin-vue') }}
 
-    {% block dashboard_bodyscripts %}{% endblock %}
+{% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

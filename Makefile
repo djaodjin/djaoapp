@@ -3,28 +3,28 @@
 
 -include $(buildTop)/share/dws/prefix.mk
 
-srcDir        ?= .
-installTop    ?= $(VIRTUAL_ENV)
-binDir        ?= $(installTop)/bin
-SYSCONFDIR    := $(installTop)/etc
+srcDir		  ?= .
+installTop	  ?= $(VIRTUAL_ENV)
+binDir		  ?= $(installTop)/bin
+SYSCONFDIR	  := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
-CONFIG_DIR    := $(SYSCONFDIR)/djaoapp
-ASSETS_DIR    := $(srcDir)/htdocs/static
+CONFIG_DIR	  := $(SYSCONFDIR)/djaoapp
+ASSETS_DIR	  := $(srcDir)/htdocs/static
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
-NPM           ?= npm
-PIP           := $(binDir)/pip
-PYTHON        := $(binDir)/python
-SQLITE        ?= sqlite3
+NPM			  ?= npm
+PIP			  := $(binDir)/pip
+PYTHON		  := $(binDir)/python
+SQLITE		  ?= sqlite3
 
 # Django 1.7,1.8 sync tables without migrations by default while Django 1.9
 # requires a --run-syncdb argument.
 # Implementation Note: We have to wait for the config files to be installed
 # before running the manage.py command (else missing SECRECT_KEY).
-RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
+RUNSYNCDB	  = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
-APP_NAME      ?= djaoapp
+APP_NAME	  ?= djaoapp
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # `make initdb` will install site.conf but only after `grep` is run
 # and DB_FILNAME set to "". We use the default value in the template site.conf
@@ -42,16 +42,13 @@ endif
 
 MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 
-MY_EMAIL          := $(shell cd $(srcDir) && git config user.email)
+MY_EMAIL		  := $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 
 all:
 	@echo "Nothing to be done for 'make'."
 
-# Remove cache directories (htdocs/media/ are uploaded files, cannot be rebuilt)
 clean: clean-themes
-	-rm -rf $(srcDir)/htdocs/static/.webassets-cache \
-		$(srcDir)/htdocs/static/cache
 
 clean-themes:
 	-rm -rf $(srcDir)/themes/djaoapp/templates/index.html \
@@ -65,7 +62,6 @@ install:: install-conf
 # We use rsync here so that make initdb can be run with user "nginx"
 # after files were installed with user "fedora".
 install-default-themes:: clean-themes
-	rsync -av $(srcDir)/htdocs/static/fonts $(srcDir)/htdocs/media
 
 
 # download and install prerequisites then create the db.
@@ -138,91 +134,32 @@ vendor-assets-prerequisites: $(installTop)/.npm
 $(installTop)/.npm: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
-	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/base $(ASSETS_DIR)/vendor/bootstrap $(ASSETS_DIR)/vendor/config $(ASSETS_DIR)/vendor/extensions $(ASSETS_DIR)/vendor/jax/output/CommonHTML/fonts/TeX $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/woff $(ASSETS_DIR)/vendor/fonts/HTML-CSS/TeX/otf $(ASSETS_DIR)/img/bootstrap-colorpicker
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/ext-language_tools.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/ext-modelist.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/ext-emmet.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/theme-monokai.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/mode-html.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/mode-css.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/mode-javascript.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/worker-html.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/worker-css.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/ace-builds/src/worker-javascript.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/animate.css/animate.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap/dist/js/bootstrap.js.map $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/img/bootstrap-colorpicker/*.png $(ASSETS_DIR)/img/bootstrap-colorpicker
-	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap-vue/dist/bootstrap-vue.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/chardin.js/chardinjs.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/d3/d3.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/dropzone/dist/dropzone.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/dropzone/dist/dropzone.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/font-awesome/css/font-awesome.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/font-awesome/fonts/* $(ASSETS_DIR)/fonts
-	$(installFiles) $(installTop)/node_modules/highlightjs/styles/monokai_sublime.css $(installTop)/node_modules/highlightjs/styles/github.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/highlightjs/highlight.pack.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/javascript-detect-element-resize/jquery.resize.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery.cookie/jquery.cookie.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery.payment/lib/jquery.payment.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery.selection/dist/jquery.selection.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/pagedown/Markdown.Converter.js $(installTop)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/skrollr/src/skrollr.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/toastr/toastr.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/sortablejs/Sortable.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js.map $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/vue2-filters/dist/vue2-filters.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/vue-infinite-loading/dist/vue-infinite-loading.js $(ASSETS_DIR)/vendor
-	[ -f $(binDir)/lessc ] || (cd $(binDir) && ln -s ../node_modules/less/bin/lessc)
-	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 
-build-assets: $(installTop)/.npm \
-                $(ASSETS_DIR)/cache/_base.css \
-                $(ASSETS_DIR)/cache/_email.css \
-                $(ASSETS_DIR)/js/djaoapp-i18n.js
-	cd $(srcDir) && DEBUG=1 $(PYTHON) manage.py assets build
+ifeq ($(mode),production)
+ifeq ($(watch),true)
+webpack_watch = '-w'
+endif
+webpack = $(installTop)/node_modules/.bin/webpack --config $(installTop)/webpack.production.js $(webpack_watch)
+else
+webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
+endif
+
+build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
+	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
+	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
+	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
+	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
+	cd $(installTop) && $(webpack)
 
 
-$(ASSETS_DIR)/cache/_base.css: $(srcDir)/assets/scss/base/base.scss \
-                $(wildcard $(srcDir)/assets/scss/base/*.scss) \
-                $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss) \
-                $(wildcard $(srcDir)/assets/scss/vendor/font-awesome/*.scss) \
-                $(wildcard $(srcDir)/assets/scss/vendor/toastr/*.scss)
-	cd $(srcDir) && $(binDir)/sassc $< $@
-
-
-$(ASSETS_DIR)/cache/_email.css: $(srcDir)/assets/scss/email/email.scss \
-                $(wildcard $(srcDir)/assets/scss/email/*.scss) \
-                $(wildcard $(srcDir)/assets/scss/vendor/bootstrap/*.scss)
-	cd $(srcDir) && $(binDir)/sassc $< $@
-
-
-$(ASSETS_DIR)/js/djaoapp-i18n.js: \
-                $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
-	$(installDirs) $(ASSETS_DIR)/js
+$(ASSETS_DIR)/djaoapp-i18n.js: \
+				$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
 	cd $(srcDir) && $(PYTHON) manage.py generate_i18n_js $@
 
 $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo: \
-                $(wildcard $(srcDir)/djaoapp/locale/es/LC_MESSAGES/*.po) \
-                $(wildcard $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/*.po) \
-                $(wildcard $(srcDir)/djaoapp/locale/pt/LC_MESSAGES/*.po)
+				$(wildcard $(srcDir)/djaoapp/locale/es/LC_MESSAGES/*.po) \
+				$(wildcard $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/*.po) \
+				$(wildcard $(srcDir)/djaoapp/locale/pt/LC_MESSAGES/*.po)
 	cd $(srcDir) && $(PYTHON) manage.py compilemessages
 
 
@@ -243,12 +180,12 @@ require-resources:
 
 
 install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
-                $(DESTDIR)$(CONFIG_DIR)/site.conf \
-                $(DESTDIR)$(CONFIG_DIR)/gunicorn.conf \
-                $(DESTDIR)$(SYSCONFDIR)/sysconfig/$(APP_NAME) \
-                $(DESTDIR)$(SYSCONFDIR)/logrotate.d/$(APP_NAME) \
-                $(DESTDIR)$(SYSCONFDIR)/monit.d/$(APP_NAME) \
-                $(DESTDIR)$(SYSCONFDIR)/systemd/system/$(APP_NAME).service
+				$(DESTDIR)$(CONFIG_DIR)/site.conf \
+				$(DESTDIR)$(CONFIG_DIR)/gunicorn.conf \
+				$(DESTDIR)$(SYSCONFDIR)/sysconfig/$(APP_NAME) \
+				$(DESTDIR)$(SYSCONFDIR)/logrotate.d/$(APP_NAME) \
+				$(DESTDIR)$(SYSCONFDIR)/monit.d/$(APP_NAME) \
+				$(DESTDIR)$(SYSCONFDIR)/systemd/system/$(APP_NAME).service
 	install -d $(DESTDIR)$(LOCALSTATEDIR)/db
 	install -d $(DESTDIR)$(LOCALSTATEDIR)/run
 	install -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
@@ -264,6 +201,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/site.conf: $(srcDir)/etc/site.conf
 			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
 			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
+			-e 's,%(installTop)s,$(installTop),' \
 			-e "s,%(DB_NAME)s,djaodjin," \
 			-e "s,%(binDir)s,$(binDir)," $< > $@
 
@@ -283,7 +221,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 		-e 's,%(APP_NAME)s,$(APP_NAME),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
-               $(srcDir)/etc/service.conf
+			   $(srcDir)/etc/service.conf
 	install -d $(dir $@)
 	[ -f $@ ] || sed \
 		-e 's,%(srcDir)s,$(srcDir),' \

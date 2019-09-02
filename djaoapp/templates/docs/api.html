@@ -188,7 +188,5 @@ dashboard</a> for example.
 {% endblock %}
 
 {% block bodyscripts %}
-{% assets "js_dashboard" %}
-<script type="text/javascript" charset="utf-8" src="{{ASSET_URL}}"></script>
-{% endassets %}
+{{ render_bundle('js_dashboard') }}
 {% endblock %}

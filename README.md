@@ -31,12 +31,13 @@ Tested with
 - **Python:** 3.6, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.10
 - **Python:** 3.6, **Django:** 2.2.4 (latest),       **Django Rest Framework:** 3.10
 - **Python:** 2.7, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.9.4
-(*Note Python2 end of life is scheduled for Jan 1st 2020. All production
+
+Note: Python2 end of life is scheduled for Jan 1st 2020. All production
 features are still supported until then. Development features are partially
 supported, notably the API docs generator is not, due to newer versions
 of prerequisites having deprecated Python2 support earlier than 2020. Please
 use `requirements-legacy.txt` instead of `requirements.txt` to install
-Python2 prerequisites.*)
+Python2 prerequisites.*
 
 Install
 -------
@@ -49,7 +50,7 @@ vendor prerequisite packages and build the static assets.
     $ source <em>installTop</em>/bin/activate
     $ pip install -r requirements.txt
     $ make install-conf
-    $ make build-assets
+    $ make mode=production build-assets
 </code></pre>
 
 At this point, all the 3rd party vendor prerequisite packages (Python and
@@ -99,6 +100,10 @@ You will want to toggle `DEBUG` on in the site.conf file.
 
     # To generate some sample data, disable emailing of receipts and run:
     $ python manage.py load_test_transactions
+
+    # Spins up a dev server that continuously watches for changes in
+    # JS & CSS files and reloads the corresponding modules in a browser
+    $ make build-assets
 </code></pre>
 
 
