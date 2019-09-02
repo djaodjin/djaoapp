@@ -1,9 +1,13 @@
 {% extends "saas/legal/base.html" %}
 
 {% block content %}
-<div class="light-background">
-<div class="container">
-{{page|safe}}
-</div>
+<div class="light-background pb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 agreement">
+        {{page|safe}}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

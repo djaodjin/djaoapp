@@ -16,6 +16,16 @@
   color: theme-color(primary);
 }
 
+// specific to legal agreements
+.agreement h1 {
+  font-size: $h4-font-size;
+}
+
+.agreement h2 {
+  padding-top: $h4-font-size !important;
+  font-size: $h4-font-size;
+}
+
 
 // XXX unsorted yet.
 
