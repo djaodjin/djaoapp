@@ -1,8 +1,10 @@
 DjaoDjin subscriber session proxy
 =================================
 
-This repository contains the code for DjaoDjin subscription-based session proxy.
-To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
+This repository contains the code for DjaoDjin subscriber session proxy.
+It is a core part of the infrastructure that makes it possible to bring
+fully-featured SaaS products to production faster. To learn more visit
+[DjaoDjin's Website](https://djaodjin.com/).
 
 The session proxy is built on [Django](https://www.djangoproject.com/),
 [Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
@@ -14,7 +16,11 @@ frameworks and many more Open Source projects. Thank you for the support!
 <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" height="75">
 </p>
 
-It integrates
+If you are looking to update the client front-end, you can browse through
+the [API documentation](https://djaodjin.com/docs/djaoapp-api/) and
+[theme templates documentation](https://djaodjin.com/docs/themes/#default-theme).
+
+If you are looking to add features, this project integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
 - [djaodjin-saas](https://github.com/djaodjin/djaodjin-saas/) for subscription-based payment pages and APIs
 - [djaodjin-rules](https://github.com/djaodjin/djaodjin-rules/) for role-based access control and HTTP request forwarding
@@ -22,9 +28,15 @@ It integrates
 
 Tested with
 
-- **Python:** 2.7, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.8.2
-- **Python:** 3.6, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.8.2
-- **Python:** 3.6, **Django:** 2.2.4 (latest),       **Django Rest Framework:** 3.8.2
+- **Python:** 3.6, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.10
+- **Python:** 3.6, **Django:** 2.2.4 (latest),       **Django Rest Framework:** 3.10
+- **Python:** 2.7, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.9.4
+(*Note Python2 end of life is scheduled for Jan 1st 2020. All production
+features are still supported until then. Development features are partially
+supported, notably the API docs generator is not, due to newer versions
+of prerequisites having deprecated Python2 support earlier than 2020. Please
+use `requirements-legacy.txt` instead of `requirements.txt` to install
+Python2 prerequisites.*)
 
 Install
 -------

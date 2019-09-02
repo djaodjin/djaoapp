@@ -170,14 +170,14 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
     .. code-block:: json
 
         {
-            "location": "",
-            "access_key": "",
-            "acl": "private",
-            "policy": "",
-            "signature": "",
-            "security_token": "",
-            "x_amz_credential": "",
-            "x_amz_date": ""
+          "location":"https://cowork.s3-us-east-1.amazonaws.com/",
+          "access_key":"*********",
+          "acl":"public-read",
+          "policy":"*********",
+          "signature":"*********",
+          "security_token":"*********",
+          "x_amz_credential":"*********/20190808/us-east-1/s3/aws4_request",
+          "x_amz_date":"20190808T000000Z"
         }
     """
     serializer_class = AuthRealmsSerializer

@@ -2,76 +2,35 @@
 
 {% macro api_param_doc(param, operationId, read_direction=True) -%}
 {% if param.type %}
-  {% if param.type == 'object' %}
-    <json-schema-lazy></json-schema-lazy>
-    <json-schema class="">
-      <table class="params-wrap">
-        {% for attr_name, attr in param.properties.items() %}
-        {% if (read_direction and attr_name|not_key) or (not read_direction and not attr.readOnly) %}
-        <tr class="param">
-            <td class="param-name">
-                <span class="param-name-wrap">
-                    <span class="param-name-content">
-                        {{attr_name}}
-                        <span class="param-name-enumvalue" hidden=""> null </span>
-                    </span>
-                </span>
-            </td>
-            <td class="param-info">
-                <div>
-                    <span class="param-type" title="">
-                        {% if attr.type %}
-                          {{attr.type}}{% if attr.type == 'array' %} of {{attr|schema_name}}{% endif %}
-                        {% else %}
-                          {{attr|schema_name}}
-                        {% endif %}
-                    </span>
-                    {# XXX add `operationId.endswith('_create') and` as #}
-                    {# a workaround if we show PATCH instead of PUT     #}
-                    {# for updates.                                     #}
-                    {% if not read_direction and attr_name in param.required %}
-                    <span class="param-required">required</span>
-                    {% endif %}
-                    {% if attr|schema_href %}
-                    <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{attr|schema_name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
-                    <div id="collapse-{{operationId}}-{{attr|schema_name}}" class="collapse">
-                        {{api_param_doc(definitions[attr|schema_href], operationId, read_direction)}}
-                    </div>
-                    {% endif %}
-                </div>
-                {% if attr.description %}
-                <div class="param-description">{{attr.description}}</div>
-                {% endif %}
-            </td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-      </table>
-    </json-schema>
-  {% else %}
-    <div class="param">
-      <div class="param-name">
-        <span class="param-name-wrap">{{param.name}}</span>
-      </div>
-      <div class="param-info">
-        <div>
-            <span class="param-type integer" title="">{{param.type}}</span>
-            {% if param.required %}
-            <span class="param-required">required</span>
-            {% endif %}
-        </div>
-        <div class="param-description">
-            <p>{{param.description}}</p>
-        </div>
-      </div>
+<div class="param">
+  <div class="param-name">
+    <span class="param-name-wrap">{{param.name}}</span>
+  </div>
+  <div class="param-info">
+    <div>
+      <span class="param-type integer" title="">{{param.type}}</span>
+      {% if param.required %}
+      <span class="param-required">required</span>
+      {% endif %}
     </div>
-  {% endif %}
-{% elif param.schema %}
-    {{api_param_doc(param.schema, operationId, read_direction)}}
+    <div class="param-description">
+      <p>{{param.description}}</p>
+      {% if param.type == 'object' or param.type == 'array' %}
+      <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+      <div id="collapse-{{operationId}}-{{param.name}}" class="collapse">
+        {% for attr in param|schema_properties(definitions) %}
+        {{ api_param_doc(attr, operationId, read_direction) }}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% else %}
-    {{api_param_doc(definitions[param|schema_href], operationId, read_direction)}}
+ XXX no type for {{param}}.
 {% endif %}
 {%- endmacro %}
+
 
 {% block sidebar %}
 <ul class="nav flex-column">
@@ -172,21 +131,21 @@ dashboard</a> for example.
         <div>
             {{api_end_point.description}}
         </div>
-        {% if api_end_point.parameters|query_parameters %}
+        {% if api_end_point|query_parameters %}
         <div>
             <h5 class="param-list-header"><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
             <div class="params-wrap">
-                {% for param in api_end_point.parameters|query_parameters %}
+                {% for param in api_end_point|query_parameters %}
                     {{ api_param_doc(param, api_end_point.operationId) }}
                 {% endfor %}
             </div>
         </div> {# .param-list-header #}
         {% endif %}
-        {% if api_end_point.parameters|request_body_parameters(definitions) %}
+        {% if api_end_point|request_body_parameters(definitions) %}
         <div>
             <h5 class="param-list-header">Request body</h5>
             <div class="params-wrap">
-                {% for param in api_end_point.parameters|request_body_parameters(definitions) %}
+                {% for param in api_end_point|request_body_parameters(definitions) %}
                     {{ api_param_doc(param, api_end_point.operationId, read_direction=False) }}
                 {% endfor %}
             </div>
@@ -194,17 +153,17 @@ dashboard</a> for example.
         {% endif %}
         <responses-list>
             <h5 class="responses-list-header param-list-header">Responses</h5>
-            {% for resp_code, param in api_end_point.responses.items() %}
+            {% for resp_code, params in (api_end_point|responses_parameters(definitions)).items() %}
             <zippy>
                 <div class="zippy zippy-success">
                     <div class="zippy-title">
                         <span class="zippy-title-content"><p>{{resp_code}}</p></span>
                     </div>
-                    {% if param.type or param.schema %}
                     <div class="zippy-content">
-                        {{ api_param_doc(param, api_end_point.operationId) }}
+                        {% for param in params %}
+                           {{ api_param_doc(param, api_end_point.operationId) }}
+                        {% endfor %}
                     </div>
-                    {% endif %}
                 </div>
             </zippy>
             {% endfor %}
@@ -212,7 +171,16 @@ dashboard</a> for example.
       </div>
       <div class="col-sm-5 code">
         <h3>Examples</h3>
-        <div class="code">{{api_end_point.examples}}</div>
+        {% for example in api_end_point.examples %}
+        <pre class="code http literal-block"><code><span class="name function">{{example.func}}</span> <span class="name namespace">{{example.path}}</span></code></pre>
+        {% if example.requestBody %}
+        <pre class="code json literal-block">{{example.requestBody}}</pre>
+        {% endif %}
+        {% if example.resp %}
+        responds
+        <pre class="code json literal-block">{{example.resp}}</pre>
+        {% endif %}
+        {% endfor %}
       </div>
     </section>
     {% endfor %}

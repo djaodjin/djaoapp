@@ -66,12 +66,17 @@ else:
     urlpatterns = []
 
 if settings.API_DEBUG:
-    from ..views.docs import APIDocView, schema_view
+    from rest_framework.schemas import get_schema_view
+    from ..views.docs import APIDocView
     urlpatterns += [
-        url(r'^docs/api/redoc/$', schema_view.with_ui('redoc',
-            cache_timeout=None), name='schema-redoc'),
-        url(r'^docs/api/swagger(?P<format>\.json|\.yaml)$',
-            schema_view.without_ui(cache_timeout=None), name='schema-json'),
+        url(r'^docs/api/schema/$', get_schema_view(
+            title="DjaoApp API",
+#            default_version='v1',
+            description="API to deploy apps on the djaodjin platform",
+#            terms_of_service="https://djaodjin.com/legal/terms-of-use/",
+#            contact=openapi.Contact(email=settings.DEFAULT_FROM_EMAIL),
+#            license=openapi.License(name="BSD License"),
+        ), name='openapi-schema'),
         url(r'^docs/api/', APIDocView.as_view()),
     ]
 

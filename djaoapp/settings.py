@@ -530,6 +530,7 @@ REST_FRAMEWORK = {
         # is absent.
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'djaoapp.views.docs.AutoSchema',
     'SEARCH_PARAM': 'q',
     'ORDERING_PARAM': 'o'
 }

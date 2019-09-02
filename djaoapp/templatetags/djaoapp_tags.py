@@ -115,59 +115,71 @@ def value_attr(field):
 
 
 @register.filter()
-def query_parameters(params):
-    return [param for param in params if param['in'] == 'query']
+def query_parameters(api_endpoint):
+    results = []
+    for param in api_endpoint.get('parameters', []):
+        if param['in'] == 'query':
+            param['type'] = param['schema']['type']
+            results += [param]
+    return results
 
 
 @register.filter()
-def request_body_parameters(params, schema):
-    definitions = schema
+def request_body_parameters(api_endpoint, defs):
+    if 'requestBody' not in api_endpoint:
+        return []
     results = []
-    # We filtered all the params in the body, now let's remove the ones
-    # which are read-only.
-    for param in [param for param in params if param['in'] == 'body']:
-        if 'schema' in param:
-            # Schema reference
-            at_least_one = False
-            for _, attr in six.iteritems(
-                    definitions[schema_href(param.schema)].properties):
-                if 'readOnly' in attr:
-                    continue
-                else:
-                    at_least_one = True
-                    break
-            if at_least_one:
-                results += [param]
-        else:
-            results += [param]
+    schema = \
+        api_endpoint['requestBody']['content']['application/json']['schema']
+    for prop_name, prop in schema['properties'].items():
+        prop.update({'name': prop_name})
+        if prop_name in schema.get('required', []):
+            prop.update({'required': True})
+        if 'type' not in prop and 'enum' in prop:
+            prop.update({'type': "String"}) # XXX Country enum
+        results += [prop]
     return results
+
+
+@register.filter()
+def responses_parameters(api_endpoint, defs):
+    if 'responses' not in api_endpoint:
+        return []
+    results = {}
+    for resp_code, param in api_endpoint['responses'].items():
+        params = []
+        if 'content' in param:
+            schema = param['content']['application/json']['schema']
+            if 'properties' in schema:
+                for prop_name, prop in schema['properties'].items():
+                    prop.update({'name': prop_name})
+                    #if prop_name in schema.get('required', []):
+                    #    prop.update({'required': True})
+                    if 'type' not in prop and 'enum' in prop:
+                        prop.update({'type': "String"}) # XXX Country enum
+                    params += [prop]
+        results.update({resp_code: params})
+    return results
+
+
+def schema_properties(schema, defs):
+    params = []
+    if schema['type'] == 'array':
+        schema = schema.get('items', {})
+    if 'properties' in schema:
+        for prop_name, prop in schema['properties'].items():
+            prop.update({'name': prop_name})
+            if 'type' not in prop and 'enum' in prop:
+                prop.update({'type': "String"}) # XXX Country enum
+            params += [prop]
+    return params
+
 
 @register.filter()
 def not_key(param_name):
     return not (param_name.lower() == 'password'
             or param_name.lower().endswith('_key')
             or param_name.lower().endswith('_password'))
-
-
-@register.filter()
-def schema_name(attr):
-    name = schema_href(attr)
-    if name:
-        return name
-    return attr['type']
-
-
-@register.filter()
-def schema_href(attr):
-    try:
-        return attr['$ref'].replace('#/definitions/', '')
-    except KeyError:
-        pass
-    try:
-        return attr['items']['$ref'].replace('#/definitions/', '')
-    except Exception: #pylint:disable=broad-except
-        pass
-    return ''
 
 
 @register.filter()

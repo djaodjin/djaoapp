@@ -108,12 +108,12 @@ def environment(**options):
             djaoapp.templatetags.djaoapp_tags.query_parameters
         env.filters['request_body_parameters'] = \
             djaoapp.templatetags.djaoapp_tags.request_body_parameters
+        env.filters['responses_parameters'] = \
+            djaoapp.templatetags.djaoapp_tags.responses_parameters
+        env.filters['schema_properties'] = \
+            djaoapp.templatetags.djaoapp_tags.schema_properties
         env.filters['not_key'] = \
             djaoapp.templatetags.djaoapp_tags.not_key
-        env.filters['schema_href'] = \
-            djaoapp.templatetags.djaoapp_tags.schema_href
-        env.filters['schema_name'] = \
-            djaoapp.templatetags.djaoapp_tags.schema_name
 
     env.assets_environment = assets_env
     return env

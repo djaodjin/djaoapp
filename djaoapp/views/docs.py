@@ -5,38 +5,28 @@
 Default start page for a djaodjin-hosted product.
 """
 
-import json, logging, os, re
+import json, logging, os, re, warnings
 from collections import OrderedDict, defaultdict
 
 from django.conf import settings
+from django.http.response import Http404
+from django.utils import six
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
+from rest_framework import serializers
 from rest_framework.compat import URLPattern, URLResolver, get_original_route
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from drf_yasg.generators import OpenAPISchemaGenerator, EndpointEnumerator
+from rest_framework.schemas import openapi
+from rest_framework.schemas.generators import EndpointEnumerator
+from rest_framework import exceptions, serializers
+from rest_framework.compat import uritemplate
+from rest_framework.fields import empty
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-OPENAPI_INFO = openapi.Info(
-        title="DjaoApp API",
-        default_version='v1',
-        description="API to deploy apps on the djaodjin platform",
-        terms_of_service="https://djaodjin.com/legal/terms-of-use/",
-        contact=openapi.Contact(email=settings.DEFAULT_FROM_EMAIL),
-        license=openapi.License(name="BSD License"),
-    )
-
-#pylint:disable=invalid-name
-schema_view = get_schema_view(OPENAPI_INFO,
-#    validators=['flex', 'ssv'],
-    public=True,
-)
 
 
 class NoHeaderHTMLWriter(Writer):
@@ -147,11 +137,11 @@ def format_examples(examples):
     Returns an example is a structured format easily useable
     by mechanical tests.
     """
-    # in_request_params
+    # in_requestBody
     # in_respoonse
     IN_URL_STATE = 0
-    IN_REQUEST_PARAMS_STATE = 1
-    IN_REQUEST_PARAMS_EXAMPLE_STATE = 2
+    IN_REQUESTBODY_STATE = 1
+    IN_REQUESTBODY_EXAMPLE_STATE = 2
     IN_RESPONSE_STATE = 3
     IN_RESPONSE_EXAMPLE_STATE = 4
 
@@ -159,7 +149,7 @@ def format_examples(examples):
     state = IN_URL_STATE
     func = None
     path = None
-    request_params = ""
+    request_body = ""
     resp = ""
     for line in examples.splitlines():
         line = line.strip()
@@ -167,9 +157,9 @@ def format_examples(examples):
         if look:
             func = look.group(1)
             path = look.group(2)
-            request_params = ""
+            request_body = ""
             resp = ""
-            state = IN_REQUEST_PARAMS_STATE
+            state = IN_REQUESTBODY_STATE
             continue
         look = re.match('responds', line)
         if look:
@@ -177,28 +167,28 @@ def format_examples(examples):
             continue
         look = re.match('.. code-block::', line)
         if look:
-            if state == IN_REQUEST_PARAMS_STATE:
-                state = IN_REQUEST_PARAMS_EXAMPLE_STATE
+            if state == IN_REQUESTBODY_STATE:
+                state = IN_REQUESTBODY_EXAMPLE_STATE
             if state == IN_RESPONSE_STATE:
                 state = IN_RESPONSE_EXAMPLE_STATE
             continue
-        if state == IN_REQUEST_PARAMS_EXAMPLE_STATE:
-            if not request_params or line.strip():
-                request_params += line
+        if state == IN_REQUESTBODY_EXAMPLE_STATE:
+            if not request_body or line.strip():
+                request_body += line
             else:
-                state = IN_REQUEST_PARAMS_STATE
+                state = IN_REQUESTBODY_STATE
         elif state == IN_RESPONSE_EXAMPLE_STATE:
             if not resp or line.strip():
                 resp += line
             else:
                 state = IN_RESPONSE_STATE
     formatted_example = {'func': func, 'path': path}
-    if request_params:
+    if request_body:
         try:
             formatted_example.update({
-                'request_params': json.loads(request_params)})
+                'requestBody': json.loads(request_body)})
         except json.JSONDecodeError:
-            LOGGER.error("error: toJSON(%s)", request_params)
+            LOGGER.error("error: toJSON(%s)", request_body)
     if resp:
         try:
             formatted_example.update({'resp': json.loads(resp)})
@@ -206,6 +196,16 @@ def format_examples(examples):
             LOGGER.error("error: toJSON(%s)", resp)
     formatted_examples += [formatted_example]
     return formatted_examples
+
+
+def format_json(obj):
+    requestBodyJSON = json.dumps(
+        obj, indent=2)
+    requestBody = ".. code-block:: json\n\n"
+    for line in requestBodyJSON.splitlines():
+        requestBody += "    " + line + "\n"
+    requestBody += "\n\n"
+    return rst_to_html(requestBody)
 
 
 def rst_to_html(string):
@@ -243,7 +243,7 @@ def endpoint_ordering(endpoint):
     return (path, method_priority)
 
 
-def split_descr_and_examples(func_details, api_base_url=None):
+def split_descr_and_examples(docstring, api_base_url=None):
     """
     Split a docstring written for API documentation into tags,
     a generic description and concrete examples.
@@ -255,12 +255,12 @@ def split_descr_and_examples(func_details, api_base_url=None):
     summary = "(XXX no summary)"
     description = ""
     examples = ""
-    for line in func_details.description.splitlines():
-        line = transform_links(line)
-        look = re.match(r'\*\*Tags:(.*)', line)
+    for line in docstring.splitlines():
+        line = transform_links(line.strip())
+        look = re.match(r'\*\*Tags(\*\*)?:(.*)', line)
         if look:
             func_tags = set([tag.strip()
-                for tag in look.group(1).split(',')])
+                for tag in look.group(2).split(',')])
         elif re.match(r'\*\*Example', line):
             in_examples = True
             sep = ""
@@ -279,8 +279,6 @@ def split_descr_and_examples(func_details, api_base_url=None):
         else:
             description += sep + line
             sep = "\n"
-    if not func_tags:
-        func_tags = func_details.tags
     return func_tags, summary, description, examples
 
 
@@ -335,7 +333,171 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
         return api_endpoints
 
 
-class APIDocGenerator(OpenAPISchemaGenerator):
+class AutoSchema(openapi.AutoSchema):
+
+    def get_operation(self, path, method):
+        kwargs = {}
+        method_obj = getattr(self.view, method.lower())
+        docstring = method_obj.__doc__
+        if not docstring:
+            docstring = self.view.__doc__
+        if docstring:
+            docstring = docstring.strip()
+            api_base_url = getattr(settings, 'API_BASE_URL', '/api')
+            func_tags, summary, description, examples = \
+                split_descr_and_examples(docstring, api_base_url=api_base_url)
+            self.examples = format_examples(examples)
+            kwargs['summary'] = summary
+            kwargs['description'] = description
+            kwargs['tags'] = list(func_tags) if func_tags else []
+            kwargs['examples'] = self.examples
+        operation = super(AutoSchema, self).get_operation(path, method)
+        operation.update(kwargs)
+        return operation
+
+    def _validate_examples(self, path, method, examples,
+                           serializer_class=None, example_key='resp'):
+        view = self.view
+        if not serializer_class:
+            serializer_class = view.get_serializer_class()
+        many = (method == 'GET' and hasattr(view, 'list'))
+        if many:
+            class APISerializer(serializers.Serializer):
+                count = serializers.IntegerField(
+                    help_text=_("Total number of items in the dataset"))
+                previous = serializers.CharField(allow_null=True,
+                    help_text=_("URL to previous page of results"))
+                next = serializers.CharField(allow_null=True,
+                    help_text=_("URL to next page of results"))
+                results = serializer_class(many=hasattr(view, 'list'),
+                    help_text=_("items in current page"))
+            serializer_class = APISerializer
+
+        serializer = None
+        if examples:
+            for example in examples:
+                if example_key in example:
+                    try:
+                        serializer = serializer_class(
+                            data=example[example_key],
+                            context=view.get_serializer_context())
+                        serializer.is_valid(raise_exception=True)
+                    except (exceptions.ValidationError, Http404) as err:
+                        warnings.warn(
+                            '{}: {} {} invalid example for {}: {}, {}'.format(
+                                view.__class__.__name__, method, path,
+                                example_key, example, err))
+                else:
+                    warnings.warn(
+                        '{}: {} {} has no {} ({})'.format(
+                            view.__class__.__name__, method, path,
+                            example_key, example))
+        else:
+            warnings.warn('{}: {} {} has no {} examples'.format(
+                view.__class__.__name__, method, path, example_key))
+            serializer = serializer_class(context=view.get_serializer_context())
+        return serializer
+
+    def _get_request_body(self, path, method):
+        view = self.view
+
+        if method not in ('PUT', 'PATCH', 'POST'):
+            return {}
+
+        serializer_class = None
+        view_method = getattr(self.view, method.lower(), None)
+        if view_method and hasattr(view_method, '_swagger_auto_schema'):
+            data = view_method._swagger_auto_schema
+            serializer_class = data.get('request_body', None)
+
+        if not serializer_class and not hasattr(view, 'get_serializer_class'):
+            return {}
+
+        serializer = None
+        try:
+            if method.lower() != 'patch':
+                # XXX We disable showing patch as they are so close
+                # to put requests.
+                serializer = self._validate_examples(path, method,
+                    self.examples if hasattr(self, 'examples') else [],
+                    serializer_class=serializer_class,
+                    example_key='requestBody')
+        except exceptions.APIException:
+            serializer = None
+            warnings.warn('{}: serializer_class() raised an exception during '
+                          'schema generation. Serializer fields will not be '
+                          'generated for {} {}.'
+                          .format(view.__class__.__name__, method, path))
+
+        if not isinstance(serializer, serializers.Serializer):
+            return {}
+
+        content = self._map_serializer(serializer)
+        # No required fields for PATCH
+        if method == 'PATCH':
+            del content['required']
+        # No read_only fields for request.
+        for name, schema in content['properties'].copy().items():
+            if 'readOnly' in schema:
+                del content['properties'][name]
+
+        return {
+            'content': {
+                ct: {'schema': content}
+                for ct in self.content_types
+            }
+        }
+
+    def _get_responses(self, path, method):
+        # TODO: Handle multiple codes.
+        content = {}
+        view = self.view
+        serializer = None
+
+        if method in ('DELETE',):
+            return {'204': {}}
+
+        serializer_class = None
+        view_method = getattr(self.view, method.lower(), None)
+        if view_method and hasattr(view_method, '_swagger_auto_schema'):
+            data = view_method._swagger_auto_schema
+            for resp_code, resp in six.iteritems(data.get('responses', {})):
+                serializer_class = resp.schema
+                break # XXX only handles first schema response.
+
+        if serializer_class or hasattr(view, 'get_serializer_class'):
+            try:
+                serializer = self._validate_examples(path, method,
+                    self.examples if hasattr(self, 'examples') else [],
+                    serializer_class=serializer_class)
+            except exceptions.APIException:
+                serializer = None
+                warnings.warn('{}: serializer_class() raised an exception'
+                    ' during '
+                    'schema generation. Serializer fields will not be '
+                    'generated for {} {}.'.format(
+                        view.__class__.__name__, method, path))
+
+            if isinstance(serializer, serializers.Serializer):
+                content = self._map_serializer(serializer)
+                # No write_only fields for response.
+                for name, schema in content['properties'].copy().items():
+                    if 'writeOnly' in schema:
+                        del content['properties'][name]
+                        content['required'] = [
+                            f for f in content['required'] if f != name]
+
+        return {
+            '200': {
+                'content': {
+                    ct: {'schema': content}
+                    for ct in self.content_types
+                }
+            }
+        }
+
+
+class APIDocGenerator(openapi.SchemaGenerator):
 
     endpoint_enumerator_class = APIDocEndpointEnumerator
 
@@ -361,40 +523,6 @@ class APIDocGenerator(OpenAPISchemaGenerator):
         return {path: (view_cls[path], methods)
             for path, methods in view_paths.items()}
 
-    def get_paths(self, endpoints, components, request, public):
-        """Generate the Swagger Paths for the API from the given endpoints."""
-        #pylint:disable=too-many-locals
-        if not endpoints:
-            return openapi.Paths(paths={}), ''
-
-        prefix = self.determine_path_prefix(list(endpoints.keys())) or ''
-        assert '{' not in prefix, "base path cannot be templated in swagger 2.0"
-
-        paths = OrderedDict()
-        for path, (view_cls, methods) in sorted(endpoints.items()):
-            operations = {}
-            for method, view, _ in methods:
-                if not public and not self._gen.has_view_permissions(
-                        path, method, view):
-                    continue
-
-                operation = self.get_operation(
-                    view, path, prefix, method, components, request)
-                if operation is not None:
-                    operations[method.lower()] = operation
-
-            if operations:
-                # since the common prefix is used as the API basePath,
-                # it must be stripped from individual paths when writing
-                # them into the swagger document
-                path_suffix = path[len(prefix):]
-                if not path_suffix.startswith('/'):
-                    path_suffix = '/' + path_suffix
-                paths[path_suffix] = self.get_path_item(
-                    path, view_cls, operations)
-
-        return openapi.Paths(paths=paths), prefix
-
 
 class APIDocView(TemplateView):
 
@@ -406,38 +534,42 @@ class APIDocView(TemplateView):
         api_end_points = []
         api_base_url = getattr(settings, 'API_BASE_URL',
             self.request.build_absolute_uri(location='/api'))
-        generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
+        generator = APIDocGenerator()
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
         count = 0
-        for path, path_details in schema.paths.items():
-            #if count > 0:
-            #    break
-            count = count + 1
+        paths = schema.get('paths', [])
+        api_paths = OrderedDict()
+        for path in sorted(paths):
+            api_paths[path] = paths[path]
+        for path, path_details in api_paths.items():
             for func, func_details in path_details.items():
                 if func.lower() == 'patch':
                     # We merge PUT and PATCH together.
                     continue
                 try:
-                    func_tags, summary, description, examples = \
-                        split_descr_and_examples(func_details,
-                            api_base_url=api_base_url)
-                    description = rst_to_html(description)
-                    examples = rst_to_html(examples)
-                    tags |= set(func_tags)
-                    api_end_points += [{
-                        'operationId': func_details.operationId,
+                    examples = ""
+                    if 'examples' in func_details:
+                        examples = func_details['examples']
+                        for example in examples:
+                            if 'requestBody' in example:
+                                example['requestBody'] = format_json(
+                                    example['requestBody'])
+                            if 'resp' in example:
+                                example['resp'] = format_json(
+                                    example['resp'])
+                    func_details.update({
                         'func': func,
                         'path': '/api%s' % path,
-                        'tags': ''.join(func_tags),
-                        'summary': summary,
-                        'description': description,
-                        'parameters': func_details.parameters,
-                        'responses': func_details.responses,
+                        'tags': ''.join(func_details['tags']),
+                        'description': rst_to_html(func_details['description']),
                         'examples': examples
-                    }]
+                    })
+                    if func_details['tags']:
+                        api_end_points += [func_details]
                 except AttributeError:
-                    pass
+                    raise
+#                    pass
         expanded_tags = OrderedDict({
             'auth': "Auth & credentials",
             'billing': "Billing",
@@ -451,8 +583,8 @@ class APIDocView(TemplateView):
             if not tag in expanded_tags:
                 expanded_tags.update({tag: ""})
         context.update({
-            'definitions': schema.definitions,
-            'api_base_url': generator.url,
+            'definitions': {}, # XXX No schema.definitions in restframework,
+            'api_base_url': api_base_url,
             'api_end_points': sorted(
                 api_end_points, key=lambda val: val['tags']),
             'tags': expanded_tags})
