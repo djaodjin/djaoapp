@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils.timezone import utc
+from faker import Faker
 from multitier.thread_locals import set_current_site
 from multitier.utils import get_site_model
 from saas.models import (Charge, ChargeItem, Coupon, Organization, Plan,
@@ -206,6 +207,9 @@ class Command(BaseCommand):
         processor = Organization.objects.get(pk=PROCESSOR_ID)
         self.generate_coupons(provider)
         self.generate_transactions(provider, processor, from_date, now)
+        subscriber = Organization.objects.filter(slug='stephanie').first()
+        if subscriber:
+            self.generate_subscriptions(subscriber)
 
     def generate_coupons(self, provider, nb_coupons=None):
         if nb_coupons is None:
@@ -218,6 +222,25 @@ class Command(BaseCommand):
                 for _ in range(0, 3)]), coupon_percent)
             Coupon.objects.create(code=coupon_code, percent=coupon_percent,
                 organization=provider)
+
+    def generate_subscriptions(self, subscriber, nb_subscriptions=None):
+        at_time = datetime_or_now()
+        if nb_subscriptions is None:
+            nb_subscriptions = settings.REST_FRAMEWORK['PAGE_SIZE'] * 4
+        self.stdout.write("%d subscriptions\n" % nb_subscriptions)
+        nb_plans = Plan.objects.count()
+        fake = Faker()
+        for _ in range(0, nb_subscriptions):
+            rank = random.randint(1, nb_plans - 1)
+            plan = Plan.objects.all().order_by('pk')[rank]
+            created_at = fake.date_time_between_dates(
+                datetime_start=at_time - datetime.timedelta(365),
+                datetime_end=at_time + datetime.timedelta(365))
+            Subscription.objects.create(
+                organization=subscriber,
+                plan=plan,
+                created_at=created_at,
+                ends_at=created_at + datetime.timedelta(30))
 
     def generate_transactions(self, provider, processor, from_date, ends_at):
         """

@@ -52,13 +52,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="search-inp">{% trans %}Filter{% endtrans %}</span>
-            </div>
-            <input class="form-control" type="text" id="search-inp"
-                  v-model="params.q" @input="filterList" />
-          </div>
+          {% include "saas/_filter_match.html" %}
         </div>
       </div>
       <div class="row">

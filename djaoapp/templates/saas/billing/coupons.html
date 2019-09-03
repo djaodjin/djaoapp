@@ -38,6 +38,23 @@
       </div>
       <hr />
       <div class="row my-3">
+        <div class="col">
+          <div class="pb-3">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">{% trans %}By{% endtrans %}</span>
+              </div>
+              <select id="order-by" class="form-control">
+                <option value="code">{% trans %}code (ascending){% endtrans %}</option>
+                <option value="percent">{% trans %}discount (highest){% endtrans %}</option>
+                <option value="ends_at">{% trans %}expiration (soonest){% endtrans %}</option>
+                <option value="-code">{% trans %}code (descending){% endtrans %}</option>
+                <option value="-percent">{% trans %}discount (lowest){% endtrans %}</option>
+                <option value="-ends_at">{% trans %}expiration (latest){% endtrans %}</option>
+              </select>
+            </div>
+          </div>
+        </div>
         {% include "saas/_filter.html" %}
       </div>
       <div class="text-center" v-show="!itemsLoaded">
