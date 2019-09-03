@@ -21,6 +21,10 @@
 
 {% block saas_content %}
 <div id="{% if urls.user %}user-{% endif %}profile-container">
+  {# We use the hidden input to pass the picture URL to the Vue component. #}
+  <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
+  <img :src="formFields.picture" width="100" height="100"
+       data-toggle="modal" data-target="#upload-picture-modal">
   {% include "_form.html" %}
   <hr />
   {% if urls.user %}
@@ -77,6 +81,40 @@
         </div>
         <div class="col-sm-7">
           {% trans %}This operation cannot be reversed.{% endtrans %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal dialog to upload a picture -->
+  <div id="upload-picture-modal"
+       class="upload-picture modal fade"
+       title="{% trans %}Upload picture ...{% endtrans %}"
+       tabindex="-1" role="dialog"
+       aria-labelledby="{% trans %}Upload picture ...{% endtrans %}"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{% trans %}Upload picture ...{% endtrans %}</h4>
+            <button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center" style="border: 1px solid grey;">
+            <croppa v-model="picture" :width="300" :height="300"></croppa>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">
+                {% trans %}Cancel{% endtrans %}</button>
+            <button type="submit"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                    @click="uploadImage">
+                {% trans %}Save picture{% endtrans %}</button>
         </div>
       </div>
     </div>

@@ -78,7 +78,8 @@ class ContactView(ProviderMixin, FormView):
         items = []
         for key, value in six.iteritems(form.data):
             if value and not (key in form.cleaned_data or
-                              key in ('captcha', 'csrfmiddlewaretoken')):
+                key in ('captcha', 'g-recaptcha-response',
+                    'csrfmiddlewaretoken')):
                 items += [(key, value)]
         if message:
             items += [("Message", message)]

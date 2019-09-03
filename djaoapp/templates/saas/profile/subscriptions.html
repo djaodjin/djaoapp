@@ -118,7 +118,7 @@
             </div>
             <div class="modal-body">
                 <p>
-{% trans organization_name=organization.printable_name %}You are about to delete the profile and account for <em>{{organization_name}}</em>{% endtrans %}.
+{% trans plan_name="[[toDelete.plan]]" %}You are about to unsubscribe from <em>{{plan_name}}</em>{% endtrans %}.
 {% trans %}This operation cannot be reversed.{% endtrans %}
                 </p>
                 <p>
