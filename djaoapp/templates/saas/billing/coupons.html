@@ -56,10 +56,10 @@
               </div>
             </div>
             <div class="list-group list-group-flush">
-              <div class="list-group-item"><span class="text-muted">Percent:</span> [[coupon.percent]]%</div>
+              <div class="list-group-item"><span class="text-muted">{% trans %}Percent:{% endtrans %}</span> [[coupon.percent]]%</div>
               <uiv-dropdown class="" append-to-body>
                 <div class="list-group-item w-100">
-                  <span class="text-muted">Expires:</span>
+                  <span class="text-muted">{% trans %}Expires:{% endtrans %}</span>
                   <btn
                     class="dropdown-toggle btn-link text-left p-0 mb-1"
                     data-trip data-trip-index="3"
@@ -80,10 +80,10 @@
                 </template>
               </uiv-dropdown>
               <div class="list-group-item">
-                  <span class="text-muted" v-show="!coupon._editAttempts">Use limit:</span>
+                  <span class="text-muted" v-show="!coupon._editAttempts">{% trans %}Use limit:{% endtrans %}</span>
                   <span @click="editAttempts(coupon)"
                     v-show="!coupon._editAttempts">
-                    [[coupon.nb_attempts ? coupon.nb_attempts : 'No limit']]
+                    [[coupon.nb_attempts ? coupon.nb_attempts : '{% trans %}No limit{% endtrans %}']]
                   </span>
                   <input type="text" class="form-control"
                       @blur="saveAttempts(coupon)"
@@ -93,7 +93,7 @@
                       v-show="coupon._editAttempts">
               </div>
               <div class="list-group-item">
-                  <span class="text-muted" v-show="!coupon._editPlan">Plan:</span>
+                  <span class="text-muted" v-show="!coupon._editPlan">{% trans %}Plan:{% endtrans %}</span>
                   <span @click="editPlan(coupon)"
                     v-show="!coupon._editPlan">
                     [[planTitle(coupon.plan)]]
@@ -104,7 +104,7 @@
                       v-model="coupon.plan"
                       :ref="'editPlan_' + coupon.code"
                       v-show="coupon._editPlan">
-                        <option value="">Select plan</option>
+                        <option value="">{% trans %}Select plan{% endtrans %}</option>
                         <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
                   </select>
               </div>
@@ -116,7 +116,7 @@
                   <span @click="editDescription(index)"
                     v-show="!edit_description[index]">
                       <i class="fa fa-pencil"></i>
-                      <span class="text-muted" v-if="!coupon.description">Click to edit description</span>
+                      <span class="text-muted" v-if="!coupon.description">{% trans %}Click to edit description{% endtrans %}</span>
                       [[coupon.description]]
                   </span>
                   <input id="input_description" type="text" class="form-control"
