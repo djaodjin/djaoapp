@@ -99,6 +99,7 @@
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
+Vue.prototype.colorFn = nv.utils.defaultColor();
 jQuery(document).ready(function($) {
     // Copy/Paste from vendor/js/bootstrap.js and inserted
     // a forced trigger of 'resize' for NVD3 to redraw the chart
