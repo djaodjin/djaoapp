@@ -11,8 +11,6 @@
       {% endblock %}
     </title>
 
-    <style>html{visibility: hidden;opacity:0;}</style>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,23 +28,29 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{'/static/img/favicon.ico'|djasset}}">
-
     <link href="//fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css">
+    
     {{ render_bundle('css_base') }}
+    
     <style media="screen">
+      /* Setup for FOUC (Flash of Unstyled Content) */
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
 
-    [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
-      display: none !important;
-    }
+      [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
+        display: none !important;
+      }
 
-    /* Override Bootstrap 4 styling on Django Debug Toolbar */
-    #djDebug[hidden], #djDebug [hidden] {
-      display: block !important;
-    }
+      /* Override Bootstrap 4 styling on Django Debug Toolbar */
+      #djDebug[hidden], #djDebug [hidden] {
+        display: block !important;
+      }
 
-    #djDebug [hidden][style='display: none;'] {
-      display: none !important;
-    }
+      #djDebug [hidden][style='display: none;'] {
+        display: none !important;
+      }
     </style>
 
     {% if csrf_token %}
