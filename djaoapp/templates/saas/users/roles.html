@@ -1,109 +1,121 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
-{% block saas_title %}{% trans %}Accessible by {{user}}{% endtrans %}{% endblock %}
+{% block saas_title %}
+  {% trans %}Accessible by {{user}}{% endtrans %}
+{% endblock %}
 
 {% block saas_content %}
 <section id="accessible-list-container">
+  
+  <!-- Add a User to Organization -->
   <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
     <form id="add-profile" class="form-inline mb-4" @submit.prevent="submit">
       <div style="width:100%;">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-          <div class="form-group"
-               data-trip data-trip-index="2"
-               data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>"
-               data-trip-position="s">
-              <input type="text" class="form-control" id="userTypeahead"
+          <div class="form-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>" data-trip-position="s">
+            <input type="text" class="form-control" id="userTypeahead"
                      name="organization" type="text" placeholder="{% trans %}Name or e-mail{% endtrans %}"
                      autocomplete="off">
-              <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit">{% trans %}Add profile{% endtrans %}</button>
-              </div>
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">{% trans %}Add profile{% endtrans %}</button>
+            </div>
           </div>
           <uiv-typeahead
-               v-model="itemSelected"
-               target="#userTypeahead"
-               :async-function="getUsers"
-               item-key="slug"
-               :open-on-focus="false"
-               class="typeahead-dropdown"
-               />
+            v-model="itemSelected"
+            target="#userTypeahead"
+            :async-function="getUsers"
+            item-key="slug"
+            :open-on-focus="false"
+            class="typeahead-dropdown"
+          />
       </div>
     </form>
   </user-typeahead>
+
   <hr />
+
+  <!-- Start Filter/Match Input -->
   <div class="row">
-      <div class="col-12">
-            {% include "saas/_filter_match.html" %}
-      </div>
+    <div class="col-12">
+      {% include "saas/_filter_match.html" %}
+    </div>
   </div>
+  <!-- End Filter/Match Input -->
+
   <div class="row">
-      <div class="col-12 col-md-6">
-        <div v-show="!itemsLoaded">
-            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-        </div>
-        <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
-            <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
-        </div>
+    <div class="col-md-6">
+      <div v-show="!itemsLoaded">
+          <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
       </div>
+      <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
+          <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
+      </div>
+    </div>
   </div>
+
   <div class="row my-4" infinite-wrapper>
-    <div class="col-lg-6 col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+    <div class="col-md-4 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         {% include "saas/_organization_card.html" %}
     </div>
   </div>
+
+  <!-- Start Pagination -->
   {% include "_pagination.html" %}
-    <!-- modal dialog to add a request to add a role to a user
-         on an organization. -->
-    <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="{% trans %}Request access{% endtrans %}" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{% trans %}Request access{% endtrans %} ...</h5>
-            <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <form>
-            <div class="modal-body">
-              <p class="text-danger">
+  <!-- End Pagination -->
+
+  <!-- Modal Dialogs -->
+
+  <!-- Modal Dialog to add a request to add a role to a user on an organization.  -->
+  <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
+        aria-labelledby="{% trans %}Request access{% endtrans %}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans %}Request access{% endtrans %} ...</h5>
+          <button type="button" class="close"
+                data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <form>
+          <div class="modal-body">
+            <p class="text-danger">
 {% trans full_name='[[unregistered.full_name]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite a profile manager for {{full_name}} to join {{site}}.{% endtrans %}
-              </p>
-              <div class="form-group" style="margin-bottom: 15px;">
-                  <label>{% trans %}To{% endtrans %}</label>
-                  <input id="new-request-email" class="email form-control"
-                         name="email" type="text"
-                         max-length="150" placeholder="invitee@example.com"
-                         style="width:100%;" autofocus
-                         v-model="unregistered.email" />
-              </div>
-              <div class="form-group">
-                <div class="controls">
-                  <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-                  <textarea class="form-control"
-                            name="message"
-                            maxlength="255" type="text" rows="10">
+            </p>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>{% trans %}To{% endtrans %}</label>
+                <input id="new-request-email" class="email form-control"
+                        name="email" type="text"
+                        max-length="150" placeholder="invitee@example.com"
+                        style="width:100%;" autofocus
+                        v-model="unregistered.email" />
+            </div>
+            <div class="form-group">
+              <div class="controls">
+                <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                <textarea class="form-control"
+                          name="message"
+                          maxlength="255" type="text" rows="10">
 {% trans organization_name="[[unregistered.full_name]]", user=request.user.first_name %}Hello,
 
 I would like to request access to {{organization_name}}
 
 Thank you,
 - {{user}}{% endtrans %}
-                  </textarea>
-                </div>
+                </textarea>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-              <button type="submit"
-                      class="btn btn-primary"
-                      data-dismiss="modal"
-                      @click="create">{% trans %}Request access{% endtrans %}</button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+            <button type="submit"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                    @click="create">{% trans %}Request access{% endtrans %}</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 </section>
 {% endblock %}
