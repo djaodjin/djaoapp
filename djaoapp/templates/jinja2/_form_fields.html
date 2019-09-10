@@ -1,24 +1,37 @@
 <!-- Form Inputs for CHECKBOX -->
 {% macro checkbox_input_field(id_for_label, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-  <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+  <div class="col-md-6 pb-3 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
     <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
-      <div class="form-check">
-        <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
-          <input id="{{id_for_label}}" class="checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
-          {{label|safe}}
-        </label>
-      </div>
+      <div class="form-check px-0">
+        <div class="container">
+          <div class="row">
 
-      <div class="form-text help-block invalid-feedback">
-        {% for error in errors %}
-          {{error}}
-        {% endfor %}
-      </div>
+            <!-- Checkbox -->
+            <div class="col-md-1 p-0">
+              <input id="{{id_for_label}}" class="mr-3 checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
+            </div>
 
-      <div class="form-text help-block">
-        {% if help_text %}
-          <small class="text-muted">{{help_text}}</small>
-        {% endif %}
+            <!-- Checkbox Copy -->
+            <div class="col-md-11 pl-0">
+              <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
+                {{label|safe}}
+              </label>
+
+              <div class="form-text help-block invalid-feedback">
+                {% for error in errors %}
+                  {{error}}
+                {% endfor %}
+              </div>
+
+              <div class="form-text help-block">
+                {% if help_text %}
+                  <small class="text-muted">{{help_text}}</small>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
