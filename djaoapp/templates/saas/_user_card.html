@@ -1,4 +1,4 @@
-<div :id="item.user.slug" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
+<div :id="item.user.slug" class="h-100" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
   <div>
     <button class="btn btn-danger btn-sm remove" style="float: right;"
             data-trip data-trip-index="3"

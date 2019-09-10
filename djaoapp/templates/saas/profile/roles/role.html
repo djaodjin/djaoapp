@@ -1,43 +1,36 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
+<!-- Roles Page Title -->
 {% block saas_title %}
-{% trans organization=organization.printable_name, role_descr=role_descr.title %}{{organization}} {{role_descr}}s{% endtrans %}
+  {% trans organization=organization.printable_name, role_descr=role_descr.title %}
+    {{organization}} {{role_descr}}s
+  {% endtrans %}
 {% endblock %}
 
+<!-- Roles Page Content -->
 {% block saas_content %}
-  <section id="{{role_descr}}"
-    data-trip data-trip-index="1"
-    data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
-    data-trip-position="screen-center">
+  <section id="{{role_descr}}" data-trip data-trip-index="1" data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
     <div id="user-relation-list-container">
       <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
         <form id="add-user" class="form-inline mb-4" @submit.prevent="submit">
+          
           {# The following div is required for the typeahead dropbox to show under the input field. #}
-          <div style="width:100%;">
+          <div class="w-100">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="input-group"
-              data-trip data-trip-index="2"
-              data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
-              data-trip-position="s">
-              <input type="text" class="form-control" id="userTypeahead"
-                    name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                    autocomplete="off">
+            <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>" data-trip-position="s">
+              <input type="text" class="form-control" id="userTypeahead" name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}" autocomplete="off">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
               </div>
             </div>
-            <uiv-typeahead
-              v-model="itemSelected"
-              target="#userTypeahead"
-              :async-function="getUsers"
-              item-key="slug"
-              :open-on-focus="false"
-              class="typeahead-dropdown"
-              />
+            <uiv-typeahead v-model="itemSelected" target="#userTypeahead" :async-function="getUsers" item-key="slug" :open-on-focus="false" class="typeahead-dropdown" />
           </div>
+
         </form>
       </user-typeahead>
+
       <hr />
+      
       <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
         <div class="col-12">
           <div class="btn-group" role="group" aria-label="{% trans %}Group of buttons to show or hide invited and requested roles{% endtrans %}" v-cloak>
@@ -50,11 +43,15 @@
           </div>
         </div>
       </div>
+
+      <!-- Filter/Search Items -->
       <div class="row">
         <div class="col-12">
           {% include "saas/_filter_match.html" %}
         </div>
       </div>
+
+      <!-- Placeholder for when there are No Current Members -->
       <div class="row">
           <div class="col-12 col-md-6">
             <div v-show="!itemsLoaded">
@@ -65,11 +62,14 @@
             </div>
           </div>
       </div>
-      <div class="row" infinite-wrapper>
-        <div class="col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+
+      <!-- Card Content -->
+      <div class="row pt-4 pb-2" infinite-wrapper>
+        <div class="col-6 pb-3" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             {% include "saas/_user_card.html" %}
         </div>
       </div>
+
       {% include "_pagination.html" %}
 
       <!--
