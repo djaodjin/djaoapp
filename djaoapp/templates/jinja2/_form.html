@@ -1,11 +1,19 @@
 {% extends "_form_fields.html" %}
 
 {% block form_block %}
-    <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-        method="post" action=".{% if next %}/?next={{next}}{% endif %}">
-        {{super()}}
-        <div class="form-action text-center">
-            <button type="submit" class="btn btn-primary btn-lg">
+    <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+        
+        <!-- Start Form Elements -->
+        <div class="container p-0">
+            <div class="row">
+                {{super()}}
+            </div>
+        </div>
+        <!-- End Form Elements -->
+
+        <!-- Start Submit Button -->
+        <div class="form-action text-left pb-4">
+            <button type="submit" class="btn btn-primary btn-md">
                 {% if form.submit_title %}
                     {{form.submit_title}}
                 {% else %}
@@ -13,5 +21,7 @@
                 {% endif %}
             </button>
         </div>
+        <!-- End Submit Button -->
+
     </form>
 {% endblock %}

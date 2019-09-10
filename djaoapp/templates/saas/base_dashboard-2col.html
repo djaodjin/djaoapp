@@ -2,14 +2,11 @@
 
 {% block saas_page_layout %}
     <div class="row">
-        <div class="col-sm-6">
-            {% block saas_content %}{% endblock %}
-        </div>
-        <div class="col-sm-6">
-            <p class="lead">
-                {% block saas_lead_help %}{% endblock %}
-            </p>
+        <div class="col-md-12">
             {% block saas_help %}{% endblock %}
+        </div>
+        <div class="col-md-12">
+            {% block saas_content %}{% endblock %}
         </div>
     </div>
 {% endblock %}

@@ -1,90 +1,128 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
 {% block saas_title %}
-{% if organization %}
-  {% trans organization=organization.printable_name %}{{organization}} Profile{% endtrans %}
-{% elif user %}
-  {% trans user=user.full_name %}{{user}} Profile{% endtrans %}
-{% else %}
-  {% trans %}Profile{% endtrans %}
-{% endif %}
+  {% if organization %}
+    {% trans organization=organization.printable_name %}
+      {{organization}} Profile
+    {% endtrans %}
+  {% elif user %}
+    {% trans user=user.full_name %}
+      {{user}} Profile
+    {% endtrans %}
+  {% else %}
+    {% trans %}Profile{% endtrans %}
+  {% endif %}
 {% endblock %}
 
-{% block saas_lead_help %}{% trans %}Information about the profile{% endtrans %}{% endblock %}
+{% block saas_lead_help %}
+  {% trans %}Information about the profile{% endtrans %}
+{% endblock %}
 
 {% block saas_help %}
-<p>
-{% trans %}Update your profile, contact information, password, etc.{% endtrans %}
-</p>
+  <p>
+    {% trans %}Update your profile, contact information, password, etc.{% endtrans %}
+  </p>
 {% endblock %}
 
 
 {% block saas_content %}
 <div id="{% if urls.user %}user-{% endif %}profile-container">
+  
   {# We use the hidden input to pass the picture URL to the Vue component. #}
-  <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
-  <img :src="formFields.picture" width="100" height="100"
-       data-toggle="modal" data-target="#upload-picture-modal">
+  <div class="container px-0">
+    <div class="row pb-3">
+      <div class="col-md-12">
+        <p>
+          User Avatar
+        </p>
+        <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
+        <img :src="formFields.picture" width="100" height="100" data-toggle="modal" data-target="#upload-picture-modal">
+      </div>
+    </div>
+  </div>
+
+  <!-- Start Form Inputs -->
   {% include "_form.html" %}
-  <hr />
-  {% if urls.user %}
-  <div class="card border-secondary mb-4">
-    <div class="card-body text-secondary">
-      {% if urls.user.password_change %}
-      <div class="row align-items-center">
-        <div class="col-sm-5">
-          <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
-        </div>
-        <div class="col-sm-7">
-          {% trans %}Use a new password to login.{% endtrans %}
+  <!-- End Form Inputs -->
+
+  <hr class="py-3" />
+
+  <div class="container p-0">
+    <div class="row">
+
+      <div class="col-md-6">
+        {% if urls.user %}
+          <div class="card border-secondary mb-4">
+            <div class="card-body text-secondary">
+              
+              {% if urls.user.password_change %}
+                <div class="row align-items-center">
+                  <div class="col-sm-5">
+                    <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
+                  </div>
+                  <div class="col-sm-7">
+                    {% trans %}Use a new password to login.{% endtrans %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if urls.user.api_generate_keys %}
+                <div class="row align-items-center" style="margin-top:15px;">
+                  <div class="col-sm-5">
+                    <button id="generate-key-open"
+                            class="btn btn-secondary btn-block"
+                            data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
+                  </div>
+                  <div class="col-sm-7">
+                    {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if urls.user.api_activate %}
+              <div class="row align-items-center">
+                <div class="col-sm-5">
+                  <button id="activate-user"
+                          class="btn btn-secondary btn-block"
+                          @click="activate">{% trans %}Activate{% endtrans %}</button>
+                </div>
+                <div class="col-sm-7">
+                  {% trans %}Send an activation e-mail to the user.{% endtrans %}
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="col-md-6">
+        <div class="card border-danger">
+          <div class="card-header">
+            {% trans %}Danger Zone{% endtrans %}
+          </div>
+          <div class="card-body text-danger">
+            <div class="row align-items-center">
+              <div class="col-sm-5">
+                <button id="delete-action-open"
+                        class="btn btn-danger btn-block"
+                        data-toggle="modal"
+                        data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+              </div>
+              <div class="col-sm-7">
+                {% trans %}This operation cannot be reversed.{% endtrans %}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {% endif %}
-      {% if urls.user.api_generate_keys %}
-      <div class="row align-items-center" style="margin-top:15px;">
-        <div class="col-sm-5">
-          <button id="generate-key-open"
-                  class="btn btn-secondary btn-block"
-                  data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
-        </div>
-        <div class="col-sm-7">
-          {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
-        </div>
-      </div>
-      {% endif %}
-      {% if urls.user.api_activate %}
-      <div class="row align-items-center">
-        <div class="col-sm-5">
-          <button id="activate-user"
-                  class="btn btn-secondary btn-block"
-                  @click="activate">{% trans %}Activate{% endtrans %}</button>
-        </div>
-        <div class="col-sm-7">
-          {% trans %}Send an activation e-mail to the user.{% endtrans %}
-        </div>
-      </div>
-      {% endif %}
+
     </div>
   </div>
-  {% endif %}
-  <div class="card border-danger">
-    <div class="card-header">
-      {% trans %}Danger Zone{% endtrans %}
-    </div>
-    <div class="card-body text-danger">
-      <div class="row align-items-center">
-        <div class="col-sm-5">
-          <button id="delete-action-open"
-                  class="btn btn-danger btn-block"
-                  data-toggle="modal"
-                  data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
-        </div>
-        <div class="col-sm-7">
-          {% trans %}This operation cannot be reversed.{% endtrans %}
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <!-- *** -->
+  <!-- Start Modal Dialogs -->
+  <!-- *** -->
 
   <!-- Modal dialog to upload a picture -->
   <div id="upload-picture-modal"
@@ -133,15 +171,15 @@
         </div>
         <div class="modal-body">
           <p>
-{% if organization %}
-{% trans profile_name=organization.printable_name %}You are about to delete the profile and account for {{profile_name}}.{% endtrans %}
-{% elif user %}
-{% trans profile_name=user.full_name %}You are about to delete the profile and account for {{profile_name}}.{% endtrans %}
-{% endif %}
-{% trans %}This operation cannot be reversed.{% endtrans %}
+            {% if organization %}
+            {% trans profile_name=organization.printable_name %}You are about to delete the profile and account for {{profile_name}}.{% endtrans %}
+            {% elif user %}
+            {% trans profile_name=user.full_name %}You are about to delete the profile and account for {{profile_name}}.{% endtrans %}
+            {% endif %}
+            {% trans %}This operation cannot be reversed.{% endtrans %}
           </p>
           <p>
-{% trans %}Are you sure you want to continue?{% endtrans %}
+            {% trans %}Are you sure you want to continue?{% endtrans %}
           </p>
         </div>
         <div class="modal-footer">
@@ -156,7 +194,9 @@
       </div>
     </form>
   </div><!-- end modal to delete profile -->
+  
   {% if urls.user %}
+  
   <!-- modal dialog asking for password before generating API keys -->
   <div id="generate-key" class="modal fade"
        tabindex="-1" role="dialog"
@@ -190,6 +230,7 @@
       </div>
     </form>
   </div>
+
   <!-- modal dialog to generate API keys -->
   <div id="show-key" class="modal fade"
        tabindex="-1" role="dialog"
@@ -218,10 +259,10 @@
           </div>
           <div>
             <p>
-{% trans %}This is the API key you can use to authenticate with the service.{% endtrans %}
+              {% trans %}This is the API key you can use to authenticate with the service.{% endtrans %}
             </p>
             <p>
-{% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
+              {% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
             </p>
           </div>
         </div>
