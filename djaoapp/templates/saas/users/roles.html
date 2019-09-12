@@ -15,7 +15,7 @@
           <form id="add-profile" class="form-inline" @submit.prevent="submit">
             <div class="w-100">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                <div class="form-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>" data-trip-position="s">
+                <div class="form-group mb-0" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>" data-trip-position="s">
                   
                   <!-- Text and Button Input -->
                   <div class="input-group w-100">
@@ -52,13 +52,11 @@
 
   <div class="container pb-4">
     <div class="row">
-      <div class="col-md-6">
-        <div v-show="!itemsLoaded">
-            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-        </div>
-        <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
-            <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
-        </div>
+      <div class="col-md-12 py-5 my-5" v-show="!itemsLoaded">
+        <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+      </div>
+      <div class="col-md-12" v-show="itemsLoaded && items.results.length == 0" v-cloak>
+          <p class="text-muted mt-2">{% trans %}There are currently no items here. Would you like to create some?{% endtrans %}</p>
       </div>
     </div>
 
