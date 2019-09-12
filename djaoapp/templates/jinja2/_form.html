@@ -4,7 +4,7 @@
     <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
         
         <!-- Start Form Elements -->
-        <div class="container p-0">
+        <div class="container pt-3">
             <div class="row">
                 {{super()}}
             </div>
@@ -12,14 +12,20 @@
         <!-- End Form Elements -->
 
         <!-- Start Submit Button -->
-        <div class="form-action text-left pb-4">
-            <button type="submit" class="btn btn-primary btn-md">
-                {% if form.submit_title %}
-                    {{form.submit_title}}
-                {% else %}
-                    {% trans %}Submit{% endtrans %}
-                {% endif %}
-            </button>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-action text-left pb-4">
+                        <button type="submit" class="btn btn-primary btn-md">
+                            {% if form.submit_title %}
+                                {{form.submit_title}}
+                            {% else %}
+                                {% trans %}Submit{% endtrans %}
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- End Submit Button -->
 

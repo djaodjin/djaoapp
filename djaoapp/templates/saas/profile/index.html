@@ -1,5 +1,7 @@
 {% extends "saas/base_dashboard-2col.html" %}
 
+<!-- Dashboard User Profile Page -->
+
 {% block saas_title %}
   {% if organization %}
     {% trans organization=organization.printable_name %}
@@ -19,9 +21,13 @@
 {% endblock %}
 
 {% block saas_help %}
-  <p>
-    {% trans %}Update your profile, contact information, password, etc.{% endtrans %}
-  </p>
+  <div class="container">
+    <div class="row pb-4">
+      <div class="col-md-12">
+        {% trans %}Update your profile, contact information, password, etc.{% endtrans %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 
@@ -29,7 +35,7 @@
 <div id="{% if urls.user %}user-{% endif %}profile-container">
   
   {# We use the hidden input to pass the picture URL to the Vue component. #}
-  <div class="container px-0">
+  <div class="container">
     <div class="row pb-3">
       <div class="col-md-12">
         <p>
@@ -45,9 +51,15 @@
   {% include "_form.html" %}
   <!-- End Form Inputs -->
 
-  <hr class="py-3" />
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <hr class="py-3" />
+      </div>
+    </div>
+  </div>
 
-  <div class="container p-0">
+  <div class="container">
     <div class="row">
 
       <div class="col-md-6">

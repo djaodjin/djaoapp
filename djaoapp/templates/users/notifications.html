@@ -1,11 +1,11 @@
 {% extends "users/base.html" %}
 
-{% block saas_title %}{% trans %}Notifications{% endtrans %}{% endblock %}
+{% block saas_title %}
+  {% trans %}
+    Notifications
+  {% endtrans %}
+{% endblock %}
 
 {% block saas_content %}
-  <div>
-    <div>
-      {% include "_form.html" %}
-    </div>
-  </div>
+  {% include "_form.html" %}
 {% endblock %}

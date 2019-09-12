@@ -8,54 +8,64 @@
 <section id="accessible-list-container">
   
   <!-- Add a User to Organization -->
-  <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
-    <form id="add-profile" class="form-inline mb-4" @submit.prevent="submit">
-      <div style="width:100%;">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-          <div class="form-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>" data-trip-position="s">
-            <input type="text" class="form-control" id="userTypeahead"
-                     name="organization" type="text" placeholder="{% trans %}Name or e-mail{% endtrans %}"
-                     autocomplete="off">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">{% trans %}Add profile{% endtrans %}</button>
+  <div class="container">
+    <div class="row pt-3">
+      <div class="col-md-12">
+        <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+          <form id="add-profile" class="form-inline" @submit.prevent="submit">
+            <div class="w-100">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <div class="form-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the name or email of the profile you want access to.{% endtrans %}</p>" data-trip-position="s">
+                  
+                  <!-- Text and Button Input -->
+                  <div class="input-group w-100">
+                    <input type="text" id="userTypeahead" name="organization" autocomplete="off" class="form-control" placeholder="{% trans %}Name or e-mail{% endtrans %}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">{% trans %}Add Profile{% endtrans %}</button>
+                    </div>
+                  </div>
+                  
+                </div>
+                <uiv-typeahead v-model="itemSelected" target="#userTypeahead" :async-function="getUsers" item-key="slug" :open-on-focus="false" class="typeahead-dropdown" />
             </div>
-          </div>
-          <uiv-typeahead
-            v-model="itemSelected"
-            target="#userTypeahead"
-            :async-function="getUsers"
-            item-key="slug"
-            :open-on-focus="false"
-            class="typeahead-dropdown"
-          />
+          </form>
+        </user-typeahead>
       </div>
-    </form>
-  </user-typeahead>
+    </div>
 
-  <hr />
+    <div class="row">
+      <div class="col-md-12">
+        <hr />
+      </div>
+    </div>
+  </div>
 
   <!-- Start Filter/Match Input -->
-  <div class="row">
-    <div class="col-12">
-      {% include "saas/_filter_match.html" %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {% include "saas/_filter_match.html" %}
+      </div>
     </div>
   </div>
   <!-- End Filter/Match Input -->
 
-  <div class="row">
-    <div class="col-md-6">
-      <div v-show="!itemsLoaded">
-          <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-      </div>
-      <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
-          <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
+  <div class="container pb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <div v-show="!itemsLoaded">
+            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+        </div>
+        <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <p class="text-muted mt-2">{% trans %}No items{% endtrans %}</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="row my-4" infinite-wrapper>
-    <div class="col-md-4 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-        {% include "saas/_organization_card.html" %}
+    <div class="row my-3" infinite-wrapper>
+      <div class="col-md-3 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          {% include "saas/_organization_card.html" %}
+      </div>
     </div>
   </div>
 
