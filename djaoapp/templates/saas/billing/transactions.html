@@ -1,101 +1,111 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Transactions{% endtrans %}{% endblock %}
+{% block saas_title %}
+  {% trans %}Transactions{% endtrans %}
+{% endblock %}
 
 {% block saas_page_layout %}
-<div class="col-md-12">
-  <div id="transactions-container" class="row">
-    <section id="total">
-      <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[items.balance | humanizeCell('$', 0.01)]]</span>
-    </section>
-    <section id="transactions">
-      <div>
-        <form class="form my-3">
-            <div class="form-row">
-              {% include "saas/_filter.html" %}
-              <div class="col">
-                    <a id="download" class="btn btn-secondary btn-sm" role="button"
-                       :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
+  <div class="col-md-12">
+    <div id="transactions-container" class="row">
+      
+      <section id="total">
+        <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[items.balance | humanizeCell('$', 0.01)]]</span>
+      </section>
+
+      <section id="transactions">
+        <div>
+          <form class="form my-3">
+              <div class="form-row">
+                {% include "saas/_filter.html" %}
+                <div class="col">
+                  <a id="download" class="btn btn-secondary btn-sm" role="button"
+                        :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
+                </div>
               </div>
-            </div>
-        </form>
-        <table class="table table-striped" infinite-wrapper>
-          <thead>
-            <tr>
-                <th>{% trans %}Date{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('created_at')">
-                    <i :class="sortIcon('created_at')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Amount{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('amount')">
-                    <i :class="sortIcon('amount')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Origin Organization{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('orig_organization')">
-                    <i :class="sortIcon('orig_organization')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Origin Account{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('orig_account')">
-                    <i :class="sortIcon('orig_account')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Destination Organization{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('dest_organization')">
-                    <i :class="sortIcon('dest_organization')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Destination Account{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('dest_account')">
-                    <i :class="sortIcon('dest_account')"></i>
-                  </a>
-                </th>
-                <th>{% trans %}Description{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('description')">
-                    <i :class="sortIcon('description')"></i>
-                  </a>
-                </th>
-            </tr>
-          </thead>
-          <tbody v-show="!itemsLoaded">
-            <tr>
-              <td colspan="4">
-                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
-            <tr>
-              <td colspan="7">
-                <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
-              </td>
-            </tr>
-          </tbody>
-          <tbody id="has-transactions"
-            v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            <tr v-for="entry in items.results">
-              <td>[[entry.created_at | formatDate]]</td>
-              <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-              <td>[[entry.orig_organization]]</td>
-              <td>[[entry.orig_account]]</td>
-              <td>[[entry.dest_organization]]</td>
-              <td>[[entry.dest_account]]</td>
-              <td v-html="entry.description"></td>
-            </tr>
-          </tbody>
-        </table>
-        {% include "_pagination.html" %}
-      </div>
-    </section>
+          </form>
+
+          <!-- Start Data Table -->
+          <table class="table table-striped" infinite-wrapper>
+            <thead>
+              <tr>
+                  <th>{% trans %}Date{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('created_at')">
+                      <i :class="sortIcon('created_at')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Amount{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('amount')">
+                      <i :class="sortIcon('amount')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Origin Organization{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('orig_organization')">
+                      <i :class="sortIcon('orig_organization')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Origin Account{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('orig_account')">
+                      <i :class="sortIcon('orig_account')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Destination Organization{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('dest_organization')">
+                      <i :class="sortIcon('dest_organization')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Destination Account{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('dest_account')">
+                      <i :class="sortIcon('dest_account')"></i>
+                    </a>
+                  </th>
+                  <th>{% trans %}Description{% endtrans %}
+                    <a class="btn-sort"
+                      @click.prevent="sortBy('description')">
+                      <i :class="sortIcon('description')"></i>
+                    </a>
+                  </th>
+              </tr>
+            </thead>
+
+            <!-- Show Loader -->
+            <tbody v-show="!itemsLoaded">
+              <tr>
+                <td colspan="4">
+                  <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+              <tr>
+                <td colspan="7">
+                  <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+                </td>
+              </tr>
+            </tbody>
+            <tbody id="has-transactions"
+              v-show="itemsLoaded && items.results.length > 0" v-cloak>
+              <tr v-for="entry in items.results">
+                <td>[[entry.created_at | formatDate]]</td>
+                <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+                <td>[[entry.orig_organization]]</td>
+                <td>[[entry.orig_account]]</td>
+                <td>[[entry.dest_organization]]</td>
+                <td>[[entry.dest_account]]</td>
+                <td v-html="entry.description"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          {% include "_pagination.html" %}
+        
+        </div>
+      </section>
+    </div>
   </div>
-</div>
 {% endblock %}

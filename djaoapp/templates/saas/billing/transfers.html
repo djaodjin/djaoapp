@@ -1,76 +1,118 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{{organization.printable_name}} {% trans %}Funds{% endtrans %}{% endblock %}
+{% block saas_title %}
+  {{organization.printable_name}} {% trans %}Funds{% endtrans %}
+{% endblock %}
 
 {% block saas_page_layout %}
-<div class="row">
-  <div id="transfers-container" class="col-12">
-    <div class="row" data-trip data-trip-index="1"
-         data-trip-content="<h2>{% trans %}Funds{% endtrans %}</h2><p>{% trans %}Transfer earned income to the organization bank account. All paid subscriptions<br />accumulate in the organization's Funds balance. You can see all deposits<br />into the organization Funds balance and transfer available funds to a bank account here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
-         data-trip-position="screen-center">
-      <section id="funds" class="col-sm-6">
-        <h3>{% trans %}Available{% endtrans %}</h3>
-        <dl class="dl-horizontal" v-show="balance_amount !== 'N/A'" v-cloak>
-          <dt id="balance-amount"
-              data-trip data-trip-index="2"
-              data-trip-content="<p>{% trans %}Amount available to transfer to the provider deposit account{% endtrans %}</p>"
-              data-trip-position="s">[[humanizeBalance()]]</dt>
-          <dd><a id="saas_withdraw_funds"
-                 href="{{ urls.provider.withdraw_funds }}"
-                 data-trip data-trip-index="4"
-                 data-trip-content="<p>{% trans %}Withdraw up to the available amount.{% endtrans %}</p>"
-                 data-trip-position="s"
-                 v-show="balance_amount > 0" v-cloak>{% trans %}withdraw{% endtrans %}</a></dd>
-        </dl>
-        <dl class="dl-horizontal" v-show="balance_amount === 'N/A'" v-cloak>
-          <dt>[[balance_amount]]</dt>
-          <dd></dd>
-        </dl>
-      </section>
-      <section id="info" class="col-sm-6">
-        <h3>{% trans %}Deposit Information{% endtrans %} <a id="update_bank"
-                                   class="btn btn-link"
-                                   href="{{ urls.provider.bank }}"
-                                   data-trip data-trip-index="3"
-                                   data-trip-content="<p>{% trans %}Update your bank information so funds can be transfered to you.{% endtrans %}</p>"
-                                   data-trip-position="s">{% trans %}Update{% endtrans %}</a></h3>
-        <dl class="dl-horizontal">
-          <dt>{% trans %}Institution{% endtrans %}</dt>
-          <dd class="bank-name">
-            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
-            <span v-if="balanceLoaded" v-cloak>[[bank_name]]</span>
-          </dd>
-        </dl>
-        <dl class="dl-horizontal">
-          <dt>{% trans %}Account Number{% endtrans %}</dt>
-          <dd class="last4">
-            <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
-            <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
-          </dd>
-        </dl>
-      </section>
-    </div>
-    <div class="btn-actions text-right">
-      <!-- Stripe provides a way to turn off payouts. This feature enables
-           a provider to do manual payouts.
-      <a id="withdraw-from-processor"
-         class="btn btn-secondary btn-sm" href="{{urls.provider.withdraw_funds}}"><i class="fa fa-sign-out"></i> Withdraw from processor</a>
-      -->
-      <a id="add-offline-transaction"
-         class="btn btn-secondary btn-sm" href="{{urls.provider.import_transactions}}"><i class="fa fa-plus"></i> {% trans %}Add offline transaction{% endtrans %}</a>
-      <a id="download"
-         class="btn btn-secondary btn-sm" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        {% include "saas/_transactions.html" %}
+  <section>
+    <div class="container pt-3">
+      <div class="row">
+        <div id="transfers-container" class="col-md-12">
+          <div class="row" data-trip data-trip-index="1"
+              data-trip-content="<h2>{% trans %}Funds{% endtrans %}</h2><p>{% trans %}Transfer earned income to the organization bank account. All paid subscriptions<br />accumulate in the organization's Funds balance. You can see all deposits<br />into the organization Funds balance and transfer available funds to a bank account here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+              data-trip-position="screen-center">
+
+            <section id="funds" class="col-md-4 mb-4 text-center">
+              <div class="border rounded h-100">
+                <h3 class="pt-4">{% trans %}Available{% endtrans %}</h3>
+                <dl class="dl-horizontal pt-3" v-show="balance_amount !== 'N/A'" v-cloak>
+                  <dt id="balance-amount" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Amount available to transfer to the provider deposit account{% endtrans %}</p>" data-trip-position="s">
+                    <h1 class="pt-3 pb-5">
+                      [[humanizeBalance()]]
+                    </h1>
+                  </dt>
+                  <dd>
+                    <a id="saas_withdraw_funds"
+                        href="{{ urls.provider.withdraw_funds }}"
+                        data-trip data-trip-index="4"
+                        data-trip-content="<p>{% trans %}Withdraw up to the available amount.{% endtrans %}</p>"
+                        data-trip-position="s"
+                        v-show="balance_amount > 0" v-cloak>{% trans %}withdraw{% endtrans %}
+                    </a>
+                  </dd>
+                </dl>
+                <dl class="dl-horizontal pt-3" v-show="balance_amount === 'N/A'" v-cloak>
+                  <dt>
+                    <h1>
+                      [[balance_amount]]
+                    </h1>
+                  </dt>
+                  <dd></dd>
+                </dl>
+              </div>
+            </section>
+
+            <section id="info" class="col-md-8 mb-4">
+
+                  <!-- <div class="card">
+                    <div class="card-body d-flex flex-column">
+                      <div class="d-flex justify-content-center">
+                        <h5 class="card-title text-center">MRR</h5>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-center py-5">
+                        123
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="p-4 border rounded">
+                    <h3>
+                      {% trans %}Deposit Information{% endtrans %} 
+                      <a id="update_bank" class="btn btn-link" href="{{ urls.provider.bank }}" data-trip data-trip-index="3" data-trip-content="<p>{% trans %}Update your bank information so funds can be transfered to you.{% endtrans %}</p>" data-trip-position="s">
+                        {% trans %}Update{% endtrans %}
+                      </a>
+                    </h3>
+                    <dl class="dl-horizontal">
+                      <dt>{% trans %}Institution{% endtrans %}</dt>
+                      <dd class="bank-name">
+                        <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+                        <span v-if="balanceLoaded" v-cloak>[[bank_name]]</span>
+                      </dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                      <dt>{% trans %}Account Number{% endtrans %}</dt>
+                      <dd class="last4">
+                        <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+                        <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
+                      </dd>
+                    </dl>
+                  </div>
+              
+            </section>
+          </div>
+
+          <!-- Offline Transactions and Download .CSV Buttons -->
+          <div class="row font-weight-bolder btn-actions text-right mb-3">
+            <!-- 
+              Stripe provides a way to turn off payouts. 
+              This feature enables a provider to do manual payouts.
+              
+              <a id="withdraw-from-processor" class="btn btn-secondary btn-sm" 
+              href="{{urls.provider.withdraw_funds}}"><i class="fa fa-sign-out">
+              </i> Withdraw from processor</a>
+            -->
+            <div class="col-md-6 mb-3">
+              <a id="add-offline-transaction" class="btn btn-secondary btn-md w-100" href="{{urls.provider.import_transactions}}">
+                <i class="fa fa-plus mr-3"></i> {% trans %}Add Offline Transactions{% endtrans %}
+              </a>
+            </div>
+            <div class="col-md-6 mb-3">
+              <a id="download" class="btn btn-secondary btn-md w-100" role="button" :href="'{{download_url}}' + getQueryString(['page'])">
+                <i class="fa fa-cloud-download mr-3"></i> {% trans %}Download .CSV{% endtrans %}
+              </a>
+            </div>
+          </div>
+
+          <!-- Transaction Details -->
+          <div class="row">
+            <div class="col-12">
+              {% include "saas/_transactions.html" %}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 text-right">
-      </div>
-    </div>
-  </div>
-</div>
+  </section>
+
 {% endblock %}
