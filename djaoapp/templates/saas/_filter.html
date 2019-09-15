@@ -1,6 +1,7 @@
-<div class="col-sm-3">
+<div class="col-md-4">
+  <!-- Find Coupon by Start Date -->
   <uiv-dropdown append-to-body class="w-100 pb-3">
-    <div class="input-group input-group-sm">
+    <div class="input-group input-group-md">
       <div class="input-group-prepend">
         <span class="input-group-text" id="from-inp">{% trans %}From{% endtrans %}</span>
       </div>
@@ -24,9 +25,10 @@
   </uiv-dropdown>
 </div>
 
-<div class="col-sm-3">
+<div class="col-md-4">
+  <!-- Find Coupon by End Date -->
   <uiv-dropdown append-to-body class="w-100 pb-3">
-    <div class="input-group input-group-sm">
+    <div class="input-group input-group-md">
       <div class="input-group-prepend">
         <span class="input-group-text" id="to-inp">{% trans %}To{% endtrans %}</span>
       </div>
@@ -49,7 +51,7 @@
   </uiv-dropdown>
 </div>
 
-<div class="col-sm-3">
+<div class="col-md-12">
   <div class="pb-3">
     {% include "saas/_filter_match.html" %}
   </div>
