@@ -1,221 +1,233 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}HTTP Request Pipeline{% endtrans %}{% endblock %}
+{% block saas_title %}
+  {% trans %}HTTP Request Pipeline{% endtrans %}
+{% endblock %}
 
 {% block saas_page_layout %}
-<div>
-  <div class="row">
-    <div class="col-md-12" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Configure the request pipeline{% endtrans %}</h2><p>{% trans %}Set URL access rules and where authorized requests are forwared to...{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
-      <h3>{% trans %}Domain{% endtrans %}</h3>
-      <div data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Check the domain for which the access rules apply. All HTTP requests to {{site_available_at_url}}<br />will be checked against the access rules defined below.{% endtrans %}</p>" data-trip-position="s">
-        <p>
-{% trans %}The site is available at{% endtrans %} <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
-        </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mt-3" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Configure the request pipeline{% endtrans %}</h2><p>{% trans %}Set URL access rules and where authorized requests are forwared to...{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
+        <h3>{% trans %}Domain{% endtrans %}</h3>
+        <div data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Check the domain for which the access rules apply. All HTTP requests to {{site_available_at_url}}<br />will be checked against the access rules defined below.{% endtrans %}</p>" data-trip-position="s">
+          <p>
+            {% trans %}The site is available at{% endtrans %} <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
+          </p>
+        </div>
       </div>
     </div>
-    <div id="rules-table" class="col-md-12">
-      <h3>{% trans %}Access Rules{% endtrans %}</h3>
-      <div class="table-responsive">
-      <table class="table table-sm table-striped" data-trip data-trip-index="3" data-trip-content="{% trans %}Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself.{% endtrans %}" data-trip-position="s" infinite-wrapper>
-        <thead>
-          <tr>
-            <th>{% trans %}Rank{% endtrans %}</th>
-            <th>{% trans %}Path{% endtrans %}</th>
-            <th>{% trans %}Access Rule{% endtrans %}</th>
-            <th class="text-center">{% trans %}Forward{% endtrans %}</th>
-            <th>{% trans %}Engage tags{% endtrans %}</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
-          <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
-              v-for="(rule, index) in items.results" v-cloak>
-            <td width="100">
-              <div class="btn btn-secondary btn-sm rule-handle">
-                <i class="fa fa-bars"></i></div>
-            </td>
-            <td>[[rule.path]]</td>
-            <td width="200">
-              <select name="rule" class="form-control form-control-sm"
-                      v-model="rule.allow"
-                      @change="update(rule)">
-                {% for rule in rules %}
-                <option value="{{rule.0}}">{{rule.1}}</option>
-                {% endfor %}
+
+    <!-- Access Rules -->
+    <div class="row">
+      <div id="rules-table" class="col-md-12 mt-3">
+        <h3>{% trans %}Access Rules{% endtrans %}</h3>
+        <div class="table-responsive">
+          <table class="table table-md table-striped" data-trip data-trip-index="3" data-trip-content="{% trans %}Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself.{% endtrans %}" data-trip-position="s" infinite-wrapper>
+            <thead>
+              <tr>
+                <th>{% trans %}Rank{% endtrans %}</th>
+                <th>{% trans %}Path{% endtrans %}</th>
+                <th>{% trans %}Access Rule{% endtrans %}</th>
+                <th class="text-center">{% trans %}Forward{% endtrans %}</th>
+                <th>{% trans %}Engage tags{% endtrans %}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
+              <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
+                  v-for="(rule, index) in items.results" v-cloak>
+                <td width="100">
+                  <div class="btn btn-secondary btn-md rule-handle">
+                    <i class="fa fa-bars"></i></div>
+                </td>
+                <td>[[rule.path]]</td>
+                <td width="200">
+                  <select name="rule" class="form-control form-control-sm"
+                          v-model="rule.allow"
+                          @change="update(rule)">
+                    {% for rule in rules %}
+                    <option value="{{rule.0}}">{{rule.1}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td width="100" class="text-center">
+                  <input type="checkbox" name="is_forward"
+                        v-model="rule.is_forward"
+                        @change="update(rule)"
+                        :checked="rule.is_forward" />
+                </td>
+                <td class="engaged">
+                    <span @click="editDescription(index)"
+                          v-show="!edit_description[index]"
+                          >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control"
+                          v-show="edit_description[index]"
+                          v-model="rule.engaged"
+                          ref="edit_description_input"
+                          @keydown="saveDescription(rule, index, $event)"
+                          @blur="saveDescription(rule, index, $event)"
+                          >
+                </td>
+                <td width="100">
+                  <button class="btn btn-danger btn-sm" @click="remove(index)">
+                    <i class="fa fa-trash-o"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <a id="add-rule" href="#"
+                    data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {% include "_pagination.html" %}
+
+        </div>
+
+        <!-- Modal Dialog for Adding a New Rule -->
+        <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="{% trans %}Add Access Rule{% endtrans %}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">{% trans %}Path accessed ...{% endtrans %}</h5>
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div id="div_id_new_rule_path" class="form-group">
+                  <div class="controls ">
+                    <input id="id_new_rule_path"
+                          class="form-control"
+                          maxlength="255"
+                          name="new_rule_path" type="text"
+                          autofocus
+                          v-model="newRule.path">
+                    <p class="form-text">{% trans %}Your path should end with '/'. If not it will be automatically added.{% endtrans %}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                <button id="new-rule-submit"
+                        type="button" class="btn btn-primary"
+                        data-dismiss="modal"
+                        @click="create">{% trans %}Create{% endtrans %}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of modal dialog for Adding a rule -->
+      </div>
+    </div>
+
+    <!-- Web Application -->
+    <div class="row">
+      <div id="rule-list-container" class="col-md-12 mt-3">
+        <h3>{% trans %}Web Application{% endtrans %}</h3>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label>{% trans %}Authentication{% endtrans %}</label>
+              <select class="form-control" name="authentication" value="{{form.instance.authentication}}" ref="authentication" @change="update()">
+                <option value="enabled"{% if form.instance.authentication == 0 %} selected{% endif %}>{% trans %}Registration enabled{% endtrans %}</option>
+                <option value="login-only"{% if form.instance.authentication == 1 %} selected{% endif %}>{% trans %}Login-only{% endtrans %}</option>
+                <option value="disabled"{% if form.instance.authentication == 2 %} selected{% endif %}>{% trans %}Only site managers can login{% endtrans %}</option>
               </select>
-            </td>
-            <td width="100" class="text-center">
-              <input type="checkbox" name="is_forward"
-                     v-model="rule.is_forward"
-                     @change="update(rule)"
-                     :checked="rule.is_forward" />
-            </td>
-            <td class="engaged">
-                <span @click="editDescription(index)"
-                      v-show="!edit_description[index]"
-                      >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
-                <input type="text" class="form-control"
-                       v-show="edit_description[index]"
-                       v-model="rule.engaged"
-                       ref="edit_description_input"
-                       @keydown="saveDescription(rule, index, $event)"
-                       @blur="saveDescription(rule, index, $event)"
-                       >
-            </td>
-            <td width="100">
-              <button class="btn btn-danger btn-sm" @click="remove(index)">
-                <i class="fa fa-trash-o"></i></button>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="6">
-              <a id="add-rule" href="#"
-                 data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {% include "_pagination.html" %}
-      </div>
-      <!-- modal dialog for Adding a rule -->
-      <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
-           aria-labelledby="{% trans %}Add Access Rule{% endtrans %}" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">{% trans %}Path accessed ...{% endtrans %}</h5>
-              <button type="button" class="close"
-                      data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
-              <div id="div_id_new_rule_path" class="form-group">
-                <div class="controls ">
-                  <input id="id_new_rule_path"
-                         class="form-control"
-                         maxlength="255"
-                         name="new_rule_path" type="text"
-                         autofocus
-                         v-model="newRule.path">
-                  <p class="form-text">{% trans %}Your path should end with '/'. If not it will be automatically added.{% endtrans %}</p>
+            <div class="form-group col-md-6">
+              <label for="">&nbsp;</label>
+              <div class="form-check pl-0">
+                <label for="welcome-email">
+                  <input id="welcome-email" class="checkboxinput mr-2"
+                      name="welcome-email"
+                      ref="welcomeEmail"
+                      type="checkbox"
+                      {% if form.instance.welcome_email %}checked="checked"{% endif %} @change="update()" />
+                  {% trans %}Send welcome e-mail to newly registered users{% endtrans %}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <form id="application-form" method="post" @submit.prevent="update(true)">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <label for="">{% trans %}Forward HTTP requests to entry point *{% endtrans %}</label>
+              <div class="input-group">
+                <input id="id_entry_point"
+                      class="form-control"
+                      maxlength="100"
+                      name="entry_point"
+                      type="text"
+                      ref="entryPoint"
+                      value="{% if form.instance.entry_point %}{{form.instance.entry_point}}{% endif %}"
+                      data-trip data-trip-index="4"
+                      data-trip-content="<p>{% trans %}Set the entry point where authorized requests should be forwarded to.{% endtrans %}</p>" data-trip-position="s">
+                <button type="submit" class="input-group-append btn btn-primary">{% trans %}Update{% endtrans %}</button>
+              </div>
+              </form>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">{% trans %}Forwarded session encoding *{% endtrans %}</label>
+              <select class="form-control"
+                  name="session_backend"
+                  value="{{form.instance.session_backend}}"
+                  ref="sessionBackend"
+                  @change="update()">
+                <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>{% trans %}No Session Forwarded{% endtrans %}</option>
+                <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>{% trans %}Cookie-based Session Backend{% endtrans %}</option>
+                <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>{% trans %}JWT-based Session Backend{% endtrans %}</option>
+              </select>
+              <div class="form-group mt-3">
+                <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
+              </div>
+            </div>
+          </div>
+
+        <!-- Modal Dialog for Encrypted Session Key -->
+        <div id="generate-key" class="modal fade"
+            tabindex="-1" role="dialog"
+            aria-labelledby="{% trans %}Encrypted Session Key{% endtrans %}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">{% trans %}Encrypted Session Key{% endtrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <div class="controls">
+                    <input class="form-control" v-model="sessionKey" name="key" maxlength="32" type="text" disabled value="{% trans %}Generating{% endtrans %} ..." />
+                  </div>
+                </div>
+                <div>
+                  <p>
+                    {% trans %}This is the AES key used to encrypt the session cookie passed to your application when a request was authorized.{% endtrans %}
+                  </p>
+                  <p>
+                    {% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
+                  </p>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                      data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-              <button id="new-rule-submit"
-                      type="button" class="btn btn-primary"
-                      data-dismiss="modal"
-                      @click="create">{% trans %}Create{% endtrans %}</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end of modal dialog for Adding a rule -->
-    </div>
-    <div id="rule-list-container" class="col-md-12">
-      <h3>{% trans %}Web application{% endtrans %}</h3>
-        <div class="row">
-          <div class="form-group col-sm-6">
-            <label>{% trans %}Authentication{% endtrans %}</label>
-            <select class="form-control" name="authentication" value="{{form.instance.authentication}}" ref="authentication" @change="update()">
-              <option value="enabled"{% if form.instance.authentication == 0 %} selected{% endif %}>{% trans %}Registration enabled{% endtrans %}</option>
-              <option value="login-only"{% if form.instance.authentication == 1 %} selected{% endif %}>{% trans %}Login-only{% endtrans %}</option>
-              <option value="disabled"{% if form.instance.authentication == 2 %} selected{% endif %}>{% trans %}Only site managers can login{% endtrans %}</option>
-            </select>
-          </div>
-          <div class="form-group col-sm-6">
-            <label for="">&nbsp;</label>
-            <div class="form-check">
-              <label for="welcome-email">
-                <input id="welcome-email" class="checkboxinput"
-                    name="welcome-email"
-                    ref="welcomeEmail"
-                    type="checkbox"
-                    {% if form.instance.welcome_email %}checked="checked"{% endif %} @change="update()" />
-                {% trans %}Send welcome e-mail to newly registered users{% endtrans %}
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <form id="application-form" method="post" @submit.prevent="update(true)">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <label for="">{% trans %}Forward HTTP requests to entry point *{% endtrans %}</label>
-            <div class="input-group">
-              <input id="id_entry_point"
-                     class="form-control"
-                     maxlength="100"
-                     name="entry_point"
-                     type="text"
-                     ref="entryPoint"
-                     value="{% if form.instance.entry_point %}{{form.instance.entry_point}}{% endif %}"
-                     data-trip data-trip-index="4"
-                     data-trip-content="<p>{% trans %}Set the entry point where authorized requests should be forwarded to.{% endtrans %}</p>" data-trip-position="s">
-              <button type="submit" class="input-group-append btn btn-primary">{% trans %}Update{% endtrans %}</button>
-            </div>
-            </form>
-          </div>
-          <div class="form-group col-md-4">
-            <label for="">{% trans %}Forwarded session encoding *{% endtrans %}</label>
-            <select class="form-control"
-                name="session_backend"
-                value="{{form.instance.session_backend}}"
-                ref="sessionBackend"
-                @change="update()">
-              <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>{% trans %}No session forwarded{% endtrans %}</option>
-              <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>{% trans %}Cookie-based session backend{% endtrans %}</option>
-              <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>{% trans %}JWT-based session backend{% endtrans %}</option>
-            </select>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="">&nbsp;</label>
-            <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
-          </div>
-        </div>
-      <!-- modal dialog for Encrypted Session Key -->
-      <div id="generate-key" class="modal fade"
-           tabindex="-1" role="dialog"
-           aria-labelledby="{% trans %}Encrypted Session Key{% endtrans %}" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">{% trans %}Encrypted Session Key{% endtrans %}</h5>
-              <button type="button" class="close"
-                      data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <div class="controls">
-                  <input class="form-control" v-model="sessionKey"
-                         name="key" maxlength="32" type="text" disabled
-                         value="{% trans %}Generating{% endtrans %} ..." />
-                </div>
+              <div class="modal-footer">
+                <button id="regenerate-key" class="btn btn-secondary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
               </div>
-              <div>
-                <p>
-{% trans %}This is the AES key used to encrypt the session cookie passed to your application when a request was authorized.{% endtrans %}
-                </p>
-                <p>
-{% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
-                </p>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button id="regenerate-key" class="btn btn-secondary"
-                      type="button"
-                      @click="generateKey">{% trans %}Generate{% endtrans %}</button>
-              <button type="button" class="btn btn-primary"
-                      data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
             </div>
           </div>
         </div>
       </div><!-- end of modal dialog for Encrypted Session Key -->
-      <div>
+    </div><!-- /Web Application -->
+
+    <!-- Testing -->
+    <div class="row">
+      <div class="col-md-12 mt-3">
         <h3>{% trans %}Testing{% endtrans %}</h3>
         <p>
-{% trans %}Enter a username and check the token that will be passed to your backend service.{% endtrans %}
+          {% trans %}Enter a username and check the token that will be passed to your backend service.{% endtrans %}
         </p>
         <form id="token-form" class="form" method="post" @submit.prevent="getSessionData">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
@@ -223,8 +235,8 @@
             <div class="form-group col-md-6">
               <div class="input-group">
                 <input id="id_username" class="form-control"
-                       maxlength="100" name="username" type="text"
-                       v-model="testUsername">
+                      maxlength="100" name="username" type="text"
+                      v-model="testUsername">
                 <span class="input-group-append">
                   <button type="submit" class="btn btn-primary">{% trans %}Check{% endtrans %}</button>
                 </span>
@@ -232,30 +244,31 @@
             </div>
           </div>
         </form>
-        <div class="row">
-          <div class="col-md-12 text-left">
-            <dl id="session-data">
-              <dt>{% trans %}Session Data{% endtrans %}</dt>
-              <dd>
-                <pre class="code"><code>[[forward_session]]</code></pre>
-              </dd>
-            </dl>
-            <dl id="session-header">
-              <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
-              <dd>
-                <pre class="code"><code>[[forward_session_header]]</code></pre>
-              </dd>
-            </dl>
-            <dl>
-              <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
-              <dd>
-                <pre class="code"><code>[[forward_url]]</code></pre>
-              </dd>
-            </dl>
-          </div>
-        </div>
-      </div><!-- /testing tokens -->
-    </div><!-- /Web Application -->
+      </div>
+    </div><!-- /testing tokens -->
+
+    <!-- Session Data -->
+    <div class="row">
+      <div class="col-md-12  mt-3 text-left">
+        <dl id="session-data">
+          <dt>{% trans %}Session Data{% endtrans %}</dt>
+          <dd>
+            <pre class="code p-3"><code>[[forward_session]]</code></pre>
+          </dd>
+        </dl>
+        <dl id="session-header">
+          <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
+          <dd>[[forward_session_header]]
+            <pre class="code p-3"><code>[[forward_session_header]]</code></pre>
+          </dd>
+        </dl>
+        <dl>
+          <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
+          <dd>
+            <pre class="code p-3"><code>[[forward_url]]</code></pre>
+          </dd>
+        </dl>
+      </div>
+    </div>
   </div>
-</div>
 {% endblock %}
