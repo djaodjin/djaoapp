@@ -1,6 +1,7 @@
-<div class="col-sm-3">
-  <uiv-dropdown append-to-body class="w-100 pb-3">
-    <div class="input-group input-group-sm">
+<div class="col-md-6 mb-3">
+  <!-- Find Coupon by Start Date -->
+  <uiv-dropdown append-to-body class="w-100">
+    <div class="input-group input-group-md w-100">
       <div class="input-group-prepend">
         <span class="input-group-text" id="from-inp">{% trans %}From{% endtrans %}</span>
       </div>
@@ -13,20 +14,16 @@
     </div>
     <template slot="dropdown">
       <li>
-        <uiv-date-picker
-          @input="get"
-          format="{{DATETIME_FORMAT}}"
-          v-model="params.start_at"
-          icon-control-left="fa fa-caret-left"
-          icon-control-right="fa fa-caret-right" />
+        <uiv-date-picker @input="get" format="{{DATETIME_FORMAT}}" v-model="params.start_at" icon-control-left="fa fa-caret-left" icon-control-right="fa fa-caret-right" />
       </li>
     </template>
   </uiv-dropdown>
 </div>
 
-<div class="col-sm-3">
-  <uiv-dropdown append-to-body class="w-100 pb-3">
-    <div class="input-group input-group-sm">
+<div class="col-md-6 mb-3">
+  <!-- Find Coupon by End Date -->
+  <uiv-dropdown append-to-body class="w-100">
+    <div class="input-group input-group-md">
       <div class="input-group-prepend">
         <span class="input-group-text" id="to-inp">{% trans %}To{% endtrans %}</span>
       </div>
@@ -38,18 +35,13 @@
     </div>
     <template slot="dropdown">
       <li>
-        <uiv-date-picker
-          @input="get"
-          format="{{DATETIME_FORMAT}}"
-          v-model="params.ends_at"
-          icon-control-left="fa fa-caret-left"
-          icon-control-right="fa fa-caret-right" />
+        <uiv-date-picker @input="get" format="{{DATETIME_FORMAT}}" v-model="params.ends_at" icon-control-left="fa fa-caret-left" icon-control-right="fa fa-caret-right" />
       </li>
     </template>
   </uiv-dropdown>
 </div>
 
-<div class="col-sm-3">
+<div class="col-md-12">
   <div class="pb-3">
     {% include "saas/_filter_match.html" %}
   </div>
