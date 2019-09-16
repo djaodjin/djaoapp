@@ -74,11 +74,11 @@
           </h3>
 
           <!-- Sub-Container -->
-          <div class="container">
+          <div class="container px-0">
             <div class="row d-flex flex-wrap">
               <!-- Primary Notifications -->
               {% for key, vals in notifications.items() %}
-                <div class="col-md-6 d-flex flex-column pl-0">
+                <div class="col-md-6 mb-3">
                   <div id="{{key}}" class="card h-100 mb-3">
                     <div class="card-body h-100">
                       <h5 class="card-title"><a href="{{urls.notifications}}{{key}}/">{{vals.title}}</a></h5>
@@ -94,7 +94,7 @@
 
               <!-- Subsequent Notifications -->
               {% for role_descr in role_descriptions %}
-                <div class="col-md-6 d-flex flex-column pl-0">
+                <div class="col-md-6 mb-3">
                   <div id="{{role_descr.slug}}_role_added" class="card h-100 mb-3">
                     <div class="card-body h-100">
                       <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_added/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
