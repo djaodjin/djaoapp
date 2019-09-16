@@ -1,44 +1,88 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{% trans organization_name=organization.printable_name %}{{organization_name}} Dashboard{% endtrans %}
+  {% trans organization_name=organization.printable_name %}
+    {{organization_name}} Dashboard
+  {% endtrans %}
 {% endblock %}
-{% block saas_descr %}{% trans %}A section short description{% endtrans %}{% endblock %}
+
+{% block saas_descr %}
+  {% trans %}
+    A section short description
+  {% endtrans %}
+{% endblock %}
 
 {% block saas_content %}
-<section>
-<div class="row">
-    <div class="col-lg-8 col-12">
-        <div id="search-list-container">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                                <input class="form-control"
-                                  type="text" placeholder="{% trans %}Search...{% endtrans %}"
-                                  v-model="params.q" @input="filterList" />
-                        </div>
-                    </div>
-                    <table class="table table-striped mt-4">
-                        <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                            <tr v-for="entry in items.results">
-                                <td>
-                                  <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
-                                </td>
-                                <td>[[entry.full_name]]</td>
-                                <td>[[entry.email]]</td>
-                                <td>[[entry.created_at | relativeDate]]</td>
-                            </tr>
-                        </tbody>
-                    </table>
+  <section>
+    <div class="container">
+      <div class="row">
+        <!-- MRR Charts -->
+        <div class="col-md-4 mb-4">
+          <div id="monthly-revenue-container" class="h-100">
+            <div class="card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-center">
+                  <h5 class="card-title text-center">MRR</h5>
                 </div>
+                <div class="d-flex align-items-center justify-content-center py-5 h-75">
+                  <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                  <h2 class="text-center" v-show="itemLoaded" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        {% if urls and urls.recent_activity %}
-        <div id="recent-activity-container" class="mt-4">
-            <div class="card">
+              
+        {% if urls and urls.rules and urls.rules.api_engagement %}
+          <div class="col-md-8 px-0 d-flex flex-wrap" id="engagement-users-container">
+            <!-- DAU Charts -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-center">
+                    <h5 class="card-title text-center">Daily Active Users</h5>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center py-5 h-75">
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Engagement Charts -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body py-3">
+                  <h5 class="card-title text-center">Engagement</h5>
+                  <div class="card-body" v-show="!itemLoaded">
+                    <h2 class="text-center"><i class="fa fa-refresh fa-spin"></i></h2>
+                  </div>
+                  <div class="card-body p-0" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
+                    <p class="card-text text-center text-muted">
+                      No engagement data
+                    </p>
+                  </div>
+                  <div class="card-body p-0" v-show="itemLoaded && item.engagements.length > 0" v-cloak>
+                    <svg ref="engagementChart"></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">    
+          
+          {% if urls and urls.recent_activity %}
+            <!-- Recent Users Chart -->
+            <div id="recent-activity-container">
+              <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-0">Recently active users</h5>
+                  <h5 class="card-title mb-0">Recently Active Users</h5>
                 </div>
                 <div class="card-body" v-show="!itemsLoaded">
                   <p>
@@ -46,75 +90,71 @@
                   </p>
                 </div>
                 <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
-                    <p class="card-text text-muted">
-                        {% trans %}No recently active users{% endtrans %}
-                    </p>
+                  <p class="card-text text-muted">
+                    {% trans %}No recently active users{% endtrans %}
+                  </p>
                 </div>
                 <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                    <a class="list-group-item  d-flex justify-content-between align-items-center" v-for="item in items.results"
-                        :href="'{{urls.profile_redirect}}' + item.slug + '/'">
-                        <span>
-                            <span class="d-inline-block item-name">[[item.printable_name]]</span>
-                            <span class="badge" :class="{
-                                'badge-success': item.descr === 'charge paid',
-                                'badge-danger': item.descr === 'charge failed',
-                                'badge-secondary': item.descr === 'recently logged in'
-                            }">[[item.descr]]</span>
-                            </span>
-                        <small class="text-muted ml-2">[[item.created_at | relativeDate]]</small>
-                    </a>
+                  <a class="list-group-item d-flex justify-content-between align-items-center" v-for="item in items.results"
+                    :href="'{{urls.profile_redirect}}' + item.slug + '/'">
+                    <span>
+                      <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
+                      <span v-else>No Username</span>
+                      <span class="badge ml-2" :class="{
+                        'badge-success': item.descr === 'charge paid',
+                        'badge-danger': item.descr === 'charge failed',
+                        'badge-secondary': item.descr === 'recently logged in'
+                      }">[[item.descr]]</span>
+                    </span>
+                    <small class="text-muted ml-2">Last active [[item.created_at | relativeDate]]</small>
+                  </a>
                 </div>
-             </div>
-        </div>
-        {% endif %}
-        <div id="todos-container" class="mt-4">
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- User Search Input -->
+          <div id="search-list-container">
+            <div class="card mt-4">
+              <div class="card-body border-bottom">
+                <h5 class="card-title mb-0">Find a User</h5>
+              </div>
+              <div class="card-body pb-0">
+                <div class="row">
+                  <div class="col">
+                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="filterList" />
+                  </div>
+                </div>
+                <table class="table table-striped">
+                  <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                    <tr v-for="entry in items.results">
+                      <td>
+                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
+                      </td>
+                      <td>[[entry.full_name]]</td>
+                      <td>[[entry.email]]</td>
+                      <td>[[entry.created_at | relativeDate]]</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Todos -->
+          <div id="todos-container" class="mt-4">
             <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <div class="card-body">
-                    <h5 class="card-title mb-0">Todo items</h5>
-                    <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                    </div>
+              <div class="card-body border-bottom">
+                <h5 class="card-title mb-0">Todo items</h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-lg-4 col-12">
-        <div id="monthly-revenue-container">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">MRR</h5>
-                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
-                </div>
-            </div>
-        </div>
-        {% if urls and urls.rules and urls.rules.api_engagement %}
-        <div id="engagement-users-container">
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Daily active users</h5>
-                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
-                </div>
-            </div>
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Engagement</h5>
-                </div>
-                <div class="card-body" v-show="!itemLoaded">
-                    <h2 class="text-center"><i class="fa fa-refresh fa-spin"></i></h2>
-                </div>
-                <div class="card-body" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
-                    <p class="card-text text-center text-muted">
-                        No engagement data
-                    </p>
-                </div>
-                <div class="card-body" v-show="itemLoaded && item.engagements.length > 0" v-cloak>
-                    <svg ref="engagementChart"></svg>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-</div>
-</section>
+  </section>
 {% endblock %}
