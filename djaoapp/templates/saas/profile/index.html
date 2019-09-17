@@ -71,11 +71,11 @@
             <div class="card-body text-secondary">
               
               {% if urls.user.password_change %}
-                <div class="row align-items-center">
-                  <div class="col-sm-5">
-                    <a id="change-password" class="btn btn-secondary btn-block mb-3" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
+                <div class="row align-items-center mb-3">
+                  <div class="col-md-12">
+                    <a id="change-password" class="btn btn-secondary btn-block mb-2" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
                   </div>
-                  <div class="col-sm-7">
+                  <div class="col-md-12">
                     {% trans %}Use a new password to login.{% endtrans %}
                   </div>
                 </div>
@@ -83,12 +83,10 @@
 
               {% if urls.user.api_generate_keys %}
                 <div class="row align-items-center" style="margin-top:15px;">
-                  <div class="col-sm-5">
-                    <button id="generate-key-open"
-                            class="btn btn-secondary btn-block mb-3"
-                            data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
+                  <div class="col-md-12">
+                    <button id="generate-key-open" class="btn btn-secondary btn-block mb-2" data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
                   </div>
-                  <div class="col-sm-7">
+                  <div class="col-md-12">
                     {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
                   </div>
                 </div>
@@ -97,9 +95,7 @@
               {% if urls.user.api_activate %}
               <div class="row align-items-center">
                 <div class="col-sm-5">
-                  <button id="activate-user"
-                          class="btn btn-secondary btn-block"
-                          @click="activate">{% trans %}Activate{% endtrans %}</button>
+                  <button id="activate-user" class="btn btn-secondary btn-block" @click="activate">{% trans %}Activate{% endtrans %}</button>
                 </div>
                 <div class="col-sm-7">
                   {% trans %}Send an activation e-mail to the user.{% endtrans %}
@@ -119,13 +115,13 @@
           </div>
           <div class="card-body text-danger">
             <div class="row align-items-center">
-              <div class="col-sm-5">
+              <div class="col-md-12">
                 <button id="delete-action-open"
                         class="btn btn-danger btn-block mb-3"
                         data-toggle="modal"
                         data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
               </div>
-              <div class="col-sm-7">
+              <div class="col-md-12">
                 {% trans %}This operation cannot be reversed.{% endtrans %}
               </div>
             </div>
