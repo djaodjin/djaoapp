@@ -7,14 +7,18 @@
             {{ super() }}
         </div>
 
-        <div class="form-action text-center">
-            <button type="submit" class="btn btn-primary btn-md">
-                {% if form.submit_title %}
-                    {{form.submit_title}}
-                {% else %}
-                    {% trans %}Submit{% endtrans %}
-                {% endif %}
-            </button>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-action text-center">
+                    <button type="submit" class="btn btn-primary btn-md w-100">
+                        {% if form.submit_title %}
+                            {{form.submit_title}}
+                        {% else %}
+                            {% trans %}Submit{% endtrans %}
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
         </div>
     </form>
 {% endblock %}
