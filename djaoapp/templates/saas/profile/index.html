@@ -67,13 +67,13 @@
       <!-- Update Password -->
       <div class="col-md-6">
         {% if urls.user %}
-          <div class="card border-secondary mb-4">
+          <div class="card border-secondary">
             <div class="card-body text-secondary">
               
               {% if urls.user.password_change %}
                 <div class="row align-items-center">
                   <div class="col-sm-5">
-                    <a id="change-password" class="btn btn-secondary btn-block" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
+                    <a id="change-password" class="btn btn-secondary btn-block mb-3" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
                   </div>
                   <div class="col-sm-7">
                     {% trans %}Use a new password to login.{% endtrans %}
@@ -85,7 +85,7 @@
                 <div class="row align-items-center" style="margin-top:15px;">
                   <div class="col-sm-5">
                     <button id="generate-key-open"
-                            class="btn btn-secondary btn-block"
+                            class="btn btn-secondary btn-block mb-3"
                             data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
                   </div>
                   <div class="col-sm-7">
@@ -113,7 +113,7 @@
 
       <!-- Danger Zone -->
       <div class="col-md-6">
-        <div class="card border-danger">
+        <div class="card border-danger h-100">
           <div class="card-header">
             {% trans %}Danger Zone{% endtrans %}
           </div>
@@ -121,7 +121,7 @@
             <div class="row align-items-center">
               <div class="col-sm-5">
                 <button id="delete-action-open"
-                        class="btn btn-danger btn-block"
+                        class="btn btn-danger btn-block mb-3"
                         data-toggle="modal"
                         data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
               </div>

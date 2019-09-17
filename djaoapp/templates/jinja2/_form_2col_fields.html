@@ -8,21 +8,24 @@
 
             <!-- Checkbox -->
             <div class="col-md-12 p-0">
-              <input id="{{id_for_label}}" class="mr-3 checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
-              <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
-                {{label|safe}}
-              </label>
-
-              <div class="form-text help-block invalid-feedback">
-                {% for error in errors %}
-                  {{error}}
-                {% endfor %}
+              <div class="d-inline-block align-top" style="width: 5%; ">
+                <input id="{{id_for_label}}" class="mr-3 checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
               </div>
+              <div class="d-inline-block" style="width: 93%;">
+                <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
+                  {{label|safe}}
+                </label>
+                <div class="form-text help-block invalid-feedback">
+                  {% for error in errors %}
+                    {{error}}
+                  {% endfor %}
+                </div>
 
-              <div class="form-text help-block">
-                {% if help_text %}
-                  <small class="text-muted">{{help_text}}</small>
-                {% endif %}
+                <div class="form-text help-block">
+                  {% if help_text %}
+                    <small class="text-muted">{{help_text}}</small>
+                  {% endif %}
+                </div>
               </div>
             </div>
             
