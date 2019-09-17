@@ -59,15 +59,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="page-header">
-        <h3 class="mb-0">
-            {% block saas_title %}{% endblock %}
-            <div class="d-inline">
-                <sup style="display: none;font-size:0.5em;cursor:pointer;">
-                    <i id="help-request" class="fa fa-question-circle"></i>
-                </sup>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h3 class="mb-0">
+                        {% block saas_title %}{% endblock %}
+                        <div class="d-inline">
+                            <sup style="display: none;font-size:0.5em;cursor:pointer;">
+                                <i id="help-request" class="fa fa-question-circle"></i>
+                            </sup>
+                        </div>
+                    </h3>
+                </div>
             </div>
-        </h3>
+        </div>
     </div>
 
     {% block saas_page_layout %}

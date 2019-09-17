@@ -2,19 +2,22 @@
   <img :src="item.picture ? item.picture : '{{'/static/img/default-organization.png'|djasset}}'" class="card-img-top" :alt="item.printable_name">
   <div class="card-body">
     <h5 class="card-title">
-        <a :href="'{{urls.profile_base}}' + item.slug + '/'">[[item.printable_name]]</a>
+      <a :href="'{{urls.profile_base}}' + item.slug + '/'">[[item.printable_name]]</a>
     </h5>
     <p class="card-text">
-        <span class="badge badge-primary">[[ (item.request_key || !item.role_description) ? "{% trans %}pending request{% endtrans %}" : item.role_description.title]]</span></p>
+      <span class="badge badge-primary">[[ (item.request_key || !item.role_description) ? "{% trans %}pending request{% endtrans %}" : item.role_description.title]]</span>
+    </p>
   </div>
+
   <div class="list-group list-group-flush">
     <a :href="item.home_url" class="list-group-item list-group-item-action">{% trans %}Home{% endtrans %}</a>
     <a :href="item.settings_url" class="list-group-item list-group-item-action">{% trans %}Dashboard{% endtrans %}</a>
   </div>
-  <div class="card-body organization-buttons">
+  
+  <div class="card-body d-flex align-items-center flex-wrap">
     <button class="btn btn-secondary btn-sm btn-block" v-if="item.grant_key"
          @click="acceptGrant(item.grant_key)">{% trans %}Accept Role{% endtrans %}</button>
-    <button class="btn btn-danger btn-sm btn-block remove"
+    <button class="btn btn-danger btn-md btn-block remove"
             data-trip data-trip-index="3"
             data-trip-content="<p>Click here to cancel access request.</p>"
             data-trip-position="s"
