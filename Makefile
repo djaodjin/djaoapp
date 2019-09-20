@@ -30,6 +30,7 @@ ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # and DB_FILNAME set to "". We use the default value in the template site.conf
 # here to prevent that issue.
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
+mode          ?= $(if $(findstring True,$(shell grep ^DEBUG $(CONFIG_DIR)/site.conf | cut -f 2 -d '=')),,production)
 else
 DB_FILENAME   := $(LOCALSTATEDIR)/db/djaodjin.sqlite
 endif
