@@ -21,8 +21,8 @@
       <dep name="Django" target="python" includes="1.11.23">
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
-      <dep name="django-assets" target="python">
-        <lib>.*/(django_assets)/__init__.py</lib>
+      <dep name="django-webpack-loader" target="python">
+        <lib>.*/(webpack_loader)/__init__.py</lib>
       </dep>
       <dep name="django-urldecorators" target="python">
         <lib>.*/(urldecorators)/__init__.py</lib>
