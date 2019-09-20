@@ -3,20 +3,20 @@
 
 -include $(buildTop)/share/dws/prefix.mk
 
-srcDir		  ?= .
-installTop	  ?= $(VIRTUAL_ENV)
-binDir		  ?= $(installTop)/bin
-SYSCONFDIR	  := $(installTop)/etc
+srcDir        ?= .
+installTop    ?= $(VIRTUAL_ENV)
+binDir        ?= $(installTop)/bin
+SYSCONFDIR    := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
-CONFIG_DIR	  := $(SYSCONFDIR)/djaoapp
-ASSETS_DIR	  := $(srcDir)/htdocs/static
+CONFIG_DIR    := $(SYSCONFDIR)/djaoapp
+ASSETS_DIR    := $(srcDir)/htdocs/static
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
-NPM			  ?= npm
-PIP			  := $(binDir)/pip
-PYTHON		  := $(binDir)/python
-SQLITE		  ?= sqlite3
+NPM           ?= npm
+PIP           := $(binDir)/pip
+PYTHON        := $(binDir)/python
+SQLITE        ?= sqlite3
 
 # Django 1.7,1.8 sync tables without migrations by default while Django 1.9
 # requires a --run-syncdb argument.

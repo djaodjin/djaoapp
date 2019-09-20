@@ -688,9 +688,8 @@ SWAGGER_SETTINGS = {
     ],
 }
 
-
-# Demo mode ...
-REUSABLE_PRODUCTS = ('demo',)
+WEBPACK_LOADER_STATS_FILE = os.path.join(
+    BASE_DIR, 'themes', 'webpack-stats.json')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -702,3 +701,6 @@ WEBPACK_LOADER = {
         'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
     }
 }
+
+# Demo mode ...
+REUSABLE_PRODUCTS = ('demo',)
