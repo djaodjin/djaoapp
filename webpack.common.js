@@ -10,8 +10,8 @@ console.log(djaodjin)
 
 module.exports = {
     entry: {
-		// these modules are resolved based on the values provided
-		// in `resolve` setting
+        // these modules are resolved based on the values provided
+        // in `resolve` setting
         css_base: 'base.scss',
         css_email: 'email.scss',
         css_dashboard: 'dashboard.scss',
@@ -49,7 +49,10 @@ module.exports = {
     },
     plugins: [
         // used by Django to look up a bundle file
-        new BundleTracker({path: djaodjin.venv, filename: 'webpack-stats.json'}),
+        new BundleTracker({
+            path: djaodjin.webpack_loader_stats_path,
+            filename: djaodjin.webpack_loader_stats_filename
+        }),
         // removes artifacts from previous builds
         new CleanWebpackPlugin({
             // clean everything except i18n code -- needed if we develop in
@@ -57,13 +60,13 @@ module.exports = {
             cleanOnceBeforeBuildPatterns: ['**/*', '!djaoapp-i18n.js']
         }),
     ],
-	// used in resolution of modules inside all js and css files,
-	// also in webpack entry points declared in the beginning of this config
+    // used in resolution of modules inside all js and css files,
+    // also in webpack entry points declared in the beginning of this config
     resolve: {
         modules: djaodjin.djaodjin_modules,
     },
-	// needed for webpack modules resolution
-	resolveLoader: {
-		modules: djaodjin.node_modules,
-	},
+    // needed for webpack modules resolution
+    resolveLoader: {
+        modules: djaodjin.node_modules,
+    },
 };

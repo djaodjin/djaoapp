@@ -18,7 +18,7 @@
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
       <fetch><url>/var/www/djaoapp/./reps/djaoapp/htdocs</url></fetch>
-      <dep name="Django" target="python" includes="1.11.23">
+      <dep name="Django" target="python" includes="1.11.24">
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
       <dep name="django-webpack-loader" target="python">
