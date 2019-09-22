@@ -31,7 +31,7 @@ module.exports = {
             var name = chunkData.chunk.name.replace('js_', '').replace('css_', '');
             return name + '-[id]' + chunkData.chunk.contentHash.javascript + '.js';
         },
-        path: djaodjin.htdocs + '/cache',
+        path: djaodjin.assets_cache_path,
     },
     module: {
         rules: [

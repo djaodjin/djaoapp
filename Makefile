@@ -22,9 +22,9 @@ SQLITE        ?= sqlite3
 # requires a --run-syncdb argument.
 # Implementation Note: We have to wait for the config files to be installed
 # before running the manage.py command (else missing SECRECT_KEY).
-RUNSYNCDB	  = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
+RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
-APP_NAME	  ?= djaoapp
+APP_NAME      ?= djaoapp
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # `make initdb` will install site.conf but only after `grep` is run
 # and DB_FILNAME set to "". We use the default value in the template site.conf
@@ -145,7 +145,7 @@ else
 webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
 endif
 
-build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
+build-assets: $(installTop)/.npm $(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
@@ -153,8 +153,9 @@ build-assets: $(installTop)/.npm $(ASSETS_DIR)/djaoapp-i18n.js
 	cd $(installTop) && $(webpack)
 
 
-$(ASSETS_DIR)/djaoapp-i18n.js: \
+$(ASSETS_DIR)/js/djaoapp-i18n.js: \
 				$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
+	$(installDirs) $(dir $@)
 	cd $(srcDir) && $(PYTHON) manage.py generate_i18n_js $@
 
 $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo: \

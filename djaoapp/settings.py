@@ -226,9 +226,21 @@ STATICFILES_FINDERS = (
 )
 
 ASSETS_DEBUG = DEBUG
-ASSETS_AUTO_BUILD = DEBUG
-ASSETS_ROOT = HTDOCS + '/static'
-ASSETS_URL = STATIC_URL
+#XXX ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
+ASSETS_ROOT = HTDOCS
+
+WEBPACK_LOADER_STATS_FILE = os.path.join(ASSETS_ROOT, 'webpack-stats.json')
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not ASSETS_DEBUG,
+        'BUNDLE_DIR_NAME': 'cache/', # must end with slash
+        'STATS_FILE': WEBPACK_LOADER_STATS_FILE,
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
+    }
+}
 
 # Sessions
 # --------
@@ -686,20 +698,6 @@ SWAGGER_SETTINGS = {
         'drf_yasg.inspectors.DjangoRestResponsePagination',
         'drf_yasg.inspectors.CoreAPICompatInspector',
     ],
-}
-
-WEBPACK_LOADER_STATS_FILE = os.path.join(
-    BASE_DIR, 'assets', 'webpack-stats.json')
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'cache/', # must end with slash
-        'STATS_FILE': WEBPACK_LOADER_STATS_FILE,
-        'POLL_INTERVAL': 0.1,
-        'TIMEOUT': None,
-        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
-    }
 }
 
 # Demo mode ...

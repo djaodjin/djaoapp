@@ -31,9 +31,11 @@ class Command(BaseCommand):
             venv = os.path.join(base, venv)
         node_modules = os.path.join(venv, 'node_modules')
         djaoapp = os.path.join(base, 'djaoapp', 'static')
-        htdocs = os.path.join(base, 'htdocs', 'static')
+        assets_cache_path = os.path.normpath(
+            settings.ASSETS_ROOT + settings.STATIC_URL
+            + settings.WEBPACK_LOADER['DEFAULT']['BUNDLE_DIR_NAME'])
         dirs = {
-            'htdocs': htdocs,
+            'assets_cache_path': assets_cache_path,
             'webpack_loader_stats_path': webpack_loader_stats_path,
             'webpack_loader_stats_filename': webpack_loader_stats_filename,
             'node_modules': [node_modules],
@@ -51,7 +53,8 @@ class Command(BaseCommand):
                         static_dir = pth[0:pth.find(subs)+len(subs)][0:-1]
                         if static_dir not in djaodjin_mods:
                             djaodjin_mods.append(static_dir)
-        dirs['djaodjin_modules'] = djaodjin_mods + [htdocs, node_modules]
+        dirs['djaodjin_modules'] = djaodjin_mods + [
+            os.path.dirname(assets_cache_path), node_modules]
         with open(output, 'w') as f:
             f.write(json.dumps(dirs))
 
