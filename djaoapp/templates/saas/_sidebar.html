@@ -5,9 +5,9 @@
     <li {% if request.path == urls.user.profile %} class="nav-item active"{% endif %}>
       <a id="profile" class="nav-link" href="{{urls.user.profile}}">
 
-        <!-- My Profile -->
-        <span class="icon icon-user {% if urls.user.profile == request.path%} icon-active{% endif %}"></span>
-        <span class="pl-1" style="vertical-align: super">{% trans %}My Profile{% endtrans %}</span>
+        {# User profiles #}
+        <span class="icon icon-user {% if urls.user.profile == request.path %} icon-active{% endif %}"></span>
+        <span class="pl-1" style="vertical-align: super">{% trans %}Profile{% endtrans %}</span>
 
       </a>
     </li>
@@ -15,9 +15,9 @@
     <li {% if urls.organization.profile == request.path %} class="nav-item active"{% endif %}>
       <a id="profile" class="nav-link" href="{{urls.organization.profile}}">
 
-        <!-- My Profile (w Organization) -->
+        {# Organization Profiles (of type organization and personal) #}
         <span class="icon icon-user {% if urls.organization.profile == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1" style="vertical-align: super">{% trans %}My Profile{% endtrans %}</span>
+        <span class="pl-1" style="vertical-align: super">{% trans %}Profile{% endtrans %}</span>
 
       </a>
     </li>
