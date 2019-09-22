@@ -689,7 +689,7 @@ SWAGGER_SETTINGS = {
 }
 
 WEBPACK_LOADER_STATS_FILE = os.path.join(
-    BASE_DIR, 'themes', 'webpack-stats.json')
+    BASE_DIR, 'assets', 'webpack-stats.json')
 
 WEBPACK_LOADER = {
     'DEFAULT': {

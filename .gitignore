@@ -5,6 +5,7 @@
 *.mo
 .DS_Store
 .timestamp
+assets
 htdocs
 htdocs/media/
 themes/
