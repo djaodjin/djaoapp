@@ -50,7 +50,10 @@ module.exports = merge(common, {
         // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/151
         new MiniCssExtractPlugin({
             moduleFilename: ({name}) => {
-                return name.replace('css_', '') + '-[id][contenthash].css';
+                // Somewhat copy/paste from webpack.common.js
+                var ext = name.indexOf('js_') >= 0 ? '.js' : '.css';
+                var assetname = name.replace('js_', '').replace('css_', '') + ext;
+                return assetname;
             }
         }),
         // removes empty js files (left from CSS bundles) - temp fix

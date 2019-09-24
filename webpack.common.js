@@ -28,8 +28,11 @@ module.exports = {
     },
     output: {
         filename: (chunkData) => {
-            var name = chunkData.chunk.name.replace('js_', '').replace('css_', '');
-            return name + '-[id]' + chunkData.chunk.contentHash.javascript + '.js';
+            // css files are intermediate files at this point so webpack
+            // requires a temporary name different from the final output.
+            var ext = chunkData.chunk.name.indexOf('js_') >= 0 ? '.js' : '-[id]' + chunkData.chunk.contentHash.javascript + '.css.js';
+            var assetname = chunkData.chunk.name.replace('js_', '').replace('css_', '') + ext;
+            return assetname;
         },
         path: djaodjin.assets_cache_path,
     },

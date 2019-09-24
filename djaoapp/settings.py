@@ -229,7 +229,8 @@ ASSETS_DEBUG = DEBUG
 #XXX ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
 ASSETS_ROOT = HTDOCS
 
-WEBPACK_LOADER_STATS_FILE = os.path.join(ASSETS_ROOT, 'webpack-stats.json')
+if not hasattr(sys.modules[__name__], 'WEBPACK_LOADER_STATS_FILE'):
+    WEBPACK_LOADER_STATS_FILE = os.path.join(ASSETS_ROOT, 'webpack-stats.json')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
