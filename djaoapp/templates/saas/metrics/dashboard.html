@@ -16,6 +16,87 @@
   <section>
     <div class="container">
       <div class="row">
+        <div class="col-md-12">    
+          <!-- User Search Input -->
+          <div id="search-list-container">
+            <div class="card">
+              <div class="card-body border-bottom">
+                <h5 class="card-title mb-0">Find a User</h5>
+              </div>
+              <div class="card-body pb-0">
+                <div class="row">
+                  <div class="col">
+                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="filterList" />
+                  </div>
+                </div>
+                <table class="table table-striped">
+                  <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                    <tr v-for="entry in items.results">
+                      <td>
+                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
+                      </td>
+                      <td>[[entry.full_name]]</td>
+                      <td>[[entry.email]]</td>
+                      <td>[[entry.created_at | relativeDate]]</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Users Chart -->
+          {% if urls and urls.recent_activity %}
+            <div id="recent-activity-container">
+              <div class="card mt-4">
+                <div class="card-body">
+                  <h5 class="card-title mb-0">Recently Active Users</h5>
+                </div>
+                <div class="card-body" v-show="!itemsLoaded">
+                  <p>
+                    <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+                  </p>
+                </div>
+                <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
+                  <p class="card-text text-muted">
+                    {% trans %}No recently active users{% endtrans %}
+                  </p>
+                </div>
+                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                  <a class="list-group-item d-flex justify-content-between align-items-center" v-for="item in items.results"
+                    :href="'{{urls.profile_redirect}}' + item.slug + '/'">
+                    <span>
+                      <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
+                      <span v-else>No Username</span>
+                      <span class="badge ml-2" :class="{
+                        'badge-success': item.descr === 'charge paid',
+                        'badge-danger': item.descr === 'charge failed',
+                        'badge-secondary': item.descr === 'recently logged in'
+                      }">[[item.descr]]</span>
+                    </span>
+                    <small class="text-muted ml-2">Last active [[item.created_at | relativeDate]]</small>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Todos -->
+          <div id="todos-container" class="mt-4">
+            <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+              <div class="card-body border-bottom">
+                <h5 class="card-title mb-0">Todo items</h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <!-- MRR Charts -->
         <div class="col-md-4 mb-4">
           <div id="monthly-revenue-container" class="h-100">
@@ -71,89 +152,6 @@
             </div>
           </div>
         {% endif %}
-
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">    
-          
-          {% if urls and urls.recent_activity %}
-            <!-- Recent Users Chart -->
-            <div id="recent-activity-container">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title mb-0">Recently Active Users</h5>
-                </div>
-                <div class="card-body" v-show="!itemsLoaded">
-                  <p>
-                    <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
-                  </p>
-                </div>
-                <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
-                  <p class="card-text text-muted">
-                    {% trans %}No recently active users{% endtrans %}
-                  </p>
-                </div>
-                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                  <a class="list-group-item d-flex justify-content-between align-items-center" v-for="item in items.results"
-                    :href="'{{urls.profile_redirect}}' + item.slug + '/'">
-                    <span>
-                      <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
-                      <span v-else>No Username</span>
-                      <span class="badge ml-2" :class="{
-                        'badge-success': item.descr === 'charge paid',
-                        'badge-danger': item.descr === 'charge failed',
-                        'badge-secondary': item.descr === 'recently logged in'
-                      }">[[item.descr]]</span>
-                    </span>
-                    <small class="text-muted ml-2">Last active [[item.created_at | relativeDate]]</small>
-                  </a>
-                </div>
-              </div>
-            </div>
-          {% endif %}
-
-          <!-- User Search Input -->
-          <div id="search-list-container">
-            <div class="card mt-4">
-              <div class="card-body border-bottom">
-                <h5 class="card-title mb-0">Find a User</h5>
-              </div>
-              <div class="card-body pb-0">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="filterList" />
-                  </div>
-                </div>
-                <table class="table table-striped">
-                  <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                    <tr v-for="entry in items.results">
-                      <td>
-                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
-                      </td>
-                      <td>[[entry.full_name]]</td>
-                      <td>[[entry.email]]</td>
-                      <td>[[entry.created_at | relativeDate]]</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Todos -->
-          <div id="todos-container" class="mt-4">
-            <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-              <div class="card-body border-bottom">
-                <h5 class="card-title mb-0">Todo items</h5>
-              </div>
-              <div class="card-body">
-                <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
