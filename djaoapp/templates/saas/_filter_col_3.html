@@ -1,4 +1,10 @@
-<div class="col-md-4 mb-3">
+<div class="col-md-6">
+  <div class="pb-3">
+    {% include "saas/_filter_match.html" %}
+  </div>
+</div>
+
+<div class="col-md-6 mb-3">
   <!-- Find Coupon by Start Date -->
   <uiv-dropdown append-to-body class="w-100">
     <div class="input-group input-group-md">
@@ -20,7 +26,7 @@
   </uiv-dropdown>
 </div>
 
-<div class="col-md-4 mb-3">
+<div class="col-md-6 mb-3">
   <!-- Find Coupon by End Date -->
   <uiv-dropdown append-to-body class="w-100">
     <div class="input-group input-group-md">
@@ -39,10 +45,4 @@
       </li>
     </template>
   </uiv-dropdown>
-</div>
-
-<div class="col-md-12">
-  <div class="pb-3">
-    {% include "saas/_filter_match.html" %}
-  </div>
 </div>
