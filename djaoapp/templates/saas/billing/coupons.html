@@ -42,13 +42,15 @@
       <hr class="mt-0" />
 
       <div class="row mt-3">
-        <div class="col-md-6">
+        <!-- From/To/Match Filter Inputs -->
+        {% include "saas/_filter_col_3.html" %}
 
-          <!-- Filter/Sort Coupon -->
+        <div class="col-md-3">
+          <!-- Sort Coupons -->
           <div class="pb-3">
             <div class="input-group input-group-md">
               <div class="input-group-prepend">
-                <span class="input-group-text">{% trans %}Sort By {% endtrans %}</span>
+                <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
               </div>
               <select id="order-by" class="form-control" style="-webkit-appearance: none;">
                 <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
@@ -61,8 +63,6 @@
             </div>
           </div>
         </div>
-
-        {% include "saas/_filter_col_3.html" %}
 
       </div>
 
