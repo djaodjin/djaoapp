@@ -107,15 +107,17 @@
                 <div class="form-group">
                   <div class="controls">
                     <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                    <!-- textareas are very special in the way they handle whitespaces. Please do
+                         not indent default text. -->
                     <textarea class="form-control"
                               name="message"
                               maxlength="255" type="text" rows="10">
-                      {% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
+{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
-                      I am adding you as a {{role_descr}} to {{organization}}.
+I am adding you as a {{role_descr}} to {{organization}}.
 
-                      Thank you,
-                      - {{user}}{% endtrans %}
+Thank you,
+- {{user}}{% endtrans %}
                     </textarea>
                   </div>
                 </div>
