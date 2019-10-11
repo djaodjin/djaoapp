@@ -40,12 +40,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
   width: 65px;
 }
 
-@include media-breakpoint-up(sm) {
-  #card-cvc {
-    width: 100px;
-  }
-}
-
 // Workaround: Bootstrap4 has make it a lot more complicated than necessary
 // when doing server-side validation.
 .has-error .invalid-feedback {
@@ -215,71 +209,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 .dashboard-inner-container .dashboard-nav {
     // sidebar is visible on dashboard on desktops
     display: block;
-}
-
-@include media-breakpoint-down(xs) {
-    .dashboard-content {
-      margin-top: $navbar-height;
-    }
-
-    .dashboard-content > header {
-      position: fixed;
-      height:  $navbar-height;
-      top: 0;
-      z-index: 4;
-      width: 100%;
-      left: 0;
-    }
-
-    .dashboard-nav,
-    .dashboard-inner-container .dashboard-nav {
-        display: none;
-    }
-
-    .navbar-brand-container {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0);
-        z-index: 10;
-    }
-
-    .navbar-brand-container .navbar-brand > img {
-        max-height: 36px;
-    }
-
-    // always display djaoapp name inside sidebar
-    // otherwise need to have two partial brand templates
-    .dashboard-nav .navbar-brand .d-none {
-        display: inline-block !important;
-    }
-
-    .header-menubar .dropdown {
-        position: static;
-    }
-
-    .header-menubar .dropdown-menu {
-        left: auto;
-        right: 5px;
-    }
-}
-
-@include media-breakpoint-up(sm) {
-  .dashboard-inner-container {
-    position: inherit;
-    left: 0;
-    width: inherit;
-  }
-
-  .dashboard-inner-container .dashboard-content {
-    margin-left: $dashboard-sidebar-width;
-    width: calc(100vw - #{$dashboard-sidebar-width});
-  }
-
-  .dashboard-inner-container .navbar-brand-container {
-    display: none;
-    margin-left: 0;
-  }
-
 }
 
 .sidebar-toggle > .closed:before  {
@@ -587,4 +516,90 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 
 .icon-active {
     background: $dashboard-icon-color-active;
+}
+
+@include media-breakpoint-up(sm) {
+
+  #card-cvc {
+    width: 100px;
+  }
+
+  .dashboard-inner-container {
+    position: inherit;
+    left: 0;
+    width: inherit;
+  }
+
+  .dashboard-inner-container .dashboard-content {
+    margin-left: $dashboard-sidebar-width;
+    width: calc(100vw - #{$dashboard-sidebar-width});
+  }
+
+  .dashboard-inner-container .navbar-brand-container {
+    display: none;
+    margin-left: 0;
+  }
+
+}
+
+
+@include media-breakpoint-down(xs) {
+
+    .dashboard-content {
+      margin-top: $navbar-height;
+    }
+
+    .dashboard-content > header {
+      position: fixed;
+      height:  $navbar-height;
+      top: 0;
+      z-index: 4;
+      width: 100%;
+      left: 0;
+    }
+
+    .dashboard-nav,
+    .dashboard-inner-container .dashboard-nav {
+        display: none;
+    }
+
+    .navbar-brand-container {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 10;
+    }
+
+    .navbar-brand-container .navbar-brand > img {
+        max-height: 36px;
+    }
+
+    // always display djaoapp name inside sidebar
+    // otherwise need to have two partial brand templates
+    .dashboard-nav .navbar-brand .d-none {
+        display: inline-block !important;
+    }
+
+    .header-menubar .dropdown {
+        position: static;
+    }
+
+    .header-menubar .dropdown-menu {
+        left: auto;
+        right: 5px;
+    }
+
+    .row-header
+    {
+        position: absolute;
+        background: white;
+        width: 115px;
+        height: 36px;
+        left: 0;
+    }
+
+    .row-body:nth-child(2)
+    {
+        padding-left: 115px;
+    }
 }
