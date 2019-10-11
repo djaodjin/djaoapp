@@ -6,66 +6,79 @@
 
 {% block saas_content %}
   <div id="coupon-list-container">
-    <div data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
-      <div class="row mt-3">
-        <div class="col-lg-8">
-          <form class="form-inline" @submit.prevent="save">
-            <div class="form-group mr-2">
-              <input type="text" class="form-control form-control-sm"
-                    placeholder="{% trans %}Code{% endtrans %}"
-                    v-model="newCoupon.code">
+    <div class="container" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
+
+      <form @submit.prevent="save">
+        <div class="row">
+          <!-- Create a New Coupon -->
+            <div class="col-md-3">
+              <div class="mr-2 mb-3 w-100">
+                <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount Code{% endtrans %}" v-model="newCoupon.code">
+              </div>
             </div>
-            <div class="form-group mr-2">
-              <input type="text" class="form-control form-control-sm"
-                    placeholder="{% trans %}Percent{% endtrans %}"
-                    v-model="newCoupon.percent">
+            <div class="col-md-3">
+              <div class="mr-2 mb-3 w-100">
+                <input type="text" class="form-control form-control-md w-100" placeholder="{% trans %}Discount %{% endtrans %}" v-model="newCoupon.percent">
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm"
-                    data-trip data-trip-index="2"
-                    data-trip-content="<p>{% trans %}Add a coupon by entering a code, percentage and click 'Create Coupon'.{% endtrans %}</p>"
-                    data-trip-position="s">{% trans %}Create Coupon{% endtrans %}</button>
-          </form>
-        </div>
-        <div class="col-lg-4">
-          <div class="btn-actions text-right">
-            <a id="download" class="btn btn-secondary btn-sm" role="button"
-              :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
-              data-trip data-trip-index="7" data-trip-content="<p>{% trans %}Download the list of coupons if necessary.{% endtrans %}</p>" data-trip-position="s">
-                <i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}
-            </a>
+            <div class="col-md-3 mb-3">
+              <button type="submit" class="btn btn-primary btn-md w-100" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Add a coupon by entering a code, percentage and click 'Create Coupon'.{% endtrans %}</p>" data-trip-position="s">
+                {% trans %}Create Coupon{% endtrans %}
+              </button>
+            </div>
+
+          <!-- Download as .CSV -->
+          <div class="col-md-3 mb-3">
+            <div class="btn-actions text-right">
+              <a id="download" class="btn btn-secondary btn-md w-100" role="button" :href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])"
+                data-trip data-trip-index="7" data-trip-content="<p>{% trans %}Download the list of coupons if necessary.{% endtrans %}</p>" data-trip-position="s">
+                <i class="fa fa-cloud-download mr-2"></i> {% trans %}Download .CSV{% endtrans %}
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <hr />
-      <div class="row my-3">
-        <div class="col">
+      </form>
+
+      <hr class="mt-0" />
+
+      <div class="row mt-3">
+        <!-- From/To/Match Filter Inputs -->
+        {% include "saas/_filter_col_3.html" %}
+
+        <div class="col-md-3">
+          <!-- Sort Coupons -->
           <div class="pb-3">
-            <div class="input-group input-group-sm">
+            <div class="input-group input-group-md">
               <div class="input-group-prepend">
-                <span class="input-group-text">{% trans %}By{% endtrans %}</span>
+                <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
               </div>
-              <select id="order-by" class="form-control">
-                <option value="code">{% trans %}code (ascending){% endtrans %}</option>
-                <option value="percent">{% trans %}discount (highest){% endtrans %}</option>
-                <option value="ends_at">{% trans %}expiration (soonest){% endtrans %}</option>
-                <option value="-code">{% trans %}code (descending){% endtrans %}</option>
-                <option value="-percent">{% trans %}discount (lowest){% endtrans %}</option>
-                <option value="-ends_at">{% trans %}expiration (latest){% endtrans %}</option>
+              <select id="order-by" class="form-control" style="-webkit-appearance: none;">
+                <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
+                <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
+                <option value="percent">{% trans %}Discount (highest){% endtrans %}</option>
+                <option value="-percent">{% trans %}Discount (lowest){% endtrans %}</option>
+                <option value="ends_at">{% trans %}Expiration (soonest){% endtrans %}</option>
+                <option value="-ends_at">{% trans %}Expiration (latest){% endtrans %}</option>
               </select>
             </div>
           </div>
         </div>
-        {% include "saas/_filter.html" %}
+
       </div>
-      <div class="text-center" v-show="!itemsLoaded">
+
+      <!-- Loading Spinner -->
+      <div class="text-center py-5 my-5" v-show="!itemsLoaded">
         <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
       </div>
+
+      <!-- No Coupons Found Msg -->
       <div class="text-center" v-show="itemsLoaded && items.results.length === 0" v-cloak>
         <h4 class="text-center"><em>{% trans %}No Coupons{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
       </div>
+
       <div class="row mb-4" id="coupon-list">
-        <div :id="coupon.code" class="col-12 col-md-6 col-lg-4 col-xl-3 my-1" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-          <div class="card">
+        <div :id="coupon.code" class="col-md-4 my-1" v-for="(coupon, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <div class="card mb-3">
             <div class="card-body">
               <div class="coupon-title">
                 <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></h5>
@@ -73,7 +86,9 @@
               </div>
             </div>
             <div class="list-group list-group-flush">
-              <div class="list-group-item"><span class="text-muted">{% trans %}Percent:{% endtrans %}</span> [[coupon.percent]]%</div>
+              <div class="list-group-item">
+                <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[coupon.percent]]%
+              </div>
               <uiv-dropdown class="" append-to-body>
                 <div class="list-group-item w-100">
                   <span class="text-muted">{% trans %}Expires:{% endtrans %}</span>
@@ -132,8 +147,8 @@
               data-trip-position="s">
                   <span @click="editDescription(index)"
                     v-show="!edit_description[index]">
-                      <i class="fa fa-pencil"></i>
-                      <span class="text-muted" v-if="!coupon.description">{% trans %}Click to edit description{% endtrans %}</span>
+                      <i class="fa fa-pencil mr-3"></i>
+                      <span class="text-muted" v-if="!coupon.description">{% trans %}Edit Description{% endtrans %}</span>
                       [[coupon.description]]
                   </span>
                   <input id="input_description" type="text" class="form-control"
@@ -147,7 +162,9 @@
           </div>
         </div>
       </div>
+
       {% include "_pagination.html" %}
+
     </div>
   </div>
 {% endblock %}

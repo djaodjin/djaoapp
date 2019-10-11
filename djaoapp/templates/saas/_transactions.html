@@ -1,32 +1,40 @@
 <section id="transactions">
-    <h3>{% trans %}Transactions{% endtrans %}</h3>
-    <form class="form my-3">
+  <h3>{% trans %}Transactions{% endtrans %}</h3>
+
+  <form class="form mt-3">
     <div class="form-row">
-        {% include "saas/_filter.html" %}
+      {% include "saas/_filter.html" %}
     </div>
-    </form>
-    <div class="table-responsive">
-    <table class="table table-striped" infinite-wrapper>
+  </form>
+
+  <div class="table-responsive">
+
+    <!-- Start Data Tables -->
+    <table class="table table-striped mb-4" infinite-wrapper>
       <thead>
         <tr>
-          <th>{% trans %}Date{% endtrans %}
-              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('created_at')">
-                <i :class="sortIcon('created_at')"></i>
-              </a>
+          <th class="text-nowrap">
+            {% trans %}Date{% endtrans %}
+            <a href="#" class="text-nowrap btn-link btn-sort ml-2" @click.prevent="sortBy('created_at')">
+              <i :class="sortIcon('created_at')"></i>
+            </a>
           </th>
-          <th>{% trans %}Amount{% endtrans %}
-              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('amount')">
-                <i :class="sortIcon('amount')"></i>
-              </a>
+          <th class="text-nowrap">
+            {% trans %}Amount{% endtrans %}
+            <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('amount')">
+              <i :class="sortIcon('amount')"></i>
+            </a>
           </th>
-          <th>{% trans %}Description{% endtrans %}
-              <a href="#" class="btn-link btn-sort" @click.prevent="sortBy('description')">
-                <i :class="sortIcon('description')"></i>
-              </a>
+          <th class="text-nowrap">
+            {% trans %}Description{% endtrans %}
+            <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('description')">
+              <i :class="sortIcon('description')"></i>
+            </a>
           </th>
-          <th></th>
         </tr>
       </thead>
+
+      <!-- Show Loader -->
       <tbody v-if="!itemsLoaded">
         <tr>
           <td colspan="4">
@@ -41,14 +49,19 @@
           </td>
         </tr>
       </tbody>
+
+      <!-- Show Data Entries -->
       <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
-          <td>[[entry.created_at | formatDate]]</td>
+          <td class="text-nowrap">[[entry.created_at | formatDate]]</td>
           <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-          <td colspan="2" v-html="entry.description"></td>
+          <td class="text-nowrap" colspan="2" v-html="entry.description"></td>
         </tr>
       </tbody>
+
     </table>
+
     {% include "_pagination.html" %}
-    </div>
+
+  </div>
 </section>
