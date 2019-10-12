@@ -68,7 +68,7 @@
 
 <!-- Form Inputs for TEXTAREA -->
 {% macro textarea_input_field(placeholder, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-<div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+<div class="col-md-6 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
       {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
@@ -149,7 +149,7 @@
 
 <!-- Form Inputs for SELECT INPUT -->
 {% macro select_input_field(choices, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-<div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+<div class="col-md-6 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
       {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
