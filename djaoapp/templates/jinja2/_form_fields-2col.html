@@ -1,0 +1,215 @@
+<!-- Form Inputs for CHECKBOX -->
+{% macro checkbox_input_field(id_for_label, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+  <div class="col-md-6 pb-3 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+    <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
+      <div class="form-check px-0">
+        <div class="container">
+          <div class="row">
+
+            <!-- Checkbox -->
+            <div class="col-md-12 p-0">
+              <div class="d-inline-block align-top" style="width: 5%; ">
+                <input id="{{id_for_label}}" class="mr-3 checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
+              </div>
+              <div class="d-inline-block" style="width: 93%;">
+                <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
+                  {{label|safe}}
+                </label>
+                <div class="form-text help-block invalid-feedback">
+                  {% for error in errors %}
+                    {{error}}
+                  {% endfor %}
+                </div>
+
+                <div class="form-text help-block">
+                  {% if help_text %}
+                    <small class="text-muted">{{help_text}}</small>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+<!-- Form Inputs for RADIO BUTTON -->
+{% macro radio_input_field(choices, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+<div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+  {% if not hide_labels %}
+  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+    {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+  </label>
+  {% endif %}
+  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+    {% for choice in choices %}
+    <div class="form-check">
+      <label>
+        <input class="{% if errors %} is-invalid{% endif %}" type="radio" name="{{name}}"{% if value == choice[0] %} selected="1"{% endif %} value="{{choice[0]}}"{% if disabled %} disabled{% endif %}>{{choice[1]}}
+      </label>
+    </div>
+    {% endfor %}
+    <div class="form-text help-block invalid-feedback">
+      {% for error in errors %}
+      {{error}}
+      {% endfor %}
+    </div>
+    <div class="form-text help-block">
+      {% if help_text %}
+      <small class="form-text text-muted">{{help_text}}</small>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+<!-- Form Inputs for TEXTAREA -->
+{% macro textarea_input_field(placeholder, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+<div class="col-md-6 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+  {% if not hide_labels %}
+  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+  </label>
+  {% endif %}
+  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+        <textarea class="textarea form-control{% if errors %} is-invalid{% endif %}" name="{{name}}"
+          cols="40" rows="10"
+          {% if placeholder %}
+          placeholder="{{placeholder}}"
+          {% endif %}
+          {% if disabled %}
+          disabled
+          {% endif %}>{% if value %}{{value}}{% endif %}</textarea>
+    <div class="form-text help-block invalid-feedback">
+      {% for error in errors %}
+      {{error}}
+      {% endfor %}
+    </div>
+    <div class="form-text help-block">
+      {% if help_text %}
+      <small class="form-text text-muted">{{help_text}}</small>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+<!-- Form Inputs for TEXT INPUT -->
+{% macro text_input_field(input_type, max_length, min_value, max_value, step, placeholder, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+  <div class="col-md-6 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+    {% if not hide_labels %}
+      <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+          {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      </label>
+    {% endif %}
+
+    <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+          <input class="form-control{% if errors %} is-invalid{% endif %}" name="{{name}}"
+            {% if value is not none %}
+            value="{{value}}"
+            {% endif %}
+            {% if placeholder %}
+            placeholder="{{placeholder}}"
+            {% endif %}
+            type="{{input_type}}"
+            {% if max_length %}
+            maxlength="{{max_length}}"
+            {% endif %}
+            {% if min_value %}
+            min="{{min_value}}"
+            {% endif %}
+            {% if max_value %}
+            max="{{max_value}}"
+            {% endif %}
+            {% if step %}
+            step="{{step}}"
+            {% endif %}
+            {% if disabled %}
+            disabled
+            {% endif %}
+          />
+
+      <div class="form-text help-block invalid-feedback">
+        {% for error in errors %}
+          {{error}}
+        {% endfor %}
+      </div>
+
+      <div class="form-text help-block">
+        {% if help_text %}
+          <small class="form-text text-muted">{{help_text}}</small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+<!-- Form Inputs for SELECT INPUT -->
+{% macro select_input_field(choices, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+<div class="col-md-6 form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+  {% if not hide_labels %}
+  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+  </label>
+  {% endif %}
+  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+    <select class="form-control{% if errors %} is-invalid{% endif %}" name="{{name}}"
+      {% if disabled %} disabled{% endif %}>
+      {% for choice in choices %}
+      <option {% if value == choice[0] %}selected="1"{% endif %} value="{{choice[0]}}">{{choice[1]}}</option>
+      {% endfor %}
+    </select>
+    <div class="form-text help-block invalid-feedback">
+      {% for error in errors %}
+      {{error}}
+      {% endfor %}
+    </div>
+    <div class="form-text help-block">
+      {% if help_text %}
+      <small class="form-text text-muted">{{help_text}}</small>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+<!-- Form Inputs for INPUT FIELD -->
+{% macro input_field(bound_field, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+{% if bound_field.field.widget.recaptcha_challenge_name %}
+  <div>
+    <div class="form-group{% if bound_field.errors %} has-error{% endif %}" style="float: right;margin-right: 5px;">
+      {{bound_field.as_widget()}}
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+{% elif bound_field.field.widget.input_type == 'hidden' %}
+<input name="{{bound_field.name}}" type="{{bound_field.field.widget.input_type}}" {% if bound_field.value() is not none %}value="{{bound_field.value()}}"{% endif %} />
+
+{% elif bound_field.field|is_checkbox %}
+  {{checkbox_input_field(bound_field.id_for_label, bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+
+{% elif bound_field.field|is_textarea %}
+  {{textarea_input_field(bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+
+{% elif bound_field.field|is_radio %}
+  {{radio_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+
+{% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type == 'select' %}
+  {{select_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+
+{% else %}
+  {## XXX Everything else text input ##}
+    {{text_input_field(bound_field.field.widget.input_type, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+  {% endif %}
+{%- endmacro %}
+
+
+{% block form_block %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {% for name, field in form.fields.items() %}
+      {{input_field(form[name], form.hide_labels)}}
+    {% endfor %}
+{% endblock %}
