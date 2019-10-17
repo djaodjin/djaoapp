@@ -60,9 +60,9 @@
     </div>
     <footer class="plan-footer mt-3 mb-3">
       {% if plan.is_not_priced %}
-        <a class="btn btn-secondary w-100" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact us{% endtrans %}</a>
+        <a class="btn btn-secondary w-100" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
       {% else %}
-        <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Subscribe{% endtrans %}</button>
+        <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Buy Now{% endtrans %}</button>
       {% endif %}
     </footer>
   </div>
