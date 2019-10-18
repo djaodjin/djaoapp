@@ -48,19 +48,14 @@
         <div class="col-md-3">
           <!-- Sort Coupons -->
           <div class="pb-3">
-            <div class="input-group input-group-md">
-              <div class="input-group-prepend">
-                <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
-              </div>
-              <select id="order-by" class="form-control" style="-webkit-appearance: none;">
-                <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
-                <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
-                <option value="percent">{% trans %}Discount (highest){% endtrans %}</option>
-                <option value="-percent">{% trans %}Discount (lowest){% endtrans %}</option>
-                <option value="ends_at">{% trans %}Expiration (soonest){% endtrans %}</option>
-                <option value="-ends_at">{% trans %}Expiration (latest){% endtrans %}</option>
-              </select>
-            </div>
+            <uiv-dropdown class="dropdown w-100" append-to-body>
+              <button type="button" class="btn btn-primary dropdown-toggle">{% trans %}Sort{% endtrans %}</button>
+              <template slot="dropdown" class="w-100">
+                <li><a class="dropdown-item" @click.prevent="sortBy('code')">{% trans %}Code{% endtrans %} <i :class="sortIcon('code')"></i></a></li>
+                <li><a class="dropdown-item" @click.prevent="sortBy('percent')">{% trans %}Discount{% endtrans %} <i :class="sortIcon('percent')"></i></a></li>
+                <li><a class="dropdown-item" @click.prevent="sortBy('ends_at')">{% trans %}Expiration{% endtrans %} <i :class="sortIcon('ends_at')"></i></a></li>
+              </template>
+            </uiv-dropdown>
           </div>
         </div>
 
