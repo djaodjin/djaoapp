@@ -23,7 +23,7 @@ from saas.signals import (charge_updated, claim_code_generated, card_updated,
 from signup.settings import NOTIFICATIONS_OPT_OUT
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
-    user_reset_password, user_verification)
+    user_reset_password, user_verification, user_mfa_code)
 from signup.utils import (has_invalid_password,
     printable_name as user_printable_name)
 
@@ -250,6 +250,21 @@ def user_reset_password_notice(
                 'broker': get_broker(), 'app': app,
                 'back_url': back_url, 'expiration_days': expiration_days,
                 'user': get_user_context(user)})
+
+
+@receiver(user_mfa_code, dispatch_uid="user_mfa_code")
+def user_mfa_code_notice(sender, user, code, request, **kwargs):
+    contact = user
+    LOGGER.debug("[signal] user_mfa_code_notice(user=%s, code=%s,"\
+        " request=%s)", contact.user, code, request)
+    if SEND_EMAIL:
+        app = get_current_app()
+        site = get_current_site()
+        _send_notification_email(site, [contact.user.email],
+            'notification/user_mfa_code.eml',
+            context={'request': request, 'code': code,
+                'broker': get_broker(), 'app': app,
+                'user': get_user_context(contact.user)})
 
 
 # We insure the method is only bounded once no matter how many times

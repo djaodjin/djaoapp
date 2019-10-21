@@ -1,0 +1,16 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{% trans broker=broker.printable_name|safe %}Your multi factor authentication token on {{broker}}{% endtrans %}
+{% endblock %}
+
+{% block plain_content %}
+{% trans broker=broker.printable_name|safe %}Your multi factor authentication token on {{broker}}{% endtrans %}
+
+{{code}}
+{% endblock %}
+
+{% block html_content %}
+<p>{% trans broker=broker.printable_name|safe %}Your multi factor authentication token on {{broker}}{% endtrans %}</p>
+<h3>{{code}}</h3>
+{% endblock %}
