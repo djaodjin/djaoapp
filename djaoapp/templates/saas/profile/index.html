@@ -16,33 +16,22 @@
   {% endif %}
 {% endblock %}
 
-{% block saas_help %}
-  <div class="container">
-    <div class="row pb-4">
-      <div class="col-md-12">
-        {% trans %}Update your profile, contact information, password, etc.{% endtrans %}
-      </div>
-    </div>
-  </div>
-{% endblock %}
-
-
-{% block saas_content %}
+{% block saas_page_layout %}
 <div id="{% if urls.user %}user-{% endif %}profile-container">
-
-  {# We use the hidden input to pass the picture URL to the Vue component. #}
   <div class="container">
-    <div class="row pb-3">
-      <div class="col-md-6">
+    <div class="row">
+      <div class="col-6">
+        {# We use the hidden input to pass the picture URL to the Vue component. #}
         <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
         <img :src="formFields.picture" width="100" height="100" data-toggle="modal" data-target="#upload-picture-modal">
       </div>
+      <div class="col-6">
+          {% block saas_help %}
+          {% trans %}Update your contact information, password, etc.{% endtrans %}
+          {% endblock %}
+      </div>
     </div>
-  </div>
-
-  <!-- Start Form Inputs -->
-  <div class="container">
-    <div class="row">
+    <div class="row pb-3">
       <div class="col-md-6">
         {% include "_form.html" %}
       </div>

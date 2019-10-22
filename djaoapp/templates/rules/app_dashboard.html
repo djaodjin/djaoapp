@@ -124,10 +124,11 @@
       </div>
     </div>
 
-    <!-- Web Application -->
-    <div class="row">
-      <div id="rule-list-container" class="col-md-12 mt-3">
-        <h3>{% trans %}Web Application{% endtrans %}</h3>
+    <div id="rule-list-container">
+      <!-- Web Application -->
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <h3>{% trans %}Web Application{% endtrans %}</h3>
           <div class="row">
             <div class="form-group col-md-6">
               <label>{% trans %}Authentication{% endtrans %}</label>
@@ -187,88 +188,87 @@
             </div>
           </div>
 
-        <!-- Modal Dialog for Encrypted Session Key -->
-        <div id="generate-key" class="modal fade"
-            tabindex="-1" role="dialog"
-            aria-labelledby="{% trans %}Encrypted Session Key{% endtrans %}" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">{% trans %}Encrypted Session Key{% endtrans %}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <div class="controls">
-                    <input class="form-control" v-model="sessionKey" name="key" maxlength="32" type="text" disabled value="{% trans %}Generating{% endtrans %} ..." />
+          <!-- Modal Dialog for Encrypted Session Key -->
+          <div id="generate-key" class="modal fade"
+               tabindex="-1" role="dialog"
+               aria-labelledby="{% trans %}Encrypted Session Key{% endtrans %}" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{% trans %}Encrypted Session Key{% endtrans %}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <div class="controls">
+                      <input class="form-control" v-model="sessionKey" name="key" maxlength="32" type="text" disabled value="{% trans %}Generating{% endtrans %} ..." />
+                    </div>
+                  </div>
+                  <div>
+                    <p>
+                    {% trans %}This is the AES key used to encrypt the session cookie passed to your application when a request was authorized.{% endtrans %}
+                    </p>
+                    <p>
+                    {% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <p>
-                    {% trans %}This is the AES key used to encrypt the session cookie passed to your application when a request was authorized.{% endtrans %}
-                  </p>
-                  <p>
-                    {% trans %}The key will only be displayed once. Keep it secure.{% endtrans %}
-                  </p>
+                <div class="modal-footer">
+                  <button id="regenerate-key" class="btn btn-secondary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button id="regenerate-key" class="btn btn-secondary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
+            </div>
+          </div><!-- end of modal dialog for Encrypted Session Key -->
+        </div>
+      </div>
+
+      <!-- Testing -->
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <h3>{% trans %}Testing{% endtrans %}</h3>
+          <p>
+          {% trans %}Enter a username and check the token that will be passed to your backend service.{% endtrans %}
+          </p>
+          <form id="token-form" class="form" method="post" @submit.prevent="getSessionData">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <div class="input-group">
+                  <input id="id_username" class="form-control"
+                         maxlength="100" name="username" type="text"
+                         v-model="testUsername">
+                  <span class="input-group-append">
+                    <button type="submit" class="btn btn-primary">{% trans %}Check{% endtrans %}</button>
+                  </span>
+                </div>
               </div>
             </div>
+          </form>
+
+          <!-- Session Data -->
+          <div class="text-left">
+            <dl id="session-data">
+              <dt>{% trans %}Session Data{% endtrans %}</dt>
+              <dd>
+                <pre class="code p-3"><code>[[forward_session]]</code></pre>
+              </dd>
+            </dl>
+            <dl id="session-header">
+              <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
+              <dd>
+                <pre class="code p-3"><code>[[forward_session_header]]</code></pre>
+              </dd>
+            </dl>
+            <dl>
+              <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
+              <dd>
+                <pre class="code p-3"><code>[[forward_url]]</code></pre>
+              </dd>
+            </dl>
           </div>
         </div>
-      </div><!-- end of modal dialog for Encrypted Session Key -->
-    </div><!-- /Web Application -->
-
-    <!-- Testing -->
-    <div class="row">
-      <div class="col-md-12 mt-3">
-        <h3>{% trans %}Testing{% endtrans %}</h3>
-        <p>
-          {% trans %}Enter a username and check the token that will be passed to your backend service.{% endtrans %}
-        </p>
-        <form id="token-form" class="form" method="post" @submit.prevent="getSessionData">
-          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-          <div class="row">
-            <div class="form-group col-md-6">
-              <div class="input-group">
-                <input id="id_username" class="form-control"
-                      maxlength="100" name="username" type="text"
-                      v-model="testUsername">
-                <span class="input-group-append">
-                  <button type="submit" class="btn btn-primary">{% trans %}Check{% endtrans %}</button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div><!-- /testing tokens -->
-
-    <!-- Session Data -->
-    <div class="row">
-      <div class="col-md-12  mt-3 text-left">
-        <dl id="session-data">
-          <dt>{% trans %}Session Data{% endtrans %}</dt>
-          <dd>
-            <pre class="code p-3"><code>[[forward_session]]</code></pre>
-          </dd>
-        </dl>
-        <dl id="session-header">
-          <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
-          <dd>
-            <pre class="code p-3"><code>[[forward_session_header]]</code></pre>
-          </dd>
-        </dl>
-        <dl>
-          <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
-          <dd>
-            <pre class="code p-3"><code>[[forward_url]]</code></pre>
-          </dd>
-        </dl>
-      </div>
-    </div>
+      </div><!-- /testing tokens -->
+    </div><!-- /rule-list-container -->
   </div>
 {% endblock %}

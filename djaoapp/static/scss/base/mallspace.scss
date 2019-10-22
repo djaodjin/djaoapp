@@ -26,9 +26,11 @@
   font-size: $h4-font-size;
 }
 
+.page-header {
+   margin-bottom: $spacer;
+}
 
 // XXX unsorted yet.
-
 
 .leaderboard.jumbotron {
   background: theme-color(primary);

@@ -4,33 +4,10 @@
   {% trans %}Themes{% endtrans %}
 {% endblock %}
 
-{% block saas_help %}
+{% block saas_page_layout %}
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <p>
-          {% trans %}
-            When you are modifying root templates (ex: <filename>base.html</filename>), you may inadvertently break the dashboard and become unable to access this page to upload a fix.
-          {% endtrans %}
-        </p>
-        <p>
-          {% trans profile_url=urls.profile_redirect %}
-            You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.
-          {% endtrans %}
-        </p>
-        <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE https://{{site_available_at_url}}/api/themes/</code></pre>
-        <p>
-          <a target="_blank" href="https://djaodjin.com/docs/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
-        </p>
-      </div>
-    </div>
-  </div>
-{% endblock %}
-
-{% block saas_content %}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 mt-3">
+      <div class="col-md-6 mt-3">
         <div id="theme-settings-container">
           <div class="mb-3">
             <form method="post">
@@ -60,6 +37,25 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="col-md-6 mt-3">
+        {% block saas_help %}
+        <p>
+          {% trans %}
+            When you are modifying root templates (ex: <filename>base.html</filename>), you may inadvertently break the dashboard and become unable to access this page to upload a fix.
+          {% endtrans %}
+        </p>
+        <p>
+          {% trans profile_url=urls.profile_redirect %}
+            You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.
+          {% endtrans %}
+        </p>
+        <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE https://{{site_available_at_url}}/api/themes/</code></pre>
+        <p>
+          <a target="_blank" href="https://djaodjin.com/docs/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
+        </p>
+        {% endblock %}
       </div>
     </div>
   </div>
