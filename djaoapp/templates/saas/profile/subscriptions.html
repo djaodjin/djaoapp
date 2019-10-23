@@ -6,164 +6,186 @@
 
 {% block saas_content %}
 <section id="subscriptions">
-<div id="subscriptions-list-container"
-     data-trip data-trip-index="1"
-     data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
-     data-trip-position="screen-center">
-<h4>{% trans %}Active subscriptions{% endtrans %}</h4>
-<div class="table-responsive mb-4">
-<table class="table" infinite-wrapper>
- <thead>
-  <tr>
-   <th>{% trans %}Plan{% endtrans %}</th>
-   <th>{% trans %}Until{% endtrans %}</th>
-   <th></th>
-   <th></th>
-  </tr>
- </thead>
- <tbody>
-  {% if plans %}
-  <tr>
-      <td colspan="4">
-          <form id="subscribe" class="form-inline" @submit.prevent="subscribe('{{organization}}')">
-              <select class="form-control mr-2" name="plan" v-model="plan">
-                <option selected
-                        value="{}"
-                        :value="{}">{% trans %}Select a plan...{% endtrans %}</option>
-                {% for choice in plans %}
-                <option value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'
-                     :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
-          </form>
-      </td>
-  </tr>
-  {% endif %}
-  <tr v-show="!itemsLoaded">
-   <td colspan="4">
-    <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-   </td>
-  </tr>
-  <tr v-show="itemsLoaded && items.count === 0" v-cloak>
-   <td colspan="4">
-       <h5 class="text-center"><em>{% trans %}No subcriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h5>
-   </td>
-  </tr>
- </tbody>
- <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
-  <tr :class="endsSoon(entry)" v-for="(entry, index) in items.results">
-   <td>
-       <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
-   </td>
-   <td>
-       <div style="display:inline-block" v-if="entry.editable">
-           <uiv-dropdown class="form-group mb-0" append-to-body>
-               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
-               <template slot="dropdown">
-                   <li>
-                       <uiv-date-picker
-                            v-model="entry.ends_at"
-                            @input="selected(index)"
-                            icon-control-left="fa fa-caret-left"
-                            icon-control-right="fa fa-caret-right" />
-                   </li>
-               </template>
-           </uiv-dropdown>
-           <span class="date"></span>
-       </div>
-       <span style="display: inline-block;">
-            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
-       </span>
-   </td>
-   <td>
-    [[entry.ends_at | relativeDate]]
-   </td>
-   <td style="text-align: right;" v-if="!entry.request_key">
-       <button class="btn btn-danger unsubscribe"
-         data-toggle="modal" data-target="#unsubscribe-action"
-         @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
-           {% trans %}Unsubscribe Now{% endtrans %}
-       </button>
-   </td>
-   <td style="text-align: right;" v-if="entry.request_key && entry.editable">
-       <button class="btn btn-danger unsubscribe"
-         data-toggle="modal" data-target="#unsubscribe-action"
-         @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
-           {% trans %}Deny{% endtrans %}
-       </button>
-       <button class="btn btn-primary"
-         @click="acceptRequest(entry.plan.organization, entry.request_key)">
-           {% trans %}Accept subscription{% endtrans %}
-       </button>
-   </td>
-   <td style="text-align: right;" v-if="entry.request_key && !entry.editable">
-       {% trans %}Request pending approval ...{% endtrans %}
-   </td>
-  </tr>
- </tbody>
-</table>
-</div>
-{% include "_pagination.html" %}
-<!-- modal dialog to confirm unsubscribe -->
-<div class="modal fade"
-     id="unsubscribe-action" tabindex="-1" role="dialog"
-     aria-labelledby="{% trans %}Unsubscribe{% endtrans %}" aria-hidden="true">
-    <form class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{% trans %}Unsubscribe{% endtrans %} ...</h5>
-                <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>
-{% trans plan_name="[[toDelete.plan]]" %}You are about to unsubscribe from <em>{{plan_name}}</em>{% endtrans %}.
-{% trans %}This operation cannot be reversed.{% endtrans %}
-                </p>
-                <p>
-        {% trans %}Are you sure you want to continue?{% endtrans %}
-                </p>
-                <div class="modal-footer">
-                    <button id="cancel-unsubscribe"
-                            class="btn btn-secondary"
-                            data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                    <button type="submit" id="unsubscribe-btn"
-                            class="btn btn-danger"
-                            data-dismiss="modal"
-                            @click="unsubscribe">{% trans %}Unsubscribe{% endtrans %}</button>
+<ul class="nav nav-tabs dashboard-tab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" href="#active_subscriptions" data-toggle="tab">{% trans %}Active subscriptions{% endtrans %}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#expired_subscriptions" data-toggle="tab">{% trans %}Expired subscriptions{% endtrans %}</a>
+    </li>
+</ul>
+<div class="tab-content">
+  <div id="active_subscriptions" class="tab-pane active" role="tabpanel">
+    <div id="subscriptions-list-container"
+         data-trip data-trip-index="1"
+         data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+         data-trip-position="screen-center">
+      {% if plans %}
+        <div class="row my-3">
+            <div class="col-md-8 col-9">
+              <form id="subscribe" @submit.prevent="subscribe('{{organization}}')">
+                <div class="row">
+                    <div class="col-lg-8 col-7">
+                      <select class="form-control mr-2" name="plan" v-model="plan">
+                        <option selected
+                                value="{}"
+                                :value="{}">{% trans %}Select a plan...{% endtrans %}</option>
+                        {% for choice in plans %}
+                        <option value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'
+                             :value='{"slug":"{{choice.slug}}","organization":"{{choice.organization.slug}}"}'>{{choice.title}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-lg-4 col-5 text-right">
+                        <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
+                    </div>
                 </div>
+              </form>
+            </div>
+            <div class="col-md-4 col-3 pb-3 text-right">
+                  <b-dropdown text="Sort" right>
+                    <b-dropdown-item @click.prevent="sortBy('plan')">
+                        {% trans %}Plan{% endtrans %} <i :class="sortIcon('plan')"></i>
+                    </b-dropdown-item>
+                    <b-dropdown-item @click.prevent="sortBy('ends_at')">
+                        {% trans %}Expiration{% endtrans %} <i :class="sortIcon('ends_at')"></i>
+                    </b-dropdown-item>
+                  </b-dropdown>
+            </div>
+          </div>
+      {% endif %}
+      <!-- Loading Spinner -->
+      <div class="text-center py-5 my-5" v-show="!itemsLoaded">
+        <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+      </div>
+
+      <!-- No Items Found Msg -->
+      <div class="text-center" v-show="itemsLoaded && items.results.length === 0" v-cloak>
+        <h4 class="text-center"><em>{% trans %}No subscriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+      </div>
+        <div class="row mb-4" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <div class="col-md-6 my-1" v-for="(entry, index) in items.results">
+              <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                       <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+                       <span class="badge badge-warning text-white" v-show="endsSoon(entry)">expiring</span>
+                    </h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <span class="text-muted">{% trans %}Expires:{% endtrans %}</span>
+                        <div class="d-inline-block" v-if="entry.editable">
+                          <b-dropdown text="Dropdown Button" class="m-md-2" variant="transparent" size="sm">
+                            <template v-slot:button-content>
+                               <i class="fa fa-calendar"></i>
+                            </template>
+                            <b-dropdown-text>
+                                <uiv-date-picker
+                                  v-model="entry.ends_at"
+                                  @input="selected(index)"
+                                  icon-control-left="fa fa-caret-left"
+                                  icon-control-right="fa fa-caret-right" />
+                            </b-dropdown-text>
+                          </b-dropdown>
+                        </div>
+                        <div class="d-inline-block">
+                            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" v-if="entry.request_key && !entry.editable">
+                  <p class="card-text">
+                   {% trans %}Request pending approval ...{% endtrans %}
+                  </p>
+                </div>
+                <div class="card-body organization-buttons" v-if="!(entry.request_key && !entry.editable)">
+                    <div v-if="!entry.request_key">
+                        <button class="btn btn-sm btn-block btn-danger unsubscribe"
+                            data-toggle="modal" data-target="#unsubscribe-action"
+                            @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
+                            {% trans %}Unsubscribe Now{% endtrans %}
+                        </button>
+                    </div>
+                    <div v-if="entry.request_key && entry.editable">
+                        <button class="btn btn-sm btn-block btn-danger unsubscribe"
+                            data-toggle="modal" data-target="#unsubscribe-action"
+                            @click="unsubscribeConfirm(entry.organization.slug, entry.plan.slug)">
+                            {% trans %}Deny{% endtrans %}
+                        </button>
+                        <button class="btn btn-sm btn-block btn-primary"
+                            @click="acceptRequest(entry.plan.organization, entry.request_key)">
+                            {% trans %}Accept subscription{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+              </div>
+              <!-- /item -->
             </div>
         </div>
-    </form>
+    {% include "_pagination.html" %}
+    <!-- modal dialog to confirm unsubscribe -->
+    <div class="modal fade"
+         id="unsubscribe-action" tabindex="-1" role="dialog"
+         aria-labelledby="{% trans %}Unsubscribe{% endtrans %}" aria-hidden="true">
+        <form class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans %}Unsubscribe{% endtrans %} ...</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+    {% trans plan_name="[[toDelete.plan]]" %}You are about to unsubscribe from <em>{{plan_name}}</em>{% endtrans %}.
+    {% trans %}This operation cannot be reversed.{% endtrans %}
+                    </p>
+                    <p>
+            {% trans %}Are you sure you want to continue?{% endtrans %}
+                    </p>
+                    <div class="modal-footer">
+                        <button id="cancel-unsubscribe"
+                                class="btn btn-secondary"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                        <button type="submit" id="unsubscribe-btn"
+                                class="btn btn-danger"
+                                data-dismiss="modal"
+                                @click="unsubscribe">{% trans %}Unsubscribe{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- /modal dialog to confirm unsubscribe -->
+    </div> <!-- /controller -->
+  </div>
+  <div id="expired_subscriptions" class="tab-pane" role="tabpanel">
+    <div id="expired-subscriptions-list-container">
+    <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
+    <div class="table-responsive" style="min-height: 400px;">
+    <table class="table" infinite-wrapper>
+     <thead>
+      <tr>
+       <th>{% trans %}Plan{% endtrans %}</th>
+       <th>{% trans %}Expired{% endtrans %}</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr v-for="(entry, index) in items.results">
+       <td>
+           <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+       </td>
+       <td>
+            [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]] ([[entry.ends_at | relativeDate]])
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    </div>
+    {% include "_pagination.html" %}
+    </div>
+    </div> <!-- /controller -->
+  </div>
 </div>
-<!-- /modal dialog to confirm unsubscribe -->
-</div> <!-- /controller -->
-<div id="expired-subscriptions-list-container">
-<div v-show="itemsLoaded && items.results.length > 0" v-cloak>
-<h4>{% trans %}Expired subscriptions{% endtrans %}</h4>
-<div class="table-responsive" style="min-height: 400px;">
-<table class="table" infinite-wrapper>
- <thead>
-  <tr>
-   <th>{% trans %}Plan{% endtrans %}</th>
-   <th>{% trans %}Expired{% endtrans %}</th>
-  </tr>
- </thead>
- <tbody>
-  <tr v-for="(entry, index) in items.results">
-   <td>
-       <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
-   </td>
-   <td>
-        [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]] ([[entry.ends_at | relativeDate]])
-   </td>
-  </tr>
- </tbody>
-</table>
-</div>
-{% include "_pagination.html" %}
-</div>
-</div> <!-- /controller -->
 </section>
 {% endblock %}
