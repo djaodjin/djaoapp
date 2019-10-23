@@ -43,7 +43,7 @@
               </form>
             </div>
             <div class="col-md-4 col-3 pb-3 text-right">
-                  <b-dropdown text="Sort" right>
+                  <b-dropdown text="{% trans %}Sort{% endtrans %}" right>
                     <b-dropdown-item @click.prevent="sortBy('plan')">
                         {% trans %}Plan{% endtrans %} <i :class="sortIcon('plan')"></i>
                     </b-dropdown-item>
@@ -76,7 +76,7 @@
                     <div class="list-group-item">
                         <span class="text-muted">{% trans %}Expires:{% endtrans %}</span>
                         <div class="d-inline-block" v-if="entry.editable">
-                          <b-dropdown text="Dropdown Button" class="m-md-2" variant="transparent" size="sm">
+                          <b-dropdown class="m-md-2" variant="transparent" size="sm">
                             <template v-slot:button-content>
                                <i class="fa fa-calendar"></i>
                             </template>
