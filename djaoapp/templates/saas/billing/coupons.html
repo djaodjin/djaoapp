@@ -48,14 +48,17 @@
         <div class="col-md-3">
           <!-- Sort Coupons -->
           <div class="pb-3">
-            <uiv-dropdown class="dropdown w-100" append-to-body>
-              <button type="button" class="btn btn-primary dropdown-toggle">{% trans %}Sort{% endtrans %}</button>
-              <template slot="dropdown" class="w-100">
-                <li><a class="dropdown-item" @click.prevent="sortBy('code')">{% trans %}Code{% endtrans %} <i :class="sortIcon('code')"></i></a></li>
-                <li><a class="dropdown-item" @click.prevent="sortBy('percent')">{% trans %}Discount{% endtrans %} <i :class="sortIcon('percent')"></i></a></li>
-                <li><a class="dropdown-item" @click.prevent="sortBy('ends_at')">{% trans %}Expiration{% endtrans %} <i :class="sortIcon('ends_at')"></i></a></li>
-              </template>
-            </uiv-dropdown>
+            <b-dropdown text="{% trans %}Sort{% endtrans %}" variant="primary" class="w-100" right>
+                <b-dropdown-item @click.prevent="sortBy('code')">
+                    {% trans %}Code{% endtrans %} <i :class="sortIcon('code')"></i>
+                </b-dropdown-item>
+                <b-dropdown-item @click.prevent="sortBy('discount')">
+                    {% trans %}Discount{% endtrans %} <i :class="sortIcon('discount')"></i>
+                </b-dropdown-item>
+                <b-dropdown-item @click.prevent="sortBy('ends_at')">
+                    {% trans %}Expiration{% endtrans %} <i :class="sortIcon('ends_at')"></i>
+                </b-dropdown-item>
+            </b-dropdown>
           </div>
         </div>
 
