@@ -19,7 +19,7 @@ module.exports = {
         js_base: 'base.js',
         js_saas: 'saas.js',
         js_auth: 'auth.js',
-        js_vue: 'vue.js',
+        'js_vendor-vue': 'vendor-vue.js',
         js_dashboard: 'dashboard.js',
         js_pages: 'pages.js',
         'js_djaodjin-vue': 'djaodjin_vue.js',

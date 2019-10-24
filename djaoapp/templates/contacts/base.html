@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "saas/base_dashboard.html" %}
 
-{% block content %}
+{% block saas_content %}
 {% endblock %}
 
 {% block bodyscripts %}
@@ -22,7 +22,5 @@ var djaodjinSettings = {
     csrf: '{{csrf_token}}',
 };
 </script>
-{{ render_bundle('js_vue') }}
-{{ render_bundle('js_djaodjin-vue') }}
 {% block contacts_scripts %}{% endblock %}
 {% endblock %}
