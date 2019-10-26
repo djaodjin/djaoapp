@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-md-6 col-lg-8">
           <!-- User Search Input -->
-          <div id="search-list-container">
+          <search-profile inline-template id="search-list-container">
             <div class="card">
               <div class="card-body border-bottom">
                 <h5 class="card-title mb-0">Find a User</h5>
@@ -43,11 +43,11 @@
                 </table>
               </div>
             </div>
-          </div>
+          </search-profile>
 
           <!-- Recent Users Chart -->
           {% if urls and urls.recent_activity %}
-          <div id="recent-activity-container">
+          <recent-activity inline-template id="recent-activity-container">
             <div class="card mt-4">
               <div class="card-body">
                 <h5 class="card-title mb-0">Recently Active Users</h5>
@@ -78,11 +78,11 @@
                 </a>
               </div>
             </div>
-          </div>
+          </recent-activity>
           {% endif %}
 
           <!-- Todos -->
-          <div id="todos-container" class="mt-4">
+          <todo-list inline-template id="todos-container" class="mt-4">
             <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
               <div class="card-body border-bottom">
                 <h5 class="card-title mb-0">Todo items</h5>
@@ -92,11 +92,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </todo-list>
         </div>
 
         <div class="col-md-6 col-lg-4">
-          <div id="monthly-revenue-container" class="px-0 d-flex flex-wrap">
+          <monthly-revenue inline-template id="monthly-revenue-container" class="px-0 d-flex flex-wrap">
             <!-- MRR Charts -->
             <div class="card w-100 mb-4">
               <div class="card-body">
@@ -109,46 +109,47 @@
                 </div>
               </div>
             </div>
-          </div>
+          </monthly-revenue>
 
           {% if urls and urls.rules and urls.rules.api_engagement %}
-          <div id="engagement-users-container" class="px-0 d-flex flex-wrap">
-            <!-- DAU Charts -->
-            <div class="card w-100 mb-4">
-              <div class="card-body">
-                <div class="justify-content-center">
-                  <h5 class="card-title text-center">{% trans %}Daily Active Users{% endtrans %}</h5>
-                </div>
-                <div class="align-items-center justify-content-center h-75">
-                  <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                  <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
+          <user-aggregate-engagement inline-template id="engagement-users-container" class="px-0 d-flex flex-wrap">
+            <div>
+              <!-- DAU Charts -->
+              <div class="card w-100 mb-4">
+                <div class="card-body">
+                  <div class="justify-content-center">
+                    <h5 class="card-title text-center">{% trans %}Daily Active Users{% endtrans %}</h5>
+                  </div>
+                  <div class="align-items-center justify-content-center h-75">
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Engagement Charts -->
-            <div class="card w-100 mb-4">
-              <div class="card-body">
-               <div class="justify-content-center">
-                 <h5 class="card-title text-center">{% trans %}Engagement{% endtrans %}</h5>
-               </div>
-                <div class="align-items-center justify-content-center py-5 h-75">
-                  <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                  <div class="p-0" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
-                    <p class="card-text text-center text-muted">
-                      {% trans %}No engagement data{% endtrans %}
-                    </p>
+              <!-- Engagement Charts -->
+              <div class="card w-100 mb-4">
+                <div class="card-body">
+                  <div class="justify-content-center">
+                    <h5 class="card-title text-center">{% trans %}Engagement{% endtrans %}</h5>
                   </div>
-                  <div class="p-0" v-show="itemLoaded && item.engagements.length > 0" v-cloak>
-                    <svg ref="engagementChart"></svg>
+                  <div class="align-items-center justify-content-center py-5 h-75">
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <div class="p-0" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
+                      <p class="card-text text-center text-muted">
+                        {% trans %}No engagement data{% endtrans %}
+                      </p>
+                    </div>
+                    <div class="p-0" v-show="itemLoaded && item.engagements.length > 0" v-cloak>
+                      <svg ref="engagementChart"></svg>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </user-aggregate-engagement>
           {% endif %}
         </div>
-
       </div><!-- /row -->
     </div>
   </section>

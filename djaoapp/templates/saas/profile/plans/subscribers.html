@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="plan-subscribers-container">
+<plan-subscriber-list inline-template id="plan-subscribers-container">
+  <div>
   <form id="add-subscriber" class="form-inline mb-4" @submit.prevent="submit">
     <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
       {# The following div is required for the typeahead dropbox to show under the input field. #}
@@ -120,5 +121,6 @@ Thank you,
     </table>
   </div>
   {% include "_pagination.html" %}
-</section>
+  </div>
+</plan-subscriber-list>
 {% endblock %}

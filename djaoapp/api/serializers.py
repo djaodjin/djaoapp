@@ -30,7 +30,7 @@ class ProfileSerializer(OrganizationSerializer):
 
     class Meta(OrganizationSerializer.Meta):
         fields = OrganizationSerializer.Meta.fields + (
-            'activities', 'subscriptions',)
+            'activities', 'subscriptions', 'picture')
 
 
 class RoleSerializer(BaseRoleSerializer):

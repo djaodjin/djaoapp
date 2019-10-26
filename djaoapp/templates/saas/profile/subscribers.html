@@ -5,21 +5,21 @@
 {% endblock %}
 
 {% block saas_content %}
-  <section id="subscribers">
-    <div id="subscribers-list-container"
+<plan-subscriber-list inline-template id="subscribers">
+  <div id="subscribers-list-container"
         data-trip data-trip-index="1"
         data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
         data-trip-position="screen-center">
       <ul class="nav nav-tabs dashboard-tab" role="tablist">
 
         {% if registered %}
-          <li @click="tabChanged" class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="#registered" data-toggle="tab">{% trans %}Registered{% endtrans %}</a>
           </li>
         {% endif %}
 
         {% for tab in tabs %}
-          <li @click="tabChanged" class="nav-item">
+          <li class="nav-item">
             <a class="nav-link{% if tab.is_active %} active{% endif %}" href="#{{tab.slug}}" data-toggle="tab">{{tab.title}}</a>
           </li>
         {% endfor %}
@@ -28,7 +28,7 @@
       <div class="tab-content">
 
         {% if registered %}
-          <div id="registered" class="tab-pane" role="tabpanel">
+          <registered inline-template id="registered" class="tab-pane" role="tabpanel">
             <div id="registered-tab-container">
               <div class="mt-2">
                   <div class="form-group d-inline-block">
@@ -76,11 +76,11 @@
               </div>
               {% include "_pagination.html" %}
             </div>
-          </div>
+          </registered>
         {% endif %}
 
         {% for tab in tabs %}
-          <div id="{{tab.slug}}"
+          <{{tab.slug}} inline-template id="{{tab.slug}}"
               class="tab-pane{% if tab.is_active %} active{% endif %}"
               role="tabpanel">
             <div id="{{tab.slug}}-tab-container">
@@ -359,7 +359,7 @@
               {% include "_pagination.html" %}
 
             </div>
-          </div>
+          </{{tab.slug}}>
         {% endfor %}
 
       </div>

@@ -17,7 +17,8 @@
 {% endblock %}
 
 {% block saas_page_layout %}
-<div id="{% if urls.user %}user-{% endif %}profile-container">
+<{% if urls.user %}user{% else %}profile{% endif %}-update inline-template id="profile-container">
+<div>
   <div class="container">
     <div class="row">
       <div class="col-6">
@@ -146,7 +147,7 @@
                     class="btn btn-secondary"
                     data-dismiss="modal">
                 {% trans %}Cancel{% endtrans %}</button>
-{#            <button type="submit" class="btn btn-primary" data-dismiss="modal" @click="uploadImage">{% trans %}Save picture{% endtrans %}</button> #}
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" @click="uploadProfilePicture">{% trans %}Save picture{% endtrans %}</button>
         </div>
       </div>
     </div>
@@ -272,4 +273,5 @@
   </div><!-- end of modal dialog to generate API keys -->
   {% endif %}
 </div>
+</{% if urls.user %}user{% else %}profile{% endif %}-update>
 {% endblock %}

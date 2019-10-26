@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block saas_page_layout %}
-  <section>
+<transfers-statement inline-template>
     <div class="container pt-3">
       <div class="row">
         <div id="transfers-container" class="col-md-12">
@@ -16,29 +16,23 @@
             <section id="funds" class="col-md-4 mb-4 text-center">
               <div class="border rounded h-100">
                 <h3 class="pt-4">{% trans %}Available{% endtrans %}</h3>
-                <dl class="dl-horizontal pt-3" v-show="balance_amount !== 'N/A'" v-cloak>
-                  <dt id="balance-amount" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Amount available to transfer to the provider deposit account{% endtrans %}</p>" data-trip-position="s">
-                    <h1 class="pt-3 pb-5">
-                      [[humanizeBalance()]]
-                    </h1>
+                <dl class="dl-horizontal pt-3">
+                  <dt data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Amount available to transfer to the provider deposit account{% endtrans %}</p>" data-trip-position="s">
+                    <h2 id="balance-amount" class="pt-3 pb-5" v-cloak>
+                      [[balance_amount !== 'N/A' ? humanizeBalance() : 'N/A']]
+                    </h2>
                   </dt>
                   <dd>
-                    <a id="saas_withdraw_funds"
+                    <div v-if="balance_amount !== 'N/A'" v-cloak>
+                      <a id="saas_withdraw_funds"
                         href="{{ urls.provider.withdraw_funds }}"
                         data-trip data-trip-index="4"
                         data-trip-content="<p>{% trans %}Withdraw up to the available amount.{% endtrans %}</p>"
                         data-trip-position="s"
                         v-show="balance_amount > 0" v-cloak>{% trans %}withdraw{% endtrans %}
-                    </a>
+                      </a>
+                    </div>
                   </dd>
-                </dl>
-                <dl class="dl-horizontal pt-3" v-show="balance_amount === 'N/A'" v-cloak>
-                  <dt>
-                    <h1>
-                      [[balance_amount]]
-                    </h1>
-                  </dt>
-                  <dd></dd>
                 </dl>
               </div>
             </section>
@@ -101,6 +95,5 @@
         </div>
       </div>
     </div>
-  </section>
-
+</transfers-statement>
 {% endblock %}

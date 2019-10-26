@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block saas_content %}
-  <section id="{{role_descr}}"
+<role-user-list inline-template id="{{role_descr}}"
     data-trip data-trip-index="1"
     data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
@@ -136,5 +136,5 @@ Thank you,
         </div>
       </div>
     </div>
-  </section>
+</role-user-list>
 {% endblock %}

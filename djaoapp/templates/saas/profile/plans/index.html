@@ -3,7 +3,7 @@
 {% block saas_title %}{% trans %}Plans{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<div id="plan-list-container">
+<plan-list inline-template id="plan-list-container">
     <div class="row my-3">
         {% include "saas/_filter.html" %}
         <div class="col-2 text-right">
@@ -68,5 +68,5 @@
                :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
         </div>
     </div>
-</div>
+</plan-list>
 {% endblock %}

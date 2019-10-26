@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block saas_content %}
-  <div id="coupon-list-container">
-    <div class="container" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
+<coupon-list inline-template id="coupon-list-container">
+  <div class="container" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
 
       <form @submit.prevent="save">
         <div class="row">
@@ -165,6 +165,6 @@
 
       {% include "_pagination.html" %}
 
-    </div>
   </div>
+</coupon-list>
 {% endblock %}

@@ -3,8 +3,8 @@
 {% block saas_title %}{% trans %}Add offline transaction{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
-<section>
-  <div id="import-transaction-container" class="offset-md-3 col-md-6">
+<import-transaction inline-template id="import-transaction-container">
+  <div class="offset-md-3 col-md-6">
     <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
@@ -86,5 +86,5 @@
       </div>
     </form>
   </div>
-</section>
+</import-transaction>
 {% endblock %}

@@ -7,8 +7,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
 from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
-from signup.settings import EMAIL_VERIFICATION_PAT
-from signup.urls.users import USERNAME_PAT
+from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from urldecorators import include, url
 
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
@@ -64,7 +63,7 @@ urlpatterns = [
         UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
-    url_direct(r'contacts/', include('signup.urls.contacts')),
+    url_direct(r'contacts/', include('signup.urls.views.contacts')),
 
     url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
     url(r'^billing/cart/',

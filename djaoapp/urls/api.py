@@ -2,7 +2,7 @@
 # see LICENSE
 
 from saas.settings import ACCT_REGEX
-from signup.urls.users import USERNAME_PAT
+from signup.settings import USERNAME_PAT
 from urldecorators import include, url
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView

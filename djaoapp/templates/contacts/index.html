@@ -1,7 +1,7 @@
 {% extends "contacts/base.html" %}
 
 {% block saas_content %}
-<div class="container">
+<contact-list inline-template class="container">
   <div id="contact-list-container">
     <div class="page-header">
       <h2>{% trans %}Contacts{% endtrans %}</h2>
@@ -23,6 +23,7 @@
       </div>
       <div class="col-sm-6">
         <form id="create-contact" class="form" @submit.prevent="createContact">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="form-group">
             <label>{% trans %}Full name{% endtrans %}</label>
             <input class="form-control" type="text" name="full_name"
@@ -43,5 +44,5 @@
       </div>
     </div>
   </div>
-</div>
+</contact-list>
 {% endblock %}

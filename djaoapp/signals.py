@@ -15,7 +15,7 @@ from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.utils import get_organization_model
 from saas.signals import (charge_updated, claim_code_generated, card_updated,
-    expires_soon, order_executed, organization_updated,
+    expires_soon, order_executed, organization_updated, processor_setup_error,
     role_grant_created, role_request_created, role_grant_accepted,
     subscription_grant_accepted, subscription_grant_created,
     subscription_request_accepted, subscription_request_created,
@@ -409,6 +409,35 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
                     'organization': {
                         'profile': site.as_absolute_uri(reverse(
                             'saas_organization_profile', args=(organization,)))}
+                }})
+
+
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(processor_setup_error, dispatch_uid="processor_setup_error")
+def processor_setup_error_notice(sender, provider, error_message, **kwargs):
+    recipients, notused = _notified_recipients(
+        provider, 'processor_setup_error')
+    if SEND_EMAIL and recipients:
+        broker = get_broker()
+        site = get_current_site()
+        app = get_current_app()
+        broker_recipients, broker_bcc = _notified_recipients(
+        broker, 'processor_setup_error')
+        reply_to = None
+        if broker.email and broker.email != site.get_from_email():
+            reply_to = broker.email
+        _send_notification_email(site, recipients,
+            'notification/processor_setup_error.eml',
+            reply_to=reply_to, bcc=broker_recipients + broker_bcc,
+            context={
+                'broker': broker, 'app': app,
+                'organization': provider,
+                'message': error_message,
+                'urls':{
+                    'update_bank': site.as_absolute_uri(reverse(
+                            'saas_update_bank', args=(provider,))),
                 }})
 
 
