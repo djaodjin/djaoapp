@@ -10,10 +10,17 @@ Vue.component('theme-update', {
         }
     },
     methods: {
-        get: function(){
+        get: function() {
             var vm = this;
             vm.reqGet(vm.url, function(res){
                 vm.showEditTools = res.show_edit_tools;
+            });
+        },
+        reset: function() {
+            var vm = this;
+            vm.reqDelete(djaodjinSettings.urls.pages.api_themes,
+            function(resp) {
+                showMessages([gettext("reset to default theme")], "success");
             });
         },
         save: function(){
