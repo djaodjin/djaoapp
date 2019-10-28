@@ -19,10 +19,13 @@
               data-trip data-trip-index="2"
               data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
               data-trip-position="s">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="filter-inp">{% trans %}User{% endtrans %}</span>
+              </div>
               <input type="text" class="form-control" id="userTypeahead"
                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                    autocomplete="off">
-              <div class="input-group-append">
+                    autocomplete="off" required>
+              <div class="input-group-append" v-if="!formVisible">
                 <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
               </div>
             </div>
@@ -37,6 +40,38 @@
           </div>
         </form>
       </user-typeahead>
+      <div v-show="formVisible" v-cloak>
+        <form class="form-horizontal">
+            <div class="modal-content">
+              <div class="modal-body">
+                <p class="text-danger">
+                  {% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
+                </p>
+                <div class="form-group">
+                  <div class="controls">
+                    <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                    <!-- textareas are very special in the way they handle whitespaces. Please do
+                         not indent default text. -->
+                    <textarea class="form-control"
+                              name="message"
+                              maxlength="255" type="text" rows="10">
+{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
+
+I am adding you as a {{role_descr}} to {{organization}}.
+
+Thank you,
+- {{user}}{% endtrans %}
+                    </textarea>
+                  </div>
+                </div>
+                <button type="submit"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        @click="create">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+              </div>
+            </div>
+          </form>
+      </div>
       <hr />
       <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
         <div class="col-12">
@@ -71,70 +106,6 @@
         </div>
       </div>
       {% include "_pagination.html" %}
-
-      <!--
-        Modal dialog for adding a userRelation
-        when the user must register later.
-      -->
-      <div class="add-role-modal modal fade" title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}"
-          tabindex="-1" role="dialog"
-          aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true">
-        <div class="modal-dialog">
-          <form class="form-horizontal">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %} ...</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div class="modal-body">
-                <p class="text-danger">
-                  {% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
-                </p>
-                <div class="row form-group">
-                  <div class="col-sm-2">
-                    <label>{% trans %}To{% endtrans %}</label>
-                  </div>
-                  <div class="controls col-sm-10">
-                    <input id="new-request-email"
-                          class="form-control" style="width:100%;"
-                          name="email" type="text" max-length="150"
-                          placeholder="invitee@example.com"
-                          autofocus
-                          v-model="unregistered.email" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="controls">
-                    <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-                    <!-- textareas are very special in the way they handle whitespaces. Please do
-                         not indent default text. -->
-                    <textarea class="form-control"
-                              name="message"
-                              maxlength="255" type="text" rows="10">
-{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
-
-I am adding you as a {{role_descr}} to {{organization}}.
-
-Thank you,
-- {{user}}{% endtrans %}
-                    </textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                <button type="submit"
-                        class="btn btn-primary"
-                        data-dismiss="modal"
-                        @click="create">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
   </section>
 {% endblock %}
