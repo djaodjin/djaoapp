@@ -25,7 +25,7 @@
               <input type="text" class="form-control" id="userTypeahead"
                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
                     autocomplete="off" required>
-              <div class="input-group-append" v-if="!formVisible">
+              <div class="input-group-append" v-if="!this.$parent.formVisible">
                 <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
               </div>
             </div>
