@@ -3,7 +3,7 @@
 {% block saas_title %}<i class="fa fa-dollar"></i> {% trans %}Balances{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<div id="balance-list-container">
+<balance-list inline-template id="balance-list-container">
 <div>
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-secondary" role="button"
@@ -97,5 +97,5 @@
       </div>
   </div>
 </div>
-</div>
+</balance-list>
 {% endblock %}

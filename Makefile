@@ -189,8 +189,8 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 				$(DESTDIR)$(SYSCONFDIR)/monit.d/$(APP_NAME) \
 				$(DESTDIR)$(SYSCONFDIR)/systemd/system/$(APP_NAME).service
 	install -d $(DESTDIR)$(LOCALSTATEDIR)/db
-	install -d $(DESTDIR)$(LOCALSTATEDIR)/run
 	install -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
+	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || install -d $(DESTDIR)$(LOCALSTATEDIR)/run
 
 
 # Implementation Note:

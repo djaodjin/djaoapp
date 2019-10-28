@@ -1,16 +1,26 @@
-if($('#theme-settings-container').length > 0){
-var app = new Vue({
-    el: "#theme-settings-container",
-    mixins: [httpRequestMixin],
-    data: {
-        url: djaodjinSettings.urls.rules.api_detail,
-        showEditTools: false
+
+Vue.component('theme-update', {
+    mixins: [
+        httpRequestMixin
+    ],
+    data: function() {
+        return {
+            url: djaodjinSettings.urls.rules.api_detail,
+            showEditTools: false
+        }
     },
     methods: {
-        get: function(){
+        get: function() {
             var vm = this;
             vm.reqGet(vm.url, function(res){
                 vm.showEditTools = res.show_edit_tools;
+            });
+        },
+        reset: function() {
+            var vm = this;
+            vm.reqDelete(djaodjinSettings.urls.pages.api_themes,
+            function(resp) {
+                showMessages([gettext("reset to default theme")], "success");
             });
         },
         save: function(){
@@ -27,41 +37,34 @@ var app = new Vue({
     mounted: function(){
         this.get();
     },
-})
-}
+});
 
-if($('#recent-activity-container').length > 0){
-var app = new Vue({
-    el: "#recent-activity-container",
-    mixins: [itemListMixin],
+
+Vue.component('recent-activity', {
+    mixins: [
+        itemListMixin
+    ],
     data: function(){
         return {
             url: djaodjinSettings.urls.recent_activity,
-            params: {
-                timezone: moment.tz.guess(),
-            },
         }
     },
     mounted: function(){
         this.get();
     },
-})
-}
+});
 
-if($('#todos-container').length > 0){
-var app = new Vue({
-    el: "#todos-container",
-    mixins: [itemListMixin],
+
+Vue.component('todo-list', {
+    mixins: [
+        itemListMixin
+    ],
     data: function(){
         return {
             url: djaodjinSettings.urls.api_todos,
-            params: {
-                timezone: moment.tz.guess(),
-            },
         }
     },
     mounted: function(){
         this.get();
     },
-})
-}
+});

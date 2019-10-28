@@ -6,11 +6,12 @@
 {% endblock %}
 
 {% block saas_content %}
-  <section id="accessible-list-container">
+<role-profile-list inline-template id="accessible-list-container">
+  <div>
     <!-- Add a User to Organization -->
     <div class="container">
       <div class="row pt-3">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
             <form id="add-profile" class="form-inline" @submit.prevent="submit">
               <div class="w-100">
@@ -43,7 +44,7 @@
     <!-- Start Filter/Match Input -->
     <div class="container">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           {% include "saas/_filter_match.html" %}
         </div>
       </div>
@@ -125,5 +126,6 @@ Thank you,
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</role-profile-list>
 {% endblock %}

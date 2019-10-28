@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block saas_page_layout %}
-<section id="plan-container">
+<plan-update inline-template id="plan-container">
   {% if urls.plan_subscribers %}
+<div>
   <div class="btn-actions text-right">
     <a href="{{urls.plan_subscribers}}">{% trans %}Plan Subscribers{% endtrans %}</a>
     <button id="activate-plan"
@@ -75,5 +76,6 @@
         {% endblock %}
     </div>
   </div>
-</section>
+</div>
+</plan-update>
 {% endblock %}

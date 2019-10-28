@@ -17,13 +17,18 @@ from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
-from rest_framework import serializers
-from rest_framework.compat import URLPattern, URLResolver, get_original_route
-from rest_framework.schemas import openapi
-from rest_framework.schemas.generators import EndpointEnumerator
 from rest_framework import exceptions, serializers
-from rest_framework.compat import uritemplate
+from rest_framework.compat import (URLPattern, URLResolver,
+    get_original_route, uritemplate)
 from rest_framework.fields import empty
+from rest_framework.schemas.generators import EndpointEnumerator
+
+try:
+    from rest_framework.schemas.openapi import (
+        AutoSchema as BaseAutoSchema, SchemaGenerator)
+except ImportError: # drf < 3.10
+    from rest_framework.schemas import (
+        AutoSchema as BaseAutoSchema, SchemaGenerator)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -333,7 +338,7 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
         return api_endpoints
 
 
-class AutoSchema(openapi.AutoSchema):
+class AutoSchema(BaseAutoSchema):
 
     def get_operation(self, path, method):
         kwargs = {}
@@ -497,7 +502,7 @@ class AutoSchema(openapi.AutoSchema):
         }
 
 
-class APIDocGenerator(openapi.SchemaGenerator):
+class APIDocGenerator(SchemaGenerator):
 
     endpoint_enumerator_class = APIDocEndpointEnumerator
 

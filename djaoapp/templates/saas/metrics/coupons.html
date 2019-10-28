@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block saas_content %}
-<div id="coupon-performance">
+<coupon-user-list inline-template id="coupon-performance">
   <div id="coupon-users-container">
     <div class="row my-3">
         {% include "saas/_filter.html" %}
@@ -59,7 +59,7 @@
                     <p class="text-center my-2"><em>{% trans coupon=coupon.code %}No use of {{coupon}} coupon{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></p>
                 </td>
             </tr>
-            <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length" v-cloak>
                 <td><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.full_name]]</a></td>
                 <td>[[item.plan]]</td>
                 <td>[[item.created_at | formatDate ]]</td>
@@ -68,5 +68,5 @@
     </table>
     {% include "_pagination.html" %}
   </div>
-</div>
+</coupon-user-list>
 {% endblock %}

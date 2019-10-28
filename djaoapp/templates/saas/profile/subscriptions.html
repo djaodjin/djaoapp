@@ -5,23 +5,26 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="subscriptions">
-<div id="subscriptions-list-container"
-     data-trip data-trip-index="1"
-     data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+<subscription-list-container inline-template id="subscriptions">
+  <div>
+    <subscription-list inline-template id="subscriptions-list-container"
+        @expired="expired"
+        data-trip data-trip-index="1"
+        data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
      data-trip-position="screen-center">
-<h4>{% trans %}Active subscriptions{% endtrans %}</h4>
-<div class="table-responsive mb-4">
-<table class="table" infinite-wrapper>
- <thead>
-  <tr>
-   <th>{% trans %}Plan{% endtrans %}</th>
-   <th>{% trans %}Until{% endtrans %}</th>
-   <th></th>
-   <th></th>
-  </tr>
- </thead>
- <tbody>
+      <div>
+        <h4>{% trans %}Active subscriptions{% endtrans %}</h4>
+        <div class="table-responsive mb-4">
+          <table class="table" infinite-wrapper>
+            <thead>
+              <tr>
+                <th>{% trans %}Plan{% endtrans %}</th>
+                <th>{% trans %}Until{% endtrans %}</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
   {% if plans %}
   <tr>
       <td colspan="4">
@@ -138,8 +141,11 @@
     </form>
 </div>
 <!-- /modal dialog to confirm unsubscribe -->
-</div> <!-- /controller -->
-<div id="expired-subscriptions-list-container">
+</div>
+</subscription-list> <!-- /controller -->
+<expired-subscription-list inline-template
+  id="expired-subscriptions-list-container"
+  ref="expired">
 <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
 <h4>{% trans %}Expired subscriptions{% endtrans %}</h4>
 <div class="table-responsive" style="min-height: 400px;">
@@ -164,6 +170,7 @@
 </div>
 {% include "_pagination.html" %}
 </div>
-</div> <!-- /controller -->
-</section>
+</expired-subscription-list> <!-- /controller -->
+</div>
+</subscription-list-container>
 {% endblock %}

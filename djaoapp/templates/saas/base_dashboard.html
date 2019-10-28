@@ -59,38 +59,41 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                    <h3 class="mb-0">
-                        {% block saas_title %}{% endblock %}
-                        <div class="d-inline">
-                            <sup style="display: none;font-size:0.5em;cursor:pointer;">
-                                <i id="help-request" class="fa fa-question-circle"></i>
-                            </sup>
-                        </div>
-                    </h3>
-                </div>
+<div id="app">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h3 class="mb-0">
+            {% block saas_title %}{% endblock %}
+            <div class="d-inline">
+              <sup style="display: none;font-size:0.5em;cursor:pointer;">
+                <i id="help-request" class="fa fa-question-circle"></i>
+              </sup>
             </div>
+          </h3>
         </div>
+      </div>
     </div>
 
     {% block saas_page_layout %}
-        <p class="lead">
-            {% block saas_lead_help %}{% endblock %}
-        </p>
-        <div class="row">
-            <div class="col-md-12">
-                {% block saas_help %}{% endblock %}
-                {% block saas_content %}{% endblock %}
-            </div>
-        </div>
+    <p class="lead">
+      {% block saas_lead_help %}{% endblock %}
+    </p>
+    <div class="row">
+      <div class="col-md-12">
+        {% block saas_help %}{% endblock %}
+        {% block saas_content %}{% endblock %}
+      </div>
+    </div>
     {% endblock %}
+
+  </div><!-- /container -->
+</div>
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{{ render_bundle('js_vue') }}
+{{ render_bundle('js_vendor-vue') }}
 
 <script type="text/javascript">
 Vue.use(uiv, {prefix: 'uiv'});
@@ -119,6 +122,13 @@ var djaodjinSettings = {
 </script>
 
 {{ render_bundle('js_djaodjin-vue') }}
+
+<script type="text/javascript">
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+</script>
 
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

@@ -1,59 +1,57 @@
 {% extends "contacts/base.html" %}
 
-{% block content %}
-<div class="container">
+{% block saas_content %}
+<contact-update inline-template class="container">
   <div class="row">
-    <div id="contact-edit-container">
-      <div class="page-header">
-        <h2>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h2>
+    <div class="page-header">
+      <h2>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h2>
+    </div>
+    <div class="col-sm-6">
+      <dl>
+        <dt>{% trans %}Nick name{% endtrans %}</dt>
+        <dd>{{contact.nick_name}}</dd>
+      </dl>
+      <dl>
+        <dt>{% trans %}Full name{% endtrans %}</dt>
+        <dd>{{contact.full_name}}</dd>
+      </dl>
+      <dl>
+        <dt>{% trans %}E-mail address{% endtrans %}</dt>
+        <dd>{{contact.email}}</dd>
+      </dl>
+      <h3>{% trans %}Activities{% endtrans %}</h3>
+      <div v-show="!itemsLoaded">
+        <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
       </div>
-      <div class="col-sm-6">
-        <dl>
-          <dt>{% trans %}Nick name{% endtrans %}</dt>
-          <dd>{{contact.nick_name}}</dd>
-        </dl>
-        <dl>
-          <dt>{% trans %}Full name{% endtrans %}</dt>
-          <dd>{{contact.full_name}}</dd>
-        </dl>
-        <dl>
-          <dt>{% trans %}E-mail address{% endtrans %}</dt>
-          <dd>{{contact.email}}</dd>
-        </dl>
-        <h3>{% trans %}Activities{% endtrans %}</h3>
-        <div v-show="!itemsLoaded">
-          <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
-        </div>
-        <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
-          <h4><em>{% trans %}No activity{% endtrans %}<span> [[params.q]]</span></em></h4>
-        </div>
-        <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-          <div v-for="entry in items.results">
-            <p>[[entry.created_at | formatDate]]
-              <a
-                 :href="'{{'/profile/'|site_prefixed}}' + entry.account + '/'">[[entry.account]]</a> {% trans %}by{% endtrans %} [[entry.created_by]]:</p>
-            <div>[[entry.text]]</div>
-          </div>
-        </div>
+      <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
+        <h4><em>{% trans %}No activity{% endtrans %}<span> [[params.q]]</span></em></h4>
       </div>
-      <div class="col-sm-6">
-        <form class="form" @submit.prevent="createActivity">
-         <div class="form-group">
-            <label>{% trans %}Account{% endtrans %}</label>
-              <input class="form-control form-control-sm" style="width: 100%;"
-                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                     autocomplete="off"
-                     v-model="itemSelected.slug">
-         </div>
-         <div class="form-group">
-            <label>{% trans %}Description{% endtrans %}</label>
-            <textarea class="form-control" name="text"
-                v-model="activityText"></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit" value="submit">{% trans %}Create activity{% endtrans %}</button>
-        </form>
+      <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+        <div v-for="entry in items.results">
+          <p>[[entry.created_at | formatDate]]
+            <a
+              :href="'{{'/profile/'|site_prefixed}}' + entry.account + '/'">[[entry.account]]</a> {% trans %}by{% endtrans %} [[entry.created_by]]:</p>
+          <div>[[entry.text]]</div>
+        </div>
       </div>
     </div>
+    <div class="col-sm-6">
+      <form class="form" @submit.prevent="createActivity">
+        <div class="form-group">
+          <label>{% trans %}Account{% endtrans %}</label>
+          <input class="form-control form-control-sm" style="width: 100%;"
+                 name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
+                 autocomplete="off"
+                 v-model="itemSelected.slug">
+        </div>
+        <div class="form-group">
+          <label>{% trans %}Description{% endtrans %}</label>
+          <textarea class="form-control" name="text"
+                    v-model="activityText"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit" value="submit">{% trans %}Create activity{% endtrans %}</button>
+      </form>
+    </div>
   </div>
-</div>
+</contact-update>
 {% endblock %}

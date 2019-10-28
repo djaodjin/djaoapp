@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block saas_content %}
-<section id="update-card-container">
+<card-update inline-template id="update-card-container">
+  <div>
   <div class="col-md-12">
     <form id="update-card" action=".{% if next %}/?next={{next}}{% endif %}"
       method="post" v-on:submit.prevent="save">
@@ -63,5 +64,6 @@
       </div>
     </form>
   </div><!-- end modal to delete card -->
-</section>
+  </div>
+</card-update>
 {% endblock %}

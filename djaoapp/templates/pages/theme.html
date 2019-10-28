@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block saas_page_layout %}
-  <div class="container">
+  <theme-update inline-template class="container">
     <div class="row">
       <div class="col-md-6 mt-3">
-        <div id="theme-settings-container">
+        <div>
           <div class="mb-3">
             <form method="post">
-                <div class="form-group form-check">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <div class="form-group form-check">
                   <input id="show_edit_tools" class="form-check-input" type="checkbox"
                       name="show_edit_tools"
                       v-model="showEditTools" @change="save">
@@ -26,14 +27,21 @@
 
           <!-- File Upload -->
           <div>
-            <div id="theme-upload" class="pages-upload" data-complete-url="{{urls.pages.api_themes}}" djupload-success >
+            <div id="theme-upload"
+                 class="pages-upload"
+                 data-complete-url="{{urls.pages.api_themes}}"
+                 djupload-success >
               <div class="dropzone-previews previewsContainer">
                 <span class="dz-default dz-message"><i class="fa fa-cloud"></i> {% trans %}Upload theme package (.zip){% endtrans %}</span>
               </div>
             </div>
             <div class="text-center">
               <a id="download-theme" class="btn btn-secondary" href="{{urls.pages.theme_download}}" target="_blank"><i class="fa fa-cloud-download mr-2"></i> {% trans %}Download .ZIP{% endtrans %}</a>
-              <button id="reset-theme" class="btn btn-danger">{% trans %}Restore to default{% endtrans %}</button>
+              <button id="reset-theme"
+                      class="btn btn-danger"
+                      @click.prevent="reset">
+                {% trans %}Restore to default{% endtrans %}
+              </button>
             </div>
           </div>
         </div>
@@ -58,7 +66,7 @@
         {% endblock %}
       </div>
     </div>
-  </div>
+  </theme-update>
 
   <!-- Notifications -->
   <section id="notifications" class="mt-5">
@@ -113,6 +121,14 @@
 {% block dashboard_bodyscripts %}
   <script type="text/javascript">
     jQuery(document).ready(function($) {
+
+      if( djaodjinSettings.urls.pages &&
+          djaodjinSettings.urls.pages.api_themes ){
+          $("#theme-upload").djupload({
+              uploadUrl: djaodjinSettings.urls.pages.api_themes,
+          });
+      }
+
       $(".send-test-email").click(function(event) {
         var self = this;
         var id = $(self).closest(".card").attr("id");
