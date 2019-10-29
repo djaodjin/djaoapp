@@ -588,3 +588,43 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 .icon-active {
     background: $dashboard-icon-color-active;
 }
+
+.chart-area {
+    height: 400px !important;
+    width: 100%;
+}
+
+.graph-legend-dot {
+    height: 12px;
+    width: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.nv-legendWrap {
+    display: none;
+}
+
+@include media-breakpoint-down(xs) {
+    .row-header {
+        position: absolute;
+        background: white;
+        width: 115px;
+        height: 36px;
+        left: 0;
+    }
+
+    .row-body:nth-child(2) {
+        padding-left: 115px;
+    }
+
+    .chart-content {
+        overflow-x: scroll;
+        width: 100%;
+    }
+
+    .chart-content .chart-area {
+        width: 600px;
+    }
+}
