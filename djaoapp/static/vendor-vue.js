@@ -25,7 +25,7 @@ window.Sortable = Sortable;
 //  - <b-pagination> in djaoapp/templates/_pagination.html
 // XXX We are already using the jQuery version (bootstrap.js) in base.js.
 import BootstrapVue from 'bootstrap-vue';
-window.BootstrapVue = BootstrapVue;
+Vue.use(BootstrapVue);
 
 // Use 'uiv/dist/uiv.esm.js' ESM module?
 // because of:
