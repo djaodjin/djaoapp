@@ -2,17 +2,25 @@
 
 {% block content %}
     <section id="plans">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center pt-4">
+                    <h3>
+                        A Subscription Plan That Works for You
+                    </h3>
+                </div>
+            </div>
+        </div>
         <div class="container container-margered">
             <form method="post" action=".">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                 <div class="row row-flex">
-
                     {% for plan in plan_list %}
                         {% if plan.is_line_break %}
                             </div>
                             <div class="row row-flex">
                                 {% if plan_list|length == 1 %}
-                                <div class="col-sm-4"></div>
+                                <div class="col-md-4"></div>
                                 {% endif %}
                         {% endif %}
 
@@ -29,6 +37,21 @@
                     {% endif %}
                 </div>
             </form>
+        </div>
+        <div class="container pt-5 pb-5 mb-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>
+                        More Details About Subscription Plans
+                    </h5>
+                </div>
+                <div class="col-md-6 pb-3">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus quibusdam molestias eos eaque aut consectetur laudantium odio, quasi doloremque harum quo maiores id nisi excepturi iste sapiente accusamus commodi reiciendis repellendus repellat? A odit omnis doloremque atque consequuntur eum sequi.    
+                </div>
+                <div class="col-md-6 pb-3">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus quibusdam molestias eos eaque aut consectetur laudantium odio, quasi doloremque harum quo maiores id nisi excepturi iste sapiente accusamus commodi reiciendis repellendus repellat? A odit omnis doloremque atque consequuntur eum sequi.    
+                </div>
+            </div>
         </div>
     </section>
 {% endblock %}

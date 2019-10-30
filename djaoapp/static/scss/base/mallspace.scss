@@ -11,8 +11,7 @@
   }
 }
 
-.navbar-light .navbar-brand
-{
+.navbar-light .navbar-brand {
   color: theme-color(primary);
 }
 
@@ -37,14 +36,14 @@
   color: #fff;
 }
 
-.site-jumbotron{
+.site-jumbotron {
   padding-bottom: 40px;
   margin-bottom:20px;
   background: theme-color(primary);
   color:#FFF;
 }
 
-.site-jumbotron-text{
+.site-jumbotron-text {
   display:table-cell;
   width:100%;
   vertical-align:middle;
@@ -53,7 +52,7 @@
   text-align:center;
 }
 
-.site-jumbotron-text h1{
+.site-jumbotron-text h1 {
   font-size: 52px;
 }
 
@@ -68,101 +67,102 @@
   }
 }
 
-.site-feedback{
+.site-feedback {
   margin-top: 20px;
   background: #FAFAFA;
   padding: 40px 0;
 }
 
-.site-feedback blockquote{
-  color:#444;
-  border:none;
+.site-feedback blockquote {
+  color: #444;
+  border: none;
 }
 
-.site-feedback blockquote p{
-  font-size:22px;
+.site-feedback blockquote p {
+  font-size: 22px;
 }
 
-.site-feedback blockquote footer{
-  color:#777;
+.site-feedback blockquote footer {
+  color: #777;
   font-style: italic;
 }
 
 .site-about,
-.site-partner{
+.site-partner {
   background: #FFF;
-  color:#444;
-  padding:40px 0;
+  color: #444;
+  padding: 40px 0;
 }
 
-.site-about{
+.site-about {
   background: #FAFAFA;
   margin-bottom: 20px;
 }
 
 
 .product-featurette {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 .product-featurette > .title > .name {
-   margin-top: 5px;
-   text-transform: uppercase;
+  margin-top: 5px;
+  text-transform: uppercase;
 }
 .product-featurette img {
-    margin: 0 auto;
-    box-shadow: 3px 3px 1px rgba(50, 50, 50, 1);
+  margin: 0 auto;
+  box-shadow: 3px 3px 1px rgba(50, 50, 50, 1);
 }
 
 // Help blocks about DjaoDjin
 // --------------------------
 .about-us {
-    background:#c6dcef;
-    padding: 10px;
+  background:#c6dcef;
+  padding: 10px;
 }
 
 .about-us dt {
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .about-us dd {
-    font-style: italic;
+  font-style: italic;
 }
 
 ol.tutorials, ul.tutorials {
+  visibility: visible;
 }
 
 ol.tutorials > .active, ul.tutorials > .active {
-    font-weight: bold;
-    font-size: 1.5em;
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
 // Login page
 // ----------
 
 .btn-google-plus {
-    color: #fff;
-    background-color: #dd4b39;
-    border-color: rgba(0,0,0,.2);
+  color: #fff;
+  background-color: #dd4b39;
+  border-color: rgba(0,0,0,.2);
 }
 
 .btn-twitter {
-    color: #fff;
-    background-color: #4099FF;
-    border-color: rgba(0,0,0,.2);
+  color: #fff;
+  background-color: #4099FF;
+  border-color: rgba(0,0,0,.2);
 }
 
 .btn-github {
-    color: #fff;
-    background-color: #444;
-    border-color: rgba(0,0,0,.2);
+  color: #fff;
+  background-color: #444;
+  border-color: rgba(0,0,0,.2);
 }
 
 .signup-group div .btn-social, .signup-group div input {
-    font-size: 1.3em;
-    height: 45px;
-    margin: 10px 0;
-    padding: 10px 12px;
+  font-size: 1.3em;
+  height: 45px;
+  margin: 10px 0;
+  padding: 10px 12px;
 }
 
 
@@ -176,37 +176,39 @@ ol.tutorials > .active, ul.tutorials > .active {
 
 /* used only in templates/base.html */
 html, body {
-    height: 100%;
+  height: 100%;
 }
 
 body{
-    min-width:100%;
-    background:#FFF;
+  min-width:100%;
+  background:#FFF;
 }
 
 #wrap{
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
 }
 
-/* Unless the font-size for #main and .footer match, using ``em`` metrics will
-   create bottom and overlap margins that have different heights, hence
-   sticking the footer to the bottom while introducing a "border" above it. */
+/* 
+  Unless the font-size for #main and .footer match, using ``em`` metrics will
+  create bottom and overlap margins that have different heights, hence
+  sticking the footer to the bottom while introducing a "border" above it. 
+*/
 #main {
-    min-height: 100%;
-    padding-bottom: 22px; /* must be in pixel (see comment abolve) */
+  min-height: 100%;
+  padding-bottom: 22px; /* must be in pixel (see comment abolve) */
 }
 
 .footer {
-    position: relative;
-    height: 150px;      /* must be in pixel (see comment abolve) */
-    margin-top: -150px;  /* stick to bottom (see comment above) */
-    clear:both;
-    bottom: 0;
-    font-size: 12px;
-    flex-shrink: 0;
-    color: #FFF;
-    background-color: theme-color(primary);
+  position: relative;
+  height: 150px;      /* must be in pixel (see comment abolve) */
+  margin-top: -150px;  /* stick to bottom (see comment above) */
+  clear:both;
+  bottom: 0;
+  font-size: 12px;
+  flex-shrink: 0;
+  color: #FFF;
+  background-color: theme-color(primary);
 }
 
 .footer a {
@@ -217,15 +219,15 @@ body{
   font-size: 24px;
 }
 
-.content-block-wrapper{
+.content-block-wrapper {
   margin-top: 50px;
 }
 
 /* -- end of css found only in templates/base.html */
 
 
-/* somewhat generic classes
-   ----
+/* 
+  somewhat generic classes
 */
 .btn-xlg, .btn-group-xlg > .btn {
   padding: 10px 12px;
@@ -234,19 +236,19 @@ body{
   border-radius: 2px;
 }
 
-.btn-block{
+.btn-block {
   display: block;
   width: 100%;
 }
 
-.btn-outline-inverse{
+.btn-outline-inverse {
   background: transparent;
-  border:1px solid #FFF;
+  border: 1px solid #FFF;
   text-shadow: none;
 }
 
 .btn-outline-inverse:hover,
-.btn-outline-inverse:focus{
+.btn-outline-inverse:focus {
   background: #FFF;
   color:theme-color(primary) !important ;
 }
@@ -259,7 +261,6 @@ body{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 /* XXX These look like bootstrap overrides but they are not. */
 blockquote.blockquote-right:after, blockquote.blockquote-right:before,
@@ -278,35 +279,35 @@ blockquote.blockquote-right:after, blockquote.blockquote-right:before{
 }
 
 blockquote.blockquote-left:after, blockquote.blockquote-left:before {
-  left:100%;
+  left: 100%;
 }
 
 blockquote.blockquote-right:after {
-    border-color: transparent;
-    border-right-color: gray();
-    border-width: 15px;
-    margin-top: -15px;
+  border-color: transparent;
+  border-right-color: gray();
+  border-width: 15px;
+  margin-top: -15px;
 }
 
 blockquote.blockquote-right:before {
-    border-color: transparent;
-    border-right-color: gray();
-    border-width: 17px;
-    margin-top: -17px;
+  border-color: transparent;
+  border-right-color: gray();
+  border-width: 17px;
+  margin-top: -17px;
 }
 
 blockquote.blockquote-left:after {
-    border-color: transparent;
-    border-left-color: gray();
-    border-width: 15px;
-    margin-top: -15px;
+  border-color: transparent;
+  border-left-color: gray();
+  border-width: 15px;
+  margin-top: -15px;
 }
 
 blockquote.blockquote-left:before {
-    border-color: transparent;
-    border-left-color: gray();
-    border-width: 17px;
-    margin-top: -17px;
+  border-color: transparent;
+  border-left-color: gray();
+  border-width: 17px;
+  margin-top: -17px;
 }
 
 @media screen and (max-width: 767px){
@@ -347,29 +348,29 @@ blockquote.blockquote-left:before {
 }
 
 .center { /* XXX better to use bootstrap .center-block instead? */
-    float: none;
-    margin-left: auto;
-    margin-right: auto;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .collapsible {
-    text-decoration-line: underline;
-    text-decoration-style: dashed;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
 }
 
-.editable{
+.editable {
   cursor: text;
 }
 
 /*BLOG*/
-.tag-navbar{
+.tag-navbar {
   padding-top: 7px;
   padding-bottom: 7px;
   background: #F3F3F3;
   margin-bottom: 20px;
 }
 
-.welcome-blog{
+.welcome-blog {
   color:#FFF;
   background: -moz-linear-gradient(-45deg, theme-color(primary) 51%, #4dd0ea 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right bottom, color-stop(51%,theme-color(primary)), color-stop(100%,#4dd0ea)); /* Chrome,Safari4+ */
@@ -380,11 +381,11 @@ blockquote.blockquote-left:before {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='theme-color(primary)', endColorstr='#4dd0ea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
-.light-link{
+.light-link {
   color: rgba(255,255,255,0.8);
 }
 
-.light-link:hover{
+.light-link:hover {
   color: rgba(255,255,255,1);
 }
 
@@ -399,8 +400,6 @@ blockquote.blockquote-left:before {
   border:1px solid #CCC;
   margin: 10px;
 }
-
-
 
 .postCaption {
   color:#777;
@@ -425,11 +424,11 @@ blockquote.blockquote-left:before {
   padding-bottom: 25px;
 }
 
-.postBody p:first-child{
+.postBody p:first-child {
   display: inline-block;
 }
 
-pre.code{
+pre.code {
   margin:10px 0;
   border:none;
   padding:0;
@@ -438,22 +437,22 @@ pre.code{
   /*border:1px solid #CCC;*/
 }
 
-pre.code code{
+pre.code code {
   background-color: transparent;
 }
 
 .djaodjin-annotate-demo { /* jquery-plugin-to-annotate-images.blog */
-    position:relative;
-    width:100%;
+  position:relative;
+  width:100%;
 }
 
 
 /* djaodjin/index.html */
-section#hosting{
+section#hosting {
   padding:30px 0;
 }
 
-.custom-list-index{
+.custom-list-index {
   list-style: none;
   padding-left: 5px;
 }
@@ -473,6 +472,7 @@ section#hosting{
 .survey .controls {
   margin-left: 20px;
 }
+
 #div_id_question-1 .control-label,
 #div_id_question-2 .control-label,
 #div_id_question-3 .control-label,
@@ -485,54 +485,57 @@ section#hosting{
 
 /* upload private key and public certificate in domain.html */
 .dropzone-previews {
-    min-height: 150px;
-    padding: 54px 54px;
-    border: 2px dashed #0087F7;
-    border-radius: 5px;
-    background: white;
-    margin-bottom: 10px;
+  min-height: 150px;
+  padding: 54px 54px;
+  border: 2px dashed #0087F7;
+  border-radius: 5px;
+  background: white;
+  margin-bottom: 10px;
 }
 
 
 #toast-container > div,
 #toast-container > :hover {
-    -webkit-box-shadow: none;
-    box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 #toast-container > div {
-    opacity: 0.9;
-    padding: 15px 15px 15px 15px;
+  opacity: 0.9;
+  padding: 15px 15px 15px 15px;
 }
 #toast-container > .toast {
-    background-image: none !important;
-    border-radius:0;
+  background-image: none !important;
+  border-radius:0;
 }
 
 #toast-container > .toast:first-child {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #toast-container > .toast:before {
-    position: fixed;
-    font-size: 24px;
-    line-height: 18px;
-    float: left;
-    color: #FFF;
-    padding-right:0;
-    margin: 0;
-    content:"";
+  position: fixed;
+  font-size: 24px;
+  line-height: 18px;
+  float: left;
+  color: #FFF;
+  padding-right:0;
+  margin: 0;
+  content:"";
 }
 
 .toast-success {
   background-color: #5cb85c;
 }
+
 .toast-error {
   background-color: #d9534f;
 }
+
 .toast-info {
   background-color: #5bc0de;
 }
+
 .toast-warning {
   background-color: #f0ad4e;
 }
@@ -547,12 +550,11 @@ section#hosting{
   text-decoration: underline;
 }
 
-
 // These are used in authentication pages (i.e. accounts/*.html)
 // XXX also in plan_short.html
 // --------
 
-.form-container{
+.form-container {
   margin-top: 40px;
   border:1px solid theme-color(primary);
   border-radius: 4px;
@@ -564,36 +566,30 @@ section#hosting{
 // Pricing plans (templates/saas/pricing.html, templates/saas/plan_short.html)
 // --------
 
-.plan-short{
-  cursor: pointer;
+.plan-short {
   margin-top: 40px;
-  border: 1px solid theme-color(primary);
+  margin-bottom: 70px;
+  background-color: #F7F7F7;
   border-radius: 4px;
-  margin-bottom: 20px;
-  position:relative;
-  min-width:100%;
+  position: relative;
+  min-width: 100%;
 }
 
-.plan-short:hover{
-  cursor: pointer;
-  background-color: lighten(theme-color(primary), 75%);
+.plan-pricing {
+  color: #333;
 }
 
-.plan-pricing{
-  color: theme-color(primary);
-}
-
-.plan-pricing h2{
+.plan-pricing h2 {
   font-size: 36px;
 }
 
-.plan-main{
-  margin: 0 20px 70px 20px;
+.plan-main {
+  margin: 0 20px 30px 20px;
 }
 
-.plan-footer{
+.plan-footer {
   position: absolute;
-  bottom:1px;
+  bottom: -70px;
   width: 100%;
   text-align: center;
 }
@@ -602,27 +598,27 @@ section#hosting{
   width: 100%;
 }
 
-.plan-desc ul{
+.plan-desc ul {
   list-style: none;
 }
 
 .plan-desc li:before {
   font-family: 'FontAwesome';
-  content: "\f0da";
-  margin:0 5px 0 -15px;
+  content: "\f058";
+  margin: 0 18px 0 -15px;
+  color: steelblue;
 }
 
-.add-plan-placeholder{
+.add-plan-placeholder {
   cursor: pointer;
   opacity: 0.4;
 }
 
-.add-plan-placeholder:hover{
+.add-plan-placeholder:hover {
   opacity: 1;
 }
 
 @include media-breakpoint-up(sm) {
-
   .row-flex > div[class$="-2"] {
     max-width: 16.66666667% !important;
   }
@@ -656,16 +652,16 @@ section#hosting{
   }
 
   .row-flex, .row-flex > div[class*="col-"] {
-      display: -webkit-box;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      flex:1 1 auto;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex:1 1 auto;
   }
 
   .row-flex > div[class*="col-"]{
-     margin:-.2px;
+    margin:-.2px;
   }
 
 }
@@ -683,36 +679,31 @@ section#hosting{
   font-size: 24px;
 }
 
-#leaderboard
-{
-    margin-top: 50px;
+#leaderboard {
+  margin-top: 50px;
 }
 
-.nvtooltip
-{
-    z-index: 3;
+.nvtooltip {
+  z-index: 3;
 }
 
-.dashboard-top-menu
-{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    display: none;
+.dashboard-top-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  display: none;
 }
 
-.dashboard-top-menu li
-{
-    margin: 0 10px;
-    font-size: 15px;
+.dashboard-top-menu li {
+  margin: 0 10px;
+  font-size: 15px;
 }
 
-.table>tbody+tbody
-{
-    border-top: 0;
+.table>tbody+tbody {
+  border-top: 0;
 }
 
 .table>thead>tr>th,
@@ -720,18 +711,16 @@ section#hosting{
 .table>tfoot>tr>th,
 .table>thead>tr>td,
 .table>tbody>tr>td,
-.table>tfoot>tr>td
-{
-    border-top: 0;
-    padding: 10px 15px;
+.table>tfoot>tr>td {
+  border-top: 0;
+  padding: 10px 15px;
 }
 
-.table>thead>tr>th
-{
-    border-bottom: 1px solid #e0e0e0;
+.table>thead>tr>th {
+  border-bottom: 1px solid #e0e0e0;
 }
 
-// Fix for FOUC (Flash of Unstyled Content)
+// Fix for FOUC
 html {
   visibility: visible !important;
   opacity: 1 !important;
