@@ -11,7 +11,7 @@ from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
     OrganizationListAPIView)
 from ..api.roles import RoleListAPIView
-from ..api.todos import TodosAPIView
+from ..api.todos import DjaoAppAPIVersion, TodosAPIView
 from ..api.users import UserProfileAPIView, RecentActivityAPIView
 from ..urlbuilders import (url_authenticated, url_direct,
     url_frictionless_direct, url_frictionless_provider,
@@ -95,4 +95,5 @@ urlpatterns = [
 
     # DjaoApp-specific
     url_self_provider(r'^api/todos/', TodosAPIView.as_view(), 'api_todos'),
+    url(r'^api$', DjaoAppAPIVersion.as_view())
 ]

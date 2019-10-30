@@ -5,11 +5,21 @@ from __future__ import unicode_literals
 import logging
 
 from django.conf import settings
-from rest_framework.generics import ListAPIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
 from saas.mixins import ProviderMixin
 from signup.serializers import ActivitySerializer
 
 LOGGER = logging.getLogger(__name__)
+
+
+class DjaoAppAPIVersion(RetrieveAPIView):
+
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        return Response({'version': "1.0"})
 
 
 def list_todos(request, provider=None):
