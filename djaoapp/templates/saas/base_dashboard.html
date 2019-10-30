@@ -14,48 +14,12 @@
 
 {% block footer %}{% endblock %}
 
-{% block dashboard_nav %}
-    {# This code is copy/pasted from base.html with the additional changes #}
-    {# to `block sidebar` such that we are able to deploy to production    #}
-    {# with minimal global changes.                                        #}
-
-    <div class="dashboard-nav nav-main-frnt">
-        <div class="dashboard-nav-inner-container">
-            <div class="dashboard-nav-main dashboard-nav-color-theme">
-                <div>
-                    <header>
-                        <nav class="navbar navbar-light">
-                            <div class="navbar-header">
-                                {% include "_navbarbrand.html" %}
-                            </div>
-                        </nav>
-                    </header>
-                    <div class="dashboard-nav-menu">
-                        {% block sidebar %}
-                        {% include "saas/_sidebar.html" %}
-                        <hr class="d-md-none" />
-                        <ul class="nav flex-column d-md-none">
-                            {% include "_generic_navbar.html" %}
-                        </ul>
-                        {% endblock %}
-                    </div>
-                </div>
-                {% block dashboard_footer %}
-                <div class="dashboard-nav-footer dashboard-nav-color-theme">
-                    <div class="footer-links">
-                        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-2"></i></a>
-                        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-2"></i></a>
-                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-                    </div>
-
-                    <div>
-                    {% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved. <a href="/legal/" target="_blank">Legal</a>.{% endtrans %}
-                    </div>
-                </div>
-                {% endblock %}
-            </div>
-        </div><!-- /.dashboard-nav-inner-container -->
-    </div>
+{% block sidebar %}
+{% include "saas/_sidebar.html" %}
+<hr class="d-md-none" />
+<ul class="nav flex-column d-md-none">
+    {% include "_generic_navbar.html" %}
+</ul>
 {% endblock %}
 
 {% block content %}

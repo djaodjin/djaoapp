@@ -1,6 +1,8 @@
 // CSS specific to the DjaoDjin dashboard
 
-$navbar-height:                 50px; // XXX until we find a better fix.
+$navbar-height:                 64px; // XXX `$navbar-height` used to be defined
+// in Bootstrap3 (it is not in Bootstrap4). We redefine it here use it stick the
+// footer at the bottom of the screen when a page is less that screen height.
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
 $dashboard-nav-footer-height:   94px;
@@ -200,7 +202,7 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 }
 
 .navbar {
-    height: 64px;
+    height: $navbar-height; // See comment about $navbar-height
 }
 
 .navbar .nav-item {
