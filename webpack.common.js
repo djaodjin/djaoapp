@@ -38,6 +38,12 @@ module.exports = {
     },
     module: {
         rules: [
+            // transpile js
+            {
+                test: /\.js$/,
+                exclude: djaodjin.node_modules,
+                loader: 'babel-loader'
+            },
             // handle images via webpack
             {
                 test: /\.(png|svg|jpg|gif)$/,

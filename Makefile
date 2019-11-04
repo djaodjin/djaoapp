@@ -147,6 +147,7 @@ endif
 
 build-assets: $(installTop)/.npm $(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
+	$(installFiles) $(srcDir)/babel.config.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
