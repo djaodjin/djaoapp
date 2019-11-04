@@ -24,7 +24,7 @@
               </div>
               <input type="text" class="form-control" id="userTypeahead"
                     name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                    autocomplete="off" required>
+                    autocomplete="off" required :disabled="this.$parent.formVisible">
               <div class="input-group-append" v-if="!this.$parent.formVisible">
                 <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
               </div>
@@ -41,12 +41,25 @@
         </form>
       </user-typeahead>
       <div v-show="formVisible" v-cloak>
-        <form class="form-horizontal">
+        <form class="form-horizontal" @submit.prevent="create">
             <div class="modal-content">
               <div class="modal-body">
                 <p class="text-danger">
                   {% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
                 </p>
+                <div class="row form-group">
+                  <div class="col-sm-2">
+                    <label>{% trans %}To{% endtrans %}</label>
+                  </div>
+                  <div class="controls col-sm-10">
+                    <input id="new-request-email"
+                          class="form-control" style="width:100%;"
+                          name="email" type="text" max-length="150"
+                          placeholder="invitee@example.com"
+                          autofocus
+                          v-model="unregistered.email" />
+                  </div>
+                </div>
                 <div class="form-group">
                   <div class="controls">
                     <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
@@ -66,8 +79,10 @@ Thank you,
                 </div>
                 <button type="submit"
                         class="btn btn-primary"
-                        data-dismiss="modal"
-                        @click="create">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+                        data-dismiss="modal">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+                <button type="button" @click="formVisible = false"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
               </div>
             </div>
           </form>
