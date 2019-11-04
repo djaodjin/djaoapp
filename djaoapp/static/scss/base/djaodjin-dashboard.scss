@@ -602,7 +602,7 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: inline-block;
 }
 
-.nv-legendWrap {
+.saas-metrics-chart .nv-legendWrap {
     display: none;
 }
 
@@ -619,12 +619,12 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
         padding-left: 115px;
     }
 
-    .chart-content {
+    .saas-metrics-chart {
         overflow-x: scroll;
         width: 100%;
     }
 
-    .chart-content .chart-area {
+    .saas-metrics-chart .chart-area {
         width: 600px;
     }
 }
