@@ -1,27 +1,29 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-    <div class="container mb-5">
-        <div class="offset-sm-2 col-sm-8">
-            <div class="page-header my-4">
-                <h1 class="text-center">
-                    {% trans %}Sign up{% endtrans %}
-                </h1>
-            </div>
-            <div class="text-center mb-2">
-                {% trans %}Already have an account?{% endtrans %}
-                <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-            </div>
-            <div class="row">
-                <div class="offset-sm-2 col-sm-8">
-                    {% if form %}
-                        {% include "accounts/_register_form.html" %}
-                    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="offset-sm-2 col-sm-8 pb-5 pt-1 mt-2 mb-5">
+                <div class="page-header my-4">
+                    <h3 class="text-center">
+                        {% trans %}Sign Up{% endtrans %}
+                    </h3>
                 </div>
-            </div>
-            <div class="text-center mt-3">
-                {% trans %}Already have an account?{% endtrans %}
-                <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
+                <div class="text-center mb-2">
+                    {% trans %}Already have an account?{% endtrans %}
+                    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+                </div>
+                <div class="row">
+                    <div class="offset-sm-2 col-sm-8">
+                        {% if form %}
+                            {% include "accounts/_register_form.html" %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    {% trans %}Already have an account?{% endtrans %}
+                    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+                </div>
             </div>
         </div>
     </div>
