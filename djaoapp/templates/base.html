@@ -127,10 +127,11 @@
             </div>
           {% endblock %}
 
+          <!-- DASHBOARD NAVBAR -->
           <div class="dashboard-content">
             <header>
-              <nav class="navbar navbar-light navbar-expand-md {% block navbar_extra_classes %}{% endblock %}">
-                <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
+              <nav class="container navbar navbar-light navbar-expand-md pt-4 {% block navbar_extra_classes %}{% endblock %}">
+                 <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
                   <i class="fa closed"></i>
                 </a>
 
@@ -148,20 +149,23 @@
                   </div>
                   <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
                     <li class="nav-item">
-                      <a class="nav-link" id="login" href="{{request|url_login}}">
-                        <i class="fa fa-lock fa-lg"></i>
-                        {% trans %}Sign in{% endtrans %}
+                      <a class="nav-link pt-0 pb-4" id="login" href="{{request|url_login}}">
+                        {% trans %}Sign In{% endtrans %}
                       </a>
                     </li>
                     <!-- this area will be populated by _menubar.html -->
                   </ul>
                 {% endblock %}
               </nav>
+
               {% block fullviewport %}
               {% endblock %}
+
             </header>
+
+            <!-- ALERT MESSAGES -->
             <div{% block content_area_classes %} class="content-area-container"{% endblock %}>
-              <div id="messages">
+              <div id="messages" class="container pt-4">
                 <div id="messages-content">
                   {% if request %}
                     {% for message in request|messages %}

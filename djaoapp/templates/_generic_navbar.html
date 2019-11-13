@@ -1,8 +1,9 @@
 {% if request and request|is_authenticated %}
-    <li class="nav-item">
-        <a id="app_home" class="nav-link" href="{{request|url_app}}{% if organization %}{{organization}}/{% endif %}">{% trans %}Home{% endtrans %}</a>
+    <li class="nav-item pt-0 pb-4">
+        <a id="app_home" class="nav-link pt-0" href="{{request|url_app}}{% if organization %}{{organization}}/{% endif %}">{% trans %}Home{% endtrans %}</a>
     </li>
 {% endif %}
-<li class="nav-item{% if request and request|url_pricing in request.path %} active{% endif %}">
-    <a class="nav-link" href="{{request|url_pricing}}">{% trans %}Pricing{% endtrans %}</a>
+
+<li class="nav-item pt-0 {% if request and request|url_pricing in request.path %} active{% endif %}">
+    <a class="nav-link pt-0 pb-4" href="{{request|url_pricing}}">{% trans %}Pricing{% endtrans %}</a>
 </li>

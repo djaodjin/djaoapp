@@ -1,7 +1,7 @@
 <ul>
-  <li class="nav-item dropdown align-self-center">
+  <li class="nav-item dropdown align-self-center pb-2">
     {% if active_organization %}
-      <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
+      <a href="#" class="nav-link pt-0 dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
         aria-haspopup="true" aria-expanded="false">
         <span class="menubar-label-title">
             <span data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span> <span class="caret"></span>
@@ -11,7 +11,7 @@
         </span>
       </a>
     {% else %}
-      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+      <a href="#" class="nav-link pt-0 dropdown-toggle" data-toggle="dropdown" role="button"
         aria-haspopup="true" aria-expanded="false">
         <span class="menubar-label">
           {{request.user.username}} <span class="caret"></span>
@@ -56,12 +56,11 @@
       {% endif %}
     </ul>
   </li>
-  <li class="nav-item align-self-center">
-      <a class="nav-link" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_prefixed}}">
-        <span class="d-none d-sm-inline-block mr-sm-2">
-          {% trans %}Sign out{% endtrans %}
+  <li class="nav-item align-self-center mr-0">
+      <a class="nav-link pt-0 pr-0" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_prefixed}}">
+        <span class="d-none d-sm-inline-block mr-0 pb-4">
+          {% trans %}Sign Out{% endtrans %}
         </span>
-        <span class="fa fa-sign-out fa-lg"></span>
       </a>
   </li>
 </ul>
