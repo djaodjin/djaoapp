@@ -183,12 +183,12 @@
 {
     "fields": {
         "app": 3,
-        "rank": 16,
+        "rank": 17,
         "path": "/",
         "rule_op": 0,
         "is_forward": false
     },
-    "model": "rules.Rule", "pk": 16
+    "model": "rules.Rule", "pk": 17
 },
 {
     "fields": {

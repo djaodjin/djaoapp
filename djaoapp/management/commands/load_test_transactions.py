@@ -5,14 +5,15 @@ import datetime, logging, random
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils.timezone import utc
 from faker import Faker
 from multitier.thread_locals import set_current_site
 from multitier.utils import get_site_model
-from saas.models import (Charge, ChargeItem, Coupon, Organization, Plan,
-    Subscription, Transaction)
+from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
+    Plan, Subscription, Transaction)
 
 from saas.utils import datetime_or_now
 from saas.settings import PROCESSOR_ID
@@ -163,6 +164,9 @@ class Command(BaseCommand):
         parser.add_argument('--provider',
             action='store', dest='provider', default=settings.APP_NAME,
             help='create sample subscribers on this provider')
+        parser.add_argument('--coupon',
+            action='store', dest='coupon', default='HALLOWEEN',
+            help='create uses of the specified coupon')
 
     def handle(self, *args, **options):
         sigs = [
@@ -190,8 +194,8 @@ class Command(BaseCommand):
             self._handle(*args, **options)
 
     def _handle(self, *args, **options):
-        if 'database' in options:
-            db_name = options['database']
+        db_name = options['database']
+        if db_name:
             set_current_site(get_site_model().objects.get(
                 slug=options['provider'], db_name=db_name), path_prefix='')
         else:
@@ -210,6 +214,9 @@ class Command(BaseCommand):
         subscriber = Organization.objects.filter(slug='stephanie').first()
         if subscriber:
             self.generate_subscriptions(subscriber)
+        coupon_code = options['coupon']
+        if coupon_code:
+            self.generate_coupon_uses(coupon_code, provider=provider)
 
     def generate_coupons(self, provider, nb_coupons=None):
         if nb_coupons is None:
@@ -222,6 +229,29 @@ class Command(BaseCommand):
                 for _ in range(0, 3)]), coupon_percent)
             Coupon.objects.create(code=coupon_code, percent=coupon_percent,
                 organization=provider)
+
+    def generate_coupon_uses(self, coupon_code, provider=None, nb_uses=None):
+        user_model = get_user_model()
+        if nb_uses is None:
+            nb_uses = settings.REST_FRAMEWORK['PAGE_SIZE'] * 4
+        self.stdout.write("%d uses of coupon %s\n" % (nb_uses, coupon_code))
+        if provider:
+            kwargs = {'organization': provider}
+        coupon = Coupon.objects.filter(code=coupon_code, **kwargs).first()
+        plans = list(Plan.objects.filter(organization=coupon.organization))
+        for _ in range(0, nb_uses):
+            try:
+                user = user_model.objects.get(
+                    pk=random.randint(1, user_model.objects.count() - 1))
+                if len(plans) > 1:
+                    plan = plans[random.randint(1, len(plans) - 1)]
+                else:
+                    plan = plans[0]
+                CartItem.objects.create(
+                    user=user, coupon=coupon, plan=plan, recorded=True)
+            except user_model.DoesNotExist:
+                pass
+
 
     def generate_subscriptions(self, subscriber, nb_subscriptions=None):
         at_time = datetime_or_now()

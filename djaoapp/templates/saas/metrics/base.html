@@ -34,7 +34,7 @@
                      data-trip data-trip data-trip-index="2"
                      data-trip-content="<p>{% trans %}Look back through time.{% endtrans %}</p>"
                      data-trip-position="s"
-                     v-model="ends_at"></input>
+                     v-model="params.ends_at"></input>
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
                 </button>
@@ -50,7 +50,7 @@
               <li>
                 <uiv-date-picker
                      format="{{DATETIME_FORMAT}}"
-                     v-model="ends_at"
+                     v-model="params.ends_at"
                      @input="prepareCurrentTabData"
                      icon-control-left="fa fa-caret-left"
                      icon-control-right="fa fa-caret-right" />
