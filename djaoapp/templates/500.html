@@ -1,164 +1,26 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-    <head>
-        <!-- WIP 120519 -->
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="DjaoDjin inc.">
-        <meta name="copyright" content="Copyright (c) 2019 DjaoDjin inc.">
-        <title>{% trans %}500 Internal Server Error{% endtrans %} | DjaoDjin</title>
-        <style>
-            html, body {
-                height: 100%;
-            }
+{% extends "base.html" %}
 
-            body {
-                min-width: 100%;
-                background: #FFF;
-                font-family: 'Open Sans',sans-serif;
-                font-size: 14px;
-                line-height: 1.42857143;
-                color: #333;
-                background-color: #fff;
-                margin: 0;
-            }
+{% block content %}
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+                <h3>
+                    Oops, our bad.
+                </h3>
 
-            a {
-                color: #337ab7;
-                text-decoration: none;
-                background-color: transparent;
-            }
-
-            #wrap {
-                width: 100%;
-                min-height: 100%;
-            }
-
-            #main {
-                min-height: 100%;
-                overflow: auto;
-                padding-bottom: 22px;
-            }
-
-            .footer {
-                position: relative;
-                height: 22px;
-                margin: 0;
-                margin-top: -22px;
-                clear: both;
-                bottom: 0;
-                text-align: center;
-                font-size: 11px;
-                width: 100%;
-            }
-
-            .navbar {
-                border-radius: 2px;
-                position: relative;
-                min-height: 50px;
-                margin-bottom: 0;
-                border: 1px solid transparent;
-            }
-
-            .navbar-default {
-                background-color: rgba(255,255,255,0.8);
-                border-color: transparent;
-                border: none;
-                -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-                -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-                box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-                padding: 0;
-                -webkit-transition: all .25s ease-in-out;
-                -moz-transition: all .25s ease-in-out;
-                -ms-transition: all .25s ease-in-out;
-                -o-transition: all .25s ease-in-out;
-                transition: all .25s ease-in-out;
-            }
-
-            .navbar-header {
-                float: left;
-            }
-
-            .navbar-default .navbar-brand {
-                height: auto;
-                padding: 0;
-                color: #428bca;
-            }
-
-            .navbar-brand {
-                float: left;
-                padding: 15px 15px;
-                font-size: 18px;
-                line-height: 20px;
-                height: 50px;
-            }
-
-            .navbar-default .navbar-brand.navbar-name {
-                padding-top: 13px;
-                padding-left: 25px;
-            }
-
-            .navbar-default .navbar-brand>img {
-                width: auto;
-                max-height: 50px;
-                display: block;
-                vertical-align: middle;
-                border: 0;
-            }
-
-            .container {
-                margin-right: auto;
-                margin-left: auto;
-                padding-left: 15px;
-                padding-right: 15px;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="wrap">
-            <div id="main">
-                <header>
-                <nav class="navbar navbar-default">
-                <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                    <img src="/static/img/logo-djaodjin-128.png">
-                </a>
-                <a class="navbar-brand navbar-name" href="/">
-                    <span>DjaoDjin</span>
-                </a>
-                </div>
-                </nav>
-                </header>
-                <div class="container">
-                    <div style="display:inline-block;text-align:left;margin:auto;">
-                    <h1>
-                        {% trans %}500 Internal Server Error{% endtrans %}
-                    </h1>
-                    <p>
-                        {% trans %}We have been notified and have started on fixing the error. We apologize for the inconvinience.{% endtrans %}
-                    </p>
-                    <p>
-                        {% trans %}If you would like to drop us a line, please <a href="/contact/">get in touch</a>.{% endtrans %}
-                    </p>
-                    <p>
-                        {% trans %}Please come back later.{% endtrans %}
-                    </p>
-                    <p style="text-align:center;">
-                        <a href="/">{% trans %}Go back to the homepage{% endtrans %} &raquo;</a>
-                    </p>
-                    </div>
-                </div>
+                <p class="text-secondary">
+                    {% trans %}
+                        500 Internal Server Error
+                    {% endtrans %}
+                </p>
+                
+                <p>
+                    {% trans %}
+                        This was a server error on our part, and we apologize. <br class="d-none d-xl-block">
+                        Refresh the page to try again, or please <a href="/contact/">drop us a line</a> to get in touch.
+                    {% endtrans %}
+                </p>
             </div>
         </div>
-        <footer class="footer">
-            <div class="copyr">{% trans %}Powered by &copy; 2019 DjaoDjin. All rights reserved.{% endtrans %} - <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>
-                &nbsp;&nbsp;
-                <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm"></i></a>
-                <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm"></i></a>
-                <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-            </div>
-        </footer>
-    </body>
-</html>
+    </div>
+{% endblock %}
