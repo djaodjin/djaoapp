@@ -1,27 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8 text-center" style="margin-top: 50px;">
-                <p>
-                    <i class="fa fa-meh-o fa-4x"></i>
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+                <h3>
+                    Didn't quite catch that.
+                </h3>
+                <p class="text-secondary">
+                    {% trans %}400 Bad Request{% endtrans %}
                 </p>
-                <p>
-                    {% trans %}400 Bad Request - Sorry, there was an error loading this page.{% endtrans %}
-                </p>
+
                 {% if messages %}
-                <div class="alert alert-danger">
-                    {% for message in messages %}
-                    <div>{{message}}</div>
-                    {% endfor %}
-                </div>
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                        <div>{{message}}</div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
+
                 <p>
-                    {% trans %}If you think there is a mistake, please <a href="/contact/">contact us</a>.{% endtrans %}
-                </p>
-                <p>
-                    {% trans %}We do our best to reply within 24 hours. Thank you!{% endtrans %}
+                    {% trans %}
+                        We couldn't understand your request. <br class="d-none d-xl-block">
+                        Refresh the page to try again, or please <a href="/contact/">drop us a line</a> to get in touch.
+                    {% endtrans %}
                 </p>
             </div>
         </div>
