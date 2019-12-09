@@ -1,23 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8 text-center" style="margin-top: 50px;">
-                <p>
-                    <i class="fa fa-hand-stop-o fa-4x"></i>
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+                <h3>
+                    Doesn't seem to be access.
+                </h3>
+
+                <p class="text-secondary">
+                    {% trans %}403 Permission Denied{% endtrans %}
                 </p>
+
                 <p>
-                    {% trans %}403 Permission denied - Sorry, it seems you do not have permissions to access this page.{% endtrans %}
-                </p>
-                <p>
-                    {% trans %}If you think it is a mistake, please contact an administrator.{% endtrans %}
-                </p>
-                <p>
-                    {% trans %}If you are an administrator and think this is a mistake, please <a href="/contact/">contact us</a>.{% endtrans %}
-                </p>
-                <p>
-                    {% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
+                    {% trans %}
+                        Unfortunately, we weren't able to access that page for you. <br class="d-none d-xl-block">
+                        Refresh the page to try again, or please <a href="/contact/">drop us a line</a> to get in touch.
+                    {% endtrans %}
                 </p>
             </div>
         </div>
