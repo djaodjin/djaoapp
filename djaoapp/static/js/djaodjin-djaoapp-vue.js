@@ -1,3 +1,23 @@
+Vue.component('role-user-list-modal', {
+    data: function() {
+        return {
+            unregistered: {
+                slug: '',
+                email: '',
+                full_name: ''
+            }
+        }
+    },
+    methods: {
+        invite: function() {
+            var dialog = $(".add-role-modal");
+            if( dialog && jQuery().modal ) {
+                dialog.modal("show");
+            }
+        }
+    }
+});
+
 
 Vue.component('theme-update', {
     mixins: [

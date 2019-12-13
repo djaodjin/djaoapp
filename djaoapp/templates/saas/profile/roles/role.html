@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block saas_content %}
-<role-user-list inline-template id="{{role_descr}}"
+<role-user-list-modal inline-template >
+<role-user-list inline-template @invite="invite" v-bind:unregistered="unregistered"
+    id="{{role_descr}}"
     data-trip data-trip-index="1"
     data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
@@ -104,6 +106,18 @@
                           v-model="unregistered.email" />
                   </div>
                 </div>
+                <div class="row form-group">
+                  <div class="col-sm-2">
+                    <label>{% trans %}Full name{% endtrans %}</label>
+                  </div>
+                  <div class="controls col-sm-10">
+                    <input id="new-request-email"
+                          class="form-control" style="width:100%;"
+                          name="full_name" type="text" max-length="150"
+                          placeholder="John Doe"
+                          v-model="unregistered.full_name" />
+                  </div>
+                </div>
                 <div class="form-group">
                   <div class="controls">
                     <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
@@ -112,7 +126,7 @@
                     <textarea class="form-control"
                               name="message"
                               maxlength="255" type="text" rows="10">
-{% trans invitee='[[unregistered.email]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
+{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
 I am adding you as a {{role_descr}} to {{organization}}.
 
@@ -137,4 +151,5 @@ Thank you,
       </div>
     </div>
 </role-user-list>
+</role-user-list-modal>
 {% endblock %}
