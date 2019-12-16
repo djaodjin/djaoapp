@@ -1,5 +1,3 @@
-import 'script-loader!js/djaodjin-dashboard';
-import 'script-loader!js/djaodjin-menubar';
 import 'script-loader!dropzone';
 import 'script-loader!d3/d3';
 import 'script-loader!nvd3';

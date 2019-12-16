@@ -66,6 +66,10 @@ module.exports = {
     // used in resolution of modules inside all js and css files,
     // also in webpack entry points declared in the beginning of this config
     resolve: {
+        alias: {
+            // using full build of Vue (runtime + compiler)
+            vue$: 'vue/dist/vue.esm.js',
+        },
         modules: djaodjin.djaodjin_modules,
     },
     // needed for webpack modules resolution

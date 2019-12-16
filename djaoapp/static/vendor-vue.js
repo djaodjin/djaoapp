@@ -6,7 +6,7 @@ import 'moment-timezone/builds/moment-timezone-with-data.js';
 // Use 'vue/dist/vue.esm.js' compiler+runtime ESM module otherwise
 // the `/profile/{organization}/subscribers/` page does not display correctly
 // and no error is shown in the console log.
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue';
 window.Vue = Vue;
 
 // Use vue2-filters `function (root, factory) {` module
@@ -25,7 +25,7 @@ window.Sortable = Sortable;
 //  - <b-pagination> in djaoapp/templates/_pagination.html
 // XXX We are already using the jQuery version (bootstrap.js) in base.js.
 import BootstrapVue from 'bootstrap-vue';
-Vue.use(BootstrapVue);
+window.BootstrapVue = BootstrapVue;
 
 // Use 'uiv/dist/uiv.esm.js' ESM module?
 // because of:

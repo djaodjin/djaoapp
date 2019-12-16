@@ -57,12 +57,6 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{{ render_bundle('js_vendor-vue') }}
-
-<script type="text/javascript">
-Vue.use(uiv, {prefix: 'uiv'});
-</script>
-
 <script type="text/javascript">
 var djaodjinSettings = {
     urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
@@ -85,9 +79,13 @@ var djaodjinSettings = {
 };
 </script>
 
+{{ render_bundle('js_vendor-vue') }}
 {{ render_bundle('js_djaodjin-vue') }}
 
 <script type="text/javascript">
+Vue.use(BootstrapVue);
+Vue.use(uiv, {prefix: 'uiv'});
+
 var app = new Vue({
   el: '#app',
   delimiters: ["[[","]]"],
