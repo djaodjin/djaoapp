@@ -1190,7 +1190,6 @@
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
-      "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
       "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
     },
     "model": "saas.Organization", "pk": 14
@@ -1340,7 +1339,8 @@
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
-      "extra": "This profile is used for taking screenshots when organization has no associated processor account."
+      "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
+      "extra": "This profile is used for taking screenshots when organization has an associated processor account."
     },
     "model": "saas.Organization", "pk": 15
 }]

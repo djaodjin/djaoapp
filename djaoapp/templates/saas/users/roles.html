@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block saas_content %}
-<role-profile-list inline-template id="accessible-list-container">
+<role-user-list-modal inline-template >
+<role-profile-list inline-template @invite="invite" v-bind:unregistered="unregistered" id="accessible-list-container">
   <div>
     <!-- Add a User to Organization -->
     <div class="container">
@@ -128,4 +129,5 @@ Thank you,
     </div>
   </div>
 </role-profile-list>
+</role-user-list-modal>
 {% endblock %}
