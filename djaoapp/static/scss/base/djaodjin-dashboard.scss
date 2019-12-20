@@ -219,71 +219,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: block;
 }
 
-@include media-breakpoint-down(xs) {
-    .dashboard-content {
-      margin-top: $navbar-height;
-    }
-
-    .dashboard-content > header {
-      position: fixed;
-      height:  $navbar-height;
-      top: 0;
-      z-index: 4;
-      width: 100%;
-      left: 0;
-    }
-
-    .dashboard-nav,
-    .dashboard-inner-container .dashboard-nav {
-        display: none;
-    }
-
-    .navbar-brand-container {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0);
-        z-index: 10;
-    }
-
-    .navbar-brand-container .navbar-brand > img {
-        max-height: 36px;
-    }
-
-    // always display djaoapp name inside sidebar
-    // otherwise need to have two partial brand templates
-    .dashboard-nav .navbar-brand .d-none {
-        display: inline-block !important;
-    }
-
-    .header-menubar .dropdown {
-        position: static;
-    }
-
-    .header-menubar .dropdown-menu {
-        left: auto;
-        right: 5px;
-    }
-}
-
-@include media-breakpoint-up(sm) {
-  .dashboard-inner-container {
-    position: inherit;
-    left: 0;
-    width: inherit;
-  }
-
-  .dashboard-inner-container .dashboard-content {
-    margin-left: $dashboard-sidebar-width;
-    width: calc(100vw - #{$dashboard-sidebar-width});
-  }
-
-  .dashboard-inner-container .navbar-brand-container {
-    display: none;
-    margin-left: 0;
-  }
-
-}
-
 .sidebar-toggle > .closed:before  {
     content: "\f101"; /* .fa-angle-double-right:before */
 }
@@ -589,4 +524,108 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 
 .icon-active {
     background: $dashboard-icon-color-active;
+}
+
+.chart-area {
+    height: 400px !important;
+    width: 100%;
+}
+
+.graph-legend-dot {
+    height: 12px;
+    width: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.saas-metrics-chart .nv-legendWrap {
+    display: none;
+}
+
+
+@include media-breakpoint-down(xs) {
+    .dashboard-content {
+      margin-top: $navbar-height;
+    }
+
+    .dashboard-content > header {
+      position: fixed;
+      height:  $navbar-height;
+      top: 0;
+      z-index: 4;
+      width: 100%;
+      left: 0;
+    }
+
+    .dashboard-nav,
+    .dashboard-inner-container .dashboard-nav {
+        display: none;
+    }
+
+    .navbar-brand-container {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 10;
+    }
+
+    .navbar-brand-container .navbar-brand > img {
+        max-height: 36px;
+    }
+
+    // always display djaoapp name inside sidebar
+    // otherwise need to have two partial brand templates
+    .dashboard-nav .navbar-brand .d-none {
+        display: inline-block !important;
+    }
+
+    .header-menubar .dropdown {
+        position: static;
+    }
+
+    .header-menubar .dropdown-menu {
+        left: auto;
+        right: 5px;
+    }
+
+    .row-header {
+        position: absolute;
+        background: white;
+        width: 115px;
+        height: 36px;
+        left: 0;
+    }
+
+    .row-body:nth-child(2) {
+        padding-left: 115px;
+    }
+
+    .saas-metrics-chart {
+        overflow-x: scroll;
+        width: 100%;
+    }
+
+    .saas-metrics-chart .chart-area {
+        width: 600px;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+  .dashboard-inner-container {
+    position: inherit;
+    left: 0;
+    width: inherit;
+  }
+
+  .dashboard-inner-container .dashboard-content {
+    margin-left: $dashboard-sidebar-width;
+    width: calc(100vw - #{$dashboard-sidebar-width});
+  }
+
+  .dashboard-inner-container .navbar-brand-container {
+    display: none;
+    margin-left: 0;
+  }
+
 }

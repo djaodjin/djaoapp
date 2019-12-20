@@ -70,6 +70,9 @@ function updateChart(container, data, unit, dataScale, extra) {
     } else {
         defaults["currency"] = [unit, ""];
     }
+    // XXX These should be derived from *-xs definitions in .scss files
+    var chartMobileWidth = 600;
+    var mobileBreakpoint = 576;
     var curr = d3.locale(defaults);
     nv.addGraph(function() {
         // clear any previous chart elements before adding new ones
@@ -112,6 +115,10 @@ function updateChart(container, data, unit, dataScale, extra) {
             .y(function(d) { return d[1] * dataScale; })
             .margin({top: 50, right: 20, bottom: 60, left: marginLeft})
             .useInteractiveGuideline(true);
+
+        if($(window).width() <= mobileBreakpoint){
+            chart.width(chartMobileWidth);
+        }
 
         chart.legend.key(function(d){return d.title ? d.title : d.key; })
         chart.interactiveLayer.tooltip.contentGenerator(function(d) {
@@ -209,26 +216,26 @@ function updateChart(container, data, unit, dataScale, extra) {
             .call(chart);
 
         drawChartBackground(chart);
-
-        // XXX listening on the inner ``container`` does not trigger
-        // the chart update so we listen to the event fired
-        // in ``$(".dashboard-nav-toggle").click()``.
-        $('.dashboard-container').resize(function(){
+        function handleRerender(){
+            // if we are on mobile, hardcode the width
+            if($(window).width() <= mobileBreakpoint){
+                chart.width(chartMobileWidth);
+            } else {
+                chart.width(false);
+            }
             chart.update();
             // Add timeout to update background correctly.
             setTimeout(function(){
                 drawChartBackground(chart);
             }, 500);
-        });
+        }
 
-        nv.utils.windowResize(function(){
-          chart.update();
-          // Add timeout to update background correctly.
-          setTimeout(function(){
-            drawChartBackground(chart);
-          }, 500);
+        // XXX listening on the inner ``container`` does not trigger
+        // the chart update so we listen to the event fired
+        // in ``$(".dashboard-nav-toggle").click()``.
+        $('.dashboard-container').resize(handleRerender);
 
-        });
+        nv.utils.windowResize(handleRerender);
 
         return chart;
     });
