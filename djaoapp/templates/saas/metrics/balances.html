@@ -13,14 +13,7 @@
           <uiv-dropdown class="form-group" append-to-body>
               <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
               <template slot="dropdown">
-                  <li>
-                      <uiv-date-picker
-                        v-model="params.ends_at"
-                        format="{{DATETIME_FORMAT}}"
-                        @input="get"
-                        icon-control-left="fa fa-caret-left"
-                        icon-control-right="fa fa-caret-right" />
-                  </li>
+                  <li>{% include "saas/_datepicker_ends_at.html" %}</li>
               </template>
           </uiv-dropdown>
       </div>

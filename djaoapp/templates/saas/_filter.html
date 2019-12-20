@@ -19,9 +19,7 @@
       </div>
     </div>
     <template slot="dropdown">
-      <li>
-        <uiv-date-picker @input="get" format="{{DATETIME_FORMAT}}" v-model="params.start_at" icon-control-left="fa fa-caret-left" icon-control-right="fa fa-caret-right" />
-      </li>
+      <li>{% include "saas/_datepicker_start_at.html" %}</li>
     </template>
   </uiv-dropdown>
 </div>
@@ -40,9 +38,7 @@
       </div>
     </div>
     <template slot="dropdown">
-      <li>
-        <uiv-date-picker @input="get" format="{{DATETIME_FORMAT}}" v-model="params.ends_at" icon-control-left="fa fa-caret-left" icon-control-right="fa fa-caret-right" />
-      </li>
+      <li>{% include "saas/_datepicker_ends_at.html" %}</li>
     </template>
   </uiv-dropdown>
 </div>
