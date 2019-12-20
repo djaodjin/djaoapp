@@ -36,18 +36,13 @@
             </div>
             <select class="form-control"
                     v-model="timezone"
-                    @change="prepareCurrentTabData">
+                    @change="get">
                 <option value="local">{% trans %}Local{% endtrans %}</option>
                 <option value="utc">{% trans %}UTC{% endtrans %}</option>
             </select>
             <template slot="dropdown">
               <li>
-                <uiv-date-picker
-                     format="{{DATETIME_FORMAT}}"
-                     v-model="params.ends_at"
-                     @input="prepareCurrentTabData"
-                     icon-control-left="fa fa-caret-left"
-                     icon-control-right="fa fa-caret-right" />
+                {% include "saas/_datepicker_ends_at.html" %}
               </li>
             </template>
           </uiv-dropdown>
