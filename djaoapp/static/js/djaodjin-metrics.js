@@ -70,6 +70,7 @@ function updateChart(container, data, unit, dataScale, extra) {
     } else {
         defaults["currency"] = [unit, ""];
     }
+    // XXX These should be derived from *-xs definitions in .scss files
     var chartMobileWidth = 600;
     var mobileBreakpoint = 576;
     var curr = d3.locale(defaults);
