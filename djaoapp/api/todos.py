@@ -7,19 +7,49 @@ import logging
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from saas.mixins import ProviderMixin
-from signup.serializers import ActivitySerializer
+from signup.serializers import ActivitySerializer, NoModelSerializer
+
+from .. import __version__
+
 
 LOGGER = logging.getLogger(__name__)
 
 
+class VersionSerializer(NoModelSerializer):
+
+    version = serializers.SerializerMethodField(read_only=True)
+
+    def get_version(self, obj):
+        return __version__
+
+
 class DjaoAppAPIVersion(RetrieveAPIView):
+    """
+    Retrieves version of the API
+
+    **Example
+
+    .. code-block:: http
+
+        GET /api HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+        {
+          "version": "2019-11-23"
+        }
+    """
+    serializer_class = VersionSerializer
 
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
-        return Response({'version': "1.0"})
+        return VersionSerializer({'version': __version__})
 
 
 def list_todos(request, provider=None):

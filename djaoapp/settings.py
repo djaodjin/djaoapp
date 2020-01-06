@@ -29,7 +29,8 @@ if os.getenv('DEBUG'):
     # Enable override on command line.
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
 
-API_DEBUG = DEBUG
+API_DEBUG = ((int(os.getenv('API_DEBUG')) > 0)
+    if os.getenv('API_DEBUG') else DEBUG)
 
 if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
     RULES_APPS = (RULES_APP_MODEL.split('.')[0],)

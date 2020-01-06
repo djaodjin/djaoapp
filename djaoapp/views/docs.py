@@ -9,6 +9,7 @@ import json, logging, os, re, warnings
 from collections import OrderedDict, defaultdict
 
 from django.conf import settings
+from django.http import HttpRequest
 from django.http.response import Http404
 from django.utils import six
 from django.utils.safestring import mark_safe
@@ -364,6 +365,8 @@ class AutoSchema(BaseAutoSchema):
                            serializer_class=None, example_key='resp'):
         view = self.view
         if not serializer_class:
+            view.request = HttpRequest()
+            view.request.method = method
             serializer_class = view.get_serializer_class()
         many = (method == 'GET' and hasattr(view, 'list'))
         if many:
@@ -566,11 +569,14 @@ class APIDocView(TemplateView):
                     func_details.update({
                         'func': func,
                         'path': '/api%s' % path,
-                        'tags': ''.join(func_details['tags']),
                         'description': rst_to_html(func_details['description']),
                         'examples': examples
                     })
-                    if func_details['tags']:
+                    if 'tags' in func_details and func_details['tags']:
+                        # /api retrieves version number and is not part
+                        # of any groups.
+                        func_details.update({
+                            'tags': ''.join(func_details['tags'])})
                         api_end_points += [func_details]
                 except AttributeError:
                     raise

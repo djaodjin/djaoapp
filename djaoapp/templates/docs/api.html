@@ -33,7 +33,7 @@
 
 
 {% block sidebar %}
-<ul class="nav flex-column">
+<ul id="api-doc-sidebar" class="nav flex-column">
   {% for tag, title in tags.items() %}
   <li class="nav-item">
       <a class="nav-link" href="#{{tag|lower}}">{{title}}</a>
@@ -49,7 +49,7 @@
 {% block content_area_classes %} style="padding-left: 20px;"{% endblock %}
 
 {% block content %}
-<div>
+<div id="api-doc-content">
     {% for api_end_point in api_end_points %}
     {% if api_end_point.tags != variable_watcher %}
     <section class="row">
