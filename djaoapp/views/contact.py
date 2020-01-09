@@ -6,6 +6,7 @@ import logging, socket
 from smtplib import SMTPException
 
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
 from django.contrib import messages
@@ -16,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView
 from saas.mixins import ProviderMixin
 from saas.models import Organization
-from saas.utils import full_name_natural_split
+from saas.utils import full_name_natural_split, update_context_urls
 from signup.auth import validate_redirect
 
 from ..compat import reverse
@@ -43,13 +44,25 @@ class ContactForm(forms.Form):
         if not kwargs.get('initial', {}).get('email', None):
             if getattr(get_current_app(), 'contact_requires_recaptcha', False):
                 self.fields['captcha'] = ReCaptchaField(
-                    attrs={'theme' : 'clean'})
+                    widget=ReCaptchaV2Checkbox(
+                        attrs={
+                            'data-theme': 'clean',
+                            'data-size': 'compact',
+                        }))
+#                    attrs={'theme' : 'clean'})
 
 
 class ContactView(ProviderMixin, FormView):
 
     form_class = ContactForm
     template_name = 'contact.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactView, self).get_context_data(**kwargs)
+        update_context_urls(context, {
+            'api_contact_us': reverse('api_contact_us')
+        })
+        return context
 
     def get_initial(self):
         kwargs = super(ContactView, self).get_initial()

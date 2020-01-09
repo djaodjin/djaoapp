@@ -1,8 +1,9 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
@@ -135,7 +136,12 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         if getattr(get_current_app(), 'registration_requires_recaptcha', False):
             # Default captcha field is already appended at the end of the list
             # of fields. We overwrite it here to set the theme.
-            self.fields['captcha'] = ReCaptchaField(attrs={'theme' : 'clean'})
+            self.fields['captcha'] = ReCaptchaField(
+                    widget=ReCaptchaV2Checkbox(
+                        attrs={
+                            'data-theme': 'clean',
+                            'data-size': 'compact',
+                        }))
         if 'country' in self.fields:
             # Country field is optional. We won't add a State/Province
             # in case it is omitted.

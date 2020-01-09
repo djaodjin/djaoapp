@@ -6,6 +6,7 @@ from signup.settings import USERNAME_PAT
 from urldecorators import include, url
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
+from ..api.contact import ContactUsAPIView
 from ..api.custom_themes import ThemePackageListAPIView, AppUpdateAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (OrganizationDetailAPIView,
@@ -15,7 +16,7 @@ from ..api.todos import DjaoAppAPIVersion, TodosAPIView
 from ..api.users import UserProfileAPIView, RecentActivityAPIView
 from ..urlbuilders import (url_authenticated, url_direct,
     url_frictionless_direct, url_frictionless_provider,
-    url_frictionless_self_provider,
+    url_frictionless_self_provider, url_prefixed,
     url_provider, url_provider_only, url_self_provider)
 
 
@@ -40,7 +41,7 @@ urlpatterns = [
     url_direct(r'^api/', include('pages.urls.api')),
 
     # Billing, Metrics, Profiles, Roles and Subscriptions
-    url(r'^api/', include('saas.urls.api.cart')), # DELETE implements own policy
+    url_prefixed(r'^api/', include('saas.urls.api.cart')), # DELETE implements own policy
     url_authenticated(r'^api/', include('saas.urls.api.legal')),
     url_self_provider(r'^api/', include('saas.urls.api.users')),
     url_direct(r'^api/', include('saas.urls.api.broker')),
@@ -89,11 +90,13 @@ urlpatterns = [
     # Furthermore we restrict verification and refresh of JWT
     # to the request.user itself.
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
-    url(r'^api/auth/register/',
+    url_prefixed(r'^api/auth/register/',
         DjaoAppJWTRegister.as_view(), name='api_register'),
-    url(r'^api/', include('signup.urls.api.auth')),
+    url_prefixed(r'^api/', include('signup.urls.api.auth')),
 
     # DjaoApp-specific
     url_self_provider(r'^api/todos/', TodosAPIView.as_view(), 'api_todos'),
-    url(r'^api$', DjaoAppAPIVersion.as_view())
+    url_prefixed(r'^api/contact/',
+        ContactUsAPIView.as_view(), name='api_contact_us'),
+    url_prefixed(r'^api$', DjaoAppAPIVersion.as_view())
 ]

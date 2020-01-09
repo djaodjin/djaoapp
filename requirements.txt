@@ -4,12 +4,12 @@
 boto3==1.4.4
 Django==1.11.26
 django-webpack-loader==0.6.0
-django-recaptcha==1.3.1
+django-recaptcha==2.0.5
 # XXX django-urldecorators==0.6 Django2.1+ requires GitHub Pull Request #2
 git+git://github.com/smirolo/django-urldecorators.git
 djangorestframework==3.10
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.5.13
+djaodjin-deployutils==0.5.18
 djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.13
 djaodjin-pages==0.2.7
@@ -34,7 +34,7 @@ yuicompressor==2.4.8
 jsmin==2.2.2
 django-extensions==2.1.4
 django-debug-panel==0.8.3
-django-debug-toolbar==1.11 # XXX does not support Django 2.2
+django-debug-toolbar==2.1 # 1.11 does not support Django 2.2
 
 # development
 drf-yasg==1.8.0

@@ -18,3 +18,38 @@
     </div>
   </div>
 {% endblock %}
+
+{% block bodyscripts %}
+<!-- The following block submits through the "contact us" through the API.
+<script type="text/javascript" src="/static/js/djaodjin-resources.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    var elm = $("form");
+    elm.submit(function(event) {
+        var self = this;
+        var data = {};
+        event.preventDefault();
+        var fields = $(self).find('[name]').not('[name="csrfmiddlewaretoken"]');
+        for( var fieldIdx = 0; fieldIdx < fields.length; ++fieldIdx ) {
+            var field = $(fields[fieldIdx]); // XXX jQuery
+            var fieldName = field.attr('name');
+            var fieldValue = field.attr('type') === 'checkbox' ?
+                field.prop('checked') : field.val();
+            data[fieldName] = fieldValue;
+        }
+        $.ajax({
+          method: 'POST',
+          url: '{{urls.api_contact_us}}',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+        }).done(function(resp) {
+            showMessages([resp.details], "info");
+        }).fail(function(resp) {
+            showErrorMessages(resp);
+        });
+        return false;
+    });
+});
+</script>
+-->
+{% endblock %}

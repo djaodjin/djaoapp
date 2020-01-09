@@ -32,6 +32,9 @@ if os.getenv('DEBUG'):
 API_DEBUG = ((int(os.getenv('API_DEBUG')) > 0)
     if os.getenv('API_DEBUG') else DEBUG)
 
+if DEBUG:
+    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
 if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
     RULES_APPS = (RULES_APP_MODEL.split('.')[0],)
 else:

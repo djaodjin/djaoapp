@@ -160,7 +160,7 @@
 
 
 {% macro input_field(bound_field, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-{% if bound_field.field.widget.recaptcha_challenge_name %}
+{% if bound_field.field.widget.recaptcha_response_name %}
 <div>
 <div class="form-group{% if bound_field.errors %} has-error{% endif %}" style="float: right;margin-right: 5px;">
         {{bound_field.as_widget()}}
