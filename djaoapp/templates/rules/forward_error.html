@@ -1,23 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="offset-sm-2 col-sm-8 text-center" style="margin-top: 50px;">
-            <p>
-                <i class="fa fa-meh-o fa-4x"></i>
-            </p>
-            <p>
-{% trans %}503 Service Unavailable{% endtrans %}{% if err %} - {{err}}{% endif %}
-            </p>
-            <p>
-{% trans %}The service behind the firewall cannot be reached.{% endtrans %}
-{% trans %}If you think there is a mistake, please <a href="/contact/">contact us</a>.{% endtrans %}
-            </p>
-            <p>
-{% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
-            </p>
-        </div>
+<div class="container py-5">
+  <div class="row py-5">
+    <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+      <h3>{% trans %}Couldn't reach destination.{% endtrans %}</h3>
+      <p class="text-secondary">
+          {% trans %}503 Service Unavailable{% endtrans %}
+      </p>
+      <p>
+{% trans %}Sorry, we couldn't reach the service behind the firewall.{% endtrans %}
+      </p>
+      <p>
+{% trans %}Please come back later or try to navigate another part of the site.{% endtrans %}
+      </p>
+      <p>
+{% trans %}Thank you for the patience!{% endtrans %}
+      </p>
+      <p style="text-align:center;">
+          <a href="/">Go back to the homepage &raquo;</a>
+      </p>
     </div>
+  </div>
 </div>
 {% endblock %}
