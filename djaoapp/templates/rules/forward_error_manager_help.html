@@ -1,64 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="offset-sm-2 col-sm-8 text-center" style="margin-top: 50px;">
-            <p>
-                <i class="fa fa-meh-o fa-4x"></i>
-            </p>
-            <p>
-{% trans %}503 Service Unavailable{% endtrans %}{% if err %} - {{err}}{% endif %}
-            </p>
-            <p>
-{% trans %}The service behind the firewall cannot be reached.{% endtrans %}
-            </p>
-            <p>
-{% trans %}You are a manager for this product. If you need help to setup your service, please <a href="/contact/">contact us</a>.{% endtrans %}
-            </p>
-            <p>
-{% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
-            </p>
-            <div class="about-us">
-                <div class="row">
-                    <div class="col-xs-1">
-                        <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
-                    </div>
-                    <div class="col-xs-11 text-left">
-                        <dl>
-                            <dt>{% trans %}Session Data{% endtrans %}</dt>
-                            <dd>
-                                <pre class="code">
-                                    <code>
-                                        {{forward_session}}
-                                    </code>
-                                </pre>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>{% trans %}As HTTP Cookie Header{% endtrans %}</dt>
-                            <dd>
-                                <pre class="code">
-                                    <code>
-                                        {{forward_session_cookie}}
-                                    </code>
-                                </pre>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
-                            <dd>
-                                <pre class="code">
-                                    <code>
-                                        {{forward_url}}
-                                    </code>
-                                </pre>
-                            </dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container py-5">
+  <div class="row py-5">
+    <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+      <h3>{% trans %}Couldn't reach destination.{% endtrans %}</h3>
+      <p class="text-secondary">
+          {% trans %}503 Service Unavailable{% endtrans %}
+      </p>
+      <p>
+{% trans %}Sorry, we couldn't reach the service behind the firewall.{% endtrans %}
+      </p>
+      <p>
+{% trans %}If you think there is a mistake on our part or you need help setting
+up your website, please <a href="/contact/">contact us</a>. We are happy
+to help. Thank you!{% endtrans %}
+      </p>
     </div>
+  </div>
+  <div class="about-us">
+    <div class="row py-5">
+      <div class="col-1">
+        <img class="img-fluid" src="{{'/static/img/logo-djaodjin-128.png'|djasset}}" />
+      </div>
+      <div class="col-11 text-left">
+        <dl>
+          <dt>{% trans %}Session Data{% endtrans %}</dt>
+          <dd>
+            <pre class="code">
+              <code>
+                  {{forward_session}}
+              </code>
+            </pre>
+          </dd>
+        </dl>
+        <dl>
+          <dt>{% trans %}As HTTP Cookie Header{% endtrans %}</dt>
+          <dd>
+            <pre class="code">
+              <code>
+                  {{forward_session_cookie}}
+              </code>
+            </pre>
+          </dd>
+        </dl>
+        <dl>
+          <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
+          <dd>
+            <pre class="code">
+              <code>
+                  {{forward_url}}
+              </code>
+            </pre>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
