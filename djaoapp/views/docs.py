@@ -357,6 +357,8 @@ class AutoSchema(BaseAutoSchema):
             kwargs['description'] = description
             kwargs['tags'] = list(func_tags) if func_tags else []
             kwargs['examples'] = self.examples
+        self.view.request = HttpRequest()
+        self.view.request.method = method
         operation = super(AutoSchema, self).get_operation(path, method)
         operation.update(kwargs)
         return operation
@@ -365,8 +367,9 @@ class AutoSchema(BaseAutoSchema):
                            serializer_class=None, example_key='resp'):
         view = self.view
         if not serializer_class:
-            view.request = HttpRequest()
-            view.request.method = method
+            if not hasattr(view, 'request'):
+                view.request = HttpRequest()
+                view.request.method = method
             serializer_class = view.get_serializer_class()
         many = (method == 'GET' and hasattr(view, 'list'))
         if many:
@@ -568,7 +571,7 @@ class APIDocView(TemplateView):
                                     example['resp'])
                     func_details.update({
                         'func': func,
-                        'path': '/api%s' % path,
+                        'path': '%s' % path,
                         'description': rst_to_html(func_details['description']),
                         'examples': examples
                     })
