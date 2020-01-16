@@ -695,7 +695,7 @@
 },
 {
     "fields": {
-      "created_at": "2019-11-20T00:00:00-00:00",
+      "created_at": "2020-01-10T00:00:00-00:00",
       "user": 9,
       "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
     },
@@ -790,13 +790,62 @@
 },
 {
     "fields": {
-      "slug": "club",
-      "email": "club@localhost.localdomain",
-      "full_name": "Association of Online Educators",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "slug": "tennis-club",
+      "email": "tennis-club@localhost.localdomain",
+      "full_name": "Tennis Club of North Beach",
+      "created_at": "2020-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
+      "is_active": 1,
+      "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
+    },
+    "model": "saas.Organization", "pk": 14
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "role_description": 1,
+      "organization": 14,
+      "user": 1
+    },
+    "model": "saas.Role", "pk": 12
+},
+{
+    "fields":{
+        "slug": "tennis-club",
+        "title":"Tennis Club of North Beach",
+        "created_at": "2020-01-01T00:00:00-00:00",
+        "setup_amount":0,
+        "period_amount":18900,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "advance_discount": 0,
+        "description":"",
+        "organization" : 14,
+        "is_active" : 1
+    },
+    "model" : "saas.Plan", "pk": 13
+},
+{
+    "fields":{
+        "code": "HALLOWEEN",
+        "created_at":"2020-01-01T00:00:00-00:00",
+        "percent": 50,
+        "organization": 14
+    },
+    "model" : "saas.Coupon", "pk": 3
+},
+{
+    "fields": {
+      "slug": "yoga-club",
+      "email": "yoga-club@localhost.localdomain",
+      "full_name": "Yoga Club",
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1,
+      "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
+      "extra": "This profile is used for taking screenshots when organization has an associated processor account."
     },
     "model": "saas.Organization", "pk": 15
 },
@@ -1182,53 +1231,6 @@
     "model": "saas.subscription", "pk": 19
 },
 {
-    "fields": {
-      "slug": "tennis-club",
-      "email": "tennis-club@localhost.localdomain",
-      "full_name": "Tennis Club of North Beach",
-      "created_at": "2020-01-01T00:00:00-00:00",
-      "processor": 1,
-      "is_provider": 1,
-      "is_active": 1,
-      "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
-    },
-    "model": "saas.Organization", "pk": 14
-},
-{
-    "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
-      "role_description": 1,
-      "organization": 14,
-      "user": 1
-    },
-    "model": "saas.Role", "pk": 12
-},
-{
-    "fields":{
-        "slug": "tennis-club",
-        "title":"Tennis Club of North Beach",
-        "created_at": "2020-01-01T00:00:00-00:00",
-        "setup_amount":0,
-        "period_amount":18900,
-        "broker_fee_percent": 0,
-        "period_type": 5,
-        "advance_discount": 0,
-        "description":"",
-        "organization" : 14,
-        "is_active" : 1
-    },
-    "model" : "saas.Plan", "pk": 13
-},
-{
-    "fields":{
-        "code": "HALLOWEEN",
-        "created_at":"2020-01-01T00:00:00-00:00",
-        "percent": 50,
-        "organization": 14
-    },
-    "model" : "saas.Coupon", "pk": 3
-},
-{
     "fields":{
         "created_at": "2020-01-01T00:00:00-00:00",
         "user": 2,
@@ -1329,18 +1331,4 @@
         "invoiced": 3
     },
     "model" : "saas.ChargeItem", "pk": 1
-},
-{
-    "fields": {
-      "slug": "yoga-club",
-      "email": "yoga-club@localhost.localdomain",
-      "full_name": "Yoga Club",
-      "created_at": "2020-01-01T00:00:00-00:00",
-      "processor": 1,
-      "is_provider": 1,
-      "is_active": 1,
-      "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
-      "extra": "This profile is used for taking screenshots when organization has an associated processor account."
-    },
-    "model": "saas.Organization", "pk": 15
 }]

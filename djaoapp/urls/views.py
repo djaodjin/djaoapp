@@ -1,14 +1,14 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
+from rules.urldecorators import include, url
 from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
-from urldecorators import include, url
 
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_self_provider,
@@ -42,6 +42,9 @@ urlpatterns = [
     url_prefixed(r'^activate/(?P<verification_key>%s)/'
         % EMAIL_VERIFICATION_PAT,
         ActivationView.as_view(), name='registration_activate'),
+    url_prefixed(r'^activate/',
+        SigninView.as_view(template_name='accounts/activate/index.html'),
+        name='registration_activate_start'),
     url_prefixed(r'^recover/',
         PasswordResetView.as_view(), name='password_reset'),
     url_prefixed(r'^login/', SigninView.as_view(), name='login'),

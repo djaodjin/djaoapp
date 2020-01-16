@@ -1,9 +1,9 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
+from rules.urldecorators import include, url
 from saas.settings import ACCT_REGEX
 from signup.settings import USERNAME_PAT
-from urldecorators import include, url
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
 from ..api.contact import ContactUsAPIView

@@ -2,18 +2,16 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.4.4
-Django==1.11.26
+Django==2.2.6
 django-webpack-loader==0.6.0
 django-recaptcha==2.0.5
-# XXX django-urldecorators==0.6 Django2.1+ requires GitHub Pull Request #2
-git+git://github.com/smirolo/django-urldecorators.git
 djangorestframework==3.10
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.18
 djaodjin-extended-templates==0.2.4
 djaodjin-multitier==0.1.13
 djaodjin-pages==0.2.7
-djaodjin-rules==0.2.0
+djaodjin-rules==0.2.1
 djaodjin-saas==0.8.2
 djaodjin-signup==0.4.2
 jinja2==2.8.1

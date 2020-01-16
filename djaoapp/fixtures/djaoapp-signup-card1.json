@@ -1,0 +1,123 @@
+[
+{
+    "fields": {
+      "slug": "stripe",
+      "full_name": "Stripe",
+      "created_at": "2012-08-14T14:16:55-09:00",
+      "email": "stripe@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "185 Berry St #550",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94107",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 1
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card1",
+      "full_name": "SignupCard1",
+      "email": "djaoapp-signup-card1@localhost.localdomain",
+      "created_at": "2020-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 20
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card1",
+      "account": 20,
+      "domain": null,
+      "is_path_prefix": true,
+      "tag": "streetside"
+    },
+    "model": "multitier.Site", "pk": 20
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card1",
+      "account": 20,
+      "authentication": 1
+    },
+    "model": "rules.App", "pk": 20
+},
+{
+    "fields": {
+      "email": "xia-djaoapp-signup-card2@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "DjaoApp Signup Card 1",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia-djaoapp-signup-card1"
+    },
+    "model": "auth.User", "pk": 20
+},
+{
+    "fields": {
+      "slug": "xia-djaoapp-signup-card1",
+      "user": 20,
+      "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c7",
+      "created_at": "2020-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 20
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card2",
+      "full_name": "SignupCard2",
+      "email": "djaoapp-signup-card2@localhost.localdomain",
+      "created_at": "2020-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 21
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card2",
+      "account": 21,
+      "domain": null,
+      "is_path_prefix": true,
+      "tag": "streetside"
+    },
+    "model": "multitier.Site", "pk": 21
+},
+{
+    "fields": {
+      "slug": "djaoapp-signup-card2",
+      "account": 20,
+      "authentication": 2
+    },
+    "model": "rules.App", "pk": 21
+},
+{
+    "fields": {
+      "email": "xia-djaoapp-signup-card2@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia-djaoapp-signup-card2"
+    },
+    "model": "auth.User", "pk": 21
+},
+{
+    "fields": {
+      "slug": "xia-djaoapp-signup-card2",
+      "user": 21,
+      "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8",
+      "created_at": "2020-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 21
+}]

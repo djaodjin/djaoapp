@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -21,8 +21,12 @@ from pages.locals import (enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
 from rules.perms import NoRuleMatch, check_matched, redirect_or_denied
 from rules.utils import get_current_app
-from saas.decorators import (NORMAL, fail_authenticated, _fail_direct,
-    _fail_provider, _fail_provider_only, _fail_self_provider, _has_valid_access)
+from saas.decorators import (NORMAL, _has_valid_access,
+    fail_authenticated as fail_authenticated_default,
+    fail_direct as fail_direct_default,
+    fail_provider as fail_provider_default,
+    fail_provider_only as fail_provider_only_default,
+    fail_self_provider as fail_self_provider_default)
 from signup.models import Contact
 from signup.utils import has_invalid_password
 from saas.utils import get_role_model
@@ -80,8 +84,7 @@ def inject_edition_tools(function=None):
     return decorator
 
 
-def requires_authenticated(function=None,
-                           redirect_field_name=REDIRECT_FIELD_NAME):
+def fail_authenticated(request, verification_key=None):
     """
     Decorator for views that checks that the user is authenticated.
 
@@ -90,220 +93,116 @@ def requires_authenticated(function=None,
     page when required, as well as raise a ``PermissionDenied``
     instead when Content-Type is showing we are dealing with an API request.
     """
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            LOGGER.debug("Enters djaoapp.decorators.requires_authenticated")
-            redirect_url = fail_authenticated(request)
-            if redirect_url:
-                verification_key = kwargs.get('verification_key', None)
-                if verification_key:
-                    contact = Contact.objects.filter(
-                        verification_key=verification_key).first()
-                    if not contact:
-                        # Not a `Contact`, let's try `Role`.
-                        role_model = get_role_model()
-                        try:
-                            role = role_model.objects.filter(
-                                Q(grant_key=verification_key)
-                                | Q(request_key=verification_key)).get()
-                            contact, _ = Contact.objects.update_or_create_token(
-                                role.user)
-                            verification_key = contact.verification_key
-                        except role_model.DoesNotExist:
-                            pass
-                    if contact and has_invalid_password(contact.user):
-                        redirect_url = request.build_absolute_uri(
-                            reverse('registration_activate',
-                                args=(verification_key,)))
-                return redirect_or_denied(request, redirect_url,
-                    redirect_field_name=redirect_field_name)
-            return view_func(request, *args, **kwargs)
-        return _wrapped_view
-
-    if function:
-        return decorator(function)
-    return decorator
+    redirect = fail_authenticated_default(request)
+    if redirect:
+        if verification_key:
+            contact = Contact.objects.filter(
+                verification_key=verification_key).first()
+            if not contact:
+                # Not a `Contact`, let's try `Role`.
+                role_model = get_role_model()
+                try:
+                    role = role_model.objects.filter(
+                        Q(grant_key=verification_key)
+                        | Q(request_key=verification_key)).get()
+                    contact, _ = Contact.objects.update_or_create_token(
+                        role.user)
+                    verification_key = contact.verification_key
+                except role_model.DoesNotExist:
+                    pass
+            if contact and has_invalid_password(contact.user):
+                redirect = request.build_absolute_uri(
+                    reverse('registration_activate',
+                        args=(verification_key,)))
+    return redirect
 
 
-def requires_direct(function=None, roledescription=None, strength=NORMAL,
-                    redirect_field_name=REDIRECT_FIELD_NAME):
-    """
-    Same decorator as ``saas.decorators.requires_direct`` with the additional
-    look up for a ``Site`` account.
-    """
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            LOGGER.debug("Enters djaoapp.decorators.requires_direct")
-            try:
-                app = get_current_app()
-                #pylint:disable=unused-variable
-                redirect_url, matched, session = check_matched(request, app,
-                    prefixes=DEFAULT_PREFIXES)
-                if redirect_url:
-                    if isinstance(redirect_url, six.string_types):
-                        return http.HttpResponseRedirect(redirect_url)
-                    raise PermissionDenied()
-            except NoRuleMatch:
-                slug = kwargs.get('charge', kwargs.get('organization', None))
-                redirect_url = _fail_direct(request, organization=slug,
-                        roledescription=roledescription, strength=strength)
-                if redirect_url:
-                    return redirect_or_denied(request, redirect_url,
-                        redirect_field_name=redirect_field_name,
-                        descr=_("%(auth)s is not a direct manager"\
-    " of %(organization)s.") % {'auth': request.user, 'organization': slug})
-
-            return view_func(request, *args, **kwargs)
-
-        return _wrapped_view
-
-    if function:
-        return decorator(function)
-    return decorator
+def fail_direct(request, organization=None, roledescription=None):
+    try:
+        app = get_current_app()
+        #pylint:disable=unused-variable
+        redirect, matched, session = check_matched(request, app,
+            prefixes=DEFAULT_PREFIXES)
+    except NoRuleMatch:
+        redirect = fail_direct_default(request, organization=organization,
+                roledescription=roledescription)
+    return redirect
 
 
-def requires_provider(function=None, roledescription=None, strength=NORMAL,
-                    redirect_field_name=REDIRECT_FIELD_NAME):
+def fail_provider(request, organization=None, roledescription=None):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            LOGGER.debug("Enters djaoapp.decorators.requires_provider")
-            site = get_current_site()
-            organization = kwargs.get('organization', None)
-            if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
-                # We have a separate database so it is OK for a manager
-                # of the site to access registered ``Organization`` which
-                # are not subscribed yet.
-                if _has_valid_access(
-                    request, [get_current_broker()], strength):
-                    return view_func(request, *args, **kwargs)
-            try:
-                app = get_current_app()
-                #pylint:disable=unused-variable
-                redirect_url, matched, session = check_matched(request, app,
-                    prefixes=DEFAULT_PREFIXES)
-                if redirect_url:
-                    if isinstance(redirect_url, six.string_types):
-                        return http.HttpResponseRedirect(redirect_url)
-                    raise PermissionDenied()
-            except NoRuleMatch:
-                # By default, we are looking for provider.
-                slug = kwargs.get('charge', organization)
-                redirect_url = _fail_provider(request, organization=slug,
-                    roledescription=roledescription, strength=strength)
-                if redirect_url:
-                    return redirect_or_denied(request, redirect_url,
-                        redirect_field_name=redirect_field_name,
-                        descr=_("%(auth)s is neither a manager of"\
-" %(organization)s nor a manager of one of %(organization)s providers.") % {
-    'auth': request.user, 'organization': slug})
-            return view_func(request, *args, **kwargs)
-
-        return _wrapped_view
-
-    if function:
-        return decorator(function)
-    return decorator
+    site = get_current_site()
+    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+        # We have a separate database so it is OK for a manager
+        # of the site to access registered ``Organization`` which
+        # are not subscribed yet.
+        if _has_valid_access(
+            request, [get_current_broker()], strength):
+            return False
+    try:
+        app = get_current_app()
+        #pylint:disable=unused-variable
+        redirect, matched, session = check_matched(request, app,
+            prefixes=DEFAULT_PREFIXES)
+    except NoRuleMatch:
+        # By default, we are looking for provider.
+        redirect = fail_provider_default(request,
+            organization=organization, roledescription=roledescription)
+    return redirect
 
 
-def requires_provider_only(function=None, roledescription=None,
-                           strength=NORMAL,
-                           redirect_field_name=REDIRECT_FIELD_NAME):
+
+def fail_provider_only(request, organization=None, roledescription=None):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            LOGGER.debug("Enters djaoapp.decorators.requires_provider_only")
-            site = get_current_site()
-            organization = kwargs.get('organization', None)
-            if site.db_name:
-                # We have a separate database so it is OK for a manager
-                # of the site to access registered ``Organization`` which
-                # are not subscribed yet.
-                if _has_valid_access(
-                    request, [get_current_broker()], strength):
-                    return view_func(request, *args, **kwargs)
-            try:
-                app = get_current_app()
-                #pylint:disable=unused-variable
-                redirect_url, matched, session = check_matched(request, app,
-                    prefixes=DEFAULT_PREFIXES)
-                if redirect_url:
-                    if isinstance(redirect_url, six.string_types):
-                        return http.HttpResponseRedirect(redirect_url)
-                    raise PermissionDenied()
-            except NoRuleMatch:
-                # By default, we are looking for provider.
-                slug = kwargs.get('charge', organization)
-                redirect_url = _fail_provider_only(request, organization=slug,
-                    roledescription=roledescription, strength=strength)
-                if redirect_url:
-                    return redirect_or_denied(request, redirect_url,
-                        redirect_field_name=redirect_field_name,
-                        descr=_("%(auth)s is not a manager of one of"\
-" %(organization)s providers.") % {'auth': request.user, 'organization': slug})
-            return view_func(request, *args, **kwargs)
-
-        return _wrapped_view
-
-    if function:
-        return decorator(function)
-    return decorator
+    site = get_current_site()
+    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+        # We have a separate database so it is OK for a manager
+        # of the site to access registered ``Organization`` which
+        # are not subscribed yet.
+        if _has_valid_access(
+            request, [get_current_broker()], strength):
+            return False
+    try:
+        app = get_current_app()
+        #pylint:disable=unused-variable
+        redirect, matched, session = check_matched(request, app,
+            prefixes=DEFAULT_PREFIXES)
+    except NoRuleMatch:
+        # By default, we are looking for provider.
+        redirect = fail_provider_only_default(request,
+            organization=organization, roledescription=roledescription)
+    return redirect
 
 
-def requires_self_provider(function=None, strength=NORMAL,
-                           redirect_field_name=REDIRECT_FIELD_NAME):
+def fail_self_provider(request, user=None, roledescription=None):
     """
     Same decorator as saas.requires_self_provider with the added permissions
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            LOGGER.debug("Enters djaoapp.decorators.requires_self_provider")
-            site = get_current_site()
-            if site.db_name:
-                # We have a separate database so it is OK for a manager
-                # of the site to access profiles of ``User`` which
-                # are not subscribed yet.
-                if _has_valid_access(
-                    request, [get_current_broker()], strength):
-                    return view_func(request, *args, **kwargs)
-            try:
-                app = get_current_app()
-                #pylint:disable=unused-variable
-                redirect_url, matched, session = check_matched(request, app,
-                    prefixes=DEFAULT_PREFIXES)
-                if redirect_url:
-                    if isinstance(redirect_url, six.string_types):
-                        return http.HttpResponseRedirect(redirect_url)
-                    raise PermissionDenied()
-            except NoRuleMatch:
-                redirect_url = _fail_self_provider(
-                        request, user=kwargs.get('user', None),
-                        strength=strength)
-                if redirect_url:
-                    return redirect_or_denied(request, redirect_url,
-                        redirect_field_name=redirect_field_name,
-                        descr=_("%(auth)s has neither a direct"\
-" relation to an organization connected to %(user)s nor a connection to one"\
-" of the providers to such organization.") % {
-    'auth': request.user, 'user': kwargs.get('user', None)})
-            return view_func(request, *args, **kwargs)
-        return _wrapped_view
-
-    if function:
-        return decorator(function)
-    return decorator
+    site = get_current_site()
+    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+        # We have a separate database so it is OK for a manager
+        # of the site to access registered ``Organization`` which
+        # are not subscribed yet.
+        if _has_valid_access(
+            request, [get_current_broker()], strength):
+            return False
+    try:
+        app = get_current_app()
+        #pylint:disable=unused-variable
+        redirect, matched, session = check_matched(request, app,
+            prefixes=DEFAULT_PREFIXES)
+    except NoRuleMatch:
+        # By default, we are looking for provider.
+        redirect = fail_self_provider_default(request,
+            user=user, roledescription=roledescription)
+    return redirect
