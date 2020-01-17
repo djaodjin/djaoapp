@@ -21,8 +21,11 @@
 
                     <!-- Text and Button Input -->
                     <div class="input-group w-100">
-                      <input type="text" id="userTypeahead" name="organization" autocomplete="off" class="form-control" placeholder="{% trans %}Name or e-mail{% endtrans %}" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                      <div class="input-group-append">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="filter-inp">{% trans %}Profile{% endtrans %}</span>
+                      </div>
+                      <input type="text" id="userTypeahead" name="organization" autocomplete="off" class="form-control" placeholder="{% trans %}Name or e-mail{% endtrans %}" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
+                      <div class="input-group-append" v-if="!this.$parent.formVisible">
                         <button class="btn btn-primary" type="submit">{% trans %}Add Profile{% endtrans %}</button>
                       </div>
                     </div>
@@ -32,6 +35,41 @@
               </div>
             </form>
           </user-typeahead>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-md-6">
+          <div v-show="formVisible" v-cloak>
+            <div class="modal-content">
+              <form>
+                <div class="modal-body">
+                  <p class="text-danger">
+      {% trans full_name='[[unregistered.full_name]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite a profile manager for {{full_name}} to join {{site}}.{% endtrans %}
+                  </p>
+                  <div class="form-group">
+                    <div class="controls">
+                      <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                      <textarea class="form-control"
+                                name="message"
+                                maxlength="255" type="text" rows="10">
+    {% trans organization_name="[[unregistered.full_name]]", user=request.user.first_name %}Hello,
+
+    I would like to request access to {{organization_name}}
+
+    Thank you,
+    - {{user}}{% endtrans %}
+                      </textarea>
+                    </div>
+                  </div>
+                  <button type="submit"
+                          class="btn btn-primary"
+                          data-dismiss="modal"
+                          @click="create">{% trans %}Request access{% endtrans %}</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -72,61 +110,6 @@
     <!-- Start Pagination -->
     {% include "_pagination.html" %}
     <!-- End Pagination -->
-
-    <!-- Modal Dialogs -->
-
-    <!-- Modal Dialog to add a request to add a role to a user on an organization.  -->
-    <div class="add-role-modal modal fade" tabindex="-1" role="dialog"
-          aria-labelledby="{% trans %}Request access{% endtrans %}" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{% trans %}Request access{% endtrans %} ...</h5>
-            <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <form>
-            <div class="modal-body">
-              <p class="text-danger">
-  {% trans full_name='[[unregistered.full_name]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite a profile manager for {{full_name}} to join {{site}}.{% endtrans %}
-              </p>
-              <div class="form-group" style="margin-bottom: 15px;">
-                  <label>{% trans %}To{% endtrans %}</label>
-                  <input id="new-request-email" class="email form-control"
-                          name="email" type="text"
-                          max-length="150" placeholder="invitee@example.com"
-                          style="width:100%;" autofocus
-                          v-model="unregistered.email" />
-              </div>
-              <div class="form-group">
-                <div class="controls">
-                  <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-                  <textarea class="form-control"
-                            name="message"
-                            maxlength="255" type="text" rows="10">
-{% trans organization_name="[[unregistered.full_name]]", user=request.user.first_name %}Hello,
-
-I would like to request access to {{organization_name}}
-
-Thank you,
-- {{user}}{% endtrans %}
-                  </textarea>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-              <button type="submit"
-                      class="btn btn-primary"
-                      data-dismiss="modal"
-                      @click="create">{% trans %}Request access{% endtrans %}</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
   </div>
 </role-profile-list>
 </role-user-list-modal>
