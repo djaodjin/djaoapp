@@ -372,24 +372,28 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     background-color: #ddd;
 }
 
+.card-inactive .list-group-item {
+    background-color: #ddd;
+}
+
 .user-password-modal .invalid-feedback {
     display: block;
 }
 
-.organization-card .card-img-top {
+.card-organization .card-img-top {
     width: 50%;
     margin: 20px auto 0;
 }
 
-.organization-card .card-title a {
+.card-organization .card-title a {
     color: black;
 }
 
-.organization-card .badge {
+.card-organization .badge {
     font-weight: normal;
 }
 
-.organization-card .organization-buttons {
+.card-organization .organization-buttons {
     min-height: 110px;
     align-items: center;
     display: flex;

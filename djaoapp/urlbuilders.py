@@ -6,8 +6,9 @@ from saas.decorators import fail_agreement
 from saas.settings import ACCT_REGEX
 from signup.decorators import fail_active
 
-from .decorators import (fail_authenticated, fail_direct, fail_provider,
-    fail_provider_only, fail_self_provider, inject_edition_tools)
+from .decorators import (fail_active_roles, fail_authenticated,
+    fail_direct, fail_provider, fail_provider_only, fail_self_provider,
+    inject_edition_tools)
 
 
 def url_prefixed(regex, view, name=None):
@@ -24,7 +25,9 @@ def url_authenticated(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
         view, name=name,
-        checks=[fail_authenticated], decorators=[inject_edition_tools])
+        redirects=[
+            fail_authenticated
+        ], decorators=[inject_edition_tools])
 
 
 def url_active(regex, view, name=None):
@@ -34,9 +37,11 @@ def url_active(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
         view, name=name,
-        checks=[fail_authenticated,
-                    fail_active,
-                    fail_agreement])
+        redirects=[
+            fail_authenticated,
+            fail_active,
+            fail_agreement
+        ])
 
 
 def url_direct(regex, view, name=None):
@@ -46,12 +51,13 @@ def url_direct(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_direct],
-               decorators=[inject_edition_tools])
+                   fail_active_roles,
+                   fail_direct
+               ], decorators=[inject_edition_tools])
 
 
 def url_frictionless_direct(regex, view, name=None):
@@ -62,10 +68,10 @@ def url_frictionless_direct(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
-                   fail_direct],
-               decorators=[inject_edition_tools])
+                   fail_direct
+               ], decorators=[inject_edition_tools])
 
 
 def url_dashboard(regex, view, name=None):
@@ -77,12 +83,13 @@ def url_dashboard(regex, view, name=None):
     return url(regex % {
             "app": r'(?P<app>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_direct],
-               decorators=[inject_edition_tools])
+                   fail_active_roles,
+                   fail_direct
+               ], decorators=[inject_edition_tools])
 
 
 def url_dashboard_iframe(regex, view, name=None):
@@ -93,11 +100,13 @@ def url_dashboard_iframe(regex, view, name=None):
     return url(regex % {
             "app": r'(?P<app>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_direct])
+                   fail_active_roles,
+                   fail_direct
+               ])
 
 
 def url_provider(regex, view, name=None):
@@ -109,12 +118,13 @@ def url_provider(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_provider],
-               decorators=[inject_edition_tools])
+                   fail_active_roles,
+                   fail_provider
+               ], decorators=[inject_edition_tools])
 
 
 def url_frictionless_provider(regex, view, name=None):
@@ -128,10 +138,10 @@ def url_frictionless_provider(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
-                   fail_provider],
-               decorators=[inject_edition_tools])
+                   fail_provider
+               ], decorators=[inject_edition_tools])
 
 
 def url_provider_only(regex, view, name=None):
@@ -141,12 +151,13 @@ def url_provider_only(regex, view, name=None):
     return url(regex % {
             "organization": r'(?P<organization>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_provider_only],
-               decorators=[inject_edition_tools])
+                   fail_active_roles,
+                   fail_provider_only
+               ], decorators=[inject_edition_tools])
 
 
 def url_self_provider(regex, view, name=None):
@@ -159,12 +170,13 @@ def url_self_provider(regex, view, name=None):
     return url(regex % {
             "user": r'(?P<user>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_self_provider],
-               decorators=[inject_edition_tools])
+                   fail_active_roles,
+                   fail_self_provider
+               ], decorators=[inject_edition_tools])
 
 
 def url_frictionless_self_provider(regex, view, name=None):
@@ -175,7 +187,7 @@ def url_frictionless_self_provider(regex, view, name=None):
     return url(regex % {
             "user": r'(?P<user>%s)' % ACCT_REGEX},
                view, name=name,
-               checks=[
+               redirects=[
                    fail_authenticated,
-                   fail_self_provider],
-               decorators=[inject_edition_tools])
+                   fail_self_provider
+               ], decorators=[inject_edition_tools])

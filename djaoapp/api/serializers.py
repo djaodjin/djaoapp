@@ -1,13 +1,12 @@
-# Copyright (c) 2019 DjaoDjin inc.
+# Copyright (c) 2020 DjaoDjin inc.
 # see LICENSE
 
-#pylint: disable=old-style-class,no-init
+#pylint: disable=no-init
 
 from django.contrib.auth import get_user_model
-from django.utils import six
 from rest_framework import serializers
 from saas.api.serializers import (
-    OrganizationSerializer as OrganizationBaseSerializer,
+    OrganizationDetailSerializer as OrganizationBaseSerializer,
     OrganizationWithEndsAtByPlanSerializer,
     WithSubscriptionSerializer)
 from saas.api.serializers import RoleSerializer as BaseRoleSerializer
@@ -17,20 +16,20 @@ from signup.serializers import (ActivitySerializer as UserActivitySerializer,
 from rules.api.serializers import AppSerializer as RulesAppSerializer
 
 
-class OrganizationSerializer(OrganizationBaseSerializer):
+class OrganizationDetailSerializer(OrganizationBaseSerializer):
 
     pass
 
 
-class ProfileSerializer(OrganizationSerializer):
+class ProfileSerializer(OrganizationDetailSerializer):
 
     activities = UserActivitySerializer(many=True, read_only=True)
     subscriptions = WithSubscriptionSerializer(
         source='subscription_set', many=True, read_only=True)
 
-    class Meta(OrganizationSerializer.Meta):
-        fields = OrganizationSerializer.Meta.fields + (
-            'activities', 'subscriptions', 'picture')
+    class Meta(OrganizationDetailSerializer.Meta):
+        fields = OrganizationDetailSerializer.Meta.fields + (
+            'activities', 'subscriptions')
 
 
 class RoleSerializer(BaseRoleSerializer):
@@ -65,10 +64,23 @@ class SessionSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_roles(request):
         results = {}
-        for role, organizations in six.iteritems(Role.objects.accessbile_by(
-                user=request.user)):
-            serializer = OrganizationWithEndsAtByPlanSerializer(many=True)
-            results[role.slug] = serializer.to_representation(organizations)
+        role_key = None
+        organizations = []
+        prev_role_key = None
+        serializer = OrganizationWithEndsAtByPlanSerializer(many=True)
+        for role in Role.objects.valid_for(user=request.user).order_by(
+                'role_description').select_related('role_description'):
+            role_key = role.role_description.slug
+            if not prev_role_key:
+                prev_role_key = role_key
+            elif role_key != prev_role_key:
+                results[prev_role_key] = serializer.to_representation(
+                    organizations)
+                prev_role_key = role_key
+                organizations = []
+            organizations += [role.organization]
+        if organizations:
+            results[prev_role_key] = serializer.to_representation(organizations)
         return results
 
     @staticmethod

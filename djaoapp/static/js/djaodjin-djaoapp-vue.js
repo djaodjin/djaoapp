@@ -1,18 +1,43 @@
 Vue.component('role-user-list-modal', {
-    data: function() {
-        return {
-            unregistered: {
-                slug: '',
-                email: '',
-                full_name: ''
-            }
-        }
-    },
     methods: {
+        create: function() {
+            var dialog = $(".create-profile");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("show");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("show");
+               }
+            }
+        },
+        createCompleted: function() {
+            var dialog = $(".create-profile");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("hide");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("hide");
+               }
+            }
+        },
         invite: function() {
             var dialog = $(".add-role-modal");
-            if( dialog && jQuery().modal ) {
-                dialog.modal("show");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("show");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("show");
+               }
+            }
+        },
+        inviteCompleted: function() {
+            var dialog = $(".add-role-modal");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("hide");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("hide");
+               }
             }
         }
     }

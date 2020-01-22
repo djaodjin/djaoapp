@@ -1,7 +1,7 @@
 # Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
-from rules.urldecorators import include, url
+from rules.urldecorators import include
 from saas.settings import ACCT_REGEX
 from signup.settings import USERNAME_PAT
 

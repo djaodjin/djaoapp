@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -10,7 +10,7 @@ from saas.api.organizations import (
 from saas.api.serializers import OrganizationCreateSerializer
 from saas.docs import swagger_auto_schema
 
-from .serializers import (OrganizationSerializer, ProfileSerializer)
+from .serializers import (OrganizationDetailSerializer, ProfileSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -151,7 +151,7 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 #    search_fields = ('full_name',)
 #    ordering_fields = ('full_name',)
 #    ordering = ('full_name',)
-    serializer_class = OrganizationSerializer
+    serializer_class = OrganizationDetailSerializer
 
     @swagger_auto_schema(request_body=OrganizationCreateSerializer)
     def post(self, request, *args, **kwargs):

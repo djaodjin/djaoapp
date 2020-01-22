@@ -6,30 +6,27 @@ from __future__ import unicode_literals
 import logging
 from functools import wraps
 
-from django import http
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.core.exceptions import PermissionDenied
 from django.db import DEFAULT_DB_ALIAS
 from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.utils.decorators import available_attrs
-from django.utils import six
-from django.utils.translation import ugettext_lazy as _
 import jinja2.exceptions
 from multitier.thread_locals import get_current_site
 from pages.locals import (enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
-from rules.perms import NoRuleMatch, check_matched, redirect_or_denied
+from rules.perms import NoRuleMatch, check_matched
 from rules.utils import get_current_app
-from saas.decorators import (NORMAL, _has_valid_access,
+from saas.decorators import (_has_valid_access,
     fail_authenticated as fail_authenticated_default,
     fail_direct as fail_direct_default,
     fail_provider as fail_provider_default,
     fail_provider_only as fail_provider_only_default,
     fail_self_provider as fail_self_provider_default)
+from saas.models import RoleDescription
+from saas.utils import get_organization_model, get_role_model
 from signup.models import Contact
 from signup.utils import has_invalid_password
-from saas.utils import get_role_model
+from signup.decorators import fail_verified_email
 
 from .compat import reverse
 from .thread_locals import get_current_broker
@@ -82,6 +79,63 @@ def inject_edition_tools(function=None):
     if function:
         return decorator(function)
     return decorator
+
+
+def fail_active_roles(request):
+    """
+    User with active roles only
+    """
+    role_model = get_role_model()
+    if not role_model.objects.filter(user=request.user).exists():
+        # Find an organization with a matching e-mail domain.
+        domain = request.user.email.split('@')[-1].lower()
+        organization_model = get_organization_model()
+        try:
+            organization = organization_model.objects.filter(
+                email__endswith=domain).get()
+            # Find a RoleDescription we can implicitely grant to the user.
+            try:
+                role_descr = RoleDescription.objects.filter(
+                    Q(organization__isnull=True) | Q(organization=organization),
+                    implicit_create_on_none=True).get()
+                # Create a granted role implicitely, but only if the e-mail
+                # was verified.
+                redirect_to = fail_verified_email(request)
+                if redirect_to:
+                    return redirect_to
+                organization.add_role(request.user, role_descr,
+                    request_user=request.user)
+            except role_model.DoesNotExist:
+                LOGGER.debug("'%s' does not have a role on any profile but"
+                    " we cannot grant one implicitely because there is"
+                    " no role description that permits it.",
+                    request.user)
+            except role_model.MultipleObjectsReturned:
+                LOGGER.debug("'%s' does not have a role on any profile but"
+                    " we cannot grant one implicitely because we have"
+                    " multiple role description that permits it. Ambiguous.",
+                    request.user)
+        except organization_model.DoesNotExist:
+            LOGGER.debug("'%s' does not have a role on any profile but"
+                " we cannot grant one implicitely because there is"
+                " no profiles with @%s e-mail domain.",
+                request.user, domain)
+        except organization_model.MultipleObjectsReturned:
+            LOGGER.debug("'%s' does not have a role on any profile but"
+                " we cannot grant one implicitely because @%s is"
+                " ambiguous. Multiple profiles share that email domain.",
+                request.user, domain)
+
+    if role_model.objects.filter(
+            user=request.user, grant_key__isnull=False).exists():
+        # We have some invites pending so let's first stop
+        # by the user accessibles page.
+        redirect_to = reverse('saas_user_product_list', args=(request.user,))
+        if request.path != redirect_to:
+            # Prevents URL redirect loops
+            return redirect_to
+
+    return False
 
 
 def fail_authenticated(request, verification_key=None):
@@ -140,8 +194,7 @@ def fail_provider(request, organization=None, roledescription=None):
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.
-        if _has_valid_access(
-            request, [get_current_broker()], strength):
+        if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
         app = get_current_app()
@@ -167,8 +220,7 @@ def fail_provider_only(request, organization=None, roledescription=None):
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.
-        if _has_valid_access(
-            request, [get_current_broker()], strength):
+        if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
         app = get_current_app()
@@ -193,8 +245,7 @@ def fail_self_provider(request, user=None, roledescription=None):
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.
-        if _has_valid_access(
-            request, [get_current_broker()], strength):
+        if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
         app = get_current_app()

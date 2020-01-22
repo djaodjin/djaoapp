@@ -20,6 +20,8 @@ class ThemePackageListAPIView(ThemePackageListAPIBaseView):
 
 class AppUpdateAPIView(RulesAppUpdateAPIView):
     """
+    Retrieves forward end-point
+
     Returns the URL endpoint to which requests passing the access rules
     are forwarded to, and the format in which the session information
     is encoded.

@@ -14,6 +14,7 @@ from saas.mixins import ProviderMixin
 from signup.serializers import ActivitySerializer, NoModelSerializer
 
 from .. import __version__
+from ..compat import import_string
 
 
 LOGGER = logging.getLogger(__name__)

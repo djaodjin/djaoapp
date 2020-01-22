@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,7 +8,6 @@ from operator import itemgetter
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
 
 from saas.models import Charge
 from saas.managers.metrics import day_periods

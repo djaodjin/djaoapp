@@ -6,13 +6,13 @@
 
 {% block saas_content %}
 <role-user-list-modal inline-template >
-<role-user-list inline-template @invite="invite" v-bind:unregistered="unregistered"
+<role-user-list inline-template @invite="invite"
     id="{{role_descr}}"
     data-trip data-trip-index="1"
     data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
     <div id="user-relation-list-container">
-      <user-typeahead @item-save="save" :url="typeaheadUrl" inline-template>
+      <user-typeahead ref="typeahead" @item-selected="updateItemSelected" @item-save="save" :url="typeaheadUrl" v-bind:itemSelected="unregistered" inline-template>
         <form id="add-user" class="form-inline mb-4" @submit.prevent="submit">
           {# The following div is required for the typeahead dropbox to show under the input field. #}
           <div style="width:100%;">
@@ -143,7 +143,7 @@ Thank you,
                 <button type="submit"
                         class="btn btn-primary"
                         data-dismiss="modal"
-                        @click="create">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+                        @click="submit">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
               </div>
             </div>
           </form>

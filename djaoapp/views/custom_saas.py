@@ -1,11 +1,10 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 from multitier.thread_locals import get_current_site
 from saas.backends import load_backend
 from saas.views.billing import (

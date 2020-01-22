@@ -14,10 +14,8 @@ from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from django_countries.fields import Country
-from rules.utils import get_app_model
 from saas.forms import PostalFormMixin
 from saas.models import Organization
-from signup.settings import FULL_NAME_PAT
 from signup.forms import (ActivationForm as ActivationFormBase, NameEmailForm,
     PasswordConfirmMixin, UsernameOrEmailAuthenticationForm)
 
