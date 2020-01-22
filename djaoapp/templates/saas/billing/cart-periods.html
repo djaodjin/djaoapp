@@ -1,9 +1,15 @@
 {% extends "saas/billing/cart.html" %}
 
-{% block order_title %}{% trans %}Place order{% endtrans %} ...{% endblock %}
+{% block order_title %}
+    <div class="text-lg-center">
+        <h4>
+            {% trans %}Select Payment Options{% endtrans %}
+        </h4>
+    </div>
+{% endblock %}
 
 {% block order_card %}
-<div class="form-group text-center">
-    <button type="submit" class="btn btn-primary btn-lg payment-submit">{% trans %}Next{% endtrans %} &raquo;</button>
-</div>
+    <div class="form-group text-center pb-5 mb-5">
+        <button type="submit" class="btn btn-primary btn-md payment-submit px-5">{% trans %}Go to Checkout{% endtrans %}</button>
+    </div>
 {% endblock %}

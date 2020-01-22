@@ -1,77 +1,123 @@
 <fieldset id="invoicables">
-  <table class="table table-striped" style="margin-bottom:0;">
-    {% if invoicables %}
-      <tbody data-plan="{{invoicables.0.subscription.plan}}">
-        <tr>
-          <td colspan="3">
-            <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
-          </td>
-        </tr>
-      {% for entry in invoicables %}
-        {% if entry.is_changed %}
-        {% if is_bulk_buyer %}
-        <tr class="seat">
-          <td colspan="3">
-            <div class="col-sm-4">
-              <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
-            </div>
-            <div class="col-sm-4">
-              <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
-            </div>
-            <div class="col-sm-4">
-              <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
-            </div>
-          </td>
-        </tr>
-        {% endif %}
-        </tbody>
-        <tbody data-plan="{{entry.subscription.plan}}">
-          <tr>
-            <td colspan="3">
-              <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
-            </td>
-          </tr>
-        {% endif %}
-          {% for line in entry.lines %}
-          <tr class="invoice-item">
-            <td></td>
-            <td>{{line.dest_price|humanize_money}}</td>
-            <td>{{line.descr}}
-            </td>
-          </tr>
-          {% endfor %}
-          {% for line in entry.options %}
-          <tr>
-            <td><input type="radio" name="{{entry.name}}" data-amount="{{line.dest_amount}}" value="{{line.rank}}" {% if line.rank == entry.selected_option %}checked="1"{% endif %}></input></td>
-            <td>{{line.dest_price|humanize_money}}</td>
-            <td>{{line.descr}}
-            </td>
-          </tr>
-          {% endfor %}
-      {% endfor %}
-      {% if is_bulk_buyer %}
-      <tr class="seat">
-        <td colspan="3">
-          <div class="col-sm-4">
-            <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
-          </div>
-          <div class="col-sm-4">
-            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
-          </div>
-          <div class="col-sm-4">
-            <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
-          </div>
-        </td>
-      </tr>
-      {% endif %}
-      </tbody>
-    {% endif %}
-    <tfooter>
-      <tr>
-        <th></th>
-        <th class="total-amount">{{lines_price|humanize_money}}</th>
-        <th>{% trans %}Charged Today{% endtrans %}</th>
-      </tr>
-    </tfooter>
-  </table>
+  <div class="container bg-light px-0 py-2">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table" style="margin-bottom:0;">
+
+          {% if invoicables %}
+            <tbody data-plan="{{invoicables.0.subscription.plan}}">
+              <tr>
+                <th colspan="3">
+                  {% trans %}Selected Plan{% endtrans %}:
+                  <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
+                </th>
+              </tr>
+              {% if invoicables.0.options %}
+              <tr class="py-0">
+                  <th colspan="2" class="font-weight-normal">Payment Options</th>
+                  <th class="font-weight-normal text-right">Totals</th>
+              </tr>
+              {% endif %}
+              <tr>
+                  <td colspan="3" class="p-0">
+                      <hr class="mx-3 my-0">
+                  </td>
+              </tr>
+
+              {% for entry in invoicables %}
+                {% if entry.is_changed %}
+                    {% if is_bulk_buyer %}
+                    <tr class="seat">
+                      <td colspan="3">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
+                          </div>
+                          <div class="col-sm-4">
+                            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
+                          </div>
+                          <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+
+                  <tbody data-plan="{{entry.subscription.plan}}">
+                    <tr>
+                      <th colspan="3">
+                        {% trans %}Selected Plan{% endtrans %}:
+                        <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
+                      </th>
+                    </tr>
+                    {% if entry.options %}
+                    <tr class="py-0">
+                      <th colspan="2" class="font-weight-normal">Payment Options</th>
+                      <th class="font-weight-normal text-right">Totals</th>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                      <td colspan="3" class="p-0">
+                        <hr class="mx-3 my-0">
+                      </td>
+                    </tr>
+                {% endif %}{# entry.is_changed #}
+
+                <!-- No options, there is only one price. Checkout Page -->
+                {% for line in entry.lines %}
+                  <tr class="invoice-item">
+                    <td></td>
+                    <td class="line-descr">{{line.descr}}</td>
+                    <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
+                  </tr>
+                {% endfor %}
+
+                <!-- Payment Options for Payment Plans Page -->
+                {% for line in entry.options %}
+                  <tr>
+                    <td><input type="radio" name="{{entry.name}}" data-amount="{{line.dest_amount}}" value="{{line.rank}}" {% if line.rank == entry.selected_option %}checked="1"{% endif %}></input></td>
+                    <td class="line-descr">{{line.descr}}</td>
+                    <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+
+              {% if is_bulk_buyer %}
+                <tr class="seat">
+                  <td colspan="3">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" />
+                      </div>
+                      <div class="col-sm-4">
+                        <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" />
+                      </div>
+                      <div class="col-sm-4">
+                        <button type="button" class="btn btn-primary add-seat" type="button">{% trans %}Add{% endtrans %}</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              {% endif %}
+
+            </tbody>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container bg-light py-3 my-3">
+    <div class="row">
+      <div class="col-md-6">
+        {% trans %}Charged Today{% endtrans %}
+      </div>
+      <div class="col-md-6 total-amount text-right">
+        {{lines_price|humanize_money}}
+      </div>
+    </div>
+  </div>
 </fieldset>
