@@ -17,7 +17,8 @@ from django_countries.fields import Country
 from saas.forms import PostalFormMixin
 from saas.models import Organization
 from signup.forms import (ActivationForm as ActivationFormBase, NameEmailForm,
-    PasswordConfirmMixin, UsernameOrEmailAuthenticationForm)
+    PasswordConfirmMixin, UsernameOrEmailAuthenticationForm,
+    UserActivateForm as UserActivateFormBase)
 
 from .fields import PhoneNumberField
 from ..thread_locals import get_current_app
@@ -66,6 +67,25 @@ class ActivationForm(MissingFieldsMixin, ActivationFormBase):
             raise forms.ValidationError(
                 _("You must agree to terms and conditions."))
         return self.cleaned_data['terms_of_use']
+
+
+class UserActivateForm(MissingFieldsMixin, UserActivateFormBase):
+
+    pass
+
+
+class GetStartedForm(UsernameOrEmailAuthenticationForm):
+    """
+    Form to present a user who may or may not have an account yet.
+    """
+    username = forms.EmailField(widget=forms.TextInput(
+        attrs={'placeholder':'Email', 'maxlength': 75}),
+        label=_("Please enter your e-mail address"))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': _("Password")}),
+        label=_("We found your account! Please enter your password"))
+
+    submit_title = _("Submit")
 
 
 class PasswordForm(MissingFieldsMixin, PasswordResetForm):

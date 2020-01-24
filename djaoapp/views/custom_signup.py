@@ -70,8 +70,8 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
 
     form_class = ActivationForm
 
-    def activate_user(self, form):
-        user = super(ActivationView, self).activate_user(form)
+    def activate_user(self, **cleaned_data):
+        user = super(ActivationView, self).activate_user(**cleaned_data)
         if user:
             Signature.objects.create_signature(saas_settings.TERMS_OF_USE, user)
         return user

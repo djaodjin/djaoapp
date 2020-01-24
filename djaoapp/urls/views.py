@@ -10,6 +10,7 @@ from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 
+from ..forms.custom_signup import GetStartedForm
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_self_provider,
      url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
@@ -43,7 +44,9 @@ urlpatterns = [
         % EMAIL_VERIFICATION_PAT,
         ActivationView.as_view(), name='registration_activate'),
     url_prefixed(r'^activate/',
-        SigninView.as_view(template_name='accounts/activate/index.html'),
+        SigninView.as_view(
+            form_class=GetStartedForm,
+            template_name='accounts/activate/index.html'),
         name='registration_activate_start'),
     url_prefixed(r'^recover/',
         PasswordResetView.as_view(), name='password_reset'),

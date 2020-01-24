@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -8,6 +8,8 @@ from django import VERSION as DJANGO_VERSION
 from django.contrib.messages import constants as messages
 
 from deployutils.configs import load_config, update_settings
+
+from .compat import reverse_lazy
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -514,7 +516,7 @@ for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
-LOGIN_URL = 'login'
+LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = '/' # XXX otherwise logout on djaoapp might lead to 410.
 
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']

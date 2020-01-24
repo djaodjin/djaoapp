@@ -32,7 +32,7 @@
             {% trans %}Balance{% endtrans %}
             <span v-if="!itemsLoaded || items.balance_amount == 0">{% trans %}due{% endtrans %}</span>
             <span
-               v-if="items.balance_amount > 0" v-cloak>{% trans %}due{% endtrans %} (<a href="{{urls.organization.balance_amount}}">{% trans %}pay now{% endtrans %}</a>)
+               v-if="items.balance_amount > 0" v-cloak>{% trans %}due{% endtrans %} (<a href="{{urls.organization.balance}}">{% trans %}pay now{% endtrans %}</a>)
             </span>
             <span v-if="items.balance_amount < 0" v-cloak>{% trans %}credit{% endtrans %}</span>
           </dd>

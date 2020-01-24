@@ -174,7 +174,6 @@ def url_self_provider(regex, view, name=None):
                    fail_authenticated,
                    fail_active,
                    fail_agreement,
-                   fail_active_roles,
                    fail_self_provider
                ], decorators=[inject_edition_tools])
 

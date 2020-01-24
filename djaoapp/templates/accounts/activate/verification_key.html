@@ -16,9 +16,11 @@
             {% endblock %}
             </p>
         </div>
+        {% if form.email %}
         <div class="text-right" style="margin-bottom: 15px;">
             {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
         </div>
+        {% endif %}
         {% if form %}
         {% include "_form.html" %}
         {% endif %}

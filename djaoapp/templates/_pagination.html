@@ -7,6 +7,6 @@
         </div>
     </infinite-loading>
 </div>
-<div v-show="pageCount > 1" class="text-center d-none d-md-block" v-if="!isInfiniteScroll" v-cloak>
+<div class="text-center" v-show="pageCount > 1" v-if="!isInfiniteScroll" v-cloak>
     <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
 </div>
