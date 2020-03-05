@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -20,9 +20,9 @@ from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
 from rest_framework import exceptions, serializers
 from rest_framework.compat import (URLPattern, URLResolver,
-    get_original_route, uritemplate)
-from rest_framework.fields import empty
+    get_original_route)
 from rest_framework.schemas.generators import EndpointEnumerator
+from saas.api.serializers import NoModelSerializer
 
 try:
     from rest_framework.schemas.openapi import (
@@ -145,6 +145,7 @@ def format_examples(examples):
     """
     # in_requestBody
     # in_respoonse
+    #pylint:disable=invalid-name
     IN_URL_STATE = 0
     IN_REQUESTBODY_STATE = 1
     IN_REQUESTBODY_EXAMPLE_STATE = 2
@@ -205,13 +206,13 @@ def format_examples(examples):
 
 
 def format_json(obj):
-    requestBodyJSON = json.dumps(
+    request_body_json = json.dumps(
         obj, indent=2)
-    requestBody = ".. code-block:: json\n\n"
-    for line in requestBodyJSON.splitlines():
-        requestBody += "    " + line + "\n"
-    requestBody += "\n\n"
-    return rst_to_html(requestBody)
+    request_body = ".. code-block:: json\n\n"
+    for line in request_body_json.splitlines():
+        request_body += "    " + line + "\n"
+    request_body += "\n\n"
+    return rst_to_html(request_body)
 
 
 def rst_to_html(string):
@@ -373,7 +374,7 @@ class AutoSchema(BaseAutoSchema):
             serializer_class = view.get_serializer_class()
         many = (method == 'GET' and hasattr(view, 'list'))
         if many:
-            class APISerializer(serializers.Serializer):
+            class APISerializer(NoModelSerializer):
                 count = serializers.IntegerField(
                     help_text=_("Total number of items in the dataset"))
                 previous = serializers.CharField(allow_null=True,

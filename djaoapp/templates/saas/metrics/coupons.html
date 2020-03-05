@@ -10,6 +10,15 @@
 {% block saas_content %}
 <coupon-user-list inline-template id="coupon-performance">
   <div id="coupon-users-container">
+    <!-- Download as .CSV -->
+    <div class="col-offset-md-9 col-md-3 mb-3">
+      <div class="btn-actions text-right">
+        <a id="download" class="btn btn-secondary btn-md w-100" role="button" :href="'{{urls.coupon_uses_download}}' + getQueryString(['page'])">
+          <i class="fa fa-cloud-download mr-2"></i> {% trans %}Download .CSV{% endtrans %}
+        </a>
+      </div>
+    </div>
+    <hr />
     <div class="row my-3">
         {% include "saas/_filter.html" %}
     </div>

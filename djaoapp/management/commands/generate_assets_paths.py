@@ -55,7 +55,7 @@ class Command(BaseCommand):
                             djaodjin_mods.append(static_dir)
         dirs['djaodjin_modules'] = djaodjin_mods + [
             os.path.dirname(assets_cache_path), node_modules]
-        with open(output, 'w') as f:
-            f.write(json.dumps(dirs))
+        with open(output, 'w') as file_d:
+            file_d.write(json.dumps(dirs))
 
         self.stdout.write('dumped djaodjin-webpack config to %s' % output)

@@ -90,9 +90,7 @@
     "fields": {
       "created_at": "2020-01-01T00:00:00+00:00",
       "slug": "viewer",
-      "title": "Viewer",
-      "skip_optin_on_grant": true,
-      "implicit_create_on_none": true
+      "title": "Viewer"
     },
     "model": "saas.RoleDescription", "pk": 3
 },

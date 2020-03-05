@@ -4,21 +4,21 @@
 
 {% block saas_page_layout %}
 <user-engagement inline-template id="user-engagement-container">
-    <div>
-        <table class="table">
-            <thead>
-                <th>Username</th>
-                <th v-for="tag in tags">[[tag]]</th>
-            </thead>
-            <tbody>
-                <tr v-for="row in items.results">
-                    <td>[[row.username]]</td>
-                    <td v-for="tag in tags">
-                        [[row.engagements.indexOf(tag) >= 0 ? 'engaged' : 'not engaged']]
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <div>
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <th>Username</th>
+        <th v-for="tag in tags">[[tag]]</th>
+      </thead>
+      <tbody>
+        <tr v-for="row in items.results">
+          <td><a :href="'{{urls.profile_redirect}}' + row.username + '/'">[[row.username]]</a></td>
+          <td v-for="tag in tags" :class="row.engagements.indexOf(tag) >= 0 ? 'bg-success' : ''">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    {% include "_pagination.html" %}
+  </div>
 </user-engagement>
 {% endblock %}

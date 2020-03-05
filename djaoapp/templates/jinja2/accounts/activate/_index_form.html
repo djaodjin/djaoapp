@@ -4,8 +4,11 @@
 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {{ input_field(form['username'], form.hide_labels) }}
-    {% if form.username.value() %}
-    {{ input_field(form['password'], form.hide_labels) }}
+    {% if form['password'] %}
+    <p>
+      {% trans %}We found your account! Please enter your password{% endtrans %}
+    </p>
+    {{ input_field(form['password'], True) }}
     <div>
       <p class="text-center mt-3">
         <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>

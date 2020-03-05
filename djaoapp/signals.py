@@ -66,6 +66,7 @@ def _send_notification_email(from_site, recipients, template,
     defaulting to sending an e-mail to broker profile managers
     if there is any problem with the connection settings.
     """
+    #pylint:disable=too-many-arguments
     try:
         get_email_backend(connection=from_site.get_email_connection()).send(
             from_email=from_site.get_from_email(),

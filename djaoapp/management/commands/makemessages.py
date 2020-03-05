@@ -35,13 +35,17 @@ if DJANGO_VERSION[:2] < (1, 11):
 else:
     from django.utils.translation import template as trans_real
 
-strip_whitespace_right = re.compile(r"(%s-?\s*(trans|pluralize).*?-%s)\s+" % (BLOCK_TAG_START, BLOCK_TAG_END), re.U)
-strip_whitespace_left = re.compile(r"\s+(%s-\s*(endtrans|pluralize).*?-?%s)" % (BLOCK_TAG_START, BLOCK_TAG_END), re.U)
+STRIP_WHITESPACE_RIGHT = re.compile(
+    r"(%s-?\s*(trans|pluralize).*?-%s)\s+" % (
+        BLOCK_TAG_START, BLOCK_TAG_END), re.U)
+STRIP_WHITESPACE_LEFT = re.compile(
+    r"\s+(%s-\s*(endtrans|pluralize).*?-?%s)" % (
+        BLOCK_TAG_START, BLOCK_TAG_END), re.U)
 
 
 def strip_whitespaces(src):
-    src = strip_whitespace_left.sub(r'\1', src)
-    src = strip_whitespace_right.sub(r'\1', src)
+    src = STRIP_WHITESPACE_LEFT.sub(r'\1', src)
+    src = STRIP_WHITESPACE_RIGHT.sub(r'\1', src)
     return src
 
 

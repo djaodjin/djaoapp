@@ -6,7 +6,6 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {{input_field(form["full_name"], form.hide_labels)}}
     {{input_field(form["email"], form.hide_labels)}}
-    {{select_input_field([("Other", "Other"), ("Certificate", "Certificate"), ("Log In", "Log In"), ("Payment", "Payment"), ("Refund", "Refund")], "Category", True, "Category", help_text="", value="Other", disabled=False, errors=[], hide_labels=form.hide_labels)}}
     {{input_field(form["message"], form.hide_labels)}}
     {% if 'captcha' in form.fields %}
       {{input_field(form["captcha"], form.hide_labels)}}

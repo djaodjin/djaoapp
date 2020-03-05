@@ -53,15 +53,16 @@ class ReCaptchaValidator(object):
         self.public_key = public_key or getattr(
             settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
 
-    def get_remote_ip(self):
+    @staticmethod
+    def get_remote_ip():
         frm = sys._getframe()
         while frm:
             request = frm.f_locals.get("request")
             if request:
                 remote_ip = request.META.get("REMOTE_ADDR", "")
                 forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                ip = remote_ip if not forwarded_ip else forwarded_ip
-                return ip
+                ip_addr = remote_ip if not forwarded_ip else forwarded_ip
+                return ip_addr
             frm = frm.f_back
 
     def __call__(self, value):
@@ -102,12 +103,10 @@ class ReCaptchaValidator(object):
             if self.required_score > score:
                 LOGGER.error(
                     "ReCAPTCHA validation failed due to its score of %s"
-                    " being lower than the required amount." % score
-                )
+                    " being lower than the required amount.", score)
                 raise ValidationError(
                     self.error_messages["captcha_invalid"],
-                    code="captcha_invalid"
-                )
+                    code="captcha_invalid")
 
 
 class ReCaptchaField(serializers.CharField):

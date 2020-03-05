@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import logging
 
+from deployutils.apps.django.compat import is_authenticated
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib import messages
@@ -29,7 +30,6 @@ from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
-from signup.models import Contact
 from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
@@ -61,6 +61,16 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
 
     # XXX ``page_name``.html will contain default message from the proxyed app.
     page_name = None
+
+    def check_permissions(self, request):
+        # XXX This will be executed for all forward requests, even ones
+        # to load static assets. As long as we don't have a reliable
+        # way to identify forwarded request to "main" page.
+        #if is_authenticated(request):
+        #    redirect_url = fail_active_roles(request)
+        #    if redirect_url:
+        #        return redirect_url, False
+        return super(ProxyPageMixin, self).check_permissions(request)
 
     def forward_error(self, err):
         #pylint:disable=unused-argument
@@ -232,6 +242,10 @@ class DjaoAppPageView(TemplateView):
 class AppPageView(ProxyPageMixin, DjaoAppPageView):
 
     page_name = 'app' # Override ProxyPageMixin.page_name
+
+    # XXX Maybe the only place we need to hard-code a redirect
+    # for fail_grant_active? What about `AppPageRedirectView`? Is it integrated
+    # in OrganizationRedirect there?
 
 
 class AppPageRedirectView(ProxyPageMixin, DjaoAppPageRedirectView):

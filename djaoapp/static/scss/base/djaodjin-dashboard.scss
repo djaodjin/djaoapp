@@ -547,6 +547,16 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: none;
 }
 
+/* upload themes */
+.dropzone-previews {
+  min-height: 150px;
+  padding: 54px 54px;
+  border: 2px dashed theme-color(primary);
+  border-radius: 5px;
+  background: #ccc;
+  margin-bottom: 10px;
+}
+
 
 @include media-breakpoint-down(xs) {
     .dashboard-content {

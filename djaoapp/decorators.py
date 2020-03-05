@@ -22,11 +22,9 @@ from saas.decorators import (_has_valid_access,
     fail_provider as fail_provider_default,
     fail_provider_only as fail_provider_only_default,
     fail_self_provider as fail_self_provider_default)
-from saas.models import RoleDescription
-from saas.utils import get_organization_model, get_role_model
+from saas.utils import get_role_model
 from signup.models import Contact
 from signup.utils import has_invalid_password
-from signup.decorators import fail_verified_email
 
 from .compat import reverse
 from .thread_locals import get_current_broker

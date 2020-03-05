@@ -2,15 +2,17 @@
 
 {% block content %}
 <div class="container">
-  <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
-    <div class="page-header my-4">
-      <h3 class="text-center">{% trans %}Get started!{% endtrans %}</h3>
-    </div>
-    <div class="signup-group row">
-      <div class="offset-sm-2 col-sm-8">
-        {% if form %}
-        {% include "accounts/activate/_index_form.html" %}
-        {% endif %}
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
+      <div class="page-header my-4">
+        <h3 class="text-center">{% trans %}Get started!{% endtrans %}</h3>
+      </div>
+      <div class="signup-group row">
+        <div class="offset-sm-2 col-sm-8">
+          {% if form %}
+          {% include "accounts/activate/_index_form.html" %}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

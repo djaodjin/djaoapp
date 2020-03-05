@@ -1,13 +1,13 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
-import json, logging, re
+import json, logging
 from hashlib import sha256
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from ...views.docs import (OPENAPI_INFO, APIDocGenerator,
+from ...views.docs import (APIDocGenerator,
     format_examples, split_descr_and_examples)
 
 
@@ -31,7 +31,7 @@ class Command(BaseCommand):
         formatted_examples = []
         api_base_url = getattr(settings,
             'API_BASE_URL', 'https://djaodjin.com/api')
-        generator = APIDocGenerator(info=OPENAPI_INFO, url=api_base_url)
+        generator = APIDocGenerator()
         schema = generator.get_schema(request=None, public=True)
         descr_hashes = []
         for path, path_details in schema.paths.items():

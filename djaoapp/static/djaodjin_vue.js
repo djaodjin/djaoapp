@@ -7,6 +7,7 @@ import 'script-loader!vue-croppa';
 import 'script-loader!vue-infinite-loading';
 import 'script-loader!js/djaodjin-upload';
 import 'script-loader!js/djaodjin-dashboard';
+import 'script-loader!js/djaodjin-resources-vue.js';
 import 'script-loader!js/djaodjin-signup-vue';
 import 'script-loader!js/djaodjin-saas-vue';
 import 'script-loader!js/djaodjin-rules-vue';

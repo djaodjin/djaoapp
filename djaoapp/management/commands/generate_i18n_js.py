@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ from django.template import Context, Engine
 from django.utils.translation import get_language
 from django.utils.translation.trans_real import DjangoTranslation
 
-js_catalog_template = r"""
+JS_CATALOG_TEMPLATE = r"""
 {% autoescape off %}
 (function(globals) {
   var activeLang = navigator.language || navigator.userLanguage || 'en';
@@ -139,8 +139,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         contents = self.generate_i18n_js()
         path = os.path.join(settings.BASE_DIR, options['PATH'][0])
-        with open(path, 'w') as f:
-            f.write(contents)
+        with open(path, 'w') as file_d:
+            file_d.write(contents)
         self.stdout.write('wrote file into %s\n' % path)
 
     def generate_i18n_js(self):
@@ -155,7 +155,8 @@ class Command(BaseCommand):
                 # this function is not i18n-enabled
                 formats = get_formats()
                 for code in codes:
-                    self.translation = DjangoTranslation(code, domain=self.domain)
+                    self.translation = DjangoTranslation(
+                        code, domain=self.domain)
                     _catalog = self.get_catalog()
                     _plural = self.get_plural()
                     if _catalog:
@@ -164,11 +165,11 @@ class Command(BaseCommand):
                         if six.PY2:
                             _plural = _plural.__str__()
                         plural[code] = _plural
-                template = Engine().from_string(js_catalog_template)
+                template = Engine().from_string(JS_CATALOG_TEMPLATE)
                 context = {
-                    'catalog_str': json.dumps(catalog, sort_keys=True, indent=2),
-                    'formats_str': json.dumps(formats, sort_keys=True, indent=2),
-                    'plural': plural,
+                  'catalog_str': json.dumps(catalog, sort_keys=True, indent=2),
+                  'formats_str': json.dumps(formats, sort_keys=True, indent=2),
+                  'plural': plural,
                 }
                 return template.render(Context(context))
 

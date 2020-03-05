@@ -74,20 +74,6 @@ class UserActivateForm(MissingFieldsMixin, UserActivateFormBase):
     pass
 
 
-class GetStartedForm(UsernameOrEmailAuthenticationForm):
-    """
-    Form to present a user who may or may not have an account yet.
-    """
-    username = forms.EmailField(widget=forms.TextInput(
-        attrs={'placeholder':'Email', 'maxlength': 75}),
-        label=_("Please enter your e-mail address"))
-    password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'placeholder': _("Password")}),
-        label=_("We found your account! Please enter your password"))
-
-    submit_title = _("Submit")
-
-
 class PasswordForm(MissingFieldsMixin, PasswordResetForm):
 
     submit_title = _("Reset")

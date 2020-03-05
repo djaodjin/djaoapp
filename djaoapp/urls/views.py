@@ -9,13 +9,14 @@ from rules.urldecorators import include, url
 from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
+from signup.forms import StartAuthenticationForm
 
-from ..forms.custom_signup import GetStartedForm
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
      url_direct, url_provider, url_self_provider,
      url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
-from ..views.custom_saas import DashboardView, ProcessorAuthorizeView
+from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
+    ProcessorAuthorizeView)
 from ..views.custom_signup import (ActivationView, PasswordResetView,
     PasswordResetConfirmView, SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
@@ -45,7 +46,7 @@ urlpatterns = [
         ActivationView.as_view(), name='registration_activate'),
     url_prefixed(r'^activate/',
         SigninView.as_view(
-            form_class=GetStartedForm,
+            form_class=StartAuthenticationForm,
             template_name='accounts/activate/index.html'),
         name='registration_activate_start'),
     url_prefixed(r'^recover/',
@@ -55,7 +56,19 @@ urlpatterns = [
     url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', #pylint: disable=line-too-long
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
+    # Redirects
+    url(r'^billing/cart/',
+        # XXX override because we want a login_required in front.
+        login_required(OrganizationRedirectView.as_view(
+                pattern_name='saas_organization_cart'),
+                       login_url='registration_register'),
+        name='saas_cart'),
+    url_authenticated(r'^', include('saas.urls.redirects')),
+
     # Profiles
+    url_authenticated(r'users/roles/accept/$',
+        RoleImplicitGrantAcceptView.as_view(),
+        name='saas_role_implicit_grant_accept'),
     url_authenticated(r'^', include('saas.urls.request')),
     url_active(r'^users/$',
         UserRedirectView.as_view(), name='accounts_profile'),
@@ -72,15 +85,8 @@ urlpatterns = [
     url_direct(r'contacts/', include('signup.urls.views.contacts')),
 
     url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
-    url(r'^billing/cart/',
-        # XXX override because we want a login_required in front.
-        login_required(OrganizationRedirectView.as_view(
-                pattern_name='saas_organization_cart'),
-                       login_url='registration_register'),
-        name='saas_cart'),
     url(r'^', include('saas.urls.noauth')),
     url_direct(r'^', include('saas.urls.broker')),
-    url_authenticated(r'^', include('saas.urls.redirects')),
     url_direct(r'^metrics/(?P<organization>%s)/dashboard/$' % ACCT_REGEX,
         DashboardView.as_view(), name='saas_dashboard'),
     url_direct(r'^billing/(?P<organization>%s)/bank/$' % ACCT_REGEX,

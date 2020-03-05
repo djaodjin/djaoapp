@@ -358,7 +358,8 @@ HAYSTACK_CONNECTIONS = {
 # more details on how to customize your logging configuration.
 LOG_HANDLER = {
     'level': 'DEBUG',
-    'formatter': 'request_format' if (DEBUG or getattr(sys.modules[__name__], 'USE_FIXTURES', False)) else 'json',
+    'formatter': ('request_format' if (DEBUG or
+        getattr(sys.modules[__name__], 'USE_FIXTURES', False)) else 'json'),
     'filters': ['request'],
     'class':'logging.StreamHandler',
 }
@@ -592,6 +593,8 @@ import djaoapp.extras.saas, djaoapp.extras.rules, djaoapp.extras.pages
 
 # Software-as-a-Service (provider)
 SAAS = {
+    'BYPASS_IMPLICIT_GRANT': getattr(
+        sys.modules[__name__], 'BYPASS_IMPLICIT_GRANT', {}),
     'BYPASS_PROCESSOR_AUTH': getattr(
         sys.modules[__name__], 'USE_FIXTURES', False),
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,

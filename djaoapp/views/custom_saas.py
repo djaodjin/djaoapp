@@ -5,14 +5,21 @@ from __future__ import unicode_literals
 import logging
 
 from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from multitier.thread_locals import get_current_site
+from saas import settings as saas_settings
 from saas.backends import load_backend
+from saas.backends.stripe_processor.views import (
+    StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
     ProcessorAuthorizeView as BaseProcessorAuthorizeView)
 from saas.views.profile import DashboardView as BaseDashboardView
+from saas.views.roles import (
+    RoleImplicitGrantAcceptView as RoleImplicitGrantAcceptViewBase)
 from saas.utils import is_broker, update_context_urls
-from saas.backends.stripe_processor.views import (
-    StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
+from signup.decorators import check_email_verified as check_email_verified_base
+
 from ..compat import reverse
 
 
@@ -85,6 +92,37 @@ class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
                     'authorize_processor_test': authorize_url
                 })
         return context
+
+
+class RoleImplicitGrantAcceptView(ContextMixin, TemplateResponseMixin,
+                                  RoleImplicitGrantAcceptViewBase):
+
+    template_name = 'saas/users/roles/accept.html'
+
+    def check_email_verified(self, request, user,
+                             redirect_field_name=REDIRECT_FIELD_NAME,
+                             next_url=None):
+        return check_email_verified_base(request, user,
+            redirect_field_name=redirect_field_name, next_url=next_url)
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleImplicitGrantAcceptView, self).get_context_data(
+            **kwargs)
+        if self.role:
+            context.update({
+                'role': self.role,
+                'contacts': ', '.join([user.get_full_name() for user
+                    in self.role.organization.with_role(
+                        saas_settings.MANAGER).exclude(
+                            pk=self.request.user.pk)])
+            })
+        return context
+
+    def get_implicit_grant_response(self, next_url, role, *args, **kwargs):
+        self.role = role
+        context = self.get_context_data(**kwargs)
+        context.update({REDIRECT_FIELD_NAME: next_url})
+        return self.render_to_response(context)
 
 
 class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):

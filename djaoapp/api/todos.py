@@ -24,7 +24,9 @@ class VersionSerializer(NoModelSerializer):
 
     version = serializers.SerializerMethodField(read_only=True)
 
-    def get_version(self, obj):
+    @staticmethod
+    def get_version(obj):
+        #pylint:disable=unused-argument
         return __version__
 
 
@@ -54,6 +56,7 @@ class DjaoAppAPIVersion(RetrieveAPIView):
 
 
 def list_todos(request, provider=None):
+    #pylint:disable=unused-argument
     return []
 
 
