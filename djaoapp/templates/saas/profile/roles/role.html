@@ -6,39 +6,93 @@
 
 {% block saas_content %}
 <role-user-list-modal inline-template >
-<role-user-list inline-template @invite="invite"
+  <role-user-list inline-template
+    @create="create" @create-completed="createCompleted"
+    @invite="invite" @invite-completed="inviteCompleted"
     id="{{role_descr}}"
     data-trip data-trip-index="1"
     data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
     <div id="user-relation-list-container">
-      <user-typeahead ref="typeahead" @item-selected="updateItemSelected" @item-save="save" :url="typeaheadUrl" v-bind:itemSelected="unregistered" inline-template>
-        <form id="add-user" class="form-inline mb-4" @submit.prevent="submit">
+      <div class="card bg-light">
+        <div class="card-body">
+          <form id="add-user" class="mb-4" @submit.prevent="submit">
           {# The following div is required for the typeahead dropbox to show under the input field. #}
-          <div style="width:100%;">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-            <div class="input-group"
-              data-trip data-trip-index="2"
-              data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
-              data-trip-position="s">
-              <input type="text" class="form-control" id="userTypeahead"
-                    name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
-                    autocomplete="off">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">{% trans role_descr=role_descr.title%}Add {{role_descr}}{% endtrans %}</button>
+            <user-typeahead ref="typeahead" @item-selected="updateItemSelected" @item-save="save" :url="typeaheadUrl" v-bind:itemSelected="unregistered" inline-template>
+              <div class="w-100">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <div class="input-group"
+                     data-trip data-trip-index="2"
+                     data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
+                     data-trip-position="s">
+                    <input type="text" class="form-control" id="userTypeahead"
+                           name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
+                           autocomplete="off">
+                </div>
+                <uiv-typeahead
+                    v-model="itemSelected"
+                    target="#userTypeahead"
+                    :async-function="getUsers"
+                    item-key="slug"
+                    :open-on-focus="false"
+                    class="typeahead-dropdown"
+                    />
               </div>
-            </div>
-            <uiv-typeahead
-              v-model="itemSelected"
-              target="#userTypeahead"
-              :async-function="getUsers"
-              item-key="slug"
-              :open-on-focus="false"
-              class="typeahead-dropdown"
-              />
-          </div>
-        </form>
-      </user-typeahead>
+            </user-typeahead>
+            <!-- inviting a user to register. -->
+            <div class="add-role-modal collapse" title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}"
+                 tabindex="-1"
+                 aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true">
+              <p class="text-danger">
+                  {% trans invitee='[[requestedProfilePrintableName]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
+              </p>
+              <div class="row form-group">
+                <div class="col-sm-2">
+                  <label>{% trans %}To{% endtrans %}</label>
+                </div>
+                <div class="controls col-sm-10">
+                  <input id="new-request-email"
+                         class="form-control" style="width:100%;"
+                         name="email" type="text" max-length="150"
+                         placeholder="invitee@example.com"
+                         autofocus
+                         v-model="unregistered.email" />
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-2">
+                  <label>{% trans %}Full name{% endtrans %}</label>
+                </div>
+                <div class="controls col-sm-10">
+                  <input id="new-request-full-name"
+                         class="form-control" style="width:100%;"
+                         name="full_name" type="text" max-length="150"
+                         placeholder="John Doe"
+                         v-model="unregistered.full_name" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="controls">
+                  <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                  <!-- textareas are very special in the way they handle whitespaces. Please do
+                       not indent default text. -->
+                  <textarea class="form-control"
+                            name="message"
+                            maxlength="255" type="text" rows="10">{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
+
+I am adding you as a {{role_descr}} to {{organization}}.
+
+Thank you,
+- {{user}}{% endtrans %}
+                  </textarea>
+                </div>
+              </div>
+            </div><!-- add-role-modal -->
+            <button class="btn btn-primary btn-md btn-block mt-3"
+                    type="submit">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+          </form>
+        </div>
+      </div>
       <hr />
       <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
         <div class="col-12">
@@ -73,82 +127,6 @@
         </div>
       </div>
       {% include "_pagination.html" %}
-
-      <!--
-        Modal dialog for adding a userRelation
-        when the user must register later.
-      -->
-      <div class="add-role-modal modal fade" title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}"
-          tabindex="-1" role="dialog"
-          aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true">
-        <div class="modal-dialog">
-          <form class="form-horizontal">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %} ...</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div class="modal-body">
-                <p class="text-danger">
-                  {% trans invitee='[[unregistered.slug]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
-                </p>
-                <div class="row form-group">
-                  <div class="col-sm-2">
-                    <label>{% trans %}To{% endtrans %}</label>
-                  </div>
-                  <div class="controls col-sm-10">
-                    <input id="new-request-email"
-                          class="form-control" style="width:100%;"
-                          name="email" type="text" max-length="150"
-                          placeholder="invitee@example.com"
-                          autofocus
-                          v-model="unregistered.email" />
-                  </div>
-                </div>
-                <div class="row form-group">
-                  <div class="col-sm-2">
-                    <label>{% trans %}Full name{% endtrans %}</label>
-                  </div>
-                  <div class="controls col-sm-10">
-                    <input id="new-request-email"
-                          class="form-control" style="width:100%;"
-                          name="full_name" type="text" max-length="150"
-                          placeholder="John Doe"
-                          v-model="unregistered.full_name" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="controls">
-                    <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
-                    <!-- textareas are very special in the way they handle whitespaces. Please do
-                         not indent default text. -->
-                    <textarea class="form-control"
-                              name="message"
-                              maxlength="255" type="text" rows="10">
-{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
-
-I am adding you as a {{role_descr}} to {{organization}}.
-
-Thank you,
-- {{user}}{% endtrans %}
-                    </textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                <button type="submit"
-                        class="btn btn-primary"
-                        data-dismiss="modal"
-                        @click="submit">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
 </role-user-list>
 </role-user-list-modal>
