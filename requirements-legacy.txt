@@ -2,7 +2,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.4.4
-Django==1.11.26
+Django==1.11.28
 django-webpack-loader==0.6.0
 django-recaptcha==2.0.5
 # XXX django-urldecorators==0.6 Django2.1+ requires GitHub Pull Request #2
