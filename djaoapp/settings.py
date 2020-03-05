@@ -34,6 +34,10 @@ if os.getenv('DEBUG'):
 API_DEBUG = ((int(os.getenv('API_DEBUG')) > 0)
     if os.getenv('API_DEBUG') else DEBUG)
 
+BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = os.getenv(
+    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', getattr(sys.modules[__name__],
+    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', False))
+
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
@@ -504,10 +508,14 @@ LOGGING = {
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_ACTIVATION_DAYS': 30,
+    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK':
+        BYPASS_VERIFICATION_KEY_EXPIRED_CHECK,
     'DISABLED_AUTHENTICATION':
         'djaoapp.thread_locals.get_disabled_authentication',
     'DISABLED_REGISTRATION':
         'djaoapp.thread_locals.get_disabled_registration',
+    'RANDOM_SEQUENCE': getattr(
+        sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', [])
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
