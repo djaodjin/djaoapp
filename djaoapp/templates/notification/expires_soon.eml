@@ -14,12 +14,11 @@ HTML encoded.
 {% trans subscriber=organization.printable_name|safe, plan=plan.printable_name|safe, provider=provider.printable_name|safe %}{{subscriber}} subscription to {{plan}} from {{provider}} expires in {{nb_days}} days.{% endtrans %}
 </p>
 <a href="{{back_url}}">{% trans %}Renew now{% endtrans %}</a>
-{% trans %}to insures continuous service by clicking on the previous link or copy/pasting
-the following link in your browser:{% endtrans %}
+{% trans %}to insures continuous service by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 <p>
-{% trans %}Check that:{% endtrans %}
+{% trans %}Check that{% endtrans %}:
 <ol>
   <li>{% trans %}You credit card is valid.{% endtrans %}</li>
   <li>{% trans %}You have auto-renew checked in your profile.{% endtrans %}</li>

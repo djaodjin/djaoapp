@@ -15,10 +15,7 @@ HTML encoded. #}
 </p>
 {% endif %}
 <p>
-{% trans %}You can review who has a {{role}} to{% endtrans %}
-<a href="{{back_url}}">{% trans organization=organization.printable_name%}{{organization}} account{% endtrans %}</a>
-{% trans %}now by clicking on the previous link or copy/pasting the following link
-in your browser:{% endtrans %}
+{% trans back_url=back_url organization=organization.printable_name %}You can review who has a {{role}} to <a href="{{back_url}}">{{organization}} profile</a> now by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

@@ -91,7 +91,7 @@
               </div>
               <uiv-dropdown class="" append-to-body>
                 <div class="list-group-item w-100">
-                  <span class="text-muted">{% trans %}Expires:{% endtrans %}</span>
+                  <span class="text-muted">{% trans %}Expires{% endtrans %}:</span>
                   <btn
                     class="dropdown-toggle btn-link text-left p-0 mb-1"
                     data-trip data-trip-index="3"
@@ -112,7 +112,7 @@
                 </template>
               </uiv-dropdown>
               <div class="list-group-item">
-                  <span class="text-muted" v-show="!coupon._editAttempts">{% trans %}Use limit:{% endtrans %}</span>
+                  <span class="text-muted" v-show="!coupon._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
                   <span @click="editAttempts(coupon)"
                     v-show="!coupon._editAttempts">
                     [[coupon.nb_attempts ? coupon.nb_attempts : '{% trans %}No limit{% endtrans %}']]
@@ -125,7 +125,7 @@
                       v-show="coupon._editAttempts">
               </div>
               <div class="list-group-item">
-                  <span class="text-muted" v-show="!coupon._editPlan">{% trans %}Plan:{% endtrans %}</span>
+                  <span class="text-muted" v-show="!coupon._editPlan">{% trans %}Plan{% endtrans %}:</span>
                   <span @click="editPlan(coupon)"
                     v-show="!coupon._editPlan">
                     [[planTitle(coupon.plan)]]

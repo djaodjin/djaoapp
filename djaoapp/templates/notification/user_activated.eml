@@ -11,10 +11,10 @@
 {% block html_content %}
 <h3>{% trans %}An account was activated!{% endtrans %}</h3>
 <p>
-{% trans %}Full name:{% endtrans %} <b>{{user.printable_name}}</b>
+{% trans %}Full name{% endtrans %}: <b>{{user.printable_name}}</b>
 <br>
-{% trans %}Username:{% endtrans %} {% if urls and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
+{% trans %}Username{% endtrans %}: {% if urls and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
 <br>
-{% trans email=user.email %}Email: {{email}}{% endtrans %}
+{% trans %}Email{% endtrans %}: {{email}}
 </p>
 {% endblock %}

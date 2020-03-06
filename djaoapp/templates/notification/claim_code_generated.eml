@@ -6,7 +6,7 @@
 
 {% block html_content %}
 <p>
-{% trans name=subscriber.printable_name %}Hello {{name}},{% endtrans %}
+{% trans name=subscriber.printable_name %}Hello {{name}}{% endtrans %},
 </p>
 <p>
 {% trans %}I generated a one-time code for you to access{% endtrans %}:
@@ -17,13 +17,13 @@
 </ul>
 </p>
 <p>
-{% trans %}Sail through the payment page by clicking on the following link:{% endtrans %}
+{% trans %}Sail through the payment page by clicking on the following link{% endtrans %}:
 </p>
 <p>
 <a href="{{urls.cart}}?code={{claim_code}}">{{urls.cart}}?code={{claim_code}}</a>
 </p>
 <p>
-{% trans %}Thank you,{% endtrans %}<br />
+{% trans %}Thank you{% endtrans %},<br />
 {{user.printable_name}}<br />
 {{user.email}}<br />
 </p>

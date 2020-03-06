@@ -11,10 +11,10 @@
 {% block html_content %}
 <h3>{% trans broker=broker.printable_name %}Awesome, a new user signed up on your {{broker}} site!{% endtrans %}</h3>
 <p>
-{% trans %}Full name:{% endtrans %} <b>{{user.printable_name}}</b>
+{% trans %}Full name{% endtrans %}: <b>{{user.printable_name}}</b>
 <br>
-{% trans %}Username:{% endtrans %} <b>{{user.username}}</b>
+{% trans %}Username{% endtrans %}: <b>{{user.username}}</b>
 <br>
-{% trans %}Email:{% endtrans %} {{user.email}}
+{% trans %}Email{% endtrans %}: {{user.email}}
 </p>
 {% endblock %}

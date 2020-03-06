@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>{% block subject %}{% trans %}Djaodjin Notification{% endtrans %}{% endblock %}</title>
+<title>{% block subject %}{% trans %}DjaoApp Notification{% endtrans %}{% endblock %}</title>
 {{ render_bundle('css_email') }}
 </head>
 <body>
@@ -47,7 +47,7 @@
                     <table>
                         <tr>
                             <td class="page-footer">
-                                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://djaodjin.com/static/img/logo-djaodjin-128.png"> <a href="https://djaodjin.com/">{% trans %}djaodjin.com{% endtrans %}</a>
+                                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://djaodjin.com/static/img/logo-djaodjin-128.png"> <a href="https://djaodjin.com/"> djaodjin.com</a>
                                 </p>
                             </td>
                         </tr>

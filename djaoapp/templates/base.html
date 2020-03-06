@@ -116,7 +116,7 @@
                           </div>
 
                           <div>
-                          {% trans %}Powered by &copy; 2020 DjaoDjin. All rights reserved. <a href="/legal/" target="_blank">Legal</a>.{% endtrans %}
+                          {% trans %}Powered by &copy; 2020 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
                           </div>
                       </div>
                   {% endblock %}
@@ -208,10 +208,7 @@
         <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-3"></i></a>
         <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
         <br><br>
-        {% trans %}
-          Powered by &copy; 2020 DjaoDjin. <br>
-          All rights reserved. <a href="/legal/" target="_blank">Legal</a>.
-        {% endtrans %}
+        {% trans %}Powered by &copy; 2020 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
       </div>
     </footer>
   {% endblock footer %}

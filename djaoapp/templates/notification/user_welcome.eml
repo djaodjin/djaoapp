@@ -18,8 +18,7 @@
 </div>
 <div id="support">
 <p>
-{% trans %}If you have any questions or comments,
-email us at{% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
+{% trans %}If you have any questions or comments, email us at{% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
 </p>
 </div>
 {% endblock %}

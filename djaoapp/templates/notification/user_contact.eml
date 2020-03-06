@@ -18,7 +18,7 @@
 {% endfor %}
 </div>
 
-<p>{% trans %}Regards,{% endtrans %}</p>
+<p>{% trans %}Regards{% endtrans %},</p>
 <p><b>{{user.printable_name}}</b><br />
 {{user.email}}</p>
 {% endblock %}

@@ -12,9 +12,7 @@
 </p>
 {% endif %}
 <p>
-{% trans %}You can{% endtrans %} <a href="{{back_url}}">{% trans %}accept the subscription{% endtrans %}</a>
-{% trans %}by clicking on the previous link or copy/pasting the following link
-in your browser:{% endtrans %}
+{% trans back_url=back_url %}You can <a href="{{back_url}}">accept the subscription</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

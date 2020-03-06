@@ -50,14 +50,10 @@
       <div class="col-md-6 mt-3">
         {% block saas_help %}
         <p>
-          {% trans %}
-            When you are modifying root templates (ex: <filename>base.html</filename>), you may inadvertently break the dashboard and become unable to access this page to upload a fix.
-          {% endtrans %}
+          {% trans %}When you are modifying root templates (ex: <filename>base.html</filename>), you may inadvertently break the dashboard and become unable to access this page to upload a fix.{% endtrans %}
         </p>
         <p>
-          {% trans profile_url=urls.profile_redirect %}
-            You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.
-          {% endtrans %}
+          {% trans profile_url=urls.profile_redirect %}You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.{% endtrans %}
         </p>
         <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE https://{{site_available_at_url}}/api/themes/</code></pre>
         <p>
@@ -73,9 +69,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h3 class="mb-4">
-            {% trans %}Notifications{% endtrans %}
-          </h3>
+          <h3 class="mb-4">{% trans %}Notifications{% endtrans %}</h3>
 
           <!-- Sub-Container -->
           <div class="container px-0">

@@ -45,21 +45,18 @@ HTML encoded. #}
 <div>
 {% if created_by %}
 <p>
-{% trans %}This order was initiated by{% endtrans %} <a href="{{urls.order.created_by}}">{{created_by.get_full_name()}}.</a>
+{% trans profile_url=urls.order.created_by name=created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
 </p>
 {% endif %}
 </div>
 <div id="support">
 <p>
-{% trans %}This order confirmation only notifies that you intend to pay
-for this product(s).{% endtrans %}
+{% trans %}This order confirmation only notifies that you intend to pay for this product(s).{% endtrans %}
 <span class="strong">{% trans %}You have not been charged.{% endtrans %}</span>
-{% trans %}A receipt will follow only after a credit card payment has been successfully
-made.{% endtrans %}
+{% trans %}A receipt will follow only after a credit card payment has been successfully made.{% endtrans %}
 </p>
 <p>
-{% trans %}Thank you for your continuous business. Any questions
-or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
 </p>
 </div>
 {% endblock %}
