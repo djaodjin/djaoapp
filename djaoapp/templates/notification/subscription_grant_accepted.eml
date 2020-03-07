@@ -15,7 +15,7 @@
 </p>
 {% endif %}
 <p>
-{% trans back_url=back_url profile=organization.printable_name %}You can now access <a href="{{back_url}}">{{organization}} profile</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
+{% trans back_url=back_url, organization=organization.printable_name %}You can now access <a href="{{back_url}}">{{organization}} profile</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

@@ -8,7 +8,7 @@
 <h3>{% trans organization=organization.printable_name %}{{organization}} was updated{% endtrans %}</h3>
 <div class="info">
   <p>
-{% trans user_url=urls.user.profile user=user.username profile_url=urls.organization.profile profile=organization.printable_name %}<a href="{{user_url}}">{{user}}</a> modified the following fields in <a href="{{profile_url}}">{{profile}}</a>{% endtrans %}:
+{% trans user_url=urls.user.profile, user=user.username, profile_url=urls.organization.profile, profile=organization.printable_name %}<a href="{{user_url}}">{{user}}</a> modified the following fields in <a href="{{profile_url}}">{{profile}}</a>{% endtrans %}:
   </p>
   <table>
     <thead>
