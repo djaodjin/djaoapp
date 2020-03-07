@@ -45,7 +45,7 @@ HTML encoded. #}
 <div>
 {% if created_by %}
 <p>
-{% trans profile_url=urls.order.created_by name=created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
+{% trans profile_url=urls.order.created_by, name=created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
 </p>
 {% endif %}
 </div>

@@ -98,7 +98,7 @@ Implementation Note:
 <div>
 {% if charge.created_by %}
 <p>
-{% trans profile_url=urls.charge.created_by name=charge.created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
+{% trans profile_url=urls.charge.created_by, name=charge.created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
 </p>
 {% endif %}
 {% if email_by %}
