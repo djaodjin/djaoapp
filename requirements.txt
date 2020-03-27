@@ -1,10 +1,10 @@
 # Direct known Python requirements
 # (Javascript prerequisites are specified in package.json)
 
-boto3==1.4.4
+boto3==1.12.31
 Django==2.2.11
 django-webpack-loader==0.6.0
-django-recaptcha==2.0.5
+django-recaptcha==2.0.6
 djangorestframework==3.10
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.18
@@ -22,7 +22,7 @@ MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 gunicorn==19.7.1
 phonenumbers==8.5.0
 python-social-auth==0.3.6
-pytz==2019.2
+pytz==2019.3
 social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
 whitenoise==4.1.2
 

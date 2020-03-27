@@ -514,6 +514,7 @@ SIGNUP = {
         'djaoapp.thread_locals.get_disabled_authentication',
     'DISABLED_REGISTRATION':
         'djaoapp.thread_locals.get_disabled_registration',
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'RANDOM_SEQUENCE': getattr(
         sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', [])
 }
@@ -612,6 +613,7 @@ SAAS = {
         'BUILD_ABSOLUTE_URI_CALLABLE':
             'djaoapp.thread_locals.provider_absolute_url',
     },
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'PROCESSOR': {
         'PUB_KEY': STRIPE_PUB_KEY,
         'PRIV_KEY': STRIPE_PRIV_KEY,
