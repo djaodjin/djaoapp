@@ -57,31 +57,23 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-<script type="text/javascript">
-var djaodjinSettings = {
-    urls: {% if urls %}{{urls|to_json}}{% else %}{}{% endif %},
-    itemsPerPage: {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %},
-    tables: {% if tables %}{{tables|safe}}{% else %}{}{% endif %}, // XXX
-    date_range: {
-        start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
-        ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
-    },
-    user: {
-        username: "{{request.user.username}}",
-        slug: "{{request.user.username}}",
-        first_name: "{{request.user.first_name}}",
-        last_name: "{{request.user.last_name}}"
-    },
-    csrf: '{{csrf_token}}',
-    {% if STRIPE_PUB_KEY %}
-    stripePubKey: "{{ STRIPE_PUB_KEY }}",
-    {% endif %}
-};
-</script>
-
 {{ render_bundle('js_vendor-vue') }}
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+{% if STRIPE_PUB_KEY %}
+Vue.prototype.$stripePubKey = "{{ STRIPE_PUB_KEY }}";
+{% endif %}
+Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %}; // XXX
+</script>
 {{ render_bundle('js_djaodjin-vue') }}
-
 <script type="text/javascript">
 Vue.use(BootstrapVue);
 Vue.use(uiv, {prefix: 'uiv'});
@@ -91,6 +83,5 @@ var app = new Vue({
   delimiters: ["[[","]]"],
 });
 </script>
-
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

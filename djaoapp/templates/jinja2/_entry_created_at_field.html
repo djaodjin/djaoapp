@@ -1,0 +1,5 @@
+{% extends "_form_fields.html" %}
+
+{% block form_block %}
+{{date_input_field('entry.created_at', 'params.timezone', "Created At", hide_labels=True, extra_control_classes='w-100')}}
+{% endblock %}

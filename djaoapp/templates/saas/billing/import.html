@@ -3,7 +3,8 @@
 {% block saas_title %}{% trans %}Add offline transaction{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
-<import-transaction inline-template id="import-transaction-container">
+<import-transaction id="import-transaction-container"
+  inline-template>
   <div class="offset-md-3 col-md-6">
     <form class="form-horizontal" method="post" @submit.prevent="addPayment">
       <fieldset>
@@ -11,8 +12,9 @@
           <label class="col-form-label" for="subscription">
             {% trans %}Subscription{% endtrans %}
           </label>
+          <div>
             <input
-                id="typeahead"
+                id="subscription-typeahead"
                 class="form-control"
                 type="text"
                 placeholder="{% trans %}Subscriber name or email{% endtrans %}"
@@ -20,11 +22,12 @@
                 autocomplete="off">
             <uiv-typeahead
                 v-model="itemSelected"
-                target="#typeahead"
+                target="#subscription-typeahead"
                 item-key="itemKey"
                 :async-function="getSubscriptions"
                 class="typeahead-dropdown"
                 :open-on-focus="false"/>
+          </div>
           {% for error in form.subscription.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
@@ -33,36 +36,21 @@
           </div>
         </div>
         <div class="form-group">
-              <label for="created_at" class="d-block">
-                {% trans %}Created At{% endtrans %}
-              </label>
-            <uiv-dropdown  class="d-block" append-to-body>
-              <div class="input-group">
-                <input class="form-control date" type="text" name="created_at" v-model="createdAt">
-                  <div class="input-group-append">
-                      <button type="button" class="btn btn-secondary dropdown-toggle">
-                        <i class="fa fa-calendar"></i>
-                      </button>
-                  </div>
-              </div>
-              <template slot="dropdown">
-                <li>
-                  <uiv-date-picker
-                    v-model="createdAt"
-                    icon-control-left="fa fa-caret-left"
-                    icon-control-right="fa fa-caret-right" />
-                </li>
-              </template>
-            </uiv-dropdown>
-          {% for error in form.created_at.errors %}
-          <span class="form-text"><strong>{{error}}</strong></span>
-          {% endfor %}
+          <label for="created_at" class="d-block">
+            {% trans %}Created At{% endtrans %}
+          </label>
+          {% include "_entry_created_at_field.html" %}
         </div>
         <div class="form-group{% if form.amount.errors %} has-error{% endif %}">
           <label class="col-form-label" for="amount">
             {% trans %}Amount{% endtrans %}
           </label>
-          <input class="form-control" name="amount" type="number" min="0" step="any" placeholder="{% trans %}Amount{% endtrans %}">
+          <input class="form-control"
+              name="amount"
+              type="number"
+              min="0" step="any"
+              placeholder="{% trans %}Amount{% endtrans %}"
+              v-model="entry.amount">
           {% for error in form.amount.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
@@ -72,7 +60,11 @@
             {% trans %}Description{% endtrans %}
           </label>
           <div>
-            <input class="form-control" name="descr" type="text" placeholder="{% trans %}Description{% endtrans %}">
+            <input class="form-control"
+                name="descr"
+                type="text"
+                placeholder="{% trans %}Description{% endtrans %}"
+                v-model="entry.descr">
             {% for error in form.descr.errors %}
             <span class="form-text"><strong>{{error}}</strong></span>
             {% endfor %}

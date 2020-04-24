@@ -116,12 +116,11 @@
   <script type="text/javascript">
     jQuery(document).ready(function($) {
 
-      if( djaodjinSettings.urls.pages &&
-          djaodjinSettings.urls.pages.api_themes ){
-          $("#theme-upload").djupload({
-              uploadUrl: djaodjinSettings.urls.pages.api_themes,
-          });
-      }
+      {% if urls.pages and urls.pages.api_themes %}
+        $("#theme-upload").djupload({
+            uploadUrl: "{{urls.pages.api_themes}}",
+        });
+      {% endif %}
 
       $(".send-test-email").click(function(event) {
         var self = this;
