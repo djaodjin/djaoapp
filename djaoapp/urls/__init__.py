@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 import os
@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.staticfiles.views import serve as django_static_serve
 
-from urldecorators import include, url
+from rules.urldecorators import include, url
 
 from multitier.settings import SLUG_RE
 from multitier.urlresolvers import url_sites
