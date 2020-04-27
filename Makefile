@@ -130,11 +130,12 @@ migratedb-%:
 # The less files (under source control) to build djaoapp base.css will be
 # also be installed into the directory assets are served from to support
 # style editing.
-vendor-assets-prerequisites: $(installTop)/.npm
+vendor-assets-prerequisites: $(installTop)/.npm/djaoapp-packages
 
-$(installTop)/.npm: $(srcDir)/package.json
+$(installTop)/.npm/djaoapp-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
+	touch $@
 
 ifeq ($(mode),production)
 ifeq ($(watch),true)
@@ -145,7 +146,7 @@ else
 webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
 endif
 
-build-assets: $(installTop)/.npm $(ASSETS_DIR)/js/djaoapp-i18n.js
+build-assets: $(installTop)/.npm/djaoapp-packages $(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)

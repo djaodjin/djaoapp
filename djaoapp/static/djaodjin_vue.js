@@ -3,8 +3,6 @@ import 'script-loader!d3/d3';
 import 'script-loader!nvd3';
 import 'script-loader!trip.js';
 import 'script-loader!chardin.js';
-import 'script-loader!vue-croppa';
-import 'script-loader!vue-infinite-loading';
 import 'script-loader!js/djaodjin-upload';
 import 'script-loader!js/djaodjin-dashboard';
 import 'script-loader!js/djaodjin-resources-vue.js';

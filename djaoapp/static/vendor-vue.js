@@ -43,6 +43,12 @@ window.BootstrapVue = BootstrapVue;
 import * as uiv from 'uiv';
 window.uiv = uiv;
 
+import Croppa from 'vue-croppa';
+window.Croppa = Croppa;
+
+import InfiniteLoading from 'vue-infinite-loading';
+window.InfiniteLoading = InfiniteLoading;
+
 // required for hot module replacement
 if (module.hot){
     module.hot.accept();
