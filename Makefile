@@ -25,6 +25,7 @@ SQLITE        ?= sqlite3
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
 
 APP_NAME      ?= djaoapp
+APP_PORT      ?= 8000
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # `make initdb` will install site.conf but only after `grep` is run
 # and DB_FILNAME set to "". We use the default value in the template site.conf
@@ -221,7 +222,8 @@ $(DESTDIR)$(SYSCONFDIR)/%/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 	install -d $(dir $@)
 	[ -f $@ ] || sed \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
-		-e 's,%(APP_NAME)s,$(APP_NAME),' $< > $@
+		-e 's,%(APP_NAME)s,$(APP_NAME),' \
+		-e 's,%(APP_PORT)s,$(APP_PORT),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 			   $(srcDir)/etc/service.conf
