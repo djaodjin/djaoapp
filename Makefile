@@ -211,7 +211,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/site.conf: $(srcDir)/etc/site.conf
 
 $(DESTDIR)$(SYSCONFDIR)/%/credentials: $(srcDir)/etc/credentials
 	install -d $(dir $@)
-	[ -f $@ ] || \
+	[ -e $@ ] || \
 		SECRET_KEY=`$(PYTHON) -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'` && sed \
 		-e "s,\%(SECRET_KEY)s,$${SECRET_KEY}," \
 		-e "s,STRIPE_PUB_KEY = \"\",STRIPE_PUB_KEY = \"$(STRIPE_PUB_KEY)\"," \
@@ -220,7 +220,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/credentials: $(srcDir)/etc/credentials
 
 $(DESTDIR)$(SYSCONFDIR)/%/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 	install -d $(dir $@)
-	[ -f $@ ] || sed \
+	[ -e $@ ] || sed \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
 		-e 's,%(APP_NAME)s,$(APP_NAME),' \
 		-e 's,%(APP_PORT)s,$(APP_PORT),' $< > $@
@@ -228,7 +228,7 @@ $(DESTDIR)$(SYSCONFDIR)/%/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 			   $(srcDir)/etc/service.conf
 	install -d $(dir $@)
-	[ -f $@ ] || sed \
+	[ -e $@ ] || sed \
 		-e 's,%(srcDir)s,$(srcDir),' \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(binDir)s,$(binDir),' \
@@ -238,16 +238,16 @@ $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 
 $(DESTDIR)$(SYSCONFDIR)/logrotate.d/%: $(srcDir)/etc/logrotate.conf
 	install -d $(dir $@)
-	[ -f $@ ] || sed \
+	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),' \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/monit.d/%: $(srcDir)/etc/monit.conf
 	install -d $(dir $@)
-	[ -f $@ ] || sed \
+	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/sysconfig/%: $(srcDir)/etc/sysconfig.conf
 	install -d $(dir $@)
-	[ -f $@ ] || install -p -m 644 $< $@
+	[ -e $@ ] || install -p -m 644 $< $@
