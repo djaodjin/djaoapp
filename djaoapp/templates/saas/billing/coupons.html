@@ -48,19 +48,17 @@
         <div class="col-md-3">
           <!-- Sort Coupons -->
           <div class="pb-3">
-            <div class="input-group input-group-md">
-              <div class="input-group-prepend">
-                <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
-              </div>
-              <select id="order-by" class="form-control" style="-webkit-appearance: none;">
-                <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
-                <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
-                <option value="percent">{% trans %}Discount (highest){% endtrans %}</option>
-                <option value="-percent">{% trans %}Discount (lowest){% endtrans %}</option>
-                <option value="ends_at">{% trans %}Expiration (soonest){% endtrans %}</option>
-                <option value="-ends_at">{% trans %}Expiration (latest){% endtrans %}</option>
-              </select>
-            </div>
+            <b-dropdown text="{% trans %}Sort{% endtrans %}" variant="primary" class="w-100" right>
+                <b-dropdown-item @click.prevent="sortBy('code')">
+                    {% trans %}Code{% endtrans %} <i :class="sortIcon('code')"></i>
+                </b-dropdown-item>
+                <b-dropdown-item @click.prevent="sortBy('discount')">
+                    {% trans %}Discount{% endtrans %} <i :class="sortIcon('discount')"></i>
+                </b-dropdown-item>
+                <b-dropdown-item @click.prevent="sortBy('ends_at')">
+                    {% trans %}Expiration{% endtrans %} <i :class="sortIcon('ends_at')"></i>
+                </b-dropdown-item>
+            </b-dropdown>
           </div>
         </div>
 
