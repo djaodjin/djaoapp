@@ -19,33 +19,7 @@
     <div class="tab-content">
       <div role="tabpanel" :id="table.key" :class="['tab-pane', activeClass(index)]" v-for="(table, index) in tables" :key="table.key">
         <form class="form-inline date-chooser pull-right mb-3">
-          <uiv-dropdown class="form-group" append-to-body menu-right>
-            <div class="input-group mr-2">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="to-inp">{% trans %}To{% endtrans %}</span>
-              </div>
-              <input class="form-control"
-                     data-trip data-trip data-trip-index="2"
-                     data-trip-content="<p>{% trans %}Look back through time.{% endtrans %}</p>"
-                     data-trip-position="s"
-                     v-model="params.ends_at"></input>
-              <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
-                </button>
-              </div>
-            </div>
-            <select class="form-control"
-                    v-model="timezone"
-                    @change="get">
-                <option value="local">{% trans %}Local{% endtrans %}</option>
-                <option value="utc">{% trans %}UTC{% endtrans %}</option>
-            </select>
-            <template slot="dropdown">
-              <li>
-                {% include "saas/_datepicker_ends_at.html" %}
-              </li>
-            </template>
-          </uiv-dropdown>
+          {% include "_params_ends_at_field.html" %}
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">

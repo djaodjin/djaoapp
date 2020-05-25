@@ -145,6 +145,39 @@ Thank you,
         </div>
       </div>
 
+      <!-- modal dialog to confirm revoking a role -->
+      <div id="revoke-action" class="revoke-modal modal fade"
+           tabindex="-1" role="dialog"
+           aria-labelledby="{% trans %}Revoke{% endtrans %}"
+           aria-hidden="true">
+        <form class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{% trans %}Revoke{% endtrans %} ...</h5>
+              <button type="button" class="close"
+                      data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>
+                {% trans %}You are about to delete yourself from this role. It is possible that you no longer can manage this profile after performing this action.{% endtrans %}
+              </p>
+              <p>
+                {% trans %}Are you sure you want to continue?{% endtrans %}
+              </p>
+              <div class="modal-footer">
+                <button id="cancel-revoke"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                <button type="submit" id="revoke-btn"
+                        class="btn btn-danger"
+                        data-dismiss="modal"
+                        @click="remove">{% trans %}Revoke{% endtrans %}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div><!-- /modal dialog to confirm revoke -->
+
       <!-- Start Pagination -->
       {% include "_pagination.html" %}
       <!-- End Pagination -->

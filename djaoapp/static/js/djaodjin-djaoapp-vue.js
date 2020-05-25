@@ -39,6 +39,26 @@ Vue.component('role-user-list-modal', {
                    dialog.collapse("hide");
                }
             }
+        },
+        remove: function() {
+            var dialog = $(".revoke-modal");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("show");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("show");
+               }
+            }
+        },
+        removeCompleted: function() {
+            var dialog = $(".revoke-modal");
+            if( dialog.length > 0 ) {
+               if( dialog.hasClass('modal') ) {
+                   dialog.modal("hide");
+               } else if( dialog.hasClass('collapse') ) {
+                   dialog.collapse("hide");
+               }
+            }
         }
     }
 });
@@ -50,7 +70,7 @@ Vue.component('theme-update', {
     ],
     data: function() {
         return {
-            url: djaodjinSettings.urls.rules.api_detail,
+            url: this.$urls.rules.api_detail,
             showEditTools: false
         }
     },
@@ -63,7 +83,7 @@ Vue.component('theme-update', {
         },
         reset: function() {
             var vm = this;
-            vm.reqDelete(djaodjinSettings.urls.pages.api_themes,
+            vm.reqDelete(this.$urls.pages.api_themes,
             function(resp) {
                 showMessages([gettext("reset to default theme")], "success");
             });
@@ -91,7 +111,7 @@ Vue.component('recent-activity', {
     ],
     data: function(){
         return {
-            url: djaodjinSettings.urls.recent_activity,
+            url: this.$urls.recent_activity,
         }
     },
     mounted: function(){
@@ -106,7 +126,7 @@ Vue.component('todo-list', {
     ],
     data: function(){
         return {
-            url: djaodjinSettings.urls.api_todos,
+            url: this.$urls.api_todos,
         }
     },
     mounted: function(){

@@ -22,6 +22,64 @@
 {%- endmacro %}
 
 
+{% macro date_input_field(name, timezone, label, required=True, help_text="", value="", disabled=False, disabled_toggle="", errors="", hide_labels=False, show_as_text=False, extra_label_classes="", extra_control_classes="") -%}
+<div class="form-group{% if errors %} has-error{% endif %}">
+  <uiv-dropdown{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %} append-to-body menu-right>
+    <div class="input-group mr-2">
+      {% if not hide_labels %}
+      <div class="input-group-prepend">
+        <label class="input-group-text{% if required %} requiredField{% endif %}">{{label}}</label>
+      </div>
+      {% endif %}
+      {% if show_as_text %}
+      <span class="p-2">[[{{name}} ? ($options.filters.formatDate({{name}})) : "{% trans %}Never{% endtrans %}" ]]</span>
+      {% else %}
+      <input class="form-control{% if errors %} is-invalid{% endif %}"
+           name="{{name}}"
+           v-model="{{name}}"
+           {% if value %}value="{{value}}"{% endif %}
+           {% if disabled %} disabled{% endif %} />
+      {% endif %}
+      <div class="input-group-append"{% if disabled_toggle %} v-if="{{disabled_toggle}}"{% endif %}>
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
+        </button>
+      </div>
+    </div>
+    <template slot="dropdown">
+      <li>
+        <div>
+          <uiv-date-picker
+            format="{{DATETIME_FORMAT}}"
+            v-model="{{name}}"
+            {% if show_as_text %}@input="selected(index)"{% else %}@input="get"{% endif %}
+            icon-control-left="fa fa-caret-left"
+            icon-control-right="fa fa-caret-right" />
+        </div>
+        <div class="m-3">
+        <select class="form-control"
+                v-model="{{timezone}}"
+                @click.prevent="function(event) {event.stopPropagation();}">
+          <option value="local">{% trans %}Local{% endtrans %}</option>
+          <option value="utc">{% trans %}UTC{% endtrans %}</option>
+        </select>
+        </div>
+      </li>
+    </template>
+  </uiv-dropdown>
+  <div class="form-text help-block invalid-feedback">
+    {% for error in errors %}
+    {{error}}
+    {% endfor %}
+  </div>
+  <div class="form-text help-block">
+    {% if help_text %}
+    <small class="text-muted">{{help_text}}</small>
+    {% endif %}
+  </div>
+</div>
+{%- endmacro %}
+
+
 {% macro radio_input_field(choices, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
@@ -190,8 +248,10 @@
 
 
 {% block form_block %}
+  {% if form %}
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {% for name, field in form.fields.items() %}
       {{input_field(form[name], form.hide_labels)}}
     {% endfor %}
+  {% endif %}
 {% endblock %}

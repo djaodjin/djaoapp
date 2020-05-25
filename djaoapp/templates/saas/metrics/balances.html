@@ -8,22 +8,9 @@
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-secondary" role="button"
          :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
-      <span>{% trans %}To{% endtrans %}</span>
       <div style="display:inline-block">
-          <uiv-dropdown class="form-group" append-to-body>
-              <btn class="dropdown-toggle"><i class="fa fa-calendar"></i></btn>
-              <template slot="dropdown">
-                  <li>{% include "saas/_datepicker_ends_at.html" %}</li>
-              </template>
-          </uiv-dropdown>
+          {% include "_params_ends_at_field.html" %}
       </div>
-      <span class="date" style="display: inline-block;"
-        data-trip data-trip-index="2"
-        data-trip-content="<p>{% trans %}Look back through time.{% endtrans %}</p>"
-        data-trip-position="s"
-        >
-          [[params.ends_at | formatDate ]]
-      </span>
   </div>
   <table class="table table-condensed table-striped">
       <thead>
