@@ -27,6 +27,13 @@ RULES_APP_MODEL = 'djaoapp_extras.App'
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
+# py27/django-recaptcha workaround
+for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
+    recaptcha_key_value = getattr(sys.modules[__name__], recaptcha_key, None)
+    if recaptcha_key_value and not isinstance(recaptcha_key_value, str):
+        setattr(sys.modules[__name__], recaptcha_key,
+            recaptcha_key_value.encode('utf-8'))
+
 if os.getenv('DEBUG'):
     # Enable override on command line.
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
