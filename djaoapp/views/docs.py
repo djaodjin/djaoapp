@@ -342,8 +342,9 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
 class AutoSchema(BaseAutoSchema):
 
     def get_request_media_types(self):
-        return getattr(self, 'request_media_types',
-            getattr(self, 'content_types', []))
+        return ['application/json']
+#XXX        return getattr(self, 'request_media_types',
+#            getattr(self, 'content_types', []))
 
     def _get_operation_id(self, path, method):
         # rest framework implementation will try to deduce the  name
@@ -431,6 +432,30 @@ class AutoSchema(BaseAutoSchema):
         serializer = None
         if examples:
             for example in examples:
+                path_parts = path.split('/')
+                if not example['path']:
+                    warnings.warn('%s example has no path (%s)' % (
+                        path, example['path']))
+                else:
+                    query_idx = example['path'].find('?')
+                    if query_idx >= 0:
+                        example_path_parts = example['path'][:query_idx].split(
+                            '/')
+                    else:
+                        example_path_parts = example['path'].split('/')
+                    if len(example_path_parts) != len(path_parts):
+                        warnings.warn('%s has different parts from %s' % (
+                            example['path'], path))
+                    for path_part, example_path_part in zip(
+                            path_parts, example_path_parts):
+                        if path_part.startswith('{'):
+                            continue
+                        if example_path_part != path_part:
+                            warnings.warn(
+                                '%s does not match pattern %s ("%s"!="%s")' % (
+                                example['path'], path,
+                                example_path_part, path_part))
+                            break
                 if example_key in example:
                     if serializer_class is not None:
                         try:

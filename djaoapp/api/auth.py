@@ -163,7 +163,7 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
 
     .. code-block:: http
 
-        GET  /api/auth/realms/cowork/ HTTP/1.1
+        GET  /api/auth/tokens/realms/cowork/ HTTP/1.1
 
     responds
 
