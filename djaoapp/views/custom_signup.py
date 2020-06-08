@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -9,7 +9,6 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
-from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
 from saas.models import Organization, Signature
@@ -23,7 +22,7 @@ from signup.views.auth import (
     SignupView as SignupBaseView)
 from rules.mixins import AppMixin
 
-from ..compat import reverse
+from ..compat import reverse, six
 from ..forms.custom_signup import ActivationForm, SigninForm, SignupForm
 from ..thread_locals import get_current_broker
 from ..mixins import RegisterMixin

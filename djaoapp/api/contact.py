@@ -12,17 +12,18 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.utils import six
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from saas.api.serializers import NoModelSerializer
+from saas.api.serializers import NoModelSerializer, ValidationErrorSerializer
+from saas.docs import OpenAPIResponse, swagger_auto_schema
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split
 
+from ..compat import six
 from ..signals import contact_requested
 from ..thread_locals import get_current_app
 
@@ -130,7 +131,7 @@ class ContactUsSerializer(NoModelSerializer):
                 self.fields['g-recaptcha-response'] = ReCaptchaField()
 
 
-class ContactUsAPIView(ProviderMixin, CreateAPIView):
+class ContactUsAPIView(ProviderMixin, GenericAPIView):
     """
     Sends a contact-us message
 
@@ -157,13 +158,15 @@ class ContactUsAPIView(ProviderMixin, CreateAPIView):
     .. code-block:: json
 
         {
-            "details": "Your request has been sent. We will reply within\
+            "detail": "Your request has been sent. We will reply within\
 24 hours. Thank you."
         }
     """
     serializer_class = ContactUsSerializer
 
-    def create(self, request, *args, **kwargs):
+    @swagger_auto_schema(responses={
+        200: OpenAPIResponse("success", ValidationErrorSerializer)})
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if is_authenticated(self.request):
@@ -190,7 +193,7 @@ class ContactUsAPIView(ProviderMixin, CreateAPIView):
         if message:
             items += [("Message", message)]
         if not user.email:
-            return Response({"details":
+            return Response({'detail':
     _("Thank you for the feedback. Please feel free to leave your contact"\
 " information next time so we can serve you better.")})
         if provider:
@@ -201,12 +204,12 @@ class ContactUsAPIView(ProviderMixin, CreateAPIView):
             contact_requested.send(
                 sender=__name__, provider=provider,
                 user=user, reason=items, request=self.request)
-            return Response({"details":
+            return Response({'detail':
 _("Your request has been sent. We will reply within 24 hours. Thank you.")})
         except (SMTPException, socket.error) as err:
             LOGGER.exception("%s on page %s",
                 err, self.request.get_raw_uri())
-            return Response({"details":
+            return Response({'detail':
 _("Sorry, there was an issue sending your request for information"\
 " to '%(full_name)s &lt;%(email)s&gt;'.") % {
     'full_name': provider.full_name, 'email': provider.email}})

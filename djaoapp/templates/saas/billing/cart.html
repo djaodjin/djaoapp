@@ -2,12 +2,10 @@
 
 {% block content %}
     <div class="container">
-        <div class="page-header text-center pt-4">
-            <h4>
-                {% block order_title %}
-                {% trans %}Complete Order{% endtrans %}
-                {% endblock %}
-            </h4>
+        <div class="page-header text-lg-center pt-4">
+            {% block order_title %}
+            <h4>{% trans %}Complete Order{% endtrans %}</h4>
+            {% endblock %}
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -71,6 +69,19 @@
                     {% block order_card %}
                         {% include "saas/_card_use.html" %}
                     {% endblock %}
+                    <div class="form-group text-center py-5">
+                      <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
+                        {% if submit_title %}
+                        {{submit_title}}
+                        {% else %}
+                        {% if force_update %}
+                        {% trans %}Update{% endtrans %}
+                        {% else %}
+                        {% trans %}Pay Now{% endtrans %}
+                        {% endif %}
+                        {% endif %}
+                      </button>
+                    </div>
                 </form>
             </div>
         </div>

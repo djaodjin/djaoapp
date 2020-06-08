@@ -11,7 +11,6 @@ from collections import OrderedDict, defaultdict
 from django.conf import settings
 from django.http import HttpRequest
 from django.http.response import Http404
-from django.utils import six
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
@@ -21,8 +20,10 @@ from docutils.writers.html5_polyglot import Writer
 from rest_framework import exceptions, serializers
 from rest_framework.compat import (URLPattern, URLResolver,
     get_original_route)
+from rest_framework.serializers import BaseSerializer
 from rest_framework.schemas.generators import EndpointEnumerator
-from saas.api.serializers import NoModelSerializer
+from rest_framework.schemas.utils import is_list_view
+from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
 
 try:
     from rest_framework.schemas.openapi import (
@@ -30,6 +31,8 @@ try:
 except ImportError: # drf < 3.10
     from rest_framework.schemas import (
         AutoSchema as BaseAutoSchema, SchemaGenerator)
+
+from ..compat import six
 
 
 LOGGER = logging.getLogger(__name__)
@@ -143,9 +146,7 @@ def format_examples(examples):
     Returns an example is a structured format easily useable
     by mechanical tests.
     """
-    # in_requestBody
-    # in_respoonse
-    #pylint:disable=invalid-name
+    #pylint:disable=invalid-name,too-many-statements
     IN_URL_STATE = 0
     IN_REQUESTBODY_STATE = 1
     IN_REQUESTBODY_EXAMPLE_STATE = 2
@@ -266,8 +267,8 @@ def split_descr_and_examples(docstring, api_base_url=None):
         line = transform_links(line.strip())
         look = re.match(r'\*\*Tags(\*\*)?:(.*)', line)
         if look:
-            func_tags = set([tag.strip()
-                for tag in look.group(2).split(',')])
+            func_tags = {tag.strip()
+                for tag in look.group(2).split(',')}
         elif re.match(r'\*\*Example', line):
             in_examples = True
             sep = ""
@@ -312,9 +313,7 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                 try:
                     path = self.get_path_from_regex(path_regex)
                     callback = pattern.callback
-                    url_name = pattern.name
-                    if self.should_include_endpoint(path, callback,
-                            app_name or '', namespace or '', url_name):
+                    if self.should_include_endpoint(path, callback):
                         path = self.replace_version(path, callback)
                         for method in self.get_allowed_methods(callback):
                             endpoint = (path, method, callback, decorators)
@@ -342,7 +341,52 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
 
 class AutoSchema(BaseAutoSchema):
 
+    def get_request_media_types(self):
+        return getattr(self, 'request_media_types',
+            getattr(self, 'content_types', []))
+
+    def _get_operation_id(self, path, method):
+        # rest framework implementation will try to deduce the  name
+        # from the model, serializer before using the view name. That
+        # leads to duplicate `operationId`.
+        method_name = getattr(self.view, 'action', method.lower())
+        if is_list_view(path, method, self.view):
+            action = 'List'
+        elif method_name not in self.method_mapping:
+            action = method_name
+        else:
+            action = self.method_mapping[method.lower()]
+
+        name = self.view.__class__.__name__
+        if name.endswith('APIView'):
+            name = name[:-7]
+        elif name.endswith('View'):
+            name = name[:-4]
+        if name.endswith(action):  # ListView, UpdateAPIView, ThingDelete ...
+            name = name[:-len(action)]
+
+        if action == 'List' and not name.endswith('s'):  # ListThings instead of ListThing
+            name += 's'
+
+        return action + name
+
+
+    def _map_field(self, field):
+        if (isinstance(field, serializers.ListField) and
+            isinstance(field.child, DatetimeValueTuple)):
+            return {
+                'type': 'array',
+                'items': {
+                    'type': 'array',
+                    'items': {'oneOf': [{'type': 'string', 'type': 'integer'}]}
+                }
+            }
+
+        return super(AutoSchema, self)._map_field(field)
+
+
     def get_operation(self, path, method):
+        self.path = path
         kwargs = {}
         method_obj = getattr(self.view, method.lower())
         docstring = method_obj.__doc__
@@ -356,8 +400,11 @@ class AutoSchema(BaseAutoSchema):
             self.examples = format_examples(examples)
             kwargs['summary'] = summary
             kwargs['description'] = description
+#            if not description:
+#                warnings.warn("%s %s: no description could be extracted from '%s'" % (method, path, docstring))
             kwargs['tags'] = list(func_tags) if func_tags else []
-            kwargs['examples'] = self.examples
+            if not settings.OPENAPI_SPEC_COMPLIANT:
+                kwargs['examples'] = self.examples
         self.view.request = HttpRequest()
         self.view.request.method = method
         operation = super(AutoSchema, self).get_operation(path, method)
@@ -366,12 +413,8 @@ class AutoSchema(BaseAutoSchema):
 
     def _validate_examples(self, path, method, examples,
                            serializer_class=None, example_key='resp'):
+        #pylint:disable=too-many-arguments
         view = self.view
-        if not serializer_class:
-            if not hasattr(view, 'request'):
-                view.request = HttpRequest()
-                view.request.method = method
-            serializer_class = view.get_serializer_class()
         many = (method == 'GET' and hasattr(view, 'list'))
         if many:
             class APISerializer(NoModelSerializer):
@@ -389,24 +432,47 @@ class AutoSchema(BaseAutoSchema):
         if examples:
             for example in examples:
                 if example_key in example:
-                    try:
-                        serializer = serializer_class(
-                            data=example[example_key],
-                            context=view.get_serializer_context())
-                        serializer.is_valid(raise_exception=True)
-                    except (exceptions.ValidationError, Http404) as err:
-                        warnings.warn(
-                            '{}: {} {} invalid example for {}: {}, {}'.format(
-                                view.__class__.__name__, method, path,
-                                example_key, example, err))
-                else:
-                    warnings.warn(
-                        '{}: {} {} has no {} ({})'.format(
-                            view.__class__.__name__, method, path,
-                            example_key, example))
+                    if serializer_class is not None:
+                        try:
+                            serializer = serializer_class(
+                                data=example[example_key],
+                                context=view.get_serializer_context())
+                            serializer.is_valid(raise_exception=True)
+                        except (exceptions.ValidationError, Http404) as err:
+                            # is_valid will also run `UniqueValidator` which
+                            # is not what we want here, especially
+                            # on GET requests.
+                            warnings.warn('%(view)s: %(method)s %(path)s'\
+                                ' invalid example for %(example_key)s:'\
+                                ' %(example)s, err=%(err)s' % {
+                                    'view': view.__class__.__name__,
+                                    'method': method,
+                                    'path': path,
+                                    'example_key': example_key,
+                                    'example': example,
+                                    'err': err})
+                    else:
+                        warnings.warn('%(view)s: %(method)s %(path)s'\
+                            ' example present but no serializer for'\
+                            ' %(example_key)s: %(example)s' % {
+                                'view': view.__class__.__name__,
+                                'method': method,
+                                'path': path,
+                                'example_key': example_key,
+                                'example': example})
+                elif serializer_class is not None:
+                    warnings.warn('%(view)s: %(method)s %(path)s'\
+                        ' has no %(example_key)s: %(example)s' % {
+                            'view': view.__class__.__name__,
+                            'method': method,
+                            'path': path,
+                            'example_key': example_key,
+                            'example': example})
         else:
-            warnings.warn('{}: {} {} has no {} examples'.format(
-                view.__class__.__name__, method, path, example_key))
+            warnings.warn('%(view)s: %(method)s %(path)s has no examples' % {
+                    'view': view.__class__.__name__,
+                    'method': method,
+                    'path': path})
             serializer = serializer_class(context=view.get_serializer_context())
         return serializer
 
@@ -417,13 +483,22 @@ class AutoSchema(BaseAutoSchema):
             return {}
 
         serializer_class = None
+        if not hasattr(view, 'request'):
+            view.request = HttpRequest()
+            view.request.method = method
+        if hasattr(view, 'get_serializer_class'):
+            serializer_class = view.get_serializer_class()
         view_method = getattr(self.view, method.lower(), None)
+        from saas.api.backend import PaymentMethodDetailAPIView
         if view_method and hasattr(view_method, '_swagger_auto_schema'):
+            #pylint:disable=protected-access
             data = view_method._swagger_auto_schema
-            serializer_class = data.get('request_body', None)
-
-        if not serializer_class and not hasattr(view, 'get_serializer_class'):
-            return {}
+            request_body_serializer_class = data.get('request_body', None)
+            if request_body_serializer_class is not None:
+                serializer_class = request_body_serializer_class
+                if not issubclass(serializer_class, serializers.Serializer):
+                    # We assume `request_body=no_body` here.
+                    serializer_class = None
 
         serializer = None
         try:
@@ -456,7 +531,7 @@ class AutoSchema(BaseAutoSchema):
         return {
             'content': {
                 ct: {'schema': content}
-                for ct in self.content_types
+                for ct in self.get_request_media_types()
             }
         }
 
@@ -467,15 +542,27 @@ class AutoSchema(BaseAutoSchema):
         serializer = None
 
         if method in ('DELETE',):
-            return {'204': {}}
+            return {'204': {'description': "NO CONTENT"}}
 
         serializer_class = None
+        if not hasattr(view, 'request'):
+            view.request = HttpRequest()
+            view.request.method = method
+        if hasattr(view, 'get_serializer_class'):
+            serializer_class = view.get_serializer_class()
         view_method = getattr(self.view, method.lower(), None)
         if view_method and hasattr(view_method, '_swagger_auto_schema'):
+            #pylint:disable=protected-access
             data = view_method._swagger_auto_schema
             for resp_code, resp in six.iteritems(data.get('responses', {})):
-                serializer_class = resp.schema
+                request_body_serializer_class = resp.schema
+                if request_body_serializer_class is not None:
+                    serializer_class = request_body_serializer_class
+                    if not issubclass(serializer_class, serializers.Serializer):
+                        # We assume `request_body=no_body` here.
+                        serializer_class = None
                 break # XXX only handles first schema response.
+
 
         if serializer_class or hasattr(view, 'get_serializer_class'):
             try:
@@ -503,8 +590,9 @@ class AutoSchema(BaseAutoSchema):
             '200': {
                 'content': {
                     ct: {'schema': content}
-                    for ct in self.content_types
-                }
+                    for ct in self.get_request_media_types()
+                },
+                'description': "OK"
             }
         }
 
@@ -523,7 +611,7 @@ class APIDocGenerator(SchemaGenerator):
         :rtype: dict
         """
         enumerator = self.endpoint_enumerator_class(
-            self._gen.patterns, self._gen.urlconf, request=request)
+            self._gen.patterns, self._gen.urlconf)
         endpoints = enumerator.get_api_endpoints()
         view_paths = defaultdict(list)
         view_cls = {}
@@ -549,7 +637,6 @@ class APIDocView(TemplateView):
         generator = APIDocGenerator()
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
-        count = 0
         paths = schema.get('paths', [])
         api_paths = OrderedDict()
         for path in sorted(paths):
@@ -570,10 +657,13 @@ class APIDocView(TemplateView):
                             if 'resp' in example:
                                 example['resp'] = format_json(
                                     example['resp'])
+                    description = func_details.get('description', None)
+                    if description is None:
+                        warnings.warn("%s %s: description is None" % (func.upper(), path))
                     func_details.update({
                         'func': func,
                         'path': '%s' % path,
-                        'description': rst_to_html(func_details['description']),
+                        'description': rst_to_html(description),
                         'examples': examples
                     })
                     if 'tags' in func_details and func_details['tags']:
@@ -583,8 +673,8 @@ class APIDocView(TemplateView):
                             'tags': ''.join(func_details['tags'])})
                         api_end_points += [func_details]
                 except AttributeError:
-                    raise
-#                    pass
+#                    raise
+                    pass
         expanded_tags = OrderedDict({
             'auth': "Auth & credentials",
             'billing': "Billing",

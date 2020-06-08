@@ -74,6 +74,13 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
             PUT /api/profile/xia/ HTTP/1.1
 
+        .. code-block:: json
+
+            {
+              "email": "xia@locahost.localdomain",
+              "full_name": "Xia Lee"
+            }
+
         responds
 
         .. code-block:: json
@@ -170,8 +177,32 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 
             {
               "email": "xia@locahost.localdomain",
-              "full_name": "Xia Lee"
+              "full_name": "Xia Lee",
+              "type": "personal"
             }
+
+        responds
+
+        .. code-block:: json
+
+            {
+              "slug": "xia",
+              "email": "xia@locahost.localdomain",
+              "full_name": "Xia Lee",
+              "printable_name": "Xia Lee",
+              "type": "personal",
+              "credentials": true,
+              "default_timezone": "America/Los_Angeles",
+              "phone": "",
+              "street_address": "",
+              "locality": "",
+              "region": "",
+              "postal_code": "",
+              "country": "US",
+              "is_bulk_buyer": false,
+              "extra": null
+            }
+
         """
         return super(OrganizationListAPIView, self).post(
             request, *args, **kwargs)

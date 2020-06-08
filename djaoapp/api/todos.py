@@ -33,25 +33,28 @@ class VersionSerializer(NoModelSerializer):
 class DjaoAppAPIVersion(RetrieveAPIView):
     """
     Retrieves version of the API
-
-    **Example
-
-    .. code-block:: http
-
-        GET /api HTTP/1.1
-
-    responds
-
-    .. code-block:: json
-
-        {
-          "version": "2019-11-23"
-        }
     """
     serializer_class = VersionSerializer
 
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
+        """
+        Retrieves version of the API
+
+        **Example
+
+        .. code-block:: http
+
+            GET /api HTTP/1.1
+
+        responds
+
+        .. code-block:: json
+
+            {
+              "version": "2019-11-23"
+            }
+        """
         return VersionSerializer({'version': __version__})
 
 
@@ -82,6 +85,10 @@ class TodosAPIView(ProviderMixin, ListAPIView):
           "previous": null,
           "results": [
             {
+              "created_at": "20200530T00:00:00Z",
+              "created_by": "djaoapp",
+              "text": "connect processor",
+              "account": null
             }
           ]
         }

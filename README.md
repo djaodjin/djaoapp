@@ -28,16 +28,14 @@ If you are looking to add features, this project integrates
 
 Tested with
 
-- **Python:** 3.6, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.10
-- **Python:** 3.6, **Django:** 2.2.4 (latest),       **Django Rest Framework:** 3.10
-- **Python:** 2.7, **Django:** 1.11.23 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.9.4
+- **Python:** 2.7, **Django:** 1.11, **Django Rest Framework:** 3.9.4
+- **Python:** 3.6, **Django:** 2.2 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.11
+- **Python:** 3.6, **Django:** 3.0 (latest), **Django Rest Framework:** 3.11
 
-Note: Python2 end of life is scheduled for Jan 1st 2020. All production
-features are still supported until then. Development features are partially
-supported, notably the API docs generator is not, due to newer versions
-of prerequisites having deprecated Python2 support earlier than 2020. Please
-use `requirements-legacy.txt` instead of `requirements.txt` to install
-Python2 prerequisites.*
+Note: Support on Python2 was officially ended on Jan 1st 2020. The core
+application works on Python2.7 but some extra commands, like generating
+the OpenAPI spec do not. Please use `requirements-legacy.txt` instead
+of `requirements.txt` to install Python2 prerequisites.*
 
 Install
 -------

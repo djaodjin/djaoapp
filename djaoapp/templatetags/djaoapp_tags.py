@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import (
@@ -8,14 +8,10 @@ from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
-from django.utils import six
 from django.utils.encoding import force_text
 from saas.templatetags.saas_tags import attached_organization
 
-#pylint:disable=no-name-in-module,import-error
-from django.utils.six.moves.urllib.parse import urljoin
-
-from ..compat import reverse
+from ..compat import reverse, six, urljoin
 from ..thread_locals import is_domain_site
 
 

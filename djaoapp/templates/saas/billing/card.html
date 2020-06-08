@@ -5,13 +5,27 @@
 {% endblock %}
 
 {% block saas_content %}
-<card-update inline-template id="update-card-container">
+<card-update inline-template id="update-card-container"
+    data-processor-pub-key="{{STRIPE_PUB_KEY}}">
   <div>
   <div class="col-md-12">
     <form id="update-card" action=".{% if next %}/?next={{next}}{% endif %}"
       method="post" v-on:submit.prevent="save">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       {% include "saas/_card_use.html" %}
+      <div class="form-group text-center py-5">
+        <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
+          {% if submit_title %}
+          {{submit_title}}
+          {% else %}
+          {% if force_update %}
+          {% trans %}Update{% endtrans %}
+          {% else %}
+          {% trans %}Pay Now{% endtrans %}
+          {% endif %}
+          {% endif %}
+        </button>
+      </div>
     </form>
     <div class="card border-danger" v-show="haveCardData" vcloak>
       <div class="card-header">

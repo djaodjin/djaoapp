@@ -112,17 +112,4 @@
       </fieldset>
     </div>
   </div> <!-- #card-use -->
-  <div class="form-group text-center py-5">
-    <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
-      {% if submit_title %}
-        {{submit_title}}
-      {% else %}
-        {% if force_update %}
-          {% trans %}Update{% endtrans %}
-        {% else %}
-          {% trans %}Pay Now{% endtrans %}
-        {% endif %}
-      {% endif %}
-    </button>
-  </div>
 {% endblock %}

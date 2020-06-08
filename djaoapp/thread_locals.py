@@ -1,11 +1,10 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 import logging, os
 
 from django.conf import settings
 from django.http import Http404
-from django.utils import six
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
@@ -14,7 +13,7 @@ from rules.utils import get_app_model
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
 
-from .compat import reverse
+from .compat import reverse, six
 
 
 LOGGER = logging.getLogger(__name__)

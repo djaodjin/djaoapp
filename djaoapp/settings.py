@@ -34,6 +34,9 @@ if os.getenv('DEBUG'):
 API_DEBUG = ((int(os.getenv('API_DEBUG')) > 0)
     if os.getenv('API_DEBUG') else DEBUG)
 
+# Remove extra information used for documentation like examples, etc.
+OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', 0)) > 0)
+
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = os.getenv(
     'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', getattr(sys.modules[__name__],
     'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', False))

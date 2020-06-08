@@ -9,7 +9,6 @@ from functools import wraps
 from django.db import DEFAULT_DB_ALIAS
 from django.db.models import Q
 from django.template.response import TemplateResponse
-from django.utils.decorators import available_attrs
 import jinja2.exceptions
 from multitier.thread_locals import get_current_site
 from pages.locals import (enable_instrumentation, disable_instrumentation,
@@ -26,7 +25,7 @@ from saas.utils import get_role_model
 from signup.models import Contact
 from signup.utils import has_invalid_password
 
-from .compat import reverse
+from .compat import reverse, available_attrs
 from .thread_locals import get_current_broker
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 

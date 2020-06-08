@@ -22,10 +22,9 @@ from ..urlbuilders import (url_authenticated, url_direct,
 
 urlpatterns = [
     # HTTP request pipeline and visual appearence.
-    url_direct(r'^api/auth/tokens/realms/%(organization)s/', # site/subdomain
+    url_direct(r'^api/auth/tokens/realms/(?P<organization>%s)?/?' % ACCT_REGEX,
+                                          # site/subdomain
         CredentialsAPIView.as_view(), name='api_credentials_organization'),
-    url_direct(r'^api/auth/tokens/realms/$', # site/subdomain
-        CredentialsAPIView.as_view(), name='api_credentials'),
     url_direct(r'^api/notifications/(?P<template>%s)/' % ACCT_REGEX,
         NotificationDetailAPIView.as_view(),
         name='api_notification_send_test_email'),

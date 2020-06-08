@@ -1,10 +1,11 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from rules.models import BaseApp
+
+from .compat import python_2_unicode_compatible
 
 
 @python_2_unicode_compatible

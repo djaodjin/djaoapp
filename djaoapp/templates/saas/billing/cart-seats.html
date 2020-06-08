@@ -1,12 +1,11 @@
 {% extends "saas/billing/cart.html" %}
 
 {% block order_title %}
-{% trans %}Place order on behalf of ...{% endtrans %}
+<h4>{% trans %}Place order on behalf of ...{% endtrans %}</h4>
 {% endblock %}
 
 {% block order_card %}
-<div class="form-group text-center">
-    <button type="submit" class="btn btn-primary btn-lg payment-submit">{% trans %}Next{% endtrans %} &raquo;</button>
+<div class="form-group text-center pb-5 mb-5">
+    <button type="submit" class="btn btn-primary btn-md payment-submit px-5">{% trans %}Next{% endtrans %} &raquo;</button>
 </div>
 {% endblock %}
-

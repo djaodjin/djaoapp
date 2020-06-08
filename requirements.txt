@@ -2,18 +2,18 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.12.31
-Django==2.2.11
+Django==2.2.13
 django-webpack-loader==0.6.0
 django-recaptcha==2.0.6
-djangorestframework==3.10
+djangorestframework==3.11.0
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.5.18
+djaodjin-deployutils==0.5.20
 djaodjin-extended-templates==0.2.4
-djaodjin-multitier==0.1.14
-djaodjin-pages==0.2.8
-djaodjin-rules==0.2.4
-djaodjin-saas==0.8.4
-djaodjin-signup==0.4.5
+djaodjin-multitier==0.1.15
+djaodjin-pages==0.2.9
+djaodjin-rules==0.2.5
+djaodjin-saas==0.9.0
+djaodjin-signup==0.4.6
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
@@ -22,15 +22,15 @@ MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 gunicorn==19.7.1
 phonenumbers==8.5.0
 python-social-auth==0.3.6
-pytz==2019.3
+pytz==2020.1
 social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
-whitenoise==4.1.2
+whitenoise==5.1.0
 
 # To run with DEBUG=1
 cssmin==0.2.0
 yuicompressor==2.4.8
 jsmin==2.2.2
-django-extensions==2.1.4
+django-extensions==2.2.9
 django-debug-panel==0.8.3
 django-debug-toolbar==2.1 # 1.11 does not support Django 2.2
 
@@ -41,5 +41,5 @@ flex==6.14.0
 pygments==2.2.0
 pyYAML==5.1.2
 Sphinx==1.7.5
-sphinxcontrib-httpdomain==1.6.1
+sphinxcontrib-httpdomain==1.7.0
 swagger-spec-validator==2.3.0

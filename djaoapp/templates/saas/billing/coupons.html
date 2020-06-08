@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-3">
               <div class="mr-2 mb-3 w-100">
-                <input type="text" class="form-control form-control-md w-100" placeholder="{% trans %}Discount %{% endtrans %}" v-model="newCoupon.percent">
+                <input type="text" class="form-control form-control-md w-100" placeholder="{% trans %}Discount %{% endtrans %}" v-model="newCoupon.discount_value">
               </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -55,8 +55,8 @@
               <select id="order-by" class="form-control" style="-webkit-appearance: none;">
                 <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
                 <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
-                <option value="percent">{% trans %}Discount (highest){% endtrans %}</option>
-                <option value="-percent">{% trans %}Discount (lowest){% endtrans %}</option>
+                <option value="discount_value">{% trans %}Discount (highest){% endtrans %}</option>
+                <option value="-discount_value">{% trans %}Discount (lowest){% endtrans %}</option>
                 <option value="ends_at">{% trans %}Expiration (soonest){% endtrans %}</option>
                 <option value="-ends_at">{% trans %}Expiration (latest){% endtrans %}</option>
               </select>
@@ -87,7 +87,7 @@
             </div>
             <div class="list-group list-group-flush">
               <div class="list-group-item">
-                <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[entry.percent]]%
+                <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[(entry.discount_value / 100).toFixed(0)]]%
               </div>
               <div class="list-group-item">
                 <span class="text-muted">{% trans %}Expires At{% endtrans %}:</span> {% include "_entry_ends_at_field.html" %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -13,7 +13,6 @@ from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
 from django.utils.module_loading import import_string
-from django.utils import six
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from pages.compat import render_template
@@ -24,7 +23,7 @@ from saas.decorators import _valid_manager
 from saas.models import Organization, get_broker
 from saas.utils import is_broker
 
-from .compat import csrf, reverse
+from .compat import csrf, reverse, six
 from .thread_locals import is_domain_site, is_testing
 
 
@@ -128,7 +127,8 @@ def inject_edition_tools(response, request, context=None,
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
             _ = get_storage_class().bucket_name
-            edit_urls.update({'media_upload': reverse('api_credentials')})
+            edit_urls.update({
+                'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
         # XXX sites which are hosted on a same domain shouldn't disable

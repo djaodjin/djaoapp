@@ -7,7 +7,7 @@
 {% block saas_content %}
 <role-user-list-modal inline-template >
   <role-user-list inline-template
-    :requestUser="{{request.user.username}}"
+    :requestUser="'{{request.user.username}}'"
     @create="create" @create-completed="createCompleted"
     @invite="invite" @invite-completed="inviteCompleted"
     @remove="remove" @remove-completed="removeCompleted"

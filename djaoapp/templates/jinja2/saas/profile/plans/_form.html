@@ -15,12 +15,16 @@
             {{input_field(form['period_type'], form.hide_labels)}}
         </div>
         {{input_field(form['period_length'], form.hide_labels)}}
-        {{input_field(form['advance_discount'], form.hide_labels)}}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}Advance discounts{% endtrans %}</legend>
+        {{input_field(form['advance_discount_type'], form.hide_labels)}}
+        {{input_field(form['advance_discount_value'], form.hide_labels)}}
+        {{input_field(form['advance_discount_length'], form.hide_labels)}}
     </fieldset>
     <fieldset>
         <legend>{% trans %}Extra Options{% endtrans %}</legend>
         {{input_field(form['renewal_type'], form.hide_labels)}}
-        {{input_field(form['is_not_priced'], form.hide_labels)}}
     </fieldset>
     <div class="form-action text-center">
         <button type="submit" class="btn btn-block btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>

@@ -24,7 +24,7 @@
 
 """Command to generate JavaScript file used for i18n on the frontend"""
 
-import json, os, six
+import json, os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -32,6 +32,8 @@ from django.views.i18n import JavaScriptCatalog, get_formats
 from django.template import Context, Engine
 from django.utils.translation import get_language
 from django.utils.translation.trans_real import DjangoTranslation
+
+from ...compat import six
 
 JS_CATALOG_TEMPLATE = r"""
 {% autoescape off %}

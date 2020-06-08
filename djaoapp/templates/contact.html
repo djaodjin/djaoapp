@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
           contentType: 'application/json',
           data: JSON.stringify(data),
         }).done(function(resp) {
-            showMessages([resp.details], "info");
+            showMessages([resp.detail], "info");
         }).fail(function(resp) {
             showErrorMessages(resp);
         });

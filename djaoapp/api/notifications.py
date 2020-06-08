@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -7,9 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 
 from rules.mixins import AppMixin
+from saas.api.serializers import ValidationErrorSerializer
+from saas.docs import swagger_auto_schema, OpenAPIResponse
 from saas.models import Price, get_broker
 
 from ..compat import reverse
@@ -72,18 +74,23 @@ def get_test_email_context():
     }
 
 
-class NotificationAPIView(AppMixin, APIView):
+class NotificationAPIView(AppMixin, GenericAPIView):
     # So far this is just a dummy used in `reverse` to get a base url.
     pass
 
 
-class NotificationDetailAPIView(AppMixin, APIView):
+class NotificationDetailAPIView(AppMixin, GenericAPIView):
 
     # Even though ``GET`` will be denied, we still need to provide
     # a ``serializer_class`` because it is called before permission checks.
     http_method_names = ['post']
     serializer_class = None
 
+    def get_serializer_class(self):
+        return None
+
+    @swagger_auto_schema(responses={
+        200: OpenAPIResponse("", ValidationErrorSerializer)})
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         """
         Sends a test notification e-mail
@@ -101,7 +108,7 @@ class NotificationDetailAPIView(AppMixin, APIView):
         .. code-block:: json
 
             {
-                "details": "Test email sent to xia@example.com"
+                "detail": "Test email sent to xia@example.com"
             }
         """
         try:
@@ -113,9 +120,9 @@ class NotificationDetailAPIView(AppMixin, APIView):
                     'template', None),
                 context=get_test_email_context())
         except TemplateDoesNotExist:
-            return Response({"details":
+            return Response({'detail':
                 _("Problem with template. Could not send test email.")},
                 status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"details": _("Test email sent to %(email)s") % {
+            {'detail': _("Test email sent to %(email)s") % {
                 'email': request.user.email}})

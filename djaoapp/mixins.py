@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,7 +8,6 @@ from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
-from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 from pages.locals import get_edition_tools_context_data
 from rest_framework.exceptions import ValidationError
@@ -19,7 +18,7 @@ from saas.models import Organization, Plan, Signature
 from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
-from .compat import reverse
+from .compat import reverse, six
 from .edition_tools import fail_edit_perm, inject_edition_tools
 
 
