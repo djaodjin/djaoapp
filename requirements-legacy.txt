@@ -3,6 +3,7 @@
 
 boto3==1.4.4
 Django==1.11.29
+django-assets==0.12
 django-countries==5.5
 django-webpack-loader==0.6.0
 django-recaptcha==2.0.5
