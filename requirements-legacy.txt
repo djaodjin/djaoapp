@@ -2,7 +2,8 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.4.4
-Django==1.11.26
+Django==1.11.29
+django-countries==5.5
 django-webpack-loader==0.6.0
 django-recaptcha==2.0.5
 djangorestframework==3.9.4
@@ -22,7 +23,7 @@ MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 gunicorn==19.7.1
 phonenumbers==8.5.0
 python-social-auth==0.3.6
-pytz==2019.2
+pytz==2020.1
 social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
 whitenoise==4.1.2
 WeasyPrint==0.42.3
