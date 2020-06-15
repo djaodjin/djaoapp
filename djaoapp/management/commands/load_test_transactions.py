@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
 import datetime, logging, random
@@ -15,6 +15,7 @@ from multitier.utils import get_site_model
 from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
     Plan, Subscription, Transaction)
 
+from saas import humanize
 from saas.utils import datetime_or_now
 from saas.settings import PROCESSOR_ID
 from saas import signals as saas_signals
@@ -165,7 +166,7 @@ class Command(BaseCommand):
             action='store', dest='provider', default=settings.APP_NAME,
             help='create sample subscribers on this provider')
         parser.add_argument('--coupon',
-            action='store', dest='coupon', default='HALLOWEEN',
+            action='store', dest='coupon', default=None,
             help='create uses of the specified coupon')
 
     def handle(self, *args, **options):
@@ -230,8 +231,9 @@ class Command(BaseCommand):
             coupon_code = "%s%d" % ("".join([
                 random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
                 for _ in range(0, 3)]), coupon_percent)
-            Coupon.objects.create(code=coupon_code, percent=coupon_percent,
-                organization=provider)
+            Coupon.objects.get_or_create(code=coupon_code,
+                defaults={'discount_value': coupon_percent * 100,
+                'organization': provider})
 
     def generate_coupon_uses(self, coupon_code, provider=None, nb_uses=None):
         user_model = get_user_model()
@@ -241,19 +243,20 @@ class Command(BaseCommand):
         if provider:
             kwargs = {'organization': provider}
         coupon = Coupon.objects.filter(code=coupon_code, **kwargs).first()
-        plans = list(Plan.objects.filter(organization=coupon.organization))
-        for _ in range(0, nb_uses):
-            try:
-                user = user_model.objects.get(
-                    pk=random.randint(1, user_model.objects.count() - 1))
-                if len(plans) > 1:
-                    plan = plans[random.randint(1, len(plans) - 1)]
-                else:
-                    plan = plans[0]
-                CartItem.objects.create(
-                    user=user, coupon=coupon, plan=plan, recorded=True)
-            except user_model.DoesNotExist:
-                pass
+        if coupon:
+            plans = list(Plan.objects.filter(organization=coupon.organization))
+            for _ in range(0, nb_uses):
+                try:
+                    user = user_model.objects.get(
+                        pk=random.randint(1, user_model.objects.count() - 1))
+                    if len(plans) > 1:
+                        plan = plans[random.randint(1, len(plans) - 1)]
+                    else:
+                        plan = plans[0]
+                    CartItem.objects.create(
+                        user=user, coupon=coupon, plan=plan, recorded=True)
+                except user_model.DoesNotExist:
+                    pass
 
 
     def generate_subscriptions(self, subscriber, nb_subscriptions=None):
@@ -322,11 +325,18 @@ class Command(BaseCommand):
                 all_subscriptions.count() - nb_churn_customers)
             for subscription in subscriptions:
                 nb_periods = random.randint(1, 6)
+                subscription.ends_at = subscription.plan.end_of_period(
+                    subscription.ends_at,
+                    nb_periods=nb_periods)
                 transaction_item = Transaction.objects.new_subscription_order(
-                    subscription, nb_natural_periods=nb_periods,
+                    subscription,
+                    amount=subscription.plan.period_amount * nb_periods,
+                    descr=humanize.describe_buy_periods(
+                        subscription.plan, subscription.ends_at, nb_periods),
                     created_at=end_period)
                 if transaction_item.dest_amount < 50:
                     continue
+                subscription.save()
                 transaction_item.orig_amount = transaction_item.dest_amount
                 transaction_item.orig_unit = transaction_item.dest_unit
                 transaction_item.save()

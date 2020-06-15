@@ -1,0 +1,97 @@
+[
+{
+    "fields":{
+        "code": "HALLOWEEN",
+        "created_at":"2014-01-01T00:00:00-09:00",
+        "discount_type": 1,
+        "discount_value": 5000,
+        "organization": 2
+    },
+    "model" : "saas.Coupon", "pk": 2
+},
+{
+    "fields":{
+        "slug":"basic",
+        "title":"Basic",
+        "created_at":"2020-01-01T00:00:00-00:00",
+        "setup_amount": 0,
+        "period_amount": 9900,
+        "broker_fee_percent": 0,
+        "period_type": 4,
+        "description":"Get started",
+        "organization": 2,
+        "is_active": 1
+    },
+    "model" : "saas.Plan", "pk": 1
+},
+{
+    "fields":{
+        "slug":"standard",
+        "title":"Standard",
+        "created_at":"2020-01-01T00:00:00-00:00",
+        "setup_amount": 0,
+        "period_amount": 19900,
+        "broker_fee_percent": 0,
+        "period_type": 4,
+        "description":"Get going",
+        "organization": 2,
+        "is_active": 1
+    },
+    "model" : "saas.Plan", "pk": 2
+},
+{
+    "fields":{
+        "slug":"premium",
+        "title":"Prremium",
+        "created_at":"2020-01-01T00:00:00-00:00",
+        "setup_amount": 0,
+        "period_amount": 39900,
+        "broker_fee_percent": 0,
+        "period_type": 4,
+        "description":"Get big",
+        "organization": 2,
+        "is_active": 1
+    },
+    "model" : "saas.Plan", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "organization": 2,
+      "slug": "contributor",
+      "title": "Contributor"
+    },
+    "model": "saas.RoleDescription", "pk": 2
+},
+{
+    "fields": {
+      "date_joined": "2020-01-01T00:00:00-00:00",
+      "email": "livedemo@localhost.localdomain",
+      "first_name": "Live",
+      "last_name": "Demo",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2020-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "username": "livedemo"
+    },
+    "model": "auth.User", "pk": 1
+},
+{
+    "fields": {
+      "last_signed": "2020-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 1
+    },
+    "model": "saas.signature", "pk": 1
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "role_description": 2,
+      "organization": 2,
+      "user": 1
+    },
+    "model": "saas.Role", "pk": 1
+}]

@@ -3,17 +3,18 @@
 
 boto3==1.12.31
 Django==2.2.13
-django-webpack-loader==0.6.0
 django-recaptcha==2.0.6
+django-webpack-loader==0.6.0
 djangorestframework==3.11.0
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.21
 djaodjin-extended-templates==0.2.5
-djaodjin-multitier==0.1.17
+djaodjin-multitier==0.1.18
 djaodjin-pages==0.2.9
 djaodjin-rules==0.2.5
 djaodjin-saas==0.9.0
 djaodjin-signup==0.4.6
+docutils==0.15  # botocore has a constraint: docutils<0.16
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)

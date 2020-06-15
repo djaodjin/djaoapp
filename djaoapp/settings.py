@@ -11,21 +11,57 @@ from deployutils.configs import load_config, update_settings
 
 from .compat import reverse_lazy
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Default values that can be overriden by `update_settings` later on.
+APP_NAME = os.path.basename(BASE_DIR)
+
+DEBUG = True
+FEATURES_DEBUG = True
+
+ALLOWED_HOSTS  = ('*',)
+BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
+
+DB_ENGINE = 'django.db.backends.sqlite3'
+DB_NAME = os.path.join(BASE_DIR, 'db.sqlite3')
+DB_HOST = ''
+DB_PORT = 5432
+DB_USER = None
+DB_PASSWORD = None
+
+SEND_EMAIL = True
+RULES_APP_MODEL = 'djaoapp_extras.App'
 
 #pylint: disable=undefined-variable
 FEATURES_REVERT_TO_DJANGO = False # XXX 2016-03-31 temporary product switch
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP_NAME = os.path.basename(BASE_DIR)
-
-DB_HOST = ''
-DB_PORT = 5432
-SEND_EMAIL = True
-RULES_APP_MODEL = 'djaoapp_extras.App'
-
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
+
+# Configuration settings that can be overriden on the command line.
+if os.getenv('DEBUG'):
+    DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
+
+if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
+    BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
+        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', 0)) > 0)
+
+API_DEBUG = True if int(os.getenv('API_DEBUG', 0)) > 0 else DEBUG
+
+# Remove extra information used for documentation like examples, etc.
+OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', 0)) > 0)
+
+
+# Implementation Note: To simplify quick tests. The `SECRET_KEY` should
+# be defined in the `credentials` otherwise all HTTP session will become
+# invalid as the process is restarted.
+if not hasattr(sys.modules[__name__], "SECRET_KEY"):
+    from random import choice
+    SECRET_KEY = "".join([choice(
+        "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)])
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # py27/django-recaptcha workaround
 for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
@@ -33,20 +69,6 @@ for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
     if recaptcha_key_value and not isinstance(recaptcha_key_value, str):
         setattr(sys.modules[__name__], recaptcha_key,
             recaptcha_key_value.encode('utf-8'))
-
-if os.getenv('DEBUG'):
-    # Enable override on command line.
-    DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
-
-API_DEBUG = ((int(os.getenv('API_DEBUG')) > 0)
-    if os.getenv('API_DEBUG') else DEBUG)
-
-# Remove extra information used for documentation like examples, etc.
-OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', 0)) > 0)
-
-BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = os.getenv(
-    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', getattr(sys.modules[__name__],
-    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', False))
 
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
@@ -343,9 +365,6 @@ else:
         }
     }]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-CRISPY_CLASS_CONVERTERS = {'textinput':"form-control"}
-
 EXTENDED_TEMPLATES = {
     'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
     'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
@@ -353,16 +372,6 @@ EXTENDED_TEMPLATES = {
 
 
 MAX_UPLOAD_SIZE = 10240
-
-# Searches
-# --------
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(SEARCH_INDEXES_ROOT, APP_NAME + '.idx')
-    },
-}
 
 
 # A sample logging configuration. The only tangible logging
@@ -612,30 +621,31 @@ import djaoapp.extras.saas, djaoapp.extras.rules, djaoapp.extras.pages
 
 # Software-as-a-Service (provider)
 SAAS = {
-    'BYPASS_IMPLICIT_GRANT': getattr(
-        sys.modules[__name__], 'BYPASS_IMPLICIT_GRANT', {}),
-    'BYPASS_PROCESSOR_AUTH': getattr(
-        sys.modules[__name__], 'USE_FIXTURES', False),
-    'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'BROKER': {
         'GET_INSTANCE': 'djaoapp.thread_locals.get_current_broker',
         'IS_INSTANCE_CALLABLE': 'djaoapp.thread_locals.is_current_broker',
         'BUILD_ABSOLUTE_URI_CALLABLE':
             'djaoapp.thread_locals.provider_absolute_url',
     },
+    'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
+    'PROCESSOR_BACKEND_CALLABLE':
+        'djaoapp.thread_locals.dynamic_processor_keys',
+
+    'BYPASS_IMPLICIT_GRANT': getattr(
+        sys.modules[__name__], 'BYPASS_IMPLICIT_GRANT', {}),
+    'BYPASS_PROCESSOR_AUTH': getattr(
+        sys.modules[__name__], 'USE_FIXTURES', False),
     'PROCESSOR': {
-        'PUB_KEY': STRIPE_PUB_KEY,
-        'PRIV_KEY': STRIPE_PRIV_KEY,
+        'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
+        'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
-        'CLIENT_ID': STRIPE_CLIENT_ID,
+        'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
         'CONNECT_STATE_CALLABLE':
             'djaoapp.thread_locals.get_authorize_processor_state',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },
-    'PROCESSOR_BACKEND_CALLABLE':
-        'djaoapp.thread_locals.dynamic_processor_keys',
 }
 
 # Software-as-a-Service (forward requests with session data)

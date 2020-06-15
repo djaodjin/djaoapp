@@ -5,6 +5,7 @@
 *.mo
 .DS_Store
 .timestamp
+db.sqlite3
 assets
 htdocs
 htdocs/media/
@@ -15,4 +16,3 @@ djaoapp/locale/*/LC_MESSAGES/*.mo
 # npm install --save <package-name>
 package-lock.json
 node_modules
-installTop
