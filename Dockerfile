@@ -12,7 +12,7 @@ WORKDIR /app/reps/djaoapp
 RUN /app/bin/pip install -r requirements.txt billiard
 # XXX Upgrading to Django 2.2 requires to install a recent version of sqlite3
 # from source.
-RUN /app/bin/pip install -r Django==1.11.29 django-localflavor==2.2
+RUN /app/bin/pip install Django==1.11.29 django-localflavor==2.2
 RUN /usr/bin/mkdir -p /etc/djaoapp
 RUN /usr/bin/sed -e "s,\%(SECRET_KEY)s,`/app/bin/python -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," \
   etc/credentials > /etc/djaoapp/credentials
