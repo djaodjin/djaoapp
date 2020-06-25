@@ -118,12 +118,12 @@ urlpatterns = [
 #            reverse_lazy('product_default_start'))),
 
     # Magic! redirects to the product webapp.
-    url(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
+    url_direct(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
         AppPageView.as_view(), name='organization_app'),
-    url(r'^app/',
+    url_authenticated(r'^app/',
         AppPageRedirectView.as_view(), name='product_default_start'),
-    url(r'^app',
+    url_prefixed(r'^app',
         RedirectView.as_view(pattern_name='product_default_start')),
-    url(r'^(?P<page>\S+)?',
+    url_prefixed(r'^(?P<page>\S+)?',
         ProxyPageView.as_view(), name='rules_page'),
 ]

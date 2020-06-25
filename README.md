@@ -44,7 +44,7 @@ First you will need to create a workspace environment, download the 3rd party
 vendor prerequisite packages and build the static assets.
 
 <pre><code>
-    $ virtualenv <em>installTop</em>
+    $ python -m venv <em>installTop</em>
     $ source <em>installTop</em>/bin/activate
     $ pip install -r requirements.txt
     $ make install-conf
