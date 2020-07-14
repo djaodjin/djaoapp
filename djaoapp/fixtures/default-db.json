@@ -350,6 +350,7 @@
 {
     "fields": {
       "slug": "djaoapp",
+      "is_active": true,
       "account": 2,
       "domain": null,
       "tag": "streetside"
@@ -359,6 +360,7 @@
 {
     "fields": {
       "slug": "cowork",
+      "is_active": true,
       "account": 4,
       "domain": null,
       "is_path_prefix": true,

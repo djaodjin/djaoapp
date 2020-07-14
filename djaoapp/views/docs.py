@@ -696,6 +696,7 @@ class APIDocView(TemplateView):
                         # of any groups.
                         func_details.update({
                             'tags': ''.join(func_details['tags'])})
+                        tags |= set([func_details['tags']])
                         api_end_points += [func_details]
                 except AttributeError:
 #                    raise
