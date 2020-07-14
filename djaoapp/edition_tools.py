@@ -102,11 +102,10 @@ def inject_edition_tools(response, request, context=None,
         'api_sitecss': reverse('edit_sitecss'),
         'api_less_overrides': reverse('pages_api_less_overrides'),
         'api_sources': reverse('pages_api_sources'),
-        'api_page_elements': reverse('page_elements'),
-        'api_plans': reverse(
-            'saas_api_plans', args=(provider,)),
-        'plan_update_base': reverse(
-            'saas_plan_base', args=(provider,))}
+        'api_page_element_base': reverse('api_page_element',
+            kwargs={'path':''}),
+        'api_plans': reverse('saas_api_plans', args=(provider,)),
+        'plan_update_base': reverse('saas_plan_base', args=(provider,))}
     if not fail_edit_perm(request, account=provider):
         # XXX `not fail_edit_perm` will pass even if site is testing, which
         # puts the tools to edit online. Error of duplicate remains.
