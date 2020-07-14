@@ -3,7 +3,7 @@
 
 boto3==1.4.4
 coverage==4.0.3
-cryptography==2.2.2
+cryptography==2.3
 Django==1.11.29
 django-assets==0.12
 django-countries==5.5
