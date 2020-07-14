@@ -1,7 +1,7 @@
 # Direct known Python requirements
 # (Javascript prerequisites are specified in package.json)
 
-boto3==1.12.31
+boto3==1.14.20
 Django==2.2.13
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
@@ -10,21 +10,21 @@ djangorestframework==3.11.0
 djaodjin-deployutils==0.5.21
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.18
-djaodjin-pages==0.2.9
+djaodjin-pages==0.3.0
 djaodjin-rules==0.2.5
 djaodjin-saas==0.9.0
 djaodjin-signup==0.4.6
-docutils==0.15  # botocore has a constraint: docutils<0.16
+docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.8.1
-MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
+MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
 #   but it still seems to work ...
 gunicorn==19.7.1
-phonenumbers==8.5.0
+phonenumbers==8.12.6
 python-social-auth==0.3.6
 pytz==2020.1
-social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
+social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
 
 # To run with DEBUG=1
@@ -41,6 +41,7 @@ Faker==2.0.0
 flex==6.14.0
 pygments==2.2.0
 pyYAML==5.1.2
-Sphinx==1.7.5
+Sphinx==1.8.4
 sphinxcontrib-httpdomain==1.7.0
+sphinxcontrib-websupport==1.1.0
 swagger-spec-validator==2.3.0
