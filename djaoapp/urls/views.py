@@ -12,8 +12,8 @@ from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.forms import StartAuthenticationForm
 
 from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
-     url_direct, url_provider, url_self_provider,
-     url_frictionless_self_provider, url_prefixed, url_dashboard_iframe)
+    url_direct, url_frictionless_direct, url_frictionless_self_provider,
+    url_provider, url_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
     ProcessorAuthorizeView)
@@ -118,7 +118,7 @@ urlpatterns = [
 #            reverse_lazy('product_default_start'))),
 
     # Magic! redirects to the product webapp.
-    url_direct(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
+    url_frictionless_direct(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
         AppPageView.as_view(), name='organization_app'),
     url_authenticated(r'^app/',
         AppPageRedirectView.as_view(), name='product_default_start'),
