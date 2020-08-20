@@ -1,6 +1,9 @@
 // These are extensions of the bootstrap v4 classes.
 // to support djaoapp templates.
 
+$footer-height: 150px;
+
+
 .navbar-brand {
   font-family: Sonsie One;
 
@@ -192,17 +195,17 @@ body{
 /* 
   Unless the font-size for #main and .footer match, using ``em`` metrics will
   create bottom and overlap margins that have different heights, hence
-  sticking the footer to the bottom while introducing a "border" above it. 
+  sticking the footer to the bottom while introducing a "border" above it.
 */
 #main {
   min-height: 100%;
-  padding-bottom: 22px; /* must be in pixel (see comment abolve) */
+  padding-bottom: $footer-height; /* must be in pixel (see comment abolve) */
 }
 
 .footer {
   position: relative;
-  height: 150px;      /* must be in pixel (see comment abolve) */
-  margin-top: -150px;  /* stick to bottom (see comment above) */
+  height: $footer-height;         /* must be in pixel (see comment abolve) */
+  margin-top: -$footer-height;    /* stick to bottom (see comment above) */
   clear:both;
   bottom: 0;
   font-size: 12px;
@@ -540,10 +543,18 @@ section#hosting {
   text-decoration: underline;
 }
 
-// These are used in authentication pages (i.e. accounts/*.html)
-// XXX also in plan_short.html
+// These are used in accounts/*.html templates
 // --------
+.container-vertical-middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - (#{$navbar-height} + #{$footer-height}));
+}
 
+
+// .form-container is used in saas/organization_redirects.html template
+// --------
 .form-container {
   margin-top: 40px;
   border:1px solid theme-color(primary);

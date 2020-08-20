@@ -548,8 +548,25 @@ ACCOUNT_ACTIVATION_DAYS = 2
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = '/' # XXX otherwise logout on djaoapp might lead to 410.
 
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
 SOCIAL_AUTH_USER_FIELDS = ['username', 'email', 'first_name', 'last_name']
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    # adds the following to the default pipeline because sites offer
+    # login by e-mail, which be definition then is unique in `auth_user`.
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
 
 NOCAPTCHA = True
 
