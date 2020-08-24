@@ -10,7 +10,7 @@ djangorestframework==3.11.0
 djaodjin-deployutils==0.5.21
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.18
-djaodjin-pages==0.3.0
+djaodjin-pages==0.3.1
 djaodjin-rules==0.2.5
 djaodjin-saas==0.9.0
 djaodjin-signup==0.4.6
@@ -37,7 +37,7 @@ django-debug-toolbar==2.1 # 1.11 does not support Django 2.2
 
 # development
 drf-yasg==1.8.0
-Faker==2.0.0
+Faker==3.0.1
 flex==6.14.0
 pygments==2.2.0
 pyYAML==5.1.2

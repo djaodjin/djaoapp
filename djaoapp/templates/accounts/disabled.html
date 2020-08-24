@@ -1,18 +1,28 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="offset-sm-3 col-sm-6">
+<div class="container container-vertical-middle">
+  <div class="row">
+    <div class="col-sm-12">
+        {% if disabled_registration %}
+        <h1>{% trans %}Registration disabled{% endtrans %}</h1>
+        <p class="text-left">
+{% trans %}User registration has been currently disabled on this site.{% endtrans %}
+        </p>
+        {% else %}
         <h1>{% trans %}Authentication disabled{% endtrans %}</h1>
-        <div class="text-left">
-            <p>
-{% trans %}User login and registration has been currently disabled on your site.{% endtrans %}
+        <p class="text-left">
+{% trans %}User login and registration has been currently disabled on this site.{% endtrans %}
+        </p>
+        {% endif %}
+        <p class="text-left">
 {% trans %}If you think it is a mistake, please contact an administrator.{% endtrans %}
-            </p>
-            <p>
+        </p>
+        <p class="text-left">
 {% trans %}Thank you.{% endtrans %}
-            </p>
+        </p>
         </div>
     </div>
+  </div>
 </div>
 {% endblock %}

@@ -228,6 +228,9 @@ class DjaoAppPageView(TemplateView):
 
     def get_template_names(self):
         if not fail_direct(self.request, organization=get_broker()):
+            # XXX testing exception catcher
+            if self.kwargs.get('organization') == '500':
+                raise ValueError("Testing 500 exception catcher")
             return ['app_proxy_help.html']
         return super(DjaoAppPageView, self).get_template_names()
 

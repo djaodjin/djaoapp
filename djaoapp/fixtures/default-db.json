@@ -185,15 +185,15 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "donny@localhost.localdomain",
-      "first_name": "Donny",
+      "email": "alice@localhost.localdomain",
+      "first_name": "Alice",
       "last_name": "Cooper",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2014-01-01T00:00:00-00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "donny"
+      "username": "alice"
     },
     "model": "auth.User", "pk": 1
 },
@@ -208,15 +208,15 @@
 {
     "fields": {
       "date_joined": "2014-01-01T00:00:00-00:00",
-      "email": "alice@localhost.localdomain",
-      "first_name": "Alice",
+      "email": "donny@localhost.localdomain",
+      "first_name": "Donny",
       "last_name": "Cooper",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2014-01-01T00:00:00-00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "alice"
+      "username": "donny"
     },
     "model": "auth.User", "pk": 2
 },
@@ -232,10 +232,10 @@
     "fields": {
       "slug": "alice",
       "created_at": "2016-03-18T00:00:00-09:00",
-      "user": 2,
+      "user": 1,
       "picture": "/static/img/alice.jpg"
     },
-    "model": "signup.Contact", "pk": 2
+    "model": "signup.Contact", "pk": 1
 },
 {
     "fields": {
@@ -265,16 +265,7 @@
     "fields": {
       "created_at": "2012-09-14T14:16:55-09:00",
       "role_description": 1,
-      "organization": 4,
-      "user": 2
-    },
-    "model": "saas.Role", "pk": 2
-},
-{
-    "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
-      "role_description": 1,
-      "organization": 4,
+      "organization": 2,
       "user": 1
     },
     "model": "saas.Role", "pk": 3
@@ -659,7 +650,7 @@
     "fields": {
       "created_at": "2012-09-14T14:16:55-09:00",
       "role_description": 1,
-      "organization": 2,
+      "organization": 4,
       "user": 2
     },
     "model": "saas.Role", "pk": 10
@@ -827,15 +818,6 @@
       "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
     },
     "model": "saas.Organization", "pk": 14
-},
-{
-    "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
-      "role_description": 1,
-      "organization": 14,
-      "user": 1
-    },
-    "model": "saas.Role", "pk": 12
 },
 {
     "fields":{

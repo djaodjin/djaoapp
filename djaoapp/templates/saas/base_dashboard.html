@@ -73,6 +73,7 @@ Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %}; /
 {{ render_bundle('js_djaodjin-vue') }}
 <script type="text/javascript">
 Vue.use(BootstrapVue);
+Vue.use(Croppa);
 Vue.use(uiv, {prefix: 'uiv'});
 
 var app = new Vue({

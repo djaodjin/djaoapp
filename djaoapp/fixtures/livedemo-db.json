@@ -65,26 +65,35 @@
 },
 {
     "fields": {
-      "date_joined": "2020-01-01T00:00:00-00:00",
-      "email": "livedemo@localhost.localdomain",
-      "first_name": "Live",
-      "last_name": "Demo",
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "alice@localhost.localdomain",
+      "first_name": "Alice",
+      "last_name": "Cooper",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2020-01-01T00:00:00-00:00",
+      "last_login": "2014-01-01T00:00:00-00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "livedemo"
+      "username": "alice"
     },
     "model": "auth.User", "pk": 1
 },
 {
     "fields": {
-      "last_signed": "2020-01-01T00:00:00-00:00",
+      "last_signed": "2014-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 1
     },
     "model": "saas.signature", "pk": 1
+},
+{
+    "fields": {
+      "slug": "alice",
+      "created_at": "2016-03-18T00:00:00-09:00",
+      "user": 1,
+      "picture": "/static/img/alice.jpg"
+    },
+    "model": "signup.Contact", "pk": 1
 },
 {
     "fields": {
@@ -94,4 +103,180 @@
       "user": 1
     },
     "model": "saas.Role", "pk": 1
-}]
+},
+{
+    "fields": {
+      "date_joined": "2014-01-01T00:00:00-00:00",
+      "email": "donny@localhost.localdomain",
+      "first_name": "Donny",
+      "last_name": "Cooper",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "username": "donny"
+    },
+    "model": "auth.User", "pk": 2
+},
+{
+    "fields": {
+      "last_signed": "2014-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 2
+    },
+    "model": "saas.signature", "pk": 2
+},
+{
+    "fields": {
+      "created_at": "2014-01-01T00:00:00-00:00",
+      "slug": "cowork",
+      "full_name": "Cowork",
+      "email": "xia@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "role_description": 2,
+      "organization": 3,
+      "user": 2
+    },
+    "model": "saas.Role", "pk": 2
+},
+{
+    "fields": {
+      "date_joined": "2020-01-01T00:00:00-00:00",
+      "email": "livedemo@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "Lee",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2020-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "username": "xia"
+    },
+    "model": "auth.User", "pk": 3
+},
+{
+    "fields": {
+      "last_signed": "2020-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 3
+    },
+    "model": "saas.signature", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-09:00",
+      "slug": "xia",
+      "email": "xia@localhost.localdomain",
+      "picture": "/media/livedemo/profiles/xia.jpg",
+      "user": 3
+    },
+    "model": "signup.Contact", "pk": 3
+},
+{
+    "fields": {
+      "created_at": "2014-01-01T00:00:00-00:00",
+      "slug": "xia",
+      "full_name": "Xia Lee",
+      "email": "xia@localhost.localdomain",
+      "picture": "/media/livedemo/profiles/xia.jpg",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 4
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-00:00",
+      "role_description": 2,
+      "organization": 4,
+      "user": 3
+    },
+    "model": "saas.Role", "pk": 3
+},
+
+{
+    "fields": {
+      "slug": "contact_requested_notice",
+      "title": "Messages through the website contact page",
+      "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."
+    },
+    "model": "signup.Notification", "pk": 1
+},
+{
+    "fields": {
+      "slug": "user_registered_notice",
+      "title": "A new user has registered",
+      "description": "By enabling this notification, you will receive e-mails when a new user has registered to the website."
+    },
+    "model": "signup.Notification", "pk": 2
+},
+{
+    "fields": {
+      "slug": "user_activated_notice",
+      "title": "A user has activated his/her account",
+      "description": "By enabling this notification, you will receive e-mails when a user has activated their account on the website and are now able to login."
+    },
+    "model": "signup.Notification", "pk": 3
+},
+{
+    "fields": {
+      "slug": "charge_updated",
+      "title": "A charge has been created or updated",
+      "description": "By enabling this notification, you will receive e-mails when a charge has been created or a refund on a previously given charge given."
+    },
+    "model": "signup.Notification", "pk": 4
+},
+{
+    "fields": {
+      "slug": "card_updated",
+      "title": "A credit card on file has been updated",
+      "description": "By enabling this notification, you will receive e-mails when a credit card on file has been updated."
+    },
+    "model": "signup.Notification", "pk": 5
+},
+{
+    "fields": {
+      "slug": "order_executed",
+      "title": "A order has been placed",
+      "description": "By enabling this notification, you will receive e-mails when an order has been placed. It is sent regardless of the charge being successful or not."
+    },
+    "model": "signup.Notification", "pk": 6
+},
+{
+    "fields": {
+      "slug": "organization_updated",
+      "title": "A billing profile has been updated",
+      "description": "By enabling this notification, you will receive e-mails when fields such as name, address, etc. have been updated."
+    },
+    "model": "signup.Notification", "pk": 7
+},
+{
+    "fields": {
+      "slug": "expires_soon",
+      "title": "A subscription is about to expires",
+      "description": "By enabling this notification, you will receive e-mails when a subscription is about to expire."
+    },
+    "model": "signup.Notification", "pk": 8
+}
+
+]

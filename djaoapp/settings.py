@@ -386,18 +386,11 @@ LOG_HANDLER = {
     'filters': ['request'],
     'class':'logging.StreamHandler',
 }
-if logging.getLogger('gunicorn.error').handlers:
-    #pylint:disable=invalid-name
-    _handler = logging.getLogger('gunicorn.error').handlers[0]
-    if isinstance(_handler, logging.FileHandler):
-        LOG_HANDLER.update({
-            'class':'logging.handlers.WatchedFileHandler',
-            'filename': LOG_FILE
-        })
-    else:
-        # stderr or logging.handlers.SysLogHandler
-        LOG_HANDLER.update({'class': "%s.%s" % (
-            _handler.__class__.__module__, _handler.__class__.__name__)})
+if not DEBUG and hasattr(sys.modules[__name__], 'LOG_FILE') and LOG_FILE:
+    LOG_HANDLER.update({
+        'class':'logging.handlers.WatchedFileHandler',
+        'filename': LOG_FILE
+    })
 
 LOGGING = {
     'version': 1,
@@ -449,6 +442,8 @@ LOGGING = {
             'class':'logging.StreamHandler',
         },
         'log': LOG_HANDLER,
+        # Add `mail_admins` in top-level handler when there are no other
+        # mechanism to be notified of server errors.
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -515,7 +510,7 @@ LOGGING = {
         # propagated from a child logger.
         #https://docs.python.org/2/library/logging.html#logging.Logger.propagate
         '': {
-            'handlers': ['log', 'mail_admins'],
+            'handlers': ['log'],
             'level': 'INFO'
         },
     },

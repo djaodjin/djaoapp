@@ -154,6 +154,15 @@ build-assets: $(installTop)/.npm/djaoapp-packages $(ASSETS_DIR)/js/djaoapp-i18n.
 	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
 	cd $(installTop) && $(webpack)
 
+setup-livedemo:
+	$(installDirs) $(srcDir)/themes/djaoapp/templates
+	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
+	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
+	cd $(srcDir) && rm db.sqlite3
+	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
+	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
+
 
 $(ASSETS_DIR)/js/djaoapp-i18n.js: \
 				$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo

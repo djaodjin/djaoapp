@@ -1,7 +1,7 @@
 # Copyright (c) 2020, DjaoDjin inc.
 # see LICENSE
 
-import datetime, logging, random
+import datetime, logging, os, random
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -60,104 +60,6 @@ class Command(BaseCommand):
     CHARGEBACK = 4
     WRITEOFF = 5
 
-    FIRST_NAMES = (
-        'Anthony',
-        'Alexander',
-        'Alexis',
-        'Alicia',
-        'Ashley',
-        'Benjamin',
-        'Bruce',
-        'Chloe',
-        'Christopher',
-        'Daniel',
-        'David',
-        'Edward',
-        'Emily',
-        'Emma',
-        'Ethan',
-        'Grace',
-        'Isabella',
-        'Jacob',
-        'James',
-        'Jayden',
-        'Jennifer',
-        'John',
-        'Julia',
-        'Lily',
-        'Lucie',
-        'Luis',
-        'Matthew',
-        'Michael',
-        'Olivia',
-        'Ryan',
-        'Samantha',
-        'Samuel',
-        'Scott',
-        'Sophia',
-        'Williom',
-        )
-
-    LAST_NAMES = (
-        'Smith',
-        'Johnson',
-        'Williams',
-        'Jones',
-        'Brown',
-        'Davis',
-        'Miller',
-        'Wilson',
-        'Moore',
-        'Taylor',
-        'Anderson',
-        'Thomas',
-        'Jackson',
-        'White',
-        'Harris',
-        'Martin',
-        'Thompson',
-        'Garcia',
-        'Martinez',
-        'Robinson',
-        'Clark',
-        'Rogriguez',
-        'Lewis',
-        'Lee',
-        'Walker',
-        'Hall',
-        'Allen',
-        'Young',
-        'Hernandez',
-        'King',
-        'Wright',
-        'Lopez',
-        'Hill',
-        'Green',
-        'Baker',
-        'Gonzalez',
-        'Nelson',
-        'Mitchell',
-        'Perez',
-        'Roberts',
-        'Turner',
-        'Philips',
-        'Campbell',
-        'Parker',
-        'Collins',
-        'Stewart',
-        'Sanchez',
-        'Morris',
-        'Rogers',
-        'Reed',
-        'Cook',
-        'Bell',
-        'Cooper',
-        'Richardson',
-        'Cox',
-        'Ward',
-        'Peterson',
-        )
-
     def add_arguments(self, parser):
         parser.add_argument('--database',
             action='store', dest='database', default=None,
@@ -168,6 +70,9 @@ class Command(BaseCommand):
         parser.add_argument('--coupon',
             action='store', dest='coupon', default=None,
             help='create uses of the specified coupon')
+        parser.add_argument('--profile-pictures',
+            action='store', dest='profile_pictures', default=None,
+            help='directory where random profile pictures are stored')
 
     def handle(self, *args, **options):
         sigs = [
@@ -214,7 +119,8 @@ class Command(BaseCommand):
         provider = Organization.objects.get(slug=options['provider'])
         processor = Organization.objects.get(pk=PROCESSOR_ID)
         self.generate_coupons(provider)
-        self.generate_transactions(provider, processor, from_date, now)
+        self.generate_transactions(provider, processor, from_date, now,
+            profile_pictures_dir=options['profile_pictures'])
         subscriber = Organization.objects.filter(slug='stephanie').first()
         if subscriber:
             self.generate_subscriptions(subscriber)
@@ -259,13 +165,15 @@ class Command(BaseCommand):
                     pass
 
 
-    def generate_subscriptions(self, subscriber, nb_subscriptions=None):
+    def generate_subscriptions(self, subscriber, nb_subscriptions=None,
+                               fake=None):
         at_time = datetime_or_now()
         if nb_subscriptions is None:
             nb_subscriptions = settings.REST_FRAMEWORK['PAGE_SIZE'] * 4
         self.stdout.write("%d subscriptions\n" % nb_subscriptions)
         nb_plans = Plan.objects.count()
-        fake = Faker()
+        if not fake:
+            fake = Faker()
         for _ in range(0, nb_subscriptions):
             rank = random.randint(1, nb_plans - 1)
             plan = Plan.objects.all().order_by('pk')[rank]
@@ -278,12 +186,26 @@ class Command(BaseCommand):
                 created_at=created_at,
                 ends_at=created_at + datetime.timedelta(30))
 
-    def generate_transactions(self, provider, processor, from_date, ends_at):
+    def generate_transactions(self, provider, processor, from_date, ends_at,
+                              fake=None, profile_pictures_dir=None):
         """
         Create Income transactions that represents a growing bussiness.
         """
         #pylint: disable=too-many-locals
         from saas.managers.metrics import month_periods # avoid import loop
+        if not fake:
+            fake = Faker()
+        # Load list of profile pcitures
+        profile_pictures_males = []
+        profile_pictures_females = []
+        if profile_pictures_dir:
+            for picture_name in os.listdir(profile_pictures_dir):
+                if picture_name.startswith("1"):
+                    profile_pictures_males += [
+                        "/media/livedemo/profiles/%s" % picture_name]
+                else:
+                    profile_pictures_females += [
+                        "/media/livedemo/profiles/%s" % picture_name]
         for end_period in month_periods(from_date=from_date):
             nb_new_customers = random.randint(0, 9)
             for _ in range(nb_new_customers):
@@ -294,14 +216,31 @@ class Command(BaseCommand):
                 trials = 0
                 while not created:
                     try:
-                        first_name = self.FIRST_NAMES[random.randint(
-                            0, len(self.FIRST_NAMES)-1)]
-                        last_name = self.LAST_NAMES[random.randint(
-                            0, len(self.LAST_NAMES)-1)]
-                        full_name = '%s %s' % (first_name, last_name)
+                        picture = None
+                        if random.randint(0, 1):
+                            full_name = fake.name_male()
+                            if profile_pictures_males:
+                                picture = profile_pictures_males[
+                                    random.randint(
+                                        0, len(profile_pictures_males) - 1)]
+                        else:
+                            full_name = fake.name_female()
+                            if profile_pictures_females:
+                                picture = profile_pictures_females[
+                                    random.randint(
+                                        0, len(profile_pictures_females) - 1)]
                         slug = slugify('demo%d' % random.randint(1, 1000))
                         customer, created = Organization.objects.get_or_create(
-                                slug=slug, full_name=full_name)
+                            slug=slug,
+                            full_name=full_name,
+                            email="%s@%s" % (slug, fake.domain_name()),
+                            phone=fake.phone_number(),
+                            street_address=fake.street_address(),
+                            locality=fake.city(),
+                            postal_code=fake.postcode(),
+                            region=fake.state_abbr(),
+                            country=fake.country_code(),
+                            picture=picture)
                     #pylint: disable=catching-non-exception
                     except IntegrityError:
                         trials = trials + 1
