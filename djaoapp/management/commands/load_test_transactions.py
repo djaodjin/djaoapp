@@ -16,9 +16,10 @@ from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
     Plan, Subscription, Transaction)
 
 from saas import humanize
-from saas.utils import datetime_or_now
+from saas.utils import datetime_or_now, generate_random_slug
 from saas.settings import PROCESSOR_ID
 from saas import signals as saas_signals
+from signup.helpers import full_name_natural_split
 from signup import signals as signup_signals
 
 
@@ -195,6 +196,7 @@ class Command(BaseCommand):
         from saas.managers.metrics import month_periods # avoid import loop
         if not fake:
             fake = Faker()
+        user_model = get_user_model()
         # Load list of profile pcitures
         profile_pictures_males = []
         profile_pictures_females = []
@@ -230,10 +232,13 @@ class Command(BaseCommand):
                                     random.randint(
                                         0, len(profile_pictures_females) - 1)]
                         slug = slugify('demo%d' % random.randint(1, 1000))
+                        email = "%s@%s" % (slug, fake.domain_name())
+                        first_name, mid_name, last_name = \
+                            full_name_natural_split(full_name)
                         customer, created = Organization.objects.get_or_create(
                             slug=slug,
                             full_name=full_name,
-                            email="%s@%s" % (slug, fake.domain_name()),
+                            email=email,
                             phone=fake.phone_number(),
                             street_address=fake.street_address(),
                             locality=fake.city(),
@@ -241,6 +246,12 @@ class Command(BaseCommand):
                             region=fake.state_abbr(),
                             country=fake.country_code(),
                             picture=picture)
+                        user, created = user_model.objects.get_or_create(
+                            username=slug,
+                            email=email,
+                            first_name=first_name,
+                            last_name=last_name)
+                        customer.add_manager(user, at_time=end_period)
                     #pylint: disable=catching-non-exception
                     except IntegrityError:
                         trials = trials + 1
@@ -283,7 +294,10 @@ class Command(BaseCommand):
                     created_at=transaction_item.created_at,
                     amount=transaction_item.dest_amount,
                     customer=subscription.organization,
-                    description='Charge for %d periods' % nb_periods,
+                    description=humanize.DESCRIBE_CHARGED_CARD % {
+                        'charge': generate_random_slug(prefix='ch_'),
+                        'organization': subscription.organization
+                    },
                     last4=1241,
                     exp_date=datetime_or_now(),
                     processor=processor,
