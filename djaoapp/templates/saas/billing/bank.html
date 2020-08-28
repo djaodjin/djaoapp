@@ -1,5 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block body_top_template %}
+  {% include "saas/_body_top_template.html" %}
+{% endblock %}
+
 {% block saas_title %}
 <i class="fa fa-money"></i> {% trans organization=organization.printable_name %}{{organization}} Payment Processor{% endtrans %}
 {% endblock %}

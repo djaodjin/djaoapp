@@ -213,7 +213,15 @@
     },
     "model": "saas.Role", "pk": 3
 },
-
+{
+    "fields": {
+      "slug": "djaoapp",
+      "account": 2,
+      "authentication": 1,
+      "registration": 3
+    },
+    "model": "rules.App", "pk": 1
+},
 {
     "fields": {
       "slug": "contact_requested_notice",

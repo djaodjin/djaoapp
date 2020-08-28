@@ -1,5 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block body_top_template %}
+  {% include "saas/_body_top_template.html" %}
+{% endblock %}
+
 {% block saas_title %}
 <i class="fa fa-credit-card"></i> {% trans %}Update Card for {{ organization }}{% endtrans %}
 {% endblock %}

@@ -22,7 +22,7 @@ from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import _valid_manager
 from saas.models import Organization, get_broker
-from saas.utils import is_broker
+from saas.utils import get_role_model, is_broker
 
 from .compat import csrf, reverse, six
 from .thread_locals import is_domain_site, is_testing
@@ -90,41 +90,26 @@ def inject_edition_tools(response, request, context=None,
 
     if context is None:
         context = {}
-    dj_urls = {}
-    edit_urls = {}
-    provider_urls = {}
-    site = get_current_site()
-    app = get_current_app()
+
     # ``app.account`` is guarenteed to be in the same database as ``app``.
     # ``site.account`` is always in the *default* database, which is not
     # the expected database ``Organization`` are typically queried from.
+    app = get_current_app()
     provider = app.account
-    enable_code_editor = False
-    edit_urls = {
-        'api_medias': reverse('uploaded_media_elements', kwargs={'path':''}),
-        'api_sitecss': reverse('edit_sitecss'),
-        'api_less_overrides': reverse('pages_api_less_overrides'),
-        'api_sources': reverse('pages_api_sources'),
-        'api_page_element_base': reverse('api_page_element',
-            kwargs={'path':''}),
-        'api_plans': reverse('saas_api_plans', args=(provider,)),
-        'plan_update_base': reverse('saas_plan_base', args=(provider,))}
-    if not fail_edit_perm(request, account=provider):
-        # XXX `not fail_edit_perm` will pass even if site is testing, which
-        # puts the tools to edit online. Error of duplicate remains.
-        if is_testing(site):
-            if has_bank_account(provider):
-                body_top_template_name = "pages/_body_top_testing_manager.html"
-            else:
-                provider_urls = {
-                    'bank': reverse('saas_update_bank', args=(provider,))}
-                body_top_template_name = \
-                    "pages/_body_top_testing_no_processor_manager.html"
-        elif not has_bank_account(provider) and (
-                request and request.path.endswith('/cart/')):
-            provider_urls = {
-                'bank': reverse('saas_update_bank', args=(provider,))}
-            body_top_template_name = "pages/_body_top_no_processor_manager.html"
+
+    soup = None
+    if app.show_edit_tools and get_role_model().objects.valid_for(
+            organization=provider, user=request.user):
+        edit_urls = {
+            'api_medias': reverse(
+                'uploaded_media_elements', kwargs={'path':''}),
+            'api_sitecss': reverse('edit_sitecss'),
+            'api_less_overrides': reverse('pages_api_less_overrides'),
+            'api_sources': reverse('pages_api_sources'),
+            'api_page_element_base': reverse(
+                'api_page_element', kwargs={'path':''}),
+            'api_plans': reverse('saas_api_plans', args=(provider,)),
+            'plan_update_base': reverse('saas_plan_base', args=(provider,))}
         try:
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
@@ -135,6 +120,7 @@ def inject_edition_tools(response, request, context=None,
             LOGGER.debug("doesn't look like we have a S3Storage.")
         # XXX sites which are hosted on a same domain shouldn't disable
         # all edit functionality, just the edition of base templates.
+        site = get_current_site()
         enable_code_editor = is_domain_site(site)
         if enable_code_editor:
             dj_urls = djaoapp_urls(
@@ -143,26 +129,14 @@ def inject_edition_tools(response, request, context=None,
         else:
             dj_urls = djaoapp_urls(request, account=provider)
             body_bottom_template_name = "pages/_body_bottom.html"
-    else:
-        if is_testing(site):
-            if has_bank_account(provider):
-                body_top_template_name = "pages/_body_top_testing.html"
-            else:
-                body_top_template_name \
-                    = "pages/_body_top_testing_no_processor.html"
-        elif not has_bank_account(provider) and (
-                request and request.path.endswith('/cart/')):
-            body_top_template_name = "pages/_body_top_no_processor.html"
-    context.update({
-        'ENABLE_CODE_EDITOR': enable_code_editor,
-        'FEATURE_DEBUG': settings.FEATURES_DEBUG,
-        'urls':{
-            'provider': provider_urls,
-            'djaodjin': dj_urls,
-            'edit': edit_urls}})
-    context.update(csrf(request))
-    soup = None
-    if app.show_edit_tools:
+
+        context.update({
+            'ENABLE_CODE_EDITOR': enable_code_editor,
+            'FEATURE_DEBUG': settings.FEATURES_DEBUG,
+            'urls':{
+                'djaodjin': dj_urls,
+                'edit': edit_urls}})
+        context.update(csrf(request))
         soup = pages_inject_edition_tools(response, request, context=context,
             body_top_template_name=body_top_template_name,
             body_bottom_template_name=body_bottom_template_name)

@@ -17,7 +17,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)
 
 DEBUG = True
-FEATURES_DEBUG = True
 
 ALLOWED_HOSTS  = ('*',)
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
@@ -41,6 +40,9 @@ update_settings(sys.modules[__name__],
 # Configuration settings that can be overriden on the command line.
 if os.getenv('DEBUG'):
     DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
+
+if not hasattr(sys.modules[__name__], 'FEATURES_DEBUG'):
+    FEATURES_DEBUG = DEBUG
 
 if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
     BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
@@ -726,12 +728,7 @@ PAGES = {
         'notification/app_updated.eml',
         'pages/_body_bottom.html',
         'pages/_body_bottom_edit_tools.html',
-        'pages/_body_top_no_processor.html',
-        'pages/_body_top_no_processor_manager.html',
-        'pages/_body_top_testing.html',
-        'pages/_body_top_testing_manager.html',
-        'pages/_body_top_testing_no_processor.html',
-        'pages/_body_top_testing_no_processor_manager.html',
+        'pages/_body_top_template.html',
         'pages/_edit_tools.html',
         'static/directory_index.html',
         'demo/frictionless.html',

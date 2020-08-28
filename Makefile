@@ -161,6 +161,7 @@ setup-livedemo:
 	cd $(srcDir) && rm db.sqlite3
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	cd $(srcDir) && $(SQLITE) db.sqlite3 "UPDATE rules_app set show_edit_tools=1;"
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 
 

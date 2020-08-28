@@ -16,6 +16,8 @@ RUN /app/bin/pip install Django==1.11.29 django-localflavor==2.2
 RUN /usr/bin/mkdir -p /etc/djaoapp
 RUN /usr/bin/sed -e "s,\%(SECRET_KEY)s,`/app/bin/python -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," \
   etc/credentials > /etc/djaoapp/credentials
+# XXX force running in production mode without bringing in a site.conf
+RUN /usr/bin/echo "DEBUG=0" >> /etc/djaoapp/credentials
 RUN /usr/bin/sed -e 's,%(APP_NAME)s,djaoapp,g' -e 's,%(LOCALSTATEDIR)s,/var,g'\
   -e 's,%(PID_FILE)s,/var/run/djaoapp.pid,g'\
   -e 's,bind="127.0.0.1:%(APP_PORT)s",bind="0.0.0.0:80",'\
