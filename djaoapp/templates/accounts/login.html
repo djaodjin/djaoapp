@@ -32,8 +32,10 @@
         <div>
           <p class="text-center mt-3">
             <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
-            or
+            {% if urls.user.register %}
+            {% trans %}or{% endtrans %}
             <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>
+            {% endif %}
           </p>
         </div>
       </div>

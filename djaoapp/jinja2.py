@@ -91,6 +91,8 @@ def environment(**options):
     env.filters['date_in_future'] = saas.templatetags.saas_tags.date_in_future
     env.filters['md'] = saas.templatetags.saas_tags.md
     env.filters['describe'] = saas.templatetags.saas_tags.describe
+    env.filters['describe_no_links'] = \
+        saas.templatetags.saas_tags.describe_no_links
 
     env.globals.update({
         'DATETIME_FORMAT': "MMM dd, yyyy",

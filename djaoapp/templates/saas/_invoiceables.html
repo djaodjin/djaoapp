@@ -14,8 +14,8 @@
               </tr>
               {% if invoicables.0.options %}
               <tr class="py-0">
-                  <th colspan="2" class="font-weight-normal">Payment Options</th>
-                  <th class="font-weight-normal text-right">Totals</th>
+                  <th colspan="2" class="font-weight-normal">{% trans %}Payment Options{% endtrans %}</th>
+                  <th class="font-weight-normal text-right">{% trans %}Totals{% endtrans %}</th>
               </tr>
               {% endif %}
               <tr>
@@ -54,8 +54,8 @@
                     </tr>
                     {% if entry.options %}
                     <tr class="py-0">
-                      <th colspan="2" class="font-weight-normal">Payment Options</th>
-                      <th class="font-weight-normal text-right">Totals</th>
+                      <th colspan="2" class="font-weight-normal">{% trans %}Payment Options{% endtrans %}</th>
+                      <th class="font-weight-normal text-right">{% trans %}Totals{% endtrans %}</th>
                     </tr>
                     {% endif %}
                     <tr>
@@ -69,7 +69,7 @@
                 {% for line in entry.lines %}
                   <tr class="invoice-item">
                     <td></td>
-                    <td class="line-descr">{{line.descr}}</td>
+                    <td class="line-descr">{{line|describe_no_links}}</td>
                     <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
                   </tr>
                 {% endfor %}
@@ -80,7 +80,7 @@
                     <td>
                       <input type="radio" name="{{entry.name}}" data-amount="{{line.dest_amount}}" value="{{line.rank}}" {% if line.rank == entry.selected_option %}checked="1"{% endif %}></input>
                     </td>
-                    <td class="line-descr">{{line.descr}}</td>
+                    <td class="line-descr">{{line|describe_no_links}}</td>
                     <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
                   </tr>
                 {% endfor %}
