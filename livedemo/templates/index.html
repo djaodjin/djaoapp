@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block localheader %}
+  <meta property="og:url" content="{{request|absolute_uri}}" />
+  <meta name="twitter:url" content="{{request|absolute_uri}}" />
+  <meta property="og:title" content="Home" />
+  <meta name="twitter:title" content="Home" />
+  <meta name="description" property="og:description" content="Sample marketing or informational website." />
+  <meta name="twitter:description" content="Sample marketing or informational website." />
+{% endblock %}
+
+{% block content %}
+  <section id="leaderboard" class="jumbotron text-center" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
+    <div class="container py-5">
+      <div class="col-sm-12">
+        <h1 id="leaderboard-title" class="editable">Welcome to DjaoDjin live demo!</h1>
+        <p id="leaderboard-message" class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom">
+This is a fully functional site. It shows the profile, billing and access
+control APIs and templates you get out-of-the-box when you rely on DjaoDjin
+technology to implement your own Software-as-a-Service.
+        </p>
+        <div class="row mt-4">
+          <div class="col-sm-6">
+            <form method="post" action="{{request|url_login}}">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <input type="hidden" name="username" value="xia" />
+              <input type="hidden" name="password" value="yoyo" />
+              <button type="submit" class="btn btn-md btn-primary px-5">{% trans %}Login as subscriber{% endtrans %}</button>
+            </form>
+          </div>
+          <div class="col-sm-6">
+            <form method="post" action="{{request|url_login}}">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <input type="hidden" name="username" value="alice" />
+              <input type="hidden" name="password" value="yoyo" />
+              <button type="submit" class="btn btn-md btn-primary px-5">{% trans %}Login as a site admin{% endtrans %}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="site-description" class="site-landing py-5 my-5">
+    <div class="container pt-2">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h4 class="mb-2">What you see ...</h4>
+          <p>
+... is what you get. This site was built straight out of
+the <a href="https://github.com/djaodjin/djaoapp/">Open Source repository</a>,
+then loaded with fake data to make it more lively.
+          </p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h4 class="mb-2">Don't believe it?</h4>
+          <p>
+Run the <a href="https://github.com/djaodjin/djaoapp/packages/270509" target="_blank">Docker container</a> yourself,
+or <a href="https://github.com/djaodjin/djaoapp" target="_blank">rebuild it from source</a>.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h4 class="mb-2">Managed hosting</h4>
+          <p>
+When you <a href="https://www.djaodjin.com/register/">sign-up</a>,
+you will have an empty site that looks just like this one within minutes.
+          </p>
+          <p>
+Our team is always ready to help you configure your own domain name, and
+deploy custom business logic as needed. <a href="https://www.djaodjin.com/contact/" target="_blank">Contact us &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="site-audience" class="site-landing bg-light py-5">
+    <div class="container my-4 py-5">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-lg-6 text-center">
+          <h4>Who is this site for?</h4>
+          <p>
+This site is for entrepreneurs or developers who are looking to use DjaoDjin
+technology to build their next micro-SaaS.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="site-feedback" class="site-landing py-5">
+    <div class="container text-center py-5">
+      <div style="display: inline-block;">
+        <div class="row portrait-and-quote">
+          <div class="col-sm-4 text-center">
+            <img id="site-feedback-portrait" class="img-fluid rounded-circle editable droppable-image" src="https://www.djaodjin.com/static/img/vpavlounis-headshot-4.jpg" alt="Portrait of statisfied customer">
+          </div>
+          <div class="col-sm-8">
+            <blockquote class="blockquote text-left" style="padding-left:10px;border-left: 5px solid #eee;">
+              <p>
+              <i class="fa fa-quote-left fa-lg"></i>
+<span>
+DjaoDjin's team helped me at every step along the way.
+Not only did I make my initial investment back in 6 months, sales doubled
+compared to my previous site. And I keep finding new features in the DjaoDjin
+platform to help me grow.
+</span>
+              <i class="fa fa-quote-right fa-lg"></i>
+              </p>
+              <footer class="blockquote-footer">
+                <cite>Vasilios Pavlounis</cite>
+                <div>
+                <a href="https://www.djaodjin.com/blog/knowaids-vasilios-pavlounis.blog.html">full interview &raquo;</a>
+                </div>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="site-partner" class="site-landing bg-light py-5">
+    <div class="container text-center py-4">
+      <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-6 offset-md-3 col-lg-6 text-center">
+          <img class="img-fluid mb-2" src="https://www.djaodjin.com/static/img/logo-djaodjin-128.png" style="display:inline-block;width:26px;height:26px;margin:0 auto;" />
+          <h4>Built with</h4>
+          <p>
+This is a sample of the products that have been built with DjaoDjin technology
+and rely on DjaoDjin's team for on-going managed hosting services.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <a href="https://www.tspproject.org/" target="_blank">
+          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/envconnect/screenshot.png" alt="The Sustainability Project">
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="https://www.a1ceus.com/" target="_blank">
+          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/a1ceus/screenshot.png" alt="A1Ceus">
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="https://spheremail.co/" target="_blank">
+          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/spheremail/screenshot.png" alt="SphereMail">
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="https://www.fortylines.com/" target="_blank">
+          <img class="img-fluid editable droppable-image" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/fortylines/screenshot.png" alt="Fortylines">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="site-about" class="site-landing my-3 py-5">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+          <h4>About us</h4>
+          <p>
+Our team has more than 10 years on experience building Software-as-Service
+products in various markets at different price points. For the past 5 years,
+we have commercially supported independent micro-SaaS entrepreneurs with
+emphasis on:
+          </p>
+          <ul class="text-left">
+            <li><strong>OpenSource</strong> productivity in delivering Software-as-a-Service</li>
+            <li><strong>OpenEducation</strong> around hosting platforms</li>
+            <li><strong>OpenSpace</strong> building together concrete useful solutions</li>
+          </ul>
+          <p>
+            <a href="https://www.djaodjin.com/about/">Learn more about our team and values &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

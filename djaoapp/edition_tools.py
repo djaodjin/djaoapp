@@ -8,7 +8,6 @@ import logging
 from collections import namedtuple
 
 from bs4 import BeautifulSoup
-from deployutils.apps.django.compat import is_authenticated
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
@@ -24,7 +23,7 @@ from saas.decorators import _valid_manager
 from saas.models import Organization, get_broker
 from saas.utils import get_role_model, is_broker
 
-from .compat import csrf, reverse, six
+from .compat import csrf, is_authenticated, reverse, six
 from .thread_locals import is_domain_site, is_testing
 
 
@@ -88,6 +87,9 @@ def inject_edition_tools(response, request, context=None,
     if not content_type.startswith('text/html'):
         return None
 
+    if not is_authenticated(request):
+        return None
+
     if context is None:
         context = {}
 
@@ -96,7 +98,6 @@ def inject_edition_tools(response, request, context=None,
     # the expected database ``Organization`` are typically queried from.
     app = get_current_app()
     provider = app.account
-
     soup = None
     if app.show_edit_tools and get_role_model().objects.valid_for(
             organization=provider, user=request.user):
@@ -142,64 +143,62 @@ def inject_edition_tools(response, request, context=None,
             body_bottom_template_name=body_bottom_template_name)
 
     # Insert the authenticated user information and roles on organization.
-    if is_authenticated(request):
-        if not soup:
-            soup = BeautifulSoup(response.content, 'html5lib')
-        if soup and soup.body:
-            # Implementation Note: we have to use ``.body.next`` here
-            # because html5lib "fixes" our HTML by adding missing
-            # html/body tags. Furthermore if we use
-            #``soup.body.insert(1, BeautifulSoup(body_top, 'html.parser'))``
-            # instead, later on ``soup.find_all(class_=...)`` returns
-            # an empty set though ``soup.prettify()`` outputs the full
-            # expected HTML text.
-            auth_user = soup.body.find(class_='header-menubar')
-            user_menu_template = '_menubar.html'
-            if (request.user.is_authenticated and auth_user
-                and user_menu_template):
-                serializer_class = import_string(
-                    rules_settings.SESSION_SERIALIZER)
-                serializer = serializer_class(request)
-                path_parts = reversed(request.path.split('/'))
-                top_accessibles = []
-                has_broker_role = False
-                active_organization = None
-                for role, organizations in six.iteritems(
-                        serializer.data['roles']):
-                    for organization in organizations:
-                        if organization['slug'] == request.user.username:
-                            # Personal Organization
-                            continue
-                        db_obj = Organization.objects.get(
-                            slug=organization['slug']) # XXX Remove query.
-                        if db_obj.is_provider:
-                            settings_location = reverse('saas_dashboard',
-                                args=(organization['slug'],))
-                        else:
-                            settings_location = reverse(
-                                'saas_organization_profile',
-                                args=(organization['slug'],))
-                        app_location = reverse('organization_app',
+    if not soup:
+        soup = BeautifulSoup(response.content, 'html5lib')
+    if soup and soup.body:
+        # Implementation Note: we have to use ``.body.next`` here
+        # because html5lib "fixes" our HTML by adding missing
+        # html/body tags. Furthermore if we use
+        #``soup.body.insert(1, BeautifulSoup(body_top, 'html.parser'))``
+        # instead, later on ``soup.find_all(class_=...)`` returns
+        # an empty set though ``soup.prettify()`` outputs the full
+        # expected HTML text.
+        auth_user = soup.body.find(class_='header-menubar')
+        user_menu_template = '_menubar.html'
+        if auth_user and user_menu_template:
+            serializer_class = import_string(rules_settings.SESSION_SERIALIZER)
+            serializer = serializer_class(request)
+            path_parts = reversed(request.path.split('/'))
+            top_accessibles = []
+            has_broker_role = False
+            active_organization = None
+            for role, organizations in six.iteritems(
+                    serializer.data['roles']):
+                for organization in organizations:
+                    if organization['slug'] == request.user.username:
+                        # Personal Organization
+                        continue
+                    db_obj = Organization.objects.get(
+                        slug=organization['slug']) # XXX Remove query.
+                    if db_obj.is_provider:
+                        settings_location = reverse('saas_dashboard',
                             args=(organization['slug'],))
-                        if organization['slug'] in path_parts:
-                            active_organization = TopAccessibleOrganization(
-                                organization['slug'],
-                                organization['printable_name'],
-                                settings_location, role, app_location)
-                        if is_broker(organization['slug']):
-                            has_broker_role = True
-                        top_accessibles += [TopAccessibleOrganization(
+                    else:
+                        settings_location = reverse(
+                            'saas_organization_profile',
+                            args=(organization['slug'],))
+                    app_location = reverse('organization_app',
+                        args=(organization['slug'],))
+                    if organization['slug'] in path_parts:
+                        active_organization = TopAccessibleOrganization(
                             organization['slug'],
                             organization['printable_name'],
-                            settings_location, role, app_location)]
-                if not active_organization and has_broker_role:
-                    active_organization = get_broker()
-                context.update({'active_organization':active_organization})
-                context.update({'top_accessibles': top_accessibles})
-                template = loader.get_template(user_menu_template)
-                user_menu = render_template(template, context, request).strip()
-                auth_user.clear()
-                els = BeautifulSoup(user_menu, 'html5lib').body.ul.children
-                for elem in els:
-                    auth_user.append(BeautifulSoup(str(elem), 'html5lib'))
+                            settings_location, role, app_location)
+                    if is_broker(organization['slug']):
+                        has_broker_role = True
+                    top_accessibles += [TopAccessibleOrganization(
+                        organization['slug'],
+                        organization['printable_name'],
+                        settings_location, role, app_location)]
+            if not active_organization and has_broker_role:
+                active_organization = get_broker()
+            context.update({'active_organization':active_organization})
+            context.update({'top_accessibles': top_accessibles})
+            template = loader.get_template(user_menu_template)
+            user_menu = render_template(template, context, request).strip()
+            auth_user.clear()
+            els = BeautifulSoup(user_menu, 'html5lib').body.ul.children
+            for elem in els:
+                auth_user.append(BeautifulSoup(str(elem), 'html5lib'))
+
     return soup
