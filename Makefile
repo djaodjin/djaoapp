@@ -158,7 +158,7 @@ setup-livedemo:
 	$(installDirs) $(srcDir)/themes/djaoapp/templates
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
-	cd $(srcDir) && rm db.sqlite3
+	cd $(srcDir) && rm -f db.sqlite3
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
 	cd $(srcDir) && $(SQLITE) db.sqlite3 "UPDATE rules_app set show_edit_tools=1;"

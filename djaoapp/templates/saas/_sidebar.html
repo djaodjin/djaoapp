@@ -94,6 +94,7 @@
   <hr class="my-1" />
   <ul class="nav flex-column"
       data-intro="{% trans %}Pricing, billing and metrics{% endtrans %}" data-position="right">
+    {% if urls.provider and urls.provider.dashboard %}
     <li {% if urls.provider.dashboard == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_dashboard" href="{{urls.provider.dashboard}}">
 
@@ -103,6 +104,8 @@
 
       </a>
     </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.coupons %}
     <li {% if urls.provider.coupons == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_coupon_list" href="{{urls.provider.coupons}}">
 
@@ -112,6 +115,8 @@
 
       </a>
     </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.transfers %}
     <li {% if urls.provider.transfers == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_transfer_info" href="{{urls.provider.transfers}}">
 
@@ -120,6 +125,8 @@
         <span class="pl-1" style="vertical-align: super">{% trans %}Funds{% endtrans %}</span></a>
 
     </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.metrics_sales %}
     <li {% if urls.provider.metrics_sales == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}">
 
@@ -128,6 +135,8 @@
         <span class="pl-1" style="vertical-align: super">{% trans %}Revenue{% endtrans %}</span></a>
 
     </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.metrics_plans %}
     <li {% if urls.provider.metrics_plans == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}">
 
@@ -136,6 +145,8 @@
         <span class="pl-1" style="vertical-align: super">{% trans %}Plans{% endtrans %}</span></a>
 
     </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.subscribers %}
     <li {% if urls.provider.subscribers == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_subscriber_list" href="{{urls.provider.subscribers}}">
 
@@ -145,6 +156,7 @@
 
       </a>
     </li>
+    {% endif %}
   </ul>
 {% endif %}
 

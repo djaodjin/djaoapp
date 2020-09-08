@@ -106,27 +106,33 @@ def fail_authenticated(request, verification_key=None):
     page when required, as well as raise a ``PermissionDenied``
     instead when Content-Type is showing we are dealing with an API request.
     """
-    redirect = fail_authenticated_default(request)
-    if redirect:
-        if verification_key:
-            contact = Contact.objects.filter(
-                verification_key=verification_key).first()
-            if not contact:
-                # Not a `Contact`, let's try `Role`.
-                role_model = get_role_model()
-                try:
-                    role = role_model.objects.filter(
-                        Q(grant_key=verification_key)
-                        | Q(request_key=verification_key)).get()
-                    contact, _ = Contact.objects.update_or_create_token(
-                        role.user)
-                    verification_key = contact.verification_key
-                except role_model.DoesNotExist:
-                    pass
-            if contact and has_invalid_password(contact.user):
-                redirect = request.build_absolute_uri(
-                    reverse('registration_activate',
-                        args=(verification_key,)))
+    try:
+        app = get_current_app()
+        #pylint:disable=unused-variable
+        redirect, matched, session = check_matched(request, app,
+            prefixes=DEFAULT_PREFIXES)
+    except NoRuleMatch:
+        redirect = fail_authenticated_default(request)
+        if redirect:
+            if verification_key:
+                contact = Contact.objects.filter(
+                    verification_key=verification_key).first()
+                if not contact:
+                    # Not a `Contact`, let's try `Role`.
+                    role_model = get_role_model()
+                    try:
+                        role = role_model.objects.filter(
+                            Q(grant_key=verification_key)
+                            | Q(request_key=verification_key)).get()
+                        contact, _ = Contact.objects.update_or_create_token(
+                            role.user)
+                        verification_key = contact.verification_key
+                    except role_model.DoesNotExist:
+                        pass
+                if contact and has_invalid_password(contact.user):
+                    redirect = request.build_absolute_uri(
+                        reverse('registration_activate',
+                            args=(verification_key,)))
     return redirect
 
 
