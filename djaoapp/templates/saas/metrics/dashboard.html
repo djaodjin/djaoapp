@@ -44,7 +44,7 @@
           <!-- Recent Users Chart -->
           {% if urls and urls.recent_activity %}
           <recent-activity inline-template id="recent-activity-container">
-            <div class="card mt-4">
+            <div class="card my-4">
               <div class="card-body">
                 <h5 class="card-title mb-0">Recently Active Users</h5>
               </div>
@@ -93,15 +93,29 @@
 
         <div class="col-md-6 col-lg-4">
           <monthly-revenue inline-template id="monthly-revenue-container" class="px-0 d-flex flex-wrap">
-            <!-- MRR Charts -->
-            <div class="card w-100 mb-4">
-              <div class="card-body">
-                <div class="justify-content-center">
-                  <h5 class="card-title text-center">{% trans %}MRR{% endtrans %}</h5>
+            <div>
+              <!-- MRR Charts -->
+              <div class="card w-100 mb-4" v-if="!item.processor_hint">
+                <div class="card-body">
+                  <div class="justify-content-center">
+                    <h5 class="card-title text-center">{% trans %}MRR{% endtrans %}</h5>
+                  </div>
+                  <div class="align-items-center justify-content-center h-75">
+                    <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                    <h2 class="text-center" v-show="itemLoaded && !item.processor_hint" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+                  </div>
                 </div>
-                <div class="align-items-center justify-content-center h-75">
-                  <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                  <h2 class="text-center" v-show="itemLoaded" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+              </div>
+              <div class="card w-100 mb-4"
+                   v-if="itemLoaded && item.processor_hint" v-cloak>
+                <div class="card-header text-white bg-warning">
+                  <span class="fa fa-warning"></span> Billing disabled
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    To accept payment for subscriptions, please
+                    <a href="{{urls.provider.bank}}">connect a payment processor &raquo;</a>.
+                  </p>
                 </div>
               </div>
             </div>
@@ -119,6 +133,9 @@
                   <div class="align-items-center justify-content-center h-75">
                     <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
                     <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
+                    <div class="text-warning" v-show="itemLoaded && item.authentication && item.authentication !=='enabled'" v-cloak>
+                      <span class="fa fa-warning"></span> authentication is <span class="text-danger">[[item.authentication]]</span>. Go to the rules page to <a href="{{urls.rules.app}}">enable registration &raquo;</a>
+                    </div>
                   </div>
                 </div>
               </div>
