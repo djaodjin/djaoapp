@@ -40,13 +40,12 @@ jQuery(document).ready(function($) {
 {% if urls and urls.provider %}
     $("[data-plan]").plan({
         saas_api_plan: "{{ urls.provider.api_plans }}",
-        saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+        saas_metrics_plans: "{{ urls.provider.metrics_plans }}",
+        message_created: "{% trans %}Plan was created successfully.{% endtrans %}",
+        message_deleted: "{% trans %}Plan was successfully deleted.{% endtrans %}"
     });
 {% endif %}
-{% if urls and urls.api_redeem %}
-    $("#redeem-code").redeem(
-        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
-{% endif %}
+
 {% if charge %}
     $(".charge-refund").click(function () {
         var self = $(this);
@@ -54,6 +53,7 @@ jQuery(document).ready(function($) {
             availableAmount: self.attr("data-available-amount"),
             linenum: self.attr("data-linenum"),
             saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+            refundedLabel: "<em>{% trans %}Refunded{% endtrans %}</em>",
             refundButton: self
         });
     });
@@ -73,9 +73,17 @@ jQuery(document).ready(function($) {
     $("#redeem-code").redeem(
         {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
 {% endif %}
-});
 
-jQuery(document).ready(function($) {
+
+{% if urls and urls.api_cart %}
+    $(".remove-cart-item").cartItem({
+        api_cart: "{{ urls.api_cart }}",
+        addLabel: {% trans %}"Add to Cart"{% endtrans %},
+        removeLabel: {% trans %}"Remove from Cart"{% endtrans %},
+        reload: true
+    });
+{% endif %}
+
     if ($('[data-trip]').length > 0){
         $("#help-request").parent().show();
         $("#help-request").click(function(){

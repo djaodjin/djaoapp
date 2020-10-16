@@ -18,7 +18,17 @@ jQuery(document).ready(function($) {
   addPlan.find(".plan-footer a").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
   addPlan.click(function(event) {
        event.preventDefault();
-       $(this).plan({saas_api_plan: "{{urls.edit.api_plans}}"}).create(true); /* XXX requires assets js_saas in page. */
+       $(this).plan({
+           saas_api_plan: "{{urls.edit.api_plans}}",
+           message_created: "{% trans %}Plan was created successfully.{% endtrans %}",
+           message_deleted: "{% trans %}Plan was successfully deleted.{% endtrans %}",
+           template_new: {
+               title: "{% trans %}New Plan{% endtrans %}",
+               description: "{% trans %}Write the description of the plan here.{% endtrans %}",
+               period_type: "monthly",
+               is_active: 1
+           }
+       }).create(true); /* XXX requires assets js_saas in page. */
        /* XXX relaod=true, really ugly but will do until we integrate vuejs. */
   });
   addPlan.show();

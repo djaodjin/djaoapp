@@ -7,9 +7,12 @@
           {% if invoicables %}
             <tbody data-plan="{{invoicables.0.subscription.plan}}">
               <tr>
-                <th colspan="3">
+                <th colspan="2">
                   {% trans %}Selected Plan{% endtrans %}:
                   <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
+                </th>
+                <th class="text-right">
+                  <a id="{{invoicables.0.subscription.plan.slug}}" class="remove-cart-item" href="">{% trans %}Remove from Cart{% endtrans %}</a>
                 </th>
               </tr>
               {% if invoicables.0.options %}

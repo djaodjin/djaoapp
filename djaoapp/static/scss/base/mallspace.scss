@@ -168,7 +168,14 @@ ol.tutorials > .active, ul.tutorials > .active {
   padding: 10px 12px;
 }
 
+// Cart/Checkout
+// -------------
 
+.remove-cart-item {
+  font-size: 0.8rem;
+  color: grey;
+  text-transform: lowercase;
+}
 
 @include media-breakpoint-up(sm) {
   .signup-group .left-delimiter {
