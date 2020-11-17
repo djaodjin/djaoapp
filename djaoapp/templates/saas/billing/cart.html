@@ -72,7 +72,6 @@
 
         {% block order_card %}
         {% include "saas/_card_use.html" %}
-        {% endblock %}
         <div class="form-group text-center py-5">
           <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
             {% if submit_title %}
@@ -86,6 +85,7 @@
             {% endif %}
           </button>
         </div>
+        {% endblock %}
       </form>
     </div>
   </div>

@@ -50,9 +50,12 @@
 
                   <tbody data-plan="{{entry.subscription.plan}}">
                     <tr>
-                      <th colspan="3">
+                      <th colspan="2">
                         {% trans %}Selected Plan{% endtrans %}:
                         <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
+                      </th>
+                      <th class="text-right">
+                        <a id="{{entry.subscription.plan.slug}}" class="remove-cart-item" href="">{% trans %}Remove from Cart{% endtrans %}</a>
                       </th>
                     </tr>
                     {% if entry.options %}
