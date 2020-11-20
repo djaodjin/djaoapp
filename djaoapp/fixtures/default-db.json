@@ -176,6 +176,17 @@
     "model" : "saas.Coupon", "pk": 2
 },
 {
+    "fields":{
+        "code": "BASIC50",
+        "created_at":"2020-11-17T00:00:00-09:00",
+        "plan": 2,
+        "discount_type": 1,
+        "discount_value": 5000,
+        "organization": 2
+    },
+    "model" : "saas.Coupon", "pk": 3
+},
+{
     "fields": {
       "domain": "localhost:8020",
       "name": "dev"
@@ -842,7 +853,7 @@
         "discount_value": 5000,
         "organization": 14
     },
-    "model" : "saas.Coupon", "pk": 3
+    "model" : "saas.Coupon", "pk": 4
 },
 {
     "fields": {
