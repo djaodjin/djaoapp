@@ -150,18 +150,13 @@ def get_disabled_registration(request):#pylint:disable=unused-argument
     return app.authentication != app.AUTH_ENABLED
 
 
-def is_current_broker(organization_slug):
-    return (get_current_broker().slug == organization_slug
-            and not is_testing(get_current_site()))
+def is_current_broker(organization):
+    return get_current_broker().slug == str(organization)
 
 
 def _provider_as_site(provider):
     site = None
-    if not provider or get_current_broker().slug == str(provider):
-        # We compare the slugs directly here instead of using
-        # `is_current_broker` because the call there to `is_testing`
-        # (aka shared database) interfers with finding the site matching
-        # the domain.
+    if not provider or is_current_broker(provider):
         site = get_current_site()
     else:
         site_model = get_site_model()

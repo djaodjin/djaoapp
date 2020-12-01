@@ -24,7 +24,7 @@ from saas.models import Organization, get_broker
 from saas.utils import get_role_model, is_broker
 
 from .compat import csrf, is_authenticated, reverse, six
-from .thread_locals import is_domain_site, is_testing
+from .thread_locals import is_domain_site
 
 
 LOGGER = logging.getLogger(__name__)
