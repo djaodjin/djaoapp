@@ -21,7 +21,7 @@ DEBUG = True
 ALLOWED_HOSTS  = ('*',)
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
 
-DB_ENGINE = 'django.db.backends.sqlite3'
+DB_ENGINE = 'sqlite3'
 DB_NAME = os.path.join(BASE_DIR, 'db.sqlite3')
 DB_HOST = ''
 DB_PORT = 5432
@@ -164,9 +164,12 @@ WSGI_APPLICATION = 'djaoapp.wsgi.application'
 EMAIL_SUBJECT_PREFIX = '[%s] ' % APP_NAME
 EMAILER_BACKEND = 'extended_templates.backends.TemplateEmailBackend'
 
+if not hasattr(sys.modules[__name__], 'DB_BACKEND'):
+    DB_BACKEND = (DB_ENGINE if DB_ENGINE.startswith('django.db.backends.') else
+        'django.db.backends.%s' % DB_ENGINE)
 DATABASES = {
     'default': {
-        'ENGINE':DB_ENGINE,
+        'ENGINE':DB_BACKEND,
         'NAME': DB_NAME,
         'USER': DB_USER,                 # Not used with sqlite3.
         'PASSWORD': DB_PASSWORD,         # Not used with sqlite3.
@@ -189,7 +192,7 @@ if os.getenv('MULTITIER_DB_NAME'):
     MULTITIER_NAME = os.path.splitext(os.path.basename(MULTITIER_DB_NAME))[0]
     if not MULTITIER_NAME in DATABASES:
         DATABASES.update({MULTITIER_NAME: {
-                'ENGINE':DB_ENGINE,
+                'ENGINE':DB_BACKEND,
                 'NAME': MULTITIER_DB_NAME,
                 'USER': DB_USER,                 # Not used with sqlite3.
                 'PASSWORD': DB_PASSWORD,         # Not used with sqlite3.

@@ -61,6 +61,10 @@ clean-themes:
 
 install:: install-conf
 
+doc:
+	$(installDirs) build/docs
+	cd $(srcDir) && sphinx-build -b html ./docs $(PWD)/build/docs
+
 # We use rsync here so that make initdb can be run with user "nginx"
 # after files were installed with user "fedora".
 install-default-themes:: clean-themes
@@ -72,12 +76,8 @@ require: require-pip require-resources initdb
 
 # We add a `load_test_transactions` because the command will set the current
 # site and thus need the rules.App table.
-initdb: install-default-themes initdb-cowork
-	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
+initdb: install-default-themes initdb-djaoapp initdb-cowork
 	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
-	cd $(srcDir) && \
-		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
-	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json djaoapp/fixtures/djaoapp-roles-card1.json
 	@echo "-- Set streetside processor deposit key."
@@ -94,6 +94,12 @@ initdb-cowork: install-conf
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 	$(SQLITE) $(dir $(DB_FILENAME))/cowork.sqlite "UPDATE rules_app set show_edit_tools=1;"
+
+initdb-djaoapp: install-conf
+	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
+	cd $(srcDir) && \
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
+	echo "CREATE UNIQUE INDEX uniq_email ON auth_user(email);" | $(SQLITE) $(DB_FILENAME)
 
 
 makemessages:
