@@ -28,9 +28,6 @@ social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
 
 # To run with DEBUG=1
-cssmin==0.2.0
-yuicompressor==2.4.8
-jsmin==2.2.2
 django-extensions==2.2.9
 django-debug-panel==0.8.3
 django-debug-toolbar==2.1 # 1.11 does not support Django 2.2
