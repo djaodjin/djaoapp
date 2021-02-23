@@ -38,12 +38,5 @@ django-extensions==2.1.4
 django-debug-panel==0.8.3
 django-debug-toolbar==1.11 # XXX does not support Django 2.2
 
-# development
-drf-yasg==1.8.0
-Faker==2.0.0
-flex==6.14.0
-pygments==2.2.0
-pyYAML==5.1.2
-Sphinx==1.7.5
-sphinxcontrib-httpdomain==1.6.1
-swagger-spec-validator==2.3.0
+# documentation is done with Py3. This requirements-legacy.txt is purely
+# used for testing on Py27.
