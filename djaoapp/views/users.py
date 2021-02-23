@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -16,7 +16,7 @@ from signup.views.users import (
     UserNotificationsView as UserNotificationsBaseView,
     PasswordChangeView as UserPasswordUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
-from saas.utils import is_broker, update_context_urls
+from saas.utils import update_context_urls
 
 from ..compat import reverse
 
@@ -56,7 +56,7 @@ class UserMixin(object):
                 'profile': reverse('users_profile', args=(self.user,)),
             }})
         organization = self.attached_organization
-        if organization and not is_broker(organization):
+        if organization and not organization.is_broker:
             # A broker does not have subscriptions.
 
             # Duplicate code from `saas.extras.OrganizationMixinBase` since

@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -124,8 +124,8 @@ def fail_authenticated(request, verification_key=None):
                         role = role_model.objects.filter(
                             Q(grant_key=verification_key)
                             | Q(request_key=verification_key)).get()
-                        contact, _ = Contact.objects.update_or_create_token(
-                            role.user)
+                        contact, _ = Contact.objects.prepare_email_verification(
+                            role.user, role.user.email)
                         verification_key = contact.verification_key
                     except role_model.DoesNotExist:
                         pass

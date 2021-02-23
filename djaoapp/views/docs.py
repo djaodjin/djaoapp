@@ -17,6 +17,7 @@ from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
+from pages.serializers import NodeElementSerializer
 from rest_framework import exceptions, serializers
 from rest_framework.compat import (URLPattern, URLResolver,
     get_original_route)
@@ -373,15 +374,20 @@ class AutoSchema(BaseAutoSchema):
 
 
     def _map_field(self, field):
-        if (isinstance(field, serializers.ListField) and
-            isinstance(field.child, DatetimeValueTuple)):
-            return {
-                'type': 'array',
-                'items': {
+        if isinstance(field, serializers.ListField):
+            if isinstance(field.child, DatetimeValueTuple):
+                return {
                     'type': 'array',
-                    'items': {'oneOf': [{'type': 'string', 'type': 'integer'}]}
+                    'items': {
+                        'type': 'array',
+                        'items': {'oneOf': [
+                            {'type': 'string'}, {'type': 'integer'}]}
+                    }
                 }
-            }
+
+        elif (isinstance(field, serializers.ListSerializer) and
+            isinstance(field.child, NodeElementSerializer)):
+            return {}
 
         return super(AutoSchema, self)._map_field(field)
 

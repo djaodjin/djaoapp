@@ -193,7 +193,7 @@ class Command(BaseCommand):
         Create Income transactions that represents a growing bussiness.
         """
         #pylint: disable=too-many-locals
-        from saas.managers.metrics import month_periods # avoid import loop
+        from saas.metrics.base import month_periods # avoid import loop
         if not fake:
             fake = Faker()
         user_model = get_user_model()

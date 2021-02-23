@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 import logging, smtplib
@@ -355,6 +355,42 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
             context=context)
 
 
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(renewal_charge_failed, dispatch_uid="renewal_charge_failed")
+def renewal_charge_failed_notice(sender, invoiced_items, total_price,
+                                 final_notice, **kwargs):
+    invoiced_items = list(invoiced_items)
+    organization = (invoiced_items[0].dest_organization
+        if invoiced_items else None)
+    recipients, bcc = _notified_recipients(
+        organization, 'renewal_charge_failed')
+    LOGGER.debug("[signal] renewal_charge_failed_notice(invoiced_items=%s,"\
+        " total_price=%s, final_notice=%s)",
+        [invoiced_item.pk for invoiced_item in invoiced_items],
+        total_price, final_notice)
+    if SEND_EMAIL and recipients:
+        broker = get_broker()
+        broker_recipients, broker_bcc = _notified_recipients(broker,
+            'renewal_charge_failed')
+        app = get_current_app()
+        site = get_current_site()
+        context = {'broker': broker, 'app': app, 'provider': broker,
+            'organization': organization, 'invoiced_items': invoiced_items,
+            'total_price': total_price,
+            'max_renewal_attempts': saas_settings.MAX_RENEWAL_ATTEMPTS,
+            'final_notice': final_notice,
+            'back_url': reverse('saas_organization_cart', args=(organization,))}
+        reply_to = None
+        if broker.email and broker.email != site.get_from_email():
+            reply_to = broker.email
+        _send_notification_email(site, recipients,
+            'notification/renewal_charge_failed.eml',
+            reply_to=reply_to, bcc=bcc + broker_recipients + broker_bcc,
+            context=context)
+
+
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated")
 def claim_code_notice(sender, subscriber, claim_code, user, **kwargs):
     cart_items = CartItem.objects.by_claim_code(claim_code)
@@ -461,8 +497,8 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
                     reason = _("You have been invited to create an account"\
                         " to join %(organization)s.") % {
                         'organization': role.organization.printable_name}
-                    Contact.objects.update_or_create_token(
-                        user, reason=reason)
+                    Contact.objects.prepare_email_verification(
+                        user, user.email, reason=reason)
                 app = get_current_app()
                 context = {
                     'broker': get_broker(), 'app': app,
@@ -619,8 +655,8 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 # The User is already in the system but the account
                 # has never been activated.
                 #pylint:disable=unused-variable
-                contact, notused = Contact.objects.update_or_create_token(
-                    manager)
+                contact, notused = Contact.objects.prepare_email_verification(
+                    manager, manager,email)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url_base)
             else:

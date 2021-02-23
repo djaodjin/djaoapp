@@ -3,7 +3,7 @@
     "fields": {
       "slug": "stripe",
       "full_name": "Stripe",
-      "created_at": "2012-08-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "stripe@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "185 Berry St #550",
@@ -29,7 +29,7 @@
     "fields": {
       "slug": "djaoapp",
       "full_name": "DjaoDjin",
-      "created_at": "2015-06-01T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "djaoapp@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -47,7 +47,7 @@
     "fields": {
       "slug": "djaodjin",
       "full_name": "DjaoDjin",
-      "created_at": "2015-06-01T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "djaodjin@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -65,13 +65,13 @@
     "fields": {
       "slug": "security",
       "title": "Security Policy",
-      "modified": "2016-05-01T00:00:00+00:00"
+      "modified": "2021-01-01T00:00:00+00:00"
     },
     "model": "saas.agreement", "pk": 2
 },
 {
     "fields": {
-      "created_at": "2016-05-01T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "slug": "manager",
       "title": "Profile Manager"
     },
@@ -79,7 +79,7 @@
 },
 {
     "fields": {
-      "created_at": "2016-05-01T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "organization": 2,
       "slug": "contributor",
       "title": "Contributor"
@@ -88,7 +88,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "slug": "viewer",
       "title": "Viewer"
     },
@@ -98,7 +98,7 @@
     "fields": {
         "slug":"managed",
         "title":"Managed",
-        "created_at":"2020-01-01T00:00:00Z",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "period_type": 4,
         "period_amount": 1000,
         "description": "To take screenshot of checkout pages",
@@ -111,7 +111,7 @@
     "fields":{
         "slug":"basic",
         "title":"Basic",
-        "created_at":"2015-06-01T10:00:00Z",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "setup_amount": 0,
         "period_amount": 24900,
         "broker_fee_percent": 0,
@@ -135,7 +135,7 @@
     "fields":{
         "slug":"premium",
         "title":"Premium",
-        "created_at":"2015-06-01T10:00:00Z",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "setup_amount": 0,
         "period_amount": 18900,
         "broker_fee_percent": 0,
@@ -158,7 +158,7 @@
 {
     "fields":{
         "code": "DIS100",
-        "created_at":"2014-01-01T00:00:00-09:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 10000,
         "organization": 2
@@ -168,7 +168,7 @@
 {
     "fields":{
         "code": "HALLOWEEN",
-        "created_at":"2014-01-01T00:00:00-09:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 5000,
         "organization": 2
@@ -178,7 +178,7 @@
 {
     "fields":{
         "code": "BASIC50",
-        "created_at":"2020-11-17T00:00:00-09:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "plan": 2,
         "discount_type": 1,
         "discount_value": 5000,
@@ -195,14 +195,14 @@
 },
 {
     "fields": {
-      "date_joined": "2014-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "alice@localhost.localdomain",
       "first_name": "Alice",
       "last_name": "Cooper",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "alice"
     },
@@ -210,7 +210,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 1
     },
@@ -218,14 +218,14 @@
 },
 {
     "fields": {
-      "date_joined": "2014-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "donny@localhost.localdomain",
       "first_name": "Donny",
       "last_name": "Cooper",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "donny"
     },
@@ -233,7 +233,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 2
     },
@@ -242,7 +242,7 @@
 {
     "fields": {
       "slug": "alice",
-      "created_at": "2016-03-18T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "user": 1,
       "picture": "/static/img/alice.jpg"
     },
@@ -250,7 +250,7 @@
 },
 {
     "fields": {
-      "date_joined": "2015-01-14T14:16:55-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "yan@localhost.localdomain",
       "first_name": "Yan",
       "last_name": "Lee",
@@ -258,7 +258,7 @@
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2015-01-14T14:57:48-09:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "yan"
     },
@@ -266,7 +266,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 3
     },
@@ -274,7 +274,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 2,
       "user": 1
@@ -283,14 +283,14 @@
 },
 {
     "fields": {
-      "date_joined": "2017-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "kenneth@localhost.localdomain",
       "first_name": "Kenneth",
       "last_name": "Contributor",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2017-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "kenneth"
     },
@@ -298,7 +298,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 4
     },
@@ -306,7 +306,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 2,
       "organization": 2,
       "user": 4
@@ -318,7 +318,7 @@
       "slug": "cowork",
       "email": "cowork@localhost.localdomain",
       "full_name": "Cowork",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 0,
       "is_active": 1
@@ -329,7 +329,7 @@
     "fields": {
       "slug": "xia-card7",
       "full_name": "Xia Card7",
-      "created_at": "2016-08-22T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "xia+card7@localhost.localdomain",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -342,8 +342,8 @@
 },
 {
     "fields": {
-      "created_at": "2014-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00-09:00",
       "organization": 4,
       "plan": 3
     },
@@ -413,7 +413,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "full_name": "Marie",
       "email": "marie@localhost.localdomain",
       "slug": "marie"
@@ -422,14 +422,14 @@
 },
 {
     "fields": {
-      "date_joined": "2014-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia"
     },
@@ -437,7 +437,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 5
     },
@@ -445,7 +445,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "slug": "xia",
       "user": 5
@@ -456,7 +456,7 @@
     "fields": {
       "slug": "xia",
       "full_name": "Xia Lee",
-      "created_at": "2014-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -471,7 +471,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 6,
       "user": 5
@@ -480,14 +480,14 @@
 },
 {
     "fields": {
-      "date_joined": "2014-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "joe@localhost.localdomain",
       "first_name": "Joe",
       "last_name": "Smith",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "joe"
     },
@@ -495,7 +495,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 6
     },
@@ -505,7 +505,7 @@
     "fields": {
       "slug": "joe-bulk",
       "full_name": "Joe Bulk Buying",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "joe+bulk@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -521,7 +521,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 7,
       "user": 6
@@ -530,14 +530,14 @@
 },
 {
     "fields": {
-      "date_joined": "2012-09-14T14:16:55-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "asmith@localhost.localdomain",
       "first_name": "Amelie",
       "groups": [],
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2012-09-14T14:57:48-09:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "last_name": "Smith",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "asmith"
@@ -546,7 +546,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 7
     },
@@ -556,7 +556,7 @@
     "fields": {
       "slug": "asmith",
       "full_name": "Amelie Smith",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "asmith@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -573,7 +573,7 @@
 {
     "fields": {
       "slug": "asmith",
-      "created_at": "2016-03-18T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "user": 7,
       "picture": "/static/img/amelie.jpg"
     },
@@ -581,7 +581,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 8,
       "user": 7
@@ -590,7 +590,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": null,
       "organization": 4,
       "user": 7,
@@ -600,8 +600,8 @@
 },
 {
     "fields": {
-      "created_at": "2013-09-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 8,
       "plan": 2
     },
@@ -611,7 +611,7 @@
     "fields": {
       "slug": "stephanie",
       "full_name": "Stephanie DuJardin",
-      "created_at": "2015-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "stephanie@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -626,14 +626,14 @@
 },
 {
     "fields": {
-      "date_joined": "2015-01-01T00:00:00-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "stephanie@localhost.localdomain",
       "first_name": "Stephanie",
       "groups": [],
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2015-02-01T00:00:00-09:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "last_name": "DuJardin",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "stephanie"
@@ -642,7 +642,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 8
     },
@@ -650,7 +650,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 9,
       "user": 8
@@ -659,7 +659,7 @@
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 4,
       "user": 2
@@ -668,8 +668,8 @@
 },
 {
     "fields": {
-      "created_at": "2015-01-01T00:00:00-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 9,
       "plan": 2
     },
@@ -679,7 +679,7 @@
     "fields": {
       "slug": "to-be-deleted-1",
       "full_name": "Subscriber ToBeDeleted",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "to-be-deleted-1@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -696,7 +696,7 @@
     "fields": {
       "slug": "to-be-deleted-2",
       "full_name": "2nd Subscriber ToBeDeleted",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -711,7 +711,7 @@
 },
 {
     "fields": {
-      "date_joined": "2016-03-18T00:00:00-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "needactive@localhost.localdomain",
       "first_name": "Stephanie",
       "is_active": true,
@@ -725,30 +725,30 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-10T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "user": 9,
-      "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
     },
     "model": "signup.Contact", "pk": 9
 },
 {
     "fields": {
       "username": "to-be-deleted-2",
-      "date_joined": "2014-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
+      "last_login": "2021-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc="
     },
     "model": "auth.User", "pk": 10
 },
 {
     "fields": {
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 11,
       "user": 10
@@ -757,8 +757,8 @@
 },
 {
     "fields": {
-      "created_at": "2014-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 11,
       "plan": 3
     },
@@ -768,7 +768,7 @@
     "fields": {
       "slug": "subscriber-5",
       "full_name": "Subscriber Five",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "subscriber-5@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -783,8 +783,8 @@
 },
 {
     "fields": {
-      "created_at": "2014-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 12,
       "plan": 3
     },
@@ -795,7 +795,7 @@
       "slug": "dibaggio-parents",
       "email": "dibaggio-parents@localhost.localdomain",
       "full_name": "Di Baggio Middle School Parents Association",
-      "created_at": "2012-09-14T14:16:55-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -806,7 +806,7 @@
     "fields":{
         "slug":"standard",
         "title":"Di Baggio Middle School Parents Association",
-        "created_at":"2013-11-01T00:00:00-09:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "setup_amount":0,
         "period_amount":18900,
         "broker_fee_percent": 0,
@@ -822,7 +822,7 @@
       "slug": "tennis-club",
       "email": "tennis-club@localhost.localdomain",
       "full_name": "Tennis Club of North Beach",
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
@@ -834,7 +834,7 @@
     "fields":{
         "slug": "tennis-club",
         "title":"Tennis Club of North Beach",
-        "created_at": "2020-01-01T00:00:00-00:00",
+        "created_at": "2021-01-01T00:00:00+00:00",
         "setup_amount":0,
         "period_amount":18900,
         "broker_fee_percent": 0,
@@ -848,7 +848,7 @@
 {
     "fields":{
         "code": "HALLOWEEN",
-        "created_at":"2020-01-01T00:00:00-00:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 5000,
         "organization": 14
@@ -860,7 +860,7 @@
       "slug": "yoga-club",
       "email": "yoga-club@localhost.localdomain",
       "full_name": "Yoga Club",
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
@@ -871,7 +871,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "slug": "registration-card3",
       "email": "registration+card3@localhost.localdomain",
       "full_name": "Registration Card 3",
@@ -886,8 +886,8 @@
 },
 {
     "fields": {
-      "created_at": "2014-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 6,
       "plan": 12
     },
@@ -895,8 +895,8 @@
 },
 {
     "fields": {
-      "created_at": "2014-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 6,
       "plan": 13
     },
@@ -904,7 +904,7 @@
 },
 {
     "fields":{
-        "created_at":"2014-01-01T00:00:00-09:00",
+        "created_at":"2021-01-01T00:00:00+00:00",
         "user": 5,
         "plan": 1,
         "coupon": 2,
@@ -914,8 +914,8 @@
 },
 {
     "fields": {
-      "created_at": "2015-01-14T14:16:55-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 6,
       "plan": 1
     },
@@ -923,8 +923,8 @@
 },
 {
     "fields": {
-      "created_at": "2016-08-22T00:00:00+00:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 5,
       "plan": 1
     },
@@ -932,7 +932,7 @@
 },
 {
     "fields": {
-      "created_at": "2016-08-22T00:00:00+00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "dest_amount": 13800,
       "dest_unit": "usd",
       "dest_account": "Payable",
@@ -947,7 +947,7 @@
 },
 {
     "fields": {
-      "created_at": "2016-08-22T00:00:01+00:00",
+      "created_at": "2021-01-01T00:00:01+00:00",
       "dest_amount": 6900,
       "dest_unit": "usd",
       "dest_account": "Liability",
@@ -962,7 +962,7 @@
 },
 {
     "fields": {
-      "date_joined": "2016-03-18T00:00:00-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "melissa@localhost.localdomain",
       "first_name": "Melissa",
       "last_name": "Xia NoOrg",
@@ -976,7 +976,7 @@
 },
 {
     "fields": {
-      "last_signed": "2014-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 11
     },
@@ -984,7 +984,7 @@
 },
 {
     "fields": {
-      "date_joined": "2020-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "brett@localhost.localdomain",
       "first_name": "Brett",
       "last_name": "",
@@ -998,7 +998,7 @@
 },
 {
     "fields": {
-      "last_signed": "2020-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 13
     },
@@ -1006,7 +1006,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 4,
       "user": 13,
@@ -1016,7 +1016,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 2,
       "user": 13
@@ -1025,7 +1025,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "organization": 5,
       "user": 13,
       "request_key": "b0e000e00e0001234567890123456789012345"
@@ -1034,7 +1034,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 6,
       "user": 13,
@@ -1044,7 +1044,7 @@
 },
 {
     "fields": {
-      "date_joined": "2020-01-01T00:00:00-00:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "joey@localhost.localdomain",
       "first_name": "Joey",
       "last_name": "create profile on subscription",
@@ -1058,7 +1058,7 @@
 },
 {
     "fields": {
-      "last_signed": "2020-01-01T00:00:00-00:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 14
     },
@@ -1133,7 +1133,7 @@
     "fields": {
       "slug": "stephanie2",
       "full_name": "Stephanie DuJardin",
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "stephanie2@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -1149,7 +1149,7 @@
 },
 {
     "fields": {
-      "date_joined": "2020-01-01T00:00:00-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "stephanie2@localhost.localdomain",
       "first_name": "Stephanie",
       "last_name": "DuJardin",
@@ -1160,7 +1160,7 @@
 },
 {
     "fields": {
-      "last_signed": "2020-01-01T00:00:00-09:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 17
     },
@@ -1168,7 +1168,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 17,
       "user": 17
@@ -1177,8 +1177,8 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
-      "ends_at": "2021-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 17,
       "plan": 3
     },
@@ -1189,7 +1189,7 @@
     "fields": {
       "slug": "stephanie3",
       "full_name": "Stephanie DuJardin",
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "email": "stephanie3@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -1205,7 +1205,7 @@
 },
 {
     "fields": {
-      "date_joined": "2020-01-01T00:00:00-09:00",
+      "date_joined": "2021-01-01T00:00:00+00:00",
       "email": "stephanie3@localhost.localdomain",
       "first_name": "Stephanie",
       "last_name": "DuJardin",
@@ -1216,7 +1216,7 @@
 },
 {
     "fields": {
-      "last_signed": "2020-01-01T00:00:00-09:00",
+      "last_signed": "2021-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 18
     },
@@ -1224,7 +1224,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 18,
       "user": 18
@@ -1233,8 +1233,8 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:01:00-09:00",
-      "ends_at": "2021-01-01T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 18,
       "plan": 3
     },
@@ -1242,8 +1242,8 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-09:00",
-      "ends_at": "2020-12-31T00:00:00-09:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 18,
       "plan": 3,
       "extra": "bogus duplicate subscription"
@@ -1252,7 +1252,7 @@
 },
 {
     "fields":{
-        "created_at": "2020-01-01T00:00:00-00:00",
+        "created_at": "2021-01-01T00:00:00+00:00",
         "user": 2,
         "plan": 1,
         "recorded": 0
@@ -1261,8 +1261,8 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
-      "ends_at": "2021-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
+      "ends_at": "2022-01-01T00:00:00+00:00",
       "organization": 14,
       "plan": 1
     },
@@ -1270,7 +1270,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:00-00:00",
+      "created_at": "2021-01-01T00:00:00+00:00",
       "dest_amount": 1000,
       "dest_unit": "usd",
       "dest_account": "Payable",
@@ -1285,7 +1285,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:01-00:00",
+      "created_at": "2021-01-01T00:00:01+00:00",
       "dest_amount": 1000,
       "dest_unit": "usd",
       "dest_account": "Funds",
@@ -1300,7 +1300,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:01-00:00",
+      "created_at": "2021-01-01T00:00:01+00:00",
       "dest_amount": 1000,
       "dest_unit": "usd",
       "dest_account": "Liability",
@@ -1315,7 +1315,7 @@
 },
 {
     "fields": {
-      "created_at": "2020-01-01T00:00:03-00:00",
+      "created_at": "2021-01-01T00:00:03-00:00",
       "dest_amount": 1000,
       "dest_unit": "usd",
       "dest_account": "Payable",
@@ -1330,7 +1330,7 @@
 },
 {
     "fields":{
-        "created_at": "2020-01-01T00:00:00-00:00",
+        "created_at": "2021-01-01T00:00:00-00:00",
         "created_by": 2,
         "amount": 1000,
         "unit": "usd",

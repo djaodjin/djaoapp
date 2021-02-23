@@ -112,6 +112,7 @@
         {% if STRIPE_PUB_KEY %}
         cardForm.card({
             stripePubKey: "{{ STRIPE_PUB_KEY }}",
+            stripeIntentSecret: "{{ STRIPE_INTENT_SECRET }}",
             saas_api_card: "{{ urls.organization.api_card }}",
             cardNumberLabel: {% trans %}"Card Number"{% endtrans %},
             securityCodeLabel: {% trans %}"Security Code"{% endtrans %},

@@ -11,9 +11,9 @@ djaodjin-deployutils==0.5.23
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.18
 djaodjin-pages==0.3.1
-djaodjin-rules==0.2.5
-djaodjin-saas==0.9.2
-djaodjin-signup==0.4.6
+djaodjin-rules==0.2.6
+djaodjin-saas==0.9.3
+djaodjin-signup==0.4.7
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.8.1
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)

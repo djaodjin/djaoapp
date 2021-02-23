@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -17,7 +17,7 @@ from saas.views.billing import (
 from saas.views.profile import DashboardView as BaseDashboardView
 from saas.views.roles import (
     RoleImplicitGrantAcceptView as RoleImplicitGrantAcceptViewBase)
-from saas.utils import is_broker, update_context_urls
+from saas.utils import update_context_urls
 from signup.decorators import check_email_verified as check_email_verified_base
 
 from ..compat import reverse
@@ -30,7 +30,7 @@ class DashboardView(BaseDashboardView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        if is_broker(self.organization):
+        if self.organization.is_broker:
             update_context_urls(context, {
                 'recent_activity': reverse('api_recent_activity'),
                 'api_todos': reverse('api_todos')

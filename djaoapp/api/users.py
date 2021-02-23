@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import ListAPIView
 
 from saas.models import Charge
-from saas.managers.metrics import day_periods
+from saas.metrics.base import day_periods
 from saas.utils import get_role_model
 from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
 

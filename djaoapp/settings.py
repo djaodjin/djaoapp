@@ -1,8 +1,8 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
-import logging, os.path, sys
+import os.path, sys
 
 from django import VERSION as DJANGO_VERSION
 from django.contrib.messages import constants as messages
@@ -18,7 +18,7 @@ APP_NAME = os.path.basename(BASE_DIR)
 
 DEBUG = True
 
-ALLOWED_HOSTS  = ('*',)
+ALLOWED_HOSTS = ('*',)
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
 
 DB_ENGINE = 'sqlite3'
@@ -46,12 +46,12 @@ if not hasattr(sys.modules[__name__], 'FEATURES_DEBUG'):
 
 if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
     BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
-        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', 0)) > 0)
+        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', "0")) > 0)
 
-API_DEBUG = True if int(os.getenv('API_DEBUG', 0)) > 0 else DEBUG
+API_DEBUG = True if int(os.getenv('API_DEBUG', "0")) > 0 else DEBUG
 
 # Remove extra information used for documentation like examples, etc.
-OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', 0)) > 0)
+OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', "0")) > 0)
 
 
 # Implementation Note: To simplify quick tests. The `SECRET_KEY` should
@@ -533,6 +533,12 @@ SIGNUP = {
         'djaoapp.thread_locals.get_disabled_authentication',
     'DISABLED_REGISTRATION':
         'djaoapp.thread_locals.get_disabled_registration',
+    'EMAIL_DYNAMIC_VALIDATOR': getattr(
+        sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
+    'LOGIN_THROTTLE': getattr(
+        sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
+    'PASSWORD_RESET_THROTTLE': getattr(
+        sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'RANDOM_SEQUENCE': getattr(
         sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', [])
@@ -657,6 +663,7 @@ SAAS = {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
+#        'USE_STRIPE_V3': True,
         'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
         'CONNECT_STATE_CALLABLE':
             'djaoapp.thread_locals.get_authorize_processor_state',

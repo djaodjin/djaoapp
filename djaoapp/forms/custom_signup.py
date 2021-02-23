@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -15,8 +15,8 @@ from django_countries import countries
 from django_countries.fields import Country
 from saas.forms import PostalFormMixin
 from saas.models import Organization
-from signup.forms import (ActivationForm as ActivationFormBase, NameEmailForm,
-    PasswordConfirmMixin, UsernameOrEmailAuthenticationForm,
+from signup.forms import (ActivationForm as ActivationFormBase,
+    FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm,
     UserActivateForm as UserActivateFormBase)
 
 from ..compat import six
@@ -82,14 +82,14 @@ class PasswordForm(MissingFieldsMixin, PasswordResetForm):
             {'class':'input-block-level'}))
 
 
-class SigninForm(MissingFieldsMixin, UsernameOrEmailAuthenticationForm):
+class SigninForm(MissingFieldsMixin, AuthenticationForm):
 
     submit_title = _("Sign in")
     hide_labels = True
 
 
 class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
-                 NameEmailForm):
+                 FrictionlessSignupForm):
     """
     Form to Register a user and (optionally) a personal or organization
     profiles.
@@ -100,7 +100,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
     user_model = get_user_model()
 
     email2 = forms.EmailField(required=False,
-        widget=forms.TextInput(attrs={'maxlength': 75}),
+        widget=forms.TextInput(attrs={'placeholder': _("Type e-mail again")}),
         label=_("E-mail confirmation"))
     username = forms.SlugField(required=False,
         widget=forms.TextInput(attrs={'placeholder': _("Username")}),
@@ -172,10 +172,10 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         if not ('email' in self._errors or 'email2' in self._errors):
             # If there are already errors reported for email or email2,
             # let's not override them with a confusing message here.
-            if 'email2' in self.data:
+            if 'email' in self.data and 'email2' in self.data:
                 # If `email2` wasn't passed in the POST request, we ignore it.
-                email = self.cleaned_data.get('email', 'A')
-                email2 = self.cleaned_data.get('email2', 'B')
+                email = self.cleaned_data['email']
+                email2 = self.cleaned_data['email2']
                 if email != email2:
                     self._errors['email'] = self.error_class([
                         _("This field does not match e-mail confirmation.")])
@@ -258,8 +258,3 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
                 raise forms.ValidationError(
                     _("Your organization might already be registered."))
         return self.cleaned_data['organization_name']
-
-    def clean_new_password(self):
-        if 'new_password' in self.data:
-            return super(SignupForm, self).clean_new_password()
-        return ""

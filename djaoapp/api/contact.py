@@ -120,9 +120,14 @@ class ReCaptchaField(serializers.CharField):
 
 class ContactUsSerializer(NoModelSerializer):
 
-    full_name = serializers.CharField()
-    email = serializers.EmailField()
-    message = serializers.CharField(required=False)
+    full_name = serializers.CharField(
+        help_text=_("Full name the sender of the message wishes"\
+        " to be addressed as"))
+    email = serializers.EmailField(
+        help_text=_("Email address to reply to the sender"))
+    message = serializers.CharField(
+        help_text=_("Description of the reason for contacting the provider"),
+        required=False)
 
     def __init__(self, *args, **kwargs):
         super(ContactUsSerializer, self).__init__(*args, **kwargs)

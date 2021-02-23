@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -20,8 +20,8 @@ from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import _valid_manager
-from saas.models import Organization, get_broker
-from saas.utils import get_role_model, is_broker
+from saas.models import get_broker, is_broker
+from saas.utils import get_organization_model, get_role_model
 
 from .compat import csrf, is_authenticated, reverse, six
 from .thread_locals import is_domain_site
@@ -168,7 +168,7 @@ def inject_edition_tools(response, request, context=None,
                     if organization['slug'] == request.user.username:
                         # Personal Organization
                         continue
-                    db_obj = Organization.objects.get(
+                    db_obj = get_organization_model().objects.get(
                         slug=organization['slug']) # XXX Remove query.
                     if db_obj.is_provider:
                         settings_location = reverse('saas_dashboard',

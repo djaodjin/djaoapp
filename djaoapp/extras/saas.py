@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
@@ -9,7 +9,6 @@ from multitier.thread_locals import get_current_site
 from pages.extras import AccountMixinBase
 from rules.extras import AppMixinBase
 from rules.utils import get_current_app
-from saas.utils import is_broker
 
 from ..compat import reverse
 
@@ -24,7 +23,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
     # matches definition in `saas.backends.stripe_processor.base.StripeBackend`.
     @staticmethod
     def _is_platform(provider):
-        return provider._state.db == 'default' and is_broker(provider)
+        return provider._state.db == 'default' and provider.is_broker
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
@@ -70,7 +69,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
         self.update_context_urls(context, {'provider': {
             'bank': reverse('saas_update_bank', args=(app.account,))}})
 
-        if not is_broker(self.organization):
+        if not self.organization.is_broker:
             if 'urls' in context:
                 if 'pages' in context['urls']:
                     del context['urls']['pages']
