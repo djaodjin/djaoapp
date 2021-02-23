@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -21,7 +21,6 @@ from pages.serializers import NodeElementSerializer
 from rest_framework import exceptions, serializers
 from rest_framework.compat import (URLPattern, URLResolver,
     get_original_route)
-from rest_framework.serializers import BaseSerializer
 from rest_framework.schemas.generators import EndpointEnumerator
 from rest_framework.schemas.utils import is_list_view
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
@@ -367,7 +366,7 @@ class AutoSchema(BaseAutoSchema):
         if name.endswith(action):  # ListView, UpdateAPIView, ThingDelete ...
             name = name[:-len(action)]
 
-        if action == 'List' and not name.endswith('s'):  # ListThings instead of ListThing
+        if action == 'List' and not name.endswith('s'):
             name += 's'
 
         return action + name
@@ -408,7 +407,8 @@ class AutoSchema(BaseAutoSchema):
             kwargs['summary'] = summary
             kwargs['description'] = description
 #            if not description:
-#                warnings.warn("%s %s: no description could be extracted from '%s'" % (method, path, docstring))
+#                warnings.warn("%s %s: no description could be extracted"
+#                    " from '%s'" % (method, path, docstring))
             kwargs['tags'] = list(func_tags) if func_tags else []
             if not settings.OPENAPI_SPEC_COMPLIANT:
                 kwargs['examples'] = self.examples
@@ -520,7 +520,6 @@ class AutoSchema(BaseAutoSchema):
         if hasattr(view, 'get_serializer_class'):
             serializer_class = view.get_serializer_class()
         view_method = getattr(self.view, method.lower(), None)
-        from saas.api.backend import PaymentMethodDetailAPIView
         if view_method and hasattr(view_method, '_swagger_auto_schema'):
             #pylint:disable=protected-access
             data = view_method._swagger_auto_schema
@@ -690,7 +689,8 @@ class APIDocView(TemplateView):
                                     example['resp'])
                     description = func_details.get('description', None)
                     if description is None:
-                        warnings.warn("%s %s: description is None" % (func.upper(), path))
+                        warnings.warn("%s %s: description is None" % (
+                            func.upper(), path))
                     func_details.update({
                         'func': func,
                         'path': '%s' % path,

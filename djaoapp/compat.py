@@ -1,11 +1,11 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
-#pylint: disable=no-name-in-module,unused-import
+#pylint: disable=no-name-in-module,unused-import,import-error,bad-except-order
+#pylint: disable=invalid-name,unused-argument
 from functools import WRAPPER_ASSIGNMENTS
 import six
 
-#pylint:disable=no-name-in-module,import-error
 from six.moves.urllib.parse import urljoin, urlparse, urlunparse
 from six import StringIO
 
@@ -24,7 +24,7 @@ except ImportError: # django < 3.0
 try:
     from django.template.context_processors import csrf
 except ImportError: # django < 1.8
-    from django.core.context_processors import csrf #pylint:disable=import-error
+    from django.core.context_processors import csrf
 
 try:
     from django.utils.module_loading import import_string

@@ -16,10 +16,10 @@ from saas.models import CartItem, get_broker
 from saas.utils import get_organization_model
 from saas.signals import (charge_updated, claim_code_generated, card_updated,
     expires_soon, order_executed, organization_updated, processor_setup_error,
-    role_grant_created, role_request_created, role_grant_accepted,
-    subscription_grant_accepted, subscription_grant_created,
-    subscription_request_accepted, subscription_request_created,
-    weekly_sales_report_created)
+    renewal_charge_failed, role_grant_created, role_request_created,
+    role_grant_accepted, subscription_grant_accepted,
+    subscription_grant_created, subscription_request_accepted,
+    subscription_request_created, weekly_sales_report_created)
 from signup.settings import NOTIFICATIONS_OPT_OUT
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
@@ -656,7 +656,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 # has never been activated.
                 #pylint:disable=unused-variable
                 contact, notused = Contact.objects.prepare_email_verification(
-                    manager, manager,email)
+                    manager, manager.email)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
                     args=(contact.verification_key,)), back_url_base)
             else:
