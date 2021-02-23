@@ -23,7 +23,6 @@ MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 #   but it still seems to work ...
 gunicorn==19.7.1
 phonenumbers==8.12.6
-python-social-auth==0.3.6
 pytz==2020.1
 social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
