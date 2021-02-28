@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <user-aggregate-engagement inline-template>
+    <div>
+      <h3>Engagement widget</h3>
+      <div v-show="itemLoaded">
+        <div>Daily active users: [[item.activeUsers]]</div>
+        <div>Engagement data: [[item.engagements]]</div>
+      </div>
+    </div>
+  </user-aggregate-engagement>
+  <user-engagement inline-template>
+    <div>
+      <h3>User engagement</h3>
+      <table>
+        <thead>
+          <th></th>
+          <th v-for="tag in tags">[[tag]]</th>
+        </thead>
+        <tbody>
+          <tr v-for="row in items.results">
+            <td>[[row.username]]</td>
+            <td v-for="tag in tags">
+              [[row.engagements.indexOf(tag) >= 0 ? 'engaged' : 'not engaged']]
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </user-engagement>
+</section>
+{% endblock %}

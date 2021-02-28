@@ -1,0 +1,50 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Roles{% endblock %}
+
+{% block saas_content %}
+<roledescr-list inline-template id="role-list-container" ng-app="saasApp">
+  <div ng-controller="userRoleDescriptionCtrl"
+       saas-organization="{{organization.slug}}">
+    <h2 ng-show="!items.$resolved"
+        v-show="!itemsLoaded">Please wait...</h2>
+    <div ng-show="items.$resolved" ng-cloak
+         v-show="itemsLoaded" v-cloak>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="entry in items.results"
+           v-for="entry in items.results">
+            <td><a ng-href="entry.slug"
+                   v-bind:href="entry.slug">[[entry.title]]</a></td>
+            <td><button type="button"
+                ng-show="!entry.is_global"
+                ng-click="deleteRoleDescription(entry)"
+                v-show="!entry.is_global">Delete</button>
+              <span v-show="entry.is_global">Globally defined</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- modals -->
+    <hr />
+    <form class="form-horizontal" @submit.prevent="create">
+      <h2>Add a new type of role</h2>
+      <div>
+        <label>Title</label>
+        <input v-model="role.title"
+               name="name" type="text" max-length="150"
+               placeholder="ex: Sales associate"
+               autofocus />
+      </div>
+      <button type="submit">Create role</button>
+    </form>
+  </div>
+</roledescr-list>
+{% endblock %}

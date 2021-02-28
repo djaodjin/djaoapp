@@ -1,0 +1,19 @@
+{% extends "saas/base.html" %}
+
+{% block saas_content %}
+<h1>Withdraw funds to your bank account</h1>
+
+<form method="post" id="bank-form"
+      action=".{% if next %}/?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    <input name="stripeToken" type="hidden">
+    <fieldset>
+        <legend>Amount to transfer</legend>
+        <div>
+         <label for="id_amount">Amount (in $):</label>
+         {{form.amount}}
+        </div>
+      </fieldset>
+      <button type="submit">{% if form.submit_title %}{{form.submit_title}}{% else %}Submit{% endif %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block localheader %}
+{% if STRIPE_PUB_KEY %}
+{% if STRIPE_INTENT_SECRET %}
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+{% else %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div>
+  <div>
+    {% block sidebar %}
+    {% include "saas/_sidebar.html" %}
+    {% endblock %}
+  </div>
+  <div id="app">
+    {% block saas_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="text/javascript" charset="utf-8" src="/static/vendor/moment.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/vendor/moment-timezone-with-data.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-resources.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-postal.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-saas.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+{% if urls and urls.provider %}
+    $("[data-plan]").plan({
+        saas_api_plan: "{{ urls.provider.api_plans }}",
+        saas_metrics_plans: "{{ urls.provider.metrics_plans }}"
+    });
+{% endif %}
+{% if urls and urls.api_redeem %}
+    $("#redeem-form").redeem(
+        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
+{% endif %}
+{% if charge %}
+    $(".charge-refund").click(function () {
+        var self = $(this);
+        $("#charge-refund").refund({
+            availableAmount: self.attr("data-available-amount"),
+            linenum: self.attr("data-linenum"),
+            saas_api_charge_refund: "{{ urls.charge.api_refund }}",
+            refundButton: self
+        });
+    });
+    $("#email-charge-receipt").chargeEmailReceipt({
+        initialState: "{{charge.state_string}}",
+        saas_api_email_charge_receipt:
+            "{{ urls.charge.api_email_receipt }}"
+    });
+
+    $("#{{charge}}").chargeMonitor({
+       initialState: "{{charge.state_string}}",
+       saas_api_charge: "{{ urls.charge.api_base }}"
+    });
+{% endif %}
+});
+</script>
+{% block saas_bodyscripts %}{% endblock %}
+{% endblock %}
+

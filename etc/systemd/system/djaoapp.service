@@ -1,0 +1,17 @@
+[Unit]
+Description=The djaoapp WebApp
+After=nginx.target
+
+[Service]
+Type=forking
+User=djaoapp
+PIDFile=/Users/lutherhill/Dev/djaoapp/var/run/djaoapp.pid
+EnvironmentFile=-/Users/lutherhill/Dev/djaoapp/etc/sysconfig/djaoapp
+WorkingDirectory=.
+ExecStart=/Users/lutherhill/Dev/djaoapp/bin/gunicorn -c /Users/lutherhill/Dev/djaoapp/etc/djaoapp/gunicorn.conf --daemon djaoapp.wsgi
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

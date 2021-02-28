@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+<h1>Forgotten password</h1>
+<p>
+Please enter your e-mail or phone.
+Your password will be reset and you will get a chance to choose a new password.
+</p>
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="submit" value="Submit">
+</form>
+<p>
+    Don't have an account? -- <a href="{% url 'registration_register' %}">Sign up</a>
+</p>
+</div>
+{% endblock %}

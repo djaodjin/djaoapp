@@ -1,0 +1,67 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<div ng-app="saasApp">
+  <div ng-controller="transactionListCtrl">
+    <section id="total">
+      <strong>Balance</strong> <span>[[humanizeBalance()]]</span>
+    </section>
+    <section id="transactions">
+      <div>
+        <h1>Transactions</h1>
+        {% include "saas/_filter.html" %}
+        <table>
+          <thead>
+            <tr>
+              <th>Date<button ng-click="sortBy('created_at')">[[dir.created_at ? 'down' : 'up']]</button></th>
+              <th>Amount<button ng-click="sortBy('amount')">[[dir.amount ? 'down' : 'up']]</button></th>
+              <th>Origin Organization<button ng-click="sortBy('orig_organization')">[[dir.orig_organization ? 'down' : 'up']]</button></th>
+              <th>Origin Account<button ng-click="sortBy('orig_account')">[[dir.orig_account ? 'down' : 'up']]</button></th>
+              <th>Destination Organization<button ng-click="sortBy('dest_organization')">[[dir.dest_organization ? 'down' : 'up']]</button></th>
+              <th>Destination Account<button ng-click="sortBy('dest_account')">[[dir.dest_account ? 'down' : 'up']]</button></th>
+              <th>Description<button ng-click="sortBy('description')">[[dir.description ? 'down' : 'up']]</button></th>
+            </tr>
+          </thead>
+          <tbody ng-hide="items.$resolved">
+            <tr>
+              <td colspan="4">
+                <h3>Loading ...</h3>
+              </td>
+            </tr>
+          </tbody>
+          <tbody ng-show="items.$resolved && items.results.length == 0">
+            <tr>
+              <td colspan="7">
+                <h4><em>No transactions<span ng-show="filterExpr"> [[filterExpr]]</span></em></h4>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="has-transactions" ng-cloak ng-show="items.$resolved && items.results.length > 0">
+            <tr ng-repeat="entry in items.results">
+              <td>[[entry.created_at | date : mediumDate]]</td>
+              <td>[[entry.amount]]</td>
+              <td>[[entry.orig_organization]]</td>
+              <td>[[entry.orig_account]]</td>
+              <td>[[entry.dest_organization]]</td>
+              <td>[[entry.dest_account]]</td>
+              <td ng-bind-html="entry.description | unsafe"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <ul uib-pagination ng-model="currentPage"
+                      total-items="totalItems"
+                      items-per-page="itemsPerPage"
+                      boundary-links="true"
+                      max-size="maxSize"
+                      previous-text="&lsaquo;"
+                      next-text="&rsaquo;"
+                      first-text="&laquo;"
+                      last-text="&raquo;"
+                      ng-change="pageChanged()"></ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

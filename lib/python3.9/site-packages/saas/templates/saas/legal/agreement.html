@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{page|safe}}{# OK to use a safe here. We load a committed source .md file #}
+{% endblock %}

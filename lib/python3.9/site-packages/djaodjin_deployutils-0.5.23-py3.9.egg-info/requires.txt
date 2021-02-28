@@ -1,0 +1,8 @@
+boto3>=1.12.31
+cryptography>=2.2.2
+pip>=8.1.2
+PyJWT>=1.6.1
+python-dateutil>=2.4.2
+pytz>=2017.2
+six>=1.10.0
+requests>=2.22.0

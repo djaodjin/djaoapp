@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<user-update id="user-profile-container" inline-template
+    ng-app="signupApp">
+  <div ng-controller="userProfileCtrl">
+    <h1>User Profile</h1>
+    <form id="update-user-info" method="post" @submit.prevent="updateProfile">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <div>
+        <input type="hidden" name="picture" value="{{user.picture}}">
+        <img :src="formFields.picture" width="100" height="100">
+        <croppa v-model="picture" :width="100" :height="100"></croppa>
+        <button @click.prevent="uploadProfilePicture">Save picture</button>
+      </div>
+      {{form.as_p}}
+      <button type="submit">Update</button>
+    </form>
+    <div>
+      <a id="change-password" href="{% url 'password_change' user %}">Change Password</a>
+    </div>
+    <div>
+      <a href="{% url 'users_notifications' user %}">Notifications</a>
+    </div>
+    {% if urls.user.api_activate %}
+    <div>
+      <button id="activate-user" @click="activate">Activate</button>
+      <span>
+        Send an activation e-mail to the user.
+      </span>
+    </div>
+    {% endif %}
+    {% if urls.user.api_generate_keys %}
+    <div id="generate-key">
+      <h5 id="generate-key-open">Reset API Key</h5>
+      <form method="POST" ng-submit="generateKey($event)"
+            @submit.prevent="generateKey">
+        <input name="key" maxlength="128" type="text" disabled
+               ng-model="api_key"
+               v-model="apiKey" />
+        <input name="password" maxlength="128" type="text"
+               placeholder="Password"
+               ng-model="password"
+               v-model="password" />
+        <button id="regenerate-key" type="submit">Generate</button>
+      </form>
+    </div>
+    {% endif %}
+  </div><!-- userProfileCtrl -->
+</user-update><!-- signupApp -->
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>New theme package</h1>
+    <p>Do you want to create a new theme package from default templates</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, I do</button>
+        <a href="/">No, I don't</a>
+    </form>
+{% endblock content %}

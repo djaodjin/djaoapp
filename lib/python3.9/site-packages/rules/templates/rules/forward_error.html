@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <p>
+503 Service Unavailable
+    </p>
+</div>
+<div>
+    <dl>
+        <dt>Session Data</dt>
+        <dd>
+            <pre>
+                <code>
+                    {{forward_session}}
+                </code>
+            </pre>
+        </dd>
+    </dl>
+    <dl>
+        <dt>As HTTP Cookie Header</dt>
+        <dd>
+            <pre>
+                <code>
+                    {{forward_session_cookie}}
+                </code>
+            </pre>
+        </dd>
+    </dl>
+    <dl>
+        <dt>Forwarding requests to</dt>
+        <dd>
+            <pre>
+                <code>
+                    {{forward_url}}
+                </code>
+            </pre>
+        </dd>
+    </dl>
+</div>
+{% endblock %}

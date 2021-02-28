@@ -1,0 +1,49 @@
+{% load static %}
+
+{# Scripts that need to be injected into the page actually being edited #}
+{# (i.e. iframe or current page).                                       #}
+
+{# PageElement editors #}
+<link rel="stylesheet" href="{% static 'vendor/font-awesome.css' %}"/><!-- XXX fontawesome is required by hallo? -->
+<link rel="stylesheet" href="{% static 'css/djaodjin-editor.css' %}"/>
+<script type="text/javascript" src="{% static 'vendor/jquery-ui.js' %}"></script><!-- for droppable() -->
+<script type="text/javascript" src="{% static 'vendor/jquery.ui.touch-punch.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/jquery.textarea_autosize.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/jquery.selection.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/jquery.ba-throttle-debounce.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/rangy-core.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/hallo.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/Markdown.Converter.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/Markdown.Sanitizer.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/dropzone.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/djaodjin-editor.js' %}"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('.editable').editor({
+      baseUrl: '{{ urls.edit.api_page_element_base }}',
+      preventBlurOnClick: '#toggle-media-gallery, .dj-gallery-item'
+    });
+  });
+</script>
+
+{# For the template code editors #}
+{% if templates %}
+<script type="text/javascript">
+templateNames = {{templates|safe}};
+</script>
+{% endif %}
+
+{# For the style editors #}
+<script type="text/javascript">
+less = {
+    env: "development",
+    async: false,
+    fileAsync: false,
+    functions: {},
+    dumpLineNumbers: "comments",
+    relativeUrls: false,
+    rootpath: "/static/vendor/less/",
+    onReady: false
+};
+</script>
+<script type="text/javascript" src="{% static 'vendor/less.js' %}"></script>

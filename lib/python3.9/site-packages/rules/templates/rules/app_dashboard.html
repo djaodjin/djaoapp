@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div ng-app="ruleApp">
+  <div ng-controller="RuleListCtrl">
+    <div>
+      <h3>Domain</h3>
+      <p>
+The site is available at <a href="{{site_available_at_url}}">{{site_available_at_url}}</a>.
+      </p>
+    </div>
+    <rules-table inline-template id="rules-table">
+      <div>
+        <h3>Access Rules</h3>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Path</th>
+                <th>Access Rule</th>
+                <th>Forward</th>
+                <th>Engage tags</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="item"
+                  ng-prop-id="'rule-'+rule.rank"
+                  ng-repeat="rule in rules.results"
+                  v-for="(rule, index) in items.results" v-cloak
+                  v-bind:id="'rule-' + rule.rank"
+                  :key="rule.rank">
+                <td width="100">
+                  [[rule.rank]]
+                </td>
+                <td>[[rule.path]]</td>
+                <td width="200">
+                  <select name="rule"
+                          ng-model="rule.allow" ng-change="updateAllow(rule)"
+                          v-model="rule.allow" @change="update(rule)">
+                    {% for rule in rules %}
+                    <option value="{{rule.0|safe}}">{{rule.1|safe}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td width="100">
+                  <input type="checkbox" name="is_forward"
+                         ng-model="rule.is_forward"
+                         ng-change="updateForward(rule)"
+                         ng-checked="rule.is_forward"
+                         v-model="rule.is_forward"
+                         @change="update(rule)"
+                         :checked="rule.is_forward" />
+                </td>
+                <td>
+                  <input type="text" ng-model="rule.engaged"
+                         ng-blur="saveEngaged($event, rule, $index)">
+            </td>
+                <td width="100">
+                  <button ng-click="remove($index)"
+                          @click="remove(index)">Delete</button>
+                </td>
+              </tr>
+              <tr slot="footer">
+                <td colspan="6">
+                  <a id="add-rule" href="#"
+                     data-toggle="modal" data-target="#new-rule"
+                     @click.prevent="ruleModalOpen=true">Add ...</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-show="itemsLoaded && totalItems > itemsPerPage">
+          <uiv-pagination
+            v-model="params.page"
+            :total-page="pageCount" @change="get" size="sm" />
+        </div>
+        <!-- modal dialog for Adding a rule -->
+        <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="Add Access Rule" aria-hidden="true">
+          <div>
+            <h4>New Rule: path accessed ...</h4>
+            <form ng-submit="create()"
+                  @submit.prevent="create">
+              <div id="div_id_new_rule_path">
+                <input id="id_new_rule_path"
+                       maxlength="255"
+                       name="new_rule_path" type="text"
+                       ng-model="newRule.path"
+                       v-model="newRule.path" autofocus>
+                <p class="help-block">Your path should end with '/'. If not it will be automatically added.</p>
+              </div>
+              <div slot="footer">
+                <button id="new-rule-submit" type="submit">Create</button>
+              </div>
+            </form>
+          </div>
+        </div> <!-- /new-rule -->
+      </div>
+    </rules-table>
+    <rule-list inline-template id="rule-list-container">
+      <div>
+        <!-- Web application -->
+        <div>
+          <h3>Web application</h3>
+          <p>
+HTTP End Point
+          </p>
+          <div style="margin-bottom:50px;">
+            <form method="post"
+                  ng-submit="submitEntryPoint('#entry-point-form')"
+                  @submit.prevent="submitEntryPoint">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <div>
+                <label for="">Entry point *</label>
+                <input ref="entryPoint" maxlength="100" name="entry_point" type="text" value="{{form.instance.entry_point}}">
+              </div>
+              <div>
+                <label for="">Session encoding *</label>
+                <select ref="sessionBackend" name="session_backend" value="{{form.instance.session_backend}}">
+                  <option value="0"{% if form.instance.session_backend == 0 %} selected{% endif %}>No session forwarded</option>
+                  <option value="1"{% if form.instance.session_backend == 1 %} selected{% endif %}>Cookie-based session backend</option>
+                  <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>JWT-based session backend</option>
+                </select>
+              </div>
+              <div>
+                <div style="height:25px;"></div>
+                <button
+                  id="generate-key-btn" data-toggle="modal" data-target="#generate-key"
+                  @click.prevent="openKeyModal">Generate Key</button>
+              </div>
+              <button type="submit">Update</button>
+            </form>
+          </div>
+          <!-- modal dialog for Encrypted Session Key -->
+          <div id="generate-key" class="modal fade"
+               tabindex="-1" role="dialog"
+               aria-labelledby="Encrypted Session Key" aria-hidden="true">
+            <div>
+              <h4>Encrypted Session Key</h4>
+              <div>
+                <input name="key" maxlength="32" type="text" disabled
+                       v-model="sessionKey"
+                       value="Generating..." />
+              </div>
+              <div>
+                <p>
+This is the AES key used to encrypt the session cookie passed
+to your application when a request was authorized.
+                </p>
+                <p>
+The key will only be displayed once. Keep it secure.
+                </p>
+              </div>
+              <div slot="footer">
+                <button id="regenerate-key" type="button"
+                        ng-click="generateKey('#generate-key')"
+                        @click="generateKey">Generate</button>
+                <button type="button" @click.prevent="modalOpen=false">OK</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /Web Application -->
+        <!-- Testing -->
+        <div>
+          <h3>Testing</h3>
+          <p>
+Enter a username and check the token that will be passed to your backend
+service.
+          </p>
+          <form id="token-form" method="post"
+                ng-submit="getSessionData('#token-form')"
+                @submit.prevent="getSessionData">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+            <input v-model="testUsername" maxlength="100" name="username" type="text">
+            <button type="submit">Check</button>
+          </form>
+          <div>
+            <dl id="session-data">
+              <dt>Session Data</dt>
+              <dd>
+                <pre class="code"><code>[[forward_session]]</code></pre>
+              </dd>
+            </dl>
+            <dl id="session-header">
+              <dt>As HTTP Header</dt>
+              <dd>
+                <pre class="code"><code>[[forward_session_header]]</code></pre>
+              </dd>
+            </dl>
+            <dl>
+              <dt>Forwarding requests to</dt>
+              <dd>
+                <pre class="code"><code>[[forward_url]]</code></pre>
+              </dd>
+            </dl>
+          </div>
+        </div><!-- /Testing -->
+      </div>
+    </rule-list>
+  </div>
+</div>
+{% endblock %}

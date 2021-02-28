@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+  <div class="col-sm-offset-3 col-sm-6">
+    <div id="theme-upload" class="pages-upload"
+         data-complete-url="{{urls.pages.api_themes}}"
+         djupload-success >
+      <div class="dropzone-previews previewsContainer">
+        <span class="dz-default dz-message"><i class="fa fa-cloud"></i> Upload theme package (.zip)</span>
+      </div>
+    </div>
+    <div class="text-center">
+      <a id="download-theme" href="{{urls.pages.theme_download}}" target="_blank">Download as .zip file</a>
+      <button id="reset-theme">Reset to default</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="text/javascript">
+djaodjinSettings = {
+  urls: {
+    pages: {
+      api_themes: "{{urls.pages.api_themes}}"
+    }
+  }
+};
+</script>
+<script src='{% static "js/djaodjin-resources.js" %}'></script>
+<script src='{% static "vendor/dropzone.js" %}'></script>
+<script src='{% static "js/djaodjin-upload.js" %}'></script>
+<script src='{% static "js/djaodjin-pages.js" %}'></script>
+{% endblock %}

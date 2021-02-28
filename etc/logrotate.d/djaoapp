@@ -1,0 +1,12 @@
+/var/log/gunicorn/djaoapp-*.log {
+    create 0664 nginx nginx
+    daily
+    rotate 30
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /Users/lutherhill/Dev/djaoapp/var/run/djaoapp.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}

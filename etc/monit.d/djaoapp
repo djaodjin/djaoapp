@@ -1,0 +1,7 @@
+check process djaoapp with pidfile /Users/lutherhill/Dev/djaoapp/var/run/djaoapp.pid
+  start program = "/usr/bin/systemctl start djaoapp.service"
+  stop program = "/usr/bin/systemctl stop djaoapp.service"
+  if failed port 8020 protocol http
+      request "/"
+      with timeout 5 seconds
+  then alert

@@ -1,0 +1,50 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Add offline transaction{% endblock %}
+
+{% block saas_content %}
+<import-transaction inline-template id="import-transaction-container" ng-app="saasApp" ng-cloak>
+  <div ng-controller="importTransactionsCtrl">
+    <form @submit.prevent="addPayment">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <fieldset>
+        <div class="{% if form.subscription.errors %} has-error{% endif %}">
+          <label for="subscription">
+            Subscription
+          </label>
+          <div>
+            <input
+               id="subscription"
+               class="form-control"
+               type="text"
+               placeholder="Subscriber name or email"
+               name="subscription"
+               autocomplete="off"
+               ng-model="subscription"
+               v-model="itemSelected" />
+          </div>
+        </div>
+        <div>
+          <label for="amount">
+            Amount
+          </label>
+          <div>
+            <input name="amount" type="number" min="0" step="any" placeholder="amount" v-model="amount">
+          </div>
+        </div>
+        <div>
+          <label for="descr">
+            Description
+          </label>
+          <div>
+            <input name="descr" type="text" placeholder="description" v-model="description">
+          </div>
+        </div>
+      </fieldset>
+      <div>
+        <button type="submit">Add Off-line Payment</button>
+      </div>
+    </form>
+  </div>
+</import-transaction>
+{% endblock %}

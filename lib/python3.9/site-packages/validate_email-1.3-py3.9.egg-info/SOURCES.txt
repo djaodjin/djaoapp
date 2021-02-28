@@ -1,0 +1,11 @@
+AUTHORS
+LICENSE
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+validate_email.py
+validate_email.egg-info/PKG-INFO
+validate_email.egg-info/SOURCES.txt
+validate_email.egg-info/dependency_links.txt
+validate_email.egg-info/top_level.txt

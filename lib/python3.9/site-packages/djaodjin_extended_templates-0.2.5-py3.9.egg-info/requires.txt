@@ -1,0 +1,4 @@
+Django>=1.6
+beautifulsoup4>=4.3.2
+premailer>=2.9.2
+WeasyPrint>=0.42

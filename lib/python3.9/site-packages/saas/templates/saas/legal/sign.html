@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>
+  Please sign:
+</p>
+{{page|safe}}{# OK to use a safe here. We load a committed source .md file #}
+
+<form method="post" action=".{% if next %}?next={{ next }}{% endif %}">
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+  <input id="id_read_terms" name="read_terms" type="checkbox">
+  <input type="submit" value="I Agree" />
+</form>
+{% endblock %}

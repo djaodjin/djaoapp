@@ -1,0 +1,421 @@
+#!/usr/bin/env python
+import itertools
+from collections import namedtuple
+from typing import Callable, Dict, Iterable, List, NamedTuple, Optional, Tuple, Union
+
+from django_countries.conf import settings
+from django.utils.encoding import force_str
+from django.utils.translation import override
+
+from .base import CountriesBase
+
+try:
+    import pyuca  # type: ignore
+except ImportError:
+    pyuca = None
+    # Fallback if the UCA sorting is not available.
+    import unicodedata
+
+CountryCode = Union[str, int, None]
+
+
+class AltCodes(NamedTuple):
+    alpha3: str
+    numeric: Optional[int]
+
+
+class CountryTuple(NamedTuple):
+    code: str
+    name: str
+
+    def __repr__(self):
+        """
+        Display the repr as a standard tuple for better backwards
+        compatibility with outputting this in a template.
+        """
+        return f"({self.code!r}, {self.name!r})"
+
+
+class Countries(CountriesBase):
+    """
+    An object containing a list of ISO3166-1 countries.
+
+    Iterating this object will return the countries as namedtuples (of
+    the country ``code`` and ``name``), sorted by name.
+    """
+
+    _countries: Dict[str, Union[str, Dict]]
+    _alt_codes: Dict[str, AltCodes]
+
+    def get_option(self, option: str):
+        """
+        Get a configuration option, trying the options attribute first and
+        falling back to a Django project setting.
+        """
+        value = getattr(self, option, None)
+        if value is not None:
+            return value
+        return getattr(settings, f"COUNTRIES_{option.upper()}")
+
+    @property
+    def countries(self) -> Dict[str, Union[str, dict]]:
+        """
+        Return the a dictionary of countries, modified by any overriding
+        options.
+
+        The result is cached so future lookups are less work intensive.
+        """
+        if not hasattr(self, "_countries"):
+            only: Iterable[Union[str, Tuple[str, str]]] = self.get_option("only")
+            only_choices = True
+            if only:
+                if not isinstance(only, dict):
+                    for item in only:
+                        if isinstance(item, str):
+                            only_choices = False
+                            break
+            if only and only_choices:
+                self._countries = dict(only)  # type: ignore
+            else:
+                # Local import so that countries aren't loaded into memory
+                # until first used.
+                from django_countries.data import COUNTRIES
+
+                self._countries = dict(COUNTRIES)
+                if self.get_option("common_names"):
+                    self._countries.update(self.COMMON_NAMES)
+                override: Dict[str, str] = self.get_option("override")
+                if override:
+                    self._countries.update(override)
+                    self._countries = dict(
+                        (code, name)
+                        for code, name in self._countries.items()
+                        if name is not None
+                    )
+            if only and not only_choices:
+                countries = {}
+                for item in only:
+                    if isinstance(item, str):
+                        countries[item] = self._countries[item]
+                    else:
+                        key, value = item
+                        countries[key] = value
+                self._countries = countries
+            self.countries_first = []
+            first: List[str] = self.get_option("first") or []
+            for code in first:
+                code = self.alpha2(code)
+                if code in self._countries:
+                    self.countries_first.append(code)
+        return self._countries
+
+    @countries.deleter
+    def countries(self):
+        """
+        Reset the countries cache in case for some crazy reason the settings or
+        internal options change. But surely no one is crazy enough to do that,
+        right?
+        """
+        if hasattr(self, "_countries"):
+            del self._countries
+        if hasattr(self, "_alt_codes"):
+            del self._alt_codes
+        if hasattr(self, "_ioc_codes"):
+            del self._ioc_codes
+
+    @property
+    def alt_codes(self) -> Dict[str, AltCodes]:
+        if not hasattr(self, "_alt_codes"):
+            # Again, local import so data is not loaded unless it's needed.
+            from django_countries.data import ALT_CODES
+
+            self._alt_codes = ALT_CODES  # type: ignore
+            altered = False
+            for code, country in self.countries.items():
+                if isinstance(country, dict) and (
+                    "alpha3" in country or "numeric" in country
+                ):
+                    if not altered:
+                        self._alt_codes = self._alt_codes.copy()
+                        altered = True
+                    alpha3, numeric = self._alt_codes.get(code, ("", None))
+                    if "alpha3" in country:
+                        alpha3 = country["alpha3"]
+                    if "numeric" in country:
+                        numeric = country["numeric"]
+                    self._alt_codes[code] = AltCodes(alpha3, numeric)
+        return self._alt_codes
+
+    @property
+    def ioc_codes(self) -> Dict[str, str]:
+        if not hasattr(self, "_ioc_codes"):
+            from django_countries.ioc_data import ISO_TO_IOC
+
+            self._ioc_codes = ISO_TO_IOC
+            altered = False
+            for code, country in self.countries.items():
+                if isinstance(country, dict) and "ioc_code" in country:
+                    if not altered:
+                        self._ioc_codes = self._ioc_codes.copy()
+                        altered = True
+                    self._ioc_codes[code] = country["ioc_code"]
+        return self._ioc_codes
+
+    def translate_code(self, code: str, ignore_first: List[str] = None):
+        """
+        Return translated countries for a country code.
+        """
+        country = self.countries[code]
+        if isinstance(country, dict):
+            if "names" in country:
+                names = country["names"]
+            else:
+                names = [country["name"]]
+        else:
+            names = [country]
+        if ignore_first and code in ignore_first:
+            names = names[1:]
+        for name in names:
+            yield self.translate_pair(code, name)
+
+    def translate_pair(self, code: str, name: Union[str, Dict] = None):
+        """
+        Force a country to the current activated translation.
+
+        :returns: ``CountryTuple(code, translated_country_name)`` namedtuple
+        """
+        if name is None:
+            name = self.countries[code]
+            if isinstance(name, dict):
+                if "names" in name:
+                    name = name["names"][0]
+                else:
+                    name = name["name"]
+        if code in self.OLD_NAMES:
+            # Check if there's an older translation available if there's no
+            # translation for the newest name.
+            with override(None):
+                source_name = force_str(name)
+            name = force_str(name)
+            if name == source_name:
+                for old_name in self.OLD_NAMES[code]:
+                    with override(None):
+                        source_old_name = force_str(old_name)
+                    old_name = force_str(old_name)
+                    if old_name != source_old_name:
+                        name = old_name
+                        break
+        else:
+            name = force_str(name)
+        return CountryTuple(code, name)
+
+    def __iter__(self):
+        """
+        Iterate through countries, sorted by name.
+
+        Each country record consists of a namedtuple of the two letter
+        ISO3166-1 country ``code`` and short ``name``.
+
+        The sorting happens based on the thread's current translation.
+
+        Countries that are in ``settings.COUNTRIES_FIRST`` will be
+        displayed before any sorted countries (in the order provided),
+        and are only repeated in the sorted list if
+        ``settings.COUNTRIES_FIRST_REPEAT`` is ``True``.
+
+        The first countries can be separated from the sorted list by the
+        value provided in ``settings.COUNTRIES_FIRST_BREAK``.
+        """
+        # Initializes countries_first, so needs to happen first.
+        countries = self.countries
+
+        # Yield countries that should be displayed first.
+        countries_first = (self.translate_pair(code) for code in self.countries_first)
+
+        # Define the sorting method.
+        if pyuca:
+            collator = pyuca.Collator()
+
+            # Use UCA sorting if it's available.
+            def sort_key(item):
+                return collator.sort_key(item[1])
+
+        else:
+            # Cheap and dirty method to sort against ASCII characters only.
+            def sort_key(item):
+                return (
+                    unicodedata.normalize("NFKD", item[1])
+                    .encode("ascii", "ignore")
+                    .decode("ascii")
+                )
+
+        if self.get_option("first_sort"):
+            countries_first = sorted(countries_first, key=sort_key)
+
+        for item in countries_first:
+            yield item
+
+        if self.countries_first:
+            first_break = self.get_option("first_break")
+            if first_break:
+                yield CountryTuple("", force_str(first_break))
+
+        # Force translation before sorting.
+        ignore_first = None if self.get_option("first_repeat") else self.countries_first
+        countries = tuple(
+            itertools.chain.from_iterable(
+                self.translate_code(code, ignore_first) for code in countries
+            )
+        )
+
+        # Return sorted country list.
+        for item in sorted(countries, key=sort_key):
+            yield item
+
+    def alpha2(self, code: CountryCode) -> str:
+        """
+        Return the two letter country code when passed any type of ISO 3166-1
+        country code.
+
+        If no match is found, returns an empty string.
+        """
+        find: Optional[Callable]
+        code_str = force_str(code).upper()
+        if code_str.isdigit():
+            lookup_numeric = int(code_str)
+
+            def find(alt_codes):
+                return alt_codes[1] == lookup_numeric
+
+        elif len(code_str) == 3:
+            lookup_alpha3 = code_str
+
+            def find(alt_codes):
+                return alt_codes[0] == lookup_alpha3
+
+        else:
+            find = None
+        if find:
+            code_str = ""
+            for alpha2, alt_codes in self.alt_codes.items():
+                if find(alt_codes):
+                    code_str = alpha2
+                    break
+        if code_str in self.countries:
+            return code_str
+        return ""
+
+    def name(self, code: CountryCode) -> str:
+        """
+        Return the name of a country, based on the code.
+
+        If no match is found, returns an empty string.
+        """
+        alpha2 = self.alpha2(code)
+        if alpha2 not in self.countries:
+            return ""
+        return self.translate_pair(alpha2)[1]
+
+    def by_name(self, country: str, language: str = "en") -> str:
+        """
+        Fetch a country's ISO3166-1 two letter country code from its name.
+
+        An optional language parameter is also available.
+        Warning: This depends on the quality of the available translations.
+
+        If no match is found, returns an empty string.
+
+        ..warning:: Be cautious about relying on this returning a country code
+            (especially with any hard-coded string) since the ISO names of
+            countries may change over time.
+        """
+        with override(language):
+            for code, name in self:
+                if name.lower() == country.lower():
+                    return code
+                if code in self.OLD_NAMES:
+                    for old_name in self.OLD_NAMES[code]:
+                        if old_name.lower() == country.lower():
+                            return code
+        return ""
+
+    def alpha3(self, code: CountryCode):
+        """
+        Return the ISO 3166-1 three letter country code matching the provided
+        country code.
+
+        If no match is found, returns an empty string.
+        """
+        alpha2 = self.alpha2(code)
+        try:
+            alpha3 = self.alt_codes[alpha2][0]
+        except KeyError:
+            alpha3 = ""
+        return alpha3 or ""
+
+    def numeric(self, code: Union[str, int, None], padded=False):
+        """
+        Return the ISO 3166-1 numeric country code matching the provided
+        country code.
+
+        If no match is found, returns ``None``.
+
+        :param padded: Pass ``True`` to return a 0-padded three character
+            string, otherwise an integer will be returned.
+        """
+        alpha2 = self.alpha2(code)
+        try:
+            num = self.alt_codes[alpha2][1]
+        except KeyError:
+            num = None
+        if num is None:
+            return None
+        if padded:
+            return "%03d" % num
+        return num
+
+    def ioc_code(self, code: CountryCode) -> str:
+        """
+        Return the International Olympic Committee three letter code matching
+        the provided ISO 3166-1 country code.
+
+        If no match is found, returns an empty string.
+        """
+        alpha2 = self.alpha2(code)
+        return self.ioc_codes.get(alpha2, "")
+
+    def __len__(self):
+        """
+        len() used by several third party applications to calculate the length
+        of choices. This will solve a bug related to generating fixtures.
+        """
+        count = len(self.countries)
+        # Add first countries, and the break if necessary.
+        count += len(self.countries_first)
+        if self.countries_first and self.get_option("first_break"):
+            count += 1
+        return count
+
+    def __bool__(self):
+        return bool(self.countries)
+
+    def __contains__(self, code):
+        """
+        Check to see if the countries contains the given code.
+        """
+        return code in self.countries
+
+    def __getitem__(self, index):
+        """
+        Some applications expect to be able to access members of the field
+        choices by index.
+        """
+        try:
+            return next(itertools.islice(self.__iter__(), index, index + 1))
+        except TypeError:
+            return list(
+                itertools.islice(self.__iter__(), index.start, index.stop, index.step)
+            )
+
+
+countries = Countries()

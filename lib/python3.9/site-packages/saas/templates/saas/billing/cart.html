@@ -1,0 +1,74 @@
+{% extends "saas/base.html" %}
+
+{% block content %}
+<h1>{% block order_title %}Place Order{% endblock %}</h1>
+{% block order_head %}
+<div>
+    <form method="post" id="redeem-form">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <div>
+            <label>
+If you have a coupon code, it is time to redeem it now!
+            </label>
+            <div id="redeem-code">
+                <div class="collapsible">
+                    <input name="code" type="text" placeholder="Coupon code">
+                    <button type="submit" class="submit-code">Redeem</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+<div>
+    <form id="payment-form" method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        {% if invoicables %}
+        {% include "saas/_invoiceables.html" %}
+        {% else %}
+        {% block no_invoicables %}
+        Your subscription cart is empty.
+        {% endblock %}
+        {% endif %}
+        {% block order_footer %}
+        {% endblock order_footer %}
+        {% block order_card %}
+        {% if RAZORPAY_PUB_KEY %}
+        {% include "saas/_razorpay_checkout.html" %}
+        <div>
+          <button type="submit" class="payment-submit">{% if submit_title %}{{submit_title}}{% else %}Submit{% endif %}</button>
+        </div>
+        {% elif STRIPE_PUB_KEY %}
+        {% include "saas/_card_use.html" %}
+        {% else %}
+        <p>
+Either variables RAZORPAY_PUB_KEY or STRIPE_PUB_KEY must be defined.
+        </p>
+        {% endif %}
+        {% endblock %}
+    </form>
+</div>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-stripe.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    var cardForm = $("#payment-form");
+{% if urls and urls.api_cart %}
+    if( cardForm.length > 0 ) {
+        cardForm.find("#invoicables").invoice(
+            {currency_unit: '{{lines_unit}}',
+             saas_api_cart: "{{ urls.api_cart }}" });
+    }
+{% endif %}
+{% if STRIPE_PUB_KEY %}
+    cardForm.card({
+        stripePubKey: "{{ STRIPE_PUB_KEY }}",
+        stripeIntentSecret: "{{ STRIPE_INTENT_SECRET }}",
+        saas_api_card: "{{ urls.organization.api_card }}"
+    });
+{% endif %}
+});
+</script>
+{% endblock %}

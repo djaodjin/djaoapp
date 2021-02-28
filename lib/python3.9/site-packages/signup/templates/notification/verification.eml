@@ -1,0 +1,11 @@
+{% block subject %}
+Account activation on {{site.name}}
+{% endblock %}
+
+{% block html_content %}
+Activate your account at {{site.name}} by visiting the following url:
+
+{{back_url}}
+
+Link is valid for {{expiration_days}} days.
+{% endblock %}

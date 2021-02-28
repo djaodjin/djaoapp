@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="legal">
+  <h1>Terms and Policies</h1>
+  <p>
+    You will find here all the legal documents that keeps us out of trouble
+    while providing you the best possible service.
+  </p>
+  {% if agreements %}
+  <ul>
+    {% for agreement in agreements %}
+    <li><a id="{{agreement.slug}}" href="{{agreement.location}}">{{agreement.title}}</a>
+      {% endfor %}
+  </ul>
+  {% else %}
+  <em>No Terms nor policies yet</em>
+  {% endif %}
+</section>
+<section id="contacts">
+  <h1>Contact us</h1>
+</div>
+<span>
+  {% if organization.email %}
+  <h3>By e-mail</h3>
+  <p>{{organization.email}}</p>
+  {% endif %}
+
+  {% if organization.phone %}
+  <h3>By phone</h3>
+  <p>{{organization.phone}}</p>
+  {% endif %}
+
+  {% if organization.street_address %}
+  <h3>By physical mail</h3>
+  <p>
+    {{organization.street_address}}<br />
+    {{organization.locality}}<br />
+    {{organization.region}} {{organization.postal_code}}<br />
+    {{organization.country.name}}
+  </p>
+  {% endif %}
+</section>
+{% endblock %}
+

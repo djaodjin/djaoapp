@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  {% if validlink %}
+  <h1>Reset Password</h1>
+  <form method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="submit" value="Submit">
+  </form>
+
+  {% else %}
+  <p>Password reset failed</p>
+  {% endif %}
+</div>
+{% endblock %}

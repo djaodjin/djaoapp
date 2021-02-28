@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: sphinxcontrib-httpdomain
+Version: 1.7.0
+Summary: Sphinx domain for documenting HTTP APIs
+Home-page: https://github.com/sphinx-contrib/httpdomain
+Author: Hong Minhee
+Author-email: hong.minhee@gmail.com
+License: BSD
+Download-URL: https://pypi.org/project/sphinxcontrib-httpdomain/
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Documentation
+Classifier: Topic :: Utilities
+Requires-Dist: Sphinx (>=1.5)
+Requires-Dist: six
+
+``sphinxcontrib.httpdomain``
+============================
+
+.. image:: https://badge.fury.io/py/sphinxcontrib-httpdomain.svg
+   :target: https://pypi.org/project/sphinxcontrib-httpdomain/
+   :alt: Latest PyPI version
+
+.. image:: https://readthedocs.org/projects/sphinxcontrib-httpdomain/badge/
+   :target: https://sphinxcontrib-httpdomain.readthedocs.io/
+   :alt: Documentation Status
+
+.. image:: https://travis-ci.org/sphinx-contrib/httpdomain.svg?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/sphinx-contrib/httpdomain
+
+This contrib extension, ``sphinxcontrib.httpdomain``, provides a Sphinx
+domain for describing HTTP APIs.
+
+You can find the documentation from the following URL:
+
+https://sphinxcontrib-httpdomain.readthedocs.io/
+
+

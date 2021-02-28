@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<user-update-pubkey id="update-pubkey-container" inline-template>
+    <h1>Change SSH Public Key</h1>
+    <form @submit.prevent="updatePubkey">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <li>
+          <label for="id_pubkey">Pubkey:</label>
+          <textarea name="pubkey" cols="40" rows="10" required="" id="id_pubkey" v-model="pubkey"></textarea>
+      </li>
+      <li>
+          <label for="id_password">Password:</label>
+          <input type="password" name="password" placeholder="Password" required="" id="id_password" v-model="password">
+          <div v-show="passwordIncorrect">Incorrect password</div>
+      </li>
+      <div>
+          <input type="submit" name="submit" value="Submit" id="submit-id-submit">
+      </div>
+    </form>
+</user-update-pubkey>
+{% endblock %}

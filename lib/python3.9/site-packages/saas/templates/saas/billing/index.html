@@ -1,0 +1,62 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<billing-statement inline-template id="billing-statement-container" ng-app="saasApp">
+  <div ng-controller="billingStatementCtrl">
+    <section id="info" ng-controller="billingSummaryCtrl"
+             data-api-url="{{urls.organization.api_card}}">
+      <h1>Credit Card</h1>
+      <a href="{{urls.organization.update_card}}">Update</a>
+      <dl>
+        <dt>card</dt>
+        <dd id="last4">
+          <span v-if="cardLoaded">[[last4]]</span>
+        </dd>
+      </dl>
+      <dl>
+        <dt>expires</dt>
+        <dd id="exp_date">
+          <span v-if="cardLoaded">[[exp_date]]</span>
+        </dd>
+      </dl>
+    </section>
+    <section id="balance">
+      <h1>Balance</h1>
+      <div ng-show="!items.$resolved" v-show="!itemsLoaded">Please wait...</div>
+      <div ng-show="items.$resolved" v-show="itemsLoaded">
+        {% if urls.organization.api_cancel_balance_due %}
+        <button id="cancel-balance-btn"
+                data-toggle="modal" data-target="#cancel-balance">cancel balance due</button>
+        {% endif %}
+        {% if urls.organization.vtcharge %}
+        <a id="one-time-charge" href="{{urls.organization.vtcharge}}">one-time charge</a>
+        {% endif %}
+        <dl ng-show="items.balance_amount >= 0" v-show="items.balance_amount >= 0">
+          <dt>[[humanizeBalance()]]</dt>
+          <dd ng-show="items.balance_amount >= 0" v-show="items.balance_amount >= 0">
+            Balance due<span ng-if="items.balance_amount > 0" v-if="items.balance_amount > 0">(<a href="{{ urls.organization.balance }}">pay now</a>)</span>
+          </dd>
+          <dd ng-show="items.balance_amount < 0" v-show="items.balance_amount < 0">Balance Credits</dd>
+        </dl>
+      </div>
+      {% if urls.organization.api_cancel_balance_due %}
+      <!-- modal dialog for cancelling balance due -->
+      <div>
+        <form id="cancel-balance" method="post" ng-submit="cancelBalance($event)" @submit.prevent="cancelBalance">
+          <h4>Cancel balance due</h4>
+          <p>
+Are you sure you would like to cancel the whole balance of [[humanizeBalance()]] ?
+          </p>
+          <div slot="footer">
+            <button data-dismiss="modal">Cancel</button>
+            <button type="submit">OK</button>
+          </div>
+        </form>
+      </div>
+      <!-- end of modal dialog -->
+      {% endif %}
+    </section>
+    {% include "saas/_transactions.html" %}
+  </div>
+</billing-statement>
+{% endblock %}

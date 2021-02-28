@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Sign up</div>
+    <div>
+        <form action=".{% if next %}/?next={{ next }}{% endif %}"
+            method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" name="submit" value="Submit" />
+        </form>
+        <div>
+            <p>You already have an account? <a href="{% url 'login' %}">Sign in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

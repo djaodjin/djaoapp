@@ -1,0 +1,10 @@
+{% block subject %}
+A user has registered for {{site.slug}}
+{% endblock %}
+
+{% block html_content %}
+<p>
+New registered user {{registered.get_full_name}}
+with email {{registered.email}}.
+</p>
+{% endblock %}

@@ -1,0 +1,281 @@
+{% load static %}
+
+<!-- Necessary vendor code to connect to the API end-points -->
+<script type="text/javascript" src="{% static 'vendor/jquery-ui.js' %}"></script><!-- for droppable() -->
+<script type="text/javascript" src="{% static 'js/djaodjin-resources.js' %}"></script>
+
+<!-- Scripts that need to be injected into the page actually being edited
+     (i.e. iframe or current page). We hoisted this code before other
+     resources are loaded so we get a chance to intercept the iframe onload
+     event.
+  -->
+<link rel="stylesheet" href="{% static 'vendor/font-awesome.css' %}"/><!-- XXX fontawesome is required by hallo? -->
+<script type="text/javascript">
+var edition_sources = [
+/* WYSIWYG element editors */
+  "{% static 'css/djaodjin-editor.css' %}",
+  "{% static 'vendor/jquery.js' %}",
+  "{% static 'vendor/jquery-ui.js' %}",
+  "{% static 'vendor/jquery.ui.touch-punch.js' %}",
+  "{% static 'vendor/jquery.textarea_autosize.js' %}",
+  "{% static 'vendor/jquery.selection.js' %}",
+  "{% static 'vendor/jquery.ba-throttle-debounce.js' %}",
+  "{% static 'vendor/rangy-core.js' %}",
+  "{% static 'vendor/hallo.js' %}",
+  "{% static 'vendor/Markdown.Converter.js' %}",
+  "{% static 'vendor/Markdown.Sanitizer.js' %}",
+  "{% static 'vendor/dropzone.js' %}",
+  "{% static 'js/djaodjin-resources.js' %}",
+  "{% static 'js/djaodjin-editor.js' %}",
+  "jQuery(document).ready(function($) {\
+    $('.editable').editor({\
+      baseUrl: '{{ urls.edit.api_page_element_base }}',\
+      preventBlurOnClick: '#toggle-media-gallery, .dj-gallery-item'\
+    });\
+  });"
+];
+
+function injectScripts(container) {
+    var self = container;
+    var doit = true;
+    var editedPage = window;
+    if( typeof self.contentWindow !== "undefined" ) {
+        editedPage = self.contentWindow;
+        doit = (typeof editedPage.edition_sources === "undefined" );
+    }
+    if( doit ) {
+        // OK. These were not previously loaded by an injector.
+        var doc = editedPage.document;
+        editedPage.edition_sources = edition_sources.slice();
+        editedPage.less = {
+            env: "development",
+            async: false,
+            fileAsync: false,
+            functions: {},
+            dumpLineNumbers: "comments",
+            relativeUrls: false,
+            rootpath: "/static/vendor/less/",
+            onReady: false
+        };
+
+        function addScript(doc, src, onload) {
+           var script = doc.createElement("script");
+           script.type = "text/javascript";
+           if( src[0] == "/" ) {
+               script.src = src;
+           } else {
+               script.text = src;
+           }
+           doc.body.appendChild(script);
+        };
+
+        function addLess(doc, src) {
+            var script = doc.createElement("link");
+            script.rel = "stylesheet/less";
+            script.type = "text/css"
+            script.href = src;
+            doc.body.appendChild(script);
+        };
+
+        addScript(doc, "{% static 'js/load-edition-src.js' %}");
+        addLess(doc, "{% static 'vendor/less/bootstrap/bootstrap.less' %}");
+        addScript(doc, "{% static 'vendor/less.js' %}");
+    }
+};
+
+var view = jQuery("iframe.edited-page");
+if( view.length > 0 ) {
+  view.on("load", function() {
+      {% if inject_from_client %}injectScripts(this);{% endif %}
+      initCodeEditors("{{urls.edit.api_sources}}", this);
+  });
+} else {
+  jQuery(document).ready(function($) {
+      {% if inject_from_client %}injectScripts(document);{% endif %}
+      initCodeEditors("{{urls.edit.api_sources}}");
+  });
+}
+</script>
+
+<!-- Media gallery panel -->
+<link rel="stylesheet" href="{% static 'css/djaodjin-sidebar-gallery.css' %}" type="text/css" />
+<div id="media-gallery" class="dj-gallery custom-gallery">
+  <div class="col-md-12">
+    <hr>
+    <div class="form-group">
+        <input placeholder="Search..." class="dj-gallery-filter form-control" type="text" >
+        <div class="progress gallery-upload-progress" style="display:none;">
+          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="progress-bar-info"></span>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="dj-gallery-items">
+            </div>
+            <div class="clickable-area">
+              <em>Drag'n'drop or click here.</em>
+            </div>
+          </div>
+        </div>
+        <div class="dj-gallery-info-item"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modal-preview-media" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4>Preview</h4>
+        </div>
+        <div class="modal-body" style="padding:0;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="{% static 'vendor/jquery.ui.touch-punch.js' %}"></script>
+  <script type="text/javascript" src="{% static 'vendor/dropzone.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/djaodjin-upload.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/djaodjin-sidebar-gallery.js' %}"></script>
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+  $(".dj-gallery").djgallery({
+    mediaUrl: "{{urls.edit.api_medias}}",
+    csrfToken: "{{csrf_token}}",
+    loadImageEvent: "gallery-opened",
+    saveDroppedMediaUrl: "{{ urls.edit.api_page_element_base }}",
+    mediaPrefix: "{{media_prefix}}",
+{% if access_key %}
+    accessKey: "{{access_key}}",
+    policy: "{{aws_policy}}",
+    signature: "{{aws_policy_signature}}",
+    securityToken: "{{security_token}}",
+    amzCredential: "{{x_amz_credential}}",
+    amzDate: "{{x_amz_date}}",
+{% endif %}
+    buttonClass: "btn btn-block btn-primary",
+    mediaClass: "thumbnail thumbnail-gallery",
+    selectedMediaClass: "thumbnail-active",
+    clickableArea: ".clickable-area",
+    itemUploadProgress: function(progress){
+      $(".gallery-upload-progress").slideDown();
+      progress = progress.toFixed();
+      $(".progress-bar").css("width", progress + "%");
+      if (progress == 100){
+        $(".progress-bar").text("Upload completed");
+        setTimeout(function(){
+          $(".gallery-upload-progress").slideUp();
+          $(".progress-bar").text("").css("width", "0%");
+        }, 2000);
+      }
+    },
+    galleryItemOptionsTemplate: "<div class=\"input-group\"><input type=\"text\" class=\"form-control\" readonly data-dj-gallery-media-url><span class=\"input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"glyphicon glyphicon-eye-open\"></i></button></span></div>\n<br><div class=\"input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input form-control\" placeholder=\"tags...\" aria-describedby=\"basic-addon1\"><span class=\"input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">Tag</button></span></div><span class=\"help-block\">Tags must be separated by a comma. ex: video, title</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"glyphicon glyphicon-trash\"></i> Delete</button>\n",
+    galleryMessage: function(message, type){
+      if (!type){
+        type = "success";
+      }
+      showMessages([message], type);
+    },
+    previewMediaItem: function(src, type){
+      $("#modal-preview-media .modal-body").empty();
+      if (type == "video"){
+        $("#modal-preview-media .modal-body").append("<video src=\"" + src + "\" controls style=\"max-width:100%\"></video>");
+      }else{
+        $("#modal-preview-media .modal-body").append("<img src=\"" + src + "\" style=\"max-width:100%\">");
+      }
+      $("#modal-preview-media").modal('show');
+    }
+  });
+});
+  </script>
+</div>
+
+<!-- Template editor panel -->
+<link rel="stylesheet" href="{% static 'vendor/jquery-ui.css' %}"/>
+<div id="code-editor" class="custom-gallery" style="width:800px;right:-800px;">
+  <ul class="nav nav-tabs dashboard-tab" role="tablist">
+      {# tabs inserted here #}
+  </ul>
+  <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
+      {# content panels inserted here #}
+  </div>
+  <script type="text/javascript" src="{% static 'vendor/jquery.ba-throttle-debounce.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/djaodjin-code-editor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'vendor/ace.js' %}"></script>
+  <script type="text/javascript" src="{% static 'vendor/ext-language_tools.js' %}"></script>
+  <script type="text/javascript" src="{% static 'vendor/ext-modelist.js' %}"></script>
+  <script type="text/javascript" src="{% static 'vendor/ext-emmet.js' %}"></script>
+</div>
+
+<!-- style editor -->
+<link rel="stylesheet" href="{% static 'vendor/bootstrap-colorpicker.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/djaodjin-style-editor.css' %}" type="text/css" />
+<div id="style-editor" class="custom-gallery" style="width:800px;right:-800px;">
+  <h2>Styles</h2>
+  <button class="refresh-styles btn btn-primary">Reload</button>
+  <form id="editable-styles-form" class="form-horizontal content">
+  {% for section_name,section_attributes in editable_styles %}
+  <hr>
+  <h3>{{section_name}}</h3>
+    {% for attribute in section_attributes %}
+    <div class="form-group">
+      <label for="style_attribute_{{forloop.parentloop.counter}}_{{forloop.counter}}"
+             class="col-sm-3 control-label">{{attribute.property}}</label>
+      <div class="col-sm-7">
+        <input id="style_attribute_{{forloop.parentloop.counter}}_{{forloop.counter}}"
+               name="{{attribute.property}}"
+               type="text"
+               class="form-control"
+               {% if attribute.editor %}
+               data-dj-style-variable-editor="{{attribute.editor}}"
+               {% endif %}
+               value="{{ attribute.value }}" />
+      </div>
+      <div class="col-sm-2">
+      <button class="btn btn-primary style-reset-button"
+              data-target="style_attribute_{{forloop.parentloop.counter}}_{{forloop.counter}}"
+              data-reset-value="{{ attribute.default }}"
+              type="button"
+              >Reset to default</button>
+      </div>
+    </div>
+    {% endfor %}
+    {% endfor  %}
+  </form>
+  <script type="text/javascript" src="{% static 'vendor/bootstrap-colorpicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/djaodjin-style-editor.js' %}"></script>
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+  $("#style-editor").djstyles({
+      api_less_overrides: "{{urls.edit.api_less_overrides}}",
+      api_sitecss: "{{urls.edit.api_sitecss}}",
+      iframe_view: $("iframe.edited-page").get(0)
+  });
+});
+  </script>
+</div>
+
+<!-- Buttons to open/close the sliding edit panels -->
+<div style="top:200px;position:fixed;right:-1px;z-index:10000" class="btn-group-vertical btn-group-sm btn-tools" role="group" aria-label="...">
+  <button class="btn btn-primary" style="opacity:0.9;" id="toggle-media-gallery" data-target="#media-gallery" data-default-width="300" data-intro="Image gallery" data-position="left" title="Image Gallery"><i class="glyphicon glyphicon-film"></i></button>
+</div>
+<div style="top:230px;position:fixed;right:-1px;z-index:10000" class="btn-group-vertical btn-group-sm btn-tools" role="group" aria-label="...">
+  <button id="toggle-code-editor" class="btn btn-primary" style="opacity:0.9;" data-target="#code-editor" data-default-width="800" data-intro="Code Editor" data-position="left" title="Code"><i class="glyphicon glyphicon-edit"></i></button>
+  <button id="toggle-style-editor" class="btn btn-primary" style="opacity:0.9;" data-target="#style-editor" data-default-width="800" data-intro="Style Editor" data-position="left" title="Styles"><i class="glyphicon glyphicon-italic"></i></button>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    if( window.location !== window.top.location ) {
+        $(".btn-tools").hide();
+    } else {
+        $(".btn-tools .btn").panelButton();
+        $(".btn-tools .btn").click(function(){
+            $(this).blur();
+        });
+    }
+});
+</script>
+</div>

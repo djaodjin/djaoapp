@@ -1,0 +1,89 @@
+<fieldset id="invoicables">
+  <table>
+    {% if invoicables %}
+      <tbody data-plan="{{invoicables.0.subscription.plan}}">
+        <tr>
+          <th colspan="2">
+            <em>{{invoicables.0.subscription.plan.title}} from {{invoicables.0.subscription.plan.organization.printable_name}}</em>
+          </th>
+          <th class="text-right">
+            {% if invoicables.0.subscription.plan.is_removable %}
+            <a id="{{invoicables.0.subscription.plan.slug}}" class="remove-cart-item" href="">Remove from Cart</a>
+            {% endif %}
+          </th>
+        </tr>
+      {% for entry in invoicables %}
+      {% if entry.is_changed %}
+        {% if is_bulk_buyer %}
+        <tr class="seat">
+          <td colspan="3">
+            <input class="seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+            <input class="seat-email" type="text" placeholder="E-mail" />
+            <button type="button" class="add-seat">Add</button>
+          </td>
+        </tr>
+        <tr class="seat-file-upload">
+          <td colspan="3">
+            <label>Upload CSV:</label>
+            <input class="seat-file" type="file" />
+            <button type="button" class="seat-upload-file">Upload</button>
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+      <tbody data-plan="{{entry.subscription.plan}}">
+      <tr>
+        <th colspan="2">
+          <em>{{entry.subscription.plan.title}} from {{entry.subscription.plan.organization.printable_name}}</em>
+        </th>
+          <th class="text-right">
+            {% if entry.subscription.plan.is_removable %}
+            <a id="{{entry.subscription.plan.slug}}" class="remove-cart-item" href="">Remove from Cart</a>
+            {% endif %}
+          </th>
+      </tr>
+      {% endif %}
+      {% for line in entry.lines %}
+      <tr class="invoice-item">
+        <td></td>
+        <td class="line-amount">{{line.dest_price|humanize_money}}</td>
+        <td class="line-descr">{{line.descr}}
+        </td>
+      </tr>
+      {% endfor %}
+      {% for line in entry.options %}
+      <tr>
+        <td><input type="radio" name="{{entry.name}}" data-amount="{{line.dest_amount}}" value="{{line.rank}}" {% if line.rank == entry.selected_option %}checked="1"{% endif %}></input></td>
+        <td class="line-amount">{{line.dest_price|humanize_money}}</td>
+        <td class="line-descr">{{line.descr}}
+        </td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+      {% if is_bulk_buyer %}
+      <tr class="seat">
+        <td colspan="3">
+            <input class="seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" />
+            <input class="seat-email" type="text" placeholder="E-mail" />
+          <button type="button" class="btn btn-primary add-seat">Add</button>
+        </td>
+      </tr>
+      <tr class="seat-file-upload">
+        <td colspan="3">
+          <label>Upload CSV:</label>
+          <input class="seat-file" type="file" />
+          <button type="button" class="seat-upload-file">Upload</button>
+        </td>
+      </tr>
+      {% endif %}
+      </tbody>
+    {% endif %}
+    <tfoot>
+      <tr>
+        <th></th>
+        <th class="total-amount" ref="totalAmount">{{lines_price|humanize_money}}</th>
+        <th>Charged Today</th>
+      </tr>
+    </tfoot>
+  </table>
+</fieldset>

@@ -1,0 +1,16 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+debug_panel/__init__.py
+debug_panel/cache.py
+debug_panel/middleware.py
+debug_panel/urls.py
+debug_panel/views.py
+debug_panel/templates/debug-data-unavailable.html
+django_debug_panel.egg-info/PKG-INFO
+django_debug_panel.egg-info/SOURCES.txt
+django_debug_panel.egg-info/dependency_links.txt
+django_debug_panel.egg-info/requires.txt
+django_debug_panel.egg-info/top_level.txt
