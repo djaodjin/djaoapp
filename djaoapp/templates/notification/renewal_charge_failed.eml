@@ -42,7 +42,7 @@ HTML encoded. #}
     </table>
 </div>
 <div>
-{% trans %}The charge of {{total_price|humanize_money}} failed. This is {{organization.nb_renewal_attempts}}/{{max_renewal_attempts}} attempts. After {{max_renewal_attempts}} attempts, your service will be discountinued. Please update your payment method by visiting the following URL in your favorite browser:{% endtrans %}
+{% trans total_price=total_price|humanize_money, nb_renewal_attempts=organization.nb_renewal_attempts, max_renewal_attempts=max_renewal_attempts %}The charge of {{total_price}} failed. This is {{nb_renewal_attempts}}/{{max_renewal_attempts}} attempts. After {{max_renewal_attempts}} attempts, your service will be discountinued. Please update your payment method by visiting the following URL in your favorite browser:{% endtrans %}
 <a href="{{back_url}}">{{back_url}}</a>
 </div>
 <hr class="horizontal-divide">

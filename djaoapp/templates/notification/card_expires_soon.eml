@@ -1,0 +1,20 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{% trans %}Card on file expires soon{% endtrans %}
+{% endblock %}
+
+{% block html_content %}
+<h3>{% trans %}Card on file expires soon{% endtrans %}</h3>
+<p>
+{% trans name=organization.printable_name %}The credit card for {{name}} expires soon.{% endtrans %}
+</p>
+<p>
+<em>****-{{new_card.last4}}</em><br />
+<b>{% trans exp_date=new_card.exp_date%}exp: {{exp_date}}{% endtrans %}</b>
+</p>
+<p>
+{% trans %}Please update it for continued service.{% endtrans %}
+{{back_url}}
+</p>
+{% endblock %}

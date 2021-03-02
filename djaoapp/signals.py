@@ -14,8 +14,9 @@ from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.utils import get_organization_model
-from saas.signals import (charge_updated, claim_code_generated, card_updated,
-    expires_soon, order_executed, organization_updated, processor_setup_error,
+from saas.signals import (card_expires_soon, charge_updated,
+    claim_code_generated, card_updated, expires_soon, order_executed,
+    organization_updated, processor_setup_error,
     renewal_charge_failed, role_grant_created, role_request_created,
     role_grant_accepted, subscription_grant_accepted,
     subscription_grant_created, subscription_request_accepted,
@@ -741,6 +742,33 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
                 " because e-mail address is invalid.",
                 organization, subscription.plan)
 
+
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(card_expires_soon, dispatch_uid="card_expires_soon")
+def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
+    LOGGER.debug("[signal] card_expires_soon_notice("\
+                 " organization=%s, nb_days=%s)", organization, nb_days)
+    recipients, bcc = _notified_recipients(organization, 'card_expires_soon')
+    if SEND_EMAIL and recipients:
+        broker = get_broker()
+        broker_recipients, broker_bcc = _notified_recipients(
+            broker, 'expires_soon')
+        site = get_current_site()
+        app = get_current_app()
+        back_url = site.as_absolute_uri(reverse('saas_organization_card',
+                args=(organization,)))
+        reply_to = None
+        if broker.email and broker.email != site.get_from_email():
+            reply_to = broker.email
+        _send_notification_email(site, recipients,
+            'notification/card_expires_soon.eml',
+            reply_to=reply_to,
+            bcc=bcc + broker_recipients + broker_bcc,
+            context={'broker': get_broker(), 'app': app,
+                'back_url': back_url, 'nb_days': nb_days,
+                'organization': organization})
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
