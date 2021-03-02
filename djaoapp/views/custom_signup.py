@@ -170,6 +170,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         return kwargs
 
     def get_template_names(self):
+        condidates = []
         register_path = self.kwargs.get('path', None)
         if not register_path and self.app:
             if self.app.registration == self.app.PERSONAL_REGISTRATION:
@@ -177,8 +178,8 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
             elif self.app.registration == self.app.TOGETHER_REGISTRATION:
                 register_path = 'organization'
         if register_path:
-            return ['accounts/register/%s.html' % register_path]
-        return super(SignupView, self).get_template_names()
+            candidates = ['accounts/register/%s.html' % register_path]
+        return candidates + list(super(SignupView, self).get_template_names())
 
     def register(self, **cleaned_data):
         #pylint:disable=too-many-boolean-expressions
