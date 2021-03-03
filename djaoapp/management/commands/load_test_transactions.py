@@ -15,9 +15,8 @@ from multitier.utils import get_site_model
 from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
     Plan, Subscription, Transaction)
 
-from saas import humanize
+from saas import humanize, settings as saas_settings
 from saas.utils import datetime_or_now, generate_random_slug
-from saas.settings import PROCESSOR_ID
 from saas import signals as saas_signals
 from signup.helpers import full_name_natural_split
 from signup import signals as signup_signals
@@ -101,6 +100,11 @@ class Command(BaseCommand):
             self._handle(*args, **options)
 
     def _handle(self, *args, **options):
+        # forces to use the fake processor. We don't want to take a lot
+        # of time to go to Stripe to create test charges.
+        settings.SAAS['PROCESSOR']['BACKEND'] = \
+            'saas.backends.fake_processor.FakeProcessorBackend'
+
         db_name = options['database']
         if db_name:
             set_current_site(get_site_model().objects.get(
@@ -118,7 +122,7 @@ class Command(BaseCommand):
             from_date = datetime.datetime.strptime(
                 args[0], '%Y-%m-%d')
         provider = Organization.objects.get(slug=options['provider'])
-        processor = Organization.objects.get(pk=PROCESSOR_ID)
+        processor = Organization.objects.get(pk=saas_settings.PROCESSOR_ID)
         self.generate_coupons(provider)
         self.generate_transactions(provider, processor, from_date, now,
             profile_pictures_dir=options['profile_pictures'])
@@ -301,10 +305,7 @@ class Command(BaseCommand):
                     last4=1241,
                     exp_date=datetime_or_now(),
                     processor=processor,
-                    processor_key=transaction_item.pk,
-# XXX We can't do that yet because of
-# ``processor_backend.charge_distribution(self)``
-#                    unit=transaction_item.dest_unit,
+                    processor_key="ch_%s" % str(transaction_item.pk),
                     state=Charge.CREATED)
                 charge.created_at = transaction_item.created_at
                 charge.save()
