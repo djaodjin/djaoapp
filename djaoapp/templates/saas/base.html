@@ -81,8 +81,8 @@ jQuery(document).ready(function($) {
 {% if urls and urls.api_cart %}
     $(".remove-cart-item").cartItem({
         api_cart: "{{ urls.api_cart }}",
-        addLabel: {% trans %}"Add to Cart"{% endtrans %},
-        removeLabel: {% trans %}"Remove from Cart"{% endtrans %},
+        addLabel: "{% trans %}Add to Cart{% endtrans %}",
+        removeLabel: "{% trans %}Remove from Cart{% endtrans %}",
         reload: true
     });
 {% endif %}

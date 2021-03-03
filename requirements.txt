@@ -2,7 +2,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.14.20
-Django==2.2.13
+Django==2.2.19
 django-phonenumber-field==5.0.0
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
@@ -14,7 +14,7 @@ djaodjin-multitier==0.1.18
 djaodjin-pages==0.3.1
 djaodjin-rules==0.2.6
 djaodjin-saas==0.9.3
-djaodjin-signup==0.4.7
+djaodjin-signup==0.4.8
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.8.1
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
