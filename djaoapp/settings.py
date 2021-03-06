@@ -32,7 +32,8 @@ SEND_EMAIL = True
 RULES_APP_MODEL = 'djaoapp_extras.App'
 
 #pylint: disable=undefined-variable
-FEATURES_REVERT_TO_DJANGO = False # XXX 2016-03-31 temporary product switch
+FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
+FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
@@ -663,7 +664,8 @@ SAAS = {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
-#        'USE_STRIPE_V3': True,
+        'USE_STRIPE_V3': not(getattr(sys.modules[__name__],
+            'FEATURES_REVERT_STRIPE_V2', False)),
         'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
         'CONNECT_STATE_CALLABLE':
             'djaoapp.thread_locals.get_authorize_processor_state',
