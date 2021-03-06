@@ -170,7 +170,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         return kwargs
 
     def get_template_names(self):
-        condidates = []
+        candidates = []
         register_path = self.kwargs.get('path', None)
         if not register_path and self.app:
             if self.app.registration == self.app.PERSONAL_REGISTRATION:
