@@ -64,7 +64,7 @@
     "fields": {
       "slug": "xia-djaoapp-signup-card1",
       "user": 20,
-      "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c7",
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c7",
       "created_at": "2020-01-01T00:00:00+00:00"
     },
     "model": "signup.Contact", "pk": 20
@@ -116,7 +116,7 @@
     "fields": {
       "slug": "xia-djaoapp-signup-card2",
       "user": 21,
-      "verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8",
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8",
       "created_at": "2020-01-01T00:00:00+00:00"
     },
     "model": "signup.Contact", "pk": 21

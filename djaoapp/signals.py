@@ -659,7 +659,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                 contact, notused = Contact.objects.prepare_email_verification(
                     manager, manager.email)
                 back_url = "%s?next=%s" % (reverse('registration_activate',
-                    args=(contact.verification_key,)), back_url_base)
+                    args=(contact.email_verification_key,)), back_url_base)
             else:
                 back_url = back_url_base
             LOGGER.debug("[signal] would send subscribe_grant_created_notice"\

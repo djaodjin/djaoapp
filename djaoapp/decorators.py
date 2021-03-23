@@ -116,7 +116,8 @@ def fail_authenticated(request, verification_key=None):
         if redirect:
             if verification_key:
                 contact = Contact.objects.filter(
-                    verification_key=verification_key).first()
+                    Q(email_verification_key=verification_key) |
+                    Q(phone_verification_key=verification_key)).first()
                 if not contact:
                     # Not a `Contact`, let's try `Role`.
                     role_model = get_role_model()
@@ -126,7 +127,7 @@ def fail_authenticated(request, verification_key=None):
                             | Q(request_key=verification_key)).get()
                         contact, _ = Contact.objects.prepare_email_verification(
                             role.user, role.user.email)
-                        verification_key = contact.verification_key
+                        verification_key = contact.email_verification_key
                     except role_model.DoesNotExist:
                         pass
                 if contact and has_invalid_password(contact.user):

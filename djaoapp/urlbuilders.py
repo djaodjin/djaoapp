@@ -15,7 +15,7 @@ def url_prefixed(regex, view, name=None):
     """
     Returns a urlpattern for public pages.
     """
-    return url(regex, view, name=name)
+    return url(regex, view, name=name, decorators=[inject_edition_tools])
 
 
 def url_authenticated(regex, view, name=None):
