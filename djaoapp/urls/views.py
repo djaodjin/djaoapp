@@ -93,8 +93,9 @@ urlpatterns = [
         UserProfileView.as_view(), name='users_profile'),
     url_direct(r'contacts/', include('signup.urls.views.contacts')),
 
-    url(r'^pricing/$', PricingView.as_view(), name='saas_cart_plan_list'),
-    url(r'^', include('saas.urls.noauth')),
+    url_prefixed(r'^pricing/$', PricingView.as_view(),
+        name='saas_cart_plan_list'),
+    url_prefixed(r'^', include('saas.urls.noauth')),
     url_direct(r'^', include('saas.urls.broker')),
     url_direct(r'^metrics/(?P<organization>%s)/dashboard/$' % ACCT_REGEX,
         DashboardView.as_view(), name='saas_dashboard'),
