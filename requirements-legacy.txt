@@ -11,7 +11,7 @@ django-localflavor==1.6
 django-phonenumber-field==2.4.0
 django-recaptcha==2.0.5
 django-webpack-loader==0.6.0
-djangorestframework==3.9.4
+djangorestframework==3.11.2
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.23
 djaodjin-extended-templates==0.2.5
