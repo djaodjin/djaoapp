@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 21:28+0000\n"
+"POT-Creation-Date: 2021-03-25 20:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
 "Language-Team: DjaoDjin <info@djaodjin.com>\n"
@@ -27,23 +26,6 @@ msgstr "Aucun %(verbose_name)s trouvé correspondant à la requête"
 #, python-format
 msgid "No %(verbose_name)s found matching '%(provider)s'"
 msgstr "Aucun %(verbose_name)s trouvé correspondant à '%(provider)s'"
-
-#: djagent/models.py:31 djagent/models.py:101 multitier/models.py:88
-#: rules/models.py:148
-msgid "unique identifier for the site (also serves as subdomain)"
-msgstr "identifieur unique pour le site (sert aussi pour nom de sous-domain)"
-
-#: djagent/models.py:105
-msgid "Entry point to forward domain requests to"
-msgstr "Point d'entrée pour faire suivre les requêtes à"
-
-#: djagent/validators.py:19
-msgid ""
-"Your e-mail address looks like one typically used by Bots. Please use an "
-"alternate e-mail address"
-msgstr ""
-"Votre adresse e-mail ressemble à celle généralement utilisée par les bots. "
-"Veuillez utiliser une autre adresse e-mail."
 
 #: djaoapp/api/auth.py:34
 msgid ""
@@ -264,31 +246,31 @@ msgid "Organization name"
 msgstr "Nom de l'organisation"
 
 #: djaoapp/forms/custom_signup.py:121
-#: djaoapp/templates/saas/billing/cart.html:121 saas/api/billing.py:87
-#: saas/api/serializers.py:211 saas/api/serializers.py:394
-#: saas/api/serializers.py:431 saas/forms.py:98 saas/forms.py:171
+#: djaoapp/templates/saas/billing/cart.html:121 saas/api/billing.py:90
+#: saas/api/serializers.py:221 saas/api/serializers.py:404
+#: saas/api/serializers.py:446 saas/forms.py:98 saas/forms.py:171
 #: saas/models.py:261
 msgid "Street address"
 msgstr "Rue"
 
 #: djaoapp/forms/custom_signup.py:122
-#: djaoapp/templates/saas/billing/cart.html:122 saas/api/billing.py:89
-#: saas/api/serializers.py:213 saas/api/serializers.py:396
-#: saas/api/serializers.py:433 saas/forms.py:96 saas/models.py:262
+#: djaoapp/templates/saas/billing/cart.html:122 saas/api/billing.py:92
+#: saas/api/serializers.py:223 saas/api/serializers.py:406
+#: saas/api/serializers.py:448 saas/forms.py:96 saas/models.py:262
 msgid "City/Town"
 msgstr "Ville"
 
 #: djaoapp/forms/custom_signup.py:123
-#: djaoapp/templates/saas/billing/cart.html:123 saas/api/billing.py:91
-#: saas/api/serializers.py:215 saas/api/serializers.py:398
-#: saas/api/serializers.py:435 saas/forms.py:76 saas/models.py:263
+#: djaoapp/templates/saas/billing/cart.html:123 saas/api/billing.py:94
+#: saas/api/serializers.py:225 saas/api/serializers.py:408
+#: saas/api/serializers.py:450 saas/forms.py:76 saas/models.py:263
 msgid "State/Province/County"
 msgstr "Département/Région"
 
 #: djaoapp/forms/custom_signup.py:125
-#: djaoapp/templates/saas/billing/cart.html:124 saas/api/billing.py:93
-#: saas/api/serializers.py:217 saas/api/serializers.py:400
-#: saas/api/serializers.py:437 saas/forms.py:101 saas/models.py:264
+#: djaoapp/templates/saas/billing/cart.html:124 saas/api/billing.py:96
+#: saas/api/serializers.py:227 saas/api/serializers.py:410
+#: saas/api/serializers.py:452 saas/forms.py:101 saas/models.py:264
 msgid "Zip/Postal code"
 msgstr "Code postal"
 
@@ -300,14 +282,14 @@ msgstr ""
 "et le caractère '-'."
 
 #: djaoapp/forms/custom_signup.py:129 djaoapp/templates/saas/_bank_use.html:34
-#: djaoapp/templates/saas/billing/cart.html:125 saas/api/billing.py:95
-#: saas/api/serializers.py:219 saas/api/serializers.py:402
-#: saas/api/serializers.py:439 saas/forms.py:64 saas/models.py:265
+#: djaoapp/templates/saas/billing/cart.html:125 saas/api/billing.py:98
+#: saas/api/serializers.py:229 saas/api/serializers.py:412
+#: saas/api/serializers.py:454 saas/forms.py:64 saas/models.py:265
 msgid "Country"
 msgstr "Etat"
 
-#: djaoapp/forms/custom_signup.py:130 saas/api/serializers.py:209
-#: saas/api/serializers.py:392 saas/api/serializers.py:429 saas/forms.py:172
+#: djaoapp/forms/custom_signup.py:130 saas/api/serializers.py:219
+#: saas/api/serializers.py:402 saas/api/serializers.py:444 saas/forms.py:172
 #: signup/forms.py:260 signup/models.py:404 signup/models.py:405
 msgid "Phone number"
 msgstr "Numéro de téléphone"
@@ -339,7 +321,7 @@ msgstr "Un utilisateur avec ce %(username)s existe déjà."
 msgid "A profile with that %(username)s already exists."
 msgstr "Un utilisateur avec ce %(username)s existe déjà."
 
-#: djaoapp/forms/custom_signup.py:249 djaoapp/mixins.py:185
+#: djaoapp/forms/custom_signup.py:249 djaoapp/mixins.py:175
 msgid "The organization name must contain some alphabetical characters."
 msgstr ""
 "Le nom de l'organization doit contenir plusieurs caractères alphabetiques."
@@ -656,7 +638,7 @@ msgid "Go further, and run a full-fledge session proxy."
 msgstr "Aller plus loin. Exécuter un proxy de session à part entière"
 
 #: djaoapp/templates/app_proxy_help.html:52
-#: djaoapp/templates/rules/app_dashboard.html:253
+#: djaoapp/templates/rules/app_dashboard.html:259
 #: djaoapp/templates/rules/forward_error_manager_help.html:28
 msgid "Session Data"
 msgstr "Données de session"
@@ -716,13 +698,21 @@ msgstr ""
 msgid "Accounts & Billing Workflows"
 msgstr "Flux de travail pour Comptes et Facturation"
 
-#: djaoapp/templates/base.html:111 djaoapp/templates/base.html:203
+#: djaoapp/templates/base.html:111 djaoapp/templates/base.html:206
 msgid "Powered by &copy; 2021 DjaoDjin. All rights reserved."
 msgstr "Réaliser avec &copy; 2021 DjaoDjin. Tous droits réservés."
 
-#: djaoapp/templates/base.html:111 djaoapp/templates/base.html:203
+#: djaoapp/templates/base.html:111 djaoapp/templates/base.html:206
 msgid "Legal"
 msgstr "Juridique"
+
+#: djaoapp/templates/base.html:181
+msgid ""
+"We have been notified and have started on fixing the error. We apologize for "
+"the inconvenience."
+msgstr ""
+"Nous avons été alertés de cette erreur. Nous nous excusons pour le "
+"dérangement."
 
 #: djaoapp/templates/contact.html:8
 msgid "Contact us"
@@ -755,8 +745,8 @@ msgstr "Surnom"
 #: djaoapp/templates/saas/profile/roles/role.html:66
 #: djaoapp/templates/saas/profile/subscribers.html:48
 #: djaoapp/templates/saas/users/roles.html:107 saas/api/roles.py:161
-#: saas/api/serializers.py:205 saas/api/serializers.py:355
-#: saas/api/serializers.py:423 saas/models.py:3074 signup/forms.py:104
+#: saas/api/serializers.py:215 saas/api/serializers.py:365
+#: saas/api/serializers.py:438 saas/models.py:3075 signup/forms.py:104
 #: signup/forms.py:265 signup/forms.py:333 signup/models.py:406
 #: signup/serializers.py:310 signup/serializers.py:329
 msgid "Full name"
@@ -767,7 +757,7 @@ msgstr "Nom complet"
 #: djaoapp/templates/saas/_invoiceables.html:40
 #: djaoapp/templates/saas/_invoiceables.html:103
 #: djaoapp/templates/saas/profile/roles/index.html:40
-#: saas/api/serializers.py:390 saas/api/serializers.py:427 signup/forms.py:97
+#: saas/api/serializers.py:400 saas/api/serializers.py:442 signup/forms.py:97
 #: signup/forms.py:258 signup/models.py:402 signup/models.py:403
 msgid "E-mail address"
 msgstr "Adresse e-mail"
@@ -874,7 +864,7 @@ msgstr "Informations de carte bancaire"
 #: djaoapp/templates/rules/app_dashboard.html:171
 #: djaoapp/templates/saas/_bank_use.html:4
 #: djaoapp/templates/saas/_bank_use.html:42
-#: djaoapp/templates/saas/billing/card.html:27
+#: djaoapp/templates/saas/billing/card.html:30
 #: djaoapp/templates/saas/billing/cart.html:81
 #: djaoapp/templates/saas/billing/index.html:44
 #: djaoapp/templates/saas/billing/transfers.html:45
@@ -1251,7 +1241,7 @@ msgid "Send test e-mail"
 msgstr "Envoyez un e-mail test"
 
 #: djaoapp/templates/notification/detail.html:12
-#: djaoapp/templates/pages/_edit_tools.html:34
+#: djaoapp/templates/pages/_edit_tools.html:61
 msgid "Preview"
 msgstr "Aperçu"
 
@@ -1690,6 +1680,10 @@ msgstr "par semaine"
 msgid "per year"
 msgstr "par année"
 
+#: djaoapp/templates/pages/_body_bottom.html:73
+msgid "placeholder, type to overwrite..."
+msgstr "commencez à écrire..."
+
 #: djaoapp/templates/pages/_edit_tools.html:11
 #: djaoapp/templates/saas/metrics/dashboard.html:25
 msgid "Search..."
@@ -1699,29 +1693,25 @@ msgstr "Chercher..."
 msgid "Drag'n'drop or click here."
 msgstr "Drag'n'drop ou cliquez ici."
 
-#: djaoapp/templates/pages/_edit_tools.html:33
-msgid "Close"
-msgstr "Fermer"
+#: djaoapp/templates/pages/_edit_tools.html:26
+msgid "Click on an item to view more options"
+msgstr "Cliquer sur un element pour voir ses options."
 
-#: djaoapp/templates/pages/_edit_tools.html:64
-msgid "Upload completed"
-msgstr "Téléchargement complet"
-
-#: djaoapp/templates/pages/_edit_tools.html:71
+#: djaoapp/templates/pages/_edit_tools.html:39
 msgid "tags"
-msgstr "tags..."
+msgstr "tags"
 
-#: djaoapp/templates/pages/_edit_tools.html:71
+#: djaoapp/templates/pages/_edit_tools.html:41
 msgid "Tag"
 msgstr "Tag"
 
-#: djaoapp/templates/pages/_edit_tools.html:71
+#: djaoapp/templates/pages/_edit_tools.html:45
 msgid "Tags must be separated by a comma. ex: video, title"
 msgstr "Les tags doivent être séparés par une virgule. ex: video, titre"
 
-#: djaoapp/templates/pages/_edit_tools.html:71
-#: djaoapp/templates/saas/billing/card.html:45
-#: djaoapp/templates/saas/billing/card.html:81
+#: djaoapp/templates/pages/_edit_tools.html:48
+#: djaoapp/templates/saas/billing/card.html:48
+#: djaoapp/templates/saas/billing/card.html:84
 #: djaoapp/templates/saas/metrics/balances.html:19
 #: djaoapp/templates/saas/profile/index.html:105
 #: djaoapp/templates/saas/profile/index.html:183
@@ -1730,18 +1720,51 @@ msgstr "Les tags doivent être séparés par une virgule. ex: video, titre"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: djaoapp/templates/pages/_edit_tools.html:104
+#: djaoapp/templates/pages/_edit_tools.html:60
+msgid "Close"
+msgstr "Fermer"
+
+#: djaoapp/templates/pages/_edit_tools.html:73
+#: djaoapp/templates/pages/theme.html:123
+#, python-brace-format
+msgid "\"${filename}\" uploaded sucessfully"
+msgstr "\"${filename}\" a été téléchargé correctement."
+
+#: djaoapp/templates/pages/_edit_tools.html:94
+msgid "Upload completed"
+msgstr "Téléchargement complet"
+
+#: djaoapp/templates/pages/_edit_tools.html:123
+#, python-brace-format
+msgid "\"${filename}\" uploaded sucessfully to \"${location}\""
+msgstr "\"${filename}\" a été téléchargé correctement à \"${location}\"."
+
+#: djaoapp/templates/pages/_edit_tools.html:126
+#, python-brace-format
+msgid "${filename}\" has previously been uploaded to \"${location}\""
+msgstr "\"${filename}\" a déjà été téléchargé à \"${location}\"."
+
+#: djaoapp/templates/pages/_edit_tools.html:129
+#, python-brace-format
+msgid "This placeholder accepts only: ${filetypes} files."
+msgstr "Accepte seulement les formats: ${filetypes}"
+
+#: djaoapp/templates/pages/_edit_tools.html:145
+msgid "No editable templates"
+msgstr "Pas de templates éditables"
+
+#: djaoapp/templates/pages/_edit_tools.html:149
 msgid "New source text"
 msgstr "Nouveau text source"
 
-#: djaoapp/templates/pages/_edit_tools.html:110
+#: djaoapp/templates/pages/_edit_tools.html:155
 msgid "URL of the page (ex: /hello) ..."
 msgstr "URL de la page (ex: /hello) ..."
 
-#: djaoapp/templates/pages/_edit_tools.html:122
+#: djaoapp/templates/pages/_edit_tools.html:167
 #: djaoapp/templates/rules/app_dashboard.html:113
 #: djaoapp/templates/saas/billing/bank.html:133
-#: djaoapp/templates/saas/billing/card.html:77
+#: djaoapp/templates/saas/billing/card.html:80
 #: djaoapp/templates/saas/billing/index.html:81
 #: djaoapp/templates/saas/billing/receipt.html:124
 #: djaoapp/templates/saas/profile/index.html:145
@@ -1756,17 +1779,17 @@ msgstr "URL de la page (ex: /hello) ..."
 msgid "Cancel"
 msgstr "Annuler"
 
-#: djaoapp/templates/pages/_edit_tools.html:125
+#: djaoapp/templates/pages/_edit_tools.html:170
 #: djaoapp/templates/rules/app_dashboard.html:117 saas/forms.py:183
 #: saas/forms.py:289
 msgid "Create"
 msgstr "Créez"
 
-#: djaoapp/templates/pages/_edit_tools.html:210
+#: djaoapp/templates/pages/_edit_tools.html:255
 msgid "Image gallery"
 msgstr "Galleries d'images"
 
-#: djaoapp/templates/pages/_edit_tools.html:216
+#: djaoapp/templates/pages/_edit_tools.html:261
 msgid "Code Editor"
 msgstr "Editeur de code"
 
@@ -2003,13 +2026,14 @@ msgstr "Genérer une clé"
 msgid "Encrypted Session Key"
 msgstr "données de session encryptées"
 
-#: djaoapp/templates/rules/app_dashboard.html:205
+#: djaoapp/templates/rules/app_dashboard.html:210
+#: djaoapp/templates/rules/app_dashboard.html:211
 #: djaoapp/templates/saas/profile/index.html:210
 #: djaoapp/templates/saas/profile/index.html:241
 msgid "Generating"
 msgstr "Genére"
 
-#: djaoapp/templates/rules/app_dashboard.html:210
+#: djaoapp/templates/rules/app_dashboard.html:216
 msgid ""
 "This is the AES key used to encrypt the session cookie passed to your "
 "application when a request was authorized."
@@ -2017,27 +2041,27 @@ msgstr ""
 "C'est la clé AES utilisée pour chiffrer le cookie de session transmise à "
 "votre demande lorsqu'une demande a été autorisée."
 
-#: djaoapp/templates/rules/app_dashboard.html:213
+#: djaoapp/templates/rules/app_dashboard.html:219
 #: djaoapp/templates/saas/profile/index.html:256
 msgid "The key will only be displayed once. Keep it secure."
 msgstr "La clé ne sera affichée qu'une fois. Gardez-la en sécurité."
 
-#: djaoapp/templates/rules/app_dashboard.html:218
+#: djaoapp/templates/rules/app_dashboard.html:224
 msgid "Regenerate"
 msgstr "Genérer"
 
-#: djaoapp/templates/rules/app_dashboard.html:219
+#: djaoapp/templates/rules/app_dashboard.html:225
 #: djaoapp/templates/saas/billing/index.html:85
 #: djaoapp/templates/saas/billing/receipt.html:126
 #: djaoapp/templates/saas/profile/index.html:265
 msgid "OK"
 msgstr "OK"
 
-#: djaoapp/templates/rules/app_dashboard.html:230
+#: djaoapp/templates/rules/app_dashboard.html:236
 msgid "Testing"
 msgstr "Tester"
 
-#: djaoapp/templates/rules/app_dashboard.html:232
+#: djaoapp/templates/rules/app_dashboard.html:238
 msgid ""
 "Enter a username and check the token that will be passed to your backend "
 "service."
@@ -2045,15 +2069,15 @@ msgstr ""
 "Entrez un nom d'utilisateur et vérifier le token qui sera passé à votre "
 "service backend."
 
-#: djaoapp/templates/rules/app_dashboard.html:243
+#: djaoapp/templates/rules/app_dashboard.html:249
 msgid "Check"
 msgstr "Vérifier"
 
-#: djaoapp/templates/rules/app_dashboard.html:259
+#: djaoapp/templates/rules/app_dashboard.html:265
 msgid "As HTTP Header"
 msgstr "Comme entête HTTP"
 
-#: djaoapp/templates/rules/app_dashboard.html:265
+#: djaoapp/templates/rules/app_dashboard.html:271
 #: djaoapp/templates/rules/forward_error_manager_help.html:48
 msgid "Forwarding requests to"
 msgstr "Faire suivre les requêtes à"
@@ -2432,19 +2456,19 @@ msgstr "Connecté un processeur de payments pour %(organization)s."
 msgid "Update Card for %(organization)s"
 msgstr "Mettre à jour la carte bancaire pour %(organization)s"
 
-#: djaoapp/templates/saas/billing/card.html:29
+#: djaoapp/templates/saas/billing/card.html:32
 #: djaoapp/templates/saas/billing/cart.html:83
 msgid "Pay Now"
 msgstr "Payez maintenant"
 
-#: djaoapp/templates/saas/billing/card.html:37
+#: djaoapp/templates/saas/billing/card.html:40
 #: djaoapp/templates/saas/profile/index.html:97
 #: djaoapp/templates/saas/profile/plans/plan.html:38
 msgid "Danger Zone"
 msgstr "Zone dangereuse"
 
-#: djaoapp/templates/saas/billing/card.html:48
-#: djaoapp/templates/saas/billing/card.html:68
+#: djaoapp/templates/saas/billing/card.html:51
+#: djaoapp/templates/saas/billing/card.html:71
 #: djaoapp/templates/saas/profile/index.html:108
 #: djaoapp/templates/saas/profile/index.html:170
 #: djaoapp/templates/saas/profile/plans/plan.html:41
@@ -2452,19 +2476,19 @@ msgstr "Zone dangereuse"
 msgid "This operation cannot be reversed."
 msgstr "Cette opération ne peut pas être annulée."
 
-#: djaoapp/templates/saas/billing/card.html:57
-#: djaoapp/templates/saas/billing/card.html:61
+#: djaoapp/templates/saas/billing/card.html:60
+#: djaoapp/templates/saas/billing/card.html:64
 msgid "Delete Card"
 msgstr "Supprimer la Carte"
 
-#: djaoapp/templates/saas/billing/card.html:67
+#: djaoapp/templates/saas/billing/card.html:70
 #, python-format
 msgid "You are about to delete the card on file for %(profile_name)s."
 msgstr ""
 "Vous êtes sur le point de supprimer la carte pour %(profile_name)s. Cette "
 "opération ne peut pas être annulée."
 
-#: djaoapp/templates/saas/billing/card.html:71
+#: djaoapp/templates/saas/billing/card.html:74
 #: djaoapp/templates/saas/profile/index.html:173
 #: djaoapp/templates/saas/profile/roles/role.html:148
 #: djaoapp/templates/saas/profile/subscriptions.html:140
@@ -3479,7 +3503,7 @@ msgid "Select a plan..."
 msgstr "Sélectionnez un forfait..."
 
 #: djaoapp/templates/saas/profile/subscriptions.html:44
-#: saas/views/billing.py:662
+#: saas/views/billing.py:572
 msgid "Subscribe"
 msgstr "Abonnez-vous"
 
@@ -3852,6 +3876,10 @@ msgstr ""
 msgid "The domain name cannot contain any spaces or tabs."
 msgstr "Le nom de domaine ne peut pas contenir d'espaces ou de tabs."
 
+#: multitier/models.py:88 rules/models.py:148
+msgid "unique identifier for the site (also serves as subdomain)"
+msgstr "identifieur unique pour le site (sert aussi pour nom de sous-domain)"
+
 #: multitier/models.py:93
 msgid "Enter a valid 'domain', ex: example.com"
 msgstr "Entrez un nom de domaine valide, ex: example.com"
@@ -3925,6 +3953,18 @@ msgstr "Fichiers du thème dans une archive zip."
 msgid "URL where the theme package was uploaded."
 msgstr "ULR ou l'archive zip du thème a été téléchargé."
 
+#: pages/api/themes.py:83
+msgid "reset to default theme"
+msgstr "Ré-initialiser le thème par défault"
+
+#: pages/api/upload_media.py:187
+msgid "Media correctly deleted."
+msgstr "Media correctement effacé"
+
+#: pages/api/upload_media.py:243
+msgid "Tags correctly updated."
+msgstr "Les tags ont été correctement changés."
+
 #: pages/models.py:156 pages/serializers.py:113
 msgid "Unique identifier that can be used in URL paths"
 msgstr "L'identifiant unique visible dans la barre URL"
@@ -3933,47 +3973,63 @@ msgstr "L'identifiant unique visible dans la barre URL"
 msgid "Title of the page element"
 msgstr "Titre pour l'element"
 
-#: pages/models.py:160 pages/serializers.py:98 pages/serializers.py:118
+#: pages/models.py:160 pages/serializers.py:98 pages/serializers.py:121
 msgid "Long description of the page element"
 msgstr "Texte libre pour la description de l'element"
 
-#: pages/models.py:286
+#: pages/models.py:164
+msgid "URL to a icon picture"
+msgstr "URL pour l'image de l'icon"
+
+#: pages/models.py:165
+msgid "Icon picture"
+msgstr "Image pour l'icon"
+
+#: pages/models.py:168
+msgid "Reading time of the material (in hh:mm:ss)"
+msgstr "Temps de lecture (en hh:mm:ss)"
+
+#: pages/models.py:169
+msgid "Language the material is written in"
+msgstr "Langue du contenu"
+
+#: pages/models.py:293
 msgid "date/time submitted"
 msgstr "date / heure de soumission"
 
-#: pages/models.py:288
+#: pages/models.py:295
 msgid "text"
 msgstr "texte"
 
-#: pages/models.py:290
+#: pages/models.py:297
 msgid "IP address"
 msgstr "Adresse IP"
 
-#: pages/models.py:292
+#: pages/models.py:299
 msgid "user"
 msgstr "utilisateur"
 
-#: pages/serializers.py:115 pages/serializers.py:170
+#: pages/serializers.py:118 pages/serializers.py:177
 msgid "Picture icon that can be displayed alongside the title"
 msgstr "Icône d'image qui peut être affichée à côté du titre"
 
-#: pages/serializers.py:120 pages/serializers.py:172
-#: saas/api/serializers.py:406 saas/api/serializers.py:441 saas/models.py:313
-#: saas/models.py:1221 saas/models.py:1280 saas/models.py:1572
-#: saas/models.py:2636 saas/models.py:2887 saas/models.py:2963
-#: saas/models.py:3237 signup/models.py:444
+#: pages/serializers.py:123 pages/serializers.py:179
+#: saas/api/serializers.py:416 saas/api/serializers.py:456 saas/models.py:313
+#: saas/models.py:1222 saas/models.py:1281 saas/models.py:1573
+#: saas/models.py:2637 saas/models.py:2888 saas/models.py:2964
+#: saas/models.py:3238 signup/models.py:444
 msgid "Extra meta data (can be stringify JSON)"
 msgstr "Meta-donnée additionnelle (potentiellement en format JSON)"
 
-#: pages/serializers.py:202
+#: pages/serializers.py:214
 msgid "URL where the asset content is stored."
 msgstr "URL ou le contenu des assets se trouve."
 
-#: pages/serializers.py:204
+#: pages/serializers.py:216
 msgid "Last date/time the asset content was updated."
 msgstr "Derniere date de modification des assets."
 
-#: pages/serializers.py:206
+#: pages/serializers.py:218
 msgid "Tags associated to the asset."
 msgstr "Tags associés a un asset."
 
@@ -3984,47 +4040,56 @@ msgid ""
 msgstr ""
 "Entrez un titre valide, constitué de lettres, chiffres ou les caractères _/-."
 
-#: rules/api/serializers.py:86 rules/api/serializers.py:228
+#: rules/api/keys.py:150
+msgid "Update successful."
+msgstr "Sauvegarde complète."
+
+#: rules/api/serializers.py:86 rules/api/serializers.py:232
 msgid "Restricted authentication and registration"
 msgstr "Authentification et enregistrement restreint"
 
-#: rules/api/serializers.py:112
+#: rules/api/serializers.py:89 saas/api/serializers.py:419
+#: saas/api/serializers.py:576 saas/api/serializers.py:861
+msgid "Describes the result of the action in human-readable form"
+msgstr "Décrit le résultat de l'action de manière lisible"
+
+#: rules/api/serializers.py:116
 msgid "Key used to decrypt the encoded session information."
 msgstr "Clé pour décrypter la session."
 
-#: rules/api/serializers.py:122 rules/models.py:259
+#: rules/api/serializers.py:126 rules/models.py:259
 msgid "Method applied to grant or deny access"
 msgstr "Méthode appliquée pour donner ou refuser l'accès"
 
-#: rules/api/serializers.py:124 rules/models.py:263
+#: rules/api/serializers.py:128 rules/models.py:263
 msgid "When access is granted, should the request be forwarded"
 msgstr "Lorsque l'accès est autorisé, faut-il faire suivre les requêtes"
 
-#: rules/api/serializers.py:126 rules/models.py:265
+#: rules/api/serializers.py:130 rules/models.py:265
 msgid "Tags to check if it is the first time a user engages"
 msgstr "Les tags a vérifier si c'est la première fois qu'un utilisateur visite"
 
-#: rules/api/serializers.py:161
+#: rules/api/serializers.py:165
 msgid "old rank for a rule in the list of rules"
 msgstr "ancien rang d'une règle dans la liste de règles"
 
-#: rules/api/serializers.py:163
+#: rules/api/serializers.py:167
 msgid "new rank for the rule in the list of rules"
 msgstr "nouveau rang d'une règle dans la liste de règles"
 
-#: rules/api/serializers.py:174
+#: rules/api/serializers.py:178
 msgid "The session being forwarded"
 msgstr "La session transmise"
 
-#: rules/api/serializers.py:176
+#: rules/api/serializers.py:180
 msgid "The HTTP header that encodes the session"
 msgstr "Le header HTTP qui encode la session"
 
-#: rules/api/serializers.py:178
+#: rules/api/serializers.py:182
 msgid "The URL end point where the request is forwarded"
 msgstr "Le point d'entrée où les requêtes autorisées doivent être envoyées."
 
-#: rules/api/serializers.py:235 saas/api/serializers.py:914
+#: rules/api/serializers.py:239 saas/api/serializers.py:938
 #: signup/serializers.py:282
 msgid "Describes the reason for the error in plain text"
 msgstr "Décrit la raison de l'erreur en texte lisible"
@@ -4057,34 +4122,46 @@ msgstr "Les arguments a passer a la méthode pour accepter ou refuser l'accès"
 msgid "Determines the order in which rules are considered"
 msgstr "Détermine l'ordre dans lequel les règles sont considérées"
 
-#: saas/api/billing.py:57
+#: saas/api/backend.py:165
+msgid "Your credit card is no longer on file with us."
+msgstr "Nous n'avons plus accès à votre carte de crédit."
+
+#: saas/api/backend.py:193
+msgid "Your credit card on file was sucessfully updated."
+msgstr "Votre carte bancaire a été sauvegardée avec succès."
+
+#: saas/api/billing.py:58
 msgid "The plan to add into the request.user cart."
 msgstr "Le plan à ajouter au panier du request.user."
 
-#: saas/api/billing.py:73
+#: saas/api/billing.py:70 saas/api/serializers.py:201
+msgid "Keys to authenticate the client with the payment processor"
+msgstr "Clées pour authentifier le client avec le processeur de payment"
+
+#: saas/api/billing.py:76
 msgid "selected plan option during checkout"
 msgstr "Option d'abonnement selectionnée lors du passage en caisse"
 
-#: saas/api/billing.py:82
+#: saas/api/billing.py:85
 msgid "attaches the payment card to the Organization when true"
 msgstr ""
 "Quand la valeur est vrai, attache une carte de paiement de l'organisation."
 
-#: saas/api/billing.py:84
+#: saas/api/billing.py:87
 msgid "one-time token generated by the processorfrom the payment card."
 msgstr ""
 "code généré par le processeur de la carte de paiement utilisable une fois."
 
-#: saas/api/billing.py:355
+#: saas/api/billing.py:358
 msgid "Coupon code to redeem"
 msgstr "Coupon à appliquer au passage en caisse"
 
-#: saas/api/billing.py:403
+#: saas/api/billing.py:406
 #, python-format
 msgid "Coupon '%(code)s' was successfully applied."
 msgstr "Le coupon '%(code)s' a été utilisé avec succes."
 
-#: saas/api/billing.py:416
+#: saas/api/billing.py:419
 #, python-format
 msgid "No items can be discounted using this coupon: %(code)s."
 msgstr "Il n'y a pas d'articles en promotion avec ce coupon: %(code)s."
@@ -4120,11 +4197,28 @@ msgstr "Une copie du reçu a été envoyée à %(email)s."
 msgid "The plan does not belong to the organization."
 msgstr "Le plan n'appartient pas à l'organisation."
 
+#: saas/api/organizations.py:248
+msgid "Profile was updated."
+msgstr "Profil sauvegardé."
+
+#: saas/api/organizations.py:310
+msgid "no location or file specified."
+msgstr "Pas d'emplacement ou de fichier spécifié"
+
+#: saas/api/plans.py:299
+msgid "Cannot delete a plan with subscribers"
+msgstr "Impossible de détruire un plan avec des abonnés"
+
+#: saas/api/plans.py:329 saas/views/plans.py:205
+#, python-format
+msgid "Successfully updated plan titled '%(title)s'."
+msgstr "Un plan avec le titre '%(title)s' a été sauvegardé avec succès."
+
 #: saas/api/roles.py:145
 msgid "Enter a valid organization slug."
 msgstr "Entrez un identifiant d'organisation valide."
 
-#: saas/api/roles.py:156 saas/api/serializers.py:717 signup/serializers.py:306
+#: saas/api/roles.py:156 saas/api/serializers.py:736 signup/serializers.py:306
 #: signup/serializers.py:325
 msgid "Enter a valid username."
 msgstr "Entrez un nom d'utilisateur valide."
@@ -4146,7 +4240,12 @@ msgstr "Profil %(organization)s n'existe pas."
 msgid "We cannot invite an organization without an e-mail address."
 msgstr "Nous ne pouvons pas inviter une organization sans address e-mail."
 
-#: saas/api/roles.py:1283 saas/views/optins.py:59
+#: saas/api/roles.py:1112
+#, python-format
+msgid "Invite for %(username)s has been sent"
+msgstr "L'invitation de %(username)s a été envoyée."
+
+#: saas/api/roles.py:1286 saas/views/optins.py:59
 #, python-format
 msgid ""
 "You already have a %(existing_role)s role on %(organization)s. Please drop "
@@ -4174,75 +4273,83 @@ msgstr "Nom du compte de dépôt"
 msgid "Last 4 characters of the deposit account identifier"
 msgstr "Les 4 derniers caractères de l'identifiant du compte de dépôt."
 
-#: saas/api/serializers.py:185 saas/api/serializers.py:321
-#: saas/api/serializers.py:900 saas/models.py:1554
+#: saas/api/serializers.py:185 saas/api/serializers.py:331
+#: saas/api/serializers.py:924 saas/models.py:1555
 msgid "Three-letter ISO 4217 code for currency unit (ex: usd)"
 msgstr "Le code à trois lettres ISO 4217 pour l'unitée monétaire (ex: eur)."
 
+#: saas/api/serializers.py:191
+msgid "Stripe processor public key"
+msgstr "La clé publique pour le compte Stripe"
+
 #: saas/api/serializers.py:193
+msgid "intent secret for SCA (Stripe)"
+msgstr "Le secret pour SCA (Stripe)"
+
+#: saas/api/serializers.py:203
 msgid "Last 4 digits of the credit card on file"
 msgstr "Les 4 derniers chiffres de la carte de paiement enregistrée."
 
-#: saas/api/serializers.py:195
+#: saas/api/serializers.py:205
 msgid "Expiration date of the credit card on file"
 msgstr "La date d'expiration de carte de paiement enregistrée."
 
-#: saas/api/serializers.py:203
+#: saas/api/serializers.py:213
 msgid "Processor token to retrieve the payment method"
 msgstr "le token du processeur de payment pour obtenir la méthode de payment"
 
-#: saas/api/serializers.py:207
+#: saas/api/serializers.py:217
 msgid "E-mail address for the account"
 msgstr "Adresse e-mail du contact"
 
-#: saas/api/serializers.py:225 saas/models.py:1570
+#: saas/api/serializers.py:235 saas/models.py:1571
 msgid "Current state (i.e. created, done, failed, disputed)"
 msgstr "L'état courant de la charge (i.e. created, done, failed, disputed)."
 
-#: saas/api/serializers.py:227
+#: saas/api/serializers.py:237
 msgid "Amount and unit in a commonly accepted readable format"
 msgstr "Montant et unitée monétaire dans un format courant."
 
-#: saas/api/serializers.py:229 saas/api/serializers.py:285
+#: saas/api/serializers.py:239 saas/api/serializers.py:295
 msgid "Feedback for the user in plain text"
 msgstr "Commentaires de l'utilisateur en texte brut"
 
-#: saas/api/serializers.py:248
+#: saas/api/serializers.py:258
 msgid "Type of discount (percentage or currency unit)"
 msgstr "Le type de rabais (en pourcentage ou unitée monétaire)"
 
-#: saas/api/serializers.py:254
+#: saas/api/serializers.py:264
 msgid "The plan is inactive. As a result the coupon will have no effect."
 msgstr "Le plan est inactif. Le coupon n'aura pas d'effet."
 
-#: saas/api/serializers.py:280
+#: saas/api/serializers.py:290
 #, python-brace-format
 msgid "Charge identifier (i.e. matches the URL {charge} parameter)"
 msgstr "L'identifiant du paiement (corresponds au paramètre {charge} de l'URL)"
 
-#: saas/api/serializers.py:283
+#: saas/api/serializers.py:293
 msgid "E-mail address to which the receipt was sent."
 msgstr "L'adresse e-mail à laquelle le ticket de caisse a été envoyé."
 
-#: saas/api/serializers.py:291
+#: saas/api/serializers.py:301
 msgid "Forces invite of user/organization that could not be found"
 msgstr ""
 "Force l'invitation d'un utilisateur ou une organisation qui n'a pas encore "
 "de compte."
 
-#: saas/api/serializers.py:306
+#: saas/api/serializers.py:316
 msgid "Unique key in the table for the data series"
 msgstr "Clé unique dans le tableau pour la série de données."
 
-#: saas/api/serializers.py:309 saas/models.py:4339
+#: saas/api/serializers.py:319 saas/models.py:4340
 msgid "Filter on the Transaction accounts"
 msgstr "Filtre sur les comptes d'une Transaction"
 
-#: saas/api/serializers.py:312
+#: saas/api/serializers.py:322
 msgid "Datapoints in the serie"
 msgstr "Les données dans une série"
 
-#: saas/api/serializers.py:318
+#: saas/api/serializers.py:328
 msgid ""
 "The scale of the number reported in the tables (ex: 1000 when numbers are "
 "reported in thousands of dollars)"
@@ -4250,15 +4357,15 @@ msgstr ""
 "L'échelle des nombres reportés dans les tableaux (ex: 1000 quand les nombres "
 "raportés sont en milliers d'euros)"
 
-#: saas/api/serializers.py:323
+#: saas/api/serializers.py:333
 msgid "Title for the table"
 msgstr "Titre du tableau"
 
-#: saas/api/serializers.py:332
+#: saas/api/serializers.py:342
 msgid "Line item index counting from zero."
 msgstr "L'index de la ligne à partir de zéro"
 
-#: saas/api/serializers.py:334
+#: saas/api/serializers.py:344
 msgid ""
 "The amount to refund cannot be higher than the amount of the line item minus "
 "the total amount already refunded on that line item."
@@ -4266,66 +4373,66 @@ msgstr ""
 "Le montant à rembourser ne peut pas être plus grand que le montant total de "
 "la ligne diminué du montant déjà remboursé."
 
-#: saas/api/serializers.py:353 saas/api/serializers.py:421 saas/forms.py:224
-#: saas/models.py:250 saas/models.py:1207 signup/models.py:559
+#: saas/api/serializers.py:363 saas/api/serializers.py:436 saas/forms.py:224
+#: saas/models.py:250 saas/models.py:1208 signup/models.py:559
 msgid "Unique identifier shown in the URL bar"
 msgstr "L'identifiant unique visible dans la barre URL"
 
-#: saas/api/serializers.py:382 saas/api/serializers.py:461
+#: saas/api/serializers.py:392 saas/api/serializers.py:476
 msgid "One of 'organization', 'personal' or 'user'"
 msgstr "Une des valeurs 'organization', 'personal' or 'user'"
 
-#: saas/api/serializers.py:388 saas/api/serializers.py:425 saas/models.py:276
+#: saas/api/serializers.py:398 saas/api/serializers.py:440 saas/models.py:276
 msgid "Timezone to use when reporting metrics"
 msgstr "Le fuseau horaire utilisé dans les graphes et tableaux d'analyse"
 
-#: saas/api/serializers.py:404 saas/api/serializers.py:485
+#: saas/api/serializers.py:414 saas/api/serializers.py:500
 msgid "Enable GroupBuy"
 msgstr "Activer GroupBuy"
 
-#: saas/api/serializers.py:448
+#: saas/api/serializers.py:463
 msgid "One of slug or (full_name, email, type) should be present"
 msgstr "Soit le slug ou (full_name, email, type) doit être présent"
 
-#: saas/api/serializers.py:456
+#: saas/api/serializers.py:471
 msgid "type must be one of 'personal' or 'organization'."
 msgstr "Le type doit être une des valeurs 'personal' or 'organization'."
 
-#: saas/api/serializers.py:518
+#: saas/api/serializers.py:533
 msgid "Type of discount (periods, percentage or currency unit)"
 msgstr "Type de remise (périodes, pourcentage ou unité monétaire)"
 
-#: saas/api/serializers.py:528
+#: saas/api/serializers.py:543
 msgid "Title for the plan"
 msgstr "Titre pour le plan"
 
-#: saas/api/serializers.py:530 saas/api/serializers.py:672
-#: saas/api/transactions.py:457 saas/models.py:2868
+#: saas/api/serializers.py:545 saas/api/serializers.py:691
+#: saas/api/transactions.py:457 saas/models.py:2869
 #, python-format
 msgid "Free-form text description for the %(object)s"
 msgstr "Texte libre pour la description de %(object)s"
 
-#: saas/api/serializers.py:533
+#: saas/api/serializers.py:548
 msgid "True when customers can subscribe to the plan"
 msgstr "Vrai quand les utilisateurs peuvent souscrire au plan"
 
-#: saas/api/serializers.py:535
+#: saas/api/serializers.py:550
 msgid "One-time amount to pay when the subscription starts"
 msgstr "Montant à payer une fois quand l'abonnement démarre"
 
-#: saas/api/serializers.py:537
+#: saas/api/serializers.py:552
 msgid "Amount billed every period"
 msgstr "Montant à payer à chaque période"
 
-#: saas/api/serializers.py:539 saas/api/serializers.py:541
+#: saas/api/serializers.py:554 saas/api/serializers.py:556
 msgid "Natural period for the subscription"
 msgstr "periode naturelle de l'abonnement"
 
-#: saas/api/serializers.py:544
+#: saas/api/serializers.py:559
 msgid "Provider of the plan"
 msgstr "fournisseur du plan"
 
-#: saas/api/serializers.py:546
+#: saas/api/serializers.py:561
 msgid ""
 "True when a subscriber can automatically be subscribed to the plan by its "
 "provider. Otherwise the subscriber must manually accept the subscription. "
@@ -4335,7 +4442,7 @@ msgstr ""
 "fournisseur. Sinon, l'abonné doit accepter manuellement l'abonnement.(par "
 "défaut False)"
 
-#: saas/api/serializers.py:550
+#: saas/api/serializers.py:565
 msgid ""
 "True when a provider must manually accept a subscription to the plan "
 "initiated by a subscriber. (defaults to False)"
@@ -4343,23 +4450,23 @@ msgstr ""
 "Vrai lorsqu'un fournisseur doit accepter manuellement un abonnement au "
 "planlancé par un abonné. (False par défaut)"
 
-#: saas/api/serializers.py:553
+#: saas/api/serializers.py:568
 msgid "Discounts when periods are paid in advance."
 msgstr "Rabais pour les périodes payées en avance"
 
-#: saas/api/serializers.py:556
+#: saas/api/serializers.py:571
 msgid "Discounted amount for the first period"
 msgstr "Montant réduit pour la première période"
 
-#: saas/api/serializers.py:558
+#: saas/api/serializers.py:573
 msgid "The plan is part of the cart to checkout"
 msgstr "Le plan fait partie du panier à la caisse"
 
-#: saas/api/serializers.py:623 saas/forms.py:360
+#: saas/api/serializers.py:642 saas/forms.py:360
 msgid "A plan with this title already exists."
 msgstr "Un plan avec ce titre existe déjà."
 
-#: saas/api/serializers.py:634
+#: saas/api/serializers.py:653
 msgid ""
 "True if the request user is able to update the subscription. Typically a "
 "manager for the plan provider."
@@ -4367,25 +4474,25 @@ msgstr ""
 "Vrai si l'utilisateur authentifié est autorisé à modifier l'abonnement. En "
 "général si l'utilisateur est un manageur du fournisseur du plan."
 
-#: saas/api/serializers.py:666 saas/models.py:4251
+#: saas/api/serializers.py:685 saas/models.py:4252
 msgid "Source organization from which funds are withdrawn"
 msgstr "L'organisation source de laquelle les fonds sont retirés"
 
-#: saas/api/serializers.py:669 saas/models.py:4262
+#: saas/api/serializers.py:688 saas/models.py:4263
 msgid "Target organization to which funds are deposited"
 msgstr "L'organisation destinataire à laquelle les fonds sont déposés"
 
-#: saas/api/serializers.py:675
+#: saas/api/serializers.py:694
 msgid "Amount being transfered"
 msgstr "Montant transféré"
 
-#: saas/api/serializers.py:677
+#: saas/api/serializers.py:696
 msgid "True if the transaction is indentified as a debit in the API context"
 msgstr ""
 "Vrai si la transaction est identifiée comme un débit dans le contexte de "
 "l'API"
 
-#: saas/api/serializers.py:719
+#: saas/api/serializers.py:738
 msgid ""
 "Effectively the username. The variable is named `slug` such that front-end "
 "code can be re-used between Organization and User records."
@@ -4394,62 +4501,62 @@ msgstr ""
 "source code du front-end puisse être utilisé sans changement entre des "
 "objets Organization et User."
 
-#: saas/api/serializers.py:723
+#: saas/api/serializers.py:742
 msgid "E-mail address for the user"
 msgstr "L'adresse e-mail pour l'utilisateur"
 
-#: saas/api/serializers.py:725 saas/api/transactions.py:453 saas/models.py:253
-#: saas/models.py:1205 saas/models.py:1547 saas/models.py:2864
-#: saas/models.py:3033 saas/models.py:3224 saas/models.py:4244
+#: saas/api/serializers.py:744 saas/api/transactions.py:453 saas/models.py:253
+#: saas/models.py:1206 saas/models.py:1548 saas/models.py:2865
+#: saas/models.py:3034 saas/models.py:3225 saas/models.py:4245
 #: signup/models.py:401 signup/models.py:534
 msgid "Date/time of creation (in ISO format)"
 msgstr "Date/heure de creation (en format ISO)"
 
-#: saas/api/serializers.py:727
+#: saas/api/serializers.py:746
 msgid ""
 "Full name for the contact (effectively first name followed by last name)"
 msgstr ""
 "Nom complet pour le contact (en fait le prénom suivi du nom de famille)"
 
-#: saas/api/serializers.py:760
+#: saas/api/serializers.py:779
 msgid "Subscription lines and options refer to."
 msgstr "Référence de l'abonnement utilisé dans les lignes et options"
 
-#: saas/api/serializers.py:762
+#: saas/api/serializers.py:781
 msgid "Line items to charge on checkout."
 msgstr "Les lignes à payer lors du réglement"
 
-#: saas/api/serializers.py:868 signup/serializers.py:291
+#: saas/api/serializers.py:892 signup/serializers.py:291
 msgid "URL to uploaded content"
 msgstr "URL pour uploader le contenu"
 
-#: saas/api/serializers.py:873
+#: saas/api/serializers.py:897
 msgid "I have read and understand these terms and conditions"
 msgstr "J'ai lu et accepte les termes et conditions"
 
-#: saas/api/serializers.py:890
+#: saas/api/serializers.py:914
 msgid "Since when is the profile a subscriber"
 msgstr "Depuis quand le profil est-il un abonné"
 
-#: saas/api/serializers.py:892
+#: saas/api/serializers.py:916
 msgid "Current end date for the contract"
 msgstr "Date de fin actuelle du contrat"
 
-#: saas/api/serializers.py:894
+#: saas/api/serializers.py:918
 msgid "Total value to be collected from the profile"
 msgstr "Valeur totale à collecter à partir du profil"
 
-#: saas/api/serializers.py:896
+#: saas/api/serializers.py:920
 msgid "Cash payments collected from the profile"
 msgstr "Paiements en espèces collectés à partir du profil"
 
-#: saas/api/serializers.py:898
+#: saas/api/serializers.py:922
 msgid "The deferred revenue for the profile"
 msgstr "Les revenus différés pour le profil"
 
-#: saas/api/transactions.py:122 saas/models.py:1399 saas/models.py:1426
-#: saas/models.py:1625 saas/models.py:1642 saas/models.py:1704
-#: saas/models.py:2185 saas/models.py:3811 saas/models.py:4463
+#: saas/api/transactions.py:122 saas/models.py:1400 saas/models.py:1427
+#: saas/models.py:1626 saas/models.py:1643 saas/models.py:1705
+#: saas/models.py:2186 saas/models.py:3812 saas/models.py:4464
 #, python-format
 msgid "balances with multiple currency units (%s)"
 msgstr "balances avec multiples unités monétaire (%s)"
@@ -4467,15 +4574,15 @@ msgstr ""
 msgid "Invalid subscription/plan field format"
 msgstr "format erroné pour l'abonnement/plan"
 
-#: saas/api/transactions.py:509 saas/views/billing.py:1188
+#: saas/api/transactions.py:509 saas/views/billing.py:1093
 msgid "Invalid subscriber"
 msgstr "Abonné invalid"
 
-#: saas/api/transactions.py:513 saas/views/billing.py:1192
+#: saas/api/transactions.py:513 saas/views/billing.py:1097
 msgid "Invalid plan"
 msgstr "plan non validé"
 
-#: saas/api/transactions.py:518 saas/views/billing.py:1196
+#: saas/api/transactions.py:518 saas/views/billing.py:1101
 msgid ""
 "Invalid combination of subscriber and plan, or the subscription is no longer "
 "active."
@@ -4506,11 +4613,9 @@ msgstr ""
 #: saas/backends/stripe_processor/base.py:362
 #: saas/backends/stripe_processor/base.py:476
 #: saas/backends/stripe_processor/base.py:524
-#: saas/backends/stripe_processor/base.py:569
-#: saas/backends/stripe_processor/base.py:615
-#: saas/backends/stripe_processor/base.py:634
-#: saas/backends/stripe_processor/base.py:667
-#: saas/backends/stripe_processor/base.py:739
+#: saas/backends/stripe_processor/base.py:612
+#: saas/backends/stripe_processor/base.py:632
+#: saas/backends/stripe_processor/base.py:665
 #: saas/backends/stripe_processor/base.py:786
 #: saas/backends/stripe_processor/base.py:828
 #: saas/backends/stripe_processor/base.py:976
@@ -4521,13 +4626,13 @@ msgstr "Demande non valide sur le processeur pour %(organization)s"
 #: saas/backends/stripe_processor/base.py:152
 #: saas/backends/stripe_processor/base.py:164
 #: saas/backends/stripe_processor/base.py:344
-#: saas/backends/stripe_processor/base.py:722
+#: saas/backends/stripe_processor/base.py:721
 #, python-format
 msgid "%(organization)s is not connected to a Stripe account."
 msgstr "%(organization)s n'est pas connecté a un compte Stripe."
 
 #: saas/backends/stripe_processor/base.py:429
-#: saas/backends/stripe_processor/base.py:781
+#: saas/backends/stripe_processor/base.py:780
 #, python-format
 msgid ""
 "access to %(organization)s Stripe account was denied (access might have been "
@@ -4775,16 +4880,16 @@ msgstr ", de la part de %(payer)s"
 msgid " (code: %(code)s)"
 msgstr " (code: %(code)s)"
 
-#: saas/mixins.py:431
+#: saas/mixins.py:432
 msgid "More ..."
 msgstr "Plus ..."
 
-#: saas/mixins.py:679
+#: saas/mixins.py:784
 #, python-format
 msgid "cannot find active subscription to %(plan)s for %(organization)s"
 msgstr "Aucun abonnement en cours pour %(plan)s de %(organization)s"
 
-#: saas/mixins.py:968
+#: saas/mixins.py:1073
 #, python-format
 msgid "RoleDescription '%(role)s' does not exist."
 msgstr "RoleDescription '%(role)s' n'existe pas."
@@ -4819,7 +4924,7 @@ msgstr ""
 msgid "enabled"
 msgstr "actif"
 
-#: saas/models.py:1212
+#: saas/models.py:1213
 msgid ""
 "Short description of the role. Grammatical rules to pluralize the title "
 "might be used in User Interfaces."
@@ -4827,11 +4932,11 @@ msgstr ""
 "Description synthétique du rôle. Les règles grammaticales pour les formes "
 "plurielles peuvent être utilisées dans l'interface utilisateur."
 
-#: saas/models.py:1215
+#: saas/models.py:1216
 msgid "Automatically grants the role without requiring a user to accept it."
 msgstr "Accorde automatiquement le rôle sans qu'un utilisateur ne l'accepte."
 
-#: saas/models.py:1218
+#: saas/models.py:1219
 msgid ""
 "Automatically adds the role when a user and profile share the same e-mail "
 "domain."
@@ -4839,7 +4944,7 @@ msgstr ""
 "Ajoute automatiquement le rôle lorsqu'un utilisateur et un profil partagent "
 "le même e-maildomaine."
 
-#: saas/models.py:1466
+#: saas/models.py:1467
 #, python-format
 msgid ""
 "%(organization)s is not associated to an account on the processor and no "
@@ -4848,34 +4953,34 @@ msgstr ""
 "%(organization)s n'est pas associée à un compte processeur et aucun token "
 "n'a été passé."
 
-#: saas/models.py:1552
+#: saas/models.py:1553
 msgid "Total amount in currency unit"
 msgstr "Montant total en unité monétaire"
 
-#: saas/models.py:1556
+#: saas/models.py:1557
 msgid "Organization charged"
 msgstr "Nom de l'organisation qui a payée"
 
-#: saas/models.py:1558
+#: saas/models.py:1559
 msgid "Description for the charge as appears on billing statements"
 msgstr "Description du paiement tel qu'il apparaît sur les relevés de banque."
 
-#: saas/models.py:1561
+#: saas/models.py:1562
 msgid "Last 4 digits of the credit card used"
 msgstr "Les 4 derniers chiffres de la carte de paiement utilisée"
 
-#: saas/models.py:1563
+#: saas/models.py:1564
 msgid "Expiration date of the credit card used"
 msgstr "La date d'expiration de la carte de paiement utilisée"
 
-#: saas/models.py:1649
+#: saas/models.py:1650
 #, python-format
 msgid "charge and refunds have different units (%(unit)s vs. %(refund_unit)s)"
 msgstr ""
 "La charge et les remboursements ont différentes unités (%(unit)s vs. "
 "%(refund_unit)s)"
 
-#: saas/models.py:2192
+#: saas/models.py:2193
 #, python-format
 msgid ""
 "Cannot refund %(refund_required)s while there is only %(refund_available)s "
@@ -4884,11 +4989,11 @@ msgstr ""
 "Impossible de rembourser %(refund_required)s alors qu'il n'y a que "
 "%(refund_available)s disponible pour la ligne."
 
-#: saas/models.py:2274
+#: saas/models.py:2275
 msgid "Transaction invoiced through this charge"
 msgstr "La Transaction facturée à travers cette charge"
 
-#: saas/models.py:2278
+#: saas/models.py:2279
 msgid ""
 "Fee transaction to processor in order to process the transaction invoiced "
 "through this charge"
@@ -4896,7 +5001,7 @@ msgstr ""
 "Transaction enregistrant les frais pour la transaction facturée a travers "
 "cette charge"
 
-#: saas/models.py:2283
+#: saas/models.py:2284
 msgid ""
 "Fee transaction to broker in order to process the transaction invoiced "
 "through this charge"
@@ -4904,12 +5009,12 @@ msgstr ""
 "Transaction enregistrant les frais pour la transaction facturée a travers "
 "cette charge"
 
-#: saas/models.py:2288
+#: saas/models.py:2289
 msgid "Transaction recording the distribution from processor to provider."
 msgstr ""
 "Transaction enregistrée pour la distribution du processeur au fournisseur."
 
-#: saas/models.py:2421
+#: saas/models.py:2422
 #, python-format
 msgid ""
 "%(provider)s has %(funds_available)s of funds available. %(funds_required)s "
@@ -4918,68 +5023,68 @@ msgstr ""
 "%(provider)s a %(funds_available)s de fonds disponibles. %(funds_required)s "
 "sont requis pour rembourser '%(descr)s'"
 
-#: saas/models.py:2611
+#: saas/models.py:2612
 msgid "One-time charge amount in currency unit"
 msgstr "Montant en unité monétaire a payer une seule fois"
 
-#: saas/models.py:2614
+#: saas/models.py:2615
 msgid "Recurring amount per period in currency unit"
 msgstr "Montant en unité monétaire à payer à chaque période"
 
-#: saas/models.py:2618
+#: saas/models.py:2619
 msgid ""
 "Natural period length of a subscription to the plan (monthly, yearly, etc.)"
 msgstr "Période naturelle pour un abonnement au plan (mois, année, etc.)"
 
-#: saas/models.py:2622
+#: saas/models.py:2623
 msgid "Broker fee per transaction (in per 10000)."
 msgstr "Frais de l'intermédiaire par transaction (en pour 10000)"
 
-#: saas/models.py:2625
+#: saas/models.py:2626
 msgid "Payment required to access full service"
 msgstr "Vous devez payer pour accèder au service complet"
 
-#: saas/models.py:2628
+#: saas/models.py:2629
 msgid ""
 "Number of natural periods before a subscription to the plan ends (default to "
 "1)"
 msgstr ""
 "Nombre de périodes avant que l'abonnement au plan se termine (1 par défaut)"
 
-#: saas/models.py:2717 saas/models.py:3288
+#: saas/models.py:2718 saas/models.py:3289
 #, python-format
 msgid "period type %d is not defined."
 msgstr "Le type de période %d n'est pas défini."
 
-#: saas/models.py:2800 saas/models.py:2873
+#: saas/models.py:2801 saas/models.py:2874
 msgid "Amount of the discount"
 msgstr "Montant sur le compte de dépôt"
 
-#: saas/models.py:2802
+#: saas/models.py:2803
 msgid "Contract length associated with the period"
 msgstr "Durée du contrat associée à la période"
 
-#: saas/models.py:2866
+#: saas/models.py:2867
 msgid "Unique identifier per provider, typically used in URLs"
 msgstr "Identifiant unique par fournisseur, en général utilisé dans les URLs"
 
-#: saas/models.py:2876
+#: saas/models.py:2877
 msgid "Coupon will only apply to purchased plans from this provider"
 msgstr "Coupon ne sera appliqué que pour les plans de ce fournisseur"
 
-#: saas/models.py:2879
+#: saas/models.py:2880
 msgid "Coupon will only apply to this plan"
 msgstr "Coupon ne sera appliqué que pour ce plan"
 
-#: saas/models.py:2882
+#: saas/models.py:2883
 msgid "Date/time at which the coupon code expires (in ISO format)"
 msgstr "Date/heure à laquelle le coupon expire (en format ISO)"
 
-#: saas/models.py:2885
+#: saas/models.py:2886
 msgid "Number of times the coupon can be used"
 msgstr "Nombre de fois que le coupon peut être utilisé"
 
-#: saas/models.py:3037
+#: saas/models.py:3038
 msgid ""
 "User who added the item to the cart (``None`` means the item could be "
 "claimed)"
@@ -4987,93 +5092,93 @@ msgstr ""
 "L'utilisateur qui a ajouté ce produit dans son panier (``None`` veut dire "
 "que le produit peut être attaché à un profil dans le futur)"
 
-#: saas/models.py:3041
+#: saas/models.py:3042
 msgid "Item added to the cart (if plan)"
 msgstr "Produit ajouté au panier (si plan)"
 
-#: saas/models.py:3044
+#: saas/models.py:3045
 msgid "Item added to the cart (if use charge)"
 msgstr "Produit ajouté au panier (si frais d'usage)"
 
-#: saas/models.py:3047
+#: saas/models.py:3048
 msgid "Coupon to apply to the order"
 msgstr "Coupon à appliquer au passage en caisse"
 
-#: saas/models.py:3049
+#: saas/models.py:3050
 msgid "Whever the item has been checked out or not"
 msgstr "Si le produit est passé en caisse ou non"
 
-#: saas/models.py:3054
+#: saas/models.py:3055
 msgid "Number of periods to be paid in advance"
 msgstr "Nombre de périodes payées en avance"
 
-#: saas/models.py:3075
+#: saas/models.py:3076
 msgid ""
 "Full name of the person that will benefit from the subscription (GroupBuy)"
 msgstr "Nom de la personne qui bénéficie de l'abonnement (GroupBuy)"
 
-#: saas/models.py:3221
+#: saas/models.py:3222
 msgid "The subscription is set to auto-renew at the end of the period"
 msgstr "L'abonnement est renouvellé automatiquement à la fin de la période"
 
-#: saas/models.py:3226
+#: saas/models.py:3227
 msgid "Date/time when the subscription period currently ends (in ISO format)"
 msgstr "Date/heure a laquelle l'abonnement se termine (en format ISO)"
 
-#: saas/models.py:3229
+#: saas/models.py:3230
 msgid "Free-form text description for the subscription"
 msgstr "Texte libre pour la description de l'abonnement"
 
-#: saas/models.py:3231
+#: saas/models.py:3232
 msgid "Organization subscribed to the plan"
 msgstr "Organisation abonnée au plan"
 
-#: saas/models.py:3233
+#: saas/models.py:3234
 msgid "Plan the organization is subscribed to"
 msgstr "Plan auquel l'organisation est abonnée"
 
-#: saas/models.py:4247
+#: saas/models.py:4248
 msgid "Source account from which funds are withdrawn"
 msgstr "Compte source duquel les fonds sont retirés"
 
-#: saas/models.py:4253
+#: saas/models.py:4254
 msgid "Amount withdrawn from source in orig_unit"
 msgstr "Montant en orig_unit retiré de la source"
 
-#: saas/models.py:4255
+#: saas/models.py:4256
 msgid "Three-letter ISO 4217 code for source currency unit (ex: usd)"
 msgstr ""
 "Le code à trois lettres ISO 4217 pour l'unité monétaire source (ex: eur)."
 
-#: saas/models.py:4258
+#: saas/models.py:4259
 msgid "Target account to which funds are deposited"
 msgstr "Compte destinataire sur lequel les fonds sont déposés"
 
-#: saas/models.py:4264
+#: saas/models.py:4265
 msgid "Amount deposited into target in dest_unit"
 msgstr "Montant en dest_unit versé au destinataire"
 
-#: saas/models.py:4266
+#: saas/models.py:4267
 msgid "Three-letter ISO 4217 code for target currency unit (ex: usd)"
 msgstr ""
 "Le code à trois lettres ISO 4217 pour l'unité monétaire destinataire (ex: "
 "eur)."
 
-#: saas/models.py:4271
+#: saas/models.py:4272
 msgid "Free-form text description for the Transaction"
 msgstr "Texte libre pour la description de la Transaction"
 
-#: saas/models.py:4273
+#: saas/models.py:4274
 msgid ""
 "Event at the origin of this transaction (ex. subscription, charge, etc.)"
 msgstr ""
 "L'événement à l'origine de la transaction (ex. abonnement, charge, etc.)"
 
-#: saas/models.py:4337
+#: saas/models.py:4338
 msgid "Title for the row"
 msgstr "Titre de la ligne"
 
-#: saas/models.py:4342
+#: saas/models.py:4343
 msgid "Absolute position of the row in the list of rows for the table"
 msgstr "Position absolue de la ligne dans la liste de ligne du tableau"
 
@@ -5095,29 +5200,29 @@ msgstr "Pas de champ '%(field)s': %(msg)s"
 msgid "This %(field)s is already taken."
 msgstr "Ce %(field)s est déjà pris."
 
-#: saas/views/billing.py:122 saas/views/billing.py:417
-#: saas/views/billing.py:483 saas/views/billing.py:877
+#: saas/views/billing.py:123 saas/views/billing.py:331
+#: saas/views/billing.py:399
 msgid ""
 "The payment processor is currently unreachable. Sorry for the inconvienience."
 msgstr ""
 "Le processeur de paiement n'est pas accessible actuellement. Désolé pour le "
 "dérangement"
 
-#: saas/views/billing.py:150 saas/views/billing.py:223
+#: saas/views/billing.py:151 saas/views/billing.py:224
 msgid "Connection to your deposit account was successfully updated."
 msgstr "La connection de votre compte de dépôt a été sauvegardée avec succès."
 
-#: saas/views/billing.py:189
+#: saas/views/billing.py:190
 msgid "Missing processor token."
 msgstr "Un token processeur est manquant"
 
-#: saas/views/billing.py:229
+#: saas/views/billing.py:230
 msgid "An error occured while saving your deposit account settings."
 msgstr ""
 "Une erreur est survenue pendant la sauvegarde de la connection de votre "
 "compte de dépôt."
 
-#: saas/views/billing.py:363
+#: saas/views/billing.py:275
 msgid ""
 "There are no items invoicable at this point. Please select an item before "
 "checking out."
@@ -5125,7 +5230,7 @@ msgstr ""
 "Il n'y a pas de produit dans votre panier. S'il vous plait choisissez un "
 "produit avant de passer en caisse."
 
-#: saas/views/billing.py:397 saas/views/billing.py:928
+#: saas/views/billing.py:309 saas/views/billing.py:833
 #, python-format
 msgid ""
 "A receipt will be sent to %(email)s once the charge has been processed. "
@@ -5133,11 +5238,11 @@ msgid ""
 msgstr ""
 "Un reçu va être envoyé à %(email)s une fois le paiement accepté. Merci."
 
-#: saas/views/billing.py:468
+#: saas/views/billing.py:382
 msgid "Your credit card on file was sucessfully updated"
 msgstr "Votre carte bancaire a été sauvegardée avec succès."
 
-#: saas/views/billing.py:674
+#: saas/views/billing.py:584
 msgid ""
 "Your Cart is empty. Please add some items to your cart before you check out."
 msgstr ""
@@ -5158,11 +5263,6 @@ msgstr "Requête pour %(organization)s acceptée."
 #, python-format
 msgid "Successfully created plan titled '%(title)s'."
 msgstr "Un plan avec le titre '%(title)s' a été créé avec succès."
-
-#: saas/views/plans.py:205
-#, python-format
-msgid "Successfully updated plan titled '%(title)s'."
-msgstr "Un plan avec le titre '%(title)s' a été sauvegardé avec succès."
 
 #: saas/views/redirects.py:127 saas/views/roles.py:65
 #, python-format
@@ -5517,19 +5617,19 @@ msgstr "Date à laquelle le compte à été créé"
 msgid "This e-mail address is already taken."
 msgstr "Cette address email est déjà prise."
 
-#: signup/utils.py:184
+#: signup/utils.py:183
 msgid "Signature has expired."
 msgstr "La signature a expiré"
 
-#: signup/utils.py:187
+#: signup/utils.py:186
 msgid "Error decoding signature."
 msgstr "Erreur durant le décodage de la signature."
 
-#: signup/utils.py:191
+#: signup/utils.py:190
 msgid "Missing username in payload"
 msgstr "Le nom d'utilisateur est manquant du payload"
 
-#: signup/utils.py:197
+#: signup/utils.py:196
 msgid "User does not exist."
 msgstr "L'utilisateur n'existe pas."
 

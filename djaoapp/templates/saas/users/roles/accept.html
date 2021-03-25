@@ -1,0 +1,29 @@
+{% extends "saas/base.html" %}
+
+{% block content %}
+<section id="redirects">
+  <div class="container">
+    <div class="row">
+      <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
+        {% if role %}
+        <p class="text-center">
+{% trans role_descr=role.role_description.title, organization=role.organization.printable_name %}Based on your e-mail address we have granted you a {{role_descr}} role on {{organization}}.{% endtrans %}
+        </p>
+        <p class="text-center">
+          {% if contacts %}
+{% trans organization=role.organization.printable_name, contacts=contacts %}If you need extra permissions, please contact one of the profile managers for {{organization}}: {{contacts}}.{% endtrans %}
+          {% else %}
+{% trans %}If you have any questions, please <a href="/contact/">contact us</a>.{% endtrans %}
+          {% endif %}
+        </p>
+        <div class="text-center">
+          <a class="btn btn-primary btn-lg" href="{{next}}">{% trans %}Continue{% endtrans %}</a>
+        </div>
+        {% else %}
+{% trans %}You need to verify your e-mail address before going further. Please click on the link in the e-mail we just sent you.{% endtrans %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
