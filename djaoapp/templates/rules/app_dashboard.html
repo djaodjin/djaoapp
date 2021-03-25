@@ -202,7 +202,13 @@
                   <div class="modal-body">
                     <div class="form-group">
                       <div class="controls">
-                        <input class="form-control" v-model="sessionKey" name="key" maxlength="32" type="text" disabled value="{% trans %}Generating{% endtrans %} ..." />
+                        <input class="form-control"
+                               v-model="sessionKey"
+                               maxlength="32"
+                               type="text" disabled
+                               name="key"
+                               placeholder="{% trans %}Generating{% endtrans %} ..."
+                               value="{% trans %}Generating{% endtrans %} ..." />
                       </div>
                     </div>
                     <div>

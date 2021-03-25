@@ -132,7 +132,7 @@
                   </div>
                   <div class="align-items-center justify-content-center h-75">
                     <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.activeUsers]]</h2>
+                    <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.active_users]]</h2>
                     <div class="text-warning" v-show="itemLoaded && item.authentication && item.authentication !=='enabled'" v-cloak>
                       <span class="fa fa-warning"></span> authentication is <span class="text-danger">[[item.authentication]]</span>. Go to the rules page to <a href="{{urls.rules.app}}">enable registration &raquo;</a>
                     </div>

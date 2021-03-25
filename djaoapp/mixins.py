@@ -19,7 +19,7 @@ from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
 from .compat import reverse, six
-from .edition_tools import fail_edit_perm, inject_edition_tools
+from .edition_tools import fail_edit_perm
 
 
 LOGGER = logging.getLogger(__name__)
@@ -40,20 +40,10 @@ class DjaoAppMixin(object):
     """
 
     def add_edition_tools(self, response, context=None):
-        """
-        If the ``request.user`` has editable permissions, this method
-        injects the edition tools into the html *content* and return
-        a BeautifulSoup object of the resulting content + tools.
-
-        If the response is editable according to the proxy rules, this
-        method returns a BeautifulSoup object of the content such that
-        ``PageMixin`` inserts the edited page elements.
-        """
-        if context is None:
-            context = {}
-        context.update(get_edition_tools_context_data())
-        return inject_edition_tools(
-            response, request=self.request, context=context)
+        # The edition tools will already be injected through
+        # the url decorator (`inject_edition_tools` defined in decorators.py)
+        # as it is added to `url_prefixed` in urlbuilders.py
+        return None
 
     @property
     def edit_perm(self):

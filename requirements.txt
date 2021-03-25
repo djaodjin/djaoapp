@@ -6,14 +6,14 @@ Django==2.2.19
 django-phonenumber-field==5.0.0
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.23
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.18
-djaodjin-pages==0.3.1
-djaodjin-rules==0.2.6
-djaodjin-saas==0.9.3
+djaodjin-pages==0.3.5
+djaodjin-rules==0.2.7
+djaodjin-saas==0.9.4
 djaodjin-signup==0.4.9
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.8.1
@@ -23,8 +23,8 @@ MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 #   but it still seems to work ...
 gunicorn==19.7.1
 phonenumbers==8.12.6
-PyJWT==1.7.1    # djaodjin-signup==0.4.7 is not compatible with PyJWT==2.0.1
-pytz==2020.1
+PyJWT==1.7.1    # djaodjin-signup==0.4.9 is not compatible with PyJWT==2.0.1
+pytz==2021.1
 social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
 

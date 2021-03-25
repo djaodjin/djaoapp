@@ -26,7 +26,7 @@ from ..views.users import (UserProfileView, UserNotificationsView,
     UserAccessiblesView, UserPasswordUpdateView, UserPublicKeyUpdateView)
 from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView)
-from ..views.redirects import OrganizationRedirectView
+from ..views.redirects import OrganizationCreateView, OrganizationRedirectView
 
 
 def is_anonymous(func, next_url):
@@ -63,6 +63,15 @@ urlpatterns = [
                 pattern_name='saas_organization_cart'),
                        login_url='registration_register'),
         name='saas_cart'),
+    url_authenticated(r'^profile/new/',
+        # We want to use `get_implicit_create_on_none` override.
+        OrganizationCreateView.as_view(),
+        name='saas_organization_create'),
+    url_authenticated(r'^profile/$',
+        # We want to use `get_implicit_create_on_none` override.
+        OrganizationRedirectView.as_view(
+        pattern_name='saas_organization_profile'),
+        name='saas_profile'),
     url_authenticated(r'^', include('saas.urls.redirects')),
 
     # Profiles

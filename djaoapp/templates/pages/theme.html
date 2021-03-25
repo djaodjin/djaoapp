@@ -119,6 +119,9 @@
       {% if urls.pages and urls.pages.api_themes %}
         $("#theme-upload").djupload({
             uploadUrl: "{{urls.pages.api_themes}}",
+            uploadSuccess: function(file, resp) {
+                showMessages(['{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', file.name)], 'success');
+            }
         });
       {% endif %}
 

@@ -21,7 +21,34 @@
           <div class="clickable-area">
             <em>{% trans %}Drag'n'drop or click here.{% endtrans %}</em>
           </div>
-          <div class="dj-gallery-info-item"></div>
+          <div class="dj-gallery-info-item">
+            <div class="dj-gallery-info-item-empty">
+                <em>{% trans %}Click on an item to view more options{% endtrans %}</em>
+            </div>
+            <div class="dj-gallery-info-item-selected" style="display: none;">
+              <div class="dj-input-group">
+                <input type="text" class="dj-input" readonly data-dj-gallery-media-url>
+                <span class="dj-input-group-btn">
+                  <button data-dj-gallery-media-location class="dj-gallery-preview-item btn btn-primary" type="button">
+                    <i class="fa fa-eye fa-lg"></i>
+                  </button>
+                </span>
+              </div>
+              <br />
+              <div class="dj-input-group">
+                <input type="text" data-dj-gallery-media-tag class="dj-gallery-tag-input dj-input" placeholder="{% trans %}tags{% endtrans %} ..." aria-describedby="basic-addon1">
+                <span class="dj-input-group-btn">
+                  <button class="dj-gallery-tag-item btn btn-primary" type="button">{% trans %}Tag{% endtrans %}</button>
+                </span>
+              </div>
+              <span class="dj-help-block">
+                {% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}
+              </span>
+              <button data-dj-gallery-media-location class="dj-gallery-delete-item btn btn-primary btn-block">
+                <i class="fa fa-trash-o fa-lg"></i> {% trans %}Delete{% endtrans %}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,7 +68,10 @@
   <script type="text/javascript">
 jQuery(document).ready(function($) {
   $(".dj-upload").djupload({
-    uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
+      uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
+      uploadSuccess: function(file, resp) {
+            showMessages(['{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', file.name)], 'success');
+      },
   });
 
   $(".dj-gallery").djgallery({
@@ -68,12 +98,15 @@ jQuery(document).ready(function($) {
         }, 2000);
       }
     },
-    galleryItemOptionsTemplate: "<div class=\"dj-input-group\"><input type=\"text\" class=\"dj-input\" readonly data-dj-gallery-media-url><span class=\"dj-input-group-btn\"><button data-dj-gallery-media-location class=\"dj-gallery-preview-item btn btn-primary\" type=\"button\"><i class=\"fa fa-eye fa-lg\"></i></button></span></div>\n<br><div class=\"dj-input-group\"><input type=\"text\" data-dj-gallery-media-tag class=\"dj-gallery-tag-input dj-input\" placeholder=\"{% trans %}tags{% endtrans %} ...\" aria-describedby=\"basic-addon1\"><span class=\"dj-input-group-btn\"><button class=\"dj-gallery-tag-item btn btn-primary\" type=\"button\">{% trans %}Tag{% endtrans %}</button></span></div><span class=\"dj-help-block\">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</span>\n<button data-dj-gallery-media-location class=\"dj-gallery-delete-item btn btn-primary btn-block\"><i class=\"fa fa-trash-o fa-lg\"></i> {% trans %}Delete{% endtrans %}</button>\n",
-    galleryMessage: function(message, type){
-      if (!type){
-        type = "success";
+    galleryMessage: function(message, type) {
+      if( type == 'error' ) {
+          showErrorMessages(message, type);
+      } else {
+          if( !type ) {
+              type = "success";
+          }
+          showMessages([message], type);
       }
-      showMessages([message], type);
     },
     previewMediaItem: function(src, type){
       $("#modal-preview-media .modal-body").empty();
@@ -83,6 +116,17 @@ jQuery(document).ready(function($) {
         $("#modal-preview-media .modal-body").append("<img src=\"" + src + "\" style=\"max-width:100%\">");
       }
       $("#modal-preview-media").modal('show');
+    },
+
+    // messages
+    uploadSuccessMessage: function(filename, location) {
+        return '{% trans %}"${filename}" uploaded sucessfully to "${location}"{% endtrans %}'.replace('${filename}', filename).replace('${location}', location);
+    },
+    uploadPreviousSuccessMessage: function(filename, location) {
+        return '"{% trans %}${filename}" has previously been uploaded to "${location}"{% endtrans %}'.replace('${filename}', filename).replace('${location}', location);
+    },
+    placeholderAcceptsErrorMessage: function(filetypes) {
+        return '{% trans %}This placeholder accepts only: ${filetypes} files.{% endtrans %}'.replace('${filetypes}', filetypes);
     }
   });
 });
@@ -98,6 +142,7 @@ jQuery(document).ready(function($) {
   </ul>
   <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
     {# panels are inserted here #}
+    <div>{% trans %}No editable templates{% endtrans %}</div>
   </div>
   <div id="new-source" class="modal fade"
        tabindex="-1" role="dialog"

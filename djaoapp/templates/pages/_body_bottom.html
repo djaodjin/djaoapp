@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
 
   $('.editable').editor({
     baseUrl: '{{urls.edit.api_page_element_base}}',
-    preventBlurOnClick: '#toggle-media-gallery, .dj-gallery-item'
+    emptyInputText: {% trans %}"placeholder, type to overwrite..."{% endtrans %}
   });
 });
 </script>
