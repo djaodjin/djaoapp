@@ -64,12 +64,12 @@ def inject_edition_tools(function=None):
 #                        using=view_func.template_engine,
                         status=400)
                     response.render()
-                soup = _inject_edition_tools(response, request,
-                    context=get_edition_tools_context_data())
-                if soup:
-                    # str(soup) instead of soup.prettify() to avoid
-                    # trailing whitespace on a reformatted HTML textarea
-                    response.content = str(soup)
+            soup = _inject_edition_tools(response, request,
+                context=get_edition_tools_context_data())
+            if soup:
+                # str(soup) instead of soup.prettify() to avoid
+                # trailing whitespace on a reformatted HTML textarea
+                response.content = str(soup)
             return response
         return _wrapped_view
 
