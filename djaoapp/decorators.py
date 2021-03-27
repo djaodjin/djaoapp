@@ -8,7 +8,7 @@ from functools import wraps
 
 from django.db import DEFAULT_DB_ALIAS
 from django.db.models import Q
-from django.template.response import TemplateResponse
+from django.template.response import SimpleTemplateResponse
 import jinja2.exceptions
 from multitier.thread_locals import get_current_site
 from pages.locals import (enable_instrumentation, disable_instrumentation,
@@ -48,7 +48,7 @@ def inject_edition_tools(function=None):
             enable_instrumentation()
             response = view_func(request, *args, **kwargs)
             disable_instrumentation()
-            if isinstance(response, TemplateResponse):
+            if isinstance(response, SimpleTemplateResponse):
                 # We could use ``SingleTemplateResponse`` to catch both
                 # django and restframework responses. Unfortunately
                 # the content_type on restframework responses is set
