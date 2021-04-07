@@ -168,6 +168,8 @@ class ProxyPageView(ProxyPageMixin, DjaoAppProxyPageView):
 class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
     """
     Implements /app/ URL.
+
+    By default redirects to the profile App page.
     """
     template_name = 'accesible_apps.html'
     pattern_name = 'organization_app'

@@ -57,7 +57,7 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     # Redirects
-    url(r'^billing/cart/',
+    url_prefixed(r'^billing/cart/',
         # XXX override because we want a login_required in front.
         login_required(OrganizationRedirectView.as_view(
                 pattern_name='saas_organization_cart'),
