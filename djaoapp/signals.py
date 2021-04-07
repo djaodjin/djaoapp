@@ -96,6 +96,12 @@ def _send_notification_email(from_site, recipients, template,
                 recipients=notified_on_errors,
                 template=template,
                 context=context)
+    except Exception as err:
+        # Something went horribly wrong, like the email password was not
+        # decrypted correctly. We want to notifiy the operations team
+        # but the end user shouldn't see a 500 error as a result
+        # of notifications sent in the HTTP request pipeline.
+        LOGGER.exception(err)
 
 
 def get_user_context(user):
