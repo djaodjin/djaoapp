@@ -18,8 +18,7 @@
     EditPlan.prototype = {
         init: function(){
             var self = this;
-            var editionTool = "<button class=\"text-danger trash-plan close\" style=\"position:absolute;top:50px; left:20px;\"><i class=\"fa fa-trash-o icon_edition\"></i></button> \
-                                <button class=\"text-danger edit-plan close\" style=\"position:absolute;top:80px; left:20px;\"><i class=\"fa fa-pencil icon_edition\"></i></button>";
+            var editionTool = "<button class=\"edit-plan close\" style=\"position:absolute;top:30px; left:20px;\"><i class=\"fa fa-pencil icon_edition\"></i></button><button class=\"text-danger trash-plan close\" style=\"position:absolute;top:30px; right:20px;\"><i class=\"fa fa-trash-o icon_edition\"></i></button>";
 
             this.element.append(editionTool);
             this.element.on("click", ".trash-plan", function(event){
