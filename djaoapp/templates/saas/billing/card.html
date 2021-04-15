@@ -14,6 +14,9 @@
     {% if STRIPE_INTENT_SECRET %}
     data-stripe-intent-secret="{{STRIPE_INTENT_SECRET}}"
     {% endif %}
+    {% if STRIPE_ACCOUNT %}
+    data-stripe-account="{{STRIPE_ACCOUNT}}"
+    {% endif %}
     >
   <div>
   <div class="col-md-12">
