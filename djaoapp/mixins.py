@@ -165,6 +165,7 @@ class RegisterMixin(object):
         username = cleaned_data.get('username', None)
         password = cleaned_data.get('new_password',
             cleaned_data.get('password', None))
+        lang = cleaned_data.get('lang', None)
         organization_name = cleaned_data.get(organization_selector, full_name)
         if user_selector == organization_selector:
             # We have a personal registration
@@ -182,7 +183,8 @@ class RegisterMixin(object):
                     password=password,
                     email=email,
                     first_name=first_name,
-                    last_name=last_name)
+                    last_name=last_name,
+                    lang=lang)
 
                 Signature.objects.create_signature(
                     saas_settings.TERMS_OF_USE, user)

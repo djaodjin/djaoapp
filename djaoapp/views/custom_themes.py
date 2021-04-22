@@ -42,7 +42,7 @@ class ThemePackageView(ThemePackageBaseView):
                 'order_executed': {
                     'title': _("Order confirmation"),
                     'descr': _("This notification is sent when an order has"\
-" been confirmed but a charge has been successfuly processed yet.")
+" been confirmed but a charge has not been successfully processed yet.")
                 },
                 'organization_updated': {
                     'title': _("Profile updated"),

@@ -46,9 +46,8 @@ class RegisterSerializer(CreateUserSerializer):
     phone = serializers.CharField(required=False,
         help_text=_("Phone number for the billing profile"))
 
-    class Meta:
-        model = get_user_model()
-        fields = ('username', 'password', 'email', 'full_name',
+    class Meta(CreateUserSerializer.Meta):
+        fields = CreateUserSerializer.Meta.fields + (
             'organization_name', 'street_address', 'locality',
             'region', 'postal_code', 'country', 'phone', 'type')
 
@@ -97,7 +96,8 @@ JwcBUUMECj8AKxsHtRHUSypco"
 
     def register(self, serializer):
         #pylint: disable=maybe-no-member,too-many-boolean-expressions
-        registration = self.app.IMPLICIT_REGISTRATION
+        registration = serializer.validated_data.get('type',
+            self.app.IMPLICIT_REGISTRATION)
         full_name = serializer.validated_data.get('full_name', None)
         if 'organization_name' in serializer.data:
             # We have a registration of a user and organization together.

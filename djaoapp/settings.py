@@ -148,8 +148,10 @@ MIDDLEWARE += (
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'signup.middleware.AuthenticationMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # The locale middleware seems to use `request.session` but not
+    # `request.user` so it is strategically placed in-between here.
+    'signup.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

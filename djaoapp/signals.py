@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.mail import get_connection as get_connection_base
 from django.db.models.signals import post_save
 from django.dispatch import Signal, receiver
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
 from multitier.thread_locals import get_current_site
@@ -68,14 +69,20 @@ def _send_notification_email(from_site, recipients, template,
     if there is any problem with the connection settings.
     """
     #pylint:disable=too-many-arguments
+    lang_code = None
+    contact = Contact.objects.filter(
+        email__in=recipients).order_by('email').first()
+    if contact:
+        lang_code = contact.lang
     try:
-        get_email_backend(connection=from_site.get_email_connection()).send(
-            from_email=from_site.get_from_email(),
-            recipients=recipients,
-            reply_to=reply_to,
-            bcc=bcc,
-            template=template,
-            context=context)
+        with translation.override(lang_code):
+            get_email_backend(connection=from_site.get_email_connection()).send(
+                from_email=from_site.get_from_email(),
+                recipients=recipients,
+                reply_to=reply_to,
+                bcc=bcc,
+                template=template,
+                context=context)
     except smtplib.SMTPException as err:
         LOGGER.warning(
             "[signal] problem sending email from %s on connection for %s. %s",
@@ -319,6 +326,7 @@ def card_updated_notice(sender, organization, user,
             'card_updated')
         app = get_current_app()
         site = get_current_site()
+        reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
         _send_notification_email(site, recipients,
