@@ -38,7 +38,7 @@ WeasyPrint==0.42.3
 # To run with DEBUG=1
 django-extensions==2.1.4
 django-debug-panel==0.8.3
-django-debug-toolbar==1.11 # XXX does not support Django 2.2
+django-debug-toolbar==1.11.1 # XXX does not support Django 2.2
 
 # documentation is done with Py3. This requirements-legacy.txt is purely
 # used for testing on Py27.
