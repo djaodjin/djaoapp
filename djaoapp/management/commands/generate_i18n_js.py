@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.views.i18n import JavaScriptCatalog, get_formats
 from django.template import Context, Engine
-from django.utils.translation import get_language
 from django.utils.translation.trans_real import DjangoTranslation
 
 from ...compat import six

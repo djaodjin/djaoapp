@@ -1,11 +1,11 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
-from rules.urldecorators import include, url
+from rules.urldecorators import include
 from saas.settings import ACCT_REGEX
 from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
@@ -16,7 +16,7 @@ from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
     url_provider, url_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
-    ProcessorAuthorizeView)
+    ProcessorAuthorizeView, OrganizationProfileView)
 from ..views.custom_signup import (ActivationView, PasswordResetView,
     PasswordResetConfirmView, SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
@@ -103,6 +103,9 @@ urlpatterns = [
         ProcessorAuthorizeView.as_view(), name='saas_update_bank'),
     url_direct(r'^', include('saas.urls.provider')),
     url_provider(r'^', include('saas.urls.subscriber.billing')),
+    url_provider(r'^profile/(?P<organization>%s)/contact/$' % ACCT_REGEX,
+        OrganizationProfileView.as_view(),
+            name='saas_organization_profile'),
     url_provider(r'^', include('saas.urls.subscriber.profile')),
     url_dashboard_iframe(r'^proxy/notifications/(?P<template>%s)/iframe/' %
         ACCT_REGEX, NotificationInnerFrameView.as_view(),

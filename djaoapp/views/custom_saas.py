@@ -14,13 +14,17 @@ from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
     ProcessorAuthorizeView as BaseProcessorAuthorizeView)
-from saas.views.profile import DashboardView as BaseDashboardView
+from saas.views.profile import (DashboardView as BaseDashboardView,
+    OrganizationProfileView as OrganizationProfileViewBase)
 from saas.views.roles import (
     RoleImplicitGrantAcceptView as RoleImplicitGrantAcceptViewBase)
-from saas.utils import update_context_urls
+from saas.utils import update_context_urls, update_db_row
 from signup.decorators import check_email_verified as check_email_verified_base
+from signup.helpers import full_name_natural_split
+from signup.models import get_user_contact
 
 from ..compat import reverse
+from ..forms.profile import PersonalProfileForm
 
 
 LOGGER = logging.getLogger(__name__)
@@ -92,6 +96,50 @@ class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
                     'authorize_processor_test': authorize_url
                 })
         return context
+
+
+class OrganizationProfileView(OrganizationProfileViewBase):
+
+    def update_attached_user(self, form):
+        validated_data = form.cleaned_data
+        user = self.object.attached_user()
+        if user:
+            user.username = validated_data.get('slug', user.username)
+            user.email = validated_data.get('email', user.email)
+            full_name = validated_data.get('full_name')
+            if full_name:
+                first_name, mid, last_name = full_name_natural_split(full_name)
+                user.first_name = first_name
+                user.last_name = last_name
+            if update_db_row(user, form):
+                raise ValidationError("update_attached_user (user)")
+            contact = get_user_contact(self.object.attached_user())
+            print("XXX contact=%s - validated_data=%s" % (contact, validated_data))
+            if contact:
+                contact.slug = validated_data.get('slug', contact.slug)
+                if full_name:
+                    contact.full_name = full_name
+                contact.email = validated_data.get('email', contact.email)
+                contact.phone = validated_data.get('phone', contact.phone)
+                contact.lang = validated_data.get('lang', contact.lang)
+                if update_db_row(contact, form):
+                    raise ValidationError("update_attached_user (contact)")
+        return user
+
+    def get_form_class(self):
+        if self.object.attached_user():
+            # There is only one user so we will add the User fields
+            # to the form so they can be updated at the same time.
+            return PersonalProfileForm
+        return super(OrganizationProfileView, self).get_form_class()
+
+    def get_initial(self):
+        kwargs = super(OrganizationProfileView, self).get_initial()
+        if self.object.attached_user():
+            contact = get_user_contact(self.object.attached_user())
+            if contact:
+                kwargs.update({'lang': contact.lang})
+        return kwargs
 
 
 class RoleImplicitGrantAcceptView(ContextMixin, TemplateResponseMixin,

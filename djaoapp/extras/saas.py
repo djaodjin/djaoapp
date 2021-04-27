@@ -23,6 +23,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
     # matches definition in `saas.backends.stripe_processor.base.StripeBackend`.
     @staticmethod
     def _is_platform(provider):
+        #pylint:disable=protected-access
         return provider._state.db == 'default' and provider.is_broker
 
     def get_context_data(self, **kwargs):

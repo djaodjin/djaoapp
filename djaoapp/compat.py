@@ -10,6 +10,22 @@ from six.moves.urllib.parse import urljoin, urlparse, urlunparse
 from six import StringIO
 
 try:
+    from django.urls import URLPattern, URLResolver
+except ImportError:
+    from django.urls import (RegexURLPattern as URLPattern,
+        RegexURLResolver as URLResolver)
+
+
+def get_original_route(urlpat):
+    if hasattr(urlpat, 'pattern'):
+        # Django 2.0
+        return str(urlpat.pattern)
+    else:
+        # Django < 2.0
+        return urlpat.regex.pattern
+
+
+try:
     from django.utils.decorators import available_attrs
 except ImportError: # django < 3.0
     def available_attrs(fn):

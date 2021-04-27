@@ -1,11 +1,10 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 
 import logging
 
-from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from pages.utils import get_default_storage
 from rest_framework import serializers
@@ -51,6 +50,7 @@ class RegisterSerializer(CreateUserSerializer):
             'organization_name', 'street_address', 'locality',
             'region', 'postal_code', 'country', 'phone', 'type')
 
+#pylint:disable=protected-access
 RegisterSerializer._declared_fields["type"] = \
     EnumField(choices=Organization.ACCOUNT_TYPE, required=False,
         help_text=_("Type of the accounts being registered"))

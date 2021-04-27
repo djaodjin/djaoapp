@@ -19,8 +19,6 @@ from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
 from pages.serializers import NodeElementSerializer
 from rest_framework import exceptions, serializers
-from rest_framework.compat import (URLPattern, URLResolver,
-    get_original_route)
 from rest_framework.schemas.generators import EndpointEnumerator
 from rest_framework.schemas.utils import is_list_view
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
@@ -32,7 +30,7 @@ except ImportError: # drf < 3.10
     from rest_framework.schemas import (
         AutoSchema as BaseAutoSchema, SchemaGenerator)
 
-from ..compat import six
+from ..compat import URLPattern, URLResolver, get_original_route, six
 
 
 LOGGER = logging.getLogger(__name__)

@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -9,7 +9,6 @@ from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
-from pages.locals import get_edition_tools_context_data
 from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
@@ -43,6 +42,7 @@ class DjaoAppMixin(object):
         # The edition tools will already be injected through
         # the url decorator (`inject_edition_tools` defined in decorators.py)
         # as it is added to `url_prefixed` in urlbuilders.py
+        #pylint:disable=unused-argument,no-self-use
         return None
 
     @property

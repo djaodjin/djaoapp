@@ -40,7 +40,7 @@ update_settings(sys.modules[__name__],
 
 # Configuration settings that can be overriden on the command line.
 if os.getenv('DEBUG'):
-    DEBUG = True if int(os.getenv('DEBUG')) > 0 else False
+    DEBUG = bool(int(os.getenv('DEBUG')) > 0)
 
 if not hasattr(sys.modules[__name__], 'FEATURES_DEBUG'):
     FEATURES_DEBUG = DEBUG

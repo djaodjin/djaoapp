@@ -91,6 +91,7 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
               "type": "personal"
             }
         """
+        #pylint:disable=useless-super-delegation
         return super(OrganizationDetailAPIView, self).put(
             request, *args, **kwargs)
 
@@ -110,6 +111,7 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
 
             DELETE /api/profile/xia/ HTTP/1.1
         """
+        #pylint:disable=useless-super-delegation
         return super(OrganizationDetailAPIView, self).delete(
             request, *args, **kwargs)
 

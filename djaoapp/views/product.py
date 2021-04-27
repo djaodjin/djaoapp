@@ -98,7 +98,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         if not page_name:
             page_name = 'index'
         candidates += ["%s.html" % page_name] + optional_template_names
-        LOGGER.debug('candidate page templates: %s' % ','.join(candidates))
+        LOGGER.debug('candidate page templates: %s', ','.join(candidates))
         for template_name in candidates:
             try:
                 get_template(template_name)

@@ -16,10 +16,10 @@ djangorestframework==3.9.4
 djaodjin-deployutils==0.5.23
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.18
-djaodjin-pages==0.3.5
+djaodjin-pages==0.3.6
 djaodjin-rules==0.2.7
-djaodjin-saas==0.9.4
-djaodjin-signup==0.4.9
+djaodjin-saas==0.9.5
+djaodjin-signup==0.4.10
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
