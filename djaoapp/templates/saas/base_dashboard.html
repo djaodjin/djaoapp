@@ -69,7 +69,7 @@ Vue.prototype.$dateRange = {
 };
 Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
 Vue.prototype.$labels = {
-    notAvailableLabel: "{% trans %}N/A{% trans %}",
+    notAvailableLabel: "{% trans %}N/A{% endtrans %}",
     cardNumberLabel: "{% trans %}Card Number{% endtrans %}",
     securityCodeLabel: "{% trans %}Security Code{% endtrans %}",
     expirationLabel: "{% trans %}Expiration{% endtrans %}",
