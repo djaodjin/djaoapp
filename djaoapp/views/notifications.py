@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 from django.views.generic import TemplateView
@@ -14,9 +14,11 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
 
     def get_template_names(self):
         template_name = self.kwargs.get('template', None)
+
         if template_name.endswith('_role_grant_created'):
             return ["notification/%s.eml" % template_name,
                 "notification/role_grant_created.eml"]
+
         return ["notification/%s.eml" % template_name]
 
     def get_context_data(self, **kwargs):
@@ -31,10 +33,14 @@ class NotificationDetailView(AppMixin, TemplateView):
     template_name = 'notification/detail.html'
 
     def _get_template_names(self):
+        # Not `get_template_names` because we do not had
+        # a `get_test_email_context` context.
         template_name = self.kwargs.get('template', None)
-        if template_name.endswith('_role_added'):
+
+        if template_name.endswith('_role_grant_created'):
             return ["notification/%s.eml" % template_name,
-                "notification/role_added.eml"]
+                "notification/role_grant_created.eml"]
+
         return ["notification/%s.eml" % template_name]
 
     def get_context_data(self, **kwargs):

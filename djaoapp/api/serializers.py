@@ -1,9 +1,10 @@
-# Copyright (c) 2020 DjaoDjin inc.
+# Copyright (c) 2021 DjaoDjin inc.
 # see LICENSE
 
 #pylint: disable=no-init
 
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from saas.api.serializers import (
     OrganizationDetailSerializer as OrganizationBaseSerializer,
@@ -14,6 +15,15 @@ from saas.models import get_broker, Role, ChargeItem
 from signup.serializers import (ActivitySerializer as UserActivitySerializer,
     UserSerializer)
 from rules.api.serializers import AppSerializer as RulesAppSerializer
+
+
+class NoModelSerializer(serializers.Serializer):
+
+    def create(self, validated_data):
+        raise RuntimeError('`create()` should not be called.')
+
+    def update(self, instance, validated_data):
+        raise RuntimeError('`update()` should not be called.')
 
 
 class OrganizationDetailSerializer(OrganizationBaseSerializer):
@@ -126,8 +136,15 @@ class AppSerializer(RulesAppSerializer):
         fields = RulesAppSerializer.Meta.fields + ('show_edit_tools',)
 
 
-class ActivitySerializer(serializers.Serializer):
+class ActivitySerializer(NoModelSerializer):
     printable_name = serializers.CharField()
     descr = serializers.CharField()
     created_at = serializers.DateTimeField()
-    slug = serializers.CharField()
+
+
+class DetailSerializer(NoModelSerializer):
+    """
+    Details on the result of an API call
+    """
+    detail = serializers.CharField(help_text=_("Describes the result of"\
+        " the API call in plain text"))

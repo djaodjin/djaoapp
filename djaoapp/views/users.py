@@ -8,21 +8,18 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from multitier.thread_locals import get_current_site
-from saas import settings as saas_settings
-from saas.models import Organization, get_broker
-from signup.models import Notification
+from saas.models import Organization
+from saas.utils import update_context_urls
 from signup.views.users import (
     UserProfileView as UserProfileBaseView,
     UserNotificationsView as UserNotificationsBaseView,
     PasswordChangeView as UserPasswordUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
-from saas.utils import update_context_urls
 
 from ..compat import reverse
-
+from ..mixins import NotificationsMixin
 
 LOGGER = logging.getLogger(__name__)
-
 
 class UserMixin(object):
     """
@@ -94,18 +91,11 @@ class UserProfileView(UserMixin, UserProfileBaseView):
         return super(UserProfileView, self).get(request, *args, **kwargs)
 
 
-class UserNotificationsView(UserMixin, UserNotificationsBaseView):
+class UserNotificationsView(NotificationsMixin, UserMixin,
+                            UserNotificationsBaseView):
     """
     A view where a user can configure their notification settings
     """
-
-    def get_notifications(self):
-        if get_broker().with_role(saas_settings.MANAGER).filter(
-                pk=self.user.pk).exists():
-            return super(UserNotificationsView, self).get_notifications()
-        return Notification.objects.filter(slug__in=(
-            'charge_updated', 'card_updated', 'order_executed',
-            'organization_updated', 'expires_soon'))
 
 
 class UserAccessiblesView(UserMixin, UserAccessiblesBaseView):

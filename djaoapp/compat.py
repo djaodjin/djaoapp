@@ -20,9 +20,8 @@ def get_original_route(urlpat):
     if hasattr(urlpat, 'pattern'):
         # Django 2.0
         return str(urlpat.pattern)
-    else:
-        # Django < 2.0
-        return urlpat.regex.pattern
+    # Django < 2.0
+    return urlpat.regex.pattern
 
 
 try:

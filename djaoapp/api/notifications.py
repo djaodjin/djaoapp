@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -10,12 +10,12 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 
 from rules.mixins import AppMixin
-from saas.api.serializers import ValidationErrorSerializer
 from saas.docs import swagger_auto_schema, OpenAPIResponse
 from saas.models import Price, get_broker
 
 from ..compat import reverse
 from ..thread_locals import get_current_site, get_current_app
+from .serializers import DetailSerializer
 
 
 def get_test_email_context():
@@ -84,13 +84,10 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
     # Even though ``GET`` will be denied, we still need to provide
     # a ``serializer_class`` because it is called before permission checks.
     http_method_names = ['post']
-    serializer_class = None
-
-    def get_serializer_class(self):
-        return None
+    serializer_class = DetailSerializer
 
     @swagger_auto_schema(responses={
-        200: OpenAPIResponse("", ValidationErrorSerializer)})
+        200: OpenAPIResponse("", DetailSerializer)})
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         """
         Sends a test notification e-mail

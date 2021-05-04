@@ -6,6 +6,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.exceptions import ValidationError
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
@@ -108,13 +109,13 @@ class OrganizationProfileView(OrganizationProfileViewBase):
             user.email = validated_data.get('email', user.email)
             full_name = validated_data.get('full_name')
             if full_name:
+                #pylint:disable=unused-variable
                 first_name, mid, last_name = full_name_natural_split(full_name)
                 user.first_name = first_name
                 user.last_name = last_name
             if update_db_row(user, form):
                 raise ValidationError("update_attached_user (user)")
             contact = get_user_contact(self.object.attached_user())
-            print("XXX contact=%s - validated_data=%s" % (contact, validated_data))
             if contact:
                 contact.slug = validated_data.get('slug', contact.slug)
                 if full_name:

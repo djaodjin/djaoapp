@@ -13,7 +13,7 @@ from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import fail_direct
-from saas.models import Organization, Plan, Signature
+from saas.models import Organization, Plan, Signature, get_broker
 from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
@@ -233,3 +233,98 @@ class RegisterMixin(object):
         # since we might have a frictionless registration.
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         return user
+
+
+class NotificationsMixin(object):
+
+    @staticmethod
+    def get_notifications(user=None):
+        broker = get_broker()
+        notifications = {
+            'card_updated': {
+                'title': _("Card updated"),
+                'descr': _("This notification is sent when a credit card"\
+" on file is updated.")
+            },
+            'charge_receipt': {
+                'title': _("Charge receipt"),
+                'descr': _("This notification is sent when a charge is"\
+" created on a credit card. It is also sent when the charge is refunded.")
+            },
+            'claim_code_generated': {
+                'title': _("Claim code"),
+                'descr': _("This notification is sent to the user invited"\
+" through a groupBuy.")
+            },
+            'expires_soon': {
+                'title': _("Expires soon"),
+                'descr': _("This notification is sent when a subscription"\
+" is about to expire.")
+            },
+            'order_executed': {
+                'title': _("Order confirmation"),
+                'descr': _("This notification is sent when an order has"\
+" been confirmed but a charge has not been successfully processed yet.")
+            },
+            'organization_updated': {
+                'title': _("Profile updated"),
+                'descr': _("This notification is sent when a profile"\
+" is updated.")
+            },
+            'password_reset': {
+                'title': _("Password reset"),
+                'descr': _("This notification is sent to a user that has"\
+" requested to reset their password through a \"forgot password?\" link.")
+            },
+            'user_activated': {
+                'title': _("User activated"),
+                'descr': _("This notification is sent to profile managers"\
+" of a domain when a user has activated his/her account.")
+                },
+            'user_contact': {
+                'title': _("User contact"),
+                'descr': _("This notification is sent to profile managers"\
+" of a domain when a user submits an inquiry on the contact-us page.")
+            },
+            'user_registered': {
+                'title': _("User registered"),
+                'descr': _("This notification is sent to profile managers"\
+" of a domain when a user has registered.")
+            },
+            'user_welcome': {
+                'title': _("Welcome e-mail"),
+                'descr': _("This notification is sent to a user after they"\
+" register an account with the site."),
+            },
+            'role_request_created': {
+                'title': _("Role requested"),
+                'descr': _("This notification is sent to profile managers"\
+" of an organization when a user has requested a role on that organization.")
+                },
+            'verification': {
+                'title': _("Verification"),
+                'descr': _("This notification is sent to verify an e-mail"\
+" address of a user.")
+            },
+            'sales_report': {
+                'title': _("Weekly sales report"),
+                'descr': _("This notification is sent to profile managers."\
+" It contains the weekly sales results.")
+            },
+        }
+        for role_descr in broker.get_role_descriptions():
+            notifications.update({"%s_role_grant_created" % role_descr.slug: {
+                'title': _("%(role_title)s Added") % {
+                    'role_title': role_descr.title},
+                'descr': ""
+            }})
+
+        # user with profile manager of broker (or theme editor)
+        if not user or broker.with_role(
+                saas_settings.MANAGER).filter(pk=user.pk).exists():
+            return notifications
+
+        # regular subscriber
+        return {key: notifications[key] for key in [
+            'charge_receipt', 'card_updated', 'order_executed',
+            'organization_updated', 'expires_soon']}

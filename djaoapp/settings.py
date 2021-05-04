@@ -540,6 +540,22 @@ SIGNUP = {
         sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
     'LOGIN_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
+    'NOTIFICATION_TYPE': (
+        ('card_updated', "Card updated"),
+        ('charge_receipt', "Charge receipt"),
+        ('claim_code_generated', "Claim code"),
+        ('expires_soon', "Expires soon"),
+        ('order_executed', "Order confirmation"),
+        ('organization_updated', "Profile updated"),
+        ('password_reset', "Password reset"),
+        ('user_activated', "User activated"),
+        ('user_contact', "User contact"),
+        ('user_registered', "User registered"),
+        ('user_welcome', "User welcome"),
+        ('role_request_created', "Role requested"),
+        ('verification', "Verification"),
+        ('sales_report', "Weekly sales report"),
+    ),
     'PASSWORD_RESET_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',

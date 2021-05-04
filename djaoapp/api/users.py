@@ -12,8 +12,10 @@ from rest_framework.generics import ListAPIView
 from saas.models import Charge
 from saas.metrics.base import day_periods
 from saas.utils import get_role_model
-from signup.api.users import UserDetailAPIView as UserProfileBaseAPIView
+from signup.api.users import (UserDetailAPIView as UserProfileBaseAPIView,
+    UserNotificationsAPIView as UserNotificationsBaseAPIView)
 
+from ..mixins import NotificationsMixin
 from .serializers import ActivitySerializer
 
 LOGGER = logging.getLogger(__name__)
@@ -49,6 +51,57 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         if instance.user:
             get_role_model().objects.filter(user=instance.user).delete()
         super(UserProfileAPIView, self).perform_destroy(instance)
+
+
+class UserNotificationsAPIView(NotificationsMixin,
+                               UserNotificationsBaseAPIView):
+    """
+    Lists a user notifications preferences
+
+    **Tags: profile
+
+    **Example
+
+    .. code-block:: http
+
+        GET /api/users/donny/notifications/ HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+        {
+          "notifications": ["user_registered_notice"]
+        }
+    """
+
+    def put(self, request, *args, **kwargs):
+        """
+        Changes a user notifications preferences
+
+        **Tags: profile
+
+        **Example
+
+        .. code-block:: http
+
+            POST /api/users/donny/notifications/ HTTP/1.1
+
+        .. code-block:: json
+
+            {
+              "notifications": ["user_registered_notice"]
+            }
+
+        responds
+
+        .. code-block:: json
+
+            {
+              "notifications": ["user_registered_notice"]
+            }
+        """
+        return self.update(request, *args, **kwargs)
 
 
 class RecentActivityAPIView(ListAPIView):

@@ -86,6 +86,7 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
 class PasswordResetView(AuthMixin, AppMixin, PasswordResetBaseView):
 
     def get_success_url(self):
+        #pylint:disable=useless-super-delegation
         # Implementation Note: Because we add a ``AuthMixin``
         # that overrides ``get_success_url``, we need to add this code
         # from the base class back here.
