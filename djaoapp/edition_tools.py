@@ -162,14 +162,26 @@ def inject_edition_tools(response, request, context=None,
             top_accessibles = []
             has_broker_role = False
             active_organization = None
-            for role, organizations in six.iteritems(
+
+            # Loads Organization models from database because we need
+            # the `is_provider` flag.
+            slugs = set([])
+            for organization_list in six.itervalues(
+                    serializer.data.get('roles', {})):
+                for organization_dict in organization_list:
+                    slugs.add(organization_dict.get('slug'))
+            organizations = {}
+            for organization in get_organization_model().objects.filter(
+                    slug__in=slugs): # XXX Remove query.
+                organizations[organization.slug] = organization
+
+            for role, organization_list in six.iteritems(
                     serializer.data['roles']):
-                for organization in organizations:
+                for organization in organization_list:
                     if organization['slug'] == request.user.username:
                         # Personal Organization
                         continue
-                    db_obj = get_organization_model().objects.get(
-                        slug=organization['slug']) # XXX Remove query.
+                    db_obj = organizations[organization['slug']]
                     if db_obj.is_provider:
                         settings_location = reverse('saas_dashboard',
                             args=(organization['slug'],))
@@ -179,6 +191,7 @@ def inject_edition_tools(response, request, context=None,
                             args=(organization['slug'],))
                     app_location = reverse('organization_app',
                         args=(organization['slug'],))
+
                     if organization['slug'] in path_parts:
                         active_organization = TopAccessibleOrganization(
                             organization['slug'],
