@@ -22,6 +22,7 @@ from signup.auth import validate_redirect
 from ..compat import reverse, six
 from ..signals import contact_requested
 from ..thread_locals import get_current_app
+from ..validators import validate_contact_form
 
 
 LOGGER = logging.getLogger(__name__)
@@ -48,7 +49,12 @@ class ContactForm(forms.Form):
                             'data-theme': 'clean',
                             'data-size': 'compact',
                         }))
-#                    attrs={'theme' : 'clean'})
+
+    def clean(self):
+        validate_contact_form(
+            self.cleaned_data['full_name'],
+            self.cleaned_data['email'],
+            self.cleaned_data['message'])
 
 
 class ContactView(ProviderMixin, FormView):

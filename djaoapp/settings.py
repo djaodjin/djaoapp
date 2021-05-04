@@ -35,6 +35,8 @@ RULES_APP_MODEL = 'djaoapp_extras.App'
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 
+CONTACT_DYNAMIC_VALIDATOR = None
+
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 

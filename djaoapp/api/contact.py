@@ -26,6 +26,7 @@ from saas.utils import full_name_natural_split
 from ..compat import six
 from ..signals import contact_requested
 from ..thread_locals import get_current_app
+from ..validators import validate_contact_form
 
 
 LOGGER = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ class ReCaptchaValidator(object):
 
     @staticmethod
     def get_remote_ip():
-        frm = sys._getframe()
+        frm = sys._getframe() #pylint:disable=protected-access
         while frm:
             request = frm.f_locals.get("request")
             if request:
@@ -135,6 +136,13 @@ class ContactUsSerializer(NoModelSerializer):
             if getattr(get_current_app(), 'contact_requires_recaptcha', False):
                 self.fields['g-recaptcha-response'] = ReCaptchaField()
 
+    def validate(self, data):
+        validate_contact_form(
+            data['full_name'],
+            data['email'],
+            data['message'])
+        return data
+
 
 class ContactUsAPIView(ProviderMixin, GenericAPIView):
     """
@@ -172,6 +180,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
     @swagger_auto_schema(responses={
         200: OpenAPIResponse("success", ValidationErrorSerializer)})
     def post(self, request, *args, **kwargs):
+        #pylint:disable=too-many-locals,unused-argument
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if is_authenticated(self.request):
