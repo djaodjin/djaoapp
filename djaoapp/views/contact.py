@@ -52,9 +52,9 @@ class ContactForm(forms.Form):
 
     def clean(self):
         validate_contact_form(
-            self.cleaned_data['full_name'],
-            self.cleaned_data['email'],
-            self.cleaned_data['message'])
+            self.cleaned_data.get('full_name'),
+            self.cleaned_data.get('email'),
+            self.cleaned_data.get('message'))
 
 
 class ContactView(ProviderMixin, FormView):

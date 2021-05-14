@@ -138,9 +138,9 @@ class ContactUsSerializer(NoModelSerializer):
 
     def validate(self, data):
         validate_contact_form(
-            data['full_name'],
-            data['email'],
-            data['message'])
+            data.get('full_name'),
+            data.get('email'),
+            data.get('message'))
         return data
 
 
