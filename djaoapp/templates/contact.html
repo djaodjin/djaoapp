@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container" style="margin-bottom: 50px;">
-    <div class="col-md-6 offset-md-3 col-lg-6">
+  <div class="container py-4" style="margin-bottom: 50px;">
+    <div class="pt-4 pb-1 col-md-8 offset-md-2">
       <div class="page-header">
-        <h1 class="text-center"><i class="fa fa-envelope"></i>
-          {% trans %}Contact us{% endtrans %}
-        </h1>
+        <h3 class="text-center">
+          {% trans %}Hey, what's up?{% endtrans %}
+        </h4>
       </div>
-      <p>
-        {% trans %}Please leave your name and email address.{% endtrans %}
-        {% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
+      <p class="text-center">
+        {% trans %}
+          We know a lot … but we don’t know everything. If you leave us a short  <br class="d-none d-xl-block">
+          message about what’s going on with you, we will do our best to help out!
+        {% endtrans %}
       </p>
       {% if form %}
         {% include "_contact_form.html" %}
