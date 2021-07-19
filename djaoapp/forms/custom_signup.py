@@ -155,14 +155,15 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             if not self.fields['country'].initial:
                 self.fields['country'].initial = country.code
             self.add_postal_region(country=country)
-        for extra_field in self.initial.get('extra_fields', []):
-            # define extra fields dynamically:
-            self.fields[extra_field[0]] = forms.CharField(
-                label=_(extra_field[1]), required=extra_field[2])
         if force_required:
             for field_name, field in six.iteritems(self.fields):
                 if field_name not in ('organization_name', 'type'):
                     field.required = True
+        # Define  extra fields dynamically. These are never forced
+        # to be required.
+        for extra_field in self.initial.get('extra_fields', []):
+            self.fields[extra_field[0]] = forms.CharField(
+                label=_(extra_field[1]), required=extra_field[2])
 
     def clean(self):
         """

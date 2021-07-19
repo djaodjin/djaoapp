@@ -12,8 +12,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rules.mixins import AppMixin
 from rules.utils import get_current_app
-from saas import settings as saas_settings
-from saas.models import Organization, Signature
+from saas.models import Agreement, Organization
 from saas.mixins import OrganizationMixin
 from saas.api.serializers import EnumField
 from signup.api.auth import JWTRegister as JWTRegisterBase
@@ -94,6 +93,14 @@ JwcBUUMECj8AKxsHtRHUSypco"
     """
     serializer_class = RegisterSerializer
 
+    def get_serializer_class(self):
+        serializer_class = super().get_serializer_class()
+        for agreement in Agreement.objects.all():
+            serializer_class._declared_fields[agreement.slug] = \
+                serializers.CharField(required=False, help_text=agreement.title)
+            serializer_class.Meta.fields += (agreement.slug,)
+        return serializer_class
+
     def register(self, serializer):
         #pylint: disable=maybe-no-member,too-many-boolean-expressions
         registration = serializer.validated_data.get('type',
@@ -122,8 +129,6 @@ JwcBUUMECj8AKxsHtRHUSypco"
             user = self.register_together(**serializer.validated_data)
         else:
             user = self.register_user(**serializer.validated_data)
-        if user:
-            Signature.objects.create_signature(saas_settings.TERMS_OF_USE, user)
         return user
 
 

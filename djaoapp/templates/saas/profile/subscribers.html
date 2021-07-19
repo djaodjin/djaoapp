@@ -69,7 +69,7 @@
                       <td>
                         <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.full_name]]</a>
                       </td>
-                      <td>[[entry.created_at | relativeDate]]</td>
+                      <td>[[humanizeTimeDelta(entry.created_at, ends_at)]]</td>
                     </tr>
                   </tbody>
                 </table>
@@ -245,8 +245,8 @@
                     <tr v-for="entry in group" :class="endsSoon(entry)">
                       <td></td>
                       <td>[[entry.plan.title]]</td>
-                      <td>[[entry.created_at | formatDate]]</td>
-                      <td class="text-nowrap">[[entry.ends_at | formatDate]]</td>
+                      <td>[[humanizeDate(entry.created_at)]]</td>
+                      <td class="text-nowrap">[[humanizeDate(entry.ends_at)]]</td>
                       <td class="description editable" :id="entry.id">
                         <span>[[entry.description]] <i class="fa fa-pencil"></i></span>
                         <input type="text"
@@ -275,8 +275,8 @@
                         <a :id="entry.organization.slug"
                             :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
                       </td>
-                      <td>[[entry.created_at | formatDate]]</td>
-                      <td class="text-nowrap">[[entry.ends_at | formatDate]]</td>
+                      <td>[[humanizeDate(entry.created_at)]]</td>
+                      <td class="text-nowrap">[[humanizeDate(entry.ends_at)]]</td>
                       <td class="description editable">
                         <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
                           [[entry.description]] <i class="fa fa-pencil"></i>
@@ -298,7 +298,7 @@
                         v-show="sortDir('created_at') && itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in [group[0]]">
                         <td colspan="5">
-                          [[entry.created_at | formatDate]]
+                          [[humanizeDate(entry.created_at)]]
                         </td>
                     </tr>
                     <tr v-for="entry in group" :class="endsSoon(entry)">
@@ -307,7 +307,7 @@
                         <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
                       </td>
                       <td>[[entry.plan.title]]</td>
-                      <td class="text-nowrap">[[entry.ends_at | formatDate]]</td>
+                      <td class="text-nowrap">[[humanizeDate(entry.ends_at)]]</td>
                       <td class="description editable">
                         <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
                           [[entry.description]] <i class="fa fa-pencil"></i>
@@ -329,7 +329,7 @@
                         v-show="sortDir('ends_at') && itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in [group[0]]">
                       <td colspan="5">
-                        [[entry.ends_at | formatDate]]
+                        [[humanizeDate(entry.ends_at)]]
                       </td>
                     </tr>
                     <tr v-for="entry in group" :class="endsSoon(entry)">
@@ -338,7 +338,7 @@
                         <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
                       </td>
                       <td>[[entry.plan.title]]</td>
-                      <td class="text-nowrap">[[entry.created_at | formatDate]]</td>
+                      <td class="text-nowrap">[[humanizeDate(entry.created_at)]]</td>
                       <td class="description editable">
                         <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
                           [[entry.description]] <i class="fa fa-pencil"></i>

@@ -9,11 +9,6 @@ import 'moment-timezone/builds/moment-timezone-with-data.js';
 import Vue from 'vue';
 window.Vue = Vue;
 
-// Use vue2-filters `function (root, factory) {` module
-// because of `Vue.filter('currency');` in djaodjin-saas-vue.js
-import Vue2Filters from 'vue2-filters';
-window.Vue.use(Vue2Filters);
-
 // Use sortablejs ESM module
 // because of statement `new Sortable(el, binding.value || {})`
 // in djaodjin-rules-vue.js

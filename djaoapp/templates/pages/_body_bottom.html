@@ -3,8 +3,12 @@
 {# Scripts that need to be injected into the page actually being edited #}
 {# (i.e. iframe or current page).                                       #}
 
-{# PageElement editors #}
+{# templates and PageElement editors #}
 <script type="text/javascript">
+{% if templates %}
+templateNames = {{templates|safe}};
+{% endif %}
+
 jQuery(document).ready(function($) {
 
   var addPlan = $(".plan").last() /* by convention */;
@@ -70,17 +74,11 @@ jQuery(document).ready(function($) {
 
   $('.editable').editor({
     baseUrl: '{{urls.edit.api_page_element_base}}',
-    emptyInputText: "{% trans %}placeholder, type to overwrite...{% endtrans %}"
+    emptyInputText: "{% trans %}placeholder, type to overwrite...{% endtrans %}",
+    hints: {{templates|safe}}
   });
 });
 </script>
-
-{# For the template code editors #}
-{% if templates %}
-<script type="text/javascript">
-templateNames = {{templates|safe}};
-</script>
-{% endif %}
 
 {# For the style editors #}
 <script type="text/javascript">

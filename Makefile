@@ -53,9 +53,9 @@ all:
 clean: clean-themes
 
 clean-themes:
-	-rm -rf $(srcDir)/themes/djaoapp/templates/index.html \
-		$(srcDir)/themes/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
-		$(srcDir)/htdocs/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
+	rm -rf $(srcDir)/themes/*
+	$(installDirs) $(srcDir)/themes
+	-rm -rf $(srcDir)/htdocs/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
 		$(srcDir)/htdocs/balme
 	cd $(srcDir) && find . -type d -name "brevent-*" -exec rm -rf {} +
 
@@ -142,6 +142,10 @@ vendor-assets-prerequisites: $(installTop)/.npm/djaoapp-packages
 $(installTop)/.npm/djaoapp-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
+	$(installDirs) -d $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
+	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 	touch $@
 
 ifeq ($(mode),production)
@@ -153,7 +157,15 @@ else
 webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
 endif
 
-build-assets: $(installTop)/.npm/djaoapp-packages $(ASSETS_DIR)/js/djaoapp-i18n.js
+build-assets: $(installTop)/.npm/djaoapp-packages \
+					$(srcDir)/djaoapp/static/js/djaoapp-i18n.js \
+					$(srcDir)/djaoapp/static/js/djaodjin-plan-edition.js \
+					$(srcDir)/djaoapp/static/js/djaodjin-metrics.js \
+					$(srcDir)/djaoapp/static/js/djaodjin-menubar.js \
+					$(srcDir)/djaoapp/static/js/djaodjin-djaoapp-vue.js \
+					$(srcDir)/djaoapp/static/js/djaodjin-dashboard.js \
+					$(srcDir)/djaoapp/static/js/wizard.js \
+					$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
@@ -171,16 +183,12 @@ setup-livedemo:
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 
 
-$(ASSETS_DIR)/js/djaoapp-i18n.js: \
-				$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
-	$(installDirs) $(dir $@)
-	cd $(srcDir) && $(PYTHON) manage.py generate_i18n_js $@
-
 $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo: \
 				$(wildcard $(srcDir)/djaoapp/locale/es/LC_MESSAGES/*.po) \
 				$(wildcard $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/*.po) \
 				$(wildcard $(srcDir)/djaoapp/locale/pt/LC_MESSAGES/*.po)
-	cd $(srcDir) && $(PYTHON) manage.py compilemessages
+	cd $(srcDir) && \
+		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py compilemessages
 
 
 # Once tests are completed, run 'coverage report'.

@@ -13,9 +13,11 @@
       </div>
       <div class="row">
         <div class="offset-sm-2 col-sm-8">
+          {% block register_form %}
             {% if form %}
             {% include "accounts/_register_form.html" %}
             {% endif %}
+          {% endblock %}
         </div>
       </div>
       <div class="text-center mt-3">
@@ -25,4 +27,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block accounts_scripts %}
+{% include "_password_strength_scripts.html" %}
 {% endblock %}

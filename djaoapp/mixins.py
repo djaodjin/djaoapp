@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 import logging
 
 from deployutils.apps.django.compat import is_authenticated
-from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -13,7 +12,7 @@ from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import fail_direct
-from saas.models import Organization, Plan, Signature, get_broker
+from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
@@ -161,11 +160,7 @@ class RegisterMixin(object):
         if not user_extra:
             user_extra = None
 
-        email = cleaned_data.get('email', None)
         username = cleaned_data.get('username', None)
-        password = cleaned_data.get('new_password',
-            cleaned_data.get('password', None))
-        lang = cleaned_data.get('lang', None)
         organization_name = cleaned_data.get(organization_selector, full_name)
         if user_selector == organization_selector:
             # We have a personal registration
@@ -178,16 +173,7 @@ class RegisterMixin(object):
         try:
             with transaction.atomic():
                 # Create a ``User``
-                user = get_user_model().objects.create_user(
-                    username=username,
-                    password=password,
-                    email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    lang=lang)
-
-                Signature.objects.create_signature(
-                    saas_settings.TERMS_OF_USE, user)
+                user = self.register_user(**cleaned_data)
 
                 # Create an ``Organization`` and set the user as its manager.
                 organization_kwargs = {}
@@ -229,9 +215,25 @@ class RegisterMixin(object):
         except IntegrityError as err:
             handle_uniq_error(err, renames={'slug': organization_selector})
 
-        # Sign-in the newly registered user, bypassing authentication here,
-        # since we might have a frictionless registration.
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        return user
+
+    def register_user(self, **cleaned_data):
+        agreements = list(Agreement.objects.filter(
+            slug__in=six.iterkeys(cleaned_data)))
+        for agreement in agreements:
+            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+                'false', 'f', '0']
+            if not_signed:
+                raise ValidationError({agreement.slug:
+                    _("You must read and agree to the %(agreement)s.") % {
+                    'agreement': agreement.title}})
+
+        user = super(RegisterMixin, self).register_user(**cleaned_data)
+        if user:
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            for agreement in agreements:
+                Signature.objects.create_signature(agreement.slug, user)
+
         return user
 
 

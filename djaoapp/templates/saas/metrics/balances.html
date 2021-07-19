@@ -20,7 +20,7 @@
               <th>{% trans %}Title{% endtrans %}</th>
               <td style="text-align:right;"
                   v-for="col in values" v-cloak>
-                  [[col[0] | monthHeading]]
+                  [[monthHeading(col[0])]]
               </td>
           </tr>
       </thead>
@@ -54,7 +54,7 @@
                   v-for="col in row.values">
                   <a target="_blank"
                      :href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">
-                    [[humanizeCell(col[1])]]
+                    [[humanizeNumber(col[1])]]
                   </a>
               </td>
           </tr>

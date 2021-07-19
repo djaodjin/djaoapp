@@ -559,6 +559,9 @@ section#hosting {
   height: calc(100vh - (#{$navbar-height} + #{$footer-height}));
 }
 
+.has-error .form-check {
+  border: 1px solid red;
+}
 
 // .form-container is used in saas/organization_redirects.html template
 // --------

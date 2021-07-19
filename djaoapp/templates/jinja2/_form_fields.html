@@ -2,8 +2,11 @@
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
     <div class="form-check">
+      {% if required %}
+      <input type="hidden" name="{{name}}" value="False">
+      {% endif %}
       <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
-        <input id="{{id_for_label}}" class="checkboxinput{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
+        <input id="{{id_for_label}}" class="form-check-input{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
         {{label|safe}}
       </label>
     </div>

@@ -21,7 +21,7 @@
   <div>
   <div class="col-md-12">
     <form id="update-card" action=".{% if next %}/?next={{next}}{% endif %}"
-      method="post" v-on:submit.prevent="save">
+      method="post" @submit.prevent="save">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       {% include "saas/_card_use.html" %}
       <div class="form-group text-center py-5">

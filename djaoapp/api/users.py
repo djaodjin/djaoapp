@@ -146,7 +146,7 @@ class RecentActivityAPIView(ListAPIView):
         for user in users:
             data[user.username] = {'printable_name': user.get_full_name(),
                 'descr': _('recently logged in'), 'slug': user.username,
-                'created_at': user.last_login}
+                'created_at': user.last_login, 'type': "user"}
         for charge in charges:
             if charge.state == charge.DONE:
                 descr = _('charge paid')

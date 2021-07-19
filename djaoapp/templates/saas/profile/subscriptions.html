@@ -91,7 +91,7 @@
                     {% include "_entry_ends_at_editable_field.html" %}
                   </td>
                   <td>
-                    [[entry.ends_at | relativeDate]]
+                    [[humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
                   <td style="text-align: right;" v-if="!entry.request_key">
                     <button class="btn btn-danger unsubscribe"
@@ -198,11 +198,11 @@
                   </td>
                   <td>
                     <span style="display: inline-block;">
-                      [[entry.ends_at ? ($options.filters.formatDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
+                      [[entry.ends_at ? humanizeDate(entry.ends_at) : "{% trans %}Never{% endtrans %}" ]]
                     </span>
                   </td>
                   <td>
-                    [[entry.ends_at | relativeDate]]
+                    [[humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
                   <td>
                   </td>

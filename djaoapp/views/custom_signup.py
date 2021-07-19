@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.utils.translation import ugettext_lazy as _
 from saas import settings as saas_settings
-from saas.models import Organization, Signature
+from saas.models import Agreement, Organization, Signature
 from signup.auth import validate_redirect
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
@@ -162,6 +162,10 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
             'country': broker.country,
             'region': broker.region
         })
+        kwargs.update({
+            'extra_fields': [(agreement.slug, agreement.title, False)
+                for agreement in Agreement.objects.all()]
+        })
         return kwargs
 
     def get_form_kwargs(self):
@@ -207,10 +211,8 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         elif registration == self.app.TOGETHER_REGISTRATION:
             user = self.register_together(**cleaned_data)
         else:
-            user = self.register_user(**cleaned_data)
-            if user:
-                Signature.objects.create_signature(
-                    saas_settings.TERMS_OF_USE, user)
+            user = self.register_user(
+                next_url=self.get_success_url(), **cleaned_data)
         if user:
             auth_login(self.request, user)
         return user

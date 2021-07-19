@@ -28,9 +28,9 @@ If you are looking to add features, this project integrates
 
 Tested with
 
-- **Python:** 2.7, **Django:** 1.11, **Django Rest Framework:** 3.9.4
-- **Python:** 3.6, **Django:** 2.2 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.11
-- **Python:** 3.6, **Django:** 3.0 (latest), **Django Rest Framework:** 3.11
+- **Python:** 3.6, **Django:** 2.2 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.12
+- **Python:** 3.6, **Django:** 3.2 (latest), **Django Rest Framework:** 3.12
+- **Python:** 2.7, **Django:** 1.11 (legacy), **Django Rest Framework:** 3.9.4
 
 Note: Support on Python2 was officially ended on Jan 1st 2020. The core
 application works on Python2.7 but some extra commands, like generating

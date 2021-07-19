@@ -137,9 +137,17 @@ class AppSerializer(RulesAppSerializer):
 
 
 class ActivitySerializer(NoModelSerializer):
+    """
+    Serializer for recent activity on the site.
+    """
+    slug = serializers.SlugField()
     printable_name = serializers.CharField()
     descr = serializers.CharField()
     created_at = serializers.DateTimeField()
+
+ActivitySerializer._declared_fields["type"] = \
+    serializers.CharField(required=False, #pylint:disable=protected-access
+    help_text=_("One of 'organization', 'personal' or 'user'"))
 
 
 class DetailSerializer(NoModelSerializer):

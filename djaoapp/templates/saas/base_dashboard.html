@@ -80,9 +80,10 @@ Vue.prototype.$labels = {
     postalCodeLabel: "{% trans %}Zip/Postal code{% endtrans %}",
     countryLabel: "{% trans %}Country{% endtrans %}",
     fieldShoundNotBeEmptyError: "{% trans %}This field shouldn't be empty{% endtrans %}",
-    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}"
+    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
 }
 Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %}; // XXX
+
 </script>
 {{ render_bundle('js_djaodjin-vue') }}
 <script type="text/javascript">
@@ -94,6 +95,11 @@ var app = new Vue({
   el: '#app',
   delimiters: ["[[","]]"],
 });
+
+humanizeTimeDelta.$labels = {
+    timeAgoTemplate: "{% trans %}%(timedelta)s ago{% endtrans %}",
+    timeLeftTemplate: "{% trans %}%(timedelta)s left{% endtrans %}",
+};
 </script>
 {% block dashboard_bodyscripts %}{% endblock %}
 {% endblock %}

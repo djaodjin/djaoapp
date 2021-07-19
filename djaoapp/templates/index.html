@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block localheader %}
   <meta property="og:url" content="{{request|absolute_uri}}" />
   <meta name="twitter:url" content="{{request|absolute_uri}}" />
@@ -10,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+<div>
   <section id="leaderboard" class="jumbotron text-center" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
     <div class="container py-5">
       <div class="col-sm-12">
@@ -127,4 +127,5 @@
       </div>
     </div>
   </section>
+</div>
 {% endblock %}

@@ -28,7 +28,7 @@
       </div>
       <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         <div v-for="entry in items.results">
-          <p>[[entry.created_at | formatDate]]
+          <p>[[humanizeDate(entry.created_at)]]
             <a
               :href="'{{'/profile/'|site_prefixed}}' + entry.account + '/'">[[entry.account]]</a> {% trans %}by{% endtrans %} [[entry.created_by]]:</p>
           <div>[[entry.text]]</div>

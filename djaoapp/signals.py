@@ -468,7 +468,8 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(processor_setup_error, dispatch_uid="processor_setup_error")
-def processor_setup_error_notice(sender, provider, error_message, **kwargs):
+def processor_setup_error_notice(sender, provider, error_message, customer,
+                                 **kwargs):
     recipients, notused = _notified_recipients(
         provider, 'processor_setup_error')
     if SEND_EMAIL and recipients:
@@ -485,7 +486,8 @@ def processor_setup_error_notice(sender, provider, error_message, **kwargs):
             reply_to=reply_to, bcc=broker_recipients + broker_bcc,
             context={
                 'broker': broker, 'app': app,
-                'organization': provider,
+                'organization': customer,
+                'provider': provider,
                 'message': error_message,
                 'urls':{
                     'update_bank': site.as_absolute_uri(reverse(

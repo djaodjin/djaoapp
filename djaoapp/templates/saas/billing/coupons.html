@@ -109,7 +109,7 @@
                   <span class="text-muted" v-show="!entry._editPlan">{% trans %}Plan{% endtrans %}:</span>
                   <span @click="editPlan(entry)"
                     v-show="!entry._editPlan">
-                    [[planTitle(entry.plan)]]
+                    [[entry.plan ? planTitle(entry.plan) : "{% trans %}No Plan{% endtrans %}"]]
                   </span>
                   <select class="form-control"
                       @blur="savePlan(entry)"
@@ -117,7 +117,7 @@
                       v-model="entry.plan"
                       :ref="'editPlan_' + entry.code"
                       v-show="entry._editPlan">
-                        <option value="">{% trans %}Select plan{% endtrans %}</option>
+                        <option value="">{% trans %}No Plan{% endtrans %}</option>
                         <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
                   </select>
               </div>
@@ -132,7 +132,7 @@
                       <span class="text-muted" v-if="!entry.description">{% trans %}Edit Description{% endtrans %}</span>
                       [[entry.description]]
                   </span>
-                  <input id="input_description" type="text" class="form-control"
+                  <input type="text" class="form-control"
                     ref="edit_description_input"
                     @keydown="saveDescription(entry, index, $event)"
                     @blur="saveDescription(entry, index, $event)"

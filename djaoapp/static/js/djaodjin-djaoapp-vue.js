@@ -85,7 +85,9 @@ Vue.component('theme-update', {
             var vm = this;
             vm.reqDelete(this.$urls.pages.api_themes,
             function(resp) {
-                showMessages([gettext("reset to default theme")], "success");
+                if( resp.detail ) {
+                    showMessages([resp.detail], "success");
+                }
             });
         },
         save: function(){

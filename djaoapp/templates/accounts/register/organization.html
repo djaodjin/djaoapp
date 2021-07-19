@@ -1,26 +1,7 @@
-{% extends "accounts/base.html" %}
+{% extends "accounts/register.html" %}
 
-{% block content %}
-<div class="container">
-    <div class="offset-md-3 col-md-6 offset-lg-3 col-lg-6">
-        <div class="page-header">
-            <h1 class="text-center"><span class="fa fa-pencil"></span> {% trans %}Sign up{% endtrans %}</h1>
-        </div>
-        <div class="text-right" style="margin-bottom: 15px;">
-            {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-        </div>
-        {% if form %}
-        {% include "accounts/register/_organization_register_form.html" %}
-        {% endif %}
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
-            </div>
-            <div class="col-md-8 text-right">
-                {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-            </div>
-        </div>
-    </div>
-</div>
+{% block register_form %}
+  {% if form %}
+    {% include "accounts/register/_organization_register_form.html" %}
+  {% endif %}
 {% endblock %}

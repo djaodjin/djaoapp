@@ -32,7 +32,7 @@
             <tr class="position-relative">
               <td class="row-header"></td>
               <td v-for="col in currentTableDates" class="row-body" v-cloak>
-                  [[col[0] | monthHeading]]
+                  [[monthHeading(col[0])]]
               </td>
             </tr>
             <tr :id="row.key" v-for="(row, index) in currentTableData.data" :key="row.key" class="position-relative">
@@ -47,8 +47,8 @@
                   <span class="align-middle">[[row.title ? row.title : row.key]]</span>
                 </div>
               </td>
-              <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeCell(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
-                  [[humanizeCell(col[1], currentTableData.unit, currentTableData.scale)]]
+              <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
+                  [[humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
               </td>
             </tr>
           </table>

@@ -12,7 +12,7 @@
     {% if bound_field.field|is_checkbox %}
     <div class="form-check">
         <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
-            <input id="{{bound_field.id_for_label}}" class="checkboxinput" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value %}checked="checked"{% endif %}>
+            <input id="{{bound_field.id_for_label}}" class="form-check-input" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value %}checked="checked"{% endif %}>
             {{ bound_field.label|safe }}
         </label>
     </div>

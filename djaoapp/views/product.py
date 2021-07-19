@@ -20,13 +20,14 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.static import serve
+from deployutils.helpers import datetime_or_now
 
 from multitier.mixins import build_absolute_uri
 from multitier.thread_locals import get_current_site
 from pages.views.pages import PageMixin
 from saas.decorators import fail_direct
 from saas.mixins import UserMixin
-from saas.models import ChargeItem, Plan, get_broker
+from saas.models import ChargeItem, Plan, Subscription, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
 from rules.utils import get_current_app
@@ -222,34 +223,42 @@ class AppDashboardView(AppDashboardViewBase):
         return context
 
 
-# XXX Because we haven't separated djaoapp into its own process.
-class DjaoAppPageView(TemplateView):
+class AppPageView(ProxyPageView):
 
+    page_name = 'app' # Override ProxyPageMixin.page_name
     template_name = 'app.html'
 
     def get_template_names(self):
+        candidates = []
+        profile = self.kwargs.get('organization')
+        original_candidates = super(AppPageView, self).get_template_names()
+        if profile:
+            for candidate in original_candidates:
+                candidates += ['app/%s/%s' % (profile, candidate)]
+        for candidate in original_candidates:
+            candidates += ['app/%s' % (candidate)]
+
+        if profile:
+           candidates += [
+                'app/%s/index.html' % profile, 'app/%s.html' % profile]
+
         if not fail_direct(self.request, organization=get_broker()):
             # XXX testing exception catcher
             if self.kwargs.get('organization') == '500':
                 raise ValueError("Testing 500 exception catcher")
-            return ['app_proxy_help.html']
-        return super(DjaoAppPageView, self).get_template_names()
+            candidates += ['app_proxy_help.html']
+
+        candidates += ['app/index.html', 'app.html']
+
+        return candidates
 
     def get_context_data(self, **kwargs):
         # Add URLs needed for _appmenu.html and sidebar
-        context = super(DjaoAppPageView, self).get_context_data(**kwargs)
+        context = super(AppPageView, self).get_context_data(**kwargs)
         broker = get_current_broker()
         context.update({'provider': broker})
         return context
 
-
-class AppPageView(ProxyPageMixin, DjaoAppPageView):
-
-    page_name = 'app' # Override ProxyPageMixin.page_name
-
-    # XXX Maybe the only place we need to hard-code a redirect
-    # for fail_grant_active? What about `AppPageRedirectView`? Is it integrated
-    # in OrganizationRedirect there?
 
 
 class AppPageRedirectView(ProxyPageMixin, DjaoAppPageRedirectView):

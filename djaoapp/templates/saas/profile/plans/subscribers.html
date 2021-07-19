@@ -100,8 +100,8 @@ Thank you,
             <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
           </td>
           <td>[[entry.plan.title]]</td>
-          <td>[[entry.created_at | formatDate('MMM D, Y') ]]</td>
-          <td>[[entry.ends_at | formatDate('MMM D, Y')]]</td>
+          <td>[[humanizeDate(entry.created_at)]]</td>
+          <td>[[humanizeDate(entry.ends_at)]]</td>
           <td>
             <span v-show="!entry.edit_description" @click="editDescription(entry, index)">
               [[entry.description]] <i class="fa fa-pencil"></i>

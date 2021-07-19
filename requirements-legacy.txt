@@ -16,10 +16,10 @@ djangorestframework==3.9.4
 djaodjin-deployutils==0.5.23
 djaodjin-extended-templates==0.2.5
 djaodjin-multitier==0.1.19
-djaodjin-pages==0.3.6
+djaodjin-pages==0.4.0
 djaodjin-rules==0.2.7
-djaodjin-saas==0.9.5
-djaodjin-signup==0.4.10
+djaodjin-saas==0.10.0
+djaodjin-signup==0.5.0
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
@@ -38,7 +38,7 @@ WeasyPrint==0.42.3
 # To run with DEBUG=1
 django-extensions==2.1.4
 django-debug-panel==0.8.3
-django-debug-toolbar==1.11 # XXX does not support Django 2.2
+django-debug-toolbar==1.11.1 # XXX does not support Django 2.2
 
 # documentation is done with Py3. This requirements-legacy.txt is purely
 # used for testing on Py27.

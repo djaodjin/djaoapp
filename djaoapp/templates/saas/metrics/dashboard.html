@@ -17,7 +17,7 @@
           <search-profile inline-template id="search-list-container">
             <div class="card">
               <div class="card-body border-bottom">
-                <h5 class="card-title mb-0">Find a User</h5>
+                <h5 class="card-title mb-0">{% trans %}Find a profile{% endtrans %}</h5>
               </div>
               <div class="card-body pb-0">
                 <div class="row">
@@ -29,11 +29,13 @@
                   <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in items.results">
                       <td>
-                      <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.slug]]</a>
+                      <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.slug]]</a>
                       </td>
                       <td>[[entry.full_name]]</td>
                       <td>[[entry.email]]</td>
-                      <td>[[entry.created_at | relativeDate]]</td>
+                      <td>
+                        [[humanizeTimeDelta(entry.created_at, ends_at)]]
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -60,7 +62,7 @@
               </div>
               <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <a class="list-group-item d-flex justify-content-between align-items-center" v-for="item in items.results"
-                   :href="'{{urls.profile_redirect}}' + item.slug + '/'">
+                   :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + item.slug + '/'">
                   <span>
                     <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
                     <span v-else>No Username</span>
@@ -70,7 +72,7 @@
                         'badge-secondary': item.descr === 'recently logged in'
                       }">[[item.descr]]</span>
                   </span>
-                  <small class="text-muted ml-2">Last active [[item.created_at | relativeDate]]</small>
+                  <small class="text-muted ml-2">Last active [[humanizeTimeDelta(item.created_at, ends_at)]]</small>
                 </a>
               </div>
             </div>

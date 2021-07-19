@@ -82,6 +82,7 @@ jQuery(document).ready(function($) {
     loadImageEvent: "gallery-opened",
 
     saveDroppedMediaUrl: "{{urls.edit.api_page_element_base}}",
+    {% if templates %}hints: {{templates|safe}},{% endif %}
     buttonClass: "btn btn-block btn-primary",
     mediaClass: "card thumbnail-gallery",
     selectedMediaClass: "thumbnail-active",
