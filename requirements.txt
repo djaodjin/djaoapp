@@ -16,7 +16,7 @@ djaodjin-rules==0.2.7
 djaodjin-saas==0.10.0
 djaodjin-signup==0.5.0
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
-jinja2==2.8.1
+jinja2==2.11.3
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
