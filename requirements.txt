@@ -37,7 +37,7 @@ django-debug-toolbar==2.2.1 # 1.11 does not support Django 2.2
 drf-yasg==1.8.0
 Faker==3.0.1
 flex==6.14.0
-pygments==2.2.0
+pygments==2.7.4
 pyYAML==5.1.2
 Sphinx==1.8.4
 sphinxcontrib-httpdomain==1.7.0
