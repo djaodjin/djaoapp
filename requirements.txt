@@ -38,7 +38,7 @@ drf-yasg==1.8.0
 Faker==3.0.1
 flex==6.14.0
 pygments==2.2.0
-pyYAML==5.1.2
+pyYAML==5.4
 Sphinx==1.8.4
 sphinxcontrib-httpdomain==1.7.0
 sphinxcontrib-websupport==1.1.0
