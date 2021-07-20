@@ -186,9 +186,7 @@ DATABASES = {
     },
 }
 
-MESSAGE_TAGS = {
-    messages.ERROR: 'danger'
-}
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 DATABASE_ROUTERS = ('multitier.routers.SiteRouter',)
 
@@ -204,6 +202,10 @@ if os.getenv('MULTITIER_DB_NAME'):
                 'HOST': DB_HOST,                 # Not used with sqlite3.
                 'PORT': DB_PORT,                 # Not used with sqlite3.
                 }})
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 
 # Language settings
 # -----------------
@@ -303,6 +305,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 # Templates
 # ---------
 # Django 1.8+
+FILE_CHARSET = 'utf-8'
 
 if FEATURES_REVERT_TO_DJANGO:
     TEMPLATES_DIRS = (
@@ -321,6 +324,7 @@ TEMPLATES_LOADERS = (
 
 TEMPLATES = [
     {
+        'NAME': 'eml',
         'BACKEND': 'extended_templates.backends.eml.EmlEngine',
         'DIRS': TEMPLATES_DIRS,
         'OPTIONS': {
@@ -328,6 +332,7 @@ TEMPLATES = [
         }
     },
     {
+        'NAME': 'pdf',
         'BACKEND': 'extended_templates.backends.pdf.PdfEngine',
         'DIRS': TEMPLATES_DIRS,
         'OPTIONS': {

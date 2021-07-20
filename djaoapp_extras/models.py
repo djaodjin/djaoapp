@@ -11,7 +11,7 @@ from .compat import python_2_unicode_compatible
 @python_2_unicode_compatible
 class App(BaseApp):
 
-    show_edit_tools = models.NullBooleanField(default=True)
+    show_edit_tools = models.BooleanField(default=True, null=True)
 
     class Meta:
         db_table = 'rules_app'
