@@ -3,7 +3,7 @@
 
 boto3==1.17.21
 Django==2.2.24
-django-phonenumber-field==5.0.0
+django-phonenumber-field==5.1.0
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
 djangorestframework==3.12.4

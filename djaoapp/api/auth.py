@@ -94,7 +94,8 @@ JwcBUUMECj8AKxsHtRHUSypco"
     serializer_class = RegisterSerializer
 
     def get_serializer_class(self):
-        serializer_class = super().get_serializer_class()
+        serializer_class = super(
+            DjaoAppJWTRegister, self).get_serializer_class()
         for agreement in Agreement.objects.all():
             serializer_class._declared_fields[agreement.slug] = \
                 serializers.CharField(required=False, help_text=agreement.title)
