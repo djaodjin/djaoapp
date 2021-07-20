@@ -62,7 +62,7 @@
               </div>
               <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <a class="list-group-item d-flex justify-content-between align-items-center" v-for="item in items.results"
-                   :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + item.slug + '/'">
+                   :href="(item.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + item.slug + '/'">
                   <span>
                     <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
                     <span v-else>No Username</span>

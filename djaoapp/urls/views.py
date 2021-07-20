@@ -131,7 +131,8 @@ urlpatterns = [
 #            reverse_lazy('product_default_start'))),
 
     # Magic! redirects to the product webapp.
-    url_frictionless_direct(r'^app/(?P<organization>%s)/' % ACCT_REGEX,
+    url_frictionless_direct(r'^app/(?P<organization>%s)/(?P<page>\S+)?' %
+        ACCT_REGEX,
         AppPageView.as_view(), name='organization_app'),
     url_authenticated(r'^app/',
         AppPageRedirectView.as_view(), name='product_default_start'),
