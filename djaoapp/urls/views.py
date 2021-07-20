@@ -53,7 +53,7 @@ urlpatterns = [
         PasswordResetView.as_view(), name='password_reset'),
     url_prefixed(r'^login/', SigninView.as_view(), name='login'),
     url_prefixed(r'^logout/', SignoutView.as_view(), name='logout'),
-    url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', #pylint: disable=line-too-long
+    url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/', #pylint: disable=line-too-long
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     # Redirects
