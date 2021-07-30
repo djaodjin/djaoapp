@@ -14,8 +14,8 @@ django-webpack-loader==0.6.0
 djangorestframework==3.9.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.5.23
-djaodjin-extended-templates==0.2.5
-djaodjin-multitier==0.1.19
+djaodjin-extended-templates==0.2.6
+djaodjin-multitier==0.1.20
 djaodjin-pages==0.4.0
 djaodjin-rules==0.2.7
 djaodjin-saas==0.10.0

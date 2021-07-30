@@ -12,10 +12,6 @@ module.exports = {
     entry: {
         // these modules are resolved based on the values provided
         // in `resolve` setting
-        css_base: 'base.scss',
-        css_email: 'email.scss',
-        css_dashboard: 'dashboard.scss',
-        css_pages: 'pages.scss',
         js_base: 'base.js',
         js_saas: 'saas.js',
         js_auth: 'auth.js',

@@ -71,8 +71,8 @@
   list-style: none;
 
   .nav-link {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: $navbar-nav-link-padding-x;
+    padding-left: $navbar-nav-link-padding-x;
   }
 
   .dropdown-menu {
@@ -249,6 +249,7 @@
 
 // White links against a dark background
 .navbar-dark {
+  background: $primary;
   .navbar-brand {
     color: $navbar-dark-brand-color;
 

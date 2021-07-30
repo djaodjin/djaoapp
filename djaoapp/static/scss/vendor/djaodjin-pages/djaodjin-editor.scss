@@ -1,0 +1,103 @@
+.dj-style-label {
+  text-align: right;
+  margin-bottom: 0;
+  padding-top: 7px;
+  width: 25%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  display: inline-block;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-right: 15px;
+}
+
+.dj-style-input-wrap {
+  width: 58.33333333%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  box-sizing: border-box;
+}
+
+.dj-style-button-wrap {
+  width: 16.66666667%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  box-sizing: border-box;
+}
+
+.edit-hover:hover{
+	background: #AAA;
+	border-radius: 4px;
+}
+
+.toggle-div{
+	padding:10px;
+	position: fixed;
+	top:50px;
+	right:-2px;
+	z-index:10000;
+	background: #FFF;
+	color: #000;
+	opacity:0.2;
+	border-radius:4px;
+	webkit-transition: opacity .15s ease-in-out;
+    -moz-transition: opacity .15s ease-in-out;
+	-ms-transition: opacity .15s ease-in-out;
+	-o-transition: opacity .15s ease-in-out;
+	transition: opacity .15s ease-in-out;
+}
+
+.toggle-div:hover{
+	opacity: 1;
+}
+
+textarea.djaodjin-editor{
+   display: block;
+   /*width: 100%;*/
+   overflow: visible !important;
+   margin-top:0px;
+   margin-bottom: 0px;
+   padding: 0px;
+   vertical-align: middle;
+   background-color: transparent;
+   border: 0px solid #cccccc;
+   border-radius: 0px;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+textarea.djaodjin-editor:focus{
+    outline: none;
+	/*outline-offset: 0px;*/
+}
+
+[id^="markdown_tool_"]{
+	position: absolute;
+    z-index:1000;
+}
+
+.error-label{
+	padding:10px;
+	text-align: center;
+	background: #ff7f7f;
+	font-size: 20px;
+	width:100%;
+	border:1px solid #7f0000;
+	color: #7f0000;
+}
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  font-style: italic;
+}
+
+.inEditMode,
+.hover-editable{
+    outline:1px solid #DDD;
+}

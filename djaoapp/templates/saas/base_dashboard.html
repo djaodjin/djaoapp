@@ -1,7 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-{{ render_bundle('css_dashboard') }}
+<link rel="stylesheet" media="screen" href="{{'/static/cache/dashboard.css'|asset}}" />
 {% endblock %}
 
 {% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}

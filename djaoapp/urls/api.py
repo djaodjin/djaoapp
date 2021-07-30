@@ -38,7 +38,9 @@ urlpatterns = [
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
         ThemePackageListAPIView.as_view(), name='pages_api_themes'),
-    url_direct(r'^api/', include('pages.urls.api')),
+    url_direct(r'^api/themes/', include('pages.urls.api.assets')),
+    url_direct(r'^api/themes/', include('pages.urls.api.templates')),
+    url_direct(r'^api/themes/', include('pages.urls.api.themes')),
 
     # Billing, Metrics, Profiles, Roles and Subscriptions
     url_prefixed(r'^api/', include('saas.urls.api.cart')),

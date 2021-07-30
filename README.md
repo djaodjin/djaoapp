@@ -48,7 +48,7 @@ vendor prerequisite packages and build the static assets.
     $ source <em>installTop</em>/bin/activate
     $ pip install -r requirements.txt
     $ make install-conf
-    $ make mode=production build-assets
+    $ make build-assets
 </code></pre>
 
 At this point, all the 3rd party vendor prerequisite packages (Python and

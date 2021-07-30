@@ -137,15 +137,18 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
 )
 
 if DEBUG and 'debug_toolbar' in INSTALLED_APPS:
-    MIDDLEWARE = tuple([
+    MIDDLEWARE = (
         'debug_panel.middleware.DebugPanelMiddleware',
-    ])
+    )
+elif not DEBUG:
+    MIDDLEWARE = (
+        'whitenoise.middleware.WhiteNoiseMiddleware',
+    )
 else:
-    MIDDLEWARE = ()
+    MIDDLEWARE = tuple([])
 
 MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'multitier.middleware.SiteMiddleware',
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
@@ -278,6 +281,39 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+ASSETS_MAP = {
+    'cache/base.css': (
+        'base/base.scss', (
+            'base/*.scss',
+            'vendor/bootstrap/*.scss',
+            'vendor/bootstrap/mixins/*.scss',
+            'vendor/bootstrap/utilities/*.scss',
+            'vendor/djaodjin/*.scss',
+            'vendor/toastr/*.scss'
+        )
+    ),
+    'cache/pages.css': (
+        'pages/pages.scss', (
+            'pages/*.scss',
+            'vendor/jquery-ui.scss',
+            'vendor/bootstrap-colorpicker.scss',
+            'vendor/djaodjin-pages/*.scss',
+        )
+    ),
+    'cache/dashboard.css': (
+        'dashboard/dashboard.scss', (
+            'dashboard/*.scss',
+            'vendor/nv.d3.scss',
+            'vendor/trip.scss',
+        )
+    ),
+    'cache/email.css': (
+        'email/email.scss', (
+            'email/*.scss',
+        )
+    ),
+}
+
 ASSETS_DEBUG = DEBUG
 #XXX ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
 ASSETS_ROOT = HTDOCS
@@ -381,6 +417,7 @@ else:
     }]
 
 EXTENDED_TEMPLATES = {
+    'ASSETS_MAP': ASSETS_MAP,
     'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
     'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
 }
@@ -472,6 +509,10 @@ LOGGING = {
             'handlers': ['log'],
             'level': 'ERROR',
             'propagate': False
+        },
+        'extended_templates': {
+            'handlers': [],
+            'level': 'INFO',
         },
         'multitier': {
             'handlers': [],

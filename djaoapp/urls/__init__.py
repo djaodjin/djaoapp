@@ -30,9 +30,8 @@ handler404 = 'djaoapp.views.errors.page_not_found'
 
 if settings.DEBUG:
     from django.contrib import admin
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    from django.conf.urls.static import static
     import debug_toolbar
+    from extended_templates.views.static import AssetView
 
     # admin doc and panel
     try:
@@ -50,20 +49,29 @@ if settings.DEBUG:
                 url(r'^admin/', include(admin.site.urls)),
             ]
     except LookupError:
-        pass
+        urlpatterns = []
 
-    urlpatterns = staticfiles_urlpatterns() \
-        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
+
+        # You need to run `python manage.py --nostatic` to enable hotreload.
+        url(r'static/(?P<path>.*)', AssetView.as_view()),
+
+        url(r'^media/(?P<path>.*)$',
+            django_static_serve, {'document_root': settings.MEDIA_ROOT}),
         url(r'^csrf-error/',
             TemplateView.as_view(template_name='csrf-error.html'),
             name='csrf_error'),
         url(r'^favicon.ico$', django_static_serve,
-            {'path': 'favicon.ico'}),
+            {'path': 'favicon.ico', 'document_root': settings.HTDOCS}),
     ]
 else:
-    urlpatterns = []
+    urlpatterns = [
+        url(r'^%s(?P<path>.*)$' % settings.STATIC_URL[1:], # remove leading '/'
+            django_static_serve, {'document_root': settings.STATIC_ROOT}),
+        url(r'^media/(?P<path>.*)$',
+            django_static_serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 
 if settings.API_DEBUG:
     from rest_framework.schemas import get_schema_view

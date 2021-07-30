@@ -1,8 +1,11 @@
 // CSS specific to the DjaoDjin dashboard
 
-$navbar-height:                 64px; // XXX `$navbar-height` used to be defined
+
+// XXX `$navbar-height` used to be defined
 // in Bootstrap3 (it is not in Bootstrap4). We redefine it here use it stick the
 // footer at the bottom of the screen when a page is less that screen height.
+$navbar-height: max($nav-link-height, $navbar-brand-height) + $navbar-padding-y * 2;
+
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
 $dashboard-nav-footer-height:   94px;
@@ -219,14 +222,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: block;
 }
 
-.sidebar-toggle > .closed:before  {
-    content: "\f101"; /* .fa-angle-double-right:before */
-}
-
-.sidebar-toggle > .opened:before  {
-    content: "\f100"; /* .fa-angle-double-left:before */
-}
-
 .dashboard-inner-container .content-area-container {
     padding: 20px;
 }
@@ -245,11 +240,42 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     padding: 9px 10px;
     border-radius: 3px;
     z-index: 1000;
-    border-right: 1px solid $dashboard-sidebar-color;
-    border-bottom: 1px solid $dashboard-sidebar-color;
     color: $dashboard-sidebar-color;
     background: $dashboard-sidebar-bg;
 }
+
+.sidebar-toggle > .bar1, .bar2, .bar3  {
+  width: 25px;
+  height: 2px;
+  background-color: white;
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+.sidebar-toggle > .bar2, .bar3  {
+  width: 20px;
+}
+
+.sidebar-toggle > .bar3  {
+  width: 15px;
+}
+
+
+.sidebar-toggle > .bar1.opened  {
+  //-webkit-transform: translate(10px, 0);
+  //transform: translate(10px, 0);
+}
+
+.sidebar-toggle > .bar2.opened  {
+  -webkit-transform: translate(5px, 0);
+  transform: translate(5px, 0);
+}
+
+.sidebar-toggle > .bar3.opened  {
+  -webkit-transform: translate(10px, 0);
+  transform: translate(10px, 0);
+}
+
 
 .typeahead-dropdown.open>.dropdown-menu {
     display: block;
@@ -559,17 +585,23 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 
 
 @include media-breakpoint-down(xs) {
-    .dashboard-content {
-      margin-top: $navbar-height;
+
+    .dashboard-content > .fullviewport {
+      padding-top: $navbar-height;
     }
 
-    .dashboard-content > header {
+    .dashboard-content > header,
+    .dashboard-content > .fullviewport > header {
       position: fixed;
       height:  $navbar-height;
       top: 0;
       z-index: 4;
       width: 100%;
       left: 0;
+    }
+
+    .dashboard-content > .fullviewport > header.scrolled {
+      background-color: $primary;
     }
 
     .dashboard-nav,

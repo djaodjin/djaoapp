@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 import logging, os
@@ -8,6 +8,7 @@ from django.http import Http404
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
+from multitier.finders import get_current_theme_assets_dirs
 from pages.utils import get_default_storage_base
 from rules.utils import get_app_model
 from saas.decorators import _valid_manager
@@ -109,23 +110,8 @@ def get_current_assets_dirs():
         if static_root_path:
             assets_dirs = [static_root_path]
 
-    static_root = assets_dirs[0].split(os.sep)
-    static_url = settings.STATIC_URL.split('/')
-    if not static_root[-1]:
-        static_root.pop()
-    if not static_url[-1]:
-        static_url.pop()
-    nb_ident_parts = 0
-    for root_part, url_part in six.moves.zip(
-            reversed(static_root), reversed(static_url)):
-        if root_part != url_part:
-            break
-        nb_ident_parts += 1
-    parts = (static_root[:-nb_ident_parts] + [get_active_theme()])
-    theme_dir = os.sep + os.path.join(*parts)
+    assets_dirs = get_current_theme_assets_dirs() + list(assets_dirs)
 
-    assets_dirs = [
-        theme_dir + settings.STATIC_URL[:-1], theme_dir] + list(assets_dirs)
     return assets_dirs
 
 

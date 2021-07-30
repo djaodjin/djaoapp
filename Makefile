@@ -16,7 +16,9 @@ installFiles  ?= /usr/bin/install -p -m 644
 NPM           ?= npm
 PIP           := $(binDir)/pip
 PYTHON        := $(binDir)/python
+SASSC         := $(binDir)/sassc
 SQLITE        ?= sqlite3
+WEBPACK       ?= $(installTop)/node_modules/.bin/webpack
 
 # Django 1.7,1.8 sync tables without migrations by default while Django 1.9
 # requires a --run-syncdb argument.
@@ -26,12 +28,17 @@ RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_S
 
 APP_NAME      ?= djaoapp
 APP_PORT      ?= 8000
+
+WEBPACK_MODE  ?= production
+ifneq ($(WEBPACK_MODE),production)
+WEBPACK := $(installTop)/node_modules/.bin/webpack-dev-server
+endif
+
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # `make initdb` will install site.conf but only after `grep` is run
 # and DB_FILNAME set to "". We use the default value in the template site.conf
 # here to prevent that issue.
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
-mode          ?= $(if $(findstring True,$(shell grep ^DEBUG $(CONFIG_DIR)/site.conf | cut -f 2 -d '=')),,production)
 else
 DB_FILENAME   := $(LOCALSTATEDIR)/db/djaodjin.sqlite
 endif
@@ -145,32 +152,58 @@ $(installTop)/.npm/djaoapp-packages: $(srcDir)/package.json
 	$(installDirs) -d $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(installTop)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
-	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
+	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
+	[ -f $(SASSC) ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 	touch $@
 
-ifeq ($(mode),production)
-ifeq ($(watch),true)
-webpack_watch = '-w'
-endif
-webpack = $(installTop)/node_modules/.bin/webpack --config $(installTop)/webpack.production.js $(webpack_watch)
-else
-webpack = $(installTop)/node_modules/.bin/webpack-dev-server --config $(installTop)/webpack.development.js
-endif
+build-assets: $(ASSETS_DIR)/cache/base.css \
+                $(ASSETS_DIR)/cache/email.css \
+                $(ASSETS_DIR)/cache/dashboard.css \
+                $(ASSETS_DIR)/cache/pages.css \
+                $(ASSETS_DIR)/cache/djaodjin-vue.js
 
-build-assets: $(installTop)/.npm/djaoapp-packages \
-					$(srcDir)/djaoapp/static/js/djaoapp-i18n.js \
-					$(srcDir)/djaoapp/static/js/djaodjin-plan-edition.js \
-					$(srcDir)/djaoapp/static/js/djaodjin-metrics.js \
-					$(srcDir)/djaoapp/static/js/djaodjin-menubar.js \
-					$(srcDir)/djaoapp/static/js/djaodjin-djaoapp-vue.js \
-					$(srcDir)/djaoapp/static/js/djaodjin-dashboard.js \
-					$(srcDir)/djaoapp/static/js/wizard.js \
-					$(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo
+$(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/djaoapp-packages \
+                $(ASSETS_DIR)/js/djaoapp-i18n.js
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.production.js $(installTop)
-	cd $(installTop) && $(webpack)
+	cd $(installTop) && $(WEBPACK) --config $(installTop)/webpack.$(WEBPACK_MODE).js
+
+$(ASSETS_DIR)/cache/base.css: $(srcDir)/djaoapp/static/scss/base/base.scss \
+  $(wildcard $(srcDir)/djaoapp/static/scss/base/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/mixins/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/utilities/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/toastr/*.scss)
+	cd $(srcDir) && $(SASSC) $< $@
+
+
+$(ASSETS_DIR)/cache/email.css: $(srcDir)/djaoapp/static/scss/email/email.scss \
+              $(wildcard $(srcDir)/djaoapp/static/scss/email/*.scss) \
+              $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss)
+	cd $(srcDir) && $(SASSC) $< $@
+
+
+$(ASSETS_DIR)/cache/dashboard.css: \
+              $(srcDir)/djaoapp/static/scss/dashboard/dashboard.scss \
+              $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
+              $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
+              $(srcDir)/djaoapp/static/scss/vendor/trip.scss
+	cd $(srcDir) && $(SASSC) $< $@
+
+
+$(ASSETS_DIR)/cache/pages.css: \
+       $(srcDir)/djaoapp/static/scss/pages/pages.scss \
+       $(wildcard $(srcDir)/djaoapp/static/scss/pages/*.scss) \
+       $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin-pages/*.scss) \
+       $(srcDir)/djaoapp/static/scss/vendor/jquery-ui.scss \
+       $(srcDir)/djaoapp/static/scss/vendor/bootstrap-colorpicker.scss
+	cd $(srcDir) && $(SASSC) $< $@
+
 
 setup-livedemo:
 	$(installDirs) $(srcDir)/themes/djaoapp/templates

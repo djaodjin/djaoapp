@@ -44,6 +44,9 @@ window.Croppa = Croppa;
 import InfiniteLoading from 'vue-infinite-loading';
 window.InfiniteLoading = InfiniteLoading;
 
+import _ from 'lodash';
+window._ = _;
+
 // required for hot module replacement
 if (module.hot){
     module.hot.accept();

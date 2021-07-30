@@ -1,21 +1,18 @@
 <ul>
   <li class="nav-item dropdown align-self-center">
     {% if active_organization %}
-      <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0;" data-toggle="dropdown" role="button"
-        aria-haspopup="true" aria-expanded="false">
-        <span class="menubar-label-title">
-            <span data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span> <span class="caret"></span>
-        </span>
-        <span class="menubar-label-subtitle">
-            {{request.user.username}}
-        </span>
+      <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0"
+         data-toggle="dropdown" role="button"
+         aria-haspopup="true" aria-expanded="false">
+        <div style="display:inline-block;">
+          <span class="menubar-label-title" style="line-height:1rem;" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
+          <span class="menubar-label-subtitle" style="line-height:1rem;">{{request.user.username}}</span>
+        </div>
       </a>
     {% else %}
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
         aria-haspopup="true" aria-expanded="false">
-        <span class="menubar-label">
-          {{request.user.username}} <span class="caret"></span>
-        </span>
+        <span class="menubar-label" data-trnc data-trnc-len="8">{{request.user.username}}</span>
       </a>
     {% endif %}
 

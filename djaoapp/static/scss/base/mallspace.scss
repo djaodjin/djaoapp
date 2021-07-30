@@ -4,20 +4,6 @@
 $footer-height: 150px;
 
 
-.navbar-brand {
-  font-family: Sonsie One;
-
-  > img {
-    display: inline-block;
-    width: auto;
-    max-height: $navbar-height - 4;
-  }
-}
-
-.navbar-light .navbar-brand {
-  color: theme-color(primary);
-}
-
 // specific to legal agreements
 .agreement h1 {
   font-size: $h4-font-size;
@@ -688,10 +674,6 @@ section#hosting {
 
 .footer-links a i {
   font-size: 24px;
-}
-
-#leaderboard {
-  margin-top: 50px;
 }
 
 .nvtooltip {
