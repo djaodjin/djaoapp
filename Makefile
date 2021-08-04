@@ -158,11 +158,13 @@ $(installTop)/.npm/djaoapp-packages: $(srcDir)/package.json
 	[ -f $(SASSC) ] || (cd $(binDir) && ln -s ../node_modules/.bin/sass sassc)
 	touch $@
 
-build-assets: $(ASSETS_DIR)/cache/base.css \
+# webpack will remove all files in the cache folder so we build the Javascript
+# bundle before the css files.
+build-assets: $(ASSETS_DIR)/cache/djaodjin-vue.js \
+                $(ASSETS_DIR)/cache/base.css \
                 $(ASSETS_DIR)/cache/email.css \
                 $(ASSETS_DIR)/cache/dashboard.css \
-                $(ASSETS_DIR)/cache/pages.css \
-                $(ASSETS_DIR)/cache/djaodjin-vue.js
+                $(ASSETS_DIR)/cache/pages.css
 
 $(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/djaoapp-packages \
                 $(ASSETS_DIR)/js/djaoapp-i18n.js
