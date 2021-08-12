@@ -7,35 +7,45 @@
         <div class="page-header">
             <h1 class="text-center"><span class="fa fa-pencil"></span> {% trans %}Activate{% endtrans %}</h1>
             <p>
-            {% block accounts_title %}
 {% if reason %}
 {{reason}}
-{% else %}
+{% elif form.email or form.phone %}
+{# We don't have a password yet. Could be a frictionless registration or an invite. #}
 {% trans %}You are about to activate your account. Please set a password to secure it.{% endtrans %}
+{% elif view.kwargs.token == object.email_verification_key %}
+{% trans %}Thank you for verifying your e-mail address. Please enter your password to login.{% endtrans %}
+{% elif view.kwargs.token == object.phone_verification_key %}
+{% trans %}Thank you for verifying your phone number. Please enter your password to login.{% endtrans %}
 {% endif %}
-            {% endblock %}
             </p>
         </div>
-        {% if form.email %}
+        {% if form %}
+        {% if form.email or form.phone %}
         <div class="text-right" style="margin-bottom: 15px;">
             {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
         </div>
         {% endif %}
-        {% if form %}
         {% include "_form.html" %}
-        {% endif %}
         <hr />
         <div class="row">
             <div class="col-md-4">
                 <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
             </div>
             <div class="col-md-8 text-right">
+            {% if form.email or form.phone %}
                 {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
+            {% else %}
+            <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+            {% endif %}
             </div>
         </div>
-        {% else %}
+        {% endif %}
+        {% else %} {# not object #}
         <p>
-            {% trans %}This activation token is invalid or has expired.{% endtrans %}
+{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
+        </p>
+        <p>
+{% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
         </p>
         {% endif %}
     </div>

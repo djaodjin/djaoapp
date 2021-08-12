@@ -41,13 +41,11 @@ class RegisterSerializer(CreateUserSerializer):
         help_text=_("Zip/Postal Code for the billing profile"))
     country = serializers.CharField(required=False,
         help_text=_("Country for the billing profile"))
-    phone = serializers.CharField(required=False,
-        help_text=_("Phone number for the billing profile"))
 
     class Meta(CreateUserSerializer.Meta):
         fields = CreateUserSerializer.Meta.fields + (
             'organization_name', 'street_address', 'locality',
-            'region', 'postal_code', 'country', 'phone', 'type')
+            'region', 'postal_code', 'country', 'type')
 
 #pylint:disable=protected-access
 RegisterSerializer._declared_fields["type"] = \
@@ -119,8 +117,7 @@ JwcBUUMECj8AKxsHtRHUSypco"
             serializer.validated_data.get('locality', None) or
             serializer.validated_data.get('region', None) or
             serializer.validated_data.get('postal_code', None) or
-            serializer.validated_data.get('country', None) or
-            serializer.validated_data.get('phone', None)):
+            serializer.validated_data.get('country', None)):
             # We have enough information for a billing profile
             registration = self.app.PERSONAL_REGISTRATION
 

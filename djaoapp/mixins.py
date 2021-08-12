@@ -96,22 +96,22 @@ class DjaoAppMixin(object):
 class RegisterMixin(object):
 
     registration_fields = (
+        'country',
+        'email',
         'first_name',
-        'last_name',
         'full_name',
-        'organization_name',
-        'username',
-        'password',
+        'lang',
+        'last_name',
+        'locality',
+        'postal_code',
         'new_password',
         'new_password2',
-        'email',
-        'username',
+        'organization_name',
+        'password',
         'phone',
-        'street_address',
-        'locality',
         'region',
-        'postal_code',
-        'country'
+        'street_address',
+        'username',
     )
 
     def register_personal(self, **cleaned_data):
@@ -142,38 +142,35 @@ class RegisterMixin(object):
             first_name, mid, last_name = full_name_natural_split(full_name)
         if not full_name:
             full_name = ("%s %s" % (first_name, last_name)).strip()
+
+        organization_name = cleaned_data.get(organization_selector, full_name)
+
         organization_extra = {}
         role_extra = {}
-        user_extra = {}
         for field_name, field_value in six.iteritems(cleaned_data):
             if field_name not in self.registration_fields:
                 if field_name.startswith('organization_'):
                     organization_extra.update({field_name[13:]: field_value})
                 if field_name.startswith('role_'):
                     role_extra.update({field_name[5:]: field_value})
-                if field_name.startswith('user_'):
-                    user_extra.update({field_name[5:]: field_value})
         if not organization_extra:
             organization_extra = None
         if not role_extra:
             role_extra = None
-        if not user_extra:
-            user_extra = None
 
-        username = cleaned_data.get('username', None)
-        organization_name = cleaned_data.get(organization_selector, full_name)
-        if user_selector == organization_selector:
-            # We have a personal registration
-            organization_slug = username
-        else:
-            organization_slug = slugify(organization_name)
-        if not organization_slug:
-            raise ValidationError(_("The organization name must contain"\
-                " some alphabetical characters."))
         try:
             with transaction.atomic():
                 # Create a ``User``
                 user = self.register_user(**cleaned_data)
+                if user_selector == organization_selector:
+                    # We have a personal registration
+                    organization_slug = user.username
+                else:
+                    organization_slug = slugify(organization_name)
+                if not organization_slug:
+                    raise ValidationError({organization_selector:
+                        _("The organization name must contain"\
+                        " some alphabetical characters.")})
 
                 # Create an ``Organization`` and set the user as its manager.
                 organization_kwargs = {}
