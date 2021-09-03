@@ -1,33 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <section id="product">
-    <div class="jumbotron mt-4">
-      <div class="jumbotron-text">
-        <div class="center" style="display:block;">
-          <h1 id="app-title" class="editable text-center" data-intro="Editable title" data-position="bottom">
-            Welcome to {{provider.printable_name}}!
-          </h1>
-          <p id="app-jumbotron" class="text-center editable edit-markdown"></p>
-        </div>
+<section id="app">
+  <div class="jumbotron mt-4">
+    <div class="jumbotron-text">
+      <div class="center" style="display:block;">
+        <h1 id="app-title" class="editable text-center" data-intro="Editable title" data-position="bottom">Welcome to {{provider.printable_name}}!</h1>
+        <p id="app-jumbotron" class="text-center editable edit-markdown"></p>
       </div>
-      <div class="text-center">
-        {% if provider.email %}
-          <span class="email"><a href="mailto:{{provider.email}}">{{provider.email}}</a></span>
-        {% endif %}
+    </div>
+    <div class="text-center">
+      {% if provider.email %}
+      <span class="email"><a href="mailto:{{provider.email}}">{{provider.email}}</a></span>
+      {% endif %}
 
-        {% if provider.phone %}
-          - <span class="tel">{{provider.phone}}</span>
-        {% endif %}
-      </div>
+      {% if provider.phone %}
+      - <span class="tel">{{provider.phone}}</span>
+      {% endif %}
     </div>
-    <div class="text-center" style="margin-bottom:25px;">
-      Quick links: 
-      <a href="{{request|url_profile}}">My Profile</a> | 
-      <a href="{{urls.organization.subscriptions}}">My Subscriptions</a> |
-      <a href="{{urls.organization.billing}}">My Billing</a>
-    </div>
-    {% block help_content %}
-    {% endblock %}
-  </section>
+  </div>
+  <div class="text-center" style="margin-bottom:25px;">
+    Quick links:
+    <a href="{{request|url_profile}}">My Profile</a> |
+    <a href="{{urls.organization.subscriptions}}">My Subscriptions</a> |
+    <a href="{{urls.organization.billing}}">My Billing</a>
+  </div>
+  {% block help_content %}
+  {% endblock %}
+</section>
 {% endblock %}

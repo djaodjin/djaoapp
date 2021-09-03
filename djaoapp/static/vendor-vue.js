@@ -15,25 +15,13 @@ window.Vue = Vue;
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;
 
-// Use bootstrap-vue ESM module
-// because of:
-//  - <b-pagination> in djaoapp/templates/_pagination.html
-// XXX We are already using the jQuery version (bootstrap.js) in base.js.
-import BootstrapVue from 'bootstrap-vue';
-window.BootstrapVue = BootstrapVue;
-
 // Use 'uiv/dist/uiv.esm.js' ESM module?
 // because of:
-//  - <uiv-dropdown> and <uiv-date-picker> in saas/metrics/base.html
-//  - <uiv-dropdown> and <uiv-date-picker> in saas/metrics/balances.html
-//  - <uiv-dropdown> and <uiv-date-picker> in saas/profile/subscriptions.html
-//  - <uiv-dropdown> and <uiv-date-picker> in saas/_filter.html
-//  - <uiv-dropdown> and <uiv-date-picker> in billing/coupons.html
-//  - <uiv-dropdown> and <uiv-date-picker> in _filter_col_3.html
+//  - <uiv-dropdown> and <uiv-date-picker> in jinja2/_form_fields.html
 //  - <uiv-typeahead> in saas/profile/plans/subscribers.html
 //  - <uiv-typeahead> in saas/profile/roles/role.html
 //  - <uiv-typeahead> in saas/users/roles.html
-//  - <uiv-typeahead>, <uiv-dropdown> and <uiv-date-picker> in saas/billing/import.html
+//  - <uiv-typeahead> in saas/billing/import.html
 // XXX This should be removed since uiv only supports Bootstrap3.
 import * as uiv from 'uiv';
 window.uiv = uiv;

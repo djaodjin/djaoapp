@@ -7,6 +7,47 @@
         </div>
     </infinite-loading>
 </div>
-<div class="text-center" v-show="pageCount > 1" v-if="!isInfiniteScroll" v-cloak>
-    <b-pagination align="center" size="md" :total-rows="totalItems" v-model="params.page" :per-page="itemsPerPage" @input="get">
+<div class="text-center"
+     v-show="pageCount > 1" v-if="!isInfiniteScroll" v-cloak>
+  <ul role="menubar" aria-disabled="false" aria-label="Pagination"
+      class="pagination pagination-md justify-content-center">
+    <li role="presentation" aria-hidden="true"
+        :class="'page-item' + (params.page == 1 ? ' disabled' : '')"
+        v-if="pageCount > ellipsisThreshold">
+      <a role="menuitem" tabindex="-1" aria-label="Go to first page"
+         class="page-link" href="#" @click.prevent="onClick(1)">«</a>
+    </li>
+    <li role="presentation" aria-hidden="true" class="page-item"
+        :class="'page-item' + (params.page == 1 ? ' disabled' : '')"
+        v-if="pageCount > ellipsisThreshold">
+      <a role="menuitem" tabindex="-1" aria-label="Go to previous page"
+         class="page-link" href="#" @click.prevent="onClick(params.page - 1)">‹</a>
+    </li>
+    <li role="separator" class="page-item disabled bv-d-xs-down-none"
+        v-if="pageCount > ellipsisThreshold && minDirectPageLink > 1">
+      <span class="page-link">…</span>
+    </li>
+    <li v-for="pageIdx in directPageLinks"
+        role="presentation" :class="'page-item' + (params.page == pageIdx ? ' active' : '')">
+      <a role="menuitemradio" aria-label="Go to page 1"
+         aria-checked="true" aria-posinset="1" aria-setsize="26" tabindex="0"
+         class="page-link" href="#" @click.prevent="onClick(pageIdx)">[[pageIdx]]</a>
+    </li>
+    <li role="separator" class="page-item disabled bv-d-xs-down-none"
+        v-if="pageCount > ellipsisThreshold && maxDirectPageLink < pageCount">
+      <span class="page-link">…</span>
+    </li>
+    <li role="presentation"
+        :class="'page-item' + (params.page == pageCount ? ' disabled' : '')"
+        v-if="pageCount > ellipsisThreshold">
+      <a role="menuitem" tabindex="-1" aria-label="Go to next page"
+         class="page-link" href="#" @click.prevent="onClick(params.page + 1)">›</a>
+    </li>
+    <li role="presentation"
+        :class="'page-item' + (params.page == pageCount ? ' disabled' : '')"
+        v-if="pageCount > ellipsisThreshold">
+      <a role="menuitem" tabindex="-1" aria-label="Go to last page"
+         class="page-link" href="#" @click.prevent="onClick(pageCount)">»</a>
+    </li>
+  </ul>
 </div>
