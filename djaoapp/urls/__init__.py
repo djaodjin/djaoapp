@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 import os
@@ -31,7 +31,7 @@ handler404 = 'djaoapp.views.errors.page_not_found'
 if settings.DEBUG:
     from django.contrib import admin
     import debug_toolbar
-    from extended_templates.views.static import AssetView
+    from ..views.static import AssetView
 
     # admin doc and panel
     try:
