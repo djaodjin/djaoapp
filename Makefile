@@ -51,7 +51,7 @@ endif
 
 MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 
-MY_EMAIL          := $(shell cd $(srcDir) && git config user.email)
+MY_EMAIL          ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 
 all:
@@ -97,9 +97,9 @@ initdb-cowork: install-conf
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
 		$(RUNSYNCDB) --database cowork --noinput
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
 
 
 initdb-djaoapp: install-conf
@@ -214,8 +214,9 @@ setup-livedemo:
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f db.sqlite3
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) db.sqlite3
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	cd $(srcDir) && $(SQLITE) db.sqlite3 "UPDATE rules_app set show_edit_tools=1;"
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) db.sqlite3
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 
 
