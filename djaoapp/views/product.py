@@ -20,14 +20,13 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.static import serve
-from deployutils.helpers import datetime_or_now
 
 from multitier.mixins import build_absolute_uri
 from multitier.thread_locals import get_current_site
 from pages.views.pages import PageMixin
 from saas.decorators import fail_direct
 from saas.mixins import UserMixin
-from saas.models import ChargeItem, Plan, Subscription, get_broker
+from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
 from rules.utils import get_current_app
@@ -239,7 +238,7 @@ class AppPageView(ProxyPageView):
             candidates += ['app/%s' % (candidate)]
 
         if profile:
-           candidates += [
+            candidates += [
                 'app/%s/index.html' % profile, 'app/%s.html' % profile]
 
         if not fail_direct(self.request, organization=get_broker()):

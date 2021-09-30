@@ -1,44 +1,98 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% macro api_param_doc(param, operationId, read_direction=True) -%}
+{% macro api_param_doc(param, operationId, response=True, indent=0) -%}
+{% if response or not param.readOnly %}
 {% if param.type %}
 <div class="param">
-  <div class="param-name">
+  <div class="param-name{% if indent %} param-indent-{{indent}}{% endif %}">
     <span class="param-name-wrap">{{param.name}}</span>
   </div>
-  <div class="param-info">
+  <div class="param-info{% if not (param.type == 'object' or param.type == 'array') %} param-builtin{% endif %}">
     <div>
       <span class="param-type integer" title="">{{param.type}}</span>
-      {% if param.required %}
+      {% if not response and param.required %}
       <span class="param-required">required</span>
       {% endif %}
     </div>
     <div class="param-description">
-      <p>{{param.description}}</p>
-      {% if param.type == 'object' or param.type == 'array' %}
-      <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
-      <div id="collapse-{{operationId}}-{{param.name}}" class="collapse">
-        {% for attr in param|schema_properties(definitions) %}
-        {{ api_param_doc(attr, operationId, read_direction) }}
-        {% endfor %}
-      </div>
-      {% endif %}
+      <p>
+        {{param.description}}
+        {% if (param.type == 'object' or param.type == 'array') and param|schema_properties(definitions) %}
+        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+        {% endif %}
+      </p>
     </div>
   </div>
 </div>
+{% if param.type == 'object' or param.type == 'array' %}
+<div id="collapse-{{operationId}}-{{param.name}}" class="collapse show">
+  {% for attr in param|schema_properties(definitions) %}
+  {{ api_param_doc(attr, operationId, response, indent + 1) }}
+  {% endfor %}
+</div>
+{% endif %}
 {% else %}
  XXX no type for {{param}}.
+{% endif %}
 {% endif %}
 {%- endmacro %}
 
 
 {% block sidebar %}
 <ul id="api-doc-sidebar" class="nav flex-column">
-  {% for tag, title in tags.items() %}
   <li class="nav-item">
-      <a class="nav-link" href="#{{tag|lower}}">{{title}}</a>
+      <a class="nav-link" href="#index">Index</a>
   </li>
-  {% endfor %}
+  <li class="nav-item">
+      <a class="nav-link" href="#alphabetical">Alphabetical</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="#workflows">By workflows</a>
+      <ul class="list-unstyled ml-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#auth">Auth & credentials</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#billing">Billing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#rbac">Roles & rules</a>
+        </li>
+      </ul>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="#permissions">By roles</a>
+      <ul class="list-unstyled ml-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#subscriber">Subscribers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#provider">Providers</a>
+        </li>
+      </ul>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="#datamodels">By models</a>
+      <ul class="list-unstyled ml-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#cartmodel">Cart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#profilemodel">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#subscriptionmodel">Subscription</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#transactionmodel">Transaction</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#usermodel">User</a>
+        </li>
+      </ul>
+  </li>
+
+
 </ul>
 <hr class="d-md-none" />
 <ul class="nav flex-column d-md-none">
@@ -50,132 +104,645 @@
 
 {% block content %}
 <div id="api-doc-content">
-    {% for api_end_point in api_end_points %}
-    {% if api_end_point.tags != variable_watcher %}
-    <section class="row">
-      <div class="col-sm-7">
-        <a name="{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}"></a><h2 style="margin-top:20px;">{{tags[api_end_point.tags]}} <a href="#{% if api_end_point.tags == 'proxy' %}rules{% else %}{{api_end_point.tags}}{% endif %}" class="header-anchor"><i class="fa fa-link"></i></a></h2>
-        {% if api_end_point.tags == 'auth' %}
+  {# intro #}
+  <a name="index"></a>
+  <div id="intro">
+    <div class="row">
+      <div class="col-12">
+        <h1>DjaoApp API Reference <a href="#index" class="header-anchor"><i class="fa fa-link"></i></a></h1>
         <p>
-The DjaoApp API is meant to be used by your application front-end logic in the
-same way you are calling your application backend API. DjaoApp seemlessly
-extends your application's backend with accounts &amp; billing API end points
-required to manage authentication, subscription, user profiles, billing
-statements and other administrative features required to run
-Software-as-a-Service on the Internet.
+Once you have registered an account on
+<a href="https://www.djaodjin.com/register/">djaodjin.com</a> and
+created a site, the following Application Programmable Interface
+(API) will be available on your site will to provide profiles, billing and
+service access control - i.e. the administrative features required to run
+Software, as-a-Service, on the Internet.
         </p>
         <p>
-DjaoApp supports three methods of authentication:
+Most API end points require authentication. DjaoApp supports three methods of
+authentication:
         </p>
         <ul>
-            <li><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" target="_blank">JSON Web Token</a> through the <a href="#auth_create">/auth/ API</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">HTTP Cookie</a> through the /login/ HTML page</li>
-            <li><a href="https://en.wikipedia.org/wiki/Application_programming_interface_key" target="_blank">API Key</a> downloaded from a user profile page</li>
+          <li><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" target="_blank">JSON Web Token</a> through the <a href="#createJWTLogin">Authentication API</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">HTTP Cookie</a> through the <a href="/docs/themes/#workflow_login">Login HTML page</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Application_programming_interface_key" target="_blank">API Key</a> downloaded from a <a href="/docs/faq/#api-keys">user profile page</a></li>
         </ul>
         <p>
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
         </p>
-        {% elif api_end_point.tags == 'profile' %}
         <p>
-This section contains APIs to manage the identity, such as name or email
-address, of users and organizations registered to the site.
+Browse the API endpoints by ...
         </p>
-        {% elif api_end_point.tags == 'subscriptions' %}
+      </div>
+    </div>
+    <div class="row"> {#row-eq-height">#}
+      <div class="col-sm-4">
+        <div class="faq-list" style="height:92%;">
+          <div class="p-4">
+            <h3>workflows</h3>
+            <ul>
+              <li><a href="#auth">Auth & credentials</a></li>
+              <li><a href="#billing">Billing</a></li>
+              <li><a href="#metrics">Metrics</a></li>
+              <li><a href="#profile">Profile</a></li>
+              <li><a href="#rbac">Roles & rules</a></li>
+              <li><a href="#subscriptions">Subscriptions</a></li>
+              <li><a href="#themes">Themes</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="faq-list" style="height:92%;">
+          <div class="p-4">
+            <h3>roles</h3>
+            <ul>
+              <li><a href="#visitor">Visitors</a></li>
+              <li><a href="#user">Users</a></li>
+              <li><a href="#subscriber">Subscribers</a></li>
+              <li><a href="#provider">Providers</a></li>
+              <li><a href="#broker">Broker</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="faq-list" style="height:92%;">
+          <div class="p-4">
+            <h3>models</h3>
+            <ul>
+              <li><a href="#cartmodel">Cart</a></li>
+              <li><a href="#chargemodel">Charge</a></li>
+              <li><a href="#couponmodel">Coupon</a></li>
+              <li><a href="#planmodel">Plan</a></li>
+              <li><a href="#profilemodel">Profile</a></li>
+              <li><a href="#rolemodel">Role</a></li>
+              <li><a href="#appmodel">Site</a></li>
+              <li><a href="#subscriptionmodel">Subscription</a></li>
+              <li><a href="#transactionmodel">Transaction</a></li>
+              <li><a href="#usermodel">User</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>{# /intro #}
+  <hr />
+
+  {# by workflows #}
+  <div id="workflows">
+    <a name="workflows"></a>
+    <h2>By workflows <a href="#workflows" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+    <a name="auth"></a>
+    <h3>Auth & credentials <a href="#auth" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'auth' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
         <p>
-This section contains APIs to manage subscription plans and subscribers
-to those plans.
+This section contains APIs related to authenticating users such as registration,
+login, updating a user password, etc.
         </p>
-        {% elif api_end_point.tags == 'billing' %}
+      </div>
+    </div>
+
+    <a name="billing"></a>
+    <h3>Billing <a href="#billing" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'billing' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
         <p>
 This section contains APIs to manage the checkout, billing and accounting
 workflows, including shopping carts, coupons, charges and balance statements.
         </p>
-        {% elif api_end_point.tags == 'rbac' %}
-        <p>
-This section contains APIs to manage the checkout, billing and accounting
-workflows, including shopping carts, coupons, charges and balance statements.
-        </p>
-        {% elif api_end_point.tags == 'themes' %}
-        <p>
-This section contains APIs to upload new templates for all pages, from login
-to checkout, or reset to the default theme.
-        </p>
-        {% elif api_end_point.tags == 'metrics' %}
+      </div>
+    </div>
+
+    <a name="metrics"></a>
+    <h3>Metrics <a href="#metrics" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'metrics' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
         <p>
 The metrics APIs crunch the numbers and return various insight into
 the performance for the business. They are used to implement
 a <a href="https://djaodjin.com/docs/#business-performance">balances
 dashboard</a> for example.
         </p>
-        {% endif %}
+      </div>
+    </div>
+
+    <a name="profile"></a>
+    <h3>Profile <a href="#profile" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
         <ul>
-        {% for summary_end_point in api_end_points %}
-        {% if summary_end_point.tags == api_end_point.tags %}
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'profile' in summary_end_point.tags %}
           <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
-        {% endif %}
-        {% endfor %}
+          {% endif %}
+          {% endfor %}
         </ul>
-        {% set variable_watcher = api_end_point.tags %}
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs to manage the identity, such as name or email
+address, of users and organizations registered to the site.
+        </p>
+      </div>
+    </div>
+
+    <a name="rbac"></a>
+    <h3>Roles & rules <a href="#rbac" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'rbac' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs to manage roles and access rules.
+        </p>
+      </div>
+    </div>
+
+    <a name="subscriptions"></a>
+    <h3>Subscriptions <a href="#subscriptions" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'subscriptions' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs to manage subscriptions.
+        </p>
+      </div>
+    </div>
+
+    <a name="themes"></a>
+    <h3>Themes <a href="#themes" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'themes' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs to upload new templates for all pages, from login
+to checkout, or reset to the default theme.
+        </p>
+      </div>
+    </div>
+  </div>{# / by workflows #}
+  <hr />
+
+  {# by permissions #}
+  <div id="permissions">
+    <a name="permissions"></a>
+    <h2>By roles <a href="#permissions" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+    <a name="visitor"></a>
+    <h3>Visitors <a href="#visitor" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'visitor' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to unauthenticated users.
+        </p>
+      </div>
+    </div>
+
+    <a name="user"></a>
+    <h3>Users <a href="#user" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'user' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to authenticated <a href="/docs/accounts/#user-accounts">users</a>.
+        </p>
+      </div>
+    </div>
+
+    <a name="subscriber"></a>
+    <h3>Subscribers <a href="#subscriber" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'subscriber' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to <a href="/docs/accounts/#subscriber-profiles">subscribers</a>.
+        </p>
+      </div>
+    </div>
+
+    <a name="provider"></a>
+    <h3>Providers <a href="#provider" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'provider' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to <a href="/docs/accounts/#provider-profiles">providers</a>.
+        </p>
+      </div>
+    </div>
+
+    <a name="broker"></a>
+    <h3>Broker <a href="#broker" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'broker' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to the <a href="/docs/accounts/#broker">broker</a>.
+        </p>
+      </div>
+    </div>
+  </div> {# / by permissions #}
+  <hr />
+
+  {# by datamodels #}
+  <div id="datamodels">
+    <a name="datamodels"></a>
+    <h2>By datamodels <a href="#datamodels" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+    <a name="usermodel"></a>
+    <h3>Users <a href="#usermodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'usermodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to users.
+        </p>
+        <p>
+A user represents a individual (or bot) with login credentials. Technically
+a user, after authentication, holds a session token that is passed to the
+server on each HTTP request. Users call API end points, and hold permissions
+to do so, through <strong>roles</strong> on organization and personal profiles.
+        </p>
+        <p>
+Users are required to sign the terms of use of a site.
+        </p>
+      </div>
+    </div>
+    <a name="profilemodel"></a>
+    <h3>Profiles <a href="#profilemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'profilemodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to billing profiles.
+        </p>
+        <p>
+A billing, sometimes called an organization profile, has no login credentials.
+It typically represents a legal entity that can be charged for service.
+Users can operate on billing profiles (ex: <strong>subscribe</strong>
+the organization to a <strong>plan</strong>) though roles they hold on an
+billing profile.
+        </p>
+        <p>
+Depending on its relationship within a workflow, a billing profile is referred
+as either a <a href="/docs/accounts/#subscriber-profiles">subscriber</a>,
+a <a href="/docs/accounts/#provider-profiles">provider</a> or
+<a href="/docs/accounts/#borker">the broker</a>.
+        </p>
+      </div>
+    </div>
+    <a name="rolemodel"></a>
+    <h3>Roles <a href="#rolemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'rolemodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to <a href="/docs/accounts/#roles">roles</a>.
+        </p>
+        <p>
+A <strong>role</strong> is a relationship between a <strong>user</strong>
+and a billing or personal profile - shorten to <strong>profile</strong>
+later on - that grant the user certain permissions to act on the profile.
+Permissions are not directly tied to the Role object, but rather to an abstract
+representation of the role called a <a href="/docs/djaoapp/latest/api/#ListRoleDescriptionListCreates">RoleDescription</a>.
+        </p>
+        <p>
+It is not uncommon in casual conversation to use <em>role</em> to mean
+RoleDescription when talking about permissions as the end result is about
+the same. None-the-less, the <a href="/docs/themes/#workflows">workflows</a>
+involved to grant a role to a user, such as opt-ins and double opt-ins can only
+be set on the RoleDescription, affecting all role objects using that
+RoleDescription.
+        </p>
+      </div>
+    </div>
+    <a name="planmodel"></a>
+    <h3>Plans <a href="#planmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'planmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to subscription plans.
+        </p>
+        <p>
+Billing profiles subscribe to one or many provider plans, hence becoming
+subscribers of that provider.
+        </p>
+      </div>
+    </div>
+    <a name="subscriptionmodel"></a>
+    <h3>Subscriptions <a href="#subscriptionmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'subscriptionmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to subscriptions.
+        </p>
+        <p>
+The subscription model defines the relationship between a subscriber and
+a provider through a plan.
+        </p>
+      </div>
+    </div>
+    <a name="cartmodel"></a>
+    <h3>Carts <a href="#cartmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'cartmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to cart items.
+        </p>
+        <p>
+In order to pay for a subscription, a billing profile will add plans to a cart,
+then checkout that cart, entering a payment method in the process.
+        </p>
+      </div>
+    </div>
+    <a name="chargemodel"></a>
+    <h3>Charges <a href="#chargemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'chargemodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to charges.
+        </p>
+        <p>
+Payments for subscriptions results in charges on the payment processor.
+        </p>
+      </div>
+    </div>
+    <a name="couponmodel"></a>
+    <h3>Coupons <a href="#couponmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'couponmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to ad-hoc discounts.
+        </p>
+      </div>
+    </div>
+    <a name="transactionmodel"></a>
+    <h3>Transactions <a href="#transactionmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'transactionmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to transactions.
+        </p>
+        <p>
+Transactions are recorded in an append-only double-entry book keeping ledger.
+        </p>
+      </div>
+    </div>
+    <a name="appmodel"></a>
+    <h3>Site <a href="#appmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'appmodel' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to site theme and operations.
+        </p>
+      </div>
+    </div>
+  </div> {# / by datamodels #}
+  <hr class="mb-0" />
+
+  {# alphabetically listed #}
+  <div id="alphabetical">
+    <section class="row">
+      <div class="col-sm-7">
+        <a name="alphabetical"></a>
+        <h2 class="mt-4">Alphabetical <a href="#alphabetical" class="header-anchor"><i class="fa fa-link"></i></a></h2>
       </div>
       <div class="col-sm-5 code">
       </div>
     </section>
-    {% endif %}
+    {% for api_end_point in api_end_points %}
     <section class="row">
       <div class="col-sm-7">
         <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
-        <pre class="end-point-url" style="background:#eee;">
-
-{{api_end_point.func|upper}} {{api_end_point.path}}
-        </pre>
+        <pre class="end-point-url" style="background:#eee;">{{api_end_point.func|upper}} {{api_end_point.path}}</pre>
         <div>
-            {{api_end_point.description}}
+          {{api_end_point.description}}
         </div>
         {% if api_end_point|query_parameters %}
         <div>
-            <h5 class="param-list-header"><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
-            <div class="params-wrap">
-                {% for param in api_end_point|query_parameters %}
-                    {{ api_param_doc(param, api_end_point.operationId) }}
-                {% endfor %}
-            </div>
+          <h5 class="param-list-header"><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
+          <div class="params-wrap">
+            {% for param in api_end_point|query_parameters %}
+            {{ api_param_doc(param, api_end_point.operationId) }}
+            {% endfor %}
+          </div>
         </div> {# .param-list-header #}
         {% endif %}
         {% if api_end_point|request_body_parameters(definitions) %}
         <div>
-            <h5 class="param-list-header">Request body</h5>
-            <div class="params-wrap">
-                {% for param in api_end_point|request_body_parameters(definitions) %}
-                    {{ api_param_doc(param, api_end_point.operationId, read_direction=False) }}
-                {% endfor %}
-            </div>
+          <h5 class="param-list-header">Request body</h5>
+          <div class="params-wrap">
+            {% for param in api_end_point|request_body_parameters(definitions) %}
+            {{ api_param_doc(param, api_end_point.operationId, response=False) }}
+            {% endfor %}
+          </div>
         </div> {# .param-list-header #}
         {% endif %}
         <responses-list>
-            <h5 class="responses-list-header param-list-header">Responses</h5>
-            {% for resp_code, params in (api_end_point|responses_parameters(definitions)).items() %}
-            <zippy>
-                <div class="zippy zippy-success">
-                    <div class="zippy-title">
-                        <span class="zippy-title-content"><p>{{resp_code}}</p></span>
-                    </div>
-                    <div class="zippy-content">
-                        {% for param in params %}
-                           {{ api_param_doc(param, api_end_point.operationId) }}
-                        {% endfor %}
-                    </div>
-                </div>
-            </zippy>
-            {% endfor %}
+          <h5 class="responses-list-header param-list-header">Responses</h5>
+          {% for resp_code, params in (api_end_point|responses_parameters(definitions)).items() %}
+          <zippy>
+            <div class="zippy zippy-success">
+              {% if not params %}
+              <div class="zippy-title">
+                <span class="zippy-title-content">
+                  <p>{{resp_code}}{% if resp_code == "204" %} No Content{% endif %}</p>
+                </span>
+              </div>
+              {% endif %}
+              <div class="zippy-content">
+                {% for param in params %}
+                {{ api_param_doc(param, api_end_point.operationId) }}
+                {% endfor %}
+              </div>
+            </div>
+          </zippy>
+          {% endfor %}
         </responses-list>{# .responses-list #}
       </div>
       <div class="col-sm-5 code">
         <h3>Examples</h3>
+        {# getting api_jwt_* tokens curl -X POST -H 'Content-Type: application/json; charset=UTF-8' -d '{"username":"xia", "password": "yoyo"}' http://localhost:8020/api/auth/ #}
         {% for example in api_end_point.examples %}
-        <pre class="code http literal-block"><code><span class="name function">{{example.func}}</span> <span class="name namespace">{{example.path}}</span></code></pre>
-        {% if example.requestBody %}
-        <pre class="code json literal-block">{{example.requestBody}}</pre>
-        {% endif %}
+        <pre class="code http literal-block"><code>curl{% if 'user' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_user|safe}}'{% endif %}{% if 'subscriber' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_subscriber|safe}}'{% endif %}{% if 'provider' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_provider|safe}}'{% endif %}{% if 'broker' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_broker|safe}}'{% endif %}{% if example.func in ('POST', 'PUT', 'PATCH', 'DELETE') %} -X {{example.func}}{% endif %}{% if example.requestBody %} -H 'Content-Type: application/json; charset=UTF-8' -d '{{example.requestBody}}'{% endif %}{# <span class="name function">{{example.func}}</span> #} <span class="name api_base_url">{{api_base_url}}</span><span class="name namespace">{% if example.path %}{{example.path.replace('&', '\&')}}{% else %}XXX{% endif %}</span></code></pre>
         {% if example.resp %}
         responds
         <pre class="code json literal-block">{{example.resp}}</pre>
@@ -184,6 +751,7 @@ dashboard</a> for example.
       </div>
     </section>
     {% endfor %}
+  </div>{# /alphabetical #}
 </div>
 {% endblock %}
 

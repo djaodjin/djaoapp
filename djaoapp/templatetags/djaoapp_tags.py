@@ -122,19 +122,20 @@ def query_parameters(api_endpoint):
 
 @register.filter()
 def request_body_parameters(api_endpoint, defs):
-    if 'requestBody' not in api_endpoint:
-        return []
-    results = []
-    schema = \
-        api_endpoint['requestBody']['content']['application/json']['schema']
-    for prop_name, prop in schema['properties'].items():
-        prop.update({'name': prop_name})
-        if prop_name in schema.get('required', []):
-            prop.update({'required': True})
-        if 'type' not in prop and 'enum' in prop:
-            prop.update({'type': "String"}) # XXX Country enum
-        results += [prop]
-    return results
+    if 'requestBody' in api_endpoint:
+        results = []
+        schema = \
+            api_endpoint['requestBody']['content']['application/json']['schema']
+        if 'properties' in schema:
+            for prop_name, prop in schema['properties'].items():
+                prop.update({'name': prop_name})
+                if prop_name in schema.get('required', []):
+                    prop.update({'required': True})
+                if 'type' not in prop and 'enum' in prop:
+                    prop.update({'type': "String"}) # XXX Country enum
+                results += [prop]
+            return results
+    return []
 
 
 @register.filter()

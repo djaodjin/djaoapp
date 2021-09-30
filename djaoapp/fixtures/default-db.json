@@ -448,6 +448,7 @@
       "created_at": "2021-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "slug": "xia",
+      "nick_name": "Xia",
       "user": 5
     },
     "model": "signup.Contact", "pk": 5

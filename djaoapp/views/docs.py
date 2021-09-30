@@ -6,7 +6,7 @@ Default start page for a djaodjin-hosted product.
 """
 
 import json, logging, os, re, warnings
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -20,8 +20,9 @@ from docutils.writers.html5_polyglot import Writer
 from pages.serializers import NodeElementSerializer
 from rest_framework import exceptions, serializers
 from rest_framework.schemas.generators import EndpointEnumerator
-from rest_framework.schemas.utils import is_list_view
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
+from saas.pagination import (BalancePagination, RoleListPagination,
+    StatementBalancePagination, TotalPagination, TypeaheadPagination)
 
 try:
     from rest_framework.schemas.openapi import (
@@ -30,7 +31,7 @@ except ImportError: # drf < 3.10
     from rest_framework.schemas import (
         AutoSchema as BaseAutoSchema, SchemaGenerator)
 
-from ..compat import URLPattern, URLResolver, get_original_route, six
+from ..compat import URLPattern, URLResolver, six
 
 
 LOGGER = logging.getLogger(__name__)
@@ -234,11 +235,17 @@ def transform_links(line):
             line = line.replace(look.group(1),
             "`%s <http://djaodjin-saas.readthedocs.io/en/latest/%s.html>`_" % (
                 look.group(2), look.group(3)))
+        look = re.search(r'(\{\{(\S+)\}\})', line)
+        if look:
+            key = look.group(2)
+            line = line.replace(look.group(1),
+                str(settings.SAAS.get(key.strip(),
+                    settings.REST_FRAMEWORK.get(key.strip(), key.strip()))))
     return line
 
 
 def endpoint_ordering(endpoint):
-    path, method, _, _ = endpoint
+    path, method, _ = endpoint
     method_priority = {
         'GET': 0,
         'POST': 1,
@@ -290,87 +297,79 @@ def split_descr_and_examples(docstring, api_base_url=None):
 
 class APIDocEndpointEnumerator(EndpointEnumerator):
 
-    def get_api_endpoints(self, patterns=None, prefix='', app_name=None,
-                          namespace=None, default_decorators=None):
+    def _insert_api_endpoint(self, api_endpoints, api_endpoint):
+        found = False
+        for endpoint in api_endpoints:
+            if (endpoint[0] == api_endpoint[0] and
+                endpoint[1] == api_endpoint[1]):
+                LOGGER.debug("found duplicate: %s %s (%s vs. %s)",
+                    endpoint[1], endpoint[0], endpoint[2], api_endpoint[2])
+                assert(endpoint[2].__name__.startswith('DjaoApp'))
+                found = True
+                break
+        if not found:
+            api_endpoints.append(api_endpoint)
+
+    def get_api_endpoints(self, patterns=None, prefix=''):
         """
         Return a list of all available API endpoints by inspecting the URL conf.
-        Copied from super and edited to look at decorators.
         """
-        #pylint:disable=arguments-differ,too-many-arguments,too-many-locals
         if patterns is None:
             patterns = self.patterns
 
         api_endpoints = []
 
         for pattern in patterns:
-            path_regex = prefix + get_original_route(pattern)
-            decorators = default_decorators
-            if hasattr(pattern, 'decorators'):
-                decorators = pattern.decorators
+            path_regex = prefix + str(pattern.pattern)
             if isinstance(pattern, URLPattern):
-                try:
-                    path = self.get_path_from_regex(path_regex)
-                    callback = pattern.callback
-                    if self.should_include_endpoint(path, callback):
-                        path = self.replace_version(path, callback)
-                        for method in self.get_allowed_methods(callback):
-                            endpoint = (path, method, callback, decorators)
-                            api_endpoints.append(endpoint)
-                except Exception: #pylint:disable=broad-except
-                    LOGGER.warning('failed to enumerate view', exc_info=True)
+                path = self.get_path_from_regex(path_regex)
+                callback = pattern.callback
+                if self.should_include_endpoint(path, callback):
+                    for method in self.get_allowed_methods(callback):
+                        endpoint = (path, method, callback)
+                        self._insert_api_endpoint(api_endpoints, endpoint)
 
             elif isinstance(pattern, URLResolver):
                 nested_endpoints = self.get_api_endpoints(
                     patterns=pattern.url_patterns,
-                    prefix=path_regex,
-                    app_name="%s:%s" % (app_name,
-                        pattern.app_name) if app_name else pattern.app_name,
-                    namespace="%s:%s" % (namespace,
-                        pattern.namespace) if namespace else pattern.namespace,
-                    default_decorators=decorators
+                    prefix=path_regex
                 )
-                api_endpoints.extend(nested_endpoints)
-            else:
-                LOGGER.warning("unknown pattern type %s", type(pattern))
+                for endpoint in nested_endpoints:
+                    self._insert_api_endpoint(api_endpoints, endpoint)
 
-        api_endpoints = sorted(api_endpoints, key=endpoint_ordering)
-        return api_endpoints
+        return sorted(api_endpoints, key=endpoint_ordering)
 
 
 class AutoSchema(BaseAutoSchema):
+
+    def _get_reference(self, serializer):
+        content = self.map_serializer(serializer)
+        return {'properties': content['properties']}
 
     def get_request_media_types(self):
         return ['application/json']
 #XXX        return getattr(self, 'request_media_types',
 #            getattr(self, 'content_types', []))
 
-    def _get_operation_id(self, path, method):
+    def get_operation_id_base(self, path, method, action):
         # rest framework implementation will try to deduce the  name
         # from the model, serializer before using the view name. That
         # leads to duplicate `operationId`.
-        method_name = getattr(self.view, 'action', method.lower())
-        if is_list_view(path, method, self.view):
-            action = 'List'
-        elif method_name not in self.method_mapping:
-            action = method_name
-        else:
-            action = self.method_mapping[method.lower()]
-
+        # Always use the view name
         name = self.view.__class__.__name__
         if name.endswith('APIView'):
             name = name[:-7]
         elif name.endswith('View'):
             name = name[:-4]
-        if name.endswith(action):  # ListView, UpdateAPIView, ThingDelete ...
+
+        # Due to camel-casing of classes and `action` being lowercase, apply title in order to find if action truly
+        # comes at the end of the name
+        if name.endswith(action.title()):  # ListView, UpdateAPIView, ThingDelete ...
             name = name[:-len(action)]
 
-        if action == 'List' and not name.endswith('s'):
-            name += 's'
+        return name
 
-        return action + name
-
-
-    def _map_field(self, field):
+    def map_field(self, field):
         if isinstance(field, serializers.ListField):
             if isinstance(field.child, DatetimeValueTuple):
                 return {
@@ -386,7 +385,15 @@ class AutoSchema(BaseAutoSchema):
             isinstance(field.child, NodeElementSerializer)):
             return {}
 
-        return super(AutoSchema, self)._map_field(field)
+        if field.field_name == 'credentials':
+            return {
+                'type': 'boolean',
+            }
+
+        schema = super(AutoSchema, self).map_field(field)
+        if not 'required' in schema:
+            schema.update({'required': field.required})
+        return schema
 
 
     def get_operation(self, path, method):
@@ -417,20 +424,116 @@ class AutoSchema(BaseAutoSchema):
         return operation
 
     def _validate_examples(self, path, method, examples,
-                           serializer_class=None, example_key='resp'):
+                           serializer_class=None, many=False,
+                           example_key='resp'):
         #pylint:disable=too-many-arguments
         view = self.view
-        many = (method == 'GET' and hasattr(view, 'list'))
+        many = many or (method == 'GET' and hasattr(view, 'list'))
         if many:
-            class APISerializer(NoModelSerializer):
-                count = serializers.IntegerField(
-                    help_text=_("Total number of items in the dataset"))
-                previous = serializers.CharField(allow_null=True,
-                    help_text=_("URL to previous page of results"))
-                next = serializers.CharField(allow_null=True,
-                    help_text=_("URL to next page of results"))
-                results = serializer_class(many=hasattr(view, 'list'),
-                    help_text=_("items in current page"))
+            if issubclass(view.pagination_class, BalancePagination):
+                class APISerializer(NoModelSerializer):
+                    start_at = serializers.CharField(
+                        help_text=_("Start of the date range for which"\
+                        " the balance was computed"))
+                    ends_at = serializers.CharField(
+                        help_text=_("End of the date range for which"\
+                        " the balance was computed"))
+                    balance_amount = serializers.IntegerField(
+                        help_text=_("Balance of all transactions in cents"\
+                        " (i.e. 100ths) of unit"))
+                    balance_unit = serializers.CharField(
+                        help_text=_("Three-letter ISO 4217 code"\
+                        " for currency unit (ex: usd)"))
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the dataset"))
+                    previous = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to previous page of results"))
+                    next = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to next page of results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in current page"))
+
+            elif issubclass(view.pagination_class, RoleListPagination):
+                class APISerializer(NoModelSerializer):
+                    invited_count = serializers.IntegerField(
+                        help_text=_("Number of user invited to have a role"))
+                    requested_count = serializers.IntegerField(
+                        help_text=_("Number of user requesting a role"))
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the dataset"))
+                    previous = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to previous page of results"))
+                    next = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to next page of results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in current page"))
+
+            elif issubclass(view.pagination_class, StatementBalancePagination):
+                class APISerializer(NoModelSerializer):
+                    start_at = serializers.CharField(
+                        help_text=_("Start of the date range for which"\
+                        " the balance was computed"))
+                    ends_at = serializers.CharField(
+                        help_text=_("End of the date range for which"\
+                        " the balance was computed"))
+                    balance_amount = serializers.IntegerField(
+                        help_text=_("Balance of all transactions in cents"\
+                        " (i.e. 100ths) of unit"))
+                    balance_unit = serializers.CharField(
+                        help_text=_("Three-letter ISO 4217 code"\
+                        " for currency unit (ex: usd)"))
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the dataset"))
+                    previous = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to previous page of results"))
+                    next = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to next page of results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in current page"))
+
+            elif issubclass(view.pagination_class, TotalPagination):
+                class APISerializer(NoModelSerializer):
+                    balance_amount = serializers.IntegerField(
+                        help_text=_("The sum of all record amounts (in unit)"))
+                    balance_unit = serializers.CharField(
+                        help_text=_("Three-letter ISO 4217 code"\
+                        " for currency unit (ex: usd)"))
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the dataset"))
+                    previous = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to previous page of results"))
+                    next = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to next page of results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in current page"))
+
+            elif issubclass(view.pagination_class, TypeaheadPagination):
+                class APISerializer(NoModelSerializer):
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in the queryset"))
+
+            else:
+                class APISerializer(NoModelSerializer):
+                    count = serializers.IntegerField(
+                        help_text=_("Total number of items in the dataset"))
+                    previous = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to previous page of results"))
+                    next = serializers.CharField(
+                        required=False, allow_null=True,
+                        help_text=_("URL to next page of results"))
+                    results = serializer_class(many=hasattr(view, 'list'),
+                        help_text=_("items in current page"))
             serializer_class = APISerializer
 
         serializer = None
@@ -463,9 +566,11 @@ class AutoSchema(BaseAutoSchema):
                 if example_key in example:
                     if serializer_class is not None:
                         try:
+                            kwargs = {}
                             serializer = serializer_class(
                                 data=example[example_key],
-                                context=view.get_serializer_context())
+                                context=view.get_serializer_context(),
+                                **kwargs)
                             serializer.is_valid(raise_exception=True)
                         except (exceptions.ValidationError, Http404) as err:
                             # is_valid will also run `UniqueValidator` which
@@ -505,7 +610,7 @@ class AutoSchema(BaseAutoSchema):
             serializer = serializer_class(context=view.get_serializer_context())
         return serializer
 
-    def _get_request_body(self, path, method):
+    def get_request_body(self, path, method):
         view = self.view
 
         if method not in ('PUT', 'PATCH', 'POST'):
@@ -547,7 +652,7 @@ class AutoSchema(BaseAutoSchema):
         if not isinstance(serializer, serializers.Serializer):
             return {}
 
-        content = self._map_serializer(serializer)
+        content = self.map_serializer(serializer)
         # No required fields for PATCH
         if method == 'PATCH':
             del content['required']
@@ -563,7 +668,7 @@ class AutoSchema(BaseAutoSchema):
             }
         }
 
-    def _get_responses(self, path, method):
+    def get_responses(self, path, method):
         # TODO: Handle multiple codes.
         content = {}
         view = self.view
@@ -572,6 +677,7 @@ class AutoSchema(BaseAutoSchema):
         if method in ('DELETE',):
             return {'204': {'description': "NO CONTENT"}}
 
+        many = False
         serializer_class = None
         if not hasattr(view, 'request'):
             view.request = HttpRequest()
@@ -583,12 +689,18 @@ class AutoSchema(BaseAutoSchema):
             #pylint:disable=protected-access
             data = view_method._swagger_auto_schema
             for resp_code, resp in six.iteritems(data.get('responses', {})):
-                request_body_serializer_class = resp.schema
-                if request_body_serializer_class is not None:
-                    serializer_class = request_body_serializer_class
-                    if not issubclass(serializer_class, serializers.Serializer):
-                        # We assume `request_body=no_body` here.
-                        serializer_class = None
+                request_body_serializer = resp.schema
+                if request_body_serializer is not None:
+                    serializer_class = request_body_serializer
+                    try:
+                        if not issubclass(
+                                serializer_class, serializers.Serializer):
+                            # We assume `request_body=no_body` here.
+                            serializer_class = None
+                    except TypeError:
+                        # We are dealing with a ListSerializer instance
+                        serializer_class = request_body_serializer.child.__class__
+                        many = request_body_serializer.many
                 break # XXX only handles first schema response.
 
 
@@ -596,7 +708,7 @@ class AutoSchema(BaseAutoSchema):
             try:
                 serializer = self._validate_examples(path, method,
                     self.examples if hasattr(self, 'examples') else [],
-                    serializer_class=serializer_class)
+                    serializer_class=serializer_class, many=many)
             except exceptions.APIException:
                 serializer = None
                 warnings.warn('{}: serializer_class() raised an exception'
@@ -606,7 +718,7 @@ class AutoSchema(BaseAutoSchema):
                         view.__class__.__name__, method, path))
 
             if isinstance(serializer, serializers.Serializer):
-                content = self._map_serializer(serializer)
+                content = self.map_serializer(serializer)
                 # No write_only fields for response.
                 for name, schema in content['properties'].copy().items():
                     if 'writeOnly' in schema:
@@ -627,29 +739,12 @@ class AutoSchema(BaseAutoSchema):
 
 class APIDocGenerator(SchemaGenerator):
 
-    endpoint_enumerator_class = APIDocEndpointEnumerator
+    endpoint_inspector_cls = APIDocEndpointEnumerator
 
-    def get_endpoints(self, request):
-        """Iterate over all the registered endpoints in the API and return
-        a fake view with the right parameters.
-
-        :param rest_framework.request.Request request: request to bind
-        to the endpoint views
-        :return: {path: (view_class, list[(http_method, view_instance)])
-        :rtype: dict
-        """
-        enumerator = self.endpoint_enumerator_class(
-            self._gen.patterns, self._gen.urlconf)
-        endpoints = enumerator.get_api_endpoints()
-        view_paths = defaultdict(list)
-        view_cls = {}
-        for path, method, callback, decorators in reversed(endpoints):
-            view = self.create_view(callback, method, request)
-            path = self._gen.coerce_path(path, method, view)
-            view_paths[path].append((method, view, decorators))
-            view_cls[path] = callback.cls
-        return {path: (view_cls[path], methods)
-            for path, methods in view_paths.items()}
+#    def _initialise_endpoints(self):
+#        if self.endpoints is None:
+#            inspector = self.endpoint_inspector_cls(self.patterns, self.urlconf)
+#            self.endpoints = reversed(inspector.get_api_endpoints())
 
 
 class APIDocView(TemplateView):
@@ -661,7 +756,7 @@ class APIDocView(TemplateView):
         context = super(APIDocView, self).get_context_data(**kwargs)
         api_end_points = []
         api_base_url = getattr(settings, 'API_BASE_URL',
-            self.request.build_absolute_uri(location='/api'))
+            self.request.build_absolute_uri(location='/').strip('/'))
         generator = APIDocGenerator()
         schema = generator.get_schema(request=None, public=True)
         tags = set([])
@@ -680,7 +775,7 @@ class APIDocView(TemplateView):
                         examples = func_details['examples']
                         for example in examples:
                             if 'requestBody' in example:
-                                example['requestBody'] = format_json(
+                                example['requestBody'] = json.dumps(
                                     example['requestBody'])
                             if 'resp' in example:
                                 example['resp'] = format_json(
@@ -696,12 +791,9 @@ class APIDocView(TemplateView):
                         'examples': examples
                     })
                     if 'tags' in func_details and func_details['tags']:
-                        # /api retrieves version number and is not part
-                        # of any groups.
-                        func_details.update({
-                            'tags': ''.join(func_details['tags'])})
-                        if func_details['tags'] not in ['content', 'editors']:
-                            tags |= set([func_details['tags']])
+                        if ('content' not in func_details['tags'] and
+                            'editors' not in func_details['tags']):
+                            tags |= set(func_details['tags'])
                             api_end_points += [func_details]
                 except AttributeError:
 #                    raise
@@ -720,8 +812,15 @@ class APIDocView(TemplateView):
                 expanded_tags.update({tag: ""})
         context.update({
             'definitions': {}, # XXX No schema.definitions in restframework,
-            'api_base_url': api_base_url,
             'api_end_points': sorted(
-                api_end_points, key=lambda val: val['tags']),
-            'tags': expanded_tags})
+                api_end_points, key=lambda val: val['path']),
+            'api_end_points_by_summary': sorted(
+                api_end_points, key=lambda val: val['summary']),
+            'tags': expanded_tags,
+            'api_base_url': api_base_url,
+         'api_jwt_user': "<a href=\"#createJWTLogin\">JWT auth token</a>",
+         'api_jwt_subscriber': "<a href=\"#createJWTLogin\">JWT auth token</a>",
+         'api_jwt_provider': "<a href=\"#createJWTLogin\">JWT auth token</a>",
+         'api_jwt_broker': "<a href=\"#createJWTLogin\">JWT auth token</a>",
+        })
         return context

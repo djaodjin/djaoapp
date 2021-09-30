@@ -7,14 +7,14 @@ from signup.settings import USERNAME_PAT
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
 from ..api.contact import ContactUsAPIView
-from ..api.custom_themes import ThemePackageListAPIView, AppUpdateAPIView
+from ..api.custom_themes import DjaoAppThemePackageListAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
-from ..api.organizations import (OrganizationDetailAPIView,
-    OrganizationListAPIView)
-from ..api.roles import RoleListAPIView
+from ..api.organizations import (DjaoAppProfileDetailAPIView,
+    DjaoAppProfileListAPIView)
+from ..api.roles import DjaoAppRoleByDescrListAPIView
 from ..api.todos import DjaoAppAPIVersion, TodosAPIView
-from ..api.users import (RecentActivityAPIView, UserProfileAPIView,
-    UserNotificationsAPIView)
+from ..api.users import (RecentActivityAPIView, DjaoAppUserDetailAPIView,
+    DjaoAppUserNotificationsAPIView)
 from ..urlbuilders import (url_authenticated, url_direct,
     url_frictionless_direct, url_frictionless_provider,
     url_frictionless_self_provider, url_prefixed,
@@ -33,11 +33,9 @@ urlpatterns = [
         NotificationAPIView.as_view(), name='api_notification_base'),
     url_direct(r'^api/proxy/recent/',
         RecentActivityAPIView.as_view(), name='api_recent_activity'),
-    url_direct(r'^api/proxy/$',
-        AppUpdateAPIView.as_view(), name='rules_api_app_detail'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
-        ThemePackageListAPIView.as_view(), name='pages_api_themes'),
+        DjaoAppThemePackageListAPIView.as_view(), name='pages_api_themes'),
     url_direct(r'^api/themes/', include('pages.urls.api.assets')),
     url_direct(r'^api/themes/', include('pages.urls.api.templates')),
     url_direct(r'^api/themes/', include('pages.urls.api.themes')),
@@ -47,6 +45,8 @@ urlpatterns = [
         # `saas.urls.api.cart`: DELETE implements its own policy
     url_authenticated(r'^api/', include('saas.urls.api.legal')),
     url_self_provider(r'^api/', include('saas.urls.api.users')),
+    url_direct(r'^api/profile/$',
+        DjaoAppProfileListAPIView.as_view(), name='saas_api_profile'),
     url_direct(r'^api/', include('saas.urls.api.broker')),
     # api/charges/:charge/refund must be before api/charges/
     url_provider_only(
@@ -61,15 +61,14 @@ urlpatterns = [
         r'^api/', include('saas.urls.api.provider.plans')),
     url_frictionless_direct(
         r'^api/', include('saas.urls.api.provider.metrics')),
-    url_direct(r'^api/profile/$',
-        OrganizationListAPIView.as_view(), name='saas_api_profile'),
     url_frictionless_provider(
         r'^api/profile/(?P<organization>%s)/?$' % ACCT_REGEX,
-        OrganizationDetailAPIView.as_view(), name='saas_api_organization'),
+        DjaoAppProfileDetailAPIView.as_view(), name='saas_api_organization'),
     url_provider(
         r'^api/profile/(?P<organization>%s)/roles/(?P<role>%s)/?$' % (
             ACCT_REGEX, ACCT_REGEX),
-        RoleListAPIView.as_view(), name='saas_api_roles_by_descr'),
+        DjaoAppRoleByDescrListAPIView.as_view(),
+        name='saas_api_roles_by_descr'),
     url_provider(
         r'^api/', include('saas.urls.api.subscriber.charges')),
     url_provider(
@@ -87,10 +86,10 @@ urlpatterns = [
     url_frictionless_self_provider(r'^api/',
         include('signup.urls.api.activate')),
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)/$' % USERNAME_PAT,
-        UserProfileAPIView.as_view(), name='api_user_profile'),
+        DjaoAppUserDetailAPIView.as_view(), name='api_user_profile'),
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)/notifications/$' %
-        USERNAME_PAT,
-        UserNotificationsAPIView.as_view(), name='api_user_notifications'),
+        USERNAME_PAT, DjaoAppUserNotificationsAPIView.as_view(),
+        name='api_user_notifications'),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     # `{user}` is not a url parameter, hence we cannot use `url_self_provider`.
     # Furthermore we restrict verification and refresh of JWT

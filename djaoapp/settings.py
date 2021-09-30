@@ -656,7 +656,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'djaoapp.views.errors.drf_exception_handler',
     'PAGE_SIZE': 25,
     'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+        'djaoapp.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'signup.authentication.JWTAuthentication',
         'signup.authentication.APIKeyAuthentication',
@@ -726,6 +726,7 @@ SAAS = {
         sys.modules[__name__], 'BYPASS_IMPLICIT_GRANT', {}),
     'BYPASS_PROCESSOR_AUTH': getattr(
         sys.modules[__name__], 'USE_FIXTURES', False),
+    'MAX_TYPEAHEAD_CANDIDATES': 5,
     'PROCESSOR': {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
@@ -738,12 +739,14 @@ SAAS = {
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
     },
+    'USER_SERIALIZER': 'signup.serializers.UserSerializer',
 }
 
 # Software-as-a-Service (forward requests with session data)
 RULES = {
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'ACCOUNT_MODEL': 'saas.Organization',
+    'APP_SERIALIZER': 'djaoapp.api.serializers.AppSerializer',
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
@@ -815,16 +818,5 @@ PAGES = {
     'THEME_DIR_CALLABLE': theme_dir
 }
 
-
-# API documentation
-SWAGGER_SETTINGS = {
-    'DEFAULT_PAGINATOR_INSPECTORS': [
-        'djaoapp.docs.DocBalancePagination',
-        'djaoapp.docs.DocTotalPagination',
-        'drf_yasg.inspectors.DjangoRestResponsePagination',
-        'drf_yasg.inspectors.CoreAPICompatInspector',
-    ],
-}
-
 # Demo mode ...
-REUSABLE_PRODUCTS = ('demo',)
+REUSABLE_PRODUCTS = ('livedemo',)

@@ -15,6 +15,7 @@ from rules.urldecorators import include, url
 from multitier.settings import SLUG_RE
 from multitier.urlresolvers import url_sites
 
+from .. import __version__
 from ..compat import reverse_lazy
 from ..views.custom_saas import StripeProcessorRedirectView
 from ..urlbuilders import (url_authenticated, url_active, url_direct,
@@ -79,8 +80,9 @@ if settings.API_DEBUG:
     urlpatterns += [
         url(r'^docs/api/schema/$', get_schema_view(
             title="DjaoApp API",
-#            default_version='v1',
-            description="API to deploy apps on the djaodjin platform",
+            version=__version__,
+            description="API to run a SaaS website deployed"\
+            " on the djaodjin platform",
 #            terms_of_service="https://djaodjin.com/legal/terms-of-use/",
 #            contact=openapi.Contact(email=settings.DEFAULT_FROM_EMAIL),
 #            license=openapi.License(name="BSD License"),

@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,19 +8,42 @@ from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
     OrganizationListAPIView as OrganizationListBaseAPIView)
 from saas.api.serializers import OrganizationCreateSerializer
-from saas.docs import swagger_auto_schema
+from saas.docs import OpenAPIResponse, swagger_auto_schema
+from saas.utils import get_organization_model
+from signup.models import Contact
 
-from .serializers import (OrganizationDetailSerializer, ProfileSerializer)
+from .serializers import (ProfileDetailSerializer, ProfileSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
 
+class ProfileDecorateMixin(object):
 
-class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
+    def decorate_personal(self, page):
+        super(ProfileDecorateMixin, self).decorate_personal(page)
+        organization_model = get_organization_model()
+        records = [page] if isinstance(page, organization_model) else page
+        for organization in records:
+            if (hasattr(organization, 'is_personal') and
+                organization.is_personal):
+                contact = organization.attached_user().contacts.first()
+                for field in Contact._meta.fields:
+                    if not hasattr(organization, field.name):
+                        setattr(organization, field.name,
+                            getattr(contact, field.name) if contact else "")
+        return page
+
+
+class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
+                                OrganizationDetailBaseAPIView):
     """
     Retrieves a billing profile
 
-    **Tags: profile
+    The API is typically used within an HTML
+    `contact information page </docs/themes/#dashboard_profile>`_
+    as present in the default theme.
+
+    **Tags**: profile, subscriber, profilemodel
 
     **Examples
 
@@ -60,13 +83,13 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
         }
     """
 #    queryset = get_organization_model().objects.all()
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileDetailSerializer
 
     def put(self, request, *args, **kwargs):
         """
         Updates a billing profile
 
-        **Tags: profile
+        **Tags: profile, subscriber, profilemodel
 
         **Examples
 
@@ -92,18 +115,18 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
             }
         """
         #pylint:disable=useless-super-delegation
-        return super(OrganizationDetailAPIView, self).put(
+        return super(DjaoAppProfileDetailAPIView, self).put(
             request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         """
         Deletes a billing profile
 
-        We anonymize the organization instead of purely deleting
+        We anonymize the profile instead of purely deleting
         it from the database because we don't want to loose history
         on subscriptions and transactions.
 
-        **Tags: profile
+        **Tags: profile, subscriber, profilemodel
 
         **Examples
 
@@ -112,24 +135,20 @@ class OrganizationDetailAPIView(OrganizationDetailBaseAPIView):
             DELETE /api/profile/xia/ HTTP/1.1
         """
         #pylint:disable=useless-super-delegation
-        return super(OrganizationDetailAPIView, self).delete(
+        return super(DjaoAppProfileDetailAPIView, self).delete(
             request, *args, **kwargs)
 
 
-class OrganizationListAPIView(OrganizationListBaseAPIView):
+class DjaoAppProfileListAPIView(ProfileDecorateMixin,
+                                OrganizationListBaseAPIView):
     """
     Lists billing profiles
 
-    Queries a page (``PAGE_SIZE`` records) of organization and user profiles.
+    Returns a list of {{PAGE_SIZE}} profile and user accounts.
 
-    The queryset can be filtered for at least one field to match a search
-    term (``q``).
-
-    The queryset can be ordered by a field by adding an HTTP query parameter
-    ``o=`` followed by the field name. A sequence of fields can be used
-    to create a complete ordering by adding a sequence of ``o`` HTTP query
-    parameters. To reverse the natural order of a field, prefix the field
-    name by a minus (-) sign.
+    The queryset can be further refined to match a search filter (``q``)
+    and/or a range of dates ([``start_at``, ``ends_at``]),
+    and sorted on specific fields (``o``).
 
     **Tags: profile
 
@@ -160,9 +179,15 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
 #    search_fields = ('full_name',)
 #    ordering_fields = ('full_name',)
 #    ordering = ('full_name',)
-    serializer_class = OrganizationDetailSerializer
+    serializer_class = ProfileSerializer
 
-    @swagger_auto_schema(request_body=OrganizationCreateSerializer)
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'post':
+            return OrganizationCreateSerializer
+        return super(DjaoAppProfileListAPIView, self).get_serializer_class()
+
+    @swagger_auto_schema(responses={
+      201: OpenAPIResponse("Create successful", ProfileSerializer)})
     def post(self, request, *args, **kwargs):
         """
         Creates a billing profile
@@ -206,5 +231,5 @@ class OrganizationListAPIView(OrganizationListBaseAPIView):
             }
 
         """
-        return super(OrganizationListAPIView, self).post(
+        return super(DjaoAppProfileListAPIView, self).post(
             request, *args, **kwargs)

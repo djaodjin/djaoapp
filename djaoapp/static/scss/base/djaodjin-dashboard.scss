@@ -177,17 +177,17 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
    margin-right: $dashboard-sidebar-toggle;
 }
 
-.dashboard-nav-menu > .nav > li {
+.dashboard-nav-menu > .nav li {
     margin: 5px 0px;
 }
 
-.dashboard-nav-menu > .nav > li > a,
-.dashboard-nav-menu > .nav > li.active > a {
+.dashboard-nav-menu > .nav li > a,
+.dashboard-nav-menu > .nav li.active > a {
    height:38px;
    font-size:13px;
 }
 
-.dashboard-nav-menu > .nav > li > a > i {
+.dashboard-nav-menu > .nav li > a > i {
    width:25px;
    text-align:center;
 }
@@ -335,19 +335,19 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     border-top: 1px solid $dashboard-sidebar-color;
 }
 
-.dashboard-nav-menu > .nav > li > a {
+.dashboard-nav-menu > .nav li > a {
     background-color:transparent;
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-menu > .nav > li.active > a {
+.dashboard-nav-menu > .nav li.active > a {
     background-color: $dashboard-sidebar-color;
     color: $dashboard-sidebar-bg;
     border-radius: 4px;
     text-decoration: none;
 }
 
-.dashboard-nav-menu > .nav > li:not(.active) > a:hover {
+.dashboard-nav-menu > .nav li:not(.active) > a:hover {
     color: $dashboard-sidebar-color;
     text-decoration: none;
 }

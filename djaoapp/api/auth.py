@@ -12,56 +12,30 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rules.mixins import AppMixin
 from rules.utils import get_current_app
-from saas.models import Agreement, Organization
+from saas.models import Agreement
 from saas.mixins import OrganizationMixin
-from saas.api.serializers import EnumField
 from signup.api.auth import JWTRegister as JWTRegisterBase
 from signup.backends.sts_credentials import aws_bucket_context
-from signup.serializers import CreateUserSerializer
-
 
 from ..mixins import RegisterMixin
+from .serializers import RegisterSerializer
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-class RegisterSerializer(CreateUserSerializer):
-
-    organization_name = serializers.CharField(required=False,
-        help_text=_("Organization name that owns the billing,"\
-            " registered with the user as profile manager"))
-    street_address = serializers.CharField(required=False,
-        help_text=_("Street address for the billing profile"))
-    locality = serializers.CharField(required=False,
-        help_text=_("City/Town for the billing profile"))
-    region = serializers.CharField(required=False,
-        help_text=_("State/Province/County for the billing profile"))
-    postal_code = serializers.CharField(required=False,
-        help_text=_("Zip/Postal Code for the billing profile"))
-    country = serializers.CharField(required=False,
-        help_text=_("Country for the billing profile"))
-
-    class Meta(CreateUserSerializer.Meta):
-        fields = CreateUserSerializer.Meta.fields + (
-            'organization_name', 'street_address', 'locality',
-            'region', 'postal_code', 'country', 'type')
-
-#pylint:disable=protected-access
-RegisterSerializer._declared_fields["type"] = \
-    EnumField(choices=Organization.ACCOUNT_TYPE, required=False,
-        help_text=_("Type of the accounts being registered"))
 
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
     """
     Registers a user
 
-    Creates a new user and optionally an associated billing
-    or organization profile.
-
-    This end point returns a JSON Web Token that can subsequently
+    Creates a new user and returns a JSON Web Token that can subsequently
     be used to authenticate the new user in HTTP requests.
+
+    The API is typically used within an HTML
+    `register page </docs/themes/#workflow_register>`_
+    as present in the default theme.
+
+    **Tags: auth, visitor, usermodel
 
     **Example
 
@@ -95,6 +69,7 @@ JwcBUUMECj8AKxsHtRHUSypco"
         serializer_class = super(
             DjaoAppJWTRegister, self).get_serializer_class()
         for agreement in Agreement.objects.all():
+            #pylint:disable=protected-access
             serializer_class._declared_fields[agreement.slug] = \
                 serializers.CharField(required=False, help_text=agreement.title)
             serializer_class.Meta.fields += (agreement.slug,)

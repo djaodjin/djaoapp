@@ -1,7 +1,7 @@
 # Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
-import logging, os
+import logging
 
 from django.conf import settings
 from django.http import Http404
@@ -14,7 +14,7 @@ from rules.utils import get_app_model
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
 
-from .compat import reverse, six
+from .compat import reverse
 
 
 LOGGER = logging.getLogger(__name__)

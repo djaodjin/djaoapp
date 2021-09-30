@@ -1,3 +1,23 @@
+.param-indent-1 {
+  border-left: 1px solid #ddd;
+  padding-left: 5px;
+}
+
+.param-indent-2 {
+  border-left: 3px solid #ddd;
+  padding-left: 5px;
+}
+
+.param-indent-3 {
+  border-left: 6px solid #ddd;
+  padding-left: 5px;
+}
+
+.param-indent-4 {
+  border-left: 9px solid #ddd;
+  padding-left: 5px;
+}
+
 a.header-anchor {
   opacity: 0;
 }
@@ -63,8 +83,11 @@ pre.code code{
 }
 
 .param-name {
+    display: table-cell;
+    width: 25%;
     vertical-align: top;
-    padding: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .param-type {
@@ -95,11 +118,6 @@ pre.code code{
 
 }
 
-.params-wrap {
-    display: table;
-    width: 100%;
-}
-
 .param {
     display: table-row;
 }
@@ -107,9 +125,13 @@ pre.code code{
 .param-info {
     display: table-cell;
     width: 75%;
-    border-bottom: 1px solid #9fb4be;
-    padding: 10px 0;
-    width: 75%;
+    padding-top: 10px;
+    padding-left: 5px;
     box-sizing: border-box;
+}
+
+.param-builtin {
+    border-bottom: 1px solid #9fb4be;
+    padding-bottom: 10px;
 }
 

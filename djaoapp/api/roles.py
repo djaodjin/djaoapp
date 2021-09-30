@@ -1,19 +1,17 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
-from saas.api.roles import RoleByDescrListAPIView as RoleListBaseAPIView
+from saas.api.roles import RoleByDescrListAPIView as RoleByDescrListBaseAPIView
 from saas.utils import get_role_model
-
-from .serializers import RoleSerializer
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-class RoleListAPIView(RoleListBaseAPIView):
+class DjaoAppRoleByDescrListAPIView(RoleByDescrListBaseAPIView):
     """
     Lists roles of a specific type
 
@@ -35,6 +33,8 @@ class RoleListAPIView(RoleListBaseAPIView):
             "count": 1,
             "next": null,
             "previous": null,
+            "invited_count": 0,
+            "requested_count": 0,
             "results": [
                 {
                     "created_at": "2018-01-01T00:00:00Z",
@@ -61,5 +61,4 @@ class RoleListAPIView(RoleListBaseAPIView):
             ]
         }
     """
-    serializer_class = RoleSerializer
     queryset = get_role_model().objects.all().select_related('user__contact')

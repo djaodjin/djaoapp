@@ -12,35 +12,38 @@ from rest_framework.generics import ListAPIView
 from saas.models import Charge
 from saas.metrics.base import day_periods
 from saas.utils import get_role_model
-from signup.api.users import (UserDetailAPIView as UserProfileBaseAPIView,
+from signup.api.users import (UserDetailAPIView as UserDetailBaseAPIView,
     UserNotificationsAPIView as UserNotificationsBaseAPIView)
 
 from ..mixins import NotificationsMixin
-from .serializers import ActivitySerializer
+from .serializers import RecentActivitySerializer
 
 LOGGER = logging.getLogger(__name__)
 
 
-class UserProfileAPIView(UserProfileBaseAPIView):
+class DjaoAppUserDetailAPIView(UserDetailBaseAPIView):
     """
     Retrieves a login profile
 
-    **Tags: profile
+    **Tags: profile, user, usermodel
 
     **Example
 
     .. code-block:: http
 
-        GET /api/users/donny HTTP/1.1
+        GET /api/users/donny/ HTTP/1.1
 
     responds
 
     .. code-block:: json
 
         {
+          "slug": "donny",
           "username": "donny",
-          "email": "donny.smith@locahost.localdomain",
-          "full_name": "Donny Smith"
+          "created_at": "2018-01-01T00:00:00Z",
+          "printable_name": "Donny",
+          "full_name": "Donny Smith",
+          "email": "donny.smith@locahost.localdomain"
         }
     """
     def perform_destroy(self, instance):
@@ -50,15 +53,15 @@ class UserProfileAPIView(UserProfileBaseAPIView):
         # are fully gone.
         if instance.user:
             get_role_model().objects.filter(user=instance.user).delete()
-        super(UserProfileAPIView, self).perform_destroy(instance)
+        super(DjaoAppUserDetailAPIView, self).perform_destroy(instance)
 
 
-class UserNotificationsAPIView(NotificationsMixin,
-                               UserNotificationsBaseAPIView):
+class DjaoAppUserNotificationsAPIView(NotificationsMixin,
+                                      UserNotificationsBaseAPIView):
     """
     Lists a user notifications preferences
 
-    **Tags: profile
+    **Tags: profile, user, usermodel
 
     **Example
 
@@ -79,7 +82,7 @@ class UserNotificationsAPIView(NotificationsMixin,
         """
         Changes a user notifications preferences
 
-        **Tags: profile
+        **Tags: profile, user, usermodel
 
         **Example
 
@@ -108,7 +111,11 @@ class RecentActivityAPIView(ListAPIView):
     """
     Retrieves recently active users
 
-    **Tags: metrics
+    The API is typically used within an HTML
+    `dashboard page </docs/themes/#dashboard_metrics_dashboard>`_
+    as present in the default theme.
+
+    **Tags: metrics, broker, appmodel
 
     **Example
 
@@ -134,7 +141,7 @@ class RecentActivityAPIView(ListAPIView):
           ]
         }
     """
-    serializer_class = ActivitySerializer
+    serializer_class = RecentActivitySerializer
 
     def get_queryset(self):
         start_at = day_periods()[0]

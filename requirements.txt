@@ -3,20 +3,20 @@
 
 boto3==1.17.21
 Django==2.2.24
-django-phonenumber-field==5.1.0
+django-phonenumber-field==5.2.0
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.6.0
-djaodjin-extended-templates==0.2.6
-djaodjin-multitier==0.1.20
-djaodjin-pages==0.4.0
-djaodjin-rules==0.2.7
-djaodjin-saas==0.10.0
-djaodjin-signup==0.5.0
+djaodjin-extended-templates==0.2.7
+djaodjin-multitier==0.1.21
+djaodjin-pages==0.4.1
+djaodjin-rules==0.2.8
+djaodjin-saas==0.10.1
+djaodjin-signup==0.5.1
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
-jinja2==2.8.1
+jinja2==2.10.1
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64

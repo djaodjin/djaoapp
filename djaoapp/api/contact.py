@@ -1,23 +1,17 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
-import logging, socket, sys
+import logging, socket
 from smtplib import SMTPException
 
-from captcha import client
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from deployutils.apps.django.compat import is_authenticated
-from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import serializers
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from saas.api.serializers import NoModelSerializer, ValidationErrorSerializer
+from saas.api.serializers import ValidationErrorSerializer
 from saas.docs import OpenAPIResponse, swagger_auto_schema
 from saas.mixins import ProviderMixin
 from saas.models import Organization
@@ -25,123 +19,10 @@ from saas.utils import full_name_natural_split
 
 from ..compat import six
 from ..signals import contact_requested
-from ..thread_locals import get_current_app
-from ..validators import validate_contact_form
+from .serializers import ContactUsSerializer
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-@deconstructible
-class ReCaptchaValidator(object):
-    error_messages = {
-        "captcha_invalid": _("Error verifying reCAPTCHA, please try again."),
-        "captcha_error": _("Error verifying reCAPTCHA, please try again."),
-    }
-
-    def __init__(self, public_key=None, private_key=None, required_score=None):
-        # reCAPTCHA fields are always required.
-        self.required = True
-
-        # Our score values need to be floats, as that is the expected
-        # response from the Google endpoint. Rather than ensure that on
-        # the widget, we do it on the field to better support user
-        # subclassing of the widgets.
-        self.required_score = float(required_score) if required_score else 0
-
-        # Setup instance variables.
-        self.private_key = private_key or getattr(
-            settings, "RECAPTCHA_PRIVATE_KEY", TEST_PRIVATE_KEY)
-        self.public_key = public_key or getattr(
-            settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
-
-    @staticmethod
-    def get_remote_ip():
-        frm = sys._getframe() #pylint:disable=protected-access
-        while frm:
-            request = frm.f_locals.get("request")
-            if request:
-                remote_ip = request.META.get("REMOTE_ADDR", "")
-                forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                ip_addr = remote_ip if not forwarded_ip else forwarded_ip
-                return ip_addr
-            frm = frm.f_back
-
-    def __call__(self, value):
-        """
-        Validate that the input contains a valid Re-Captcha value.
-        """
-        try:
-            check_captcha = client.submit(
-                recaptcha_response=value,
-                private_key=self.private_key,
-                remoteip=self.get_remote_ip(),
-            )
-
-        except six.moves.urllib.error.HTTPError:  # Catch timeouts, etc
-            raise ValidationError(
-                self.error_messages["captcha_error"],
-                code="captcha_error"
-            )
-
-        if not check_captcha.is_valid:
-            LOGGER.error(
-                "ReCAPTCHA validation failed due to: %s",
-                check_captcha.error_codes
-            )
-            raise ValidationError(
-                self.error_messages["captcha_invalid"],
-                code="captcha_invalid"
-            )
-
-        if self.required_score:
-            # If a score was expected but non was returned, default to a 0,
-            # which is the lowest score that it can return. This is to do our
-            # best to assure a failure here, we can not assume that a form
-            # that needed the threshold should be valid if we didn't get a
-            # value back.
-            score = float(check_captcha.extra_data.get("score", 0))
-
-            if self.required_score > score:
-                LOGGER.error(
-                    "ReCAPTCHA validation failed due to its score of %s"
-                    " being lower than the required amount.", score)
-                raise ValidationError(
-                    self.error_messages["captcha_invalid"],
-                    code="captcha_invalid")
-
-
-class ReCaptchaField(serializers.CharField):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        validator = ReCaptchaValidator()
-        self.validators.append(validator)
-
-
-class ContactUsSerializer(NoModelSerializer):
-
-    full_name = serializers.CharField(
-        help_text=_("Full name the sender of the message wishes"\
-        " to be addressed as"))
-    email = serializers.EmailField(
-        help_text=_("Email address to reply to the sender"))
-    message = serializers.CharField(
-        help_text=_("Description of the reason for contacting the provider"),
-        required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(ContactUsSerializer, self).__init__(*args, **kwargs)
-        if not kwargs.get('initial', {}).get('email', None):
-            if getattr(get_current_app(), 'contact_requires_recaptcha', False):
-                self.fields['g-recaptcha-response'] = ReCaptchaField()
-
-    def validate(self, data):
-        validate_contact_form(
-            data.get('full_name'),
-            data.get('email'),
-            data.get('message'))
-        return data
 
 
 class ContactUsAPIView(ProviderMixin, GenericAPIView):
@@ -150,7 +31,11 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
 
     Emails a free form contact-us message from a customer to the provider
 
-    **Tags: auth
+    The API is typically used within an HTML
+    `contact page </docs/themes/#workflow_contact>`_
+    as present in the default theme.
+
+    **Tags: visitor
 
     **Example
 

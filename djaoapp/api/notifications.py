@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 
 from rules.mixins import AppMixin
-from saas.docs import swagger_auto_schema, OpenAPIResponse
+from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import Price, get_broker
 
 from ..compat import reverse
@@ -86,13 +86,13 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
     http_method_names = ['post']
     serializer_class = DetailSerializer
 
-    @swagger_auto_schema(responses={
+    @swagger_auto_schema(request_body=no_body, responses={
         200: OpenAPIResponse("", DetailSerializer)})
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         """
         Sends a test notification e-mail
 
-        **Tags: themes
+        **Tags: themes, broker, notificationmodel
 
         **Example
 

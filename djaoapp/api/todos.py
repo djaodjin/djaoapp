@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -7,27 +7,18 @@ import logging
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import serializers
+from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from saas.mixins import ProviderMixin
-from signup.serializers import ActivitySerializer, NoModelSerializer
+from signup.serializers import ActivitySerializer
 
 from .. import __version__
 from ..compat import import_string
+from .serializers import VersionSerializer
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-class VersionSerializer(NoModelSerializer):
-
-    version = serializers.SerializerMethodField(read_only=True)
-
-    @staticmethod
-    def get_version(obj):
-        #pylint:disable=unused-argument
-        return __version__
 
 
 class DjaoAppAPIVersion(RetrieveAPIView):
@@ -39,7 +30,11 @@ class DjaoAppAPIVersion(RetrieveAPIView):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         """
+        API version
+
         Retrieves version of the API
+
+        **Tags: visitor
 
         **Example
 
@@ -52,10 +47,11 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         .. code-block:: json
 
             {
-              "version": "2019-11-23"
+              "version": "2020-10-01"
             }
         """
-        return VersionSerializer({'version': __version__})
+        serializer = VersionSerializer({'version': __version__})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def list_todos(request, provider=None):
@@ -93,6 +89,7 @@ class TodosAPIView(ProviderMixin, ListAPIView):
           ]
         }
     """
+    schema = None # XXX currently not providing useful information
     serializer_class = ActivitySerializer
 
     def get_queryset(self):
