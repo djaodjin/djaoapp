@@ -80,7 +80,7 @@ JwcBUUMECj8AKxsHtRHUSypco"
         registration = serializer.validated_data.get('type',
             self.app.IMPLICIT_REGISTRATION)
         full_name = serializer.validated_data.get('full_name', None)
-        if 'organization_name' in serializer.data:
+        if 'organization_name' in serializer.validated_data:
             # We have a registration of a user and organization together.
             registration = self.app.TOGETHER_REGISTRATION
             organization_name = serializer.validated_data.get(

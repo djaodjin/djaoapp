@@ -190,8 +190,7 @@ class RegisterMixin(object):
                     country=_clean_field(cleaned_data, 'country'),
                     extra=organization_extra,
                     **organization_kwargs)
-                account.add_manager(user, extra=role_extra,
-                    request_user=self.request.user)
+                account.add_manager(user, extra=role_extra)
                 LOGGER.info("created organization '%s' with"\
                     " full name: '%s', email: '%s', phone: '%s',"\
                     " street_address: '%s', locality: '%s', region: '%s',"\
