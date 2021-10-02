@@ -11,10 +11,10 @@ djangorestframework==3.12.4
 djaodjin-deployutils==0.6.0
 djaodjin-extended-templates==0.2.7
 djaodjin-multitier==0.1.21
-djaodjin-pages==0.4.1
+djaodjin-pages==0.4.2
 djaodjin-rules==0.2.8
 djaodjin-saas==0.10.1
-djaodjin-signup==0.5.1
+djaodjin-signup==0.5.2
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.11.3
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
@@ -22,7 +22,8 @@ MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
 #   but it still seems to work ...
 gunicorn==19.7.1
-phonenumbers==8.12.6
+phonenumbers==8.12.19
+Pygments==2.6.1
 PyJWT==2.0.1
 pytz==2021.1
 social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
