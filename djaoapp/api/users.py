@@ -51,8 +51,8 @@ class DjaoAppUserDetailAPIView(UserDetailBaseAPIView):
         # in place but we delete the roles on organizations
         # for that user to make sure access rights for the archive profile
         # are fully gone.
-        if instance.user:
-            get_role_model().objects.filter(user=instance.user).delete()
+        if instance:
+            get_role_model().objects.filter(user=instance).delete()
         super(DjaoAppUserDetailAPIView, self).perform_destroy(instance)
 
 
