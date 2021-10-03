@@ -10,40 +10,40 @@
 
 {% block content %}
 <div>
-  <section id="leaderboard" class="jumbotron text-center" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
+  <section class="jumbotron text-center" id="leaderboard" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
     <div class="container py-5">
       <div class="col-sm-12">
-        <h1 id="leaderboard-title" class="editable">Where dreams are built</h1>
+        <h1 class="editable" id="leaderboard-title">Where dreams are built</h1>
         <!-- next line must be line 18 for edit testing -->
-        <h2 id="leaderboard-subtitle" class="editable"></h2>
-        <p id="leaderboard-message" class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom">
+        <h2 class="editable" id="leaderboard-subtitle"></h2>
+        <div class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom" id="leaderboard-message">
           This is a template for a marketing or informational website. Use it as a starting point to create something unique!
-        </p>
-        <p>
-          <a href="{{request|url_register}}" class="btn btn-md btn-primary px-5">{% trans %}Register{% endtrans %}</a>
-        </p>
+        </div>
+        <div>
+          <a class="btn btn-md btn-primary px-5" href="{{request|url_register}}">{% trans %}Register{% endtrans %}</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="site-description" class="site-landing py-5 my-5">
+  <section class="site-landing py-5 my-5" id="site-description">
     <div class="container pt-2">
       <div class="row">
         <div class="col-md-4 mb-4">
-          <h4 id="site-description-heading-1" class="editable mb-2">Heading 1</h4>
-          <p id="site-description-descr-1" class="editable edit-markdown">
+          <h4 class="editable mb-2" id="site-description-heading-1">Heading 1</h4>
+          <p class="editable edit-markdown" id="site-description-descr-1">
             First set of benefits of using the site. Describe what the site can do for a registered user, the pain it solves, etc.
           </p>
         </div>
         <div class="col-md-4 mb-4">
-          <h4 id="site-description-heading-2" class="editable mb-2" data-intro="Editable title" data-position="right">Heading 2</h4>
-          <p id="site-description-descr-2" class="editable edit-markdown">
+          <h4 class="editable mb-2" data-intro="Editable title" data-position="right" id="site-description-heading-2">Heading 2</h4>
+          <p class="editable edit-markdown" id="site-description-descr-2">
             Second set of benefits of using the site. Describe what the site can do for a registered user, the pain it solves, etc.
           </p>
         </div>
         <div class="col-md-4">
-          <h4 id="site-description-heading-3" class="editable mb-2">Heading 3</h4>
-          <p id="site-description-descr-3" class="editable edit-markdown">
+          <h4 class="editable mb-2" id="site-description-heading-3">Heading 3</h4>
+          <p class="editable edit-markdown" id="site-description-descr-3">
             Third set of benefits of using the site. Describe what the site can do for a registered user, the pain it solves, etc.
           </p>
         </div>
@@ -51,12 +51,12 @@
     </div>
   </section>
 
-  <section id="site-audience" class="site-landing bg-light py-5">
+  <section class="site-landing bg-light py-5" id="site-audience">
     <div class="container my-4 py-5">
       <div class="row">
         <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-          <h4 id="site-audience-title" class="editable">Who is this site for?</h4>
-          <p id="site-audience-descr" class="editable edit-markdown">
+          <h4 class="editable" id="site-audience-title">Who is this site for?</h4>
+          <p class="editable edit-markdown" id="site-audience-descr">
             This section describes the intended audience for the site. It could be a list of professional occupations, an ideal customer profile, etc.
           </p>
         </div>
@@ -64,12 +64,12 @@
     </div>
   </section>
 
-  <section id="site-feedback" class="site-landing py-5">
+  <section class="site-landing py-5" id="site-feedback">
     <div class="container text-center py-5">
       <div style="display: inline-block;">
         <div class="row portrait-and-quote">
           <div class="text-center" style="flex-shrink:0;margin:0 20px;">
-            <img id="site-feedback-portrait" class="img-fluid rounded-circle editable droppable-image" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Portrait of statisfied customer">
+            <img alt="Portrait of statisfied customer" class="img-fluid rounded-circle editable droppable-image" id="site-feedback-portrait" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style="width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
           </div>
           <div class="text-left">
             <blockquote>
@@ -88,39 +88,39 @@
     </div>
   </section>
 
-  <section id="site-partner" class="site-landing bg-light py-5">
+  <section class="site-landing bg-light py-5" id="site-partner">
     <div class="container text-center py-4">
       <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-          <h4 id="site-partner-header" class="editable">Our partners</h4>
-          <p id="site-partner-descr" class="editable edit-markdown">
-            This section describes &quot;powered by&quot;, partners, awards, certifications, etc. It can be populated by a list of logos, more quotes, etc.
+          <h4 class="editable" id="site-partner-header">Our partners</h4>
+          <p class="editable edit-markdown" id="site-partner-descr">
+            This section describes "powered by", partners, awards, certifications, etc. It can be populated by a list of logos, more quotes, etc.
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
-          <img id="site-partner-logo-1" class="img-fluid editable droppable-image" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 1">
+          <img alt="partner logo 1" class="img-fluid editable droppable-image" id="site-partner-logo-1" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
         </div>
         <div class="col-md-3">
-          <img id="site-partner-logo-2" class="img-fluid editable droppable-image" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 2">
+          <img alt="partner logo 2" class="img-fluid editable droppable-image" id="site-partner-logo-2" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
         </div>
         <div class="col-md-3">
-          <img id="site-partner-logo-3" class="img-fluid editable droppable-image" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 3">
+          <img alt="partner logo 3" class="img-fluid editable droppable-image" id="site-partner-logo-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
         </div>
         <div class="col-md-3">
-          <img id="site-partner-logo-4" class="img-fluid editable droppable-image" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="partner logo 4">
+          <img alt="partner logo 4" class="img-fluid editable droppable-image" id="site-partner-logo-4" src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style="border-radius: 100px; width:150px;height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="site-about" class="site-landing my-3 py-5">
+  <section class="site-landing my-3 py-5" id="site-about">
     <div class="container py-5">
       <div class="row">
         <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-          <h4 id="site-about-title" class="editable">About us</h4>
-          <p id="site-about-descr" class="editable edit-markdown">
+          <h4 class="editable" id="site-about-title">About us</h4>
+          <p class="editable edit-markdown" id="site-about-descr">
             This section describes the people behind the site. It can include ways to contact customer support, etc.
           </p>
         </div>
