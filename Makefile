@@ -167,8 +167,7 @@ build-assets: $(ASSETS_DIR)/cache/djaodjin-vue.js \
                 $(ASSETS_DIR)/cache/dashboard.css \
                 $(ASSETS_DIR)/cache/pages.css
 
-$(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/djaoapp-packages \
-                $(ASSETS_DIR)/js/djaoapp-i18n.js
+$(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/djaoapp-packages
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)

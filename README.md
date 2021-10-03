@@ -99,9 +99,9 @@ You will want to toggle `DEBUG` on in the site.conf file.
     # To generate some sample data, disable emailing of receipts and run:
     $ python manage.py load_test_transactions
 
-    # Spins up a dev server that continuously watches for changes in
-    # JS & CSS files and reloads the corresponding modules in a browser
-    $ make build-assets
+    # Spins up a dev server that re-compiles the `.css` files
+    # on page reload whenever necessary.
+    $ python manage.py runserver --nostatic
 </code></pre>
 
 
