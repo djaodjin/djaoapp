@@ -22,8 +22,6 @@ from ..urlbuilders import (url_authenticated, url_active, url_direct,
     url_provider, url_provider_only, url_self_provider,
     url_frictionless_self_provider)
 
-import djaoapp.signals
-
 # These handlers will only be used in production (DEBUG=0)
 #pylint:disable=invalid-name
 handler403 = 'djaoapp.views.errors.permission_denied'

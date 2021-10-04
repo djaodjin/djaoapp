@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -6,7 +6,7 @@ from django.db import models
 from rules.models import BaseApp
 
 from .compat import python_2_unicode_compatible
-
+from . import signals
 
 @python_2_unicode_compatible
 class App(BaseApp):
