@@ -22,7 +22,7 @@ ALLOWED_HOSTS = ('*',)
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
 
 DB_ENGINE = 'sqlite3'
-DB_NAME = os.path.join(BASE_DIR, 'db.sqlite3')
+DB_NAME = os.path.join(BASE_DIR, 'db.sqlite')
 DB_HOST = ''
 DB_PORT = 5432
 DB_USER = None

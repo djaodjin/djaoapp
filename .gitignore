@@ -1,11 +1,11 @@
-*.pyc
 *~
-*.xcodeproj
-.vscode
+*.pyc
 *.mo
+*.sqlite
+*.xcodeproj
 .DS_Store
 .timestamp
-db.sqlite3
+.vscode
 assets
 htdocs
 htdocs/media/

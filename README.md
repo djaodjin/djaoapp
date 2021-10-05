@@ -114,3 +114,9 @@ the default will be used.
 
 All CSS present in the default templates must be declared which ever
 base.html is included.
+
+
+Release Notes
+=============
+
+See [release notes](https://www.djaodjin.com/docs/djaoapp/releases/)

@@ -21,6 +21,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.static import serve
 
+from extended_templates.helpers import get_assets_dirs
 from multitier.mixins import build_absolute_uri
 from multitier.thread_locals import get_current_site
 from pages.views.pages import PageMixin
@@ -33,6 +34,7 @@ from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 
+from ..compat import urlparse
 from ..thread_locals import get_current_broker
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
@@ -146,8 +148,27 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
                     pass
             if response is None:
                 # Mostly for automated tests.
-                response = serve(
-                    request, request.path, document_root=settings.HTDOCS)
+                not_found = None
+                parts = urlparse(request.path)
+                path_parts = parts.path.strip('/').split('/')
+                static_url_parts = settings.STATIC_URL.strip('/').split('/')
+                rel_path = '/'.join(path_parts)
+                for idx, path_part in enumerate(reversed(path_parts)):
+                    if path_part == static_url_parts[-1]:
+                        # We found where STATIC_URL begins.
+                        rel_path = '/'.join(path_parts[len(path_parts) - idx:])
+                        break
+                for asset_dir in get_assets_dirs():
+                    LOGGER.info("looking for '%s' in '%s'",
+                        rel_path, asset_dir)
+                    try:
+                        response = serve(
+                            request, rel_path, document_root=asset_dir)
+                        break
+                    except Http404 as err:
+                        not_found = err
+                if not response and not_found:
+                    raise not_found
         return response
 
 

@@ -10,30 +10,32 @@
 {% endblock %}
 
 {% block content %}
-  <section id="leaderboard" class="jumbotron text-center" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
+<div>
+  <section class="jumbotron text-center" id="leaderboard" style="background-image: url(/static/img/sf-golden-gate.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
     <div class="container py-5">
       <div class="col-sm-12">
-        <h1 id="leaderboard-title" class="editable">Welcome to DjaoDjin live demo!</h1>
-        <p id="leaderboard-message" class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom">
+        <h1 class="editable" id="leaderboard-title">Welcome to DjaoDjin live demo!</h1>
+        <h2 class="editable" id="leaderboard-subtitle"></h2><!-- this line must be line 18 for edit testing -->
+        <p class="lead editable edit-markdown" data-intro="Paragraph editable in markdown" data-position="bottom" id="leaderboard-message">
 This is a fully functional site. It shows the profile, billing and access
 control APIs and templates you get out-of-the-box when you rely on DjaoDjin
 technology to implement your own Software-as-a-Service.
         </p>
         <div class="row mt-4">
           <div class="col-sm-6">
-            <form method="post" action="{{request|url_login}}">
-              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-              <input type="hidden" name="username" value="xia" />
-              <input type="hidden" name="password" value="yoyo" />
-              <button type="submit" class="btn btn-md btn-primary px-5">{% trans %}Login as subscriber{% endtrans %}</button>
+            <form action="{{request|url_login}}" method="post">
+              <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
+              <input name="username" type="hidden" value="xia"/>
+              <input name="password" type="hidden" value="yoyo"/>
+              <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as subscriber{% endtrans %}</button>
             </form>
           </div>
           <div class="col-sm-6">
-            <form method="post" action="{{request|url_login}}">
-              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-              <input type="hidden" name="username" value="alice" />
-              <input type="hidden" name="password" value="yoyo" />
-              <button type="submit" class="btn btn-md btn-primary px-5">{% trans %}Login as a site admin{% endtrans %}</button>
+            <form action="{{request|url_login}}" method="post">
+              <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
+              <input name="username" type="hidden" value="alice"/>
+              <input name="password" type="hidden" value="yoyo"/>
+              <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as a site admin{% endtrans %}</button>
             </form>
           </div>
         </div>
@@ -41,7 +43,7 @@ technology to implement your own Software-as-a-Service.
     </div>
   </section>
 
-  <section id="site-description" class="site-landing py-5 my-5">
+  <section class="site-landing py-5 my-5" id="site-description">
     <div class="container pt-2">
       <div class="row">
         <div class="col-md-4 mb-4">
@@ -74,7 +76,7 @@ deploy custom business logic as needed. <a href="https://www.djaodjin.com/contac
     </div>
   </section>
 
-  <section id="site-audience" class="site-landing bg-light py-5">
+  <section class="site-landing bg-light py-5" id="site-audience">
     <div class="container my-4 py-5">
       <div class="row">
         <div class="col-md-6 offset-md-3 col-lg-6 text-center">
@@ -88,12 +90,12 @@ technology to build their next micro-SaaS.
     </div>
   </section>
 
-  <section id="site-feedback" class="site-landing py-5">
+  <section class="site-landing py-5" id="site-feedback">
     <div class="container text-center py-5">
       <div style="display: inline-block;">
         <div class="row portrait-and-quote">
           <div class="col-sm-4 text-center">
-            <img id="site-feedback-portrait" class="img-fluid rounded-circle editable droppable-image" src="https://www.djaodjin.com/static/img/vpavlounis-headshot-4.jpg" alt="Portrait of statisfied customer">
+            <img alt="Portrait of statisfied customer" class="img-fluid rounded-circle editable droppable-image" id="site-feedback-portrait" src="https://www.djaodjin.com/static/img/vpavlounis-headshot-4.jpg">
           </div>
           <div class="col-sm-8">
             <blockquote class="blockquote text-left" style="padding-left:10px;border-left: 5px solid #eee;">
@@ -120,11 +122,11 @@ platform to help me grow.
     </div>
   </section>
 
-  <section id="site-partner" class="site-landing bg-light py-5">
+  <section class="site-landing bg-light py-5" id="site-partner">
     <div class="container text-center py-4">
       <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-6 offset-md-3 col-lg-6 text-center">
-          <img class="img-fluid mb-2" src="https://www.djaodjin.com/static/img/logo-djaodjin-128.png" style="display:inline-block;width:26px;height:26px;margin:0 auto;" />
+          <img class="img-fluid mb-2" src="https://www.djaodjin.com/static/img/logo-djaodjin-128.png" style="display:inline-block;width:26px;height:26px;margin:0 auto;"/>
           <h4>Built with</h4>
           <p>
 This is a sample of the products that have been built with DjaoDjin technology
@@ -135,29 +137,29 @@ and rely on DjaoDjin's team for on-going managed hosting services.
       <div class="row">
         <div class="col-md-3">
           <a href="https://www.tspproject.org/" target="_blank">
-          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/envconnect/screenshot.png" alt="The Sustainability Project">
+          <img alt="The Sustainability Project" class="img-fluid" src="https://www.djaodjin.com/static/img/envconnect/screenshot.png" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
           </a>
         </div>
         <div class="col-md-3">
           <a href="https://www.a1ceus.com/" target="_blank">
-          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/a1ceus/screenshot.png" alt="A1Ceus">
+          <img alt="A1Ceus" class="img-fluid" src="https://www.djaodjin.com/static/img/a1ceus/screenshot.png" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
           </a>
         </div>
         <div class="col-md-3">
           <a href="https://spheremail.co/" target="_blank">
-          <img class="img-fluid" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/spheremail/screenshot.png" alt="SphereMail">
+          <img alt="SphereMail" class="img-fluid" src="https://www.djaodjin.com/static/img/spheremail/screenshot.png" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
           </a>
         </div>
         <div class="col-md-3">
           <a href="https://www.fortylines.com/" target="_blank">
-          <img class="img-fluid editable droppable-image" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;" src="https://www.djaodjin.com/static/img/fortylines/screenshot.png" alt="Fortylines">
+          <img alt="Fortylines" class="img-fluid editable droppable-image" src="https://www.djaodjin.com/static/img/fortylines/screenshot.png" style="height:150px;margin-left:auto;margin-right:auto;margin-top:15px;margin-bottom:15px;"/>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="site-about" class="site-landing my-3 py-5">
+  <section class="site-landing my-3 py-5" id="site-about">
     <div class="container py-5">
       <div class="row">
         <div class="col-md-8 offset-md-2 text-center">
@@ -180,4 +182,5 @@ emphasis on:
       </div>
     </div>
   </section>
+</div>
 {% endblock %}

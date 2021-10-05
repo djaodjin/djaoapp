@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   title: DjaoApp API
-  version: 2021-10-02
+  version: 2021-10-05
   description: API to run a SaaS website deployed on the djaodjin platform
 paths:
   /api/auth/tokens/realms/{organization}/:

@@ -40,14 +40,9 @@ ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # here to prevent that issue.
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
 else
-DB_FILENAME   := $(LOCALSTATEDIR)/db/djaodjin.sqlite
+DB_FILENAME   := $(srcDir)/db.sqlite
 endif
-
-ifeq ($(dir $(DB_FILENAME)),./)
-MULTITIER_DB_FILENAME := cowork
-else
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
-endif
 
 MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 
@@ -57,14 +52,17 @@ EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 all:
 	@echo "Nothing to be done for 'make'."
 
-clean: clean-themes
+clean: clean-dbs clean-themes
+	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
+	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
+	find $(srcDir) -name '*~' -exec rm -rf {} +
+
+clean-dbs:
+	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
+	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
 
 clean-themes:
-	rm -rf $(srcDir)/themes/*
-	$(installDirs) $(srcDir)/themes
-	-rm -rf $(srcDir)/htdocs/brevent-eb84bac8559b825b545a8299c3888c52f3f172b7 \
-		$(srcDir)/htdocs/balme
-	cd $(srcDir) && find . -type d -name "brevent-*" -exec rm -rf {} +
+	rm -rf $(srcDir)/themes/* $(srcDir)/htdocs/themes/*
 
 install:: install-conf
 
@@ -91,7 +89,7 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
 	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set show_edit_tools=1;"
 
-initdb-cowork: install-conf
+initdb-cowork:
 	-[ -f $(MULTITIER_DB_FILENAME) ] && rm -f $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate \
@@ -102,7 +100,7 @@ initdb-cowork: install-conf
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
 
 
-initdb-djaoapp: install-conf
+initdb-djaoapp:
 	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
 	cd $(srcDir) && \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py migrate $(RUNSYNCDB) --noinput --fake-initial
@@ -211,12 +209,15 @@ setup-livedemo:
 	$(installDirs) $(srcDir)/themes/djaoapp/templates
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
-	cd $(srcDir) && rm -f db.sqlite3
+	cd $(srcDir) && rm -f $(DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) db.sqlite3
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) db.sqlite3
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
+	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
+	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
+	find $(srcDir) -name '*~' -exec rm -rf {} +
 
 
 $(srcDir)/djaoapp/locale/fr/LC_MESSAGES/django.mo: \
