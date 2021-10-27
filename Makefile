@@ -73,6 +73,8 @@ doc:
 # We use rsync here so that make initdb can be run with user "nginx"
 # after files were installed with user "fedora".
 install-default-themes:: clean-themes
+	$(installDirs) -d $(srcDir)/themes
+	$(installDirs) -d $(srcDir)/htdocs/themes
 
 
 # download and install prerequisites then create the db.

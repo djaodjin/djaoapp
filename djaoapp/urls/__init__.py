@@ -61,8 +61,7 @@ if settings.DEBUG:
         url(r'^csrf-error/',
             TemplateView.as_view(template_name='csrf-error.html'),
             name='csrf_error'),
-        url(r'^favicon.ico$', django_static_serve,
-            {'path': 'favicon.ico', 'document_root': settings.HTDOCS}),
+        url(r'^favicon.ico$', django_static_serve, {'path': 'favicon.ico'}),
     ]
 else:
     urlpatterns = [
