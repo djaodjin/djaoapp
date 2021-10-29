@@ -60,6 +60,7 @@ clean: clean-dbs clean-themes
 clean-dbs:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
 	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
+	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 
 clean-themes:
 	rm -rf $(srcDir)/themes/* $(srcDir)/htdocs/themes/*
@@ -84,7 +85,6 @@ require: require-pip require-resources initdb
 # We add a `load_test_transactions` because the command will set the current
 # site and thus need the rules.App table.
 initdb: install-default-themes initdb-djaoapp initdb-cowork
-	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
 	cd $(srcDir) && \
 		DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) ./manage.py loadfixtures $(EMAIL_FIXTURE_OPT) djaoapp/fixtures/default-db.json djaoapp/fixtures/djaoapp-roles-card1.json djaoapp/fixtures/100-balance-due.json djaoapp/fixtures/110-balance-checkout.json
 	@echo "-- Set streetside processor deposit key."

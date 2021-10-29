@@ -38,7 +38,10 @@ def is_anonymous(func, next_url):
 
 urlpatterns = [
     # Authentication (login, registration, etc.)
-    url_prefixed(r'^register/((?P<path>%s)/)?' % ACCT_REGEX,
+    # We want to give the opportunity to have multiple registration page
+    # (ex: frictionless) yet at the same time prvent bots to mindlessly
+    # attempt to register accounts through `POST /register/.`
+    url_prefixed(r'^register/((?P<path>\w+)/)?',
         SignupView.as_view(),
         name='registration_register'),
     url_prefixed(r'^activate/(?P<verification_key>%s)/'
