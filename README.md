@@ -6,7 +6,8 @@ It is a core part of the infrastructure that makes it possible to bring
 fully-featured SaaS products to production faster. To learn more visit
 [DjaoDjin's Website](https://djaodjin.com/).
 
-The session proxy is built on [Django](https://www.djangoproject.com/),
+The session proxy is built on
+[Django](https://www.djangoproject.com/),
 [Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
 frameworks and many more Open Source projects. Thank you for the support!
 
@@ -17,7 +18,7 @@ frameworks and many more Open Source projects. Thank you for the support!
 </p>
 
 If you are looking to update the client front-end, you can browse through
-the [API documentation](https://djaodjin.com/docs/djaoapp-api/) and
+the [API documentation](/docs/djaoapp/latest/api/) and
 [theme templates documentation](https://djaodjin.com/docs/themes/#default-theme).
 
 If you are looking to add features, this project integrates

@@ -1,14 +1,17 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
 -include $(buildTop)/share/dws/prefix.mk
+
+APP_NAME      ?= djaoapp
+APP_PORT      ?= 8000
 
 srcDir        ?= .
 installTop    ?= $(VIRTUAL_ENV)
 binDir        ?= $(installTop)/bin
 SYSCONFDIR    := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
-CONFIG_DIR    := $(SYSCONFDIR)/djaoapp
+CONFIG_DIR    := $(SYSCONFDIR)/$(APP_NAME)
 ASSETS_DIR    := $(srcDir)/htdocs/static
 
 installDirs   ?= /usr/bin/install -d
@@ -25,9 +28,6 @@ WEBPACK       ?= $(installTop)/node_modules/.bin/webpack
 # Implementation Note: We have to wait for the config files to be installed
 # before running the manage.py command (else missing SECRECT_KEY).
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py migrate --help 2>/dev/null)),--run-syncdb,)
-
-APP_NAME      ?= djaoapp
-APP_PORT      ?= 8000
 
 WEBPACK_MODE  ?= production
 ifneq ($(WEBPACK_MODE),production)
@@ -145,9 +145,9 @@ migratedb-%:
 # The less files (under source control) to build djaoapp base.css will be
 # also be installed into the directory assets are served from to support
 # style editing.
-vendor-assets-prerequisites: $(installTop)/.npm/djaoapp-packages
+vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 
-$(installTop)/.npm/djaoapp-packages: $(srcDir)/package.json
+$(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(installTop)
 	$(NPM) install --loglevel verbose --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(installTop)
 	$(installDirs) -d $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
@@ -167,7 +167,7 @@ build-assets: $(ASSETS_DIR)/cache/djaodjin-vue.js \
                 $(ASSETS_DIR)/cache/dashboard.css \
                 $(ASSETS_DIR)/cache/pages.css
 
-$(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/djaoapp-packages
+$(ASSETS_DIR)/cache/djaodjin-vue.js: $(installTop)/.npm/$(APP_NAME)-packages
 	cd $(srcDir) && $(PYTHON) manage.py generate_assets_paths --venv=$(installTop) $(installTop)/djaodjin-webpack.json
 	$(installFiles) $(srcDir)/webpack.common.js $(installTop)
 	$(installFiles) $(srcDir)/webpack.development.js $(installTop)
