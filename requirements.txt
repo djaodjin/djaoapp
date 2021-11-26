@@ -27,7 +27,9 @@ PyJWT==2.0.1
 pytz==2021.1
 social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
-WeasyPrint==52.5          # >=53 requires Pango1.44, AMZLinux2 has 1.42
+# >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
+# use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
+WeasyPrint==53.3
 
 # To run with DEBUG=1
 django-extensions==2.2.9
