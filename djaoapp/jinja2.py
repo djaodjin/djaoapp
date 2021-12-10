@@ -15,7 +15,7 @@ from pages import signals as pages_signals
 import saas.templatetags.saas_tags
 from webpack_loader.templatetags.webpack_loader import render_bundle
 
-from .compat import import_string, reverse
+from .compat import import_string, reverse, six
 import djaoapp.templatetags.djaoapp_tags
 
 
@@ -43,8 +43,11 @@ def environment(**options):
     # would only be compiled on the first edit.
     options.update({'auto_reload': True})
     if 'loader' in options:
-        options['loader'] = import_string(options['loader'])(
-            get_template_search_path())
+        if isinstance(options['loader'], six.string_types):
+            loader_class = import_string(options['loader'])
+        else:
+            loader_class = options['loader'].__class__
+        options['loader'] = loader_class(get_template_search_path())
     env = DjaoappEnvironment(extensions=[i18n], **options)
     # i18n
     env.install_gettext_callables(gettext=gettext, ngettext=ngettext,

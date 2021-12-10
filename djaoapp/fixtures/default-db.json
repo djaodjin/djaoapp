@@ -449,6 +449,7 @@
       "email": "xia@localhost.localdomain",
       "slug": "xia",
       "nick_name": "Xia",
+      "phone": "+14155555556",
       "user": 5
     },
     "model": "signup.Contact", "pk": 5

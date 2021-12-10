@@ -7,7 +7,7 @@
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2021 DjaoDjin inc.">
     {% block localheadermeta %}
-    <title>{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %} | DjaoDjin</title>
+    <title>{% block localheader_title %}{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
     <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />

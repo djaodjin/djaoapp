@@ -12,11 +12,6 @@ from rules.utils import get_current_app
 
 from ..compat import reverse
 
-# matches definitions in `saas.backends.stripe_processor.base.StripeBackend`.
-STRIPE_CONNECT_LOCAL = 0
-STRIPE_CONNECT_FORWARD = 1
-STRIPE_CONNECT_REMOTE = 2
-
 
 class ExtraMixin(AppMixinBase, AccountMixinBase):
 
@@ -44,20 +39,15 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
         # ``site.account`` is always in the *default* database, which is not
         # the expected database ``Organization`` are typically queried from.
 
-        # XXX Relying on settings instead of saas_settings to cut down
-        # on imports. `requires_provider_keys` matches definition
-        # in `saas.backends.stripe_processor.base.StripeBackend`.
-        broker_pub_key = getattr(settings, 'STRIPE_PUB_KEY', None)
-        processor_backend_mode = settings.SAAS.get(
-            'PROCESSOR', STRIPE_CONNECT_LOCAL).get(
-            'MODE', STRIPE_CONNECT_LOCAL)
-        requires_provider_keys = (processor_backend_mode in (
-            STRIPE_CONNECT_FORWARD, STRIPE_CONNECT_REMOTE) and
+        processor_backend = app.account.processor_backend
+        broker_pub_key = processor_backend.pub_key
+        requires_provider_keys = (
+            processor_backend.requires_provider_keys() and
             not self._is_platform(app.account))
         provider_pub_key = app.account.processor_pub_key
 
         processor_hint = None
-        if not broker_pub_key:
+        if not processor_backend.is_configured():
             processor_hint = 'configure_broker'
         elif requires_provider_keys and not provider_pub_key:
             processor_hint = 'connect_provider'

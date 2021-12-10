@@ -1,5 +1,7 @@
 {% extends "accounts/base.html" %}
 
+{% block localheader_title %}{% if disabled_registration %}{% trans %}Registration disabled{% endtrans %}{% else %}{% trans %}Authentication disabled{% endtrans %}{% endif %}{% endblock %}
+
 {% block content %}
 <div class="container container-vertical-middle">
   <div class="row">

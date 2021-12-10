@@ -77,6 +77,8 @@ JwcBUUMECj8AKxsHtRHUSypco"
 
     def register(self, serializer):
         #pylint: disable=maybe-no-member,too-many-boolean-expressions
+        # XXX incorrect use of `type` which is derived from
+        # Organization.ACCOUNT_TYPE vs. rules.app.REGISTRATION_TYPE
         registration = serializer.validated_data.get('type',
             self.app.IMPLICIT_REGISTRATION)
         full_name = serializer.validated_data.get('full_name', None)

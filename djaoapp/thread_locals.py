@@ -29,10 +29,11 @@ def is_testing(site):
     return site.tag and 'testing' in site.tag
 
 
-def dynamic_processor_keys(provider):#pylint:disable=unused-argument
+def dynamic_processor_keys(provider, livemode=None):
     """
     Update the Stripe keys to use based on the database we are referring to.
     """
+    #pylint:disable=unused-argument
     from saas.backends import load_backend
     processor_backend = load_backend(
         settings.SAAS.get('PROCESSOR', {
@@ -41,10 +42,14 @@ def dynamic_processor_keys(provider):#pylint:disable=unused-argument
     site = get_current_site()
     if is_domain_site(site):
         processor_backend.mode = processor_backend.REMOTE
-    if is_testing(site):
+    if livemode is None:
+        livemode = bool(not is_testing(site))
+    if not livemode:
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
         processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
         processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
+        processor_backend.connect_callback_url = \
+            settings.STRIPE_TEST_CONNECT_CALLBACK_URL
     return processor_backend
 
 

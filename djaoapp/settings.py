@@ -648,7 +648,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.github.GithubOAuth2',
-    'signup.backends.auth.UsernameOrEmailModelBackend',
+    'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
 
@@ -731,13 +731,15 @@ SAAS = {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
         'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
-        'USE_STRIPE_V3': not(getattr(sys.modules[__name__],
-            'FEATURES_REVERT_STRIPE_V2', False)),
         'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
+        'CONNECT_CALLBACK_URL': getattr(sys.modules[__name__],
+            'STRIPE_CONNECT_CALLBACK_URL', None),
         'CONNECT_STATE_CALLABLE':
             'djaoapp.thread_locals.get_authorize_processor_state',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
-        'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', [])
+        'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', []),
+        'USE_STRIPE_V3': not(getattr(sys.modules[__name__],
+            'FEATURES_REVERT_STRIPE_V2', False)),
     },
     'USER_SERIALIZER': 'signup.serializers.UserSerializer',
 }

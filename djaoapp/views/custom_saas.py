@@ -26,6 +26,7 @@ from signup.models import get_user_contact
 
 from ..compat import reverse
 from ..forms.profile import PersonalProfileForm
+from ..thread_locals import dynamic_processor_keys
 
 
 LOGGER = logging.getLogger(__name__)
@@ -45,53 +46,26 @@ class DashboardView(BaseDashboardView):
 
 class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
 
-    @property
-    def processor_backend(self):
-        if not hasattr(self, '_processor_backend'):
-            self._processor_backend = load_backend(
-                settings.SAAS.get('PROCESSOR', {
-                    'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
-                }).get(
-                    'BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
-        return self._processor_backend
-
     def connect_auth(self, auth_code):
-        site = get_current_site()
         try:
             livemode = int(self.request.GET.get('livemode', 1))
         except ValueError:
             livemode = 1
+        site = get_current_site()
         if livemode:
             site.remove_tags(['testing'])
         else:
             site.add_tags(['testing'])
-            self.processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
-            self.processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
-            self.processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
         site.save()
-        self.processor_backend.connect_auth(self.object, auth_code)
+        return super(ProcessorAuthorizeView, self).connect_auth(auth_code)
 
     def get_context_data(self, **kwargs):
         context = super(ProcessorAuthorizeView, self).get_context_data(**kwargs)
-        provider = self.organization
-
-        kwargs = {}
-        if (hasattr(settings, 'STRIPE_CONNECT_CALLBACK_URL') and
-            settings.STRIPE_CONNECT_CALLBACK_URL):
-            kwargs = {
-                'redirect_uri': settings.STRIPE_CONNECT_CALLBACK_URL,
-            }
-        authorize_url = self.processor_backend.get_authorize_url(
-            provider, **kwargs)
-        if authorize_url:
-            update_context_urls(context, {
-                'authorize_processor': authorize_url
-            })
         if (hasattr(settings, 'STRIPE_TEST_CONNECT_CALLBACK_URL') and
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL):
-            authorize_url = self.processor_backend.get_authorize_url(
-                provider, client_id=settings.STRIPE_TEST_CLIENT_ID,
-                redirect_uri=settings.STRIPE_TEST_CONNECT_CALLBACK_URL)
+            provider = self.organization
+            processor_backend = dynamic_processor_keys(provider, livemode=False)
+            authorize_url = processor_backend.get_authorize_url(provider)
             if authorize_url:
                 update_context_urls(context, {
                     'authorize_processor_test': authorize_url

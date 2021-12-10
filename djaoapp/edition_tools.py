@@ -18,7 +18,6 @@ from pages.compat import render_template
 from pages.views.pages import inject_edition_tools as pages_inject_edition_tools
 from rules import settings as rules_settings
 from rules.utils import get_current_app
-from saas import settings as saas_settings
 from saas.decorators import _valid_manager
 from saas.models import get_broker, is_broker
 from saas.utils import get_organization_model, get_role_model
@@ -64,9 +63,9 @@ def fail_edit_perm(request, account=None):
 
 
 def has_bank_account(broker):
+    processor_backend = broker.processor_backend
     return ((broker.slug == settings.APP_NAME and
-             saas_settings.PROCESSOR.get('PUB_KEY') and
-             saas_settings.PROCESSOR.get('PRIV_KEY'))
+             processor_backend.pub_key and processor_backend.priv_key)
             or broker.has_bank_account)
 
 
