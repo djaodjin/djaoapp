@@ -40,8 +40,6 @@ def dynamic_processor_keys(provider, livemode=None):
             'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
         }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
     site = get_current_site()
-    if is_domain_site(site):
-        processor_backend.mode = processor_backend.REMOTE
     if livemode is None:
         livemode = bool(not is_testing(site))
     if not livemode:
@@ -50,6 +48,26 @@ def dynamic_processor_keys(provider, livemode=None):
         processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
         processor_backend.connect_callback_url = \
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL
+
+    if is_domain_site(site):
+        processor_backend.mode = processor_backend.REMOTE
+        if not is_current_broker(provider):
+            processor_backend.mode = processor_backend.FORWARD
+        try:
+            if site.processor_client_key:
+                processor_backend.pub_key = site.processor_pub_key
+                processor_backend.priv_key = site.processor_priv_key
+                processor_backend.client_id = site.processor_client_key
+                processor_backend.connect_callback_url = site.connect_callback_url
+                if not livemode:
+                    processor_backend.pub_key = site.processor_test_pub_key
+                    processor_backend.priv_key = site.processor_test_priv_key
+                    processor_backend.client_id = site.processor_test_client_key
+                    processor_backend.connect_callback_url = \
+                        site.processor_test_connect_callback_url
+        except AttributeError:
+            pass
+
     return processor_backend
 
 
@@ -165,11 +183,17 @@ def _provider_as_site(provider):
 
 
 def get_authorize_processor_state(processor, provider):
-    # returns site slug as `state` for redirects.
-    site = _provider_as_site(provider)
-    if not site:
-        # We force a valid state instead of `None`.
-        site = provider
+    """
+    Returns site or site.provider as `state` query parameter for redirects.
+
+    This function is executed in the context of the whitelabel's site.
+    """
+    site = get_current_site()
+    if not is_current_broker(provider):
+        # Implementation note: '.' is neither part of a slug, nor url encoded
+        # in query parameters. It is a good candidate for a separator between
+        # a site's slug and a provider's slug.
+        return "%s.%s" % (site, provider)
     return str(site)
 
 
@@ -177,19 +201,29 @@ def processor_redirect(request, site=None):
     """
     Full URL redirect after the processor connected the organization
     account with our system.
+
+    This function is executed in the context of the callback's site.
     """
-    site_model = get_site_model()
-    if site is None:
-        site = get_current_site()
-    elif not isinstance(site, site_model):
-        try:
-            site = site_model.objects.get(slug=site)
-        except site_model.DoesNotExist:
-            #pylint:disable=protected-access
-            raise Http404("No %s with slug '%s' can be found."
-                % (site_model._meta.object_name, site))
+    # The `site` parameter is either a site's slug, or a site's slug and
+    # provider's slug separated by a '.' (see `get_authorize_processor_state`).
+    if site:
+        parts = site.split('.')
+        if len(parts) >= 2:
+            site = parts[0]
+            provider = parts[1]
+        else:
+            site_model = get_site_model()
+            try:
+                site = site_model.objects.get(slug=site)
+                provider = site.account
+            except site_model.DoesNotExist:
+                #pylint:disable=protected-access
+                raise Http404("No %s with slug '%s' can be found."
+                    % (site_model._meta.object_name, site))
+    else:
+        provider = get_current_broker()
     return build_absolute_uri(request, location=reverse('saas_update_bank',
-        kwargs={'organization': site.account}), site=site)
+        kwargs={'organization': provider}), site=site)
 
 
 def provider_absolute_url(request,
@@ -204,5 +238,5 @@ def provider_absolute_url(request,
         except AttributeError:
             # OK, we'll use the default build_absolute_uri from multitier.
             pass
-    return build_absolute_uri(request, site=site,
-        location=location, with_scheme=with_scheme)
+    return build_absolute_uri(request, location=location,
+        site=site, with_scheme=with_scheme)
