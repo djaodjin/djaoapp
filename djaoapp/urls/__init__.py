@@ -18,6 +18,7 @@ from multitier.urlresolvers import url_sites
 from .. import __version__
 from ..compat import reverse_lazy
 from ..views.custom_saas import StripeProcessorRedirectView
+from ..views.product import ProxyPageView
 from ..urlbuilders import (url_authenticated, url_active, url_direct,
     url_provider, url_provider_only, url_self_provider,
     url_frictionless_self_provider)
@@ -64,12 +65,7 @@ if settings.DEBUG:
         url(r'^favicon.ico$', django_static_serve, {'path': 'favicon.ico'}),
     ]
 else:
-    urlpatterns = [
-        url(r'^%s(?P<path>.*)$' % settings.STATIC_URL[1:], # remove leading '/'
-            django_static_serve, {'document_root': settings.STATIC_ROOT}),
-        url(r'^media/(?P<path>.*)$',
-            django_static_serve, {'document_root': settings.MEDIA_ROOT}),
-    ]
+    urlpatterns = []
 
 if settings.API_DEBUG:
     from rest_framework.schemas import get_schema_view
@@ -97,4 +93,6 @@ urlpatterns += [
 
     # Proxy application firewall for all.
     url_sites(r'^', include('djaoapp.urls.proxy')),
+    # When there are no `path_prefix` to reference static assets:
+    url(r'^(?P<page>\S+)?', ProxyPageView.as_view()),
 ]
