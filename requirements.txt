@@ -2,13 +2,13 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.17.21
-Django==2.2.24
+Django==2.2.25
 django-phonenumber-field==5.2.0
 django-recaptcha==2.0.6
 django-webpack-loader==0.6.0
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.6.2
+djaodjin-deployutils==0.6.3
 djaodjin-extended-templates==0.2.7
 djaodjin-multitier==0.1.21
 djaodjin-pages==0.4.2

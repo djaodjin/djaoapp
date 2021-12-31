@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import get_connection as get_connection_base
 from django.db.models.signals import post_save
-from django.dispatch import Signal, receiver
+from django.dispatch import receiver
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
@@ -173,7 +173,6 @@ def user_registered_notice(sender, user, **kwargs):
     site = get_current_site()
     recipients, bcc = _notified_recipients(broker, "user_registered_notice")
     if hasattr(app, 'welcome_email') and app.welcome_email:
-        back_url = site.as_absolute_uri()
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
@@ -182,7 +181,7 @@ def user_registered_notice(sender, user, **kwargs):
             reply_to=reply_to, bcc=recipients + bcc, context={
                 'broker': broker, 'app': app,
                 'user': get_user_context(user),
-                'back_url': back_url})
+                'back_url': site.as_absolute_uri()})
     if recipients:
         _send_notification_email(site, recipients,
             'notification/user_registered.eml',
@@ -374,6 +373,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
 @receiver(renewal_charge_failed, dispatch_uid="renewal_charge_failed")
 def renewal_charge_failed_notice(sender, invoiced_items, total_price,
                                  final_notice, **kwargs):
+    #pylint:disable=too-many-locals
     invoiced_items = list(invoiced_items)
     organization = (invoiced_items[0].dest_organization
         if invoiced_items else None)
@@ -389,12 +389,13 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
             'renewal_charge_failed')
         app = get_current_app()
         site = get_current_site()
+        back_url = reverse('saas_organization_cart', args=(organization,))
         context = {'broker': broker, 'app': app, 'provider': broker,
             'organization': organization, 'invoiced_items': invoiced_items,
             'total_price': total_price,
             'max_renewal_attempts': saas_settings.MAX_RENEWAL_ATTEMPTS,
             'final_notice': final_notice,
-            'back_url': reverse('saas_organization_cart', args=(organization,))}
+            'back_url': site.as_absolute_uri(back_url)}
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
@@ -771,8 +772,7 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
             broker, 'expires_soon')
         site = get_current_site()
         app = get_current_app()
-        back_url = site.as_absolute_uri(reverse('saas_organization_card',
-                args=(organization,)))
+        back_url = reverse('saas_organization_card', args=(organization,))
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
@@ -781,7 +781,8 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
             reply_to=reply_to,
             bcc=bcc + broker_recipients + broker_bcc,
             context={'broker': get_broker(), 'app': app,
-                'back_url': back_url, 'nb_days': nb_days,
+                'back_url': site.as_absolute_uri(back_url),
+                'nb_days': nb_days,
                 'organization': organization})
 
 # We insure the method is only bounded once no matter how many times
