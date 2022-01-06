@@ -188,6 +188,11 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     def register(self, **cleaned_data):
         #pylint:disable=too-many-boolean-expressions
+        # We use the following line to understand better what kind of data
+        # bad bots post to a registration form.
+        LOGGER.debug("calling register(**%s)", str({field_name: (
+            '*****' if field_name.startswith('password') else val)
+            for field_name, val in six.iteritems(cleaned_data)}))
         registration = self.app.USER_REGISTRATION
         full_name = cleaned_data.get('full_name', None)
         if 'organization_name' in cleaned_data:
