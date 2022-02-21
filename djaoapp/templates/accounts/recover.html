@@ -1,30 +1,25 @@
 {% extends "accounts/base.html" %}
 
-{% block localheader_title %}{% trans %}Forgot Password{% endtrans %}{% endblock %}
+{% block localheader_title %}{% trans %}Recover Password{% endtrans %}{% endblock %}
+
+{% block accounts_title %}{% trans %}Recover Password{% endtrans %}{% endblock %}
 
 {% block accounts_content %}
-<div class="container">
-    <div class="row">
-        <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
-            <div class="page-header my-4">
-                <h3 class="text-center">{% trans %}Forgot Password{% endtrans %}</h3>
-            </div>
-            <p class="text-center">
-                {% trans %}Enter your e-mail address to reset and create a new password.{% endtrans %}
-            </p>
+<p class="text-center">
+{% trans %}Enter your e-mail address to reset and create a new password.{% endtrans %}
+</p>
 
-            <div class="offset-sm-2 col-sm-8">
-                {% if form %}
-                    {% include "accounts/_recover_form.html" %}
-                {% endif %}
+<div class="offset-sm-2 col-sm-8">
+  {% if form %}
+  {% include "accounts/_recover_form.html" %}
+  {% endif %}
 
-                <p class="text-center mt-3">
-                    <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Back to login?{% endtrans %}</a>
-                    or
-                    <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>
-                </p>
-            </div>
-        </div>
-    </div>
+  <p class="text-center mt-3">
+    <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Back to login?{% endtrans %}</a>
+    {% if urls.user.register %}
+    {% trans %}or{% endtrans %}
+    <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>
+    {% endif %}
+  </p>
 </div>
 {% endblock %}

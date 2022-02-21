@@ -1,22 +1,15 @@
 {% extends "accounts/base.html" %}
 
-{% block localheader_title %}{% trans %}Get started!{% endtrans %}{% endblock %}
+{% block localheader_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
 
-{% block content %}
-<div class="container">
-  <div class="row">
-    <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
-      <div class="page-header my-4">
-        <h3 class="text-center">{% trans %}Get started!{% endtrans %}</h3>
-      </div>
-      <div class="signup-group row">
-        <div class="offset-sm-2 col-sm-8">
-          {% if form %}
-          {% include "accounts/activate/_index_form.html" %}
-          {% endif %}
-        </div>
-      </div>
-    </div>
+{% block accounts_title %}{% trans %}Get started!{% endtrans %}{% endblock %}
+
+{% block accounts_content %}
+<div class="signup-group row">
+  <div class="offset-sm-2 col-sm-8">
+    {% if form %}
+    {% include "accounts/activate/_index_form.html" %}
+    {% endif %}
   </div>
 </div>
 {% endblock %}

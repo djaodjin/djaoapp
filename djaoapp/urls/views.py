@@ -38,12 +38,6 @@ def is_anonymous(func, next_url):
 
 urlpatterns = [
     # Authentication (login, registration, etc.)
-    # We want to give the opportunity to have multiple registration page
-    # (ex: frictionless) yet at the same time prvent bots to mindlessly
-    # attempt to register accounts through `POST /register/.`
-    url_prefixed(r'^register/((?P<path>\w+)/)?$',
-        SignupView.as_view(),
-        name='registration_register'),
     url_prefixed(r'^activate/(?P<verification_key>%s)/'
         % EMAIL_VERIFICATION_PAT,
         ActivationView.as_view(), name='registration_activate'),
@@ -52,10 +46,16 @@ urlpatterns = [
             form_class=StartAuthenticationForm,
             template_name='accounts/activate/index.html'),
         name='registration_activate_start'),
+    url_prefixed('', include('social_django.urls', namespace='social')),
+    url_prefixed(r'^login/', SigninView.as_view(), name='login'),
+    url_prefixed(r'^logout/', SignoutView.as_view(), name='logout'),
     url_prefixed(r'^recover/',
         PasswordResetView.as_view(), name='password_reset'),
-    url_prefixed(r'^login/$', SigninView.as_view(), name='login'),
-    url_prefixed(r'^logout/', SignoutView.as_view(), name='logout'),
+    # We want to give the opportunity to have multiple registration page
+    # (ex: frictionless).`
+    url_prefixed(r'^register/((?P<path>\w+)/)?',
+        SignupView.as_view(),
+        name='registration_register'),
     url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/', #pylint: disable=line-too-long
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 

@@ -1,10 +1,11 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
 from deployutils.apps.django.compat import is_authenticated
+from django.contrib.auth import get_backends
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -30,6 +31,16 @@ def _clean_field(cleaned_data, field_name):
     if field is None:
         field = ""
     return field
+
+
+def social_login_urls():
+    urls = {}
+    for backend in get_backends():
+        name = getattr(backend, 'name', None)
+        if name:
+            urls.update({'login_%s' % name.replace('-', '_'): reverse(
+                'social:begin', args=(name,))})
+    return urls
 
 
 class DjaoAppMixin(object):
@@ -64,14 +75,13 @@ class DjaoAppMixin(object):
                 'profile': reverse('users_profile', args=(self.request.user,)),
             }}
         else:
-            urls = {'user': {
-               'login': reverse('login'),
-               'login_github': reverse('social:begin', args=('github',)),
-               'login_google': reverse('social:begin', args=('google-oauth2',)),
-               'login_twitter': reverse('social:begin', args=('twitter',)),
+            login_urls = social_login_urls()
+            login_urls.update({
+                'login': reverse('login'),
                'password_reset': reverse('password_reset'),
                'register': reverse('registration_register'),
-            }}
+            })
+            urls = {'user': login_urls}
         # URLs for provider
         app = get_current_app()
         # ``app.account`` is guarenteed to be in the same database as ``app``.

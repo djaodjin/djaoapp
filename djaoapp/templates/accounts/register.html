@@ -2,32 +2,25 @@
 
 {% block localheader_title %}{% trans %}Sign Up{% endtrans %}{% endblock %}
 
-{% block content %}
-<div class="container">
-  <div class="row">
-    <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-2 mb-5">
-      <div class="page-header my-4">
-        <h3 class="text-center">{% trans %}Sign Up{% endtrans %}</h3>
-      </div>
-      <div class="text-center mb-2">
-        {% trans %}Already have an account?{% endtrans %}
-        <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
-      </div>
-      <div class="row">
-        <div class="offset-sm-2 col-sm-8">
-          {% block register_form %}
-            {% if form %}
-            {% include "accounts/_register_form.html" %}
-            {% endif %}
-          {% endblock %}
-        </div>
-      </div>
-      <div class="text-center mt-3">
-          {% trans %}Already have an account?{% endtrans %}
-          <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
-      </div>
-    </div>
+{% block accounts_title %}{% trans %}Sign Up{% endtrans %}{% endblock %}
+
+{% block accounts_content %}
+<div class="text-center mb-2">
+  {% trans %}Already have an account?{% endtrans %}
+  <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+</div>
+<div class="row">
+  <div class="offset-sm-2 col-sm-8">
+    {% block register_form %}
+    {% if form %}
+    {% include "accounts/_register_form.html" %}
+    {% endif %}
+    {% endblock %}
   </div>
+</div>
+<div class="text-center mt-3">
+  {% trans %}Already have an account?{% endtrans %}
+  <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
 </div>
 {% endblock %}
 

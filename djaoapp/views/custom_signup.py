@@ -25,7 +25,7 @@ from rules.mixins import AppMixin
 from ..compat import reverse, six
 from ..forms.custom_signup import ActivationForm, SigninForm, SignupForm
 from ..thread_locals import get_current_broker
-from ..mixins import RegisterMixin
+from ..mixins import RegisterMixin, social_login_urls
 
 
 LOGGER = logging.getLogger(__name__)
@@ -37,11 +37,7 @@ class AuthMixin(object):
         context = super(AuthMixin, self).get_context_data(**kwargs)
         # URLs for user
         if not is_authenticated(self.request):
-            user_urls = {
-               'login_github': reverse('social:begin', args=('github',)),
-               'login_google': reverse('social:begin', args=('google-oauth2',)),
-               'login_twitter': reverse('social:begin', args=('twitter',)),
-            }
+            user_urls = social_login_urls()
             if 'urls' in context:
                 if 'user' in context['urls']:
                     context['urls']['user'].update(user_urls)

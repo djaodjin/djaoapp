@@ -608,7 +608,12 @@ SIGNUP = {
         sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'RANDOM_SEQUENCE': getattr(
-        sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', [])
+        sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', []),
+    'SSO_PROVIDERS': {
+        'azuread-oauth2': {'name': 'Microsoft', 'icon': 'microsoft'},
+        'github': {'name': 'GitHub', 'icon': 'github'},
+        'google-oauth2': {'name': 'Google', 'icon': 'google'},
+    },
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
@@ -627,7 +632,7 @@ SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
 SOCIAL_AUTH_USER_FIELDS = ['username', 'email', 'first_name', 'last_name']
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
+    'signup.utils.social_uid',
     'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
@@ -644,9 +649,8 @@ SOCIAL_AUTH_PIPELINE = (
 NOCAPTCHA = True
 
 AUTHENTICATION_BACKENDS = (
-#    'social.backends.facebook.FacebookOAuth2',
+    'social_core.backends.azuread.AzureADOAuth2',
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.github.GithubOAuth2',
     'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'

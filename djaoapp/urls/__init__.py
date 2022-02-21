@@ -89,7 +89,6 @@ urlpatterns += [
         StripeProcessorRedirectView.as_view(
             pattern_name='saas_update_bank'),
         name='saas_processor_connected_hook'),
-    url('', include('social_django.urls', namespace='social')),
 
     # Proxy application firewall for all.
     url_sites(r'^', include('djaoapp.urls.proxy')),

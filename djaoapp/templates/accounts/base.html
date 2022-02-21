@@ -5,7 +5,25 @@
 {% endblock %}
 
 {% block content %}
-{% block accounts_content %}{% endblock %}
+<div class="container">
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
+      <div class="signup-group">
+        <div class="page-header my-4">
+          <h3 class="text-center">{% block accounts_title %}{% endblock %}</h3>
+        </div>
+        {% if sso_required %}
+        <p>
+{% trans %}You are required to login through the following Single Sign On (SSO) provider{% endtrans %}:
+        </p>
+        <a href="{{sso_required.url}}">{{sso_required.printable_name}}</a>
+        {% else %}
+        {% block accounts_content %}{% endblock %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block bodyscripts %}

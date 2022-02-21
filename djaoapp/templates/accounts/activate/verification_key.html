@@ -1,12 +1,12 @@
 {% extends "accounts/register.html" %}
 
-{% block content %}
-<div class="container">
-    <div class="offset-md-3 col-md-6">
-        {% if object %}
-        <div class="page-header">
-            <h1 class="text-center"><span class="fa fa-pencil"></span> {% trans %}Activate{% endtrans %}</h1>
-            <p>
+{% block localheader_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
+
+{% block accounts_title %}{% trans %}Activate{% endtrans %}{% endblock %}
+
+{% block accounts_content %}
+{% if object %}
+<p>
 {% if reason %}
 {{reason}}
 {% elif form.email or form.phone %}
@@ -17,37 +17,37 @@
 {% elif view.kwargs.token == object.phone_verification_key %}
 {% trans %}Thank you for verifying your phone number. Please enter your password to login.{% endtrans %}
 {% endif %}
-            </p>
-        </div>
-        {% if form %}
-        {% if form.email or form.phone %}
-        <div class="text-right" style="margin-bottom: 15px;">
-            {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-        </div>
-        {% endif %}
-        {% include "_form.html" %}
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
-            </div>
-            <div class="col-md-8 text-right">
-            {% if form.email or form.phone %}
-                {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-            {% else %}
-            <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
-            {% endif %}
-            </div>
-        </div>
-        {% endif %}
-        {% else %} {# not object #}
-        <p>
-{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
-        </p>
-        <p>
-{% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-        </p>
-        {% endif %}
+</p>
+
+{% if form %}
+  {% if form.email or form.phone %}
+  <div class="text-right" style="margin-bottom: 15px;">
+    {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
+  </div>
+  {% endif %}
+  {% include "_form.html" %}
+  <hr />
+  <div class="row">
+    <div class="col-md-4">
+      <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
     </div>
-</div>
+    <div class="col-md-8 text-right">
+      {% if form.email or form.phone %}
+      {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
+      {% else %}
+      <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %} {# form #}
+
+{% else %} {# not object #}
+<p>
+{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
+</p>
+<p>
+{% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
+</p>
+{% endif %}
+
 {% endblock %}

@@ -2,46 +2,37 @@
 
 {% block localheader_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
 
-{% block content %}
-<div class="container container-vertical-middle">
-  <div class="row">
-    <div class="offset-sm-2 col-sm-8">
-      <div class="signup-group">
-        <div class="page-header my-4">
-          <h3 class="text-center">{% trans %}Sign In{% endtrans %}</h3>
-        </div>
-        {% if form %}
-        <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
-            {% include "_form_fields.html" %}
-            <p class="text-center">
-              <small>
-                  <em>
+{% block accounts_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
+
+{% block accounts_content %}
+{% if form %}
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+  {% include "_form_fields.html" %}
+  <p class="text-center">
+    <small>
+      <em>
 {% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before signing in.{% endtrans %}
-                  </em>
-              </small>
-            </p>
-            <div class="form-action text-center">
-              <button type="submit" class="btn btn-block btn-primary btn-md">
-                  {% if form.submit_title %}
-                  {{form.submit_title}}
-                  {% else %}
-                  {% trans %}Submit{% endtrans %}
-                  {% endif %}
-              </button>
-            </div>
-        </form>
-        {% endif %}
-        <div>
-          <p class="text-center mt-3">
-            <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
-            {% if urls.user.register %}
-            {% trans %}or{% endtrans %}
-            <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>
-            {% endif %}
-          </p>
-        </div>
-      </div>
-    </div>
+      </em>
+    </small>
+  </p>
+  <div class="form-action text-center">
+    <button type="submit" class="btn btn-block btn-primary btn-md">
+      {% if form.submit_title %}
+      {{form.submit_title}}
+      {% else %}
+      {% trans %}Submit{% endtrans %}
+      {% endif %}
+    </button>
   </div>
+</form>
+{% endif %}
+<div>
+  <p class="text-center mt-3">
+    <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
+    {% if urls.user.register %}
+    {% trans %}or{% endtrans %}
+    <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>
+    {% endif %}
+  </p>
 </div>
 {% endblock %}
