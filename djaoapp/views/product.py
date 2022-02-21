@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -126,7 +126,11 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
             if invoice_keys:
                 ChargeItem.objects.filter(invoice_key__in=invoice_keys).update(
                     invoice_key=None, sync_on="")
-        return super(ProxyPageMixin, self).translate_response(response)
+        resp = super(ProxyPageMixin, self).translate_response(response)
+        # 500 errors in the service the request was forwarded to will have
+        # logged errors there.
+        resp._has_been_logged = True
+        return resp
 
     def get(self, request, *args, **kwargs):
         try:
