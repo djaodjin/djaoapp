@@ -20,7 +20,7 @@
       "agreement": 1,
       "user": 120
     },
-    "model": "saas.signature", "pk": 1
+    "model": "saas.signature", "pk": 120
 },
 {
     "fields": {
