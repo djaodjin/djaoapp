@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -13,13 +13,14 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from django_countries.fields import Country
+from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
 from signup.forms import (ActivationForm as ActivationFormBase,
     FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm,
     UserActivateForm as UserActivateFormBase)
 
-from ..compat import six
+from ..compat import reverse, six
 from .fields import PhoneNumberField
 from ..thread_locals import get_current_app
 
@@ -55,8 +56,13 @@ class ActivationForm(MissingFieldsMixin, ActivationFormBase):
         # enforced as required within `form_valid`
         # (ex: legal agreement checkbox).
         for extra_field in self.initial.get('extra_fields', []):
-            self.fields[extra_field[0]] = forms.CharField(
-                label=_(extra_field[1]), required=extra_field[2])
+            if extra_field[0] == saas_settings.TERMS_OF_USE:
+                legal_agreement_url = reverse(
+                    'legal_agreement', args=(extra_field[0],))
+                self.fields[extra_field[0]] = forms.BooleanField(
+                    label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
+                    " conditions</a>") % legal_agreement_url),
+                    required=extra_field[2])
 
 
 class UserActivateForm(MissingFieldsMixin, UserActivateFormBase):
