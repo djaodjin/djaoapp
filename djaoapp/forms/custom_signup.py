@@ -50,23 +50,13 @@ class MissingFieldsMixin(object):
 class ActivationForm(MissingFieldsMixin, ActivationFormBase):
 
     def __init__(self, *args, **kwargs):
-        legal_agreement_url = kwargs['initial'].pop('legal_agreement_url', None)
         super(ActivationForm, self).__init__(*args, **kwargs)
-        if legal_agreement_url:
-            # BooleanField/Checkbox might not be sent by the browser
-            # when they are unchecked which will lead to a generic
-            # "field required" error message.
-            # We add `required=False` here so that the error message
-            # is generated in `clean_terms_of_use` instead.
-            self.fields['terms_of_use'] = forms.BooleanField(
-                label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
-                    " conditions</a>") % legal_agreement_url), required=False)
-
-    def clean_terms_of_use(self):
-        if not self.cleaned_data['terms_of_use']:
-            raise forms.ValidationError(
-                _("You must agree to terms and conditions."))
-        return self.cleaned_data['terms_of_use']
+        # Define  extra fields dynamically. These are optional but might be
+        # enforced as required within `form_valid`
+        # (ex: legal agreement checkbox).
+        for extra_field in self.initial.get('extra_fields', []):
+            self.fields[extra_field[0]] = forms.CharField(
+                label=_(extra_field[1]), required=extra_field[2])
 
 
 class UserActivateForm(MissingFieldsMixin, UserActivateFormBase):
@@ -159,8 +149,9 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             for field_name, field in six.iteritems(self.fields):
                 if field_name not in ('organization_name', 'type'):
                     field.required = True
-        # Define  extra fields dynamically. These are never forced
-        # to be required.
+        # Define  extra fields dynamically. These are optional but might be
+        # enforced as required within `form_valid`
+        # (ex: legal agreement checkbox).
         for extra_field in self.initial.get('extra_fields', []):
             self.fields[extra_field[0]] = forms.CharField(
                 label=_(extra_field[1]), required=extra_field[2])

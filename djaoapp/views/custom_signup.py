@@ -66,15 +66,28 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
     form_class = ActivationForm
 
     def activate_user(self, **cleaned_data):
+        agreements = list(Agreement.objects.filter(
+            slug__in=six.iterkeys(cleaned_data)))
+        for agreement in agreements:
+            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+                'false', 'f', '0']
+            if not_signed:
+                raise ValidationError({agreement.slug:
+                    _("You must read and agree to the %(agreement)s.") % {
+                    'agreement': agreement.title}})
+
         user = super(ActivationView, self).activate_user(**cleaned_data)
         if user:
-            Signature.objects.create_signature(saas_settings.TERMS_OF_USE, user)
+            for agreement in agreements:
+                Signature.objects.create_signature(agreement.slug, user)
         return user
 
     def get_initial(self):
         kwargs = super(ActivationView, self).get_initial()
-        kwargs.update({'legal_agreement_url': reverse('legal_agreement',
-            args=('terms-of-use',))})
+        kwargs.update({
+            'extra_fields': [(agreement.slug, agreement.title, False)
+                for agreement in Agreement.objects.all()]
+        })
         return kwargs
 
 
