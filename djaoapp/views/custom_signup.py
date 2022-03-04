@@ -69,7 +69,7 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
         agreements = list(Agreement.objects.filter(
             slug__in=six.iterkeys(cleaned_data)))
         for agreement in agreements:
-            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+            not_signed = str(cleaned_data.get(agreement.slug, "")).lower() in [
                 'false', 'f', '0']
             if not_signed:
                 raise ValidationError({agreement.slug:
