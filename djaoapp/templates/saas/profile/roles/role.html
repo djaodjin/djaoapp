@@ -27,7 +27,7 @@
                      data-trip data-trip-index="2"
                      data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>"
                      data-trip-position="s">
-                    <input type="text" class="form-control" id="userTypeahead"
+                    <input class="form-control" id="userTypeahead"
                            name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
                            autocomplete="off">
                 </div>
@@ -118,7 +118,7 @@ Thank you,
             <div v-show="!itemsLoaded">
                 <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </div>
-            <div v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <div class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
                 <p class="text-muted mt-2">{% trans role_descr=role_descr.title %}No {{role_descr}}s yet{% endtrans %}</p>
             </div>
           </div>

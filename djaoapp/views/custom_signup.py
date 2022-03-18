@@ -1,10 +1,11 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
 from deployutils.apps.django.compat import is_authenticated
+from django.conf import settings
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -57,7 +58,7 @@ class AuthMixin(object):
     def get_success_url(self):
         next_url = validate_redirect(self.request)
         if not next_url:
-            next_url = reverse('product_default_start')
+            next_url = settings.LOGIN_REDIRECT_URL
         return next_url
 
 

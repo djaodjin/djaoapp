@@ -30,6 +30,19 @@ def url_authenticated(regex, view, name=None):
         ], decorators=[inject_edition_tools])
 
 
+def url_agreement(regex, view, name=None):
+    """
+    Returns a urlpattern accessible to a user that signed the terms-of-use.
+    """
+    return url(regex % {
+            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+        view, name=name,
+        redirects=[
+            fail_authenticated,
+            fail_agreement
+        ])
+
+
 def url_active(regex, view, name=None):
     """
     Returns a urlpattern accessible to an active user.

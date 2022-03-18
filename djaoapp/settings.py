@@ -624,7 +624,7 @@ for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
 ACCOUNT_ACTIVATION_DAYS = 2
 
 LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = '/' # XXX otherwise logout on djaoapp might lead to 410.
+LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
 
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
@@ -657,10 +657,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'djaoapp.views.errors.drf_exception_handler',
-    'PAGE_SIZE': 25,
-    'DEFAULT_PAGINATION_CLASS':
-        'djaoapp.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'signup.authentication.JWTAuthentication',
         'signup.authentication.APIKeyAuthentication',
@@ -669,9 +665,14 @@ REST_FRAMEWORK = {
         # is absent.
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS':
+        'djaoapp.pagination.PageNumberPagination',
     'DEFAULT_SCHEMA_CLASS': 'djaoapp.views.docs.AutoSchema',
+    'EXCEPTION_HANDLER': 'djaoapp.views.errors.drf_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'detail',
+    'ORDERING_PARAM': 'o',
+    'PAGE_SIZE': 25,
     'SEARCH_PARAM': 'q',
-    'ORDERING_PARAM': 'o'
 }
 if not DEBUG:
     REST_FRAMEWORK.update({

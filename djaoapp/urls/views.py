@@ -11,9 +11,10 @@ from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.forms import StartAuthenticationForm
 
-from ..urlbuilders import (url_authenticated, url_active, url_dashboard,
-    url_direct, url_frictionless_direct, url_frictionless_self_provider,
-    url_provider, url_self_provider, url_prefixed, url_dashboard_iframe)
+from ..urlbuilders import (url_active, url_agreement, url_authenticated,
+    url_dashboard, url_direct, url_frictionless_direct,
+    url_frictionless_self_provider, url_provider, url_self_provider,
+    url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
     ProcessorAuthorizeView, OrganizationProfileView)
@@ -78,7 +79,7 @@ urlpatterns = [
     url_authenticated(r'^', include('saas.urls.redirects')),
 
     # Profiles
-    url_authenticated(r'users/roles/accept/$',
+    url_agreement(r'users/roles/accept/$',
         RoleImplicitGrantAcceptView.as_view(),
         name='saas_role_implicit_grant_accept'),
     url_authenticated(r'^', include('saas.urls.request')),

@@ -17,7 +17,7 @@
             {% trans %}You don't have access to any profile yet. Please request access to an existing profile or create a new one.{% endtrans %}
             </p>
             <div class="text-right" v-if="itemsLoaded && items.results.length !== 0" v-cloak>
-              <a href="#add-or-create" data-toggle="collapse" data-target="#add-or-create">more profiles ...</a>
+              <a id="add-or-create-btn" href="#add-or-create" data-toggle="collapse" data-target="#add-or-create">more profiles ...</a>
             </div>
           </div>
         </div>
