@@ -22,11 +22,6 @@
         {% include "_field.html" with bound_field=form|get_bounded_field:'country' hide_labels=form.hide_labels %}
         {% include "_field.html" with bound_field=form|get_bounded_field:'phone' hide_labels=form.hide_labels %}
     </fieldset>
-    <div>
-        <p>
-{% trans %}By clicking on the &quot;Register&quot; button below, <b>I signify that I have read and accept the <a target="_blank" href="/legal/terms-of-use/">terms of service</a></b>.{% endtrans %}
-        </p>
-    </div>
     <div class="form-action text-center">
         <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
     </div>
