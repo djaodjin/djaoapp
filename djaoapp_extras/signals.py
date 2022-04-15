@@ -772,7 +772,7 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
             broker, 'expires_soon')
         site = get_current_site()
         app = get_current_app()
-        back_url = reverse('saas_organization_card', args=(organization,))
+        back_url = reverse('saas_update_card', args=(organization,))
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
