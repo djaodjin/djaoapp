@@ -1,25 +1,23 @@
 {% macro checkbox_input_field(id_for_label, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-<div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
-  <div{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}>
-    <div class="form-check">
-      {% if required %}
-      <input type="hidden" name="{{name}}" value="False">
-      {% endif %}
-      <label class="{% if required %}requiredField{% endif %}" for="{{id_for_label}}">
-        <input id="{{id_for_label}}" class="form-check-input{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
-        {{label|safe}}
-      </label>
-    </div>
-    <div class="form-text help-block invalid-feedback">
-      {% for error in errors %}
-      {{error}}
-      {% endfor %}
-    </div>
-    <div class="form-text help-block">
-      {% if help_text %}
-      <small class="text-muted">{{help_text}}</small>
-      {% endif %}
-    </div>
+<div class="form-group{% if errors %} has-error{% endif %}">
+  <div class="form-check">
+    {% if required %}
+    <input type="hidden" name="{{name}}" value="False">
+    {% endif %}
+    <input id="{{id_for_label}}" class="form-check-input{% if extra_control_classes %} {{extra_control_classes}}{% endif %}{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox" {% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}>
+    <label class="form-check-label{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}" for="{{id_for_label}}">
+      {{label|safe}}
+    </label>
+  </div>
+  <div class="form-text help-block invalid-feedback">
+    {% for error in errors %}
+    {{error}}
+    {% endfor %}
+  </div>
+  <div class="form-text help-block">
+    {% if help_text %}
+    <small class="text-muted">{{help_text}}</small>
+    {% endif %}
   </div>
 </div>
 {%- endmacro %}

@@ -606,7 +606,7 @@ SIGNUP = {
     ),
     'PASSWORD_RESET_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
-    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
     'RANDOM_SEQUENCE': getattr(
         sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', []),
     'SSO_PROVIDERS': {
@@ -723,7 +723,7 @@ SAAS = {
             'djaoapp.thread_locals.provider_absolute_url',
     },
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
-    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
     'PROCESSOR_BACKEND_CALLABLE':
         'djaoapp.thread_locals.dynamic_processor_keys',
 

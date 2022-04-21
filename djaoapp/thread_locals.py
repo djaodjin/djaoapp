@@ -138,10 +138,20 @@ def get_current_assets_dirs():
     return assets_dirs
 
 
+def get_picture_storage(request, account=None):
+    if not account:
+        # We use `account` to generate a `key_prefix`.
+        account = get_current_app(request)
+    # By default profile pictures are public so they can be fetched
+    # directly from S3 and do not need any specific authentication.
+    return get_default_storage_base(request, account=account, public=True)
+
+
 def get_default_storage(request, account=None):
-    # pylint:disable=unused-argument
-    # XXX use `account` to generate `key_prefix`.
-    return get_default_storage_base(request, account=get_current_app(request))
+    if not account:
+        # We use `account` to generate a `key_prefix`.
+        account = get_current_app(request)
+    return get_default_storage_base(request, account=account)
 
 
 def get_active_theme():
