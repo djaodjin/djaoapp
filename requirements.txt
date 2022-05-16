@@ -29,7 +29,16 @@ social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
-WeasyPrint==53.3
+WeasyPrint==53.3 # Depends on libpangoft2 (Debian) and Pillow (wheel)
+
+# Wheels previously installed as site-packages
+psycopg2-binary==2.9.3 # Binary wheel.
+setproctitle==1.2.3 # Binary wheel.
+coverage==6.3.2 # Python wheel.
+billiard==4.0.0 # Python wheel
+python-ldap==3.4.0 # Source wheel. Depends on libldap2.4-2 (Debian).
+pycairo==1.21.0 # Source wheel. Depends on libcairo2 (Debian).
+#lxml # Source wheel. Depends on libxml2, libxslt1.1 (Debian). Built as a dependency of another wheel.
 
 # To run with DEBUG=1
 django-extensions==2.2.9
