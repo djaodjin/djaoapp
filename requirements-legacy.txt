@@ -28,7 +28,7 @@ MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 gunicorn==19.7.1
 phonenumbers==8.5.0
 premailer==3.6.1
-PyJWT==1.7.1    # djaodjin-signup==0.4.9 is not compatible with PyJWT==2.0.1
+PyJWT==2.4.0    # djaodjin-signup==0.4.9 is not compatible with PyJWT==2.0.1
 pytz==2021.1
 social-auth-app-django==3.1.0 # v1.2.0 does not support Django>=2.1
 social-auth-core==3.2.0
