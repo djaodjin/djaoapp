@@ -269,13 +269,15 @@ $(ASSETS_DIR)/cache/base.css: $(srcDir)/djaoapp/static/scss/base/base.scss \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/mixins/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/utilities/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin/*.scss) \
-  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/toastr/*.scss)
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/toastr/*.scss) \
+  $(installTop)/.npm/$(APP_NAME)-packages
 	cd $(srcDir) && $(SASSC) $< $@
 
 
 $(ASSETS_DIR)/cache/email.css: $(srcDir)/djaoapp/static/scss/email/email.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/email/*.scss) \
-              $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss)
+              $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
+              $(installTop)/.npm/$(APP_NAME)-packages
 	cd $(srcDir) && $(SASSC) $< $@
 
 
@@ -283,16 +285,17 @@ $(ASSETS_DIR)/cache/dashboard.css: \
               $(srcDir)/djaoapp/static/scss/dashboard/dashboard.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
               $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
-              $(srcDir)/djaoapp/static/scss/vendor/trip.scss
+              $(srcDir)/djaoapp/static/scss/vendor/trip.scss \
+              $(installTop)/.npm/$(APP_NAME)-packages
 	cd $(srcDir) && $(SASSC) $< $@
 
 
 $(ASSETS_DIR)/cache/pages.css: \
        $(srcDir)/djaoapp/static/scss/pages/pages.scss \
-       $(wildcard $(srcDir)/djaoapp/static/scss/pages/*.scss) \
        $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin-extended-templates/*.scss) \
        $(srcDir)/djaoapp/static/scss/vendor/jquery-ui.scss \
-       $(srcDir)/djaoapp/static/scss/vendor/bootstrap-colorpicker.scss
+       $(srcDir)/djaoapp/static/scss/vendor/bootstrap-colorpicker.scss \
+       $(installTop)/.npm/$(APP_NAME)-packages
 	cd $(srcDir) && $(SASSC) $< $@
 
 
