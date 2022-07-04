@@ -8,7 +8,7 @@ django-recaptcha==2.0.6
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.9.1
-djaodjin-extended-templates==0.3.1
+djaodjin-extended-templates==0.3.2
 djaodjin-multitier==0.1.22
 djaodjin-rules==0.2.9
 djaodjin-saas==0.11.0
