@@ -209,10 +209,10 @@ $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-javascript.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/chart.js/dist/chart.js $(srcDir)/djaoapp/static/vendor
-	$(installFiles) $(installTop)/node_modules/d3/d3.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/d3/d3.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/font-awesome/css/font-awesome.css $(ASSETS_DIR)/vendor
@@ -230,12 +230,12 @@ $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper-utils.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/sortablejs/Sortable.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/toastr/toastr.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(installTop)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/sortablejs/Sortable.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/toastr/toastr.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/uiv/dist/uiv.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
