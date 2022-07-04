@@ -35,10 +35,10 @@ urlpatterns = [
         RecentActivityAPIView.as_view(), name='api_recent_activity'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
-        DjaoAppThemePackageListAPIView.as_view(), name='pages_api_themes'),
-    url_direct(r'^api/themes/', include('pages.urls.api.assets')),
-    url_direct(r'^api/themes/', include('pages.urls.api.templates')),
-    url_direct(r'^api/themes/', include('pages.urls.api.themes')),
+        DjaoAppThemePackageListAPIView.as_view(), name='extended_templates_api_themes'),
+    url_direct(r'^api/themes/', include('extended_templates.urls.api.assets')),
+    url_direct(r'^api/themes/', include('extended_templates.urls.api.templates')),
+    url_direct(r'^api/themes/', include('extended_templates.urls.api.themes')),
 
     # Billing, Metrics, Profiles, Roles and Subscriptions
     url_prefixed(r'^api/', include('saas.urls.api.cart')),

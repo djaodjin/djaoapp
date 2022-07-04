@@ -29,8 +29,8 @@
     "fields": {
       "slug": "djaoapp",
       "full_name": "DjaoApp",
-      "created_at": "2015-06-01T00:00:00+00:00",
-      "email": "djaoapp@localhost.localdomain",
+      "created_at": "2022-01-01T00:00:00+00:00",
+      "email": "alice+djaoapp@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "",
       "locality":  "",
@@ -84,7 +84,7 @@
 },
 {
     "fields": {
-      "created_at": "2015-06-01T00:00:00+00:00",
+      "created_at": "2022-01-01T00:00:00+00:00",
       "slug": "manager",
       "title": "Profile Manager"
     },

@@ -11,7 +11,8 @@ from django.db.models import Q
 from django.template.response import SimpleTemplateResponse
 import jinja2.exceptions
 from multitier.thread_locals import get_current_site
-from pages.locals import (enable_instrumentation, disable_instrumentation,
+from extended_templates.thread_locals import (
+    enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
 from rules.perms import NoRuleMatch, check_matched
 from rules.utils import get_current_app

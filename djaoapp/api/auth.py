@@ -1,12 +1,11 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 
 import logging
 
-from django.utils.translation import ugettext_lazy as _
-from pages.utils import get_default_storage
+from extended_templates.utils import get_default_storage
 from rest_framework import serializers
 from rest_framework import generics
 from rest_framework.response import Response
@@ -19,6 +18,7 @@ from signup.backends.sts_credentials import aws_bucket_context
 
 from ..mixins import RegisterMixin
 from .serializers import RegisterSerializer
+from ..compat import gettext_lazy as _
 
 
 LOGGER = logging.getLogger(__name__)
@@ -171,6 +171,8 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
             location = "s3://%s/%s" % (storage.bucket_name, storage.location)
+            if kwargs.get(self.organization_url_kwarg):
+                location += "/%s" % str(self.organization)
             aws_region = context.get('aws_region', None)
             context.update(aws_bucket_context(request, location,
                 aws_upload_role=app.role_name,

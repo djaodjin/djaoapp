@@ -57,7 +57,7 @@
             </td>
             <td>[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</td>
             <td>[[item.period_amount]]</td>
-            <td class="date">[[humanizeDate(item.created_at)]]</td>
+            <td class="date">[[$globals.humanizeDate(item.created_at)]]</td>
         </tr>
     </table>
     {% include "_pagination.html" %}

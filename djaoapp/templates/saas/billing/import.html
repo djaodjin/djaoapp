@@ -3,37 +3,54 @@
 {% block saas_title %}{% trans %}Add offline transaction{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
-<import-transaction id="import-transaction-container"
-  inline-template>
+<import-transaction id="import-transaction-container" inline-template>
   <div class="offset-md-3 col-md-6">
     <form class="form-horizontal" method="post" @submit.prevent="addPayment">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <fieldset>
         <div class="form-group{% if form.subscription.errors %} has-error{% endif %}">
           <label class="col-form-label" for="subscription">
             {% trans %}Subscription{% endtrans %}
           </label>
-          <div>
-            <input
-                id="subscription-typeahead"
-                class="form-control"
-                type="text"
-                placeholder="{% trans %}Subscriber name or email{% endtrans %}"
-                name="subscription"
-                autocomplete="off">
-            <uiv-typeahead
-                v-model="itemSelected"
-                target="#subscription-typeahead"
-                item-key="itemKey"
-                :async-function="getSubscriptions"
-                class="typeahead-dropdown"
-                :open-on-focus="false"/>
-          </div>
+          <subscription-typeahead inline-template ref="subscription"
+                     :url="typeaheadUrl"
+                     v-on:selectitem="updateItemSelected">
+            <div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <!-- optional indicators -->
+                  <span class="input-group-text">
+                    <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                    <template v-else>
+                      <i class="fa fa-search" v-show="isEmpty"></i>
+                      <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                    </template>
+                  </span>
+                </div>
+                <!-- the input field -->
+                <input class="form-control"
+                       type="text"
+                       placeholder="{% trans %}Subscriber name or email{% endtrans %}"
+                       autocomplete="off"
+                       v-model="query"
+                       @keydown.down="down"
+                       @keydown.up="up"
+                       @keydown.enter.prevent="hit"
+                       @blur="clear"
+                       @input="update" />
+                <!-- the list -->
+                <ul class="dropdown-menu" style="display:block;padding:5px;"
+                    v-show="hasItems">
+                  <li v-for="(item, $item) in items" :class="activeClass($item)" @mousedown="hit" @mousemove="setActive($item)">
+                    <a v-text="item.full_name"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </subscription-typeahead>
           {% for error in form.subscription.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
-          <div v-show="searching" style="height:14px">
-            <i class="fa fa-spinner"></i>
-          </div>
         </div>
         <div class="form-group">
           <label for="created_at" class="d-block">

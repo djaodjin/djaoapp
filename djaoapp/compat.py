@@ -42,11 +42,6 @@ except ImportError: # django < 1.8
     from django.core.context_processors import csrf
 
 try:
-    from django.utils.module_loading import import_string
-except ImportError: # django < 1.7
-    from django.utils.module_loading import import_by_path as import_string
-
-try:
     from django.urls import NoReverseMatch, reverse, reverse_lazy
 except ImportError: # <= Django 1.10, Python<3.6
     from django.core.urlresolvers import NoReverseMatch, reverse, reverse_lazy
@@ -54,6 +49,23 @@ except ModuleNotFoundError: #pylint:disable=undefined-variable
     # <= Django 1.10, Python>=3.6
     from django.core.urlresolvers import NoReverseMatch, reverse, reverse_lazy
 
+try:
+    if six.PY3:
+        from django.utils.encoding import force_str
+    else:
+        from django.utils.encoding import force_text as force_str
+except ImportError: # django < 3.0
+    from django.utils.encoding import force_text as force_str
+
+try:
+    from django.utils.module_loading import import_string
+except ImportError: # django < 1.7
+    from django.utils.module_loading import import_by_path as import_string
+
+try:
+    from django.utils.translation import gettext_lazy
+except ImportError: # django < 3.0
+    from django.utils.translation import ugettext_lazy as gettext_lazy
 
 def is_authenticated(request):
     if hasattr(request, 'user'):

@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -12,14 +12,13 @@ from django import forms, http
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split, update_context_urls
 from signup.auth import validate_redirect
 
-from ..compat import reverse, six
+from ..compat import gettext_lazy as _, reverse, six
 from ..signals import contact_requested
 from ..thread_locals import get_current_app
 from ..validators import validate_contact_form

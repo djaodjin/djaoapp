@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.conf import locale
-from django.utils.translation import ugettext_lazy as _
 from saas.forms import OrganizationForm
 
-from ..compat import six
+from ..compat import gettext_lazy as _, six
 
 
 class PersonalProfileForm(OrganizationForm):

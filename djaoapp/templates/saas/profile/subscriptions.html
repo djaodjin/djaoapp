@@ -20,8 +20,7 @@
           class="tab-pane active"
           role="tabpanel"
           @expired="expired">
-        <div id="subscriptions-list-container"
-             data-trip data-trip-index="1"
+        <div data-trip data-trip-index="1"
              data-trip-content="<h2>{% trans %}Subscriptions{% endtrans %}</h2><p>{% trans %}List of all your active subscriptions.{% endtrans %}<br />{% trans %}You can manage all your active subscriptions here.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
              data-trip-position="screen-center">
           {% if plans %}
@@ -48,7 +47,7 @@
             </div>
           </div>
           {% endif %}
-          <div class="table-responsive mb-4">
+          <div id="subscriptions-list-container" class="table-responsive mb-4">
             <table class="table" infinite-wrapper>
               <thead>
                 <tr>
@@ -87,11 +86,14 @@
                   <td>
                     <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
                   </td>
-                  <td>
-                    {% include "_entry_ends_at_editable_field.html" %}
+                  <td v-if="entry.editable">
+                    {% include "_entry_ends_at_field.html" %}
+                  </td>
+                  <td v-if="!entry.editable">
+                    [[entry.ends_at ? ($globals.humanizeDate(entry.ends_at)) : "{% trans %}Never{% endtrans %}" ]]
                   </td>
                   <td>
-                    [[humanizeTimeDelta(entry.ends_at, ends_at)]]
+                    [[$globals.humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
                   <td style="text-align: right;" v-if="!entry.request_key">
                     <button class="btn btn-danger unsubscribe"
@@ -156,8 +158,9 @@
       </subscription-list> <!-- /controller -->
       <expired-subscription-list inline-template id="expired_subscriptions"
           class="tab-pane" role="tabpanel" ref="expired">
-        <div id="expired-subscriptions-list-container">
-          <div class="table-responsive mb-4">
+        <div>
+          <div id="expired-subscriptions-list-container"
+               class="table-responsive mb-4">
             <table class="table" infinite-wrapper>
               <thead>
                 <tr>
@@ -198,11 +201,11 @@
                   </td>
                   <td>
                     <span style="display: inline-block;">
-                      [[entry.ends_at ? humanizeDate(entry.ends_at) : "{% trans %}Never{% endtrans %}" ]]
+                      [[entry.ends_at ? $globals.humanizeDate(entry.ends_at) : "{% trans %}Never{% endtrans %}" ]]
                     </span>
                   </td>
                   <td>
-                    [[humanizeTimeDelta(entry.ends_at, ends_at)]]
+                    [[$globals.humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
                   <td>
                   </td>

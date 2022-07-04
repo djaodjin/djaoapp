@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -12,12 +12,10 @@ from django.conf import settings
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
-from pages.serializers import NodeElementSerializer
 from rest_framework import exceptions, serializers
 from rest_framework.schemas.generators import EndpointEnumerator
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
@@ -31,7 +29,7 @@ except ImportError: # drf < 3.10
     from rest_framework.schemas import (
         AutoSchema as BaseAutoSchema, SchemaGenerator)
 
-from ..compat import URLPattern, URLResolver, six
+from ..compat import gettext_lazy as _, URLPattern, URLResolver, six
 
 
 LOGGER = logging.getLogger(__name__)
@@ -380,10 +378,6 @@ class AutoSchema(BaseAutoSchema):
                             {'type': 'string'}, {'type': 'integer'}]}
                     }
                 }
-
-        elif (isinstance(field, serializers.ListSerializer) and
-            isinstance(field.child, NodeElementSerializer)):
-            return {}
 
         if field.field_name == 'credentials':
             return {

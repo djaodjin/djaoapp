@@ -1,32 +1,5 @@
 [
-{
-    "fields": {
-      "slug": "stripe",
-      "full_name": "Stripe",
-      "created_at": "2022-01-01T00:00:00-00:00",
-      "email": "stripe@localhost.localdomain",
-      "phone": "555-555-5555",
-      "street_address": "185 Berry St #550",
-      "locality":  "San Francisco",
-      "region": "CA",
-      "postal_code": "94107",
-      "country": "US",
-      "processor": 1,
-      "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 1
-},
-{
-    "fields": {
-      "slug": "terms-of-use",
-      "title": "Terms Of Use",
-      "modified": "2022-01-01T00:00:00-00:00"
-    },
-    "model": "saas.agreement", "pk": 1
-},
-{
-    "fields": {
+{ "fields": {
       "slug": "djaoapp-roles-card1",
       "full_name": "RolesCard1",
       "email": "djaoapp-roles-card1@djaoapp-roles-card1.com",
@@ -37,8 +10,7 @@
     },
     "model": "saas.Organization", "pk": 30
 },
-{
-    "fields": {
+{ "fields": {
       "date_joined": "2022-01-01T00:00:00-00:00",
       "email": "xia+roles-card1@djaoapp-roles-card1.com",
       "first_name": "Xia",
@@ -51,8 +23,7 @@
     },
     "model": "auth.User", "pk": 30
 },
-{
-    "fields": {
+{ "fields": {
       "last_signed": "2022-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 30

@@ -73,7 +73,7 @@ function humanizeTimeDelta(at_time, ends_at) {
             moment.duration(cutOff.diff(dateTime)).humanize());
     }
     var timeLeftTemplate = (self.$labels && self.$labels.timeLeftTemplate) ?
-        self.$labels.timeLeftTemplate : "%(timedelta)s ago";
+        self.$labels.timeLeftTemplate : "%(timedelta)s left";
     return timeLeftTemplate.replace("%(timedelta)s",
         moment.duration(dateTime.diff(cutOff)).humanize());
 };

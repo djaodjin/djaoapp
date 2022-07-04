@@ -67,10 +67,11 @@
   </div>
   <script type="text/javascript">
 jQuery(document).ready(function($) {
+
   $(".dj-upload").djupload({
       uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
       uploadSuccess: function(file, resp) {
-            showMessages(['{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', file.name)], 'success');
+          showMessages(['{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', file.name)], 'success');
       },
   });
 
@@ -282,5 +283,22 @@ jQuery(document).ready(function($) {
 </div>
 
 {# aggregated, minified scripts #}
-{{ render_bundle('js_theme-editors') }}
-{{ render_bundle('js_edit-tools') }}
+<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ace.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|asset}}"></script>
+{% endif %}

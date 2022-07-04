@@ -8,7 +8,6 @@ from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_backends
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
-from django.utils.translation import ugettext_lazy as _
 from rest_framework.exceptions import ValidationError
 from rules.utils import get_current_app
 from saas import settings as saas_settings
@@ -17,7 +16,7 @@ from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
-from .compat import reverse, six
+from .compat import gettext_lazy as _, reverse, six
 from .edition_tools import fail_edit_perm
 
 

@@ -1,7 +1,7 @@
 {% extends "_form.html" %}
 
 {% block form_block %}
-  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} class="form-horizontal" method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+  <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" class="form-horizontal" method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
 
       {{ input_field(form['email'], form.hide_labels) }}

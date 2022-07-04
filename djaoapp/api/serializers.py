@@ -1,4 +1,4 @@
-# Copyright (c) 2021 DjaoDjin inc.
+# Copyright (c) 2022 DjaoDjin inc.
 # see LICENSE
 
 #pylint: disable=no-init
@@ -11,7 +11,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils.deconstruct import deconstructible
-from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from saas.api.serializers import (
     OrganizationDetailSerializer as OrganizationBaseSerializer,
@@ -25,7 +24,7 @@ from rules.api.serializers import AppSerializer as RulesAppSerializer
 from signup.serializers import UserCreateSerializer
 
 from .. import __version__
-from ..compat import six
+from ..compat import gettext_lazy as _, six
 from ..thread_locals import get_current_app
 from ..validators import validate_contact_form
 

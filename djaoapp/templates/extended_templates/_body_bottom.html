@@ -97,5 +97,23 @@ less = {
     {% endif %}
 };
 </script>
-
-{{ render_bundle('js_pages') }}
+<script type="text/javascript" src="{{'/static/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.selection.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.textarea_autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.ui.touch-punch.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/rangy-core.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/Markdown.Converter.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/Markdown.Sanitizer.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/hallo.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/static/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-sidebar-gallery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-plan-edition.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/wizard.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/static/cache/pages.js'|asset}}"></script>
+{% endif %}

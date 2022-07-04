@@ -33,7 +33,7 @@
       </div>
       {% endif %}
       {% if show_as_text %}
-      <span class="p-2">[[{{name}} ? (humanizeDate({{name}})) : "{% trans %}Never{% endtrans %}" ]]</span>
+      <span class="p-2">[[{{name}} ? ($globals.humanizeDate({{name}})) : "{% trans %}Never{% endtrans %}" ]]</span>
       {% else %}
       <input class="form-control{% if errors %} is-invalid{% endif %}"
            name="{{name}}"

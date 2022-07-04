@@ -8,7 +8,6 @@ from smtplib import SMTPException
 from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from saas.api.serializers import ValidationErrorSerializer
@@ -17,7 +16,7 @@ from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split
 
-from ..compat import six
+from ..compat import gettext_lazy as _, six
 from ..signals import contact_requested
 from .serializers import ContactUsSerializer
 

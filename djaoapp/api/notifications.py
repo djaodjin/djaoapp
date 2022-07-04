@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 from django.template import TemplateDoesNotExist
-from django.utils.translation import ugettext_lazy as _
 from extended_templates.backends import get_email_backend
 from rest_framework import status
 from rest_framework.response import Response
@@ -13,7 +12,7 @@ from rules.mixins import AppMixin
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import Price, get_broker
 
-from ..compat import reverse
+from ..compat import gettext_lazy as _, reverse
 from ..thread_locals import get_current_site, get_current_app
 from .serializers import DetailSerializer
 

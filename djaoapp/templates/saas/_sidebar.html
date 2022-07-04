@@ -162,15 +162,15 @@
 
 {# Broker menu items #}
 
-{% if urls.pages or urls.rules %}
+{% if urls.theme_update or urls.rules %}
   <hr class="my-1" />
   <ul class="nav flex-column pb-2" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
-    {% if urls.pages.theme_base %}
-      <li {% if urls.pages.theme_base == request.path %} class="nav-item active"{% endif %}>
-          <a id="pages_theme" class="nav-link" href="{{urls.pages.theme_base}}">
+    {% if urls.theme_update %}
+      <li {% if urls.theme_update == request.path %} class="nav-item active"{% endif %}>
+          <a id="pages_theme" class="nav-link" href="{{urls.theme_update}}">
 
             <!-- Themes -->
-            <span class="icon icon-themes {% if urls.pages.theme_base == request.path %} icon-active{% endif %}"></span>
+            <span class="icon icon-themes {% if urls.theme_update == request.path %} icon-active{% endif %}"></span>
             <span class="pl-1" style="vertical-align: super">{% trans %}Themes{% endtrans %}</span>
 
           </a>

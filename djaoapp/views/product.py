@@ -17,14 +17,11 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.static import serve
-
 from extended_templates.helpers import get_assets_dirs
+from extended_templates.views.pages import PageMixin
 from multitier.mixins import build_absolute_uri
-from multitier.thread_locals import get_current_site
-from pages.views.pages import PageMixin
 from saas.decorators import fail_direct
 from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
@@ -34,7 +31,7 @@ from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 
-from ..compat import urlparse
+from ..compat import gettext_lazy as _, urlparse
 from ..thread_locals import get_current_broker
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
@@ -112,7 +109,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
     @method_decorator(raise_404_on_does_not_exist)
     def get_context_data(self, **kwargs):
         context = super(ProxyPageMixin, self).get_context_data(**kwargs)
-        # Need to be set to be able to use djaoapp-pages PageView
+        # Need to be set to be able to use djaoapp-extended-templates PageView
         self.template_name = self.get_template_names()[0]
         return context
 
@@ -239,12 +236,8 @@ class PricingView(DjaoAppMixin, PageMixin, SessionProxyMixin, CartPlanListView):
 
 
 class AppDashboardView(AppDashboardViewBase):
-
-    def get_context_data(self, **kwargs):
-        context = super(AppDashboardView, self).get_context_data(**kwargs)
-        context.update({'site_available_at_url': build_absolute_uri(
-            self.request, site=get_current_site().db_object)})
-        return context
+    """
+    """
 
 
 class AppPageView(ProxyPageView):

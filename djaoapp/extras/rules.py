@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 
 from django.http import Http404
-from pages.extras import AccountMixinBase
+from extended_templates.extras import AccountMixinBase
 from saas.extras import OrganizationMixinBase
 from saas.utils import get_organization_model
 

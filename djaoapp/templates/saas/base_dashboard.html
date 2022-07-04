@@ -57,7 +57,19 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-{{ render_bundle('js_vendor-vue') }}
+<script type="text/javascript" src="{{'/static/vendor/moment.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/moment-timezone-with-data.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/vue.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/vue-infinite-loading.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/lodash.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/Sortable.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/uiv.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/vue-croppa.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/d3.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/nv.d3.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/trip.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaoapp-i18n.js'|asset}}"></script>
 <script type="text/javascript">
 Vue.prototype.$itemsPerPage =
     {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
@@ -83,9 +95,26 @@ Vue.prototype.$labels = {
     fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
 }
 Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %}; // XXX
-
+Vue.prototype.$globals = {
+    'humanizeDate': humanizeDate,
+    'humanizeNumber': humanizeNumber,
+    'humanizeTimeDelta': humanizeTimeDelta
+};
 </script>
-{{ render_bundle('js_djaodjin-vue') }}
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-resources-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-signup-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-saas-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-rules-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-themes-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-djaoapp-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-metrics.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" charset="utf-8" src="{{'/static/cache/djaodjin-vue.js'|asset}}"></script>
+{% endif %}
+
 <script type="text/javascript">
 Vue.use(Croppa);
 Vue.use(uiv, {prefix: 'uiv'});

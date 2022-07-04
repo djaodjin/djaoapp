@@ -54,7 +54,7 @@
                   v-for="col in row.values">
                   <a target="_blank"
                      :href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">
-                    [[humanizeNumber(col[1])]]
+                    [[$globals.humanizeNumber(col[1])]]
                   </a>
               </td>
           </tr>

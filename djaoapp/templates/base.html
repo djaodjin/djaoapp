@@ -7,7 +7,7 @@
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2022 DjaoDjin inc.">
     {% block localheadermeta %}
-    <title>{% block localheader_title %}{% if request and request.site %}{{request.site.printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
+    <title>{% block localheader_title %}{% if request %}{{request|site_printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
     <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
@@ -133,7 +133,7 @@
                     <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
                       <!-- The content here will be replaced by _menubar.html -->
                       <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" id="login" href="{{'/login/'|site_prefixed}}">
+                        <a class="nav-link btn btn-primary text-white" id="login" href="{{'/login/'|site_url}}">
                           {% trans %}Sign in{% endtrans %}
                         </a>
                       </li>
@@ -201,8 +201,20 @@
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
-  {{ render_bundle('js_base') }}
-  <script type="text/javascript">
+<script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/popper.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/toastr.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
+{% endif %}
+<script type="text/javascript">
 jQuery(document).ready(function($) {
     toastr.options = {
         "closeButton": true,
@@ -230,9 +242,9 @@ jQuery(document).ready(function($) {
         },
     };
 });
-  </script>
-  {% block bodyscripts %}
-  {% endblock %}
+</script>
+{% block bodyscripts %}
+{% endblock %}
 {% endblock %}
 </body>
 </html>

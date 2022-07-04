@@ -14,8 +14,9 @@ from django.template import loader
 from django.utils.module_loading import import_string
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
-from pages.compat import render_template
-from pages.views.pages import inject_edition_tools as pages_inject_edition_tools
+from extended_templates.compat import render_template
+from extended_templates.views.pages import (
+    inject_edition_tools as inject_edition_tools_base)
 from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
@@ -62,13 +63,6 @@ def fail_edit_perm(request, account=None):
     return result
 
 
-def has_bank_account(broker):
-    processor_backend = broker.processor_backend
-    return ((broker.slug == settings.APP_NAME and
-             processor_backend.pub_key and processor_backend.priv_key)
-            or broker.has_bank_account)
-
-
 def inject_edition_tools(response, request, context=None,
                          body_top_template_name=None,
                          body_bottom_template_name=None):
@@ -102,11 +96,16 @@ def inject_edition_tools(response, request, context=None,
             organization=provider, user=request.user):
         edit_urls = {
             'api_medias': reverse(
-                'uploaded_media_elements', kwargs={'path':''}),
-            'api_sitecss': reverse('edit_sitecss'),
-            'api_less_overrides': reverse('pages_api_less_overrides'),
-            'api_sources': reverse('pages_api_sources'),
-            'api_page_element_base': reverse('pages_api_edit_template_base'),
+                'extended_templates_api_uploaded_media_elements',
+                kwargs={'path':''}),
+            'api_sitecss': reverse(
+                'extended_templates_api_edit_sitecss'),
+            'api_less_overrides': reverse(
+                'extended_templates_api_less_overrides'),
+            'api_sources': reverse(
+                'extended_templates_api_sources'),
+            'api_page_element_base': reverse(
+                'extended_templates_api_edit_template_base'),
             'api_plans': reverse('saas_api_plans', args=(provider,)),
             'plan_update_base': reverse('saas_plan_base', args=(provider,))}
         try:
@@ -124,10 +123,11 @@ def inject_edition_tools(response, request, context=None,
         if enable_code_editor:
             dj_urls = djaoapp_urls(
                 request, account=provider, base=site.as_base())
-            body_bottom_template_name = "pages/_body_bottom_edit_tools.html"
+            body_bottom_template_name = \
+                "extended_templates/_body_bottom_edit_tools.html"
         else:
             dj_urls = djaoapp_urls(request, account=provider)
-            body_bottom_template_name = "pages/_body_bottom.html"
+            body_bottom_template_name = "extended_templates/_body_bottom.html"
 
         context.update({
             'ENABLE_CODE_EDITOR': enable_code_editor,
@@ -136,7 +136,7 @@ def inject_edition_tools(response, request, context=None,
                 'djaodjin': dj_urls,
                 'edit': edit_urls}})
         context.update(csrf(request))
-        soup = pages_inject_edition_tools(response, request, context=context,
+        soup = inject_edition_tools_base(response, request, context=context,
             body_top_template_name=body_top_template_name,
             body_bottom_template_name=body_bottom_template_name)
 
@@ -211,5 +211,4 @@ def inject_edition_tools(response, request, context=None,
             els = BeautifulSoup(user_menu, 'html5lib').body.ul.children
             for elem in els:
                 auth_user.append(BeautifulSoup(str(elem), 'html5lib'))
-
     return soup

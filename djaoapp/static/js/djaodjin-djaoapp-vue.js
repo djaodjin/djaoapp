@@ -1,3 +1,48 @@
+// specifics to DjaoApp
+
+var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
+  props: ['dataset'],
+  data: function data() {
+    return {
+      url: this.$urls.api_candidates,
+     };
+  },
+  methods: {
+    setActiveAndHit: function(item) {
+      var vm = this;
+      vm.setActive(item);
+      vm.hit();
+    },
+
+    hit: function() {
+      var vm = this;
+      if( vm.current !== -1 ) {
+        vm.onHit(vm.items[vm.current]);
+      } else {
+        vm.search();
+      }
+    },
+
+    onHit: function onHit(newItem) {
+      var vm = this;
+      vm.$emit('selectitem', vm.dataset, newItem);
+/*XXX
+      if( typeof newItem.full_name !== 'undefined' ) {
+          vm.query = newItem.full_name;
+      } else {
+          vm.query = newItem;
+      }
+*/
+      vm.reset();
+      vm.clear();
+    }
+  }
+}));
+
+var SubscriptionTypeAhead = Vue.component('subscription-typeahead',
+    TypeAhead.extend({
+}));
+
 Vue.component('role-user-list-modal', {
     methods: {
         create: function() {
@@ -12,26 +57,6 @@ Vue.component('role-user-list-modal', {
         },
         createCompleted: function() {
             var dialog = $(".create-profile");
-            if( dialog.length > 0 ) {
-               if( dialog.hasClass('modal') ) {
-                   dialog.modal("hide");
-               } else if( dialog.hasClass('collapse') ) {
-                   dialog.collapse("hide");
-               }
-            }
-        },
-        invite: function() {
-            var dialog = $(".add-role-modal");
-            if( dialog.length > 0 ) {
-               if( dialog.hasClass('modal') ) {
-                   dialog.modal("show");
-               } else if( dialog.hasClass('collapse') ) {
-                   dialog.collapse("show");
-               }
-            }
-        },
-        inviteCompleted: function() {
-            var dialog = $(".add-role-modal");
             if( dialog.length > 0 ) {
                if( dialog.hasClass('modal') ) {
                    dialog.modal("hide");
@@ -61,49 +86,6 @@ Vue.component('role-user-list-modal', {
             }
         }
     }
-});
-
-
-Vue.component('theme-update', {
-    mixins: [
-        httpRequestMixin
-    ],
-    data: function() {
-        return {
-            url: this.$urls.rules.api_detail,
-            showEditTools: false
-        }
-    },
-    methods: {
-        get: function() {
-            var vm = this;
-            vm.reqGet(vm.url, function(res){
-                vm.showEditTools = res.show_edit_tools;
-            });
-        },
-        reset: function() {
-            var vm = this;
-            vm.reqDelete(this.$urls.pages.api_themes,
-            function(resp) {
-                if( resp.detail ) {
-                    showMessages([resp.detail], "success");
-                }
-            });
-        },
-        save: function(){
-            var vm = this;
-            vm.reqPut(vm.url, {
-                    show_edit_tools: vm.showEditTools,
-                },
-                function(){
-                    location.reload();
-                }
-            );
-        },
-    },
-    mounted: function(){
-        this.get();
-    },
 });
 
 

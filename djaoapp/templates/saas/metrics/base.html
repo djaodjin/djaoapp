@@ -28,7 +28,7 @@
         </div>
         <!-- Display as a table -->
         <div class="table-responsive">
-          <table class="table" style="font-size:0.7em;">
+          <table class="table" id="data-in-rows" style="font-size:0.7em;">
             <tr class="position-relative">
               <td class="row-header"></td>
               <td v-for="col in currentTableDates" class="row-body" v-cloak>
@@ -47,12 +47,14 @@
                   <span class="align-middle">[[row.title ? row.title : row.key]]</span>
                 </div>
               </td>
-              <td v-for="col in row.values" :key="col[0].toISOString()" :title="humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
-                  [[humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
+              <td v-for="col in row.values" :key="col[0].toISOString()" :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
+                  [[$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
               </td>
             </tr>
+            {% block metrics_extra_data %}
+            {% endblock %}
           </table>
-          {% block metrics_extra_data %}
+          {% block metrics_extra_info %}
           {% endblock %}
         </div>
       </div>

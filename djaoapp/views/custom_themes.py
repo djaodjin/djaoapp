@@ -1,9 +1,7 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
-from multitier.mixins import build_absolute_uri
-from multitier.thread_locals import get_current_site
-from pages.views.themes import (
+from extended_templates.views.themes import (
     ThemePackagesView as  ThemePackageBaseView,
     ThemePackageDownloadView as ThemePackageDownloadBaseView)
 
@@ -18,8 +16,6 @@ class ThemePackageView(NotificationsMixin, ThemePackageBaseView):
         self.update_context_urls(context, {
             'send_test_email': reverse('api_notification_base')
         })
-        context.update({'site_available_at_url': build_absolute_uri(
-            self.request, site=get_current_site().db_object)})
         return context
 
 

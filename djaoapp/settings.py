@@ -17,6 +17,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)
 
 DEBUG = True
+API_DEBUG = DEBUG
+ASSETS_DEBUG = DEBUG
+FEATURES_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ('*',)
 BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
@@ -40,22 +43,17 @@ CONTACT_DYNAMIC_VALIDATOR = None
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
-# Configuration settings that can be overriden on the command line.
-if os.getenv('DEBUG'):
-    DEBUG = bool(int(os.getenv('DEBUG')) > 0)
-
-if not hasattr(sys.modules[__name__], 'FEATURES_DEBUG'):
-    FEATURES_DEBUG = DEBUG
-
-if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
-    BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
-        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', "0")) > 0)
-
-API_DEBUG = True if int(os.getenv('API_DEBUG', "0")) > 0 else DEBUG
+# Enable override on command line.
+for env_var in ['DEBUG', 'API_DEBUG', 'ASSETS_DEBUG', 'FEATURES_DEBUG']:
+    if os.getenv(env_var):
+        setattr(sys.modules[__name__], env_var, (int(os.getenv(env_var)) > 0))
 
 # Remove extra information used for documentation like examples, etc.
 OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', "0")) > 0)
 
+if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
+    BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
+        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', "0")) > 0)
 
 # Implementation Note: To simplify quick tests. The `SECRET_KEY` should
 # be defined in the `credentials` otherwise all HTTP session will become
@@ -122,7 +120,6 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webpack_loader',
     'rest_framework',
     'captcha',
     'deployutils.apps.django',
@@ -130,8 +127,8 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'saas',  # Because we want `djaodjin-resources.js` picked up from here.
     'signup',
     'social_django',
-    'pages',
     'multitier',
+    'extended_templates',
     'rules',
     'djaoapp'
 )
@@ -297,7 +294,7 @@ ASSETS_MAP = {
             'pages/*.scss',
             'vendor/jquery-ui.scss',
             'vendor/bootstrap-colorpicker.scss',
-            'vendor/djaodjin-pages/*.scss',
+            'vendor/djaodjin-extended-templates/*.scss',
         )
     ),
     'cache/dashboard.css': (
@@ -314,23 +311,8 @@ ASSETS_MAP = {
     ),
 }
 
-ASSETS_DEBUG = DEBUG
 #XXX ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
 ASSETS_ROOT = HTDOCS
-
-if not hasattr(sys.modules[__name__], 'WEBPACK_LOADER_STATS_FILE'):
-    WEBPACK_LOADER_STATS_FILE = os.path.join(ASSETS_ROOT, 'webpack-stats.json')
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not ASSETS_DEBUG,
-        'BUNDLE_DIR_NAME': 'cache/', # must end with slash
-        'STATS_FILE': WEBPACK_LOADER_STATS_FILE,
-        'POLL_INTERVAL': 0.1,
-        'TIMEOUT': None,
-        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
-    }
-}
 
 # Sessions
 # --------
@@ -415,12 +397,6 @@ else:
             'environment': 'djaoapp.jinja2.environment'
         }
     }]
-
-EXTENDED_TEMPLATES = {
-    'ASSETS_MAP': ASSETS_MAP,
-    'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
-    'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
-}
 
 
 MAX_UPLOAD_SIZE = 10240
@@ -527,10 +503,6 @@ LOGGING = {
             'level': 'INFO',
         },
         'signup': {
-            'handlers': [],
-            'level': 'INFO',
-        },
-        'pages': {
             'handlers': [],
             'level': 'INFO',
         },
@@ -696,7 +668,7 @@ MULTITIER = {
     'ACCOUNT_URL_KWARG': 'organization',
 #    'DEFAULT_URLS': ['login'], # XXX can't do reverse in multitier middleware.
     'ROUTER_APPS': (
-        'social_django', 'signup', 'saas', 'pages', 'rules'),
+        'social_django', 'signup', 'saas', 'extended_templates', 'rules'),
     'ROUTER_TABLES': ('rules_app', 'rules_rules', 'rules_engagement',
         'django_admin_log', 'django_session', 'auth_user'),
     'THEMES_DIRS': [
@@ -711,8 +683,58 @@ for config_param in ['DEFAULT_DOMAIN', 'DEFAULT_SITE']:
             getattr(sys.modules[__name__], multitier_config_param)})
 
 
+# Software-as-a-Service (pages editor)
+def theme_dir(account):
+    return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
+
+import djaoapp.extras.extended_templates
+
+EXTENDED_TEMPLATES = {
+    'ACCOUNT_MODEL': 'saas.Organization',
+    'ACCOUNT_URL_KWARG' : 'app',
+    'ACTIVE_THEME_CALLABLE': 'djaoapp.thread_locals.get_active_theme',
+    'ASSETS_MAP': ASSETS_MAP,
+    'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
+    'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
+    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
+    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
+    'EXTRA_MIXIN': djaoapp.extras.extended_templates.ExtraMixin,
+    'PUBLIC_ROOT': HTDOCS,
+    'TEMPLATES_BLACKLIST': [
+        'jinja2/debug_toolbar/base.html',
+        'jinja2/debug_toolbar/panels/cache.html',
+        'jinja2/debug_toolbar/panels/headers.html',
+        'jinja2/debug_toolbar/panels/logging.html',
+        'jinja2/debug_toolbar/panels/profiling.html',
+        'jinja2/debug_toolbar/panels/request.html',
+        'jinja2/debug_toolbar/panels/settings.html',
+        'jinja2/debug_toolbar/panels/signals.html',
+        'jinja2/debug_toolbar/panels/sql.html',
+        'jinja2/debug_toolbar/panels/sql_explain.html',
+        'jinja2/debug_toolbar/panels/sql_profile.html',
+        'jinja2/debug_toolbar/panels/sql_select.html',
+        'jinja2/debug_toolbar/panels/staticfiles.html',
+        'jinja2/debug_toolbar/panels/template_source.html',
+        'jinja2/debug_toolbar/panels/templates.html',
+        'jinja2/debug_toolbar/panels/timer.html',
+        'jinja2/debug_toolbar/panels/versions.html',
+        'jinja2/debug_toolbar/redirect.html',
+        'notification/app_created.eml',
+        'notification/app_updated.eml',
+        'extended_templates/_body_bottom.html',
+        'extended_templates/_body_bottom_edit_tools.html',
+        'extended_templates/_body_top_template.html',
+        'extended_templates/_edit_tools.html',
+        'static/directory_index.html',
+        'demo/frictionless.html',
+        'demo/frictionless-iframe.html'
+    ],
+    'THEME_DIR_CALLABLE': theme_dir
+}
+
+
 # imports made here so SECRET_KEY is defined when loading AUTH_USER.
-import djaoapp.extras.saas, djaoapp.extras.rules, djaoapp.extras.pages
+import djaoapp.extras.saas, djaoapp.extras.rules
 
 # Software-as-a-Service (provider)
 SAAS = {
@@ -779,50 +801,6 @@ RULES = {
         'signup.decorators.fail_active',               # 17
         'saas.decorators.fail_provider_readable'       # 18
     ),
-}
-
-# Software-as-a-Service (pages editor)
-def theme_dir(account):
-    return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
-
-PAGES = {
-    'ACCOUNT_MODEL': 'saas.Organization',
-    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
-    'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
-    'ACCOUNT_URL_KWARG' : 'app',
-    'ACTIVE_THEME_CALLABLE': 'djaoapp.thread_locals.get_active_theme',
-    'EXTRA_MIXIN': djaoapp.extras.pages.ExtraMixin,
-    'PUBLIC_ROOT': HTDOCS,
-    'TEMPLATES_BLACKLIST': [
-        'jinja2/debug_toolbar/base.html',
-        'jinja2/debug_toolbar/panels/cache.html',
-        'jinja2/debug_toolbar/panels/headers.html',
-        'jinja2/debug_toolbar/panels/logging.html',
-        'jinja2/debug_toolbar/panels/profiling.html',
-        'jinja2/debug_toolbar/panels/request.html',
-        'jinja2/debug_toolbar/panels/settings.html',
-        'jinja2/debug_toolbar/panels/signals.html',
-        'jinja2/debug_toolbar/panels/sql.html',
-        'jinja2/debug_toolbar/panels/sql_explain.html',
-        'jinja2/debug_toolbar/panels/sql_profile.html',
-        'jinja2/debug_toolbar/panels/sql_select.html',
-        'jinja2/debug_toolbar/panels/staticfiles.html',
-        'jinja2/debug_toolbar/panels/template_source.html',
-        'jinja2/debug_toolbar/panels/templates.html',
-        'jinja2/debug_toolbar/panels/timer.html',
-        'jinja2/debug_toolbar/panels/versions.html',
-        'jinja2/debug_toolbar/redirect.html',
-        'notification/app_created.eml',
-        'notification/app_updated.eml',
-        'pages/_body_bottom.html',
-        'pages/_body_bottom_edit_tools.html',
-        'pages/_body_top_template.html',
-        'pages/_edit_tools.html',
-        'static/directory_index.html',
-        'demo/frictionless.html',
-        'demo/frictionless-iframe.html'
-    ],
-    'THEME_DIR_CALLABLE': theme_dir
 }
 
 # Demo mode ...

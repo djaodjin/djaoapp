@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 import logging, smtplib
@@ -59,14 +59,16 @@ def _notified_recipients(organization, notification_slug, originated_by=None):
     return recipients, bcc
 
 
-def _send_notification_email(from_site, recipients, template,
-                             context=None, reply_to=None, bcc=None):
+def _send_notification_email(recipients, template,
+                             context=None, reply_to=None, bcc=None, site=None):
     """
     Sends a notification e-mail using the current site connection,
     defaulting to sending an e-mail to broker profile managers
     if there is any problem with the connection settings.
     """
     #pylint:disable=too-many-arguments
+    if not site:
+        site = get_current_site()
     lang_code = None
     contact = Contact.objects.filter(
         email__in=recipients).order_by('email').first()
@@ -74,8 +76,8 @@ def _send_notification_email(from_site, recipients, template,
         lang_code = contact.lang
     try:
         with translation.override(lang_code):
-            get_email_backend(connection=from_site.get_email_connection()).send(
-                from_email=from_site.get_from_email(),
+            get_email_backend(connection=site.get_email_connection()).send(
+                from_email=site.get_from_email(),
                 recipients=recipients,
                 reply_to=reply_to,
                 bcc=bcc,
@@ -84,16 +86,16 @@ def _send_notification_email(from_site, recipients, template,
     except smtplib.SMTPException as err:
         LOGGER.warning(
             "[signal] problem sending email from %s on connection for %s. %s",
-            from_site.get_from_email(), from_site, err)
+            site.get_from_email(), site, err)
         context.update({'errors': [_("There was an error sending"\
 " the following email to %(recipients)s. This is most likely due to"\
 " a misconfiguration of the e-mail notifications whitelabel settings"\
 " for your site %(site)s.") % {
-    'recipients': recipients, 'site': from_site.as_absolute_uri()}]})
+    'recipients': recipients, 'site': site.as_absolute_uri()}]})
         #pylint:disable=unused-variable
         notified_on_errors, notused = _notified_recipients(
-            get_organization_model().objects.using(from_site._state.db).get(
-                pk=from_site.account_id), "")
+            get_organization_model().objects.using(site._state.db).get(
+                pk=site.account_id), "")
         if notified_on_errors:
             get_email_backend(
                 connection=get_connection_base(fail_silently=True)).send(
@@ -152,7 +154,7 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
     LOGGER.debug("[signal] contact_requested_notice(provider=%s, user=%s)",
         provider, user)
     if SEND_EMAIL and recipients:
-        _send_notification_email(get_current_site(), recipients,
+        _send_notification_email(recipients,
             'notification/user_contact.eml',
             reply_to=user.email, bcc=bcc, context=context)
 
@@ -176,18 +178,18 @@ def user_registered_notice(sender, user, **kwargs):
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, [user.email],
+        _send_notification_email([user.email],
             'notification/user_welcome.eml',
             reply_to=reply_to, bcc=recipients + bcc, context={
                 'broker': broker, 'app': app,
                 'user': get_user_context(user),
-                'back_url': site.as_absolute_uri()})
+                'back_url': site.as_absolute_uri()}, site=site)
     if recipients:
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/user_registered.eml',
             bcc=bcc, context={
                 'broker': broker, 'app': app,
-                'user': get_user_context(user)})
+                'user': get_user_context(user)}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -206,14 +208,14 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/user_activated.eml',
             bcc=bcc, context={'request': request, 'broker': get_broker(),
                      'app': app, 'user': get_user_context(user),
                      'urls':{
                          'user': {
                              'profile': site.as_absolute_uri(reverse(
-                                 'users_profile', args=(user,)))}}})
+                                 'users_profile', args=(user,)))}}}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -230,8 +232,7 @@ def user_verification_notice(
         " expiration_days=%s)", user, back_url, expiration_days)
     if SEND_EMAIL:
         app = get_current_app()
-        site = get_current_site()
-        _send_notification_email(site, [user.email],
+        _send_notification_email([user.email],
             'notification/verification.eml',
             context={'request': request,
                 # Without ``app`` we donot set the color correctly in
@@ -255,8 +256,7 @@ def user_reset_password_notice(
         " expiration_days=%s)", user, back_url, expiration_days)
     if SEND_EMAIL:
         app = get_current_app()
-        site = get_current_site()
-        _send_notification_email(site, [user.email],
+        _send_notification_email([user.email],
             'notification/password_reset.eml',
             context={'request': request,
                 'broker': get_broker(), 'app': app,
@@ -271,8 +271,7 @@ def user_mfa_code_notice(sender, user, code, request, **kwargs):
         " request=%s)", contact.user, code, request)
     if SEND_EMAIL:
         app = get_current_app()
-        site = get_current_site()
-        _send_notification_email(site, [contact.user.email],
+        _send_notification_email([contact.user.email],
             'notification/user_mfa_code.eml',
             context={'request': request, 'code': code,
                 'broker': get_broker(), 'app': app,
@@ -305,10 +304,10 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             reply_to = None
             if broker.email and broker.email != site.get_from_email():
                 reply_to = broker.email
-            _send_notification_email(site, recipients,
+            _send_notification_email(recipients,
                 'notification/charge_receipt.eml',
                 reply_to=reply_to, bcc=bcc + broker_recipients + broker_bcc,
-                context=context)
+                context=context, site=site)
 
 
 @receiver(card_updated, dispatch_uid="card_updated")
@@ -326,13 +325,13 @@ def card_updated_notice(sender, organization, user,
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/card_updated.eml',
             reply_to=reply_to, bcc=bcc + broker_recipients + broker_bcc,
             context={
                 'broker': broker, 'app': app,
                 'organization': organization, 'user': get_user_context(user),
-                'old_card': old_card, 'new_card': new_card})
+                'old_card': old_card, 'new_card': new_card}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -361,10 +360,10 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/order_executed.eml',
             reply_to=reply_to, bcc=bcc + broker_recipients + broker_bcc,
-            context=context)
+            context=context, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -399,10 +398,10 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/renewal_charge_failed.eml',
             reply_to=reply_to, bcc=bcc + broker_recipients + broker_bcc,
-            context=context)
+            context=context, site=site)
 
 
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated")
@@ -416,7 +415,7 @@ def claim_code_notice(sender, subscriber, claim_code, user, **kwargs):
         # only have one person respnsible for using the claim code.
         site = get_current_site()
         app = get_current_app()
-        _send_notification_email(site, [subscriber.email],
+        _send_notification_email([subscriber.email],
             'notification/claim_code_generated.eml',
             reply_to=user.email,
             context={
@@ -424,7 +423,7 @@ def claim_code_notice(sender, subscriber, claim_code, user, **kwargs):
                 'urls': {'cart': site.as_absolute_uri(reverse('saas_cart'))},
                 'subscriber': subscriber, 'provider': provider,
                 'claim_code': claim_code, 'cart_items': cart_items,
-                'user': get_user_context(user)})
+                'user': get_user_context(user)}, site=site)
 
 
 @receiver(organization_updated, dispatch_uid="organization_updated")
@@ -446,7 +445,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/organization_updated.eml',
             reply_to=reply_to, bcc=broker_recipients + broker_bcc,
             context={
@@ -460,7 +459,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
                     'organization': {
                         'profile': site.as_absolute_uri(reverse(
                             'saas_organization_profile', args=(organization,)))}
-                }})
+                }}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -480,7 +479,7 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/processor_setup_error.eml',
             reply_to=reply_to, bcc=broker_recipients + broker_bcc,
             context={
@@ -491,7 +490,7 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
                 'urls':{
                     'update_bank': site.as_absolute_uri(reverse(
                             'saas_update_bank', args=(provider,))),
-                }})
+                }}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -533,12 +532,12 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
                 LOGGER.debug("[signal] role_grant_created_notice(role=%s,"\
                     " reason=%s)", role, reason)
                 if SEND_EMAIL:
-                    _send_notification_email(site, [user.email],
+                    _send_notification_email([user.email],
                         [("notification/%s_role_grant_created.eml"
                           % role.role_description.slug),
                          "notification/role_grant_created.eml"],
                         reply_to=reply_to,
-                        context=context)
+                        context=context, site=site)
             else:
                 LOGGER.warning(
                     "%s will not be notified being added to %s"\
@@ -564,7 +563,7 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
                 "organization=%s, user=%s, reason=%s)",
                 organization, user, reason)
             if SEND_EMAIL:
-                _send_notification_email(site, [organization.email],
+                _send_notification_email([organization.email],
                     'notification/role_request_created.eml',
                     reply_to=user.email,
                     context={
@@ -573,7 +572,7 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
                             reverse('saas_role_list', args=(organization,))),
                         'organization': organization,
                         'reason': reason if reason is not None else "",
-                        'user': get_user_context(user)})
+                        'user': get_user_context(user)}, site=site)
         else:
             LOGGER.warning(
                 "%s will not be notified of role request to %s"\
@@ -595,7 +594,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     if SEND_EMAIL and recipients:
         site = get_current_site()
         app = get_current_app()
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/role_grant_accepted.eml',
             reply_to=user_context['email'], bcc=bcc,
             context={
@@ -604,7 +603,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
                     args=(role.organization, role.role_description))),
                 'organization': role.organization,
                 'role': role.role_description.title,
-                'user': user_context})
+                'user': user_context}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -625,7 +624,7 @@ def subscribe_grant_accepted_notice(sender, subscription, grant_key,
         site = get_current_site()
         app = get_current_app()
         user_context = get_user_context(originated_by)
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/subscription_grant_accepted.eml',
             reply_to=user_context['email'], bcc=bcc,
             context={
@@ -634,7 +633,7 @@ def subscribe_grant_accepted_notice(sender, subscription, grant_key,
                     args=(provider,))),
                 'organization': subscription.organization,
                 'plan': subscription.plan,
-                'user': user_context})
+                'user': user_context}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -682,7 +681,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
             if SEND_EMAIL:
                 site = get_current_site()
                 app = get_current_app()
-                _send_notification_email(site, [manager.email],
+                _send_notification_email([manager.email],
                     'notification/subscription_grant_created.eml',
                     reply_to=user_context['email'],
                     context={
@@ -692,7 +691,7 @@ def subscribe_grant_created_notice(sender, subscription, reason=None,
                         'plan': subscription.plan,
                         'reason': reason if reason is not None else "",
                         'invite': invite,
-                        'user': user_context})
+                        'user': user_context}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -711,7 +710,7 @@ def subscribe_req_accepted_notice(sender, subscription, request_key,
         site = get_current_site()
         app = get_current_app()
         user_context = get_user_context(request.user if request else None)
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/subscription_request_accepted.eml',
             reply_to=user_context['email'], bcc=bcc,
             context={
@@ -720,7 +719,7 @@ def subscribe_req_accepted_notice(sender, subscription, request_key,
                     args=(subscriber,))),
                 'organization': subscriber,
                 'plan': subscription.plan,
-                'user': user_context})
+                'user': user_context}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -739,7 +738,7 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
             LOGGER.debug("[signal] subscribe_req_created_notice("\
                          " subscription=%s, reason=%s)", subscription, reason)
             if SEND_EMAIL:
-                _send_notification_email(site, [organization.email],
+                _send_notification_email([organization.email],
                     'notification/subscription_request_created.eml',
                     reply_to=user_context['email'],
                     context={
@@ -750,7 +749,7 @@ def subscribe_req_created_notice(sender, subscription, reason=None,
                         'organization': organization,
                         'plan': subscription.plan,
                         'reason': reason if reason is not None else "",
-                        'user': user_context})
+                        'user': user_context}, site=site)
         else:
             LOGGER.warning(
                 "%s will not be notified of a subscription request to %s"\
@@ -776,14 +775,14 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/card_expires_soon.eml',
             reply_to=reply_to,
             bcc=bcc + broker_recipients + broker_bcc,
             context={'broker': get_broker(), 'app': app,
                 'back_url': site.as_absolute_uri(back_url),
                 'nb_days': nb_days,
-                'organization': organization})
+                'organization': organization}, site=site)
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
@@ -806,7 +805,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
         reply_to = None
         if broker.email and broker.email != site.get_from_email():
             reply_to = broker.email
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/expires_soon.eml',
             reply_to=reply_to,
             bcc=bcc + broker_recipients + broker_bcc,
@@ -814,7 +813,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
                 'back_url': back_url, 'nb_days': nb_days,
                 'organization': subscription.organization,
                 'plan': subscription.plan,
-                'provider': subscription.plan.organization})
+                'provider': subscription.plan.organization}, site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -831,10 +830,9 @@ def weekly_sales_report_notice(sender, provider, dates, data, **kwargs):
         date = last_sunday.strftime("%A %b %d, %Y")
 
         app = get_current_app()
-        site = get_current_site()
         # XXX using the provider in templates is incorrect. "Any questions
         # or comments..." should show DjaoDjin support email address.
-        _send_notification_email(site, recipients,
+        _send_notification_email(recipients,
             'notification/weekly_sales_report_created.eml',
             bcc=bcc,
             context={'broker': get_broker(), 'provider': provider,

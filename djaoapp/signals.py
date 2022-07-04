@@ -6,4 +6,5 @@ from django.dispatch import Signal
 
 
 contact_requested = Signal( #pylint:disable=invalid-name
-    providing_args=["provider", "user", "reason"])
+#    providing_args=["provider", "user", "reason"]
+)

@@ -81,17 +81,17 @@ function updateChart(container, data, unit, dataScale, extra) {
         d3.select(container).append("svg").attr("class", "chart-area");
         var maxY = 0;
         var dateTicks = [];
-        var values = data[0].values;
+        var labels = data.length > 0 ? data[0].values : [];
         var j = 0;
         var i = 0;
         for( j = 0; j < data.length; ++j ) {
-            values = data[j].values;
+            var values = data[j].values;
             for( i = 0; i < values.length; ++i ) {
                 if( values[i][1] > maxY ) { maxY = values[i][1]; }
             }
         }
-        for( i = 0; i < data[0].values.length; ++i ) {
-            dateTicks.push(data[0].values[i][0]);
+        for( i = 0; i < labels.length; ++i ) {
+            dateTicks.push(labels[i][0]);
         }
 
         var marginLeft = maxY * dataScale;

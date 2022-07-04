@@ -1,0 +1,166 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+{{title}} for {{organization.printable_name}}
+{% endblock %}
+
+{% block saas_content %}
+<div class="row">
+<div class="col-sm-6">
+  <div>
+    <h1 class="text-center">Active within the last 7 days</h1>
+  </div>
+  <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
+    <active-reporting-entities inline-template id="active-reporting-entities">
+      <div>
+        <div>
+          <div v-if="!itemsLoaded">
+            <p>
+              <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+            </p>
+          </div>
+          <div v-if="itemsLoaded">
+            <div class="p-4 text-center" style="font-size: 32px;">
+              [[items.count]] users
+            </div>
+          </div>
+        </div>
+        <!-- Start Data Tables -->
+        <table class="table table-striped mb-4" infinite-wrapper>
+          <thead>
+            <tr>
+              <th class="text-nowrap">
+                Last login
+                <a href="#" class="text-nowrap btn-link btn-sort ml-2" @click.prevent="sortBy('created_at')">
+                  <i :class="sortIcon('created_at')"></i>
+                </a>
+              </th>
+              <th class="text-nowrap">
+                Full name
+                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('first_name')">
+                  <i :class="sortIcon('first_name')"></i>
+                </a>
+              </th>
+              <th class="text-nowrap">
+                Organization
+                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('organization_full_name')">
+                  <i :class="sortIcon('organization_full_name')"></i>
+                </a>
+              </th>
+            </tr>
+          </thead>
+
+          <!-- Show Loader -->
+          <tbody v-if="!itemsLoaded">
+            <tr>
+              <td colspan="4">
+                <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- Show no items -->
+          <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <tr>
+              <td colspan="4">
+                <h3 class="text-center"><em>No items<span v-show="params.q"> [[params.q]]</span></em></h3>
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- Show Data Entries -->
+          <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
+              <td class="text-nowrap">[[ (humanizeDate(entry.last_login)) ]]</td>
+              <td>[[entry.first_name]] [[entry.last_name]]</td>
+              <td class="text-nowrap">[[entry.organization]]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {% include "_pagination.html" %}
+      </div>
+    </active-reporting-entities>
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div>
+    <h1 class="text-center">Inactive since {{expires_at|date}}</h1>
+  </div>
+  <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
+    <inactive-reporting-entities inline-template id="inactive-reporting-entities">
+      <div>
+        <div>
+          <div v-if="!itemsLoaded">
+            <p>
+              <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+            </p>
+          </div>
+          <div v-if="itemsLoaded">
+            <div class="p-4 text-center" style="font-size: 32px;">
+              [[items.count]] reporting entities
+            </div>
+          </div>
+        </div>
+        <!-- Start Data Tables -->
+        <table class="table table-striped mb-4" infinite-wrapper>
+          <thead>
+            <tr>
+              <th class="text-nowrap">
+                Organization
+                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('organization_full_name')">
+                  <i :class="sortIcon('organization_full_name')"></i>
+                </a>
+              </th>
+            </tr>
+            <tr>
+              <td>Click on a name to show contacts at the organization.</td>
+            </tr>
+          </thead>
+
+          <!-- Show Loader -->
+          <tbody v-if="!itemsLoaded">
+            <tr>
+              <td>
+                <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- Show no items -->
+          <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+            <tr>
+              <td>
+                <h3 class="text-center"><em>No items<span v-show="params.q"> [[params.q]]</span></em></h3>
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- Show Data Entries -->
+          <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
+              <td class="text-nowrap">
+                <a data-toggle="collapse"
+                   :href="'#collapse-'+ entry.slug"
+                   @click="showHideRoles(entry)">[[entry.printable_name]]</a>
+                <div :id="'collapse-'+ entry.slug" class="collapse">
+                  <div v-if="!entry.roles">
+                    <i class="fa fa-refresh fa-spin"></i>
+                  </div>
+                  <div v-for="item in entry.roles" v-if="entry.roles">
+                    {% include "saas/_user_card.html" %}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        {% include "_pagination.html" %}
+      </div>
+    </inactive-reporting-entities>
+  </div>
+</div>
+</div>
+{% endblock %}

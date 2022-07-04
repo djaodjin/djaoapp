@@ -82,6 +82,14 @@ Then, as usual, we start the Docker container as:
         $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t docker.pkg.github.com/djaodjin/djaoapp/djaoapp:2020-06-08
 
 
+Configuring where assets are stored
+-----------------------------------
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = '*bucket_name*'
+
+
+
 Reference for configuration variables
 -------------------------------------
 

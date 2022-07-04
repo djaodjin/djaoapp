@@ -1,12 +1,11 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
 
 from django.conf import settings
 
-from multitier.thread_locals import get_current_site
-from pages.extras import AccountMixinBase
+from extended_templates.extras import AccountMixinBase
 from rules.extras import AppMixinBase
 from rules.utils import get_current_app
 
@@ -51,24 +50,23 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
             processor_hint = 'configure_broker'
         elif requires_provider_keys and not provider_pub_key:
             processor_hint = 'connect_provider'
+            self.update_context_urls(context, {'provider': {
+                'bank': reverse('saas_update_bank', args=(app.account,))}})
         elif not broker_pub_key.startswith('pk_live_'):
             processor_hint = 'configure_broker_livemode'
         elif (requires_provider_keys and
               not provider_pub_key.startswith('pk_live_')):
             processor_hint = 'connect_provider_livemode'
+            self.update_context_urls(context, {'provider': {
+                'bank': reverse('saas_update_bank', args=(app.account,))}})
         context.update({'processor_hint': processor_hint})
-        self.update_context_urls(context, {'provider': {
-            'bank': reverse('saas_update_bank', args=(app.account,))}})
 
         if not self.organization.is_broker:
             if 'urls' in context:
-                if 'pages' in context['urls']:
-                    del context['urls']['pages']
+                if 'theme_update' in context['urls']:
+                    del context['urls']['theme_update']
                 if 'rules' in context['urls']:
                     del context['urls']['rules']
-        # XXX might be overkill to always add ``site`` even though
-        # it is only used in ``templates/saas/users/roles.html`` at this point.
-        context.update({'site': get_current_site()})
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
         })
@@ -109,11 +107,4 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
             #        'api_activate': reverse(
             #            'api_user_activate', args=(attached_user,)),
             #    }})
-
-        # XXX temporarily until djaodjin-saas v0.5 is released.
-        #if not is_broker(self.organization):
-        #    self.update_context_urls(context, {
-        #        'rules': {'app': None},
-        #        'pages': {'theme_base': None},
-        #    })
         return context

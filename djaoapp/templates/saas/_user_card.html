@@ -18,13 +18,13 @@
         <h6 class="card-subtitle">[[item.user.email]]</h6>
         <div class="text-left" v-if="item.accept_request_api_url">
           <hr style="margin-top:0.25rem;margin-bottom:0.5rem" />
-          <small class="text-muted">{% trans %}requested{% endtrans %} [[humanizeDate(item.created_at)]]</small>
+          <small class="text-muted">{% trans %}requested{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
           <button class="btn btn-secondary btn-sm" style="float: right;"
                   @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
         </div>
         <div class="text-left" v-if="item.grant_key">
           <hr  style="margin-top:0.25rem;margin-bottom:0.5rem;" />
-          <small class="text-muted">{% trans %}invited{% endtrans %} [[humanizeDate(item.created_at)]]</small>
+          <small class="text-muted">{% trans %}invited{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
           <button class="btn btn-secondary btn-sm" style="float: right;"
                   @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
         </div>

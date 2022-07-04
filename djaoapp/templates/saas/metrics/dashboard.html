@@ -34,7 +34,7 @@
                       <td>[[entry.full_name]]</td>
                       <td>[[entry.email]]</td>
                       <td>
-                        [[humanizeTimeDelta(entry.created_at, params.ends_at)]]
+                        [[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]
                       </td>
                     </tr>
                   </tbody>
@@ -72,7 +72,7 @@
                         'badge-secondary': item.descr === 'recently logged in'
                       }">[[item.descr]]</span>
                   </span>
-                  <small class="text-muted ml-2">Last active [[humanizeTimeDelta(item.created_at, params.ends_at)]]</small>
+                  <small class="text-muted ml-2">Last active [[$globals.humanizeTimeDelta(item.created_at, params.ends_at)]]</small>
                 </a>
               </div>
             </div>

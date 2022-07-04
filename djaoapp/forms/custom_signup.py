@@ -10,7 +10,6 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from django_countries.fields import Country
 from saas import settings as saas_settings
@@ -20,8 +19,8 @@ from signup.forms import (ActivationForm as ActivationFormBase,
     FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm,
     UserActivateForm as UserActivateFormBase)
 
-from ..compat import reverse, six
 from .fields import PhoneNumberField
+from ..compat import gettext_lazy as _, reverse, six
 from ..thread_locals import get_current_app
 
 

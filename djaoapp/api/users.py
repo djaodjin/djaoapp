@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -6,7 +6,6 @@ import logging
 from operator import itemgetter
 
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
 from rest_framework.generics import ListAPIView
 
 from saas.models import Charge
@@ -17,6 +16,7 @@ from signup.api.users import (UserDetailAPIView as UserDetailBaseAPIView,
 
 from ..mixins import NotificationsMixin
 from .serializers import RecentActivitySerializer
+from ..compat import gettext_lazy as _
 
 LOGGER = logging.getLogger(__name__)
 

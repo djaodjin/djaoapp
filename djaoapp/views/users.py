@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -6,7 +6,6 @@ import logging
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext_lazy as _
 from multitier.thread_locals import get_current_site
 from saas.models import Organization
 from saas.utils import update_context_urls
@@ -16,7 +15,7 @@ from signup.views.users import (
     PasswordChangeView as UserPasswordUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 
-from ..compat import reverse
+from ..compat import gettext_lazy as _, reverse
 from ..mixins import NotificationsMixin
 
 LOGGER = logging.getLogger(__name__)

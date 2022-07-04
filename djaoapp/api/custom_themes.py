@@ -1,7 +1,7 @@
 # Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
 
-from pages.api.themes import (
+from extended_templates.api.themes import (
     ThemePackageListAPIView as ThemePackageListAPIBaseView)
 
 

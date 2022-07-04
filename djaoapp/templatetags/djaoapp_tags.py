@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import (
@@ -8,10 +8,9 @@ from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
-from django.utils.encoding import force_text
 from saas.templatetags.saas_tags import attached_organization
 
-from ..compat import reverse, six, urljoin
+from ..compat import force_str, reverse, six, urljoin
 from ..thread_locals import is_domain_site
 
 
@@ -44,13 +43,6 @@ def pluralize(text):
     if text.endswith('s'):
         return text
     return text + 's'
-
-
-@register.filter()
-def site_printable_name(request):
-    if hasattr(request, 'site') and is_domain_site(request.site):
-        return request.site.printable_name
-    return settings.APP_NAME
 
 
 @register.filter()
@@ -106,7 +98,7 @@ def value_attr(field):
         if value is None:
             value = ""
         if value != "":
-            return 'value=%s' % force_text(value)
+            return 'value=%s' % force_str(value)
     return ""
 
 

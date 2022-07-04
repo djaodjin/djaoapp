@@ -36,8 +36,15 @@
 {% endblock %}
 
 {% block bodyscripts %}
-{{ render_bundle('js_saas') }}
-
+<script type="text/javascript" src="{{'/static/vendor/jquery.payment.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/static/js/djaodjin-postal.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-saas.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-stripe.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/static/cache/saas.js'|asset}}"></script>
+{% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 {% if urls and urls.provider %}

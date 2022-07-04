@@ -8,7 +8,9 @@ import logging
 import phonenumbers
 from django.core.exceptions import ValidationError
 from django.forms import fields
-from django.utils.translation import ugettext_lazy as _
+
+from ..compat import gettext_lazy as _
+
 
 LOGGER = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
@@ -8,12 +8,11 @@ import django.template.defaulttags
 from django.utils.translation import gettext, ngettext
 from deployutils.apps.django.themes import get_template_search_path
 from deployutils.apps.django.templatetags import deployutils_extratags
+from extended_templates import signals as extended_templates_signals
 from jinja2.ext import i18n
 from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment
 import multitier.templatetags.multitier_tags
-from pages import signals as pages_signals
 import saas.templatetags.saas_tags
-from webpack_loader.templatetags.webpack_loader import render_bundle
 
 from .compat import import_string, reverse, six
 import djaoapp.templatetags.djaoapp_tags
@@ -25,7 +24,8 @@ class DjaoappEnvironment(Jinja2Environment):
         #pylint:disable=redefined-builtin
         template = super(DjaoappEnvironment, self).get_template(
             name, parent=parent, globals=globals)
-        pages_signals.template_loaded.send(sender=self, template=template)
+        extended_templates_signals.template_loaded.send(
+            sender=self, template=template)
         return template
 
 
@@ -52,10 +52,12 @@ def environment(**options):
     # i18n
     env.install_gettext_callables(gettext=gettext, ngettext=ngettext,
         newstyle=True)
-    # Generic filters to render pages
+    # Generic filters to render templates
     env.filters['asset'] = multitier.templatetags.multitier_tags.asset
-    env.filters['absolute_uri'] = \
-        multitier.templatetags.multitier_tags.absolute_uri
+    env.filters['site_url'] = multitier.templatetags.multitier_tags.site_url
+    env.filters['site_printable_name'] = \
+        multitier.templatetags.multitier_tags.site_printable_name
+
     env.filters['djasset'] = djaoapp.templatetags.djaoapp_tags.djasset
     env.filters['host'] = deployutils_extratags.host
     env.filters['is_authenticated'] = \
@@ -68,13 +70,9 @@ def environment(**options):
     env.filters['messages'] = djaoapp.templatetags.djaoapp_tags.messages
     env.filters['no_cache'] = djaoapp.templatetags.djaoapp_tags.no_cache
     env.filters['pluralize'] = djaoapp.templatetags.djaoapp_tags.pluralize
-    env.filters['site_prefixed'] = \
-        multitier.templatetags.multitier_tags.site_prefixed
     env.filters['to_json'] = deployutils_extratags.to_json
 
     # Standard site pages
-    env.filters['site_printable_name'] = \
-        djaoapp.templatetags.djaoapp_tags.site_printable_name
     env.filters['url_app'] = djaoapp.templatetags.djaoapp_tags.url_app
     env.filters['url_contact'] = djaoapp.templatetags.djaoapp_tags.url_contact
     env.filters['url_home'] = djaoapp.templatetags.djaoapp_tags.url_home
@@ -99,11 +97,11 @@ def environment(**options):
 
     env.globals.update({
         'DATETIME_FORMAT': "MMM dd, yyyy",
-        'render_bundle': render_bundle
     })
     if settings.DEBUG:
         env.filters['addslashes'] = django.template.defaultfilters.addslashes
         env.globals.update({
+            'ASSETS_DEBUG': settings.ASSETS_DEBUG,
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,
             'url': reverse,
             'cycle': django.template.defaulttags.cycle,

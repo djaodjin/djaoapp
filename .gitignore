@@ -16,3 +16,6 @@ djaoapp/locale/*/LC_MESSAGES/*.mo
 # npm install --save <package-name>
 package-lock.json
 node_modules
+credentials
+djaoapp/static/vendor/chart.js
+webpack-conf-paths.json

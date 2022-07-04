@@ -6,7 +6,7 @@
 <div class="col-md-12">
   <div id="transactions-container" class="row">
     <section id="total">
-      <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[humanizeNumber(items.balance_amount, items.balance_unit, 0.01)]]</span>
+      <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[$globals.humanizeNumber(items.balance_amount, items.balance_unit, 0.01)]]</span>
     </section>
     <section id="transactions">
       <div>
@@ -83,7 +83,7 @@
           <tbody id="has-transactions"
             v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <tr v-for="entry in items.results">
-              <td>[[humanizeDate(entry.created_at)]]</td>
+              <td>[[$globals.humanizeDate(entry.created_at)]]</td>
               <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
               <td>[[entry.orig_organization]]</td>
               <td>[[entry.orig_account]]</td>
