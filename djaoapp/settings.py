@@ -106,10 +106,11 @@ if DEBUG:
 else:
     DEBUG_APPS = RULES_APPS
 
-if API_DEBUG:
+if API_DEBUG and sys.version_info[0] == 3:
+    # Requires Python3+ to create API docs
     ENV_INSTALLED_APPS = DEBUG_APPS + (
         'drf_yasg',
-        )
+    )
 else:
     ENV_INSTALLED_APPS = DEBUG_APPS
 
