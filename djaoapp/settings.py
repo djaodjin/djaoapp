@@ -47,6 +47,9 @@ update_settings(sys.modules[__name__],
 for env_var in ['DEBUG', 'API_DEBUG', 'ASSETS_DEBUG', 'FEATURES_DEBUG']:
     if os.getenv(env_var):
         setattr(sys.modules[__name__], env_var, (int(os.getenv(env_var)) > 0))
+if sys.version_info[0] < 3:
+    # Requires Python3+ to create API docs
+    API_DEBUG = False
 
 # Remove extra information used for documentation like examples, etc.
 OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', "0")) > 0)
@@ -106,8 +109,7 @@ if DEBUG:
 else:
     DEBUG_APPS = RULES_APPS
 
-if API_DEBUG and sys.version_info[0] == 3:
-    # Requires Python3+ to create API docs
+if API_DEBUG:
     ENV_INSTALLED_APPS = DEBUG_APPS + (
         'drf_yasg',
     )
