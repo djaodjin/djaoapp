@@ -41,7 +41,7 @@ ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # here to prevent that issue.
 DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
 else
-DB_FILENAME   := $(srcDir)/db.sqlite
+DB_FILENAME   ?= $(if $(wildcard $(LOCALSTATEDIR)/db/),$(LOCALSTATEDIR)/db/db.sqlite,$(srcDir)/db.sqlite)
 endif
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
 
@@ -58,15 +58,19 @@ all:
 	@echo "Nothing to be done for 'make'."
 
 
+# We need to remove chart.js installed by collectstatic
+# because it is not JS/v5 compatible.
 build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/email.css \
               $(ASSETS_DIR)/cache/dashboard.css \
               $(ASSETS_DIR)/cache/pages.css \
               $(ASSETS_DIR)/cache/saas.js
+	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
+	rm $(ASSETS_DIR)/vendor/chart.js
 	cd $(srcDir) && $(ESCHECK) es5 htdocs/static/cache/*.js htdocs/static/vendor/*.js -v
 
 
-clean: clean-dbs clean-themes
+clean: clean-dbs clean-themes clean-assets
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +
@@ -154,6 +158,9 @@ initdb-cowork:
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
+
+clean-assets:
+	rm $(ASSETS_DIR)/cache/*
 
 clean-dbs:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
@@ -321,26 +328,26 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 				$(DESTDIR)$(SYSCONFDIR)/monit.d/$(APP_NAME) \
 				$(DESTDIR)$(SYSCONFDIR)/systemd/system/$(APP_NAME).service \
 				$(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf
-	install -d $(DESTDIR)$(LOCALSTATEDIR)/db
-	install -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
-	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || install -d $(DESTDIR)$(LOCALSTATEDIR)/run
+	[ -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
+	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/run
+	$(if $(dirname $(DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(DB_FILENAME)))
 
 # Implementation Note:
 # We use [ -f file ] before install here such that we do not blindly erase
 # already present configuration files with template ones.
 $(DESTDIR)$(CONFIG_DIR)/site.conf: $(srcDir)/etc/site.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -f $@ ] || \
 		sed -e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
 			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
 			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
 			-e 's,%(installTop)s,$(installTop),' \
-			-e "s,%(DB_NAME)s,djaodjin," \
+			-e "s,%(DB_FILENAME)s,$(abspath $(DB_FILENAME))," \
 			-e "s,%(binDir)s,$(binDir)," $< > $@
 
 $(DESTDIR)$(CONFIG_DIR)/credentials: $(srcDir)/etc/credentials
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e "s,\%(SECRET_KEY)s,`$(PYTHON) -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," \
 		-e "s,STRIPE_PUB_KEY = \"\",STRIPE_PUB_KEY = \"$(STRIPE_PUB_KEY)\"," \
@@ -348,7 +355,7 @@ $(DESTDIR)$(CONFIG_DIR)/credentials: $(srcDir)/etc/credentials
 			$< > $@
 
 $(DESTDIR)$(CONFIG_DIR)/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
 		-e 's,%(APP_NAME)s,$(APP_NAME),' \
@@ -356,7 +363,7 @@ $(DESTDIR)$(CONFIG_DIR)/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 			   $(srcDir)/etc/service.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(srcDir)s,$(srcDir),' \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
@@ -366,22 +373,22 @@ $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/logrotate.d/%: $(srcDir)/etc/logrotate.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/monit.d/%: $(srcDir)/etc/monit.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/sysconfig/%: $(srcDir)/etc/sysconfig.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || install -p -m 644 $< $@
 
 $(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf: $(srcDir)/etc/tmpfiles.conf
-	install -d $(dir $@)
+	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' $< > $@
