@@ -64,7 +64,7 @@ function humanizeNumber(cell, unit, scale) {
 
 function humanizeTimeDelta(at_time, ends_at) {
     var self = this;
-    var cutOff = ends_at ? moment(ends_at, DATE_FORMAT) : moment();
+    var cutOff = ends_at ? moment(ends_at) : moment();
     var dateTime = moment(at_time);
     if( dateTime <= cutOff ) {
         var timeAgoTemplate = (self.$labels && self.$labels.timeAgoTemplate) ?

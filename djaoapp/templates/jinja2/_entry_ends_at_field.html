@@ -1,5 +1,5 @@
 {% extends "_form_fields.html" %}
 
 {% block form_block %}
-{{date_input_field('entry.ends_at', 'params.timezone', "Expires At", hide_labels=True, show_as_text=True)}}
+{{date_input_field('entry.ends_at', 'params.timezone', "Expires At", hide_labels=True, nameOpened='entry._editEndsAt', toggleNameOpened='toggleEndsAt(entry, $event)', nameOpenedRef='"editEndsAt_" + entry.code')}}
 {% endblock %}

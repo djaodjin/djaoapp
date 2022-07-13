@@ -23,50 +23,44 @@
 {%- endmacro %}
 
 
-{% macro date_input_field(name, timezone, label, required=True, help_text="", value="", disabled=False, disabled_toggle="", errors="", hide_labels=False, show_as_text=False, extra_label_classes="", extra_control_classes="") -%}
+{% macro date_input_field(name, timezone, label, required=True, help_text="", value="", disabled=False, errors="", hide_labels=False, nameOpened="", toggleNameOpened="", nameOpenedRef="", extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if errors %} has-error{% endif %}">
-  <uiv-dropdown{% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %} append-to-body menu-right>
+  <div class="{% if extra_control_classes %} {{extra_control_classes}}{% endif %}"{% if not show_as_text %}id="dateinput"{% endif %}>
     <div class="input-group mr-2">
       {% if not hide_labels %}
       <div class="input-group-prepend">
         <label class="input-group-text{% if required %} requiredField{% endif %}">{{label}}</label>
       </div>
       {% endif %}
-      {% if show_as_text %}
-      <span class="p-2">[[{{name}} ? ($globals.humanizeDate({{name}})) : "{% trans %}Never{% endtrans %}" ]]</span>
-      {% else %}
+      {% if nameOpened %}
+      <span class="form-control"
+            v-show="!{{nameOpened}} && !{{name}}">{% trans %}Never{% endtrans %}</span>
+      <div class="input-group-append"
+           v-show="!{{nameOpened}} && !{{name}}">
+        <button class="input-group-text"
+                {% if disabled %}
+                disabled
+                {% else %}
+                @click.prevent="{{toggleNameOpened}}"
+                {% endif %}
+                ><span class="fa fa-calendar"></span></button>
+      </div>
+      {% endif %}
       <input class="form-control{% if errors %} is-invalid{% endif %}"
+           type="date"
            name="{{name}}"
+           {% if nameOpened %}
+           v-show="{{nameOpened}} || {{name}}"
+           :value="asDateInputField({{name}})"
+           @input="{{toggleNameOpened}}"
+           {% if nameOpenedRef %} :ref="{{nameOpenedRef}}"{% endif %}
+           {% else %}
            v-model="{{name}}"
+           {% endif %}
            {% if value %}value="{{value}}"{% endif %}
            {% if disabled %} disabled{% endif %} />
-      {% endif %}
-      <div class="input-group-append"{% if disabled_toggle %} v-if="{{disabled_toggle}}"{% endif %}>
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle"><i class="fa fa-calendar"></i>
-        </button>
-      </div>
     </div>
-    <template slot="dropdown">
-      <li>
-        <div>
-          <uiv-date-picker
-            format="{{DATETIME_FORMAT}}"
-            v-model="{{name}}"
-            {% if show_as_text %}@input="selected(index)"{% else %}@input="get"{% endif %}
-            icon-control-left="fa fa-caret-left"
-            icon-control-right="fa fa-caret-right" />
-        </div>
-        <div class="m-3">
-        <select class="form-control"
-                v-model="{{timezone}}"
-                @click.prevent="function(event) {event.stopPropagation();}">
-          <option value="local">{% trans %}Local{% endtrans %}</option>
-          <option value="utc">{% trans %}UTC{% endtrans %}</option>
-        </select>
-        </div>
-      </li>
-    </template>
-  </uiv-dropdown>
+  </div>
   <div class="form-text help-block invalid-feedback">
     {% for error in errors %}
     {{error}}
