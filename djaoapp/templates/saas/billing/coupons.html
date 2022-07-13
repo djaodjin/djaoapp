@@ -96,7 +96,7 @@
                   <span class="text-muted" v-show="!entry._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
                   <span @click="editAttempts(entry)"
                     v-show="!entry._editAttempts">
-                    [[entry.nb_attempts ? entry.nb_attempts : '{% trans %}No limit{% endtrans %}']]
+                    [[entry.nb_attempts === null ? '{% trans %}No limit{% endtrans %}' : entry.nb_attempts]]
                   </span>
                   <input type="text" class="form-control"
                       @blur="saveAttempts(entry)"
