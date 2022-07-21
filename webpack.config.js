@@ -28,7 +28,6 @@ module.exports = {
           'js/djaodjin-metrics.js'
       ],
       pages: [
-          'js/djaodjin-resources.js',
           'js/djaodjin-editor.js',
           'js/djaodjin-upload.js',
           'js/djaodjin-sidebar-gallery.js',
@@ -37,7 +36,6 @@ module.exports = {
       ],
       saas: [
           'js/djaodjin-postal.js',
-          'js/djaodjin-resources.js',
           'js/djaodjin-saas.js',
           'js/djaodjin-stripe.js'
       ],
@@ -82,6 +80,12 @@ module.exports = {
           itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
           itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
           TypeAhead: ['js/djaodjin-resources-vue.js', 'TypeAhead'],
+
+          clearMessages: ['js/djaodjin-resources.js', 'clearMessages'],
+          showMessages: ['js/djaodjin-resources.js', 'showMessages'],
+          showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
+          getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
+          getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
       })
   ],
   resolve: {

@@ -7,8 +7,6 @@ import logging
 from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
     OrganizationListAPIView as OrganizationListBaseAPIView)
-from saas.api.serializers import OrganizationCreateSerializer
-from saas.docs import OpenAPIResponse, swagger_auto_schema
 from saas.utils import get_organization_model
 from signup.models import Contact
 
@@ -27,6 +25,7 @@ class ProfileDecorateMixin(object):
             if (hasattr(organization, 'is_personal') and
                 organization.is_personal):
                 contact = organization.attached_user().contacts.first()
+                #pylint:disable=protected-access
                 for field in Contact._meta.fields:
                     if not hasattr(organization, field.name):
                         setattr(organization, field.name,

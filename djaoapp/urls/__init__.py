@@ -69,7 +69,7 @@ else:
 
 if settings.API_DEBUG:
     from rest_framework.schemas import get_schema_view
-    from ..views.docs import APIDocView
+    from ..views.docs import APIDocView, NotificationDocView
     urlpatterns += [
         url(r'^docs/api/schema/$', get_schema_view(
             title="DjaoApp API",
@@ -80,6 +80,7 @@ if settings.API_DEBUG:
 #            contact=openapi.Contact(email=settings.DEFAULT_FROM_EMAIL),
 #            license=openapi.License(name="BSD License"),
         ), name='openapi-schema'),
+        url(r'^docs/api/notifications/', NotificationDocView.as_view()),
         url(r'^docs/api/', APIDocView.as_view()),
     ]
 

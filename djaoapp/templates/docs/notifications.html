@@ -1,0 +1,224 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% macro api_param_doc(param, operationId, response=True, indent=0) -%}
+{% if response or not param.readOnly %}
+{% if param.type %}
+<div class="param">
+  <div class="param-name{% if indent %} param-indent-{{indent}}{% endif %}">
+    <span class="param-name-wrap">{{param.name}}</span>
+  </div>
+  <div class="param-info{% if not (param.type == 'object' or param.type == 'array') %} param-builtin{% endif %}">
+    <div>
+      <span class="param-type integer" title="">{{param.type}}</span>
+      {% if not response and param.required %}
+      <span class="param-required">required</span>
+      {% endif %}
+    </div>
+    <div class="param-description">
+      <p>
+        {{param.description}}
+        {% if (param.type == 'object' or param.type == 'array') and param|schema_properties(definitions) %}
+        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+{% if param.type == 'object' or param.type == 'array' %}
+<div id="collapse-{{operationId}}-{{param.name}}" class="collapse show">
+  {% for attr in param|schema_properties(definitions) %}
+  {{ api_param_doc(attr, operationId, response, indent + 1) }}
+  {% endfor %}
+</div>
+{% endif %}
+{% else %}
+ XXX no type for {{param}}.
+{% endif %}
+{% endif %}
+{%- endmacro %}
+
+
+{% block sidebar %}
+<ul id="api-doc-sidebar" class="nav flex-column">
+  <li class="nav-item">
+      <a class="nav-link" href="#index">Index</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="#alphabetical">Alphabetical</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="#workflows">By workflows</a>
+      <ul class="list-unstyled ml-2">
+        <li class="nav-item">
+          <a class="nav-link" href="#rbac">Access control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#billing">Billing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#subscription">Subscriptions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#activity">Activity</a>
+        </li>
+
+      </ul>
+  </li>
+</ul>
+<hr class="d-md-none" />
+<ul class="nav flex-column d-md-none">
+    {% include "_generic_navbar.html" %}
+</ul>
+{% endblock %}
+
+{% block content_area_classes %} style="padding-left: 20px;"{% endblock %}
+
+{% block content %}
+<div id="api-doc-content">
+  {# intro #}
+  <a name="index"></a>
+  <div id="intro">
+    <div class="row">
+      <div class="col-12">
+        <h1>DjaoApp Notifications Reference <a href="#index" class="header-anchor"><i class="fa fa-link"></i></a></h1>
+        <p>
+These are notifications sent by DjaoApp.
+        </p>
+      </div>
+    </div>
+    <div class="row"> {#row-eq-height">#}
+      <div class="col-sm-4">
+        <div class="faq-list" style="height:92%;">
+          <div class="p-4">
+            <h3>workflows</h3>
+            <ul>
+              <li><a href="#rbac">Access control</a></li>
+              <li><a href="#billing">Billing</a></li>
+              <li><a href="#subscription">Subscriptions</a></li>
+              <li><a href="#activity">Activity</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>{# /intro #}
+  <hr />
+
+  {# by workflows #}
+  <div id="workflows">
+    <a name="workflows"></a>
+    <h2>By workflows <a href="#workflows" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+    <a name="auth"></a>
+    <h3>Auth & credentials <a href="#auth" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'auth' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs related to authenticating users such as registration,
+login, updating a user password, etc.
+        </p>
+      </div>
+    </div>
+
+    <a name="billing"></a>
+    <h3>Billing <a href="#billing" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          {% for summary_end_point in api_end_points_by_summary %}
+          {% if 'billing' in summary_end_point.tags %}
+          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <p>
+This section contains APIs to manage the checkout, billing and accounting
+workflows, including shopping carts, coupons, charges and balance statements.
+        </p>
+      </div>
+    </div>
+  </div> {# / by datamodels #}
+  <hr class="mb-0" />
+
+  {# alphabetically listed #}
+  <div id="alphabetical">
+    <section class="row">
+      <div class="col-sm-7">
+        <a name="alphabetical"></a>
+        <h2 class="mt-4">Alphabetical <a href="#alphabetical" class="header-anchor"><i class="fa fa-link"></i></a></h2>
+      </div>
+      <div class="col-sm-5 code">
+      </div>
+    </section>
+    {% for api_end_point in api_end_points %}
+    <section class="row">
+      <div class="col-sm-7">
+        <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
+        <div>
+          {{api_end_point.description}}
+        </div>
+        {% if api_end_point|request_body_parameters(definitions) %}
+        <div>
+          <h5 class="param-list-header">Request body</h5>
+          <div class="params-wrap">
+            {% for param in api_end_point|request_body_parameters(definitions) %}
+            {{ api_param_doc(param, api_end_point.operationId, response=False) }}
+            {% endfor %}
+          </div>
+        </div> {# .param-list-header #}
+        {% endif %}
+        <responses-list>
+          <h5 class="responses-list-header param-list-header">Definition</h5>
+          {% for resp_code, params in (api_end_point|responses_parameters(definitions)).items() %}
+          <zippy>
+            <div class="zippy zippy-success">
+              {% if not params %}
+              <div class="zippy-title">
+                <span class="zippy-title-content">
+                  <p>{{resp_code}}{% if resp_code == "204" %} No Content{% endif %}</p>
+                </span>
+              </div>
+              {% endif %}
+              <div class="zippy-content">
+                <div class="param">
+                  <div class="param-name">
+                    <span class="param-name-wrap">event</span>
+                  </div>
+                  <div class="param-info param-builtin">
+                    <div>
+                      <strong>"{{api_end_point.operationId}}"</strong>
+                    </div>
+                  </div>
+                </div>
+                {% for param in params %}
+                {{ api_param_doc(param, api_end_point.operationId) }}
+                {% endfor %}
+              </div>
+            </div>
+          </zippy>
+          {% endfor %}
+        </responses-list>{# .responses-list #}
+      </div>
+      <div class="col-sm-5 code">
+        <h3>Examples</h3>
+        {% for example in api_end_point.examples %}
+        {% if example.resp %}
+        {{example.resp}}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  </div>{# /alphabetical #}
+</div>
+{% endblock %}

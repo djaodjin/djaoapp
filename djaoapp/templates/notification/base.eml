@@ -7,55 +7,66 @@
 <link rel="stylesheet" media="screen" href="{{'/static/cache/email.css'|asset}}" />
 </head>
 <body>
-    {% if errors %}
-    <div style="margin:15px;color:#721c24;background-color:#f8d7da;border-color:#f5c6cb;">
-        {% for error in errors %}
-        <p>
-            {{error}}
-        </p>
-        {% endfor %}
-    </div>
-    {% endif %}
-    <table class="body-wrap">
-        <tr>
-            <td></td>
-            <td class="container">
-                <!-- content -->
-                <div class="content">
-                    <table>
-                        <tr style="width:100%">
-                            <td class="page-header">
-                                <h3>{% block title %}{{broker.printable_name}}{% endblock %}</h3>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="content">
-                                {% block html_content %}{% endblock %}
-                            </td>
-                        </tr>
-                    </table>
+  {% if errors %}
+  <div style="margin:15px;color:#721c24;background-color:#f8d7da;border-color:#f5c6cb;">
+    {% for error in errors %}
+    <p>
+      {{error}}
+    </p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <table class="body-wrap">
+    <tr>
+      <td></td>
+      <td class="container">
+        <!-- content -->
+        <div class="content">
+          <table>
+            <tr style="width:100%">
+              <td class="page-header">
+                <h3>{% block title %}{{broker.printable_name}}{% endblock %}</h3>
+              </td>
+            </tr>
+            <tr>
+              <td id="content">
+                {% block html_content %}{% endblock %}
+                {% block support %}
+                <div>
+                  <p>
+{% if provider %}
+{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
+{% else %}
+{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
+{% endif %}
+                  </p>
                 </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
-    <table class="footer-wrap">
-        <tr>
-            <td></td>
-            <td class="container">
-                <div class="content">
-                    <table>
-                        <tr>
-                            <td class="page-footer">
-                                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://djaodjin.com/static/img/logo-djaodjin-128.png"> <a href="https://djaodjin.com/"> djaodjin.com</a>
-                                </p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
+                {% endblock %}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+  <table class="footer-wrap">
+    <tr>
+      <td></td>
+      <td class="container">
+        <div class="content">
+          <table>
+            <tr>
+              <td class="page-footer">
+                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://www.djaodjin.com/static/img/logo-djaodjin-128.png"> <a href="https://www.djaodjin.com/"> djaodjin.com</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </table>
 </body>
 </html>

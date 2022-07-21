@@ -13,8 +13,8 @@
 <p>
 {% trans %}Full name{% endtrans %}: <b>{{user.printable_name}}</b>
 <br>
-{% trans %}Username{% endtrans %}: {% if urls and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
+{% trans %}Username{% endtrans %}: {% if user.location %}<a href="{{user.location}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
 <br>
-{% trans %}Email{% endtrans %}: {{email}}
+{% trans %}Email{% endtrans %}: {{user.email}}
 </p>
 {% endblock %}

@@ -7,12 +7,18 @@
 {% block html_content %}
 <h3>{% trans %}Credit card updated{% endtrans %}</h3>
 <p>
-{% trans name=organization.printable_name %}The {{name}} credit card has been successfully updated.{% endtrans %}
+{% trans name=profile.printable_name %}The {{name}} credit card has been successfully updated.{% endtrans %}
 <br>
 <br>
-{% trans %}Old{% endtrans %} : <em>****-{{old_card.last4}}</em>, {% trans exp_date=old_card.exp_date %}exp: {{exp_date}}{% endtrans %}
+{% trans %}Old{% endtrans %} : <em>****-{{changes.last4.pre}}</em>, {% trans exp_date=changes.exp_date.pre %}exp: {{exp_date}}{% endtrans %}
 <br>
-<b>{% trans %}New{% endtrans %} : <em>****-{{new_card.last4}}</em>, {% trans exp_date=new_card.exp_date%}exp: {{exp_date}}{% endtrans %}</b>
+<b>{% trans %}New{% endtrans %} : <em>****-{{changes.last4.post}}</em>, {% trans exp_date=changes.exp_date.post %}exp: {{exp_date}}{% endtrans %}</b>
 </p>
 
+<div>
+{% if originated_by %}
+<p>
+{% trans profile_url=originated_by.location, name=originated_by.printable_name %}The card was updated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
+</p>
+{% endif %}
 {% endblock %}

@@ -244,87 +244,13 @@ class RegisterMixin(object):
 
 class NotificationsMixin(object):
 
-    @staticmethod
-    def get_notifications(user=None):
+    def get_notifications(self, user=None):
+        from .views.docs import NotificationDocGenerator
         broker = get_broker()
-        notifications = {
-            'card_updated': {
-                'title': _("Card updated"),
-                'descr': _("This notification is sent when a credit card"\
-" on file is updated.")
-            },
-            'charge_receipt': {
-                'title': _("Charge receipt"),
-                'descr': _("This notification is sent when a charge is"\
-" created on a credit card. It is also sent when the charge is refunded.")
-            },
-            'claim_code_generated': {
-                'title': _("Claim code"),
-                'descr': _("This notification is sent to the user invited"\
-" through a groupBuy.")
-            },
-            'expires_soon': {
-                'title': _("Expires soon"),
-                'descr': _("This notification is sent when a subscription"\
-" is about to expire.")
-            },
-            'order_executed': {
-                'title': _("Order confirmation"),
-                'descr': _("This notification is sent when an order has"\
-" been confirmed but a charge has not been successfully processed yet.")
-            },
-            'organization_updated': {
-                'title': _("Profile updated"),
-                'descr': _("This notification is sent when a profile"\
-" is updated.")
-            },
-            'password_reset': {
-                'title': _("Password reset"),
-                'descr': _("This notification is sent to a user that has"\
-" requested to reset their password through a \"forgot password?\" link.")
-            },
-            'user_activated': {
-                'title': _("User activated"),
-                'descr': _("This notification is sent to profile managers"\
-" of a domain when a user has activated his/her account.")
-                },
-            'user_contact': {
-                'title': _("User contact"),
-                'descr': _("This notification is sent to profile managers"\
-" of a domain when a user submits an inquiry on the contact-us page.")
-            },
-            'user_registered': {
-                'title': _("User registered"),
-                'descr': _("This notification is sent to profile managers"\
-" of a domain when a user has registered.")
-            },
-            'user_welcome': {
-                'title': _("Welcome e-mail"),
-                'descr': _("This notification is sent to a user after they"\
-" register an account with the site."),
-            },
-            'role_request_created': {
-                'title': _("Role requested"),
-                'descr': _("This notification is sent to profile managers"\
-" of an organization when a user has requested a role on that organization.")
-                },
-            'verification': {
-                'title': _("Verification"),
-                'descr': _("This notification is sent to verify an e-mail"\
-" address of a user.")
-            },
-            'sales_report': {
-                'title': _("Weekly sales report"),
-                'descr': _("This notification is sent to profile managers."\
-" It contains the weekly sales results.")
-            },
-        }
-        for role_descr in broker.get_role_descriptions():
-            notifications.update({"%s_role_grant_created" % role_descr.slug: {
-                'title': _("%(role_title)s Added") % {
-                    'role_title': role_descr.title},
-                'descr': ""
-            }})
+        generator = NotificationDocGenerator()
+        schema = generator.get_schema(request=self.request)
+        notifications = {notification_slug: notification.get('GET')
+            for notification_slug, notification in schema.get('paths').items()}
 
         # user with profile manager of broker (or theme editor)
         if not user or broker.with_role(

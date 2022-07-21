@@ -1,13 +1,13 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{% trans user=user.printable_name %}Contact inquiry from {{user}}{% endtrans %}
+{% trans user=originated_by.printable_name %}Contact inquiry from {{user}}{% endtrans %}
 {% endblock %}
 
-{% block title %}{{provider.printable_name}}{% endblock %}
+{% block title %}{% if provider %}{{provider.printable_name}}{% else %}{{broker.printable_name}}{% endif %}{% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Contact inquiry from{% endtrans %} {% if urls and urls.user and urls.user.profile %}<a href="{{urls.user.profile}}">{{user.printable_name}}</a>{% else %}<b>{{user.printable_name}}</b>{% endif %}</h3>
+<h3>{% trans %}Contact inquiry from{% endtrans %} {% if originated_by.location %}<a href="{{originated_by.location}}">{{originated_by.printable_name}}</a>{% else %}<b>{{originated_by.printable_name}}</b>{% endif %}</h3>
 
 <div>
 {% for row in reason %}
@@ -19,7 +19,6 @@
 </div>
 
 <p>{% trans %}Regards{% endtrans %},</p>
-<p><b>{{user.printable_name}}</b><br />
-{{user.email}}</p>
+<p><b>{{originated_by.printable_name}}</b><br />
+{{originated_by.email}}</p>
 {% endblock %}
-

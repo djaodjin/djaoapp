@@ -54,9 +54,4 @@
 <p>
 <a href="https://djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
 </p>
-<div id="support">
-  <p>
-{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}If you have any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
-  </p>
-</div>
 {% endblock %}

@@ -2,14 +2,14 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.17.21
-Django==2.2.28
+Django==3.2.14
 django-phonenumber-field==5.2.0
 django-recaptcha==2.0.6
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.9.1
 djaodjin-extended-templates==0.3.2
-djaodjin-multitier==0.1.22
+djaodjin-multitier==0.1.23
 djaodjin-rules==0.2.9
 djaodjin-saas==0.12.0
 djaodjin-signup==0.6.0
@@ -30,9 +30,12 @@ whitenoise==5.1.0
 WeasyPrint==53.3
 
 # To run with DEBUG=1
-django-extensions==2.2.9
-django-debug-panel==0.8.3
-django-debug-toolbar==2.2.1 # 1.11 does not support Django 2.2
+django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2
+                                  # 3.2.4 fails with SQLPanel is not scriptable
+                                  # 2.2.1 is the last version for Django2.2
+                                  # 1.11 does not support Django 2.2
+django-extensions==3.2.0          # required by Django==4.0
+
 
 # development
 drf-yasg==1.8.0

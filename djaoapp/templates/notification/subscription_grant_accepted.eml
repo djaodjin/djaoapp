@@ -1,11 +1,11 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{% trans user=user.printable_name|safe, organization=organization.printable_name|safe, plan=plan.title %}{{user}} accepted the subscription of {{organization}} to {{plan}}{% endtrans %}
+{% trans user=originated_by.printable_name|safe, organization=profile.printable_name|safe, plan=plan.title %}{{user}} accepted the subscription of {{organization}} to {{plan}}{% endtrans %}
 {% endblock %}
 
 {% block title %}
-<h3>{% trans user=user.printable_name|safe, organization=organization.printable_name|safe, plan=plan.title %}{{user}} accepted the subscription of {{organization}} to {{plan}}{% endtrans %}</h3>
+<h3>{% trans user=originated_by.printable_name|safe, organization=profile.printable_name|safe, plan=plan.title %}{{user}} accepted the subscription of {{organization}} to {{plan}}{% endtrans %}</h3>
 {% endblock %}
 
 {% block html_content %}
@@ -15,7 +15,7 @@
 </p>
 {% endif %}
 <p>
-{% trans back_url=back_url, organization=organization.printable_name %}You can now access <a href="{{back_url}}">{{organization}} profile</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
+{% trans back_url=back_url, organization=profile.printable_name %}You can now access <a href="{{back_url}}">{{organization}} profile</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

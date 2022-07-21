@@ -30,7 +30,7 @@
         <div v-for="entry in items.results">
           <p>[[$globals.humanizeDate(entry.created_at)]]
             <a
-              :href="'{{'/profile/'|site_url}}' + entry.account + '/'">[[entry.account]]</a> {% trans %}by{% endtrans %} [[entry.created_by]]:</p>
+              :href="'{{request|site_url}}/profile/' + entry.account + '/'">[[entry.account]]</a> {% trans %}by{% endtrans %} [[entry.created_by]]:</p>
           <div>[[entry.text]]</div>
         </div>
       </div>

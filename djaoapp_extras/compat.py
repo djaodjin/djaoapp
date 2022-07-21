@@ -1,7 +1,7 @@
 # Copyright (c) 2019, DjaoDjin inc.
 # see LICENSE
 
-#pylint: disable=no-name-in-module,unused-import
+#pylint: disable=no-name-in-module,unused-import,invalid-name,bad-except-order
 from functools import WRAPPER_ASSIGNMENTS
 import six
 
@@ -38,3 +38,8 @@ except ImportError: # <= Django 1.10, Python<3.6
 except ModuleNotFoundError: #pylint:disable=undefined-variable
     # <= Django 1.10, Python>=3.6
     from django.core.urlresolvers import NoReverseMatch, reverse, reverse_lazy
+
+try:
+    from django.utils.translation import gettext_lazy
+except ImportError: # django < 3.0
+    from django.utils.translation import ugettext_lazy as gettext_lazy

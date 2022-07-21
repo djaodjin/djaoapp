@@ -18,7 +18,7 @@
     <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta name="twitter:site" content="@djaodjin" />
     {% endblock %}
-    <link rel="stylesheet" media="screen" href="{{'/static/cache/base.css'|asset}}" />
+    <link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/base.css" />
     <style media="screen">
       [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
         display: none !important;
@@ -133,7 +133,7 @@
                     <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
                       <!-- The content here will be replaced by _menubar.html -->
                       <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" id="login" href="{{'/login/'|site_url}}">
+                        <a class="nav-link btn btn-primary text-white" id="login" href="{{request|url_login}}">
                           {% trans %}Sign in{% endtrans %}
                         </a>
                       </li>
@@ -201,18 +201,18 @@
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
-<script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/popper.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/toastr.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/popper.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/toastr.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/cache/base.js'|djasset}}"></script>
 {% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {

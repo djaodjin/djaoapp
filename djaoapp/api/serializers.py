@@ -18,8 +18,7 @@ from saas.api.serializers import (
     OrganizationWithEndsAtByPlanSerializer)
 from saas.models import get_broker, Role, ChargeItem
 from saas.api.serializers import EnumField
-from signup.serializers import (ActivitySerializer as UserActivitySerializer,
-    UserSerializer)
+from signup.serializers import ActivitySerializer as UserActivitySerializer
 from rules.api.serializers import AppSerializer as RulesAppSerializer
 from signup.serializers import UserCreateSerializer
 

@@ -3,8 +3,6 @@
 
 from __future__ import absolute_import
 
-from django.conf import settings
-
 from extended_templates.extras import AccountMixinBase
 from rules.extras import AppMixinBase
 from rules.utils import get_current_app

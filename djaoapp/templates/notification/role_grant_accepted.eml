@@ -3,10 +3,10 @@
 {% block subject %}
 {# We are putting |safe here because an e-mail's subject line shouldn't be
 HTML encoded. #}
-{% trans user=user.printable_name|safe, organization=organization.printable_name|safe %}{{user}} was added as a {{role}} to {{organization}}{% endtrans %}
+{% trans user=user.printable_name|safe, organization=profile.printable_name|safe, role_description=role_description.title %}{{user}} was added as a {{role_description}} to {{organization}}{% endtrans %}
 {% endblock %}
 
-{% block title %}{% trans user=user.printable_name, organization=organization.printable_name %}{{user}} was added as a {{role}} to {{organization}}{% endtrans %}{% endblock %}
+{% block title %}{% trans user=user.printable_name, organization=profile.printable_name, role_description=role_description.title %}{{user}} was added as a {{role_description}} to {{organization}}{% endtrans %}{% endblock %}
 
 {% block html_content %}
 {% if reason %}
@@ -15,7 +15,7 @@ HTML encoded. #}
 </p>
 {% endif %}
 <p>
-{% trans back_url=back_url, organization=organization.printable_name %}You can review who has a {{role}} to <a href="{{back_url}}">{{organization}} profile</a> now by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
+{% trans back_url=back_url, organization=profile.printable_name, role_description=role_description.title %}You can review who has a {{role_description}} to <a href="{{back_url}}">{{organization}} profile</a> now by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
 </p>
 {% endblock %}

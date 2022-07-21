@@ -5,13 +5,13 @@
 We are putting |safe here because an e-mail's subject line shouldn't be
 HTML encoded.
 #}
-{% trans name=provider.printable_name|safe %}Your subscription to {{name}} expires in {{nb_days}} days{% endtrans %}
+{% trans name=provider.printable_name|safe %}Your subscription to {{name}} expires in {{nb_expiration_days}} days{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
 <h3>{% trans %}Act Now!{% endtrans %}</h3>
 <p>
-{% trans subscriber=organization.printable_name|safe, plan=plan.printable_name|safe, provider=provider.printable_name|safe %}{{subscriber}} subscription to {{plan}} from {{provider}} expires in {{nb_days}} days.{% endtrans %}
+{% trans subscriber=profile.printable_name|safe, plan=plan.title|safe, provider=provider.printable_name|safe %}{{subscriber}} subscription to {{plan}} from {{provider}} expires in {{nb_expiration_days}} days.{% endtrans %}
 </p>
 <a href="{{back_url}}">{% trans %}Renew now{% endtrans %}</a>
 {% trans %}to insures continuous service by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}

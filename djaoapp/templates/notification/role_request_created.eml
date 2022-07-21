@@ -1,11 +1,11 @@
 {% extends "notification/base.eml" %}
 
 {% block subject %}
-{% trans user=user.printable_name|safe, organization=organization.printable_name|safe %}{{user}} requested an additional role on {{organization}}{% endtrans %}
+{% trans user=user.printable_name|safe, organization=profile.printable_name|safe %}{{user}} requested an additional role on {{organization}}{% endtrans %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans user=user.printable_name, organization=organization.printable_name %}{{user}} requested an additional role on {{organization}}{% endtrans %}</h3>
+<h3>{% trans user=user.printable_name, organization=profile.printable_name %}{{user}} requested an additional role on {{organization}}{% endtrans %}</h3>
 {% if reason %}
 <p>
 {{reason|md}}

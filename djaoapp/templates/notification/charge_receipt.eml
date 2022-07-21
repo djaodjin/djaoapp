@@ -8,33 +8,16 @@ Implementation Note:
 #}
 
 {% block subject %}
-{% trans name=provider.printable_name|safe %}Receipt from {{name}}{% endtrans %}{% if refunded %} - {% trans %}Refund{% endtrans %}{% endif %}
+{% trans name=provider.printable_name|safe %}Receipt from {{name}}{% endtrans %}{% if charge_total %} - {% trans %}Refund{% endtrans %}{% endif %}
 {% endblock %}
 
 {% block html_content %}
-<h3>{{provider.printable_name}}{% if refunded %} {% trans %}Refund{% endtrans %}{% else %} {% trans %}Charge{% endtrans %}{% endif %} {% trans %}Receipt{% endtrans %}</h3>
+<h3>{{provider.printable_name}}{% if charge_total %} {% trans %}Refund{% endtrans %}{% else %} {% trans %}Charge{% endtrans %}{% endif %} {% trans %}Receipt{% endtrans %}</h3>
 <div id="status">
-    {% if charge.is_paid %}
     <p>
-      {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
+      {% trans created_at=charge.created_at|short_date, price=charge|price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
       {% trans %}Payment Information{% endtrans %}:
     </p>
-    {% elif charge.is_failed %}
-    <p>
-    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for {{price}}.{% endtrans %}
-    {% trans %}The charge failed.{% endtrans %}
-    </p>
-    {% elif charge.is_disputed %}
-    <p>
-    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for {{price}}.{% endtrans %}
-    {% trans %}The charge was disputed.{% endtrans %}
-    </p>
-    {% elif charge.is_progress %}
-    <p>
-    {% trans created_at=charge.created_at|short_date, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for {{price}}.{% endtrans %}
-    {% trans %}The charge is in progress...{% endtrans %}
-    </p>
-    {% endif %}
 </div>
 <div class="info">
   <table>
@@ -47,7 +30,7 @@ Implementation Note:
       </tr>
       <tr>
         <th class="info-row-header" style="text-transform:upper;">{% trans %}amount{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{% if refunded %}{% trans amount=charge.invoiced_total_after_refund|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge.price|humanize_money}}{% endif %}</td>
+        <td>{% if charge_total %}{% trans amount=charge_total|price|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge|price|humanize_money}}{% endif %}</td>
       </tr>
       {% if charge.card_name %}
       <tr>
@@ -79,13 +62,13 @@ Implementation Note:
       <tbody>
         {% for line in charge_items %}
         <tr>
-          <td>{{line.invoiced.dest_price|humanize_money}}</td>
+          <td>{{line.invoiced|dest_price|humanize_money}}</td>
           <td>{{line.invoiced|describe}}</td>
           <td></td>
         </tr>
         {% for refund in line.refunded %}
         <tr>
-          <td>-{{refund.orig_price|humanize_money}}</td>
+          <td>-{{refund|orig_price|humanize_money}}</td>
           <td>{{refund|describe}}</td>
           <td></td>
         </tr>
@@ -96,20 +79,15 @@ Implementation Note:
 </div>
 <hr />
 <div>
-{% if charge.created_by %}
+{% if created_by %}
 <p>
-{% trans profile_url=urls.charge.created_by, name=charge.created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
+{% trans profile_url=created_by.location, name=created_by.printable_name %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
 </p>
 {% endif %}
-{% if email_by %}
+{% if originated_by %}
 <p>
-{% trans name=email_by.printable_name %}This email was triggered by {{name}}.{% endtrans %}
+{% trans name=originated_by.printable_name %}This email was triggered by {{name}}.{% endtrans %}
 </p>
 {% endif %}
-</div>
-<div id="support">
-  <p>
-{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}If you have any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
-  </p>
 </div>
 {% endblock %}

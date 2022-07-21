@@ -7,70 +7,35 @@ from extended_templates.backends import get_email_backend
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
-
 from rules.mixins import AppMixin
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
-from saas.models import Price, get_broker
+from saas.models import get_broker
+from signup.serializers import UserDetailSerializer
 
-from ..compat import gettext_lazy as _, reverse
-from ..thread_locals import get_current_site, get_current_app
+from ..api.serializers import ProfileSerializer
+from ..compat import gettext_lazy as _
+from ..thread_locals import get_current_app
+from ..views.docs import get_notification_schema
 from .serializers import DetailSerializer
 
 
-def get_test_email_context():
-    broker = get_broker()
-    site = get_current_site()
-    return {
-        # specific to charge_receipt
-        'charge': {
-            'price': Price(2999, 'usd'),
-            'processor_key': "{{charge.processor_key}}",
-            'last4': "{{charge.last4}}",
-            'exp_date': "{{charge.exp_date}}",
-            'created_by': {},
-        },
-        'email_by': {
-            'username': "{{charge.email_by.username}}",
-            'email': "{{charge.email_by.email}}",
-            'first_name': "{{charge.email_by.first_name}}",
-            'printable_name': "{{charge.email_by.printable_name}}"},
-        # specific to expires_at
-        'plan': {'printable_name': "{{plan.printable_name}}"},
-        # specific to organization_updated
-        'changes': {},
-        # specific to claim_code_generated
-        'subscriber': {},
-        # specific to card_updated
-        'old_card': {
-            'last4': "{{old_card.last4}}",
-            'exp_date': "{{old_card.exp_date}}"},
-        'new_card': {
-            'last4': "{{new_card.last4}}",
-            'exp_date': "{{new_card.exp_date}}"},
-        # specific to weekly_report
-        'table': {},
-        'date': '',
-        # app_created/app_updated
-        'instance': {
-            'printable_name': "{{instance.printable_name}}"},
-        # common across all notifications
-        'urls': {
-            'cart': site.as_absolute_uri(reverse('saas_cart')),
-            'user': {
-                'profile': None},
-            'organization': {
-                'profile': None}
-        },
-        'user': {
-            'username': "{{user.username}}",
-            'email': "{{user.email}}",
-            'first_name': "{{user.first_name}}",
-            'printable_name': "{{user.printable_name}}"},
-        'organization': {
-            'printable_name': "{{organization.printable_name}}"},
-        'site': site, 'app': get_current_app(),
-        'provider': broker, 'broker': broker
-    }
+def get_test_email_context(notification_slug, originated_by=None):
+    schema = get_notification_schema(notification_slug)
+    examples = schema.get('examples', [])
+    if examples:
+        # XXX We do some strange things to display the notification docs
+        example = examples[0].get('requestBody', examples[0].get('resp', {}))
+    else:
+        example = {}
+    if 'broker' in example:
+        broker = get_broker()
+        example.update({
+            'broker': ProfileSerializer().to_representation(broker)})
+    if originated_by and 'originated_by' in example:
+        example.update({
+            'originated_by': UserDetailSerializer().to_representation(
+                originated_by)})
+    return example
 
 
 class NotificationAPIView(AppMixin, GenericAPIView):
@@ -109,12 +74,13 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
         """
         try:
             app = get_current_app()
+            notification_slug = self.kwargs.get('template')
             get_email_backend(connection=app.get_connection()).send(
                 from_email=app.get_from_email(),
                 recipients=[self.request.user.email],
-                template="notification/%s.eml" % self.kwargs.get(
-                    'template', None),
-                context=get_test_email_context())
+                template="notification/%s.eml" % notification_slug,
+                context=get_test_email_context(notification_slug,
+                    originated_by=self.request.user))
         except TemplateDoesNotExist:
             return Response({'detail':
                 _("Problem with template. Could not send test email.")},

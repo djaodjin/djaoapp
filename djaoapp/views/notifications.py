@@ -1,11 +1,18 @@
 # Copyright (c) 2021, DjaoDjin inc.
 # see LICENSE
+import logging
 
+from django.template.exceptions import (
+    TemplateDoesNotExist as DjangoTemplateDoesNotExist)
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.generic import TemplateView
+from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 from rules.mixins import AppMixin
 
 from ..api.notifications import get_test_email_context
 from ..compat import reverse
+
+LOGGER = logging.getLogger(__name__)
 
 
 class NotificationInnerFrameView(AppMixin, TemplateView):
@@ -24,8 +31,30 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(NotificationInnerFrameView, self).get_context_data(
             **kwargs)
-        context.update(get_test_email_context())
+        context.update(get_test_email_context(self.kwargs.get('template'),
+            originated_by=self.request.user))
         return context
+
+    @xframe_options_sameorigin
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        try:
+            result = self.render_to_response(context)
+            result.content = result.rendered_content
+        except (AttributeError, TemplateSyntaxError, UndefinedError,
+            DjangoTemplateDoesNotExist) as err:
+            LOGGER.info("error '%s' rendering notification '%s'",
+                err, self.kwargs.get('template'))
+            messages = context.get('messages', [])
+            messages += [str(err)]
+            context.update({'messages': messages})
+            result = self.response_class(
+                request=self.request,
+                template='400.html',
+                context=context,
+                using=self.template_engine,
+                content_type=self.content_type)
+        return result
 
 
 class NotificationDetailView(AppMixin, TemplateView):
@@ -52,7 +81,7 @@ class NotificationDetailView(AppMixin, TemplateView):
         context.update({
             'show_edit_tools': self.app.show_edit_tools,
             'templates': templates,
-            'api_sources': reverse('pages_api_sources'),
+            'api_sources': reverse('extended_templates_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
                 args=(template_name,))})
         self.update_context_urls(context, {

@@ -21,7 +21,6 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from extended_templates.helpers import get_assets_dirs
 from extended_templates.views.pages import PageMixin
-from multitier.mixins import build_absolute_uri
 from saas.decorators import fail_direct
 from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
@@ -126,7 +125,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         resp = super(ProxyPageMixin, self).translate_response(response)
         # 500 errors in the service the request was forwarded to will have
         # logged errors there.
-        resp._has_been_logged = True
+        resp._has_been_logged = True #pylint:disable=protected-access
         return resp
 
     def get(self, request, *args, **kwargs):
@@ -237,6 +236,7 @@ class PricingView(DjaoAppMixin, PageMixin, SessionProxyMixin, CartPlanListView):
 
 class AppDashboardView(AppDashboardViewBase):
     """
+    Application dashboard
     """
 
 

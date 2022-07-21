@@ -4,6 +4,7 @@
 """
 Default start page for a djaodjin-hosted product.
 """
+#pylint:disable=too-many-lines
 
 import json, logging, os, re, warnings
 from collections import OrderedDict
@@ -30,6 +31,19 @@ except ImportError: # drf < 3.10
         AutoSchema as BaseAutoSchema, SchemaGenerator)
 
 from ..compat import gettext_lazy as _, URLPattern, URLResolver, six
+from ..notifications import signals as notification_signals
+from ..notifications.serializers import (ContactUsNotificationSerializer,
+    UserNotificationSerializer, ExpireUserNotificationSerializer,
+    OneTimeCodeNotificationSerializer,
+    ExpireProfileNotificationSerializer,
+    SubscriptionExpireNotificationSerializer,
+    ChangeProfileNotificationSerializer, AggregatedSalesNotificationSerializer,
+    ChargeNotificationSerializer,
+    RenewalFailedNotificationSerializer, InvoiceNotificationSerializer,
+    ClaimNotificationSerializer, ProcessorSetupNotificationSerializer,
+    RoleRequestNotificationSerializer, RoleGrantNotificationSerializer,
+    SubscriptionAcceptedNotificationSerializer,
+    SubscriptionCreatedNotificationSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -172,7 +186,7 @@ def format_examples(examples):
             continue
         look = re.match('.. code-block::', line)
         if look:
-            if state == IN_REQUESTBODY_STATE:
+            if state in (IN_URL_STATE, IN_REQUESTBODY_STATE):
                 state = IN_REQUESTBODY_EXAMPLE_STATE
             if state == IN_RESPONSE_STATE:
                 state = IN_RESPONSE_EXAMPLE_STATE
@@ -295,14 +309,15 @@ def split_descr_and_examples(docstring, api_base_url=None):
 
 class APIDocEndpointEnumerator(EndpointEnumerator):
 
-    def _insert_api_endpoint(self, api_endpoints, api_endpoint):
+    @staticmethod
+    def _insert_api_endpoint(api_endpoints, api_endpoint):
         found = False
         for endpoint in api_endpoints:
             if (endpoint[0] == api_endpoint[0] and
                 endpoint[1] == api_endpoint[1]):
                 LOGGER.debug("found duplicate: %s %s (%s vs. %s)",
                     endpoint[1], endpoint[0], endpoint[2], api_endpoint[2])
-                assert(endpoint[2].__name__.startswith('DjaoApp'))
+                assert endpoint[2].__name__.startswith('DjaoApp')
                 found = True
                 break
         if not found:
@@ -360,9 +375,10 @@ class AutoSchema(BaseAutoSchema):
         elif name.endswith('View'):
             name = name[:-4]
 
-        # Due to camel-casing of classes and `action` being lowercase, apply title in order to find if action truly
+        # Due to camel-casing of classes and `action` being lowercase,
+        # apply title in order to find if action truly
         # comes at the end of the name
-        if name.endswith(action.title()):  # ListView, UpdateAPIView, ThingDelete ...
+        if name.endswith(action.title()): # ListView, UpdateAPIView, etc.
             name = name[:-len(action)]
 
         return name
@@ -420,7 +436,7 @@ class AutoSchema(BaseAutoSchema):
     def _validate_examples(self, path, method, examples,
                            serializer_class=None, many=False,
                            example_key='resp'):
-        #pylint:disable=too-many-arguments
+        #pylint:disable=too-many-arguments,too-many-locals,too-many-statements
         view = self.view
         many = many or (method == 'GET' and hasattr(view, 'list'))
         if many:
@@ -693,7 +709,8 @@ class AutoSchema(BaseAutoSchema):
                             serializer_class = None
                     except TypeError:
                         # We are dealing with a ListSerializer instance
-                        serializer_class = request_body_serializer.child.__class__
+                        serializer_class = \
+                            request_body_serializer.child.__class__
                         many = request_body_serializer.many
                 break # XXX only handles first schema response.
 
@@ -744,6 +761,7 @@ class APIDocGenerator(SchemaGenerator):
 class APIDocView(TemplateView):
 
     template_name = 'docs/api.html'
+    generator = APIDocGenerator()
 
     def get_context_data(self, **kwargs):
         #pylint:disable=too-many-locals,too-many-nested-blocks
@@ -751,8 +769,7 @@ class APIDocView(TemplateView):
         api_end_points = []
         api_base_url = getattr(settings, 'API_BASE_URL',
             self.request.build_absolute_uri(location='/').strip('/'))
-        generator = APIDocGenerator()
-        schema = generator.get_schema(request=None, public=True)
+        schema = self.generator.get_schema(request=None, public=True)
         tags = set([])
         paths = schema.get('paths', [])
         api_paths = OrderedDict()
@@ -818,3 +835,182 @@ class APIDocView(TemplateView):
          'api_jwt_broker': "<a href=\"#createJWTLogin\">JWT auth token</a>",
         })
         return context
+
+
+def populate_schema_from_docstring(schema, docstring):
+    schema.update({
+        'func': 'GET',
+        'path': "",
+    })
+    if docstring:
+        docstring = docstring.strip()
+        func_tags, summary, description, examples = \
+            split_descr_and_examples(docstring)
+        examples = format_examples(examples)
+        schema['summary'] = summary
+        schema['description'] = description
+        schema['tags'] = list(func_tags) if func_tags else []
+        if not settings.OPENAPI_SPEC_COMPLIANT:
+            schema['examples'] = [
+                {'resp': example['requestBody']}
+                for example in examples if 'requestBody' in example]
+    return schema
+
+
+def get_notification_schema(notification_slug):
+    """
+    Returns the summary, description and examples for a notification.
+    """
+    #pylint:disable=too-many-statements
+    if notification_slug == 'user_contact':
+        serializer = ContactUsNotificationSerializer()
+        docstring = notification_signals.contact_requested_notice.__doc__
+    elif notification_slug == 'user_registered':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_registered_notice.__doc__
+    elif notification_slug == 'user_activated':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_activated_notice.__doc__
+    elif notification_slug == 'user_verification':
+        serializer = ExpireUserNotificationSerializer()
+        docstring = notification_signals.user_verification_notice.__doc__
+    elif notification_slug == 'user_reset_password':
+        serializer = ExpireUserNotificationSerializer()
+        docstring = notification_signals.user_reset_password_notice.__doc__
+    elif notification_slug == 'user_mfa_code':
+        serializer = OneTimeCodeNotificationSerializer()
+        docstring = notification_signals.user_mfa_code_notice.__doc__
+    elif notification_slug == 'card_expires_soon':
+        serializer = ExpireProfileNotificationSerializer()
+        docstring = notification_signals.card_expires_soon_notice.__doc__
+    elif notification_slug == 'expires_soon':
+        serializer = SubscriptionExpireNotificationSerializer()
+        docstring = notification_signals.expires_soon_notice.__doc__
+    elif notification_slug == 'organization_updated':
+        serializer = ChangeProfileNotificationSerializer()
+        docstring = notification_signals.organization_updated_notice.__doc__
+    elif notification_slug == 'card_updated':
+        serializer = ChangeProfileNotificationSerializer()
+        docstring = notification_signals.card_updated_notice.__doc__
+    elif notification_slug == 'weekly_sales_report_created':
+        serializer = AggregatedSalesNotificationSerializer()
+        docstring = \
+            notification_signals.weekly_sales_report_created_notice.__doc__
+    elif notification_slug == 'charge_receipt':
+        serializer = ChargeNotificationSerializer()
+        docstring = notification_signals.charge_updated_notice.__doc__
+    elif notification_slug == 'order_executed':
+        serializer = InvoiceNotificationSerializer()
+        docstring = notification_signals.order_executed_notice.__doc__
+    elif notification_slug == 'renewal_charge_failed':
+        serializer = RenewalFailedNotificationSerializer()
+        docstring = notification_signals.renewal_charge_failed_notice.__doc__
+    elif notification_slug == 'claim_code_generated':
+        serializer = ClaimNotificationSerializer()
+        docstring = notification_signals.claim_code_generated_notice.__doc__
+    elif notification_slug == 'processor_setup_error':
+        serializer = ProcessorSetupNotificationSerializer()
+        docstring = notification_signals.processor_setup_error_notice.__doc__
+    elif notification_slug == 'role_grant_created':
+        serializer = RoleGrantNotificationSerializer()
+        docstring = notification_signals.role_grant_created_notice.__doc__
+    elif notification_slug == 'role_request_created':
+        serializer = RoleRequestNotificationSerializer()
+        docstring = notification_signals.role_request_created_notice.__doc__
+    elif notification_slug == 'role_grant_accepted':
+        serializer = RoleGrantNotificationSerializer()
+        docstring = notification_signals.role_grant_accepted_notice.__doc__
+    elif notification_slug == 'subscription_grant_accepted':
+        serializer = SubscriptionAcceptedNotificationSerializer()
+        docstring = \
+            notification_signals.subscription_grant_accepted_notice.__doc__
+    elif notification_slug == 'subscription_grant_created':
+        serializer = SubscriptionCreatedNotificationSerializer()
+        docstring = \
+            notification_signals.subscription_grant_created_notice.__doc__
+    elif notification_slug == 'subscription_request_accepted':
+        serializer = SubscriptionAcceptedNotificationSerializer()
+        docstring = \
+            notification_signals.subscription_request_accepted_notice.__doc__
+    elif notification_slug == 'subscription_request_created':
+        serializer = SubscriptionCreatedNotificationSerializer()
+        docstring = \
+            notification_signals.subscription_request_created_notice.__doc__
+
+    inspector = AutoSchema()
+    content = inspector.map_serializer(serializer)
+    schema = {
+        'operationId': notification_slug,
+        'responses': {
+            '200': {
+                'content': {
+                    'application/json': {
+                        'schema': content
+                    }
+                }
+            }
+        }
+    }
+    populate_schema_from_docstring(schema, docstring)
+    return schema
+
+
+class NotificationDocGenerator(object):
+
+    @staticmethod
+    def get_schema(request=None, public=True):
+        #pylint:disable=unused-argument
+        api_end_points = OrderedDict({
+            'user_contact': get_notification_schema('user_contact'),
+            'user_registered': get_notification_schema('user_registered'),
+            'user_activated': get_notification_schema('user_activated'),
+            'user_verification': get_notification_schema('user_verification'),
+            'user_reset_password': get_notification_schema(
+                'user_reset_password'),
+            'user_mfa_code': get_notification_schema('user_mfa_code'),
+            'card_expires_soon': get_notification_schema('card_expires_soon'),
+            'expires_soon': get_notification_schema('expires_soon'),
+            'organization_updated': get_notification_schema(
+                'organization_updated'),
+            'card_updated': get_notification_schema('card_updated'),
+            'weekly_sales_report_created': get_notification_schema(
+                'weekly_sales_report_created'),
+            'charge_receipt': get_notification_schema('charge_receipt'),
+            'order_executed': get_notification_schema('order_executed'),
+            'renewal_charge_failed': get_notification_schema(
+                'renewal_charge_failed'),
+            'claim_code_generated': get_notification_schema(
+                'claim_code_generated'),
+            'processor_setup_error': get_notification_schema(
+                'processor_setup_error'),
+            'role_grant_created': get_notification_schema('role_grant_created'),
+            'role_request_created': get_notification_schema(
+                'role_request_created'),
+            'role_grant_accepted': get_notification_schema(
+                'role_grant_accepted'),
+            'subscription_grant_accepted': get_notification_schema(
+                'subscription_grant_accepted'),
+            'subscription_grant_created': get_notification_schema(
+                'subscription_grant_created'),
+            'subscription_request_accepted': get_notification_schema(
+                'subscription_request_accepted'),
+            'subscription_request_created': get_notification_schema(
+                'subscription_request_created'),
+        })
+        api_paths = {}
+        for api_end_point in api_end_points.values():
+            funcs = {}
+            funcs.update({api_end_point.get('func'): api_end_point})
+            api_paths.update({api_end_point.get('operationId'): funcs})
+        schema = {
+            'paths': api_paths
+        }
+        return schema
+
+
+class NotificationDocView(APIDocView):
+    """
+    Documentation for notifications triggered by the application
+    """
+    template_name = 'docs/notifications.html'
+    generator = NotificationDocGenerator()

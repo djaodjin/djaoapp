@@ -16,7 +16,7 @@ HTML encoded. #}
     <tbody>
       <tr>
         <th class="info-row-header" style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{{organization.printable_name}}</td>
+        <td>{{profile.printable_name}}</td>
       </tr>
     </tbody>
   </table>
@@ -34,21 +34,16 @@ HTML encoded. #}
       <tbody>
         {% for line in invoiced_items %}
         <tr>
-          <td>{{line.dest_price|humanize_money}}</td>
+          <td>{{line|dest_price|humanize_money}}</td>
           <td>{{line|describe}}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 </div>
-<div>
-{% trans total_price=total_price|humanize_money, nb_renewal_attempts=organization.nb_renewal_attempts, max_renewal_attempts=max_renewal_attempts %}The charge of {{total_price}} failed. This is {{nb_renewal_attempts}}/{{max_renewal_attempts}} attempts. After {{max_renewal_attempts}} attempts, your service will be discountinued. Please update your payment method by visiting the following URL in your favorite browser:{% endtrans %}
-<a href="{{back_url}}">{{back_url}}</a>
-</div>
 <hr class="horizontal-divide">
-<div id="support">
-<p>
-{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
-</p>
+<div>
+{% trans total_price=charge_total|price|humanize_money, nb_renewal_attempts=nb_renewal_attempts, max_renewal_attempts=max_renewal_attempts %}The charge of {{total_price}} failed. This is {{nb_renewal_attempts}}/{{max_renewal_attempts}} attempts. After {{max_renewal_attempts}} attempts, your service will be discountinued. Please update your payment method by visiting the following URL in your favorite browser:{% endtrans %}
+<a href="{{back_url}}">{{back_url}}</a>
 </div>
 {% endblock %}

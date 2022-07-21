@@ -7,13 +7,13 @@
 {% block html_content %}
 <h3>{% trans name=provider.printable_name %}Payment Processor setup error for {{name}}{% endtrans %}</h3>
 <p>
-{% trans customer=organization.printable_name, provider=provider.printable_name %}<strong>{{customer}}</strong> attempted to pay on your website. There was an error as it seems the payment processor account for {{provider}} is not connected properly.{% endtrans %}
+{% trans customer=profile.printable_name, provider=provider.printable_name %}<strong>{{customer}}</strong> attempted to pay on your website. There was an error as it seems the payment processor account for {{provider}} is not connected properly.{% endtrans %}
 </p>
 <p>
-<em>{{message}}</em>
+<em>{{detail}}</em>
 </p>
 <p>
 {% trans name=provider.printable_name %}Please review and/or (re-)connect the payment processor associated to {{name}} at the URL below:{% endtrans %}
-<a href="{{urls.update_bank}}">{{urls.update_bank}}</a>
+<a href="{{back_url}}">{{back_url}}</a>
 </p>
 {% endblock %}

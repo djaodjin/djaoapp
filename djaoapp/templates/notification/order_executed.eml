@@ -16,7 +16,7 @@ HTML encoded. #}
     <tbody>
       <tr>
         <th class="info-row-header" style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{{organization.printable_name}}</td>
+        <td>{{profile.printable_name}}</td>
       </tr>
     </tbody>
   </table>
@@ -34,7 +34,7 @@ HTML encoded. #}
       <tbody>
         {% for line in invoiced_items %}
         <tr>
-          <td>{{line.dest_price|humanize_money}}</td>
+          <td>{{line|dest_price|humanize_money}}</td>
           <td>{{line|describe}}</td>
         </tr>
         {% endfor %}
@@ -43,20 +43,17 @@ HTML encoded. #}
 </div>
 <hr class="horizontal-divide">
 <div>
-{% if created_by %}
+{% if originated_by %}
 <p>
-{% trans profile_url=urls.order.created_by, name=created_by.get_full_name() %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
+{% trans profile_url=originated_by.location, name=originated_by.printable_name %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
 </p>
 {% endif %}
 </div>
-<div id="support">
-<p>
+<div>
+  <p>
 {% trans %}This order confirmation only notifies that you intend to pay for this product(s).{% endtrans %}
 <span class="strong">{% trans %}You have not been charged.{% endtrans %}</span>
 {% trans %}A receipt will follow only after a credit card payment has been successfully made.{% endtrans %}
-</p>
-<p>
-{% trans %}Thank you for your continued business.{% endtrans %} {% trans %}Any questions or comments, email us at{% endtrans %} <a href="mailto:{{provider.email}}">{{provider.email}}</a>.
-</p>
+  </p>
 </div>
 {% endblock %}

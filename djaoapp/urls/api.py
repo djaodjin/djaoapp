@@ -35,9 +35,11 @@ urlpatterns = [
         RecentActivityAPIView.as_view(), name='api_recent_activity'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes/$',
-        DjaoAppThemePackageListAPIView.as_view(), name='extended_templates_api_themes'),
+        DjaoAppThemePackageListAPIView.as_view(),
+        name='extended_templates_api_themes'),
     url_direct(r'^api/themes/', include('extended_templates.urls.api.assets')),
-    url_direct(r'^api/themes/', include('extended_templates.urls.api.templates')),
+    url_direct(r'^api/themes/',
+        include('extended_templates.urls.api.templates')),
     url_direct(r'^api/themes/', include('extended_templates.urls.api.themes')),
 
     # Billing, Metrics, Profiles, Roles and Subscriptions
@@ -47,7 +49,7 @@ urlpatterns = [
     url_self_provider(r'^api/', include('saas.urls.api.users')),
     url_direct(r'^api/profile/$',
         DjaoAppProfileListAPIView.as_view(), name='saas_api_profile'),
-    url_direct(r'^api/', include('saas.urls.api.broker')),
+    url_direct(r'^api/', include('saas.urls.api.headbroker')),
     # api/charges/:charge/refund must be before api/charges/
     url_provider_only(
         r'^api/', include('saas.urls.api.provider.charges')),
@@ -77,6 +79,7 @@ urlpatterns = [
         r'^api/', include('saas.urls.api.subscriber.roles')),
     url_frictionless_provider(
         r'^api/', include('saas.urls.api.subscriber.profile')),
+    url_direct(r'^api/', include('saas.urls.api.tailbroker')),
     url_authenticated(
         '^api/', include('saas.urls.api.search')),
 

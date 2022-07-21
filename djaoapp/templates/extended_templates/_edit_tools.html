@@ -1,4 +1,4 @@
-<link rel="stylesheet" media="screen" href="{{'/static/cache/pages.css'|asset}}" />
+<link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/pages.css" />
 
 {# media editors #}
 {# ------------- #}
@@ -283,22 +283,22 @@ jQuery(document).ready(function($) {
 </div>
 
 {# aggregated, minified scripts #}
-<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ace.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ace.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
 {% endif %}

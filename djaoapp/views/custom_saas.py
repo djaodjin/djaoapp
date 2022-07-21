@@ -10,7 +10,6 @@ from django.core.exceptions import ValidationError
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
-from saas.backends import load_backend
 from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (

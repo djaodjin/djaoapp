@@ -79,9 +79,9 @@
                 <div class="col-md-6 mb-3">
                   <div id="{{key}}" class="card h-100 mb-3">
                     <div class="card-body h-100">
-                      <h5 class="card-title"><a href="{{urls.notifications}}{{key}}/">{{vals.title}}</a></h5>
+                      <h5 class="card-title">{{vals.summary}}</h5>
                       <p class="card-text">
-                        {{vals.descr}}
+                        {{vals.description}}
                       </p>
                       <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
                       <button class="btn btn-outline-secondary send-test-email">{% trans %}Send Test Email{% endtrans %}</button>

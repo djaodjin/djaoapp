@@ -6,11 +6,10 @@ import logging
 
 from deployutils.apps.django.compat import is_authenticated
 from django.conf import settings
-from django.core.exceptions import NON_FIELD_ERRORS
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
-from saas import settings as saas_settings
 from saas.models import Agreement, Organization, Signature
 from signup.auth import validate_redirect
 from signup.views.auth import (

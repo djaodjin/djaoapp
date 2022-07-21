@@ -83,6 +83,9 @@ def environment(**options):
     env.filters['url_register'] \
         = djaoapp.templatetags.djaoapp_tags.url_register
     # Specific to SaaS
+    env.filters['price'] = saas.templatetags.saas_tags.price
+    env.filters['dest_price'] = saas.templatetags.saas_tags.dest_price
+    env.filters['orig_price'] = saas.templatetags.saas_tags.orig_price
     env.filters['isoformat'] = saas.templatetags.saas_tags.isoformat
     env.filters['short_date'] = saas.templatetags.saas_tags.short_date
     env.filters['humanize_percent'] \

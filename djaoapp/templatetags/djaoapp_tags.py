@@ -4,14 +4,12 @@
 from deployutils.apps.django.compat import (
     is_authenticated as base_is_authenticated)
 from django import template
-from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
 from saas.templatetags.saas_tags import attached_organization
 
 from ..compat import force_str, reverse, six, urljoin
-from ..thread_locals import is_domain_site
 
 
 register = template.Library()

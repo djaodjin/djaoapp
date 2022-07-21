@@ -2,10 +2,13 @@
 
 {% block saas_title %}
 {% trans %}{{template}} Notification{% endtrans %}
-<button class="btn btn-sm btn-outline-secondary ml-3 send-test-email" data-template="{{template}}">{% trans %}Send test e-mail{% endtrans %}</button>
 {% endblock %}
 
 {% block saas_page_layout %}
+<div class="mt-2">
+<button class="btn btn-primary send-test-email" data-template="{{template}}">{% trans %}Send test e-mail{% endtrans %}</button>
+<span>(<a href="https://www.djaodjin.com/docs/api/notifications/#{{template}}" target="_blank">variables defined in template context</a>)</span>
+</div>
 
 <div id="email-tpl-editor" class="mt-4">
   <ul class="nav nav-tabs dashboard-tab" role="tablist">
@@ -17,7 +20,8 @@
         <div id="tpl-spinner" class="mt-5">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </div>
-        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0" style="height:100vh;width:80%;display: none;"></iframe>
+        <iframe src="{{iframe_url}}" id="email-tpl-iframe" frameborder="0"
+            style="height:100vh;width:100%;display: none;"></iframe>
     </div>
     {# panels are inserted here #}
   </div>
@@ -29,24 +33,24 @@
     when edit tools are disabled the required scripts are not included
     however if we're serving assets via cdn I'm not sure if this is the best way
 #}
-<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ace.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ace.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
 {% endif %}
 {% endif %}
 <script type="text/javascript">
