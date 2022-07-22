@@ -151,7 +151,7 @@ install-default-themes:: clean-themes
 
 
 initdb-cowork: clean-dbs
-	$(if $(dirname $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(MULTITIER_DB_FILENAME)))
+	$(if $(dir $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)))
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) migrate $(RUNSYNCDB) --database cowork --noinput
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
@@ -172,7 +172,7 @@ clean-themes:
 
 
 initdb-djaoapp: clean-dbs
-	$(if $(dirname $(DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(DB_FILENAME)))
+	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
 	cd $(srcDir) && $(MANAGE) migrate $(RUNSYNCDB) --noinput --fake-initial
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
@@ -329,7 +329,7 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 				$(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/run
-	$(if $(dirname $(DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(DB_FILENAME)))
+	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
 
 # Implementation Note:
 # We use [ -f file ] before install here such that we do not blindly erase
