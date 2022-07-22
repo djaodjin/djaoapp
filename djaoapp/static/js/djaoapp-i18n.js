@@ -1,6 +1,8 @@
 /** Functions used for display of localized dates and numbers.
  */
 
+var DATE_FORMAT = 'MMM DD, YYYY';
+
 function humanizeDate(at_time) {
     return moment(at_time).format(DATE_FORMAT);
 }

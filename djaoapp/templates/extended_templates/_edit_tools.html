@@ -174,11 +174,6 @@ jQuery(document).ready(function($) {
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-  <script type="text/javascript">
-jQuery(document).ready(function($) {
-    initCodeEditors("{{urls.edit.api_sources}}");
-});
-  </script>
 </div>
 
 {# style editors #}
@@ -233,15 +228,6 @@ jQuery(document).ready(function($) {
     {% endfor  %}
   </form>
   </div>
-  <script type="text/javascript">
-jQuery(document).ready(function($) {
-  $("#style-editor").djstyles({
-      api_less_overrides: "{{urls.edit.api_less_overrides}}",
-      api_sitecss: "{{urls.edit.api_sitecss}}",
-      iframe_view: $("iframe.edited-page").get(0)
-  });
-});
-  </script>
 </div>
 {% endif %}
 
@@ -302,3 +288,18 @@ jQuery(document).ready(function($) {
 {% else %}
 <script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
 {% endif %}
+
+<script type="text/javascript">
+// code editors
+jQuery(document).ready(function($) {
+    initCodeEditors("{{urls.edit.api_sources}}");
+});
+// style editors
+jQuery(document).ready(function($) {
+  $("#style-editor").djstyles({
+      api_less_overrides: "{{urls.edit.api_less_overrides}}",
+      api_sitecss: "{{urls.edit.api_sitecss}}",
+      iframe_view: $("iframe.edited-page").get(0)
+  });
+});
+</script>

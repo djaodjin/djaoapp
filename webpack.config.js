@@ -19,7 +19,6 @@ module.exports = {
       'djaodjin-vue': [
           'js/djaodjin-upload.js',
           'js/djaodjin-dashboard.js',
-          'js/djaodjin-resources-vue.js',
           'js/djaodjin-signup-vue.js',
           'js/djaodjin-saas-vue.js',
           'js/djaodjin-rules-vue.js',
@@ -70,6 +69,7 @@ module.exports = {
   },
   externals: {
     jQuery: 'jQuery',
+    initCodeEditors: 'initCodeEditors',
   },
   plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -77,6 +77,7 @@ module.exports = {
       }),
       new webpack.ProvidePlugin({
           Chart: ['vendor/chart.js', 'Chart'],
+         httpRequestMixin: ['js/djaodjin-resources-vue.js', 'httpRequestMixin'],
           itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
           itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
           TypeAhead: ['js/djaodjin-resources-vue.js', 'TypeAhead'],
@@ -86,6 +87,8 @@ module.exports = {
           showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
           getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
           getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
+
+          initCodeEditors: ['js/djaodjin-code-editor.js', 'initCodeEditors'],
       })
   ],
   resolve: {

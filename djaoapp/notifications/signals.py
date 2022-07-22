@@ -23,7 +23,7 @@ from signup.utils import (has_invalid_password,
     printable_name as user_printable_name)
 from djaoapp.signals import contact_requested
 
-from ..compat import reverse, gettext_lazy as _
+from ..compat import gettext_lazy as _, reverse, six
 from ..thread_locals import get_current_app
 from .serializers import (ContactUsNotificationSerializer,
     UserNotificationSerializer, ExpireUserNotificationSerializer,
@@ -1300,6 +1300,13 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
                'changes': changes})
     broker = get_broker()
     site = get_current_site()
+    # Some changes are still typed by the model field (ex: Country).
+    # We want to make sure we have a JSON-serializable `changes` dict here.
+    for change in six.itervalues(changes):
+        change.update({
+            'pre': str(change.get('pre')),
+            'post': str(change.get('post'))
+        })
     context={
         'broker': broker,
         'back_url': site.as_absolute_uri(
