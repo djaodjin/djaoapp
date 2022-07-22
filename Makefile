@@ -150,8 +150,8 @@ install-default-themes:: clean-themes
 	$(installDirs) $(srcDir)/htdocs/themes
 
 
-initdb-cowork:
-	-[ -f $(MULTITIER_DB_FILENAME) ] && rm -f $(MULTITIER_DB_FILENAME)
+initdb-cowork: clean-dbs
+	$(if $(dirname $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(MULTITIER_DB_FILENAME)))
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) migrate $(RUNSYNCDB) --database cowork --noinput
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
@@ -165,14 +165,14 @@ clean-assets:
 clean-dbs:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
 	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
-	-[ -f $(dir $(DB_FILENAME))my-streetside.sqlite ] && rm -f $(dir $(DB_FILENAME))my-streetside.sqlite
+	[ ! -f $(dir $(DB_FILENAME))my-streetside.sqlite ] || rm $(dir $(DB_FILENAME))my-streetside.sqlite
 
 clean-themes:
 	rm -rf $(srcDir)/themes/* $(srcDir)/htdocs/themes/*
 
 
-initdb-djaoapp:
-	-[ -f $(DB_FILENAME) ] && rm -f $(DB_FILENAME)
+initdb-djaoapp: clean-dbs
+	$(if $(dirname $(DB_FILENAME)),[ -d $(DESTDIR)$(dirname $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dirname $(DB_FILENAME)))
 	cd $(srcDir) && $(MANAGE) migrate $(RUNSYNCDB) --noinput --fake-initial
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
