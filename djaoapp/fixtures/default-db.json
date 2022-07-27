@@ -159,7 +159,7 @@
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00+00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "alice"
     },
     "model": "auth.User", "pk": 1
@@ -215,7 +215,7 @@
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00+00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "yan"
     },
     "model": "auth.User", "pk": 3
@@ -492,7 +492,7 @@
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00+00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "joe"
     },
     "model": "auth.User", "pk": 6
@@ -543,7 +543,7 @@
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00+00:00",
       "last_name": "Smith",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "asmith"
     },
     "model": "auth.User", "pk": 7
@@ -639,7 +639,7 @@
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00+00:00",
       "last_name": "DuJardin",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "stephanie"
     },
     "model": "auth.User", "pk": 8
@@ -996,7 +996,7 @@
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00-09:00",
       "last_name": "BillingCard10",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia10"
     },
     "model": "auth.User", "pk": 12
@@ -1203,7 +1203,7 @@
       "email": "stephanie2@localhost.localdomain",
       "first_name": "Stephanie",
       "last_name": "DuJardin",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "stephanie2"
     },
     "model": "auth.User", "pk": 17
@@ -1259,7 +1259,7 @@
       "email": "stephanie3@localhost.localdomain",
       "first_name": "Stephanie",
       "last_name": "DuJardin",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "stephanie3"
     },
     "model": "auth.User", "pk": 18
@@ -1472,7 +1472,7 @@
       "is_superuser": false,
       "last_login": "2022-01-01T00:00:00-09:00",
       "last_name": "SubscriptionsAPI1",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia21"
     },
     "model": "auth.User", "pk": 21
@@ -1528,7 +1528,7 @@
       "is_staff": false,
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia22"
     },
     "model": "auth.User", "pk": 22
@@ -1575,7 +1575,7 @@
       "is_staff": false,
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia23"
     },
     "model": "auth.User", "pk": 23
@@ -1612,4 +1612,53 @@
       "plan": 5
     },
     "model": "saas.subscription", "pk": 23
+},
+
+{
+    "fields": {
+      "date_joined": "2022-01-01T00:00:00-09:00",
+      "last_login": "2022-01-01T00:00:00-09:00",
+      "email": "xia+24@localhost.localdomain",
+      "first_name": "Xia24",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_name": "SubscriptionsAPI1",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia24"
+    },
+    "model": "auth.User", "pk": 24
+},
+{
+    "fields": {
+      "slug": "xia24",
+      "full_name": "Xia24",
+      "created_at": "2022-01-01T00:00:00+00:00",
+      "email": "xia+24@localhost.localdomain",
+      "phone": "555-555-5555",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 24
+},
+{
+    "fields": {
+      "created_at": "2022-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 24,
+      "user": 24
+    },
+    "model": "saas.Role", "pk": 24
+},
+{
+    "fields": {
+      "created_at": "2022-01-01T00:00:00+00:00",
+      "ends_at": "2022-12-31T23:59:59+00:00",
+      "organization": 24,
+      "plan": 5
+    },
+    "model": "saas.subscription", "pk": 24
 }]

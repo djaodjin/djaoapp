@@ -113,34 +113,26 @@
 {% endblock %}
 
 {% block dashboard_bodyscripts %}
-  <script type="text/javascript">
-    jQuery(document).ready(function($) {
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/static/js/djaodjin-themes.js'|djasset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
+{% endif %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
 
-      {% if urls.api_themes %}
-        $("#theme-upload").djupload({
-            uploadUrl: "{{urls.api_themes}}",
-            uploadSuccess: function(file, resp) {
-                showMessages(['{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', file.name)], 'success');
-            }
-        });
-      {% endif %}
-
-      $(".send-test-email").click(function(event) {
-        var self = this;
-        var id = $(self).closest(".card").attr("id");
-        $.ajax({
-          type: "POST",
-          url: "{{urls.send_test_email}}" + id + "/",
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader("X-CSRFToken", getMetaCSRFToken());
-          },
-          data: null,
-          datatype: "json",
-          contentType: "application/json; charset=utf-8",
-          success: function(data) { showMessages([data.detail], "info"); },
-          error: function(resp) { showErrorMessages(resp); },
-        });
-      });
+    {% if urls.api_themes %}
+    $("#theme-upload").djupload({
+        uploadUrl: "{{urls.api_themes}}",
+        uploadSuccessMessage: function(filename, location) {
+            return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);
+        }
     });
-  </script>
+    {% endif %}
+
+    $(".send-test-email").notificationTest({
+        url: "{{urls.send_test_email}}"
+    });
+});
+</script>
 {% endblock %}

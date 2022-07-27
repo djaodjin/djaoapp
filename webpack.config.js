@@ -31,7 +31,6 @@ module.exports = {
           'js/djaodjin-upload.js',
           'js/djaodjin-sidebar-gallery.js',
           'js/djaodjin-plan-edition.js',
-          'js/wizard.js'
       ],
       saas: [
           'js/djaodjin-postal.js',
@@ -39,8 +38,10 @@ module.exports = {
           'js/djaodjin-stripe.js'
       ],
       'theme-editors': [
+          'js/djaoapp-theme-editors.js',
           'js/djaodjin-code-editor.js',
-          'js/djaodjin-style-editor.js'
+          'js/djaodjin-style-editor.js',
+          'js/djaodjin-themes.js',
       ],
   },
   module: {
@@ -69,7 +70,6 @@ module.exports = {
   },
   externals: {
     jQuery: 'jQuery',
-    initCodeEditors: 'initCodeEditors',
   },
   plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -87,8 +87,6 @@ module.exports = {
           showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
           getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
           getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
-
-          initCodeEditors: ['js/djaodjin-code-editor.js', 'initCodeEditors'],
       })
   ],
   resolve: {

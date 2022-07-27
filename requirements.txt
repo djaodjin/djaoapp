@@ -8,11 +8,11 @@ django-recaptcha==2.0.6
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.9.1
-djaodjin-extended-templates==0.3.2
+djaodjin-extended-templates==0.3.3
 djaodjin-multitier==0.1.23
 djaodjin-rules==0.2.9
 djaodjin-saas==0.12.0
-djaodjin-signup==0.6.0
+djaodjin-signup==0.6.1
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==2.11.3
 MarkupSafe==1.1.1  # force installs in case older version is found (CentOS7)

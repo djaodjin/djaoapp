@@ -160,7 +160,9 @@ initdb-cowork: clean-dbs
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
 
 clean-assets:
-	rm $(ASSETS_DIR)/cache/*
+	rm -f $(srcDir)/webpack-conf-paths.json
+	rm -f $(ASSETS_DIR)/static/js/*
+	rm -f $(ASSETS_DIR)/cache/*
 
 clean-dbs:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
@@ -168,7 +170,9 @@ clean-dbs:
 	[ ! -f $(dir $(DB_FILENAME))my-streetside.sqlite ] || rm $(dir $(DB_FILENAME))my-streetside.sqlite
 
 clean-themes:
-	rm -rf $(srcDir)/themes/* $(srcDir)/htdocs/themes/*
+	rm -rf $(srcDir)/themes/*
+	rm -rf $(srcDir)/htdocs/themes/*
+	rm -rf $(srcDir)/htdocs/uploads/*
 
 
 initdb-djaoapp: clean-dbs
