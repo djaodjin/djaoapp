@@ -26,7 +26,7 @@
           {% if plans %}
           <div class="row my-3">
             <div class="col-md-8">
-              <form id="subscribe" @submit.prevent="subscribe('{{organization}}')">
+              <form id="subscribe" @submit.prevent="subscribe({slug: '{{organization.slug}}', full_name: '{{organization.full_name}}'})">
                 <div class="row">
                   <div class="col-md-8">
                     <select class="form-control mr-2" name="plan" v-model="plan">
@@ -82,9 +82,9 @@
                 </tr>
               </tbody>
               <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <tr :class="endsSoon(entry)" v-for="(entry, index) in items.results">
+                <tr :id="entry.plan.slug" :class="endsSoon(entry)" v-for="(entry, index) in items.results">
                   <td>
-                    <a :href="entry.plan.app_url + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+                    <a :href="'{{request|site_url}}/app/' + entry.organization.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
                   </td>
                   <td v-if="entry.editable">
                     {% include "_entry_ends_at_field.html" %}
