@@ -41,7 +41,7 @@ def environment(**options):
 
     # If we don't force ``auto_reload`` to True, in DEBUG=0, the templates
     # would only be compiled on the first edit.
-    options.update({'auto_reload': True})
+    options.update({'auto_reload': True, 'bytecode_cache': None})
     if 'loader' in options:
         if isinstance(options['loader'], six.string_types):
             loader_class = import_string(options['loader'])
