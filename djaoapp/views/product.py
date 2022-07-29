@@ -40,16 +40,6 @@ from .redirects import OrganizationRedirectView
 LOGGER = logging.getLogger(__name__)
 
 
-def raise_404_on_does_not_exist(method):
-    """Raise a 404 error when an object cannot be found in the database."""
-    def wrap(*args, **kwargs):
-        try:
-            return method(*args, **kwargs)
-        except ObjectDoesNotExist as err:
-            raise Http404()  from err
-    return wrap
-
-
 class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
     """
     Display or Edit a ``Page`` of a ``rules.App``.
@@ -99,20 +89,8 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
             page_name = 'index'
         candidates += ["%s.html" % page_name] + optional_template_names
         LOGGER.info('candidate page templates: %s', ','.join(candidates))
-        for template_name in candidates:
-            try:
-                get_template(template_name)
-                return [template_name]
-            except TemplateDoesNotExist:
-                pass
-        raise Http404('TemplateDoesNotExist: %s' % ', '.join(candidates))
+        return candidates
 
-    @method_decorator(raise_404_on_does_not_exist)
-    def get_context_data(self, **kwargs):
-        context = super(ProxyPageMixin, self).get_context_data(**kwargs)
-        # Need to be set to be able to use djaoapp-extended-templates PageView
-        self.template_name = self.get_template_names()[0]
-        return context
 
     def translate_response(self, response):
         if response.status_code == 200:

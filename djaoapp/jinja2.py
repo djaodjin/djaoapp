@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+import logging
+
 from django.conf import settings
 import django.template.defaulttags
 from django.utils.translation import gettext, ngettext
@@ -18,12 +20,17 @@ from .compat import import_string, reverse, six
 import djaoapp.templatetags.djaoapp_tags
 
 
+LOGGER = logging.getLogger(__name__)
+
+
 class DjaoappEnvironment(Jinja2Environment):
 
     def get_template(self, name, parent=None, globals=None):
         #pylint:disable=redefined-builtin
         template = super(DjaoappEnvironment, self).get_template(
             name, parent=parent, globals=globals)
+        LOGGER.debug("[DjaoappEnvironment.get_template] loads %s from %s" % (
+            name, template.filename))
         extended_templates_signals.template_loaded.send(
             sender=self, template=template)
         return template
@@ -41,7 +48,7 @@ def environment(**options):
 
     # If we don't force ``auto_reload`` to True, in DEBUG=0, the templates
     # would only be compiled on the first edit.
-    options.update({'auto_reload': True, 'bytecode_cache': None})
+    options.update({'auto_reload': True, 'cache_size': 0})
     if 'loader' in options:
         if isinstance(options['loader'], six.string_types):
             loader_class = import_string(options['loader'])
