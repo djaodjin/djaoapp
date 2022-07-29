@@ -16,22 +16,24 @@ from django.http import Http404
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.template.response import TemplateResponse
+from django.utils._os import safe_join
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.static import serve
-from extended_templates.helpers import get_assets_dirs
+from extended_templates import settings as themes_settings
 from extended_templates.views.pages import PageMixin
+from rules.utils import get_current_app
+from rules.views.app import (AppMixin, SessionProxyMixin,
+    AppDashboardView as AppDashboardViewBase)
 from saas.decorators import fail_direct
 from saas.mixins import UserMixin
 from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
-from rules.utils import get_current_app
-from rules.views.app import (AppMixin, SessionProxyMixin,
-    AppDashboardView as AppDashboardViewBase)
 
-from ..compat import gettext_lazy as _, urlparse
-from ..thread_locals import get_current_broker
+from ..compat import gettext_lazy as _
+from ..thread_locals import (get_active_theme, get_current_app,
+    get_current_broker, is_current_broker)
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
 
@@ -44,7 +46,7 @@ def raise_404_on_does_not_exist(method):
         try:
             return method(*args, **kwargs)
         except ObjectDoesNotExist as err:
-            raise Http404(err)
+            raise Http404()  from err
     return wrap
 
 
@@ -96,7 +98,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         if not page_name:
             page_name = 'index'
         candidates += ["%s.html" % page_name] + optional_template_names
-        LOGGER.debug('candidate page templates: %s', ','.join(candidates))
+        LOGGER.info('candidate page templates: %s', ','.join(candidates))
         for template_name in candidates:
             try:
                 get_template(template_name)
@@ -134,41 +136,36 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         # XXX cannot use 404 exception because it will catch errors
         # in get_context_data.
         except Http404 as err:
-            LOGGER.debug("we will be looking for assets because of '%s'", err)
+            LOGGER.info("we will be looking for assets because of '%s'", err)
+            # static and media assets will have been served through
+            # different rules in debug mode. In production, they
+            # will have been served by the front-end webserver (nginx)
+            # directly. So we only have to deal with the buildbot (DEBUG=0,
+            # USE_FIXTURES=1).
+            if not settings.USE_FIXTURES:
+                raise
+            rel_path = self.kwargs.get('page')
+            if rel_path is None:
+                rel_path = ''
             response = None
             if settings.DEBUG:
                 # If we do not execute after the forward we will return
                 # local versions of bootstrap.js for example.
                 try:
-                    page = self.kwargs.get('page')
-                    if page is None:
-                        page = ''
-                    response = debug_serve(request, page)
+                    response = debug_serve(request, rel_path)
                 except Http404:
                     pass
             if response is None:
-                # Mostly for automated tests.
-                not_found = None
-                parts = urlparse(request.path)
-                path_parts = parts.path.strip('/').split('/')
-                static_url_parts = settings.STATIC_URL.strip('/').split('/')
-                rel_path = '/'.join(path_parts)
-                for idx, path_part in enumerate(reversed(path_parts)):
-                    if path_part == static_url_parts[-1]:
-                        # We found where STATIC_URL begins.
-                        rel_path = '/'.join(path_parts[len(path_parts) - idx:])
-                        break
-                for asset_dir in get_assets_dirs():
-                    LOGGER.info("looking for '%s' in '%s'",
-                        rel_path, asset_dir)
-                    try:
-                        response = serve(
-                            request, rel_path, document_root=asset_dir)
-                        break
-                    except Http404 as err:
-                        not_found = err
-                if not response and not_found:
-                    raise not_found
+                app = get_current_app(request)
+                if is_current_broker(app.account):
+                    asset_dir = themes_settings.PUBLIC_ROOT
+                else:
+                    theme_name = get_active_theme()
+                    asset_dir = safe_join(
+                        themes_settings.PUBLIC_ROOT, theme_name)
+                LOGGER.info("looking for '%s' in '%s'", rel_path, asset_dir)
+                response = serve(
+                    request, rel_path, document_root=asset_dir)
         return response
 
 

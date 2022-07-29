@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = os.path.basename(BASE_DIR)
 
 DEBUG = True
+USE_FIXTURES = True
 API_DEBUG = DEBUG
 ASSETS_DEBUG = DEBUG
 FEATURES_DEBUG = DEBUG
