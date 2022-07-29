@@ -172,7 +172,7 @@ clean-dbs:
 clean-themes:
 	rm -rf $(srcDir)/themes/*
 	rm -rf $(srcDir)/htdocs/themes/*
-	rm -rf $(srcDir)/htdocs/uploads/*
+	rm -rf $(srcDir)/htdocs/djaoapp
 
 
 initdb-djaoapp: clean-dbs
