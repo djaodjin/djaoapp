@@ -6,16 +6,14 @@
 .DS_Store
 .timestamp
 .vscode
-assets
-htdocs
-htdocs/media/
-themes/
-djaoapp/locale/*/LC_MESSAGES/*.mo
+htdocs/
+htdocs/media
+themes
+credentials
 # we don't use package.json in root dir, however it is convenient
-# to ingore these files when making modifications to package.json via
+# to ignore these files when making modifications to package.json via
 # npm install --save <package-name>
 package-lock.json
-node_modules
-credentials
-djaoapp/static/vendor/chart.js
 webpack-conf-paths.json
+node_modules
+djaoapp/static/vendor/chart.js

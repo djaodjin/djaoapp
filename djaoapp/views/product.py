@@ -113,7 +113,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
             response = super(ProxyPageMixin, self).get(request, *args, **kwargs)
         # XXX cannot use 404 exception because it will catch errors
         # in get_context_data.
-        except Http404 as err:
+        except (TemplateDoesNotExist, Http404) as err:
             LOGGER.info("we will be looking for assets because of '%s'", err)
             # static and media assets will have been served through
             # different rules in debug mode. In production, they
@@ -121,7 +121,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
             # directly. So we only have to deal with the buildbot (DEBUG=0,
             # USE_FIXTURES=1).
             if not settings.USE_FIXTURES:
-                raise
+                raise Http404()
             rel_path = self.kwargs.get('page')
             if rel_path is None:
                 rel_path = ''
