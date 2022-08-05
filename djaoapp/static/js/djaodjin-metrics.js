@@ -1,6 +1,23 @@
-/* Copyright (c) 2018, Djaodjin Inc.
+/* Copyright (c) 2022, Djaodjin Inc.
    see LICENSE
 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['exports', 'jQuery'], factory);
+    } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+        // CommonJS
+        factory(exports, require('jQuery'));
+    } else {
+        // Browser true globals added to `window`.
+        factory(root, root.jQuery);
+        // If we want to put the exports in a namespace, use the following line
+        // instead.
+        // factory((root.djResources = {}), root.jQuery);
+    }
+}(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
+
 
 // Calculate width of word
 function marginLeftCalculation(text, defaultFont) {
@@ -241,53 +258,6 @@ function updateChart(container, data, unit, dataScale, extra) {
     });
 }
 
-function saveContent(dataType, fileContents, fileName){
-    "use strict";
-    var uri = "data:" + dataType + "," + fileContents;
-//XXX old browsers:    window.open(uri);
-    var link = document.createElement("a");
-    link.download = fileName;
-    link.href = uri;
-    link.click();
-}
-
-function exportCSV(event) {
-    "use strict";
-    var self = $(this);
-    event.preventDefault();
-    var key = self.parents("section").find(".tab-pane.active").attr("id");
-    var table = data[key].table; // XXX Use of global variable *data*
-        // until we figure out how to get the data attached to the svg.
-    var output = "";
-    // Create the monthly headers
-    var sep = ", ";
-    output += "\t";
-    for( var j = 0; j < table[0].values.length; ++j ) {
-        var d = new Date(table[0].values[j][0]);
-        output += sep + d.getFullYear() + "-" + (d.getMonth() + 1);
-    }
-    output += "\n";
-    // Create the rows with numbers
-    for( var i = 0; i < table.length; ++i ) {
-        output += table[i].key;
-        for( j = 0; j < table[i].values.length; ++j ) {
-            output += sep + table[i].values[j][1];
-        }
-        output += "\n";
-    }
-
-    table = data.key.extra;
-
-    for( i = 0; i < table.length; ++i ) {
-        output += table[i].key;
-        for( j = 0; j < table[i].values.length; ++j ) {
-            output += sep + table[i].values[j][1];
-        }
-        output += "\n";
-    }
-    saveContent("application/csv;charset=UTF-8", encodeURIComponent(output),
-        "download.csv");
-}
 
 function updateBarChart(container, data, unit, dataScale, extra) {
     "use strict";
@@ -367,3 +337,10 @@ function updateBarChart(container, data, unit, dataScale, extra) {
         return chart;
     });
 }
+
+
+    // attach properties to the exports object to define
+    // the exported module properties.
+    exports.updateChart = updateChart;
+    exports.updateBarChart = updateBarChart;
+}));

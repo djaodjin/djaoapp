@@ -12,7 +12,7 @@ django-phonenumber-field==2.4.0
 django-recaptcha==2.0.5
 djangorestframework==3.9.4
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.9.1
+djaodjin-deployutils==0.9.4
 djaodjin-extended-templates==0.3.2
 djaodjin-multitier==0.1.22
 djaodjin-rules==0.2.9

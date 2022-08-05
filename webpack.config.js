@@ -23,8 +23,8 @@ module.exports = {
           'js/djaodjin-saas-vue.js',
           'js/djaodjin-rules-vue.js',
           'js/djaodjin-themes-vue.js',
+          'js/djaodjin-metrics.js',
           'js/djaodjin-djaoapp-vue.js',
-          'js/djaodjin-metrics.js'
       ],
       pages: [
           'js/djaodjin-editor.js',
@@ -87,6 +87,9 @@ module.exports = {
           showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
           getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
           getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
+
+          updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
+          updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],
       })
   ],
   resolve: {

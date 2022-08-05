@@ -104,7 +104,7 @@
                   </div>
                   <div class="align-items-center justify-content-center h-75">
                     <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
-                    <h2 class="text-center" v-show="itemLoaded && !item.processor_hint" v-cloak>[[amount / 100 | currency('$', 0)]]</h2>
+                    <h2 class="text-center" v-show="itemLoaded && !item.processor_hint" v-cloak>[[$globals.humanizeNumber(amount, item.unit, item.scale)]]</h2>
                   </div>
                 </div>
               </div>
