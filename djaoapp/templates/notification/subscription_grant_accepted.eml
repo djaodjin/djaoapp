@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block html_content %}
-{% if reason %}
+{% if detail %}
 <p>
-{{reason|md}}
+{{detail|md}}
 </p>
 {% endif %}
 <p>

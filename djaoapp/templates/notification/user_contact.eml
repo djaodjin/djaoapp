@@ -10,7 +10,7 @@
 <h3>{% trans %}Contact inquiry from{% endtrans %} {% if originated_by.location %}<a href="{{originated_by.location}}">{{originated_by.printable_name}}</a>{% else %}<b>{{originated_by.printable_name}}</b>{% endif %}</h3>
 
 <div>
-{% for row in reason %}
+{% for row in detail %}
 {% if row.0 %}
 <p><strong>{{row.0}}</strong></p>
 {% endif %}

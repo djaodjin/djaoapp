@@ -9,9 +9,9 @@ HTML encoded. #}
 {% block title %}{% trans user=user.printable_name, organization=profile.printable_name, role_description=role_description.title %}{{user}} was added as a {{role_description}} to {{organization}}{% endtrans %}{% endblock %}
 
 {% block html_content %}
-{% if reason %}
+{% if detail %}
 <p>
-{{reason|md}}
+{{detail|md}}
 </p>
 {% endif %}
 <p>
