@@ -26,16 +26,24 @@ class NotificationSerializer(NoModelSerializer):
         read_only_fields = ('broker', 'back_url')
 
 
+class ContactUsValueTuple(serializers.ListField):
+
+    child = serializers.CharField() # (key, value)
+    min_length = 2
+    max_length = 2
+
+
 class ContactUsNotificationSerializer(NotificationSerializer):
     """
     Notification sent when a contact us form is processed
     """
     originated_by = UserDetailSerializer(
         help_text=_("the user at the origin of the notification"))
-    detail = serializers.CharField(
-        help_text=_("message written in the contact us form"))
     provider = ProfileSerializer(required=False,
         help_text=_("provider when different from broker"))
+    detail = serializers.ListField(child=ContactUsValueTuple(),
+        help_text=_("information passed in the 'Contact us' form,"\
+            " including message"))
 
     class Meta(NotificationSerializer.Meta):
         fields = NotificationSerializer.Meta.fields + (
