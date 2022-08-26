@@ -81,7 +81,7 @@ class Command(BaseCommand):
             saas_signals.card_updated,
             saas_signals.expires_soon,
             saas_signals.order_executed,
-            saas_signals.organization_updated,
+            saas_signals.profile_updated,
             saas_signals.role_grant_created,
             saas_signals.role_request_created,
             saas_signals.role_grant_accepted,

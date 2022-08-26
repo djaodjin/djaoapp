@@ -1116,6 +1116,21 @@
 },
 {
     "fields": {
+      "date_joined": "2022-01-01T00:00:00+00:00",
+      "email": "xia+16@localhost.localdomain",
+      "first_name": "Xia16",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2022-01-01T00:00:00+00:00",
+      "last_name": "SignupProfileAPI2",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia16"
+    },
+    "model": "auth.User", "pk": 16
+},
+{
+    "fields": {
       "slug": "contact_requested_notice",
       "title": "Messages through the website contact page",
       "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."

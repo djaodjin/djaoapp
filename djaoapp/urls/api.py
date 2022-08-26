@@ -2,7 +2,7 @@
 # see LICENSE
 
 from rules.urldecorators import include
-from saas.settings import ACCT_REGEX
+from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.settings import USERNAME_PAT
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
@@ -23,31 +23,28 @@ from ..urlbuilders import (url_authenticated, url_direct,
 
 urlpatterns = [
     # HTTP request pipeline and visual appearence.
-    url_direct(r'^api/auth/tokens/realms/(?P<organization>%s)?/?' % ACCT_REGEX,
-                                          # site/subdomain
+    url_direct(r'^api/auth/tokens/realms/(?P<%s>%s)?' % (
+        PROFILE_URL_KWARG, SLUG_RE), # site/subdomain
         CredentialsAPIView.as_view(), name='api_credentials_organization'),
-    url_direct(r'^api/notifications/(?P<template>%s)/' % ACCT_REGEX,
+    url_direct(r'^api/notifications/(?P<template>%s)' % SLUG_RE,
         NotificationDetailAPIView.as_view(),
         name='api_notification_send_test_email'),
-    url_direct(r'^api/notifications/',
+    url_direct(r'^api/notifications',
         NotificationAPIView.as_view(), name='api_notification_base'),
-    url_direct(r'^api/proxy/recent/',
+    url_direct(r'^api/proxy/recent',
         RecentActivityAPIView.as_view(), name='api_recent_activity'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
-    url_direct(r'^api/themes/$',
+    url_direct(r'^api/themes$',
         DjaoAppThemePackageListAPIView.as_view(),
         name='extended_templates_api_themes'),
-    url_direct(r'^api/themes/', include('extended_templates.urls.api.assets')),
-    url_direct(r'^api/themes/',
-        include('extended_templates.urls.api.templates')),
-    url_direct(r'^api/themes/', include('extended_templates.urls.api.themes')),
+    url_direct(r'^api/', include('extended_templates.urls.api')),
 
     # Billing, Metrics, Profiles, Roles and Subscriptions
     url_prefixed(r'^api/', include('saas.urls.api.cart')),
         # `saas.urls.api.cart`: DELETE implements its own policy
     url_authenticated(r'^api/', include('saas.urls.api.legal')),
     url_self_provider(r'^api/', include('saas.urls.api.users')),
-    url_direct(r'^api/profile/$',
+    url_direct(r'^api/profile$',
         DjaoAppProfileListAPIView.as_view(), name='saas_api_profile'),
     url_direct(r'^api/', include('saas.urls.api.headbroker')),
     # api/charges/:charge/refund must be before api/charges/
@@ -64,11 +61,12 @@ urlpatterns = [
     url_frictionless_direct(
         r'^api/', include('saas.urls.api.provider.metrics')),
     url_frictionless_provider(
-        r'^api/profile/(?P<organization>%s)/?$' % ACCT_REGEX,
+        r'^api/profile/(?P<%s>%s)$' % (
+        PROFILE_URL_KWARG, SLUG_RE),
         DjaoAppProfileDetailAPIView.as_view(), name='saas_api_organization'),
     url_provider(
-        r'^api/profile/(?P<organization>%s)/roles/(?P<role>%s)/?$' % (
-            ACCT_REGEX, ACCT_REGEX),
+        r'^api/profile/(?P<%s>%s)/roles/(?P<role>%s)$' % (
+            PROFILE_URL_KWARG, SLUG_RE, SLUG_RE),
         DjaoAppRoleByDescrListAPIView.as_view(),
         name='saas_api_roles_by_descr'),
     url_provider(
@@ -88,9 +86,9 @@ urlpatterns = [
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_frictionless_self_provider(r'^api/',
         include('signup.urls.api.activate')),
-    url_frictionless_self_provider(r'^api/users/(?P<user>%s)/$' % USERNAME_PAT,
+    url_frictionless_self_provider(r'^api/users/(?P<user>%s)$' % USERNAME_PAT,
         DjaoAppUserDetailAPIView.as_view(), name='api_user_profile'),
-    url_frictionless_self_provider(r'^api/users/(?P<user>%s)/notifications/$' %
+    url_frictionless_self_provider(r'^api/users/(?P<user>%s)/notifications$' %
         USERNAME_PAT, DjaoAppUserNotificationsAPIView.as_view(),
         name='api_user_notifications'),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
@@ -98,13 +96,13 @@ urlpatterns = [
     # Furthermore we restrict verification and refresh of JWT
     # to the request.user itself.
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
-    url_prefixed(r'^api/auth/register/',
+    url_prefixed(r'^api/auth/register',
         DjaoAppJWTRegister.as_view(), name='api_register'),
     url_prefixed(r'^api/', include('signup.urls.api.auth')),
 
     # DjaoApp-specific
-    url_self_provider(r'^api/todos/', TodosAPIView.as_view(), 'api_todos'),
-    url_prefixed(r'^api/contact/',
+    url_self_provider(r'^api/todos', TodosAPIView.as_view(), 'api_todos'),
+    url_prefixed(r'^api/contact',
         ContactUsAPIView.as_view(), name='api_contact_us'),
     url_prefixed(r'^api$', DjaoAppAPIVersion.as_view())
 ]

@@ -62,7 +62,7 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
 
         .. code-block:: http
 
-            POST /api/notifications/contact_requested_notice/ HTTP/1.1
+            POST /api/notifications/contact_requested_notice HTTP/1.1
 
         responds
 

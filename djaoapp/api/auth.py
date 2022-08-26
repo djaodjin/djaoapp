@@ -41,7 +41,7 @@ class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
 
     .. code-block:: http
 
-        POST /api/auth/register/ HTTP/1.1
+        POST /api/auth/register HTTP/1.1
 
     .. code-block:: json
 
@@ -143,7 +143,7 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
 
     .. code-block:: http
 
-        GET  /api/auth/tokens/realms/cowork/ HTTP/1.1
+        GET  /api/auth/tokens/realms/cowork HTTP/1.1
 
     responds
 

@@ -25,14 +25,7 @@ var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
 
     onHit: function onHit(newItem) {
       var vm = this;
-      vm.$emit('selectitem', vm.dataset, newItem);
-/*XXX
-      if( typeof newItem.full_name !== 'undefined' ) {
-          vm.query = newItem.full_name;
-      } else {
-          vm.query = newItem;
-      }
-*/
+      vm.$emit('selectitem', newItem);
       vm.reset();
       vm.clear();
     }

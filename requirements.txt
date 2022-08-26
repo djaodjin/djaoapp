@@ -1,18 +1,18 @@
 # Direct known Python requirements
 # (Javascript prerequisites are specified in package.json)
 
-boto3==1.17.21
-Django==3.2.14
-django-phonenumber-field==5.2.0
+boto3==1.24.48
+Django==3.2.15
+django-phonenumber-field==6.3.0
 django-recaptcha==2.0.6
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.9.4
+djaodjin-deployutils==0.10.2
 djaodjin-extended-templates==0.3.4
 djaodjin-multitier==0.1.23
-djaodjin-rules==0.2.9
-djaodjin-saas==0.12.0
-djaodjin-signup==0.6.1
+djaodjin-rules==0.3.0
+djaodjin-saas==0.14.0
+djaodjin-signup==0.7.0
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==3.1.2
 MarkupSafe==2.1.1
@@ -20,10 +20,10 @@ MarkupSafe==2.1.1
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
 #   but it still seems to work ...
 gunicorn==20.1.0
-phonenumbers==8.12.19
+phonenumbers==8.12.54
 PyJWT==2.4.0
-pytz==2021.1
-social-auth-app-django==4.0.0 # v1.2.0 does not support Django>=2.1
+pytz==2022.1
+social-auth-app-django==5.0.0 # v1.2.0 does not support Django>=2.1
 whitenoise==5.1.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
@@ -36,6 +36,8 @@ django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2
                                   # 1.11 does not support Django 2.2
 django-extensions==3.2.0          # 3.2.0 required by Django==4.0
 
+# Optional packages
+django-storages==1.13.1
 
 # development
 drf-yasg==1.8.0
@@ -43,7 +45,7 @@ Faker==3.0.1
 flex==6.14.0
 pygments==2.6.1
 pyYAML==5.1.2
-Sphinx==1.8.4
-sphinxcontrib-httpdomain==1.7.0
-sphinxcontrib-websupport==1.1.0
-swagger-spec-validator==2.3.0
+Sphinx==5.1.1
+sphinxcontrib-httpdomain==1.8.0
+sphinxcontrib-websupport==1.2.4
+swagger-spec-validator==2.7.4

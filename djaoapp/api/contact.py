@@ -40,7 +40,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
 
     .. code-block:: http
 
-        POST /api/contact/ HTTP/1.1
+        POST /api/contact HTTP/1.1
 
     .. code-block:: json
 

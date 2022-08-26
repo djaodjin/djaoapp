@@ -11,7 +11,7 @@ from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.signals import (card_expires_soon, charge_updated,
     claim_code_generated, card_updated, expires_soon, order_executed,
-    organization_updated, processor_setup_error,
+    profile_updated, processor_setup_error,
     renewal_charge_failed, role_grant_created, role_request_created,
     role_grant_accepted, subscription_grant_accepted,
     subscription_grant_created, subscription_request_accepted,
@@ -97,7 +97,7 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000",
+          "back_url": "{{api_base_url}}",
           "originated_by": {
             "slug": "xia",
             "username": "xia",
@@ -114,7 +114,7 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "detail": "Please help!"
+          "detail": [["Message", "Please help!"]]
         }
     """
     broker = get_broker()
@@ -175,7 +175,7 @@ def user_registered_notice(sender, user, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000",
+          "back_url": "{{api_base_url}}",
           "user": {
             "slug": "xia",
             "username": "xia",
@@ -251,7 +251,7 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000",
+          "back_url": "{{api_base_url}}",
           "user": {
             "slug": "xia",
             "username": "xia",
@@ -323,7 +323,7 @@ def user_verification_notice(
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/activate/abcdef123/",
+          "back_url": "{{api_base_url}}activate/abcdef123/",
           "user": {
             "slug": "xia",
             "username": "xia",
@@ -397,7 +397,7 @@ def user_reset_password_notice(sender, user, request, back_url,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/activate/abcdef123/",
+          "back_url": "{{api_base_url}}activate/abcdef123/",
           "user": {
             "slug": "xia",
             "username": "xia",
@@ -466,7 +466,7 @@ def user_mfa_code_notice(sender, user, code, request, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/activate/abcdef123/",
+          "back_url": "{{api_base_url}}activate/abcdef123/",
           "user": {
             "slug": "xia",
             "username": "xia",
@@ -542,7 +542,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -588,11 +588,23 @@ def charge_updated_notice(sender, charge, user, **kwargs):
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
-              "orig_organization": "djaoapp",
+              "orig_profile": {
+                  "slug": "djaoapp",
+                  "printable_name": "DjaoApp",
+                  "picture": null,
+                  "type": "organization",
+                  "credentials": false
+              },
               "orig_amount": 11900,
               "orig_unit": "usd",
               "dest_account": "Payable",
-              "dest_organization": "xia",
+              "dest_profile": {
+                  "slug": "xia",
+                  "printable_name": "Xia",
+                  "picture": null,
+                  "type": "personal",
+                  "credentials": true
+              },
               "dest_amount": 11900,
               "dest_unit": "usd"
             },
@@ -705,7 +717,7 @@ def card_updated_notice(sender, organization, user, old_card, new_card,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000",
+          "back_url": "{{api_base_url}}",
           "originated_by": {
             "slug": "xia",
             "username": "xia",
@@ -821,7 +833,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -866,11 +878,23 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
-              "orig_organization": "djaoapp",
+              "orig_profile": {
+                  "slug": "djaoapp",
+                  "printable_name": "DjaoApp",
+                  "picture": null,
+                  "type": "organization",
+                  "credentials": false
+              },
               "orig_amount": 11900,
               "orig_unit": "usd",
               "dest_account": "Payable",
-              "dest_organization": "xia",
+              "dest_profile": {
+                  "slug": "xia",
+                  "printable_name": "Xia",
+                  "picture": null,
+                  "type": "personal",
+                  "credentials": true
+              },
               "dest_amount": 11900,
               "dest_unit": "usd"
           }],
@@ -961,7 +985,7 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -994,11 +1018,23 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
-              "orig_organization": "djaoapp",
+              "orig_profile": {
+                  "slug": "djaoapp",
+                  "printable_name": "DjaoApp",
+                  "picture": null,
+                  "type": "organization",
+                  "credentials": false
+              },
               "orig_amount": 11900,
               "orig_unit": "usd",
               "dest_account": "Payable",
-              "dest_organization": "xia",
+              "dest_profile": {
+                  "slug": "xia",
+                  "printable_name": "Xia",
+                  "picture": null,
+                  "type": "personal",
+                  "credentials": true
+              },
               "dest_amount": 11900,
               "dest_unit": "usd"
           }],
@@ -1095,7 +1131,7 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1208,8 +1244,8 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
         site=site)
 
 
-@receiver(organization_updated, dispatch_uid="organization_updated_notice")
-def organization_updated_notice(sender, organization, changes, user, **kwargs):
+@receiver(profile_updated, dispatch_uid="profile_updated_notice")
+def profile_updated_notice(sender, organization, changes, user, **kwargs):
     """
     Profile updated
 
@@ -1222,7 +1258,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
     .. code-block:: json
 
        {
-          "event": "organization_updated",
+          "event": "profile_updated",
           "broker": {
             "slug": "djaoapp",
             "printable_name": "DjaoApp",
@@ -1245,7 +1281,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1315,7 +1351,7 @@ def organization_updated_notice(sender, organization, changes, user, **kwargs):
         'profile': organization,
         'changes': changes
     }
-    get_current_app().send_notification('organization_updated',
+    get_current_app().send_notification('profile_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
       site=site)
 
@@ -1361,7 +1397,7 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1481,7 +1517,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1615,7 +1651,7 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1734,7 +1770,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1860,7 +1896,7 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -1968,7 +2004,7 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -2086,7 +2122,7 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -2195,7 +2231,7 @@ def subscription_request_created_notice(sender, subscription, reason=None,
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -2303,7 +2339,7 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -2390,7 +2426,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",
@@ -2503,7 +2539,7 @@ def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "back_url": "http://localhost:8000/",
+          "back_url": "{{api_base_url}}",
           "profile": {
             "slug": "xia",
             "printable_name": "Xia",

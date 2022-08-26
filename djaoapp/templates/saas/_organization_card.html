@@ -1,9 +1,7 @@
-<div :id="item.organization.slug" :class="(item.accept_grant_api_url || item.request_key) ? 'card card-organization card-inactive' : 'card card-organization'">
-  <img :src="item.organization.picture ? item.organization.picture : (item.organization.type == 'personal' ? '{{'/static/img/default-user.png'|djasset}}' : '{{'/static/img/default-organization.png'|djasset}}')" class="card-img-top" :alt="item.organization.printable_name">
+<div :id="item.profile.slug" :class="(item.accept_grant_api_url || item.request_key) ? 'card card-organization card-inactive' : 'card card-organization'">
+  <img :src="item.profile.picture ? item.profile.picture : (item.profile.type == 'personal' ? '{{'/static/img/default-user.png'|djasset}}' : '{{'/static/img/default-organization.png'|djasset}}')" class="card-img-top" :alt="item.profile.printable_name">
   <div class="card-body">
-    <h5 class="card-title">
-      [[item.organization.printable_name]]
-    </h5>
+    <h5 class="card-title">[[item.profile.printable_name]]</h5>
     <p class="card-text">
       <span class="badge badge-primary">[[ item.role_description ? item.role_description.title : "" ]]</span>
     </p>

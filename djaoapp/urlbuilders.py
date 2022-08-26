@@ -1,9 +1,9 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 from rules.urldecorators import url
 from saas.decorators import fail_agreement
-from saas.settings import ACCT_REGEX
+from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.decorators import fail_active
 
 from .decorators import (fail_active_roles, fail_authenticated,
@@ -23,7 +23,7 @@ def url_authenticated(regex, view, name=None):
     Returns a urlpattern accessible to an authenticated user.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
             fail_authenticated
@@ -35,7 +35,7 @@ def url_agreement(regex, view, name=None):
     Returns a urlpattern accessible to a user that signed the terms-of-use.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
             fail_authenticated,
@@ -48,7 +48,7 @@ def url_active(regex, view, name=None):
     Returns a urlpattern accessible to an active user.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
             fail_authenticated,
@@ -62,7 +62,7 @@ def url_direct(regex, view, name=None):
     Builds URLs for a direct decorator.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -79,7 +79,7 @@ def url_frictionless_direct(regex, view, name=None):
     an activated account.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -94,7 +94,7 @@ def url_dashboard(regex, view, name=None):
     dashboard functionality, hence the name ``url_dashboard``.
     """
     return url(regex % {
-            "app": r'(?P<app>%s)' % ACCT_REGEX},
+            "app": r'(?P<app>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -111,7 +111,7 @@ def url_dashboard_iframe(regex, view, name=None):
     Used in notifications template iframe
     """
     return url(regex % {
-            "app": r'(?P<app>%s)' % ACCT_REGEX},
+            "app": r'(?P<app>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -129,7 +129,7 @@ def url_provider(regex, view, name=None):
     to access the urlpattern built from *regex*.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -149,7 +149,7 @@ def url_frictionless_provider(regex, view, name=None):
     The request user is not require to have activated their account yet.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -162,7 +162,7 @@ def url_provider_only(regex, view, name=None):
     Builds URLs for a provider-only decorator.
     """
     return url(regex % {
-            "organization": r'(?P<organization>%s)' % ACCT_REGEX},
+            PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -181,7 +181,7 @@ def url_self_provider(regex, view, name=None):
     have permission to access the urlpattern built from *regex*.
     """
     return url(regex % {
-            "user": r'(?P<user>%s)' % ACCT_REGEX},
+            "user": r'(?P<user>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
                    fail_authenticated,
@@ -197,7 +197,7 @@ def url_frictionless_self_provider(regex, view, name=None):
     It will also let user (self) which have not activated their account through.
     """
     return url(regex % {
-            "user": r'(?P<user>%s)' % ACCT_REGEX},
+            "user": r'(?P<user>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
                    fail_authenticated,

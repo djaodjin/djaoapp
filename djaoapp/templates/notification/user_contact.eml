@@ -22,3 +22,6 @@
 <p><b>{{originated_by.printable_name}}</b><br />
 {{originated_by.email}}</p>
 {% endblock %}
+
+{% block support %}
+{% endblock %}

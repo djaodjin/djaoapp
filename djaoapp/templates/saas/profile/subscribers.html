@@ -102,11 +102,11 @@
               <thead>
 
                 <!-- Sort Organization -->
-                <tr v-show="sortDir('organization')" class="text-nowrap" v-cloak>
+                <tr v-show="sortDir('profile')" class="text-nowrap" v-cloak>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('organization')">
-                      <i :class="sortIcon('organization')" class="pl-2"></i>
+                    <a href="#" @click.prevent="sortBy('profile')">
+                      <i :class="sortIcon('profile')" class="pl-2"></i>
                     </a>
                   </th>
                   <th>
@@ -138,8 +138,8 @@
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('organization')">
-                      <i :class="sortIcon('organization')" class="pl-2"></i>
+                    <a href="#" @click.prevent="sortBy('profile')">
+                      <i :class="sortIcon('profile')" class="pl-2"></i>
                     </a>
                   </th>
                   <th>
@@ -167,8 +167,8 @@
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('organization')">
-                      <i :class="sortIcon('organization')" class="pl-2"></i>
+                    <a href="#" @click.prevent="sortBy('profile')">
+                      <i :class="sortIcon('profile')" class="pl-2"></i>
                     </a>
                   </th>
                   <th>
@@ -194,8 +194,8 @@
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('organization')">
-                      <i :class="sortIcon('organization')" class="pl-2"></i>
+                    <a href="#" @click.prevent="sortBy('profile')">
+                      <i :class="sortIcon('profile')" class="pl-2"></i>
                     </a>
                   </th>
                   <th>
@@ -235,11 +235,11 @@
               </tbody>
 
               <!-- Sort by subscriber's name -->
-              <tbody class="has-results" v-for="(group, key) in groupBy(items.results, 'organization.printable_name')"
-                     v-show="sortDir('organization') && itemsLoaded && items.results.length > 0" v-cloak>
+              <tbody class="has-results" v-for="(group, key) in groupBy(items.results, 'profile.printable_name')"
+                     v-show="sortDir('profile') && itemsLoaded && items.results.length > 0" v-cloak>
                 <tr v-for="entry in [group[0]]">
                   <td colspan="5" class="text-nowrap">
-                    <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                    <a :id="entry.profile.slug" :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
                   </td>
                 </tr>
                 <tr v-for="entry in group" :class="endsSoon(entry)">
@@ -272,8 +272,8 @@
                 <tr v-for="entry in group" :class="endsSoon(entry)">
                   <td></td>
                   <td class="text-nowrap">
-                    <a :id="entry.organization.slug"
-                       :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                    <a :id="entry.profile.slug"
+                       :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
                   </td>
                   <td>[[$globals.humanizeDate(entry.created_at)]]</td>
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.ends_at)]]</td>
@@ -304,7 +304,7 @@
                 <tr v-for="entry in group" :class="endsSoon(entry)">
                   <td></td>
                   <td class="text-nowrap">
-                    <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                    <a :id="entry.profile.slug" :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
                   </td>
                   <td>[[entry.plan.title]]</td>
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.ends_at)]]</td>
@@ -335,7 +335,7 @@
                 <tr v-for="entry in group" :class="endsSoon(entry)">
                   <td></td>
                   <td class="text-nowrap">
-                    <a :id="entry.organization.slug" :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+                    <a :id="entry.profile.slug" :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
                   </td>
                   <td>[[entry.plan.title]]</td>
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>

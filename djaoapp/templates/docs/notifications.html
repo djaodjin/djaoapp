@@ -46,24 +46,6 @@
   <li class="nav-item">
       <a class="nav-link" href="#alphabetical">Alphabetical</a>
   </li>
-  <li class="nav-item">
-      <a class="nav-link" href="#workflows">By workflows</a>
-      <ul class="list-unstyled ml-2">
-        <li class="nav-item">
-          <a class="nav-link" href="#rbac">Access control</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#billing">Billing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#subscription">Subscriptions</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#activity">Activity</a>
-        </li>
-
-      </ul>
-  </li>
 </ul>
 <hr class="d-md-none" />
 <ul class="nav flex-column d-md-none">
@@ -84,70 +66,14 @@
         <p>
 These are notifications sent by DjaoApp.
         </p>
-      </div>
-    </div>
-    <div class="row"> {#row-eq-height">#}
-      <div class="col-sm-4">
-        <div class="faq-list" style="height:92%;">
-          <div class="p-4">
-            <h3>workflows</h3>
-            <ul>
-              <li><a href="#rbac">Access control</a></li>
-              <li><a href="#billing">Billing</a></li>
-              <li><a href="#subscription">Subscriptions</a></li>
-              <li><a href="#activity">Activity</a></li>
-            </ul>
-          </div>
-        </div>
+        <p>
+You can edit the <a href="/docs/guides/themes/#notifications">notification e-mail templates</a>
+in the <em>Themes dashboard page</em>.
+        </p>
       </div>
     </div>
   </div>{# /intro #}
-  <hr />
 
-  {# by workflows #}
-  <div id="workflows">
-    <a name="workflows"></a>
-    <h2>By workflows <a href="#workflows" class="header-anchor"><i class="fa fa-link"></i></a></h2>
-    <a name="auth"></a>
-    <h3>Auth & credentials <a href="#auth" class="header-anchor"><i class="fa fa-link"></i></a></h3>
-    <div class="row">
-      <div class="col-sm-6">
-        <ul>
-          {% for summary_end_point in api_end_points_by_summary %}
-          {% if 'auth' in summary_end_point.tags %}
-          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-sm-6">
-        <p>
-This section contains APIs related to authenticating users such as registration,
-login, updating a user password, etc.
-        </p>
-      </div>
-    </div>
-
-    <a name="billing"></a>
-    <h3>Billing <a href="#billing" class="header-anchor"><i class="fa fa-link"></i></a></h3>
-    <div class="row">
-      <div class="col-sm-6">
-        <ul>
-          {% for summary_end_point in api_end_points_by_summary %}
-          {% if 'billing' in summary_end_point.tags %}
-          <li><a href="#{{summary_end_point.operationId}}">{{summary_end_point.summary}}</a></li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-sm-6">
-        <p>
-This section contains APIs to manage the checkout, billing and accounting
-workflows, including shopping carts, coupons, charges and balance statements.
-        </p>
-      </div>
-    </div>
-  </div> {# / by datamodels #}
   <hr class="mb-0" />
 
   {# alphabetically listed #}

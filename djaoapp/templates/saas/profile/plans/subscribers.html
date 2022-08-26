@@ -87,7 +87,7 @@ Thank you,
     <table class="table" infinite-wrapper>
       <thead>
         <tr>
-          <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('organization')"><i :class="sortIcon('organization')"></i></a></th>
+          <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('profile')"><i :class="sortIcon('profile')"></i></a></th>
           <th>{% trans %}Plan{% endtrans %}</th>
           <th>{% trans %}Since{% endtrans %} <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a></th>
           <th>{% trans %}Ends at{% endtrans %} <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></a></th>
@@ -111,7 +111,7 @@ Thank you,
       <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         <tr :class="endsSoon(entry)">
           <td>
-            <a :href="'{{urls.profile_base}}' + entry.organization.slug + '/subscriptions/'">[[entry.organization.printable_name]]</a>
+            <a :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
           </td>
           <td>[[entry.plan.title]]</td>
           <td>[[$globals.humanizeDate(entry.created_at)]]</td>

@@ -556,6 +556,7 @@ LOGGING = {
 # --------------
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
+    'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
     'ACCOUNT_ACTIVATION_DAYS': 30,
     'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK':
         BYPASS_VERIFICATION_KEY_EXPIRED_CHECK,
@@ -573,7 +574,7 @@ SIGNUP = {
         ('claim_code_generated', "Claim code"),
         ('expires_soon', "Expires soon"),
         ('order_executed', "Order confirmation"),
-        ('organization_updated', "Profile updated"),
+        ('profile_updated', "Profile updated"),
         ('password_reset', "Password reset"),
         ('user_activated', "User activated"),
         ('user_contact', "User contact"),
@@ -775,7 +776,7 @@ SAAS = {
         'USE_STRIPE_V3': not(getattr(sys.modules[__name__],
             'FEATURES_REVERT_STRIPE_V2', False)),
     },
-    'USER_SERIALIZER': 'signup.serializers.UserSerializer',
+    'USER_SERIALIZER': 'signup.serializers_overrides.UserSerializer',
 }
 
 # Software-as-a-Service (forward requests with session data)

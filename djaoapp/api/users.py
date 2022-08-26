@@ -31,7 +31,7 @@ class DjaoAppUserDetailAPIView(UserDetailBaseAPIView):
 
     .. code-block:: http
 
-        GET /api/users/donny/ HTTP/1.1
+        GET /api/users/donny HTTP/1.1
 
     responds
 
@@ -67,7 +67,7 @@ class DjaoAppUserNotificationsAPIView(NotificationsMixin,
 
     .. code-block:: http
 
-        GET /api/users/donny/notifications/ HTTP/1.1
+        GET /api/users/donny/notifications HTTP/1.1
 
     responds
 
@@ -88,7 +88,7 @@ class DjaoAppUserNotificationsAPIView(NotificationsMixin,
 
         .. code-block:: http
 
-            POST /api/users/donny/notifications/ HTTP/1.1
+            POST /api/users/donny/notifications HTTP/1.1
 
         .. code-block:: json
 
@@ -121,7 +121,7 @@ class RecentActivityAPIView(ListAPIView):
 
     .. code-block:: http
 
-        GET /api/proxy/recent/ HTTP/1.1
+        GET /api/proxy/recent HTTP/1.1
 
     responds
 

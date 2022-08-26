@@ -22,6 +22,10 @@ from rest_framework.schemas.generators import EndpointEnumerator
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
 from saas.pagination import (BalancePagination, RoleListPagination,
     StatementBalancePagination, TotalPagination, TypeaheadPagination)
+from saas.api.billing import CartItemUploadAPIView
+from saas.api.organizations import OrganizationPictureAPIView
+from signup.api.contacts import ContactPictureAPIView
+from signup.api.users import UserPictureAPIView
 
 try:
     from rest_framework.schemas.openapi import (
@@ -233,7 +237,7 @@ def rst_to_html(string):
     return mark_safe(result.decode('utf-8'))
 
 
-def transform_links(line):
+def transform_links(line, api_base_url=""):
     look = True
     while look:
         look = re.search(r'(:doc:`([^`]+)<(\S+)>`)', line)
@@ -249,10 +253,11 @@ def transform_links(line):
                 look.group(2), look.group(3)))
         look = re.search(r'(\{\{(\S+)\}\})', line)
         if look:
-            key = look.group(2)
+            key = look.group(2).strip()
             line = line.replace(look.group(1),
-                str(settings.SAAS.get(key.strip(),
-                    settings.REST_FRAMEWORK.get(key.strip(), key.strip()))))
+                str(settings.SAAS.get(key,
+                    settings.REST_FRAMEWORK.get(key,
+                    api_base_url if key == 'api_base_url' else key))))
     return line
 
 
@@ -281,7 +286,7 @@ def split_descr_and_examples(docstring, api_base_url=None):
     description = ""
     examples = ""
     for line in docstring.splitlines():
-        line = transform_links(line.strip())
+        line = transform_links(line.strip(), api_base_url=api_base_url)
         look = re.match(r'\*\*Tags(\*\*)?:(.*)', line)
         if look:
             func_tags = {tag.strip()
@@ -438,6 +443,9 @@ class AutoSchema(BaseAutoSchema):
                            example_key='resp'):
         #pylint:disable=too-many-arguments,too-many-locals,too-many-statements
         view = self.view
+        if isinstance(view, (CartItemUploadAPIView, ContactPictureAPIView,
+                      OrganizationPictureAPIView, UserPictureAPIView)):
+            return
         many = many or (method == 'GET' and hasattr(view, 'list'))
         if many:
             if issubclass(view.pagination_class, BalancePagination):
@@ -769,7 +777,7 @@ class APIDocView(TemplateView):
         api_end_points = []
         api_base_url = getattr(settings, 'API_BASE_URL',
             self.request.build_absolute_uri(location='/').strip('/'))
-        schema = self.generator.get_schema(request=None, public=True)
+        schema = self.generator.get_schema(request=self.request, public=True)
         tags = set([])
         paths = schema.get('paths', [])
         api_paths = OrderedDict()
@@ -837,7 +845,7 @@ class APIDocView(TemplateView):
         return context
 
 
-def populate_schema_from_docstring(schema, docstring):
+def populate_schema_from_docstring(schema, docstring, api_base_url=None):
     schema.update({
         'func': 'GET',
         'path': "",
@@ -845,7 +853,7 @@ def populate_schema_from_docstring(schema, docstring):
     if docstring:
         docstring = docstring.strip()
         func_tags, summary, description, examples = \
-            split_descr_and_examples(docstring)
+            split_descr_and_examples(docstring, api_base_url=api_base_url)
         examples = format_examples(examples)
         schema['summary'] = summary
         schema['description'] = description
@@ -857,7 +865,7 @@ def populate_schema_from_docstring(schema, docstring):
     return schema
 
 
-def get_notification_schema(notification_slug):
+def get_notification_schema(notification_slug, api_base_url=None):
     """
     Returns the summary, description and examples for a notification.
     """
@@ -886,9 +894,9 @@ def get_notification_schema(notification_slug):
     elif notification_slug == 'expires_soon':
         serializer = SubscriptionExpireNotificationSerializer()
         docstring = notification_signals.expires_soon_notice.__doc__
-    elif notification_slug == 'organization_updated':
+    elif notification_slug == 'profile_updated':
         serializer = ChangeProfileNotificationSerializer()
-        docstring = notification_signals.organization_updated_notice.__doc__
+        docstring = notification_signals.profile_updated_notice.__doc__
     elif notification_slug == 'card_updated':
         serializer = ChangeProfileNotificationSerializer()
         docstring = notification_signals.card_updated_notice.__doc__
@@ -951,7 +959,7 @@ def get_notification_schema(notification_slug):
             }
         }
     }
-    populate_schema_from_docstring(schema, docstring)
+    populate_schema_from_docstring(schema, docstring, api_base_url=api_base_url)
     return schema
 
 
@@ -960,42 +968,55 @@ class NotificationDocGenerator(object):
     @staticmethod
     def get_schema(request=None, public=True):
         #pylint:disable=unused-argument
+        api_base_url = getattr(settings, 'API_BASE_URL',
+            request.build_absolute_uri(location='/').strip('/'))
         api_end_points = OrderedDict({
-            'user_contact': get_notification_schema('user_contact'),
-            'user_registered': get_notification_schema('user_registered'),
-            'user_activated': get_notification_schema('user_activated'),
-            'user_verification': get_notification_schema('user_verification'),
+            'user_contact': get_notification_schema('user_contact',
+                api_base_url=api_base_url),
+            'user_registered': get_notification_schema('user_registered',
+                api_base_url=api_base_url),
+            'user_activated': get_notification_schema('user_activated',
+                api_base_url=api_base_url),
+            'user_verification': get_notification_schema('user_verification',
+                api_base_url=api_base_url),
             'user_reset_password': get_notification_schema(
-                'user_reset_password'),
-            'user_mfa_code': get_notification_schema('user_mfa_code'),
-            'card_expires_soon': get_notification_schema('card_expires_soon'),
-            'expires_soon': get_notification_schema('expires_soon'),
-            'organization_updated': get_notification_schema(
-                'organization_updated'),
-            'card_updated': get_notification_schema('card_updated'),
+                'user_reset_password', api_base_url=api_base_url),
+            'user_mfa_code': get_notification_schema('user_mfa_code',
+                api_base_url=api_base_url),
+            'card_expires_soon': get_notification_schema('card_expires_soon',
+                api_base_url=api_base_url),
+            'expires_soon': get_notification_schema('expires_soon',
+                api_base_url=api_base_url),
+            'profile_updated': get_notification_schema(
+                'profile_updated', api_base_url=api_base_url),
+            'card_updated': get_notification_schema('card_updated',
+                api_base_url=api_base_url),
             'weekly_sales_report_created': get_notification_schema(
-                'weekly_sales_report_created'),
-            'charge_receipt': get_notification_schema('charge_receipt'),
-            'order_executed': get_notification_schema('order_executed'),
+                'weekly_sales_report_created', api_base_url=api_base_url),
+            'charge_receipt': get_notification_schema('charge_receipt',
+                api_base_url=api_base_url),
+            'order_executed': get_notification_schema('order_executed',
+                api_base_url=api_base_url),
             'renewal_charge_failed': get_notification_schema(
-                'renewal_charge_failed'),
+                'renewal_charge_failed', api_base_url=api_base_url),
             'claim_code_generated': get_notification_schema(
-                'claim_code_generated'),
+                'claim_code_generated', api_base_url=api_base_url),
             'processor_setup_error': get_notification_schema(
-                'processor_setup_error'),
-            'role_grant_created': get_notification_schema('role_grant_created'),
+                'processor_setup_error', api_base_url=api_base_url),
+            'role_grant_created': get_notification_schema(
+                'role_grant_created', api_base_url=api_base_url),
             'role_request_created': get_notification_schema(
-                'role_request_created'),
+                'role_request_created', api_base_url=api_base_url),
             'role_grant_accepted': get_notification_schema(
-                'role_grant_accepted'),
+                'role_grant_accepted', api_base_url=api_base_url),
             'subscription_grant_accepted': get_notification_schema(
-                'subscription_grant_accepted'),
+                'subscription_grant_accepted', api_base_url=api_base_url),
             'subscription_grant_created': get_notification_schema(
-                'subscription_grant_created'),
+                'subscription_grant_created', api_base_url=api_base_url),
             'subscription_request_accepted': get_notification_schema(
-                'subscription_request_accepted'),
+                'subscription_request_accepted', api_base_url=api_base_url),
             'subscription_request_created': get_notification_schema(
-                'subscription_request_created'),
+                'subscription_request_created', api_base_url=api_base_url),
         })
         api_paths = {}
         for api_end_point in api_end_points.values():

@@ -260,4 +260,4 @@ class NotificationsMixin(object):
         # regular subscriber
         return {key: notifications[key] for key in [
             'charge_receipt', 'card_updated', 'order_executed',
-            'organization_updated', 'expires_soon']}
+            'profile_updated', 'expires_soon']}

@@ -15,7 +15,7 @@ class DjaoAppRoleByDescrListAPIView(RoleByDescrListBaseAPIView):
     """
     Lists roles of a specific type
 
-    Lists the specified role assignments for an organization.
+    Lists the specified role assignments for a profile.
 
     **Tags: rbac
 
@@ -23,7 +23,7 @@ class DjaoAppRoleByDescrListAPIView(RoleByDescrListBaseAPIView):
 
     .. code-block:: http
 
-        GET /api/profile/cowork/roles/manager/ HTTP/1.1
+        GET /api/profile/cowork/roles/manager HTTP/1.1
 
     responds
 
@@ -41,19 +41,12 @@ class DjaoAppRoleByDescrListAPIView(RoleByDescrListBaseAPIView):
                     "role_description": {
                         "name": "Manager",
                         "slug": "manager",
-                        "organization": {
-                            "slug": "cowork",
-                            "full_name": "ABC Corp.",
-                            "printable_name": "ABC Corp.",
-                            "created_at": "2018-01-01T00:00:00Z",
-                            "email": "support@localhost.localdomain"
-                        }
+                        "profile": null
                     },
                     "user": {
                         "slug": "alice",
-                        "email": "alice@localhost.localdomain",
-                        "full_name": "Alice Doe",
-                        "created_at": "2018-01-01T00:00:00Z"
+                        "printable_name": "Alice Doe",
+                        "picture": null
                     },
                     "request_key": "1",
                     "grant_key": null

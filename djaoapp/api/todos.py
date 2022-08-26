@@ -69,7 +69,7 @@ class TodosAPIView(ProviderMixin, ListAPIView):
 
     .. code-block:: http
 
-        GET /api/todos/ HTTP/1.1
+        GET /api/todos HTTP/1.1
 
     responds
 

@@ -48,7 +48,7 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
 
     .. code-block:: http
 
-        GET /api/profile/xia/ HTTP/1.1
+        GET /api/profile/xia HTTP/1.1
 
     responds
 
@@ -94,7 +94,7 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
 
         .. code-block:: http
 
-            PUT /api/profile/xia/ HTTP/1.1
+            PUT /api/profile/xia HTTP/1.1
 
         .. code-block:: json
 
@@ -131,7 +131,7 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
 
         .. code-block:: http
 
-            DELETE /api/profile/xia/ HTTP/1.1
+            DELETE /api/profile/xia HTTP/1.1
         """
         #pylint:disable=useless-super-delegation
         return super(DjaoAppProfileDetailAPIView, self).delete(
@@ -155,7 +155,7 @@ class DjaoAppProfileListAPIView(ProfileDecorateMixin,
 
     .. code-block:: http
 
-        GET /api/profile/?o=created_at&ot=desc HTTP/1.1
+        GET /api/profile?o=created_at&ot=desc HTTP/1.1
 
     responds
 
@@ -166,11 +166,22 @@ class DjaoAppProfileListAPIView(ProfileDecorateMixin,
             "next": null,
             "previous": null,
             "results": [{
-                "slug": "xia",
+                "created_at": "2018-01-01T00:00:00Z",
+                "email": "xia@locahost.localdomain",
                 "full_name": "Xia Lee",
-                "email": "xia@localhost.localdomain",
-                "created_at": "2016-01-14T23:16:55Z",
-                "printable_name": "Xia Lee"
+                "printable_name": "Xia Lee",
+                "slug": "xia",
+                "phone": "555-555-5555",
+                "street_address": "185 Berry St #550",
+                "locality": "San Francisco",
+                "region": "CA",
+                "postal_code": "",
+                "country": "US",
+                "default_timezone": "Europe/Kiev",
+                "is_provider": false,
+                "is_bulk_buyer": false,
+                "type": "personal",
+                "picture": ""
             }]
         }
     """

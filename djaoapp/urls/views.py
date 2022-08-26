@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView
 from rules.urldecorators import include
-from saas.settings import ACCT_REGEX
+from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from saas.views import UserRedirectView
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.forms import StartAuthenticationForm
@@ -102,20 +102,22 @@ urlpatterns = [
         name='saas_cart_plan_list'),
     url_prefixed(r'^', include('saas.urls.views.noauth')),
     url_direct(r'^', include('saas.urls.views.broker')),
-    url_direct(r'^metrics/(?P<organization>%s)/dashboard/$' % ACCT_REGEX,
+    url_direct(r'^metrics/(?P<%s>%s)/dashboard/$' % (
+        PROFILE_URL_KWARG, SLUG_RE),
         DashboardView.as_view(), name='saas_dashboard'),
-    url_direct(r'^billing/(?P<organization>%s)/bank/$' % ACCT_REGEX,
+    url_direct(r'^billing/(?P<%s>%s)/bank/$' % (PROFILE_URL_KWARG, SLUG_RE),
         ProcessorAuthorizeView.as_view(), name='saas_update_bank'),
     url_direct(r'^', include('saas.urls.views.provider')),
     url_provider(r'^', include('saas.urls.views.subscriber.billing')),
-    url_provider(r'^profile/(?P<organization>%s)/contact/$' % ACCT_REGEX,
+    url_provider(r'^profile/(?P<%s>%s)/contact/$' % (
+        PROFILE_URL_KWARG, SLUG_RE),
         OrganizationProfileView.as_view(),
             name='saas_organization_profile'),
     url_provider(r'^', include('saas.urls.views.subscriber.profile')),
     url_dashboard_iframe(r'^proxy/notifications/(?P<template>%s)/iframe/' %
-        ACCT_REGEX, NotificationInnerFrameView.as_view(),
+        SLUG_RE, NotificationInnerFrameView.as_view(),
         name='notification_inner_frame'),
-    url_dashboard(r'^proxy/notifications/(?P<template>%s)/' % ACCT_REGEX,
+    url_dashboard(r'^proxy/notifications/(?P<template>%s)/' % SLUG_RE,
         NotificationDetailView.as_view(), name='notification_detail'),
     url_dashboard(r'^proxy/notifications/',
         RedirectView.as_view(pattern_name='extended_templates_theme_update'),
@@ -137,8 +139,8 @@ urlpatterns = [
 #            reverse_lazy('product_default_start'))),
 
     # Magic! redirects to the product webapp.
-    url_frictionless_direct(r'^app/(?P<organization>%s)/(?P<page>\S+)?' %
-        ACCT_REGEX,
+    url_frictionless_direct(r'^app/(?P<%s>%s)/(?P<page>\S+)?' % (
+        PROFILE_URL_KWARG, SLUG_RE),
         AppPageView.as_view(), name='organization_app'),
     url_authenticated(r'^app/',
         AppPageRedirectView.as_view(), name='product_default_start'),

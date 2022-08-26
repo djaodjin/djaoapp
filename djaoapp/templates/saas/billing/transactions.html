@@ -34,10 +34,10 @@
                     <i :class="sortIcon('amount')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Origin Organization{% endtrans %}
+                <th>{% trans %}Origin Profile{% endtrans %}
                   <a class="btn-sort"
-                    @click.prevent="sortBy('orig_organization')">
-                    <i :class="sortIcon('orig_organization')"></i>
+                    @click.prevent="sortBy('orig_profile')">
+                    <i :class="sortIcon('orig_profile')"></i>
                   </a>
                 </th>
                 <th>{% trans %}Origin Account{% endtrans %}
@@ -46,10 +46,10 @@
                     <i :class="sortIcon('orig_account')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Destination Organization{% endtrans %}
+                <th>{% trans %}Destination Profile{% endtrans %}
                   <a class="btn-sort"
-                    @click.prevent="sortBy('dest_organization')">
-                    <i :class="sortIcon('dest_organization')"></i>
+                    @click.prevent="sortBy('dest_profile')">
+                    <i :class="sortIcon('dest_profile')"></i>
                   </a>
                 </th>
                 <th>{% trans %}Destination Account{% endtrans %}
@@ -85,9 +85,9 @@
             <tr v-for="entry in items.results">
               <td>[[$globals.humanizeDate(entry.created_at)]]</td>
               <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-              <td>[[entry.orig_organization]]</td>
+              <td>[[entry.orig_profile.printable_name]]</td>
               <td>[[entry.orig_account]]</td>
-              <td>[[entry.dest_organization]]</td>
+              <td>[[entry.dest_profile.printable_name]]</td>
               <td>[[entry.dest_account]]</td>
               <td v-html="entry.description"></td>
             </tr>

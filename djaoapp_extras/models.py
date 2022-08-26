@@ -164,7 +164,7 @@ def _notified_recipients(notification_slug, context, broker=None, site=None):
         reply_to = originated_by.get('email', "")
 
     elif notification_slug in (
-            'organization_updated',
+            'profile_updated',
             'order_executed',
             'card_updated',
             'charge_receipt',

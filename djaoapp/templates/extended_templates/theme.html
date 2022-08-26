@@ -55,7 +55,7 @@
         <p>
           {% trans profile_url=urls.profile_redirect %}You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.{% endtrans %}
         </p>
-        <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes/</code></pre>
+        <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</code></pre>
         <p>
           <a target="_blank" href="https://djaodjin.com/docs/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
         </p>
