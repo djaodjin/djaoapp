@@ -18,8 +18,8 @@ var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
       var vm = this;
       if( vm.current !== -1 ) {
         vm.onHit(vm.items[vm.current]);
-      } else {
-        vm.search();
+      } else if( vm.query ) {
+          vm.onHit(vm.query);
       }
     },
 
