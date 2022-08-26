@@ -43,7 +43,7 @@ django-storages==1.13.1
 drf-yasg==1.8.0
 Faker==3.0.1
 flex==6.14.0
-pygments==2.6.1
+pygments==2.7.4
 pyYAML==5.1.2
 Sphinx==5.1.1
 sphinxcontrib-httpdomain==1.8.0
