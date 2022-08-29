@@ -438,14 +438,8 @@ class AutoSchema(BaseAutoSchema):
         operation.update(kwargs)
         return operation
 
-    def _validate_examples(self, path, method, examples,
-                           serializer_class=None, many=False,
-                           example_key='resp'):
-        #pylint:disable=too-many-arguments,too-many-locals,too-many-statements
+    def _get_serializer(self, method, serializer_class, many=False):
         view = self.view
-        if isinstance(view, (CartItemUploadAPIView, ContactPictureAPIView,
-                      OrganizationPictureAPIView, UserPictureAPIView)):
-            return
         many = many or (method == 'GET' and hasattr(view, 'list'))
         if many:
             if issubclass(view.pagination_class, BalancePagination):
@@ -555,6 +549,28 @@ class AutoSchema(BaseAutoSchema):
             serializer_class = APISerializer
 
         serializer = None
+        if serializer_class:
+            serializer = serializer_class(context=view.get_serializer_context())
+        return serializer
+
+    @staticmethod
+    def _validate_against_schema(data, schema):
+        errs = []
+        for key, value in six.iteritems(data):
+            if key not in schema['properties']:
+                errs += [exceptions.ValidationError({key: "unexpected field"})]
+        if errs:
+            raise exceptions.ValidationError(errs)
+
+
+    def _validate_examples(self, examples, path, method,
+                           serializer_class=None, schema=None,
+                           example_key='resp'):
+        #pylint:disable=too-many-arguments,too-many-locals,too-many-statements
+        view = self.view
+        if isinstance(view, (CartItemUploadAPIView, ContactPictureAPIView,
+                      OrganizationPictureAPIView, UserPictureAPIView)):
+            return
         if examples:
             for example in examples:
                 path_parts = path.split('/')
@@ -590,6 +606,9 @@ class AutoSchema(BaseAutoSchema):
                                 context=view.get_serializer_context(),
                                 **kwargs)
                             serializer.is_valid(raise_exception=True)
+                            self._validate_against_schema(
+                                example[example_key], schema)
+
                         except (exceptions.ValidationError, Http404) as err:
                             # is_valid will also run `UniqueValidator` which
                             # is not what we want here, especially
@@ -625,8 +644,6 @@ class AutoSchema(BaseAutoSchema):
                     'view': view.__class__.__name__,
                     'method': method,
                     'path': path})
-            serializer = serializer_class(context=view.get_serializer_context())
-        return serializer
 
     def get_request_body(self, path, method):
         view = self.view
@@ -651,14 +668,28 @@ class AutoSchema(BaseAutoSchema):
                     # We assume `request_body=no_body` here.
                     serializer_class = None
 
-        serializer = None
+        serializer = self._get_serializer(method, serializer_class)
+        if not isinstance(serializer, serializers.Serializer):
+            return {}
+
+        schema = self.map_serializer(serializer)
+        # No required fields for PATCH
+        if method == 'PATCH' and 'required' in schema:
+            del schema['required']
+        # No read_only fields for request.
+        for name, sub_schema in schema['properties'].copy().items():
+            if 'readOnly' in sub_schema:
+                del schema['properties'][name]
+
         try:
             if method.lower() != 'patch':
                 # XXX We disable showing patch as they are so close
                 # to put requests.
-                serializer = self._validate_examples(path, method,
+                serializer = self._validate_examples(
                     self.examples if hasattr(self, 'examples') else [],
-                    serializer_class=serializer_class,
+                    path, method,
+                    serializer_class=serializer.__class__,
+                    schema=schema,
                     example_key='requestBody')
         except exceptions.APIException:
             serializer = None
@@ -667,28 +698,17 @@ class AutoSchema(BaseAutoSchema):
                           'generated for {} {}.'
                           .format(view.__class__.__name__, method, path))
 
-        if not isinstance(serializer, serializers.Serializer):
-            return {}
-
-        content = self.map_serializer(serializer)
-        # No required fields for PATCH
-        if method == 'PATCH':
-            del content['required']
-        # No read_only fields for request.
-        for name, schema in content['properties'].copy().items():
-            if 'readOnly' in schema:
-                del content['properties'][name]
 
         return {
             'content': {
-                ct: {'schema': content}
+                ct: {'schema': schema}
                 for ct in self.get_request_media_types()
             }
         }
 
     def get_responses(self, path, method):
         # TODO: Handle multiple codes.
-        content = {}
+        schema = {}
         view = self.view
         serializer = None
 
@@ -724,10 +744,23 @@ class AutoSchema(BaseAutoSchema):
 
 
         if serializer_class or hasattr(view, 'get_serializer_class'):
+            serializer = self._get_serializer(
+                method, serializer_class, many=many)
+            if isinstance(serializer, serializers.Serializer):
+                schema = self.map_serializer(serializer)
+                # No write_only fields for response.
+                for name, sub_schema in schema['properties'].copy().items():
+                    if 'writeOnly' in sub_schema:
+                        del schema['properties'][name]
+                        schema['required'] = [
+                            f for f in schema['required'] if f != name]
+
             try:
-                serializer = self._validate_examples(path, method,
+                serializer = self._validate_examples(
                     self.examples if hasattr(self, 'examples') else [],
-                    serializer_class=serializer_class, many=many)
+                    path, method,
+                    serializer_class=serializer.__class__,
+                    schema=schema)
             except exceptions.APIException:
                 serializer = None
                 warnings.warn('{}: serializer_class() raised an exception'
@@ -736,19 +769,10 @@ class AutoSchema(BaseAutoSchema):
                     'generated for {} {}.'.format(
                         view.__class__.__name__, method, path))
 
-            if isinstance(serializer, serializers.Serializer):
-                content = self.map_serializer(serializer)
-                # No write_only fields for response.
-                for name, schema in content['properties'].copy().items():
-                    if 'writeOnly' in schema:
-                        del content['properties'][name]
-                        content['required'] = [
-                            f for f in content['required'] if f != name]
-
         return {
             '200': {
                 'content': {
-                    ct: {'schema': content}
+                    ct: {'schema': schema}
                     for ct in self.get_request_media_types()
                 },
                 'description': "OK"

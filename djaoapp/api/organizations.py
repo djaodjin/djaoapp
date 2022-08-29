@@ -75,7 +75,10 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
                 {
                     "created_at": "2018-01-01T00:00:00Z",
                     "ends_at": "2019-01-01T00:00:00Z",
-                    "plan": "open-space",
+                    "plan": {
+                        "slug": "open-space",
+                        "title": "Open Space"
+                    },
                     "auto_renew": true
                 }
             ]

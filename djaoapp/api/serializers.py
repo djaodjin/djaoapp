@@ -209,10 +209,14 @@ class RecentActivitySerializer(NoModelSerializer):
     """
     Serializer for recent activity on the site.
     """
-    slug = serializers.SlugField()
-    printable_name = serializers.CharField()
-    descr = serializers.CharField()
-    created_at = serializers.DateTimeField()
+    slug = serializers.SlugField(
+        help_text=_("Unique identifier for the user or profile"))
+    printable_name = serializers.CharField(
+        help_text=_("Name that can be safely used for display in HTML pages"))
+    descr = serializers.CharField(
+        help_text=_("Description of the activity"))
+    created_at = serializers.DateTimeField(
+        help_text=_("Date/time of creation (in ISO format)"))
 
 RecentActivitySerializer._declared_fields["type"] = \
     serializers.CharField(required=False, #pylint:disable=protected-access
