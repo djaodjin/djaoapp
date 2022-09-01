@@ -1844,7 +1844,8 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
             'slug': role.role_description.slug,
             'title': role.role_description.title,
         },
-        'user': originated_by
+        'user': originated_by,
+        'detail': "",
     }
     request_user = kwargs.get('request_user', None)
     context.update({'originated_by': request_user if request_user else None})
