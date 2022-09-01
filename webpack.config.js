@@ -41,7 +41,6 @@ module.exports = {
           'js/djaoapp-theme-editors.js',
           'js/djaodjin-code-editor.js',
           'js/djaodjin-style-editor.js',
-          'js/djaodjin-themes.js',
       ],
   },
   module: {

@@ -6,8 +6,15 @@
 
 {% block saas_page_layout %}
 <div class="mt-2">
-<button class="btn btn-primary send-test-email" data-template="{{template}}">{% trans %}Send test e-mail{% endtrans %}</button>
-<span>(<a href="https://www.djaodjin.com/docs/api/notifications/#{{template}}" target="_blank">variables defined in template context</a>)</span>
+  <notification-test inline-template :notification-id="'{{template}}'">
+    <div>
+      <button class="btn btn-outline-secondary"
+              @click="submit">
+          {% trans %}Send Test Email{% endtrans %}
+      </button>
+    </div>
+  </notification-test>
+  <span>(<a href="https://www.djaodjin.com/docs/api/notifications/#{{template}}" target="_blank">variables defined in template context</a>)</span>
 </div>
 
 <div id="email-tpl-editor" class="mt-4">
@@ -47,7 +54,7 @@
 <script type="text/javascript" src="{{'/static/vendor/worker-css.js'|djasset}}"></script>
 <script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-theme.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaoapp-theme-editors.js'|djasset}}"></script>
 <script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|djasset}}"></script>
 <script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|djasset}}"></script>
 {% else %}
@@ -71,11 +78,6 @@ jQuery(document).ready(function($) {
     });
 
     $('.tab-content .content').trigger('pages.loadresources');
-
-    $(".send-test-email").notificationTest({
-        url: "{{urls.send_test_email}}"
-    });
-
   });
 </script>
 {% endblock %}

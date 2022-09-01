@@ -57,7 +57,7 @@
         </p>
         <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</code></pre>
         <p>
-          <a target="_blank" href="https://djaodjin.com/docs/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
+          <a target="_blank" href="https://www.djaodjin.com/docs/guides/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
         </p>
         {% endblock %}
       </div>
@@ -84,7 +84,14 @@
                         {{vals.description}}
                       </p>
                       <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
-                      <button class="btn btn-outline-secondary send-test-email">{% trans %}Send Test Email{% endtrans %}</button>
+                      <notification-test inline-template :notification-id="'{{key}}'">
+                        <div>
+                          <button class="btn btn-outline-secondary"
+                                  @click.prevent="submit">
+                            {% trans %}Send Test Email{% endtrans %}
+                          </button>
+                        </div>
+                      </notification-test>
                     </div>
                   </div>
                 </div>
@@ -99,7 +106,14 @@
                       <p class="card-text">
                       </p>
                       <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
-                      <button class="btn btn-outline-secondary send-test-email">{% trans %}Send Test Email{% endtrans %}</button>
+                      <notification-test inline-template :notification-id="'{{key}}'">
+                        <div>
+                          <button class="btn btn-outline-secondary"
+                                  @click="submit">
+                            {% trans %}Send Test Email{% endtrans %}
+                          </button>
+                        </div>
+                      </notification-test>
                     </div>
                   </div>
                 </div>
@@ -114,7 +128,6 @@
 
 {% block dashboard_bodyscripts %}
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-themes.js'|djasset}}"></script>
 {% else %}
 <script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
 {% endif %}
@@ -129,10 +142,6 @@ jQuery(document).ready(function($) {
         }
     });
     {% endif %}
-
-    $(".send-test-email").notificationTest({
-        url: "{{urls.send_test_email}}"
-    });
 });
 </script>
 {% endblock %}

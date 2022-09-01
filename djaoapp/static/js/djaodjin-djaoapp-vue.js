@@ -36,6 +36,26 @@ var SubscriptionTypeAhead = Vue.component('subscription-typeahead',
     TypeAhead.extend({
 }));
 
+
+Vue.component('notification-test', {
+    mixins: [
+        httpRequestMixin
+    ],
+    props: ['notificationId'],
+    data: function() {
+        return {
+            url: this.$urls.send_test_email ? this.$urls.send_test_email : null,
+        }
+    },
+    methods: {
+        submit: function() {
+            var vm = this;
+            vm.reqPost(vm._safeUrl(vm.url, vm.notificationId));
+        },
+    },
+});
+
+
 Vue.component('role-user-list-modal', {
     methods: {
         create: function() {
