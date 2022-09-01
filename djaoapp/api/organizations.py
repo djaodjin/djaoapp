@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -39,7 +39,7 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
     Retrieves a billing profile
 
     The API is typically used within an HTML
-    `contact information page </docs/themes/#dashboard_profile>`_
+    `contact information page </docs/guides/themes/#dashboard_profile>`_
     as present in the default theme.
 
     **Tags**: profile, subscriber, profilemodel

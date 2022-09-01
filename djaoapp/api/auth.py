@@ -32,7 +32,7 @@ class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
     be used to authenticate the new user in HTTP requests.
 
     The API is typically used within an HTML
-    `register page </docs/themes/#workflow_register>`_
+    `register page </docs/guides/themes/#workflow_register>`_
     as present in the default theme.
 
     **Tags: auth, visitor, usermodel

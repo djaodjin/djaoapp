@@ -112,7 +112,7 @@ class RecentActivityAPIView(ListAPIView):
     Retrieves recently active users
 
     The API is typically used within an HTML
-    `dashboard page </docs/themes/#dashboard_metrics_dashboard>`_
+    `dashboard page </docs/guides/themes/#dashboard_metrics_dashboard>`_
     as present in the default theme.
 
     **Tags: metrics, broker, appmodel

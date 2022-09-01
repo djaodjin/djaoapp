@@ -124,7 +124,7 @@ authentication:
         </p>
         <ul>
           <li><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" target="_blank">JSON Web Token</a> through the <a href="#createJWTLogin">Authentication API</a></li>
-          <li><a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">HTTP Cookie</a> through the <a href="/docs/themes/#workflow_login">Login HTML page</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">HTTP Cookie</a> through the <a href="/docs/guides/themes/#workflow_login">Login HTML page</a></li>
           <li><a href="https://en.wikipedia.org/wiki/Application_programming_interface_key" target="_blank">API Key</a> downloaded from a <a href="/docs/faq/#api-keys">user profile page</a></li>
         </ul>
         <p>
@@ -249,7 +249,7 @@ workflows, including shopping carts, coupons, charges and balance statements.
         <p>
 The metrics APIs crunch the numbers and return various insight into
 the performance for the business. They are used to implement
-a <a href="https://djaodjin.com/docs/#business-performance">balances
+a <a href="https://www.djaodjin.com/docs/faq/#business-performance">balances
 dashboard</a> for example.
         </p>
       </div>
@@ -372,7 +372,7 @@ This section contains APIs related to unauthenticated users.
       </div>
       <div class="col-sm-6">
         <p>
-This section contains APIs related to authenticated <a href="/docs/accounts/#user-accounts">users</a>.
+This section contains APIs related to authenticated <a href="/docs/guides/accounts/#user-accounts">users</a>.
         </p>
       </div>
     </div>
@@ -391,7 +391,7 @@ This section contains APIs related to authenticated <a href="/docs/accounts/#use
       </div>
       <div class="col-sm-6">
         <p>
-This section contains APIs related to <a href="/docs/accounts/#subscriber-profiles">subscribers</a>.
+This section contains APIs related to <a href="/docs/guides/accounts/#subscriber-profiles">subscribers</a>.
         </p>
       </div>
     </div>
@@ -410,7 +410,7 @@ This section contains APIs related to <a href="/docs/accounts/#subscriber-profil
       </div>
       <div class="col-sm-6">
         <p>
-This section contains APIs related to <a href="/docs/accounts/#provider-profiles">providers</a>.
+This section contains APIs related to <a href="/docs/guides/accounts/#provider-profiles">providers</a>.
         </p>
       </div>
     </div>
@@ -429,7 +429,7 @@ This section contains APIs related to <a href="/docs/accounts/#provider-profiles
       </div>
       <div class="col-sm-6">
         <p>
-This section contains APIs related to the <a href="/docs/accounts/#broker">broker</a>.
+This section contains APIs related to the <a href="/docs/guides/accounts/#broker">broker</a>.
         </p>
       </div>
     </div>
@@ -492,9 +492,9 @@ billing profile.
         </p>
         <p>
 Depending on its relationship within a workflow, a billing profile is referred
-as either a <a href="/docs/accounts/#subscriber-profiles">subscriber</a>,
-a <a href="/docs/accounts/#provider-profiles">provider</a> or
-<a href="/docs/accounts/#borker">the broker</a>.
+as either a <a href="/docs/guides/accounts/#subscriber-profiles">subscriber</a>,
+a <a href="/docs/guides/accounts/#provider-profiles">provider</a> or
+<a href="/docs/guides/accounts/#borker">the broker</a>.
         </p>
       </div>
     </div>
@@ -512,19 +512,19 @@ a <a href="/docs/accounts/#provider-profiles">provider</a> or
       </div>
       <div class="col-sm-6">
         <p>
-This section contains APIs related to <a href="/docs/accounts/#roles">roles</a>.
+This section contains APIs related to <a href="/docs/guides/accounts/#roles">roles</a>.
         </p>
         <p>
 A <strong>role</strong> is a relationship between a <strong>user</strong>
 and a billing or personal profile - shorten to <strong>profile</strong>
 later on - that grant the user certain permissions to act on the profile.
 Permissions are not directly tied to the Role object, but rather to an abstract
-representation of the role called a <a href="/docs/djaoapp/latest/api/#ListRoleDescriptionListCreates">RoleDescription</a>.
+representation of the role called a <a href="#ListRoleDescriptionListCreates">RoleDescription</a>.
         </p>
         <p>
 It is not uncommon in casual conversation to use <em>role</em> to mean
 RoleDescription when talking about permissions as the end result is about
-the same. None-the-less, the <a href="/docs/themes/#workflows">workflows</a>
+the same. None-the-less, the <a href="/docs/guides/themes/#workflows">workflows</a>
 involved to grant a role to a user, such as opt-ins and double opt-ins can only
 be set on the RoleDescription, affecting all role objects using that
 RoleDescription.

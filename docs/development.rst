@@ -39,7 +39,7 @@ The website is built as a Multi-Page Application (MPA). As much as possible
 the template filenames follow the URL on which the template is used.
 For example: you can find the template for ``/profile/{profile}/subscriptions/``
 in ``djaoapp/templates/saas/profile/subscriptions.html``.
-More details on the content of each page is available in the [default theme documentation](https://www.djaodjin.com/docs/themes/#default-theme).
+More details on the content of each page is available in the [default theme documentation](https://www.djaodjin.com/docs/guides/themes/).
 
 Django reads and re-compiles the template on page load.
 

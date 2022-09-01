@@ -31,7 +31,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
     Emails a free form contact-us message from a customer to the provider
 
     The API is typically used within an HTML
-    `contact page </docs/themes/#workflow_contact>`_
+    `contact page </docs/guides/themes/#workflow_contact>`_
     as present in the default theme.
 
     **Tags: visitor

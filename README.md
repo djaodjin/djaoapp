@@ -19,7 +19,7 @@ frameworks and many more Open Source projects. Thank you for the support!
 
 If you are looking to update the client front-end, you can browse through
 the [API documentation](/docs/djaoapp/latest/api/) and
-[theme templates documentation](https://djaodjin.com/docs/themes/#default-theme).
+[theme templates documentation](https://www.djaodjin.com/docs/guides/themes/).
 
 If you are looking to add features, this project integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
