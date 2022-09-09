@@ -46,14 +46,16 @@ class DjaoAppUserDetailAPIView(UserDetailBaseAPIView):
           "email": "donny.smith@locahost.localdomain"
         }
     """
-    def perform_destroy(self, instance):
+
+    def delete_records(self, user):
         # We will archive the user record to keep audit foreign keys
         # in place but we delete the roles on organizations
         # for that user to make sure access rights for the archive profile
         # are fully gone.
-        if instance:
-            get_role_model().objects.filter(user=instance).delete()
-        super(DjaoAppUserDetailAPIView, self).perform_destroy(instance)
+        get_role_model().objects.filter(user=user).delete()
+        user.signatures.all().delete()
+        user.social_auth.all().delete()
+        super(DjaoAppUserDetailAPIView, self).delete_records(user)
 
 
 class DjaoAppUserNotificationsAPIView(NotificationsMixin,
