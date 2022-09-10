@@ -86,7 +86,7 @@
                       <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
                       <notification-test inline-template :notification-id="'{{key}}'">
                         <div>
-                          <button class="btn btn-outline-secondary"
+                          <button class="btn btn-outline-secondary send-test-email"
                                   @click.prevent="submit">
                             {% trans %}Send Test Email{% endtrans %}
                           </button>
