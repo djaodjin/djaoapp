@@ -10,7 +10,7 @@ from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import get_broker
-from signup.serializers import UserDetailSerializer
+from signup.serializers_overrides import UserDetailSerializer
 
 from ..api.serializers import ProfileSerializer
 from ..compat import gettext_lazy as _

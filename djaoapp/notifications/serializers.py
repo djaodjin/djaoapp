@@ -9,7 +9,7 @@ from saas.api.serializers import (PlanSerializer, ChargeSerializer,
     ChargeItemSerializer, CartItemSerializer, PriceSerializer,
     RoleDescriptionSerializer, TransactionSerializer)
 from saas.utils import get_user_serializer
-from signup.serializers import UserDetailSerializer
+from signup.serializers_overrides import UserDetailSerializer
 
 from ..compat import gettext_lazy as _
 

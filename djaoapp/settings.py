@@ -780,6 +780,8 @@ SAAS = {
             'FEATURES_REVERT_STRIPE_V2', False)),
     },
     'USER_SERIALIZER': 'signup.serializers_overrides.UserSerializer',
+    'USER_DETAIL_SERIALIZER':
+        'signup.serializers_overrides.UserDetailSerializer',
 }
 
 # Software-as-a-Service (forward requests with session data)

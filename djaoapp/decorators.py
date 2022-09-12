@@ -23,8 +23,8 @@ from saas.decorators import (_has_valid_access,
     fail_provider_only as fail_provider_only_default,
     fail_self_provider as fail_self_provider_default)
 from saas.utils import get_role_model
+from signup.helpers import has_invalid_password
 from signup.models import Contact
-from signup.utils import has_invalid_password
 
 from .compat import reverse, available_attrs
 from .thread_locals import get_current_broker

@@ -16,11 +16,11 @@ from saas.signals import (card_expires_soon, charge_updated,
     role_grant_accepted, subscription_grant_accepted,
     subscription_grant_created, subscription_request_accepted,
     subscription_request_created, weekly_sales_report_created)
+from signup.helpers import has_invalid_password
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
     user_reset_password, user_verification, user_mfa_code)
-from signup.utils import (has_invalid_password,
-    printable_name as user_printable_name)
+from signup.utils import printable_name as user_printable_name
 from djaoapp.signals import contact_requested
 
 from ..compat import gettext_lazy as _, reverse, six
