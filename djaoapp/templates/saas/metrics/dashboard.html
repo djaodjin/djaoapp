@@ -29,10 +29,8 @@
                   <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
                     <tr v-for="entry in items.results">
                       <td>
-                      <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.slug]]</a>
+                      <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.printable_name]]</a>
                       </td>
-                      <td>[[entry.full_name]]</td>
-                      <td>[[entry.email]]</td>
                       <td>
                         [[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]
                       </td>
