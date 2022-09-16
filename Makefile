@@ -94,6 +94,7 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork
         djaoapp/fixtures/100-balance-due.json \
         djaoapp/fixtures/110-balance-checkout.json \
         djaoapp/fixtures/120-subscriptions.json \
+        djaoapp/fixtures/130-subscriptions.json \
         djaoapp/fixtures/djaoapp-signup-card1.json
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"

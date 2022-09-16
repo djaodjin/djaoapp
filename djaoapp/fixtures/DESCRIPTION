@@ -13,3 +13,8 @@ cowork-db.json
 
 - test coupons:
     DIS100: 100% discount
+
+130-subscriptions.json
+    Defines a provider a 2 plans and 5 subscribers such that each subscription
+    period intersects [2022-04-01,2022-07-31[ in a different way.
+    This fixture is used to test active, all and churned subscriptions APIs.

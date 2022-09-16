@@ -858,7 +858,7 @@ class APIDocView(TemplateView):
             'api_end_points': sorted(
                 api_end_points, key=lambda val: val['path']),
             'api_end_points_by_summary': sorted(
-                api_end_points, key=lambda val: val['summary']),
+                api_end_points, key=lambda val: val.get('summary', "")),
             'tags': expanded_tags,
             'api_base_url': api_base_url,
          'api_jwt_user': "<a href=\"#createJWTLogin\">JWT auth token</a>",

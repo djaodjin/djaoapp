@@ -16,7 +16,7 @@ djaodjin-deployutils==0.10.3
 djaodjin-extended-templates==0.3.4
 djaodjin-multitier==0.1.22
 djaodjin-rules==0.3.0
-djaodjin-saas==0.14.0
+djaodjin-saas==0.15.0
 djaodjin-signup==0.7.2
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
