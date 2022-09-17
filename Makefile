@@ -65,6 +65,7 @@ build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/dashboard.css \
               $(ASSETS_DIR)/cache/pages.css \
               $(ASSETS_DIR)/cache/saas.js
+	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
 	rm $(ASSETS_DIR)/vendor/chart.js
 	cd $(srcDir) && $(ESCHECK) es5 htdocs/static/cache/*.js htdocs/static/vendor/*.js -v
@@ -124,7 +125,7 @@ run-coverage: initdb
 
 
 setup-livedemo:
-	$(installDirs) $(srcDir)/themes/djaoapp/templates
+	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f $(DB_FILENAME)
