@@ -43,6 +43,7 @@ DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"'
 else
 DB_FILENAME   ?= $(if $(wildcard $(LOCALSTATEDIR)/db/),$(LOCALSTATEDIR)/db/db.sqlite,$(srcDir)/db.sqlite)
 endif
+LIVEDEMO_DB_FILENAME := $(srcDir)/db.sqlite
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
 
 MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
@@ -123,17 +124,21 @@ run-coverage: initdb
 	cd $(srcDir) && coverage run --source='.,deployutils,extended-templates,rules,saas,signup,' \
 		manage.py runserver $(APP_PORT) --noreload
 
-
+# Implementation note:
+# We use `$(LIVEDEMO_DB_FILENAME)` and `$(PYTHON) manage.py` in this target,
+# so no matter the installed config files, we reliably create db.sqlite in
+# the source directory and thus are able to transfer it onto the Docker
+# container.
 setup-livedemo:
 	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
-	cd $(srcDir) && rm -f $(DB_FILENAME)
-	cd $(srcDir) && $(MANAGE) migrate --run-syncdb
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
-	cd $(srcDir) && $(MANAGE) loadfixtures djaoapp/fixtures/livedemo-db.json
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
-	cd $(srcDir) && $(MANAGE) load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
+	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +
@@ -336,7 +341,7 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 				$(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/run
-	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
+
 
 # Implementation Note:
 # We use [ -f file ] before install here such that we do not blindly erase

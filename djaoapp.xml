@@ -17,8 +17,7 @@
     <repository>
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
-      <fetch><url>/var/www/djaoapp/./reps/djaoapp/htdocs</url></fetch>
-      <dep name="Django" target="python" includes="1.11.24">
+      <dep name="Django" target="python" includes="3.2.15">
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
       <dep name="django-webpack-loader" target="python">
@@ -27,6 +26,9 @@
       <dep name="djangorestframework" target="python">
         <lib>.*/(rest_framework)/__init__.py</lib>
       </dep>
+      <dep name="drf-yasg" target="python">
+        <lib>.*/(drf_yasg)/__init__.py</lib>
+      </dep>
       <dep name="whitenoise" target="python">
         <lib>.*/(whitenoise)/__init__.py</lib>
       </dep>
@@ -34,41 +36,35 @@
            It will try to create a python/dws.mk, which is
            correct behavior but unexpected and troublesome
            in this case. -->
-      <dep name="djaodjin-deployutils">
+      <dep name="djaodjin-deployutils" target="python">
         <lib>.*/(deployutils)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-extended-templates">
+      <dep name="djaodjin-extended-templates" target="python">
         <lib>.*/(extended_templates)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-multitier">
+      <dep name="djaodjin-multitier" target="python">
         <lib>.*/(multitier)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-pages">
-        <lib>.*/(pages)/__init__.py</lib>
-      </dep>
-      <dep name="djaodjin-rules">
+      <dep name="djaodjin-rules" target="python">
         <lib>.*/(rules)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-saas">
+      <dep name="djaodjin-saas" target="python">
         <lib>.*/(saas)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-signup">
+      <dep name="djaodjin-signup" target="python">
         <lib>.*/(signup)/__init__.py</lib>
       </dep>
-      <dep name="djaodjin-chat">
-        <lib>.*/(chat)/__init__.py</lib>
-      </dep>
-      <dep name="gunicorn" target="python" excludes="19.0">
+      <dep name="gunicorn" target="python" excludes="19.0,20.0.2">
         <!-- gunicorn 18.0 does not send accesslog to syslog.
              gunicorn 19.0 is currently broken (see github issue 787) -->
         <bin>gunicorn</bin>
       </dep>
-      <dep name="jinja2" target="python" includes="2.8.1">
+      <dep name="jinja2" target="python">
         <!-- Jinja2>=2.9 will serve the first index.html file it loaded
              regardless of the multitier site. -->
         <lib>.*/(jinja2)/__init__.py</lib>
       </dep>
-      <dep name="MarkupSafe" target="python" includes="1.1.0">
+      <dep name="MarkupSafe" target="python">
         <!-- By default version 0.11 is installed on CentOS7,
              which leads to an exception attempting to use jinja2 module. -->
         <lib>.*/(markupsafe)/__init__.py</lib>
@@ -103,20 +99,74 @@
         <!-- required by django-debug-toolbar without being a prerequisite -->
         <lib>.*/(sqlparse)/__init__.py</lib>
       </dep>
+      <dep name="drop">
+        <bin>dws</bin>
+        <share>(dws)/prefix.mk</share>
+      </dep>
       <!-- end of for development -->
       <!-- XXX impossible to find setproctitle in MacPorts -->
       <alternates>
+        <alternate name="Amazon">
+          <!-- We rely on the `wheel` module to install pre-compiled versions
+               here. Since lxml is required by premailer, cryptography is
+               required by pyOpenSSL, they will be included transitively. -->
+          <dep name="billiard" target="python">
+            <lib>.*/(billiard)/__init__.py</lib>
+          </dep>
+          <dep name="coverage" target="python">
+            <bin>(coverage)3</bin>
+          </dep>
+          <dep name="psycopg2-binary" target="python">
+            <!-- because we connect to postgresql and it is not automatically
+                 pulled from Django.
+                 There is apparently no wheel of `psycopg2` but installing
+                 `psycopg2-binary` works.
+
+                 Django2.2 is incompatible with psycopg2 2.9, use 2.8.6 then.
+            -->
+            <lib>.*/(psycopg2)/__init__.py</lib>
+          </dep>
+          <dep name="setproctitle" target="python">
+            <lib>.*/setproctitle.cpython-37m-x86_64-linux-gnu.so</lib>
+          </dep>
+
+          <!-- djaodjin-extended-templates native dependencies -->
+          <!-- We rely on the `wheel` module to install pre-compiled versions
+               here. Since pillow is required by WeasyPrint, it will be included
+               transitively. -->
+          <dep name="WeasyPrint" target="python" includes="52.5">
+            <!-- WeasyPrint==0.42.3 is the last version supporting Python2.
+                 WeasyPrint>=53 requires Pango 1.44
+                 (https://github.com/Kozea/WeasyPrint/issues/1384)
+                 but Amazon Linux 2 comes with Pango 1.42.
+            -->
+            <lib>.*/(weasyprint)/__init__.py</lib>
+          </dep>
+          <dep name="cairocffi" target="python">
+            <!-- marked as a .noarch package yet will try to run gcc when
+                 installed through pip.
+                 CentOS7 (python-cairocffi) installs version 0.5.4 while
+                 WeasyPrint>=0.42.3 requires cairocffi>=0.9.0. WeasyPrint
+                 is though incompatible with cairocffi>=1.0.0 -->
+            <lib>.*/(cairocffi)/_generated/ffi.py</lib>
+          </dep>
+          <dep name="cairo">
+            <lib>cairo</lib>
+          </dep>
+          <dep name="pango">
+            <lib>pango-1.0</lib>
+          </dep>
+        </alternate>
         <alternate name="CentOS">
           <!-- We couldn't find a native python36- package for those,
                so we will have to rely on pip compiling them with gcc. -->
           <dep name="billiard" target="python">
             <lib>.*/(billiard)/__init__.py</lib>
           </dep>
-          <dep name="lxml" target="python">
+          <!-- XXX We found python36- package for those but they might be
+               older incompatible versions. -->
+          <dep name="python36-lxml">
             <lib>.*/(lxml)/etree.*</lib>
-          </dep>
-          <dep name="Pillow" target="python">
-            <lib>.*/(PIL)/__init__.py</lib>
           </dep>
           <!-- next dependencies: because python27 and python36 are both
                installed, we make sure to look for a relevant v3 file.
@@ -155,9 +205,6 @@
           <dep name="py36-lxml">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
-          <dep name="py36-Pillow">
-            <lib>.*/(PIL)/__init__.py</lib>
-          </dep>
           <dep name="py36-psycopg2">
             <!-- because we connect to postgresql and it is not automatically
                  pulled from Django. -->
@@ -181,9 +228,6 @@
           <dep name="python3-lxml">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
-          <dep name="python3-pillow">
-            <lib>.*/(PIL)/__init__.py</lib>
-          </dep>
           <dep name="python3-psycopg2">
             <!-- because we connect to postgresql and it is not automatically
                  pulled from Django. -->
@@ -191,104 +235,6 @@
           </dep>
           <dep name="python3-setproctitle">
             <lib>.*/setproctitle.*.so</lib>
-          </dep>
-        </alternate>
-      </alternates>
-    </repository>
-  </project>
-  <project name="djaodjin-multitier">
-    <title>Multitier app</title>
-    <description>
-      Django app to connect to multiple databases based on request.
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="requests" target="python">
-        <lib>.*/(requests)/__init__.py</lib>
-      </dep>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-extended-templates">
-    <title>EML and PDF templates</title>
-    <description>
-      Templates to send emails in Plain + HTML format.
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="beautifulsoup4" target="python">
-        <lib>.*/(bs4)/__init__.py</lib>
-      </dep>
-      <dep name="premailer" target="python">
-        <lib>.*/(premailer)/__init__.py</lib>
-      </dep>
-      <dep name="podofo-flatform">
-        <bin>podofo-flatform</bin>
-      </dep>
-      <alternates>
-        <alternate name="CentOS">
-          <dep name="WeasyPrint" target="python">
-            <!-- WeasyPrint 0.42.3 is the last version supporting Python2. -->
-            <lib>.*/(weasyprint)/__init__.py</lib>
-          </dep>
-          <dep name="cairocffi" target="python" includes="0.9.0">
-            <!-- marked as a .noarch package yet will try to run gcc when
-                 installed through pip.
-                 CentOS7 (python-cairocffi) installs version 0.5.4 while
-                 WeasyPrint>=0.42.3 requires cairocffi>=0.9.0. WeasyPrint
-                 is though incompatible with cairocffi>=1.0.0 -->
-            <lib>.*/(cairocffi)/_generated/ffi.py</lib>
-          </dep>
-          <dep name="cairo">
-            <lib>cairo</lib>
-          </dep>
-          <dep name="pango">
-            <lib>pango-1.0</lib>
-          </dep>
-          <dep name="python36-cffi">
-            <lib>.*/_cffi_backend.cpython-36m-x86_64-linux-gnu.so</lib>
-          </dep>
-        </alternate>
-        <alternate name="Darwin">
-          <dep name="WeasyPrint" target="python">
-            <lib>.*/(weasyprint)/__init__.py</lib>
-          </dep>
-          <dep name="cairo">
-            <lib>cairo</lib>
-          </dep>
-          <dep name="pango">
-            <lib>pango-1.0</lib>
-          </dep>
-          <dep name="py36-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
-          </dep>
-        </alternate>
-        <alternate name="Fedora">
-          <dep name="WeasyPrint" target="python">
-            <lib>.*/(weasyprint)/__init__.py</lib>
-          </dep>
-          <dep name="cairo">
-            <lib>cairo</lib>
-          </dep>
-          <dep name="python3-cairocffi">
-            <!-- marked as a .noarch package yet will try to run gcc when
-                 installed through pip -->
-            <lib>.*/(cairocffi)/__init__.py</lib>
-          </dep>
-          <dep name="pango">
-            <lib>pango-1.0</lib>
-          </dep>
-          <dep name="python3-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
           </dep>
         </alternate>
       </alternates>
@@ -382,209 +328,6 @@
         <sha1>e71493ebceda2d9833cb18b84d11256ee232afeb</sha1>
       </fetch>
     </package>
-  </project>
-  <project name="contrib/django-storages">
-    <title>Patch in django-storages to support access to 3rd party buckets</title>
-    <description>
-Django-storages-redux is a Python3 compatible fork of django-storages
-from BitBucket with actual uploads to PyPi
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <shell>
-cd $srcTop/contrib/django-storages
-TMPDIR=$buildTop $binDir/pip --log-file $buildTop/pip.log --cache-dir $buildTop/.cache/pip install .
-      </shell>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-signup">
-    <title>Frictionless signup for djaoapp webapp</title>
-    <description>
-      Frictionless signup for djaoapp webapp
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="django-recaptcha" target="python" includes="1.3.1">
-        <!-- version 2.0.2 does not work with Python3. It attempts
-        to verify RECAPTCHA_PRIVATE_KEY is of type str, though it
-        is declared as type unicode in settings.py. -->
-        <lib>.*/(captcha)/__init__.py</lib>
-      </dep>
-      <dep name="boto3" target="python">
-        <lib>.*/(boto3)/__init__.py</lib>
-      </dep>
-      <dep name="PyJWT" target="python">
-        <lib>.*/(jwt)/__init__.py</lib>
-      </dep>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-chat">
-    <title>Chat support app</title>
-    <description>
-      Django app to answer customers questions online.
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-pages">
-    <title>open source pages django app</title>
-    <description>
-      open source pages django app
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="beautifulsoup4" target="python">
-        <lib>.*/(bs4)/__init__.py</lib>
-      </dep>
-      <dep name="bleach" target="python">
-        <lib>.*/(bleach)/__init__.py</lib>
-      </dep>
-      <!-- boto is not pulled as a prerequisite of django-storages -->
-      <dep name="boto" target="python">
-        <lib>.*/(boto)/__init__.py</lib>
-      </dep>
-      <dep name="contrib/django-storages">
-        <lib>.*/(storages)/__init__.py</lib>
-      </dep>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-      <dep name="Markdown" target="python">
-        <lib>.*/(markdown)/__init__.py</lib>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-rules">
-    <title>Apply access rules to URIs</title>
-    <description>
-Flexible framework to validate access to URIs and forward HTTP requests
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-saas">
-    <title>djaodjin open source djaodjin-saas</title>
-    <description>
-      djaodjin open source djaodjin-saas
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="djangorestframework" target="python" includes="3.8.2">
-        <lib>.*/(rest_framework)/__init__.py</lib>
-      </dep>
-      <dep name="django-extra-views" target="python">
-        <lib>.*/(extra_views)/__init__.py</lib>
-      </dep>
-      <dep name="django-countries" target="python">
-        <lib>.*/(django_countries)/__init__.py</lib>
-      </dep>
-      <dep name="django-localflavor" target="python">
-        <lib>.*/(localflavor)/__init__.py</lib>
-      </dep>
-      <dep name="Markdown" target="python">
-        <lib>.*/(markdown)/__init__.py</lib>
-      </dep>
-      <dep name="python-dateutil" target="python">
-        <lib>.*/(dateutil)/__init__.py</lib>
-      </dep>
-      <dep name="stripe" target="python">
-        <lib>.*/(stripe)/__init__.py</lib>
-      </dep>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-    </repository>
-  </project>
-  <project name="djaodjin-deployutils">
-    <title>djaodjin deploy-utils tools</title>
-    <description>
-      djaodjin tools to manage image assets and deploy to production
-    </description>
-    <maintainer>
-      <personname>The DjaoDjin Team</personname>
-      <email>support@djaodjin.com</email>
-    </maintainer>
-    <repository>
-      <dep name="pytz" target="python">
-        <lib>.*/(pytz)/__init__.py</lib>
-      </dep>
-      <dep name="Fabric3" target="python">
-        <!-- https://github.com/fabric/fabric/issues/1424 -->
-        <lib>.*/(fabric)/__init__.py</lib>
-      </dep>
-      <dep name="drop">
-        <bin>dws</bin>
-        <share>(dws)/prefix.mk</share>
-      </dep>
-      <alternates>
-        <!-- instead of pip install cryptography because there is a C module -->
-        <alternate name="CentOS">
-          <!-- because python27 and python36 are both installed, we make
-               sure to look for a relevant v3 file. We can't use `target=`
-               here since we install a native package. -->
-          <dep name="python36-cryptography">
-            <lib>.*/(cryptography)/hazmat/bindings/_openssl.abi3.so</lib>
-          </dep>
-          <dep name="python36-cffi">
-            <lib>.*/_cffi_backend.cpython-36m-x86_64-linux-gnu.so</lib>
-          </dep>
-        </alternate>
-        <alternate name="Darwin">
-          <dep name="py36-cryptography">
-            <lib>.*/(cryptography)/__init__.py</lib>
-          </dep>
-          <dep name="py36-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
-          </dep>
-        </alternate>
-        <alternate name="Fedora">
-          <dep name="python3-cryptography">
-            <lib>.*/(cryptography)/__init__.py</lib>
-          </dep>
-          <dep name="python3-cffi">
-            <lib>.*/_cffi_backend.*.so</lib>
-          </dep>
-        </alternate>
-      </alternates>
-    </repository>
   </project>
   <project name="drop">
     <title>inter-project dependencies tool</title>
