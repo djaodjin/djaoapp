@@ -268,16 +268,12 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 APP_STATIC_ROOT = HTDOCS + '/static'
+STATIC_URL = '/static/'
+STATIC_ROOT = APP_STATIC_ROOT
 if DEBUG:
     STATIC_ROOT = ''
     # Additional locations of static files
     STATICFILES_DIRS = (APP_STATIC_ROOT, HTDOCS,)
-else:
-    STATIC_ROOT = APP_STATIC_ROOT
-
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
