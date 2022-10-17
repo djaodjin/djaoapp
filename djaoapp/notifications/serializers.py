@@ -4,13 +4,13 @@
 #pylint: disable=no-init
 
 from rest_framework import serializers
-from djaoapp.api.serializers import NoModelSerializer, ProfileSerializer
 from saas.api.serializers import (PlanSerializer, ChargeSerializer,
     ChargeItemSerializer, CartItemSerializer, PriceSerializer,
     RoleDescriptionSerializer, TransactionSerializer)
 from saas.utils import get_user_serializer
 from signup.serializers_overrides import UserDetailSerializer
 
+from ..api.serializers import NoModelSerializer, ProfileSerializer
 from ..compat import gettext_lazy as _
 
 
@@ -125,11 +125,37 @@ class ChangeProfileNotificationSerializer(UpdateProfileNotificationSerializer):
     changes = serializers.DictField( # XXX
         help_text=_("changes to the profile"))
 
+class PeriodValuesSerializer(NoModelSerializer):
+
+    last = serializers.CharField()
+    prev = serializers.CharField()
+    prev_year = serializers.CharField()
+
+    class Meta:
+        fields = ('last', 'prev', 'prev_year')
+        read_only_fields = ('last', 'prev', 'prev_year')
+
+
+class PeriodSalesReportRowSerializer(NoModelSerializer):
+
+    key = serializers.CharField()
+    values = PeriodValuesSerializer()
+
+    class Meta:
+        fields = ('key', 'values')
+        read_only_fields = ('key', 'values')
+
 
 class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):
 
-    table = serializers.CharField() # XXX
-    date = serializers.CharField() # XXX
+    table = PeriodSalesReportRowSerializer(many=True)
+    date = serializers.DateTimeField(
+        help_text=_("Date/time of creation (in ISO format)"))
+
+    class Meta(ProfileNotificationSerializer.Meta):
+        fields = ProfileNotificationSerializer.Meta.fields + ('table', 'date')
+        read_only_fields = ProfileNotificationSerializer.Meta.read_only_fields\
+            + ('table', 'date')
 
 
 class OrderNotificationSerializer(UpdateProfileNotificationSerializer):
