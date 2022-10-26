@@ -15,7 +15,7 @@ RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
 COPY . /app/reps/djaoapp
 WORKDIR /app/reps/djaoapp
 RUN /app/bin/pip install -r requirements.txt
-RUM DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
+RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
 
 # Create local configuration files
 RUN /bin/mkdir -p /etc/djaoapp
