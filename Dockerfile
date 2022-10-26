@@ -7,7 +7,7 @@ FROM python:3.9-slim-bullseye
 #     Loads the list of native packages
 RUN apt-get update -y
 #     Installs required native packages
-RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install python3-psycopg2 python3-cryptography python3-coverage python3-setproctitle python3-lxml python3-pil python3-cffi python3-billiard python3-ldap python3-cairo libpangoft2-1.0-0 libxmlsec1-dev libxmlsec1-openssl
+RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install python3-psycopg2 python3-cryptography python3-coverage python3-setproctitle python3-lxml python3-pil python3-cffi python3-billiard python3-ldap python3-cairo libpangoft2-1.0-0 libxmlsec1-openssl pkg-config gcc libxmlsec1-dev
 
 RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
 
@@ -15,6 +15,7 @@ RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
 COPY . /app/reps/djaoapp
 WORKDIR /app/reps/djaoapp
 RUN /app/bin/pip install -r requirements.txt
+RUM DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
 
 # Create local configuration files
 RUN /bin/mkdir -p /etc/djaoapp
