@@ -3,22 +3,28 @@ FROM python:3.9-slim-bullseye
 # RUN which python3
 # RUN python3 --version
 # RUN cat /etc/debian_version
+RUN /bin/mkdir -p /etc/djaoapp
 
-#     Loads the list of native packages
+# ==== Installs required native packages
 RUN apt-get update -y
-#     Installs required native packages
 RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install python3-psycopg2 python3-cryptography python3-coverage python3-setproctitle python3-lxml python3-pil python3-cffi python3-billiard python3-ldap python3-cairo libpangoft2-1.0-0 libxmlsec1-openssl pkg-config gcc libxmlsec1-dev
 
+# ==== Installs pip packages
+# docutils==0.15.2 because botocore has a constraint: docutils<0.16
+# WeasyPrint>=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian
+# (Dockerfile), if we use version 52.5, it leads to
+# `OSError: cannot load library 'pangocairo-1.0'`
 RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
+RUN /app/bin/pip install boto3==1.24.48 Django==3.2.16 django-phonenumber-field==6.3.0 django-recaptcha==2.0.6 djangorestframework==3.12.4 djaodjin-deployutils==0.10.3 djaodjin-extended-templates==0.3.4 djaodjin-multitier==0.1.24 djaodjin-rules==0.3.0 djaodjin-saas==0.15.2 djaodjin-signup==0.7.4 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.12.54 PyJWT==2.4.0 pytz==2022.1 social-auth-app-django==5.0.0 whitenoise==5.1.0 WeasyPrint==53.3 django-debug-toolbar==3.5.0 django-extensions==3.2.0 django-storages==1.13.1
+
+# ==== Cleans up native package only necessary while installing pip packages
+RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
 
 # Bundle app source
 COPY . /app/reps/djaoapp
 WORKDIR /app/reps/djaoapp
-RUN /app/bin/pip install -r requirements.txt
-RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
 
 # Create local configuration files
-RUN /bin/mkdir -p /etc/djaoapp
 RUN /bin/sed -e "s,\%(SECRET_KEY)s,`/app/bin/python -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," etc/credentials > /etc/djaoapp/credentials
 RUN /bin/sed -e "s,^DB_LOCATION *= *\".*\",DB_LOCATION = \"sqlite3:///app/reps/djaoapp/db.sqlite\"," etc/site.conf > /etc/djaoapp/site.conf
 RUN /bin/sed -e 's,%(APP_NAME)s,djaoapp,g' -e 's,%(LOCALSTATEDIR)s,/var,g'\

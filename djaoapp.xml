@@ -156,6 +156,14 @@
           <dep name="pango">
             <lib>pango-1.0</lib>
           </dep>
+          <!-- We need to install the xmlsec1 include headers such
+               that the Python native module xmlsec can be built. -->
+          <dep name="xmlsec1-devel">
+            <lib>xmlsec1</lib>
+          </dep>
+          <dep name="xmlsec1-openssl">
+            <lib>xmlsec1-openssl</lib>
+          </dep>
         </alternate>
         <alternate name="CentOS">
           <!-- We couldn't find a native python36- package for those,
@@ -213,6 +221,9 @@
           <dep name="setproctitle" target="python">
             <lib>.*/setproctitle.*.so</lib>
           </dep>
+          <dep name="xmlsec1">
+            <lib>xmlsec1</lib>
+          </dep>
         </alternate>
         <alternate name="Fedora">
           <dep name="python3-cryptography">
@@ -235,6 +246,12 @@
           </dep>
           <dep name="python3-setproctitle">
             <lib>.*/setproctitle.*.so</lib>
+          </dep>
+          <dep name="xmlsec1-devel">
+            <lib>xmlsec1</lib>
+          </dep>
+          <dep name="xmlsec1-openssl">
+            <lib>xmlsec1-openssl</lib>
           </dep>
         </alternate>
       </alternates>
