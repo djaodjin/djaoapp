@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2022, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
@@ -8,8 +8,9 @@ from django.views.generic import RedirectView
 from rules.urldecorators import include
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from saas.views import UserRedirectView
-from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.forms import StartAuthenticationForm
+from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
+from signup.views.saml import saml_metadata_view
 
 from ..urlbuilders import (url_active, url_agreement, url_authenticated,
     url_dashboard, url_direct, url_frictionless_direct,
@@ -59,6 +60,7 @@ urlpatterns = [
         name='registration_register'),
     url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/', #pylint: disable=line-too-long
         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url_prefixed(r'^saml/', saml_metadata_view),
 
     # Redirects
     url_prefixed(r'^billing/cart/',

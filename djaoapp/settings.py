@@ -44,6 +44,9 @@ FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 
 CONTACT_DYNAMIC_VALIDATOR = None
 
+# Defaults for social auth configuration
+SOCIAL_AUTH_SAML_ENABLED_IDPS = {}
+
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
 
@@ -631,6 +634,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.azuread.AzureADOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.saml.SAMLAuth',
     'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
