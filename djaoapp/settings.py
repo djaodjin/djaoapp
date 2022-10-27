@@ -634,7 +634,8 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.azuread.AzureADOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.github.GithubOAuth2',
-    'social_core.backends.saml.SAMLAuth',
+# disables SAML so it is simpler to configure on a developer machine.
+#    'social_core.backends.saml.SAMLAuth',
     'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
