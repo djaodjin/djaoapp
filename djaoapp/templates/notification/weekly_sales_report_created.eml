@@ -44,9 +44,9 @@
         {% for row in table %}
             <tr>
                 <td>{{row.key}}</td>
-                <td>{{row.values.last}}</td>
-                <td>{{row.values.prev}}</td>
-                <td>{{row.values.prev_year}}</td>
+                <td>{{row.vals.last}}</td>
+                <td>{{row.vals.prev}}</td>
+                <td>{{row.vals.prev_year}}</td>
             </tr>
         {% endfor %}
     </tbody>

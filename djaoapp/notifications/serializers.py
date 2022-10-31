@@ -139,11 +139,11 @@ class PeriodValuesSerializer(NoModelSerializer):
 class PeriodSalesReportRowSerializer(NoModelSerializer):
 
     key = serializers.CharField()
-    values = PeriodValuesSerializer()
+    vals = PeriodValuesSerializer()
 
     class Meta:
-        fields = ('key', 'values')
-        read_only_fields = ('key', 'values')
+        fields = ('key', 'vals')
+        read_only_fields = ('key', 'vals')
 
 
 class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):

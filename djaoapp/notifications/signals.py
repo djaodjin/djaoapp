@@ -2572,7 +2572,9 @@ def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
     date = last_sunday.strftime("%A %b %d, %Y")
     # XXX using the provider in templates is incorrect. "Any questions
     # or comments..." should show DjaoDjin support email address.
+    site = get_current_site()
     context = {
+        'back_url': site.as_absolute_uri(),
         'broker': get_broker(),
         'profile': provider,
         'table': data,
