@@ -139,7 +139,20 @@
                   <option value="disabled"{% if form.instance.authentication == 2 %} selected{% endif %}>{% trans %}Only site managers can login{% endtrans %}</option>
                 </select>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
+                <label for="">&nbsp;</label>
+                <div class="form-check pl-0">
+                  <label for="cors-restricted">
+                    <input id="cors-restricted" class="checkboxinput mr-2"
+                           name="cors-restricted"
+                           ref="corsRestricted"
+                           type="checkbox"
+                           {% if form.instance.cors_restricted %}checked="checked"{% endif %} @change="update()" />
+                    {% trans %}Add CORS headers{% endtrans %}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group col-md-3">
                 <label for="">&nbsp;</label>
                 <div class="form-check pl-0">
                   <label for="welcome-email">
