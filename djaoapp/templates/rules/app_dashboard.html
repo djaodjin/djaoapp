@@ -34,12 +34,18 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody id="rules" v-sortable="{ handle: '.rule-handle', onUpdate: moved }">
+              <tbody id="rules">
                 <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
                     v-for="(rule, index) in items.results" v-cloak>
-                  <td width="100">
-                    <div class="btn btn-secondary btn-md rule-handle">
-                      <i class="fa fa-bars"></i></div>
+                  <td>
+                    <button class="btn btn-secondary btn-sm rule-up"
+                            @click.prevent="moveUp(rule, index)">
+                      <i class="fa fa-arrow-up"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm rule-down"
+                            @click.prevent="moveDown(rule, index)">
+                      <i class="fa fa-arrow-down"></i>
+                    </button>
                   </td>
                   <td>[[rule.path]]</td>
                   <td width="200">
@@ -70,7 +76,8 @@
                            >
                   </td>
                   <td width="100">
-                    <button class="btn btn-danger btn-sm" @click="remove(index)">
+                    <button class="btn btn-danger btn-sm rule-delete"
+                            @click="remove(index)">
                       <i class="fa fa-trash-o"></i></button>
                   </td>
                 </tr>
