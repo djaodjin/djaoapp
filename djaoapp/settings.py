@@ -711,7 +711,7 @@ EXTENDED_TEMPLATES = {
     'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
     'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'EXTRA_MIXIN': djaoapp.extras.extended_templates.ExtraMixin,
-    'PUBLIC_ROOT': os.path.join(HTDOCS, 'themes'),
+    'PUBLIC_ROOT': HTDOCS,
     'TEMPLATES_BLACKLIST': [
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',

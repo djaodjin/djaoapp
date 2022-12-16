@@ -187,7 +187,7 @@
     "fields": {
         "app": 3,
         "rank": 17,
-        "path": "/app/{profile}/premium/",
+        "path": "/app/{profile}/subscribed/premium/",
         "rule_op": 16,
         "kwargs": "{\"plan\": \"premium\"}",
         "is_forward": false
@@ -198,7 +198,7 @@
     "fields": {
         "app": 3,
         "rank": 18,
-        "path": "/app/{profile}/basic/",
+        "path": "/app/{profile}/subscribed/basic/",
         "rule_op": 16,
         "kwargs": "{\"plan\": [\"basic\",\"premium\"]}",
         "is_forward": false
@@ -209,7 +209,7 @@
     "fields": {
         "app": 3,
         "rank": 19,
-        "path": "/app/{profile}/",
+        "path": "/app/{profile}/subscribed/",
         "rule_op": 16,
         "is_forward": false
     },
@@ -219,8 +219,8 @@
     "fields": {
         "app": 3,
         "rank": 20,
-        "path": "/app",
-        "rule_op": 1,
+        "path": "/app/{profile}/",
+        "rule_op": 15,
         "is_forward": false
     },
     "model": "rules.Rule", "pk": 20
@@ -229,11 +229,21 @@
     "fields": {
         "app": 3,
         "rank": 21,
+        "path": "/app",
+        "rule_op": 1,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 21
+},
+{
+    "fields": {
+        "app": 3,
+        "rank": 22,
         "path": "/forward/",
         "rule_op": 1,
         "is_forward": true
     },
-    "model": "rules.Rule", "pk": 21
+    "model": "rules.Rule", "pk": 22
 },
 {
     "fields": {
