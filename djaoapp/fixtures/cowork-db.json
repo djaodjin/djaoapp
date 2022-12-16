@@ -21,7 +21,7 @@
     "fields": {
         "app": 3,
         "rank": 1,
-        "path": "/api/billing/charges/{profile}/email/",
+        "path": "/api/billing/charges/{organization}/email/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -32,7 +32,7 @@
     "fields": {
         "app": 3,
         "rank": 2,
-        "path": "/api/billing/{profile}/history",
+        "path": "/api/billing/{organization}/history",
         "rule_op": 6,
         "kwargs": "{\"roledescription\":[\"contributor\",\"support\"]}",
         "is_forward": false
@@ -43,7 +43,7 @@
     "fields": {
         "app": 3,
         "rank": 3,
-        "path": "/api/billing/{profile}/card",
+        "path": "/api/billing/{organization}/card",
         "rule_op": 6,
         "kwargs": "{\"roledescription\":\"contributor\"}",
         "is_forward": false
@@ -54,7 +54,7 @@
     "fields": {
         "app": 3,
         "rank": 4,
-        "path": "/api/profile/{profile}/subscribers/",
+        "path": "/api/profile/{organization}/subscribers/",
         "rule_op": 3,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -65,7 +65,7 @@
     "fields": {
         "app": 3,
         "rank": 5,
-        "path": "/api/profile/{profile}/subscriptions/",
+        "path": "/api/profile/{organization}/subscriptions/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -76,7 +76,7 @@
     "fields": {
         "app": 3,
         "rank": 6,
-        "path": "/billing/{profile}/history/",
+        "path": "/billing/{organization}/history/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -87,7 +87,7 @@
     "fields": {
         "app": 3,
         "rank": 7,
-        "path": "/billing/{profile}/receipt/",
+        "path": "/billing/{organization}/receipt/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -98,7 +98,7 @@
     "fields": {
         "app": 3,
         "rank": 8,
-        "path": "/billing/{profile}/balance/",
+        "path": "/billing/{organization}/balance/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -109,7 +109,7 @@
     "fields": {
         "app": 3,
         "rank": 9,
-        "path": "/metrics/{profile}/dashboard/",
+        "path": "/metrics/{organization}/dashboard/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -131,7 +131,7 @@
     "fields": {
         "app": 3,
         "rank": 11,
-        "path": "/profile/{profile}/subscribers/",
+        "path": "/profile/{organization}/subscribers/",
         "rule_op": 3,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -142,7 +142,7 @@
     "fields": {
         "app": 3,
         "rank": 12,
-        "path": "/profile/{profile}/subscriptions/",
+        "path": "/profile/{organization}/subscriptions/",
         "rule_op": 6,
         "kwargs": "{\"roledescription\": \"support\"}",
         "is_forward": false
@@ -154,7 +154,7 @@
     "fields": {
         "app": 3,
         "rank": 14,
-        "path": "/app/{profile}/premium/paid/",
+        "path": "/app/{organization}/premium/paid/",
         "rule_op": 15,
         "kwargs": "{\"plan\": \"premium\"}",
         "is_forward": false
@@ -165,7 +165,7 @@
     "fields": {
         "app": 3,
         "rank": 15,
-        "path": "/app/{profile}/basic/paid/",
+        "path": "/app/{organization}/basic/paid/",
         "rule_op": 15,
         "kwargs": "{\"plan\": [\"basic\",\"premium\"]}",
         "is_forward": false
@@ -176,7 +176,7 @@
     "fields": {
         "app": 3,
         "rank": 16,
-        "path": "/app/{profile}/paid/",
+        "path": "/app/{organization}/paid/",
         "rule_op": 15,
         "is_forward": false
     },
@@ -187,7 +187,7 @@
     "fields": {
         "app": 3,
         "rank": 17,
-        "path": "/app/{profile}/subscribed/premium/",
+        "path": "/app/{organization}/subscribed/premium/",
         "rule_op": 16,
         "kwargs": "{\"plan\": \"premium\"}",
         "is_forward": false
@@ -198,7 +198,7 @@
     "fields": {
         "app": 3,
         "rank": 18,
-        "path": "/app/{profile}/subscribed/basic/",
+        "path": "/app/{organization}/subscribed/basic/",
         "rule_op": 16,
         "kwargs": "{\"plan\": [\"basic\",\"premium\"]}",
         "is_forward": false
@@ -209,7 +209,7 @@
     "fields": {
         "app": 3,
         "rank": 19,
-        "path": "/app/{profile}/subscribed/",
+        "path": "/app/{organization}/subscribed/",
         "rule_op": 16,
         "is_forward": false
     },
@@ -219,7 +219,7 @@
     "fields": {
         "app": 3,
         "rank": 20,
-        "path": "/app/{profile}/",
+        "path": "/app/{organization}/",
         "rule_op": 3,
         "is_forward": false
     },
