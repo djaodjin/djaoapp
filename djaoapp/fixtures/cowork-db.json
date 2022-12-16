@@ -220,7 +220,7 @@
         "app": 3,
         "rank": 20,
         "path": "/app/{profile}/",
-        "rule_op": 15,
+        "rule_op": 3,
         "is_forward": false
     },
     "model": "rules.Rule", "pk": 20
