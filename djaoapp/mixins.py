@@ -13,6 +13,7 @@ from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import fail_direct
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
+from saas.utils import get_organization_model
 from signup.helpers import full_name_natural_split
 from signup.utils import handle_uniq_error
 
@@ -186,7 +187,7 @@ class RegisterMixin(object):
                 if ('type' in cleaned_data and
                     cleaned_data['type'] == Organization.ACCOUNT_PROVIDER):
                     organization_kwargs = {'is_provider': True}
-                account = Organization.objects.create(
+                account = get_organization_model().objects.create(
                     slug=organization_slug,
                     full_name=organization_name,
                     email=_clean_field(cleaned_data, 'email'),
@@ -209,7 +210,7 @@ class RegisterMixin(object):
                     account.region, account.postal_code, account.country,
                     extra={'event': 'create',
                         'request': self.request, 'user': user,
-                        'type': 'Organization', 'slug': account.slug,
+                        'type': 'organization', 'slug': account.slug,
                         'full_name': account.full_name,
                         'email': account.email,
                         'street_address': account.street_address,
