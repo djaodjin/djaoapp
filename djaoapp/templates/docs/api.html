@@ -1,5 +1,12 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block localheadermeta %}
+<title>Profile, Billing and Access Control API Reference | DjaoDjin</title>
+<meta property="og:image" content="https://www.djaodjin.com/static/img/docs/desktop-control_panel-melissa.png" />
+<meta property="og:site_name" content="DjaoDjin" />
+<meta property="og:type" content="website" />
+{% endblock %}
+
 {% macro api_param_doc(param, operationId, response=True, indent=0) -%}
 {% if response or not param.readOnly %}
 {% if param.type %}
