@@ -1132,7 +1132,7 @@
 },
 {
     "fields": {
-      "slug": "contact_requested_notice",
+      "slug": "contact_requested",
       "title": "Messages through the website contact page",
       "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."
     },
@@ -1140,7 +1140,7 @@
 },
 {
     "fields": {
-      "slug": "user_registered_notice",
+      "slug": "user_registered",
       "title": "A new user has registered",
       "description": "By enabling this notification, you will receive e-mails when a new user has registered to the website."
     },
@@ -1148,7 +1148,7 @@
 },
 {
     "fields": {
-      "slug": "user_activated_notice",
+      "slug": "user_activated",
       "title": "A user has activated his/her account",
       "description": "By enabling this notification, you will receive e-mails when a user has activated their account on the website and are now able to login."
     },

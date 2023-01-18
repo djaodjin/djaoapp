@@ -250,9 +250,11 @@ class NotificationsMixin(object):
         broker = get_broker()
         generator = NotificationDocGenerator()
         schema = generator.get_schema(request=self.request)
-        notifications = {notification_slug: notification.get('GET')
+        notifications = {notification_slug: {
+            'summary': notification.get('GET').get('summary'),
+            'description': notification.get('GET').get('description'),
+        }
             for notification_slug, notification in schema.get('paths').items()}
-
         # user with profile manager of broker (or theme editor)
         if not user or broker.with_role(
                 saas_settings.MANAGER).filter(pk=user.pk).exists():
@@ -261,4 +263,5 @@ class NotificationsMixin(object):
         # regular subscriber
         return {key: notifications[key] for key in [
             'charge_receipt', 'card_updated', 'order_executed',
-            'profile_updated', 'expires_soon']}
+            'profile_updated', 'expires_soon',
+            'role_grant_created', 'role_request_created']}
