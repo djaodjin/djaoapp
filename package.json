@@ -6,7 +6,6 @@
         "bootbox": "4.4.0",
         "bootstrap": "4.3.1",
         "bootstrap-colorpicker": "2.5.2",
-        "bootstrap-vue": "^2.0.0-rc.11",
         "chart.js": "^3.7.1",
         "d3": "3.5.5",
         "dropzone": "4.2.0",

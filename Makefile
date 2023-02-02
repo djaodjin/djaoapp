@@ -147,6 +147,49 @@ setup-livedemo:
 # Download prerequisites specified in package.json and install relevant files
 # in the directory assets are served from.
 vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
+	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-language_tools.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-emmet.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-modelist.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/theme-monokai.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-html.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-css.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-javascript.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-html.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-css.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-javascript.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/chart.js/dist/chart.js $(srcDir)/djaoapp/static/vendor
+	$(installFiles) $(libDir)/node_modules/d3/d3.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/font-awesome/css/font-awesome.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/font-awesome/fonts/* $(ASSETS_DIR)/fonts
+	$(installFiles) $(libDir)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/jquery.cookie/jquery.cookie.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/jquery.selection/dist/jquery.selection.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/jquery.payment/lib/jquery.payment.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Converter.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper-utils.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/toastr/toastr.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/vue-infinite-loading/dist/vue-infinite-loading.js $(ASSETS_DIR)/vendor
 
 
 # --------- intermediate targets
@@ -169,7 +212,7 @@ initdb-cowork: clean-dbs
 
 clean-assets:
 	rm -f $(srcDir)/webpack-conf-paths.json
-	rm -f $(ASSETS_DIR)/static/js/*
+	rm -f $(ASSETS_DIR)/js/*
 	rm -f $(ASSETS_DIR)/cache/*
 
 clean-dbs:
@@ -214,53 +257,10 @@ migratedb-%:
 $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(libDir)
 	$(NPM) install --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(libDir)
-	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-language_tools.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-emmet.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-modelist.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/theme-monokai.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-html.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-css.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/mode-javascript.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-html.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-css.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/ace-builds/src/worker-javascript.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/bootstrap/dist/js/bootstrap.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/bootbox/bootbox.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/chart.js/dist/chart.js $(srcDir)/djaoapp/static/vendor
-	$(installFiles) $(libDir)/node_modules/d3/d3.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/font-awesome/css/font-awesome.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/font-awesome/fonts/* $(ASSETS_DIR)/fonts
-	$(installFiles) $(libDir)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery.cookie/jquery.cookie.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery.selection/dist/jquery.selection.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery.payment/lib/jquery.payment.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Converter.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper-utils.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/toastr/toastr.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/vue-infinite-loading/dist/vue-infinite-loading.js $(ASSETS_DIR)/vendor
-	[ -f $(binDir)/es-check ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/es-check es-check)
-	[ -f $(binDir)/sassc ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/sass sassc)
-	[ -f $(binDir)/swagger-cli ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/swagger-cli swagger-cli)
-	[ -f $(binDir)/webpack ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/webpack webpack)
+	[ -e $(binDir)/es-check ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/es-check es-check)
+	[ -e $(binDir)/sassc ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/sass sassc)
+	[ -e $(binDir)/swagger-cli ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/swagger-cli swagger-cli)
+	[ -e $(binDir)/webpack ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/webpack webpack)
 	touch $@
 
 

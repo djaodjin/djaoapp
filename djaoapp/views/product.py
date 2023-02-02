@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -6,7 +6,7 @@ Default start page for a djaodjin-hosted product.
 """
 from __future__ import unicode_literals
 
-import logging
+import logging, os
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
@@ -135,8 +135,8 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
                     pass
             if response is None:
                 app = get_current_app(request)
-                if is_current_broker(app.account):
-                    asset_dir = themes_settings.PUBLIC_ROOT
+                if is_current_broker(app.account) and settings.STATIC_ROOT:
+                    asset_dir = os.path.dirname(settings.STATIC_ROOT)
                 else:
                     theme_name = get_active_theme()
                     asset_dir = safe_join(
