@@ -621,6 +621,20 @@
     "model": "saas.Organization", "pk": 4
 },
 {
+    "fields":{
+        "slug":"basic-sublease",
+        "title": "Open Space Sublease",
+        "created_at":"2023-01-01T00:00:00-00:00",
+        "unit": "cad",
+        "period_amount":17999,
+        "period_type": 4,
+        "description":"(sublease) open space desk, High speed internet – Ethernet or WiFi, Unlimited printing, Unlimited scanning, Unlimited fax service (send and receive)",
+        "is_active": true,
+        "organization" : 4
+    },
+    "model" : "saas.Plan", "pk": 4
+},
+{
     "fields": {
       "date_joined": "2023-01-01T00:00:00-00:00",
       "email": "donny@localhost.localdomain",

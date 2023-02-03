@@ -10,6 +10,7 @@ from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from multitier.finders import get_current_theme_assets_dirs
+from rules.models import Rule
 from rules.utils import get_app_model
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
@@ -20,10 +21,8 @@ from .compat import reverse
 LOGGER = logging.getLogger(__name__)
 
 def is_domain_site(site):
-    return site.tag and 'streetside' in site.tag
-                                    # XXX should be not site.is_path_prefix
-                                    # but we are using is_path_prefix for local
-                                    # dev.
+    return not (site.account._state.db == 'default' or site.account.is_broker or
+        site.is_path_prefix)
 
 def is_testing(site):
     return site.tag and 'testing' in site.tag
@@ -42,6 +41,8 @@ def dynamic_processor_keys(provider, livemode=None):
     site = get_current_site()
     if livemode is None:
         livemode = bool(not is_testing(site))
+
+    processor_backend.mode = processor_backend.LOCAL
     if not livemode:
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
         processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
@@ -49,24 +50,25 @@ def dynamic_processor_keys(provider, livemode=None):
         processor_backend.connect_callback_url = \
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL
 
-    if is_domain_site(site):
-        processor_backend.mode = processor_backend.REMOTE
-        if not is_current_broker(provider):
-            processor_backend.mode = processor_backend.FORWARD
-        try:
-            if site.processor_client_key:
-                processor_backend.pub_key = site.processor_pub_key
-                processor_backend.priv_key = site.processor_priv_key
-                processor_backend.client_id = site.processor_client_key
-                processor_backend.connect_callback_url = site.connect_callback_url
-                if not livemode:
-                    processor_backend.pub_key = site.processor_test_pub_key
-                    processor_backend.priv_key = site.processor_test_priv_key
-                    processor_backend.client_id = site.processor_test_client_key
-                    processor_backend.connect_callback_url = \
-                        site.processor_test_connect_callback_url
-        except AttributeError:
-            pass
+    if not is_current_broker(provider):
+        processor_backend.mode = processor_backend.FORWARD
+    try:
+        if site.processor_client_key:
+            processor_backend.pub_key = site.processor_pub_key
+            processor_backend.priv_key = site.processor_priv_key
+            processor_backend.client_id = site.processor_client_key
+            processor_backend.connect_callback_url = site.connect_callback_url
+            if not livemode:
+                processor_backend.pub_key = site.processor_test_pub_key
+                processor_backend.priv_key = site.processor_test_priv_key
+                processor_backend.client_id = site.processor_test_client_key
+                processor_backend.connect_callback_url = \
+                    site.processor_test_connect_callback_url
+        elif is_domain_site(site):
+            processor_backend.mode = processor_backend.REMOTE
+    except AttributeError:
+        if is_domain_site(site):
+            processor_backend.mode = processor_backend.REMOTE
 
     return processor_backend
 
@@ -234,6 +236,32 @@ def processor_redirect(request, site=None):
         provider = get_current_broker()
     return build_absolute_uri(request, location=reverse('saas_update_bank',
         kwargs={'organization': provider}), site=site)
+
+
+def product_url(subscriber=None, plan=None, request=None):
+    location = None
+    if plan:
+        candidate_rule = Rule.objects.filter(
+            app=get_current_app(request),
+            kwargs__contains=str(plan)).order_by('-rank').first()
+        if candidate_rule:
+            location = candidate_rule.path.replace(
+                '{profile}', str(subscriber)).replace(
+                '{plan}',  str(plan))
+    if not location:
+        location = reverse('product_default_start')
+        if subscriber:
+            location += '%s/' % subscriber
+        if plan:
+            location += '%s/' % plan
+    site = get_current_site()
+    if request:
+        return build_absolute_uri(request, location=location, site=site)
+    # We don't have a request, so we return a URL path such that the host
+    # is correctly inferred by the browser.
+    if site.is_path_prefix:
+        location = "/%s%s" % (site.slug, location)
+    return location
 
 
 def provider_absolute_url(request,

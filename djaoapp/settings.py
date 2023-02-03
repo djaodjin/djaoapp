@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -48,7 +48,8 @@ CONTACT_DYNAMIC_VALIDATOR = None
 SOCIAL_AUTH_SAML_ENABLED_IDPS = {}
 
 update_settings(sys.modules[__name__],
-    load_config(APP_NAME, 'credentials', 'site.conf', verbose=True))
+    load_config(APP_NAME, 'credentials', 'site.conf',
+        verbose=True, debug=DEBUG))
 
 # Enable override on command line.
 for env_var in ['DEBUG', 'API_DEBUG', 'ASSETS_DEBUG', 'FEATURES_DEBUG']:
@@ -221,9 +222,6 @@ MESSAGE_TAGS = {
 # -----------------
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-#
-# Implementation note: this needs to be one of the key available in
-# `django.conf.locale.LANG_INFO`.
 LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
@@ -259,7 +257,8 @@ HTDOCS = os.path.join(BASE_DIR, 'htdocs')
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(HTDOCS, 'media')
+if not hasattr(sys.modules[__name__], 'MEDIA_ROOT'):
+    MEDIA_ROOT = os.path.join(HTDOCS, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -322,12 +321,6 @@ ASSETS_MAP = {
 
 #XXX ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
 ASSETS_ROOT = HTDOCS
-
-# Sessions
-# --------
-# The default session serializer switched to JSONSerializer in Django 1.6
-# but just to be sure:
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # Templates
 # ---------
@@ -495,6 +488,15 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False
         },
+        'deployutils': {
+            'handlers': ['db_log'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'djaoapp': {
+            'handlers': [],
+            'level': 'INFO',
+        },
         'extended_templates': {
             'handlers': [],
             'level': 'INFO',
@@ -502,6 +504,10 @@ LOGGING = {
         'multitier': {
             'handlers': [],
             'level': 'INFO',
+        },
+        'requests': {
+            'handlers': [],
+            'level': 'WARNING',
         },
         'rules': {
             'handlers': [],
@@ -514,15 +520,6 @@ LOGGING = {
         'signup': {
             'handlers': [],
             'level': 'INFO',
-        },
-        'djaoapp': {
-            'handlers': [],
-            'level': 'INFO',
-        },
-        'deployutils': {
-            'handlers': ['db_log'],
-            'level': 'INFO',
-            'propagate': False
         },
 #        'django.db.backends': {
 #           'handlers': ['db_log'],
@@ -537,10 +534,6 @@ LOGGING = {
         # copy on stderr.
         'django': {
             'handlers': [],
-        },
-        'requests': {
-            'handlers': [],
-            'level': 'WARNING',
         },
         # This is the root logger.
         # The level will only be taken into account if the record is not
@@ -605,9 +598,6 @@ for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
 
 ACCOUNT_ACTIVATION_DAYS = 2
 
-LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
-
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
@@ -627,8 +617,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-
 NOCAPTCHA = True
+
+# User settings
+# -------------
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.azuread.AzureADOAuth2',
@@ -640,6 +634,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend'
 )
 
+# API settings
+# ------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'signup.authentication.JWTAuthentication',
@@ -659,13 +655,23 @@ REST_FRAMEWORK = {
     'SEARCH_PARAM': 'q',
 }
 if not DEBUG:
+    # We are using Jinja2 templates so there are no templates
+    # for `rest_framework.renderers.BrowsableAPIRenderer`.
     REST_FRAMEWORK.update({
         'DEFAULT_RENDERER_CLASSES': (
             'rest_framework.renderers.JSONRenderer',
         )
     })
 
+# Session settings
+# ----------------
+# The default session serializer switched to JSONSerializer in Django 1.6
+# but just to be sure:
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': '%svendor/jquery.js' % STATIC_URL,
     'SHOW_COLLAPSED': True,
     'SHOW_TEMPLATE_CONTEXT': True,
 }
@@ -711,7 +717,7 @@ EXTENDED_TEMPLATES = {
     'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
     'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'EXTRA_MIXIN': djaoapp.extras.extended_templates.ExtraMixin,
-    'PUBLIC_ROOT': HTDOCS,
+    'PUBLIC_ROOT': os.path.join(HTDOCS, 'themes'),
     'TEMPLATES_BLACKLIST': [
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',
@@ -758,6 +764,7 @@ SAAS = {
     },
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
+    'PRODUCT_URL_CALLABLE': 'djaoapp.thread_locals.product_url',
     'PROCESSOR_BACKEND_CALLABLE':
         'djaoapp.thread_locals.dynamic_processor_keys',
 
@@ -769,7 +776,7 @@ SAAS = {
     'PROCESSOR': {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
-        'MODE': 1, # ``FORWARD``, i.e. defaults to mallspace.
+        'MODE': 0, # ``LOCAL``, i.e. defaults to storing customers and charges
         'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
         'CONNECT_CALLBACK_URL': getattr(sys.modules[__name__],
             'STRIPE_CONNECT_CALLBACK_URL', None),
@@ -787,13 +794,11 @@ SAAS = {
 
 # Software-as-a-Service (forward requests with session data)
 RULES = {
-    'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'ACCOUNT_MODEL': 'saas.Organization',
     'APP_SERIALIZER': 'djaoapp.api.serializers.AppSerializer',
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
-    'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
-    'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
+    'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'RULE_OPERATORS': (
         '',                                            # 0
         'saas.decorators.fail_authenticated',          # 1
@@ -815,6 +820,8 @@ RULES = {
         'signup.decorators.fail_active',               # 17
         'saas.decorators.fail_provider_readable'       # 18
     ),
+    'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
+    'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
 }
 
 # Demo mode ...

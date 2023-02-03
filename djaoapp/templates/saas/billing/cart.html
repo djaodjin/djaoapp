@@ -16,6 +16,7 @@
     <div class="col-md-12">
       <form method="post" id="payment-form" class="form-horizontal"
             action=".{% if next %}/?next={{next}}{% endif %}">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         {% if invoicables %}
         {% include "saas/_invoiceables.html" %}
         {% elif is_extra_charge %}
@@ -51,6 +52,9 @@
 
         {% block order_footer %}
         <div id="redeem-code" class="text-right mt-3 mb-5">
+          {# `csrfmiddlewaretoken` is added back here because the `Redeem`    #}
+          {# javascript component will look for it within the "#redeem-code"  #}
+          {# element. #}
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <a href="" class="collapsible text-decoration-none">{% trans %}Have a registration code?{% endtrans %}</a>
           <div style="display:none;" class="mt-3">

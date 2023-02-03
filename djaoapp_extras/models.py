@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import json, logging, smtplib
 
 from deployutils.crypt import JSONEncoder
+from django.conf import settings
 from django.core.mail import get_connection as get_connection_base
 from django.db import models
 from django.utils import translation

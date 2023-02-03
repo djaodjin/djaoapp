@@ -84,7 +84,7 @@
               <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <tr :id="entry.plan.slug" :class="endsSoon(entry)" v-for="(entry, index) in items.results">
                   <td>
-                    <a :href="'{{request|site_url}}/app/' + entry.profile.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+                    <a :href="entry.app_url">[[entry.plan.title]]</a>
                   </td>
                   <td v-if="entry.editable">
                     {% include "_entry_ends_at_field.html" %}
@@ -197,7 +197,7 @@
               <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
                 <tr :class="endsSoon(entry)" v-for="(entry, index) in items.results">
                   <td>
-                    <a :href="entry.plan.app_url + entry.profile.slug + '/' + entry.plan.slug + '/'">[[entry.plan.title]]</a>
+                    <a :href="entry.app_url">[[entry.plan.title]]</a>
                   </td>
                   <td>
                     <span style="display: inline-block;">

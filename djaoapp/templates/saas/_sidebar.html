@@ -2,7 +2,7 @@
 {% if urls.organization and urls.organization.profile %}
 <ul class="nav flex-column py-1" data-intro="Home" data-position="right">
   <li class="nav-item">
-    <a id="profile-app" class="nav-link" href="{{'/app/'|site_url}}{{organization}}/">
+    <a id="profile-app" class="nav-link" href="{{'/app/'|site_url}}{{organization}}/">{# XXX should use `product_url`? #}
       <span class="fa fa-2x fa-home" style="vertical-align: middle"></span>
       <span class="pl-1">{% trans %}Home{% endtrans %}</span>
     </a>

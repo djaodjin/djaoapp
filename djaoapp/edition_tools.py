@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -42,10 +42,6 @@ def djaoapp_urls(request, account=None, base=None):
         'cart': build_absolute_uri(request,
             location='/billing/%s/cart/' % account,
             site=settings.APP_NAME)}
-    if base:
-        urls.update({'app':
-            build_absolute_uri(request, location='/app/%s/' % base,
-            site="%s-master" % settings.DB_NAME)}) # XXX Hack for correct domain
     return urls
 
 
@@ -116,21 +112,13 @@ def inject_edition_tools(response, request, context=None,
                 'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-        # XXX sites which are hosted on a same domain shouldn't disable
-        # all edit functionality, just the edition of base templates.
         site = get_current_site()
-        enable_code_editor = is_domain_site(site)
-        if enable_code_editor:
-            dj_urls = djaoapp_urls(
-                request, account=provider, base=site.as_base())
-            body_bottom_template_name = \
-                "extended_templates/_body_bottom_edit_tools.html"
-        else:
-            dj_urls = djaoapp_urls(request, account=provider)
-            body_bottom_template_name = "extended_templates/_body_bottom.html"
+        dj_urls = djaoapp_urls(request, account=provider)
+        body_bottom_template_name = \
+            "extended_templates/_body_bottom_edit_tools.html"
 
         context.update({
-            'ENABLE_CODE_EDITOR': enable_code_editor,
+            'ENABLE_CODE_EDITOR': app.show_edit_tools,
             'FEATURE_DEBUG': settings.FEATURES_DEBUG,
             'urls':{
                 'djaodjin': dj_urls,

@@ -46,18 +46,6 @@
     -->
 
     {% block localheader %}{% endblock %}
-
-    {% if request and 'djaoapp.com' in request|host %}
-      <!-- Google Analytics -->
-      <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-          ga('create', 'UA-41399084-1', 'auto');
-          ga('send', 'pageview');
-      </script>
-    {% endif %}
 </head>
 <body{% block body_classes %}{% endblock %}>
   {% block body_top_template %}{% endblock %}
@@ -131,13 +119,15 @@
                       </ul>
                     </div>
                     <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
-                      <!-- The content here will be replaced by _menubar.html -->
+                      {# The content here will be replaced by _menubar.html #}
                       <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" id="login" href="{{request|url_login}}">
-                          {% trans %}Sign in{% endtrans %}
-                        </a>
+                        {% if request and request|is_authenticated %}
+                        <a class="nav-link">{{request.user.username}}</a>
+                        {% else %}
+                        <a id="login" class="nav-link" href="{{'/login/'|site_url}}">Sign In</a>
+                        {% endif %}
                       </li>
-                      <!-- this area will be populated by _menubar.html -->
+                      {# end of replaced by _menubar.html #}
                     </ul>
                   {% endblock %}
                 </nav>
@@ -189,30 +179,36 @@
       {% block localfooter %}
       {% endblock %}
 
-      <div class="copyr mt-2">
-        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-3"></i></a>
-        <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-3"></i></a>
-        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-        <br><br>
-        {% trans %}Powered by &copy; 2023 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
+      <div class="copyr">
+        <div class="my-2">
+          <a href="{{'/legal/'|site_url}}" target="_blank">{% trans %}Legal{% endtrans %}</a>
+          | <a href="{{'/contact/'|site_url}}" target="_blank">{% trans %}Contact{% endtrans %}</a>
+        </div>
+        <div class="my-2">
+          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-1"></i></a>
+          <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm pl-1"></i></a>
+        </div>
+        <div class="my-2">
+          {% trans %}Powered by DjaoDjin. &copy; 2023 All rights reserved.{% endtrans %}
+        </div>
       </div>
     </footer>
   {% endblock footer %}
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
-<script type="text/javascript" src="{{'/static/vendor/jquery.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/popper.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/toastr.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/popper.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/toastr.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/base.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
 {% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {
