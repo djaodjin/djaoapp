@@ -18,9 +18,6 @@ APP_NAME = os.path.basename(BASE_DIR)
 
 DEBUG = True
 USE_FIXTURES = True
-API_DEBUG = DEBUG
-ASSETS_DEBUG = DEBUG
-FEATURES_DEBUG = DEBUG
 
 # XXX djaodjin-saas==0.12.0 requires this
 SAAS_ORGANIZATION_MODEL = 'saas.Organization'
@@ -39,6 +36,7 @@ SEND_EMAIL = True
 RULES_APP_MODEL = 'djaoapp_extras.App'
 
 #pylint: disable=undefined-variable
+STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 
@@ -51,10 +49,12 @@ update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
         verbose=True, debug=DEBUG))
 
-# Enable override on command line.
+# Enable override on command line even when it is not defined in site.conf
 for env_var in ['DEBUG', 'API_DEBUG', 'ASSETS_DEBUG', 'FEATURES_DEBUG']:
     if os.getenv(env_var):
         setattr(sys.modules[__name__], env_var, (int(os.getenv(env_var)) > 0))
+    if not hasattr(sys.modules[__name__], env_var):
+        setattr(sys.modules[__name__], env_var, DEBUG)
 if sys.version_info[0] < 3:
     # Requires Python3+ to create API docs
     API_DEBUG = False
@@ -776,7 +776,7 @@ SAAS = {
     'PROCESSOR': {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
-        'MODE': 0, # ``LOCAL``, i.e. defaults to storing customers and charges
+        'MODE': STRIPE_MODE,
         'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
         'CONNECT_CALLBACK_URL': getattr(sys.modules[__name__],
             'STRIPE_CONNECT_CALLBACK_URL', None),

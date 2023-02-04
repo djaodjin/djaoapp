@@ -42,16 +42,12 @@ def dynamic_processor_keys(provider, livemode=None):
     if livemode is None:
         livemode = bool(not is_testing(site))
 
-    processor_backend.mode = processor_backend.LOCAL
     if not livemode:
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
         processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
         processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
         processor_backend.connect_callback_url = \
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL
-
-    if not is_current_broker(provider):
-        processor_backend.mode = processor_backend.FORWARD
     try:
         if site.processor_client_key:
             processor_backend.pub_key = site.processor_pub_key
@@ -64,11 +60,14 @@ def dynamic_processor_keys(provider, livemode=None):
                 processor_backend.client_id = site.processor_test_client_key
                 processor_backend.connect_callback_url = \
                     site.processor_test_connect_callback_url
-        elif is_domain_site(site):
-            processor_backend.mode = processor_backend.REMOTE
     except AttributeError:
-        if is_domain_site(site):
-            processor_backend.mode = processor_backend.REMOTE
+        pass
+
+    # if we are using platform keys but the site is not the platform,
+    # we override the Stripe Connect mode to be REMOTE.
+    if is_domain_site(site) and processor_backend.pub_key in (
+                settings.STRIPE_PUB_KEY, settings.STRIPE_TEST_PUB_KEY):
+        processor_backend.mode = processor_backend.REMOTE
 
     return processor_backend
 
