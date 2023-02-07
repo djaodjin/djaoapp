@@ -136,6 +136,7 @@ jQuery(document).ready(function($) {
 
     {% if urls.api_themes %}
     $("#theme-upload").djupload({
+        csrfToken: "{{csrf_token}}",
         uploadUrl: "{{urls.api_themes}}",
         uploadSuccessMessage: function(filename, location) {
             return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);

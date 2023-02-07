@@ -1,7 +1,7 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
-import logging
+import logging, os
 
 from django.conf import settings
 from django.http import Http404
@@ -128,13 +128,8 @@ def get_current_assets_dirs():
 
     This function is used by premailer to inline applicable CSS.
     """
-    assets_dirs = getattr(settings, 'STATICFILES_DIRS', None)
-    if not assets_dirs:
-        static_root_path = getattr(settings, 'STATIC_ROOT', None)
-        if static_root_path:
-            assets_dirs = [static_root_path]
-
-    assets_dirs = get_current_theme_assets_dirs() + list(assets_dirs)
+    assets_dirs = [os.path.join(settings.PUBLIC_ROOT, get_active_theme()),
+        settings.HTDOCS]
 
     return assets_dirs
 

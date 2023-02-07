@@ -254,6 +254,7 @@ TIME_ZONE = 'UTC'
 # static assets
 # -------------
 HTDOCS = os.path.join(BASE_DIR, 'htdocs')
+PUBLIC_ROOT = os.path.join(HTDOCS, 'themes')
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -275,7 +276,7 @@ STATIC_ROOT = APP_STATIC_ROOT
 if DEBUG:
     STATIC_ROOT = ''
     # Additional locations of static files
-    STATICFILES_DIRS = (APP_STATIC_ROOT, HTDOCS,)
+    STATICFILES_DIRS = (PUBLIC_ROOT, APP_STATIC_ROOT, HTDOCS,)
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
@@ -717,7 +718,7 @@ EXTENDED_TEMPLATES = {
     'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
     'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'EXTRA_MIXIN': djaoapp.extras.extended_templates.ExtraMixin,
-    'PUBLIC_ROOT': os.path.join(HTDOCS, 'themes'),
+    'PUBLIC_ROOT': PUBLIC_ROOT,
     'TEMPLATES_BLACKLIST': [
         'jinja2/debug_toolbar/base.html',
         'jinja2/debug_toolbar/panels/cache.html',
