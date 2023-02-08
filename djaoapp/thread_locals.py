@@ -21,8 +21,7 @@ from .compat import reverse
 LOGGER = logging.getLogger(__name__)
 
 def is_domain_site(site):
-    return not (site.account._state.db == 'default' or site.account.is_broker or
-        site.is_path_prefix)
+    return not (get_current_broker()._state.db == 'default')
 
 def is_testing(site):
     return site.tag and 'testing' in site.tag
