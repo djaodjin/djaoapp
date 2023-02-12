@@ -1,7 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block content %}
-    <section id="plans">
+    <section id="plans" class="mb-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center pt-4">
@@ -9,14 +9,14 @@
                 </div>
             </div>
         </div>
-        <div class="container container-margered">
+        <div class="container-fluid container-margered">
             <form method="post" action=".">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                <div class="row row-flex">
+                <div class="row">
                     {% for plan in plan_list %}
                         {% if plan.is_line_break %}
                             </div>
-                            <div class="row row-flex">
+                            <div class="row">
                                 {% if plan_list|length == 1 %}
                                 <div class="col-md-4"></div>
                                 {% endif %}
@@ -27,7 +27,7 @@
 
                     {% if plan_list.is_line_break %}
                         </div>
-                        <div class="row row-flex">
+                        <div class="row">
                     {% endif %}
 
                     {% if show_show_edit_tools and plan %}

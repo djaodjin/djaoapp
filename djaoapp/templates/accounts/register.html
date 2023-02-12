@@ -5,22 +5,34 @@
 {% block accounts_title %}{% trans %}Sign Up{% endtrans %}{% endblock %}
 
 {% block accounts_content %}
-<div class="text-center mb-2">
-  {% trans %}Already have an account?{% endtrans %}
-  <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
-</div>
-<div class="row">
-  <div class="offset-sm-2 col-sm-8">
-    {% block register_form %}
-    {% if form %}
+<div>
+  <p class="text-center mb-2">
+    {% trans %}Already have an account?{% endtrans %}
+    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+  </p>
+  {% if form %}
+  {% block register_form %}
+  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {% include "accounts/_register_form.html" %}
-    {% endif %}
-    {% endblock %}
-  </div>
-</div>
-<div class="text-center mt-3">
-  {% trans %}Already have an account?{% endtrans %}
-  <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+    <p class="text-center">
+      <small>
+        <em>
+{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before entering any information.{% endtrans %}
+        </em>
+      </small>
+    </p>
+    <div class="form-action text-center">
+      <button type="submit" class="btn btn-block btn-primary btn-md">
+        {% trans %}Sign Up{% endtrans %}
+      </button>
+    </div>
+  </form>
+  {% endblock %}
+  {% endif %}
+  <p class="text-center mt-3">
+    {% trans %}Already have an account?{% endtrans %}
+    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+  </p>
 </div>
 {% endblock %}
 

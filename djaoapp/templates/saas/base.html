@@ -12,27 +12,34 @@
 {% endblock %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{% block saas_title %}{% endblock %}
-            <div style="display: inline-block;">
-                <sup style="display: none;font-size:0.5em;cursor:pointer;">
-                    <i id="help-request" class="fa fa-question-circle"></i>
-                </sup>
-            </div>
-        </h1>
+<div id="app">
+  <h1>{% block saas_title %}{% endblock %}
+    <div class="d-inline">
+      <sup class="d-none" role="button">
+        <small>
+          <i id="help-request" class="fa fa-question-circle"></i>
+        </small>
+      </sup>
     </div>
+  </h1>
 
-    {% block saas_page_layout %}
-        <p class="lead">
-            {% block saas_lead_help %}{% endblock %}
-        </p>
-        <div class="row">
-            <div class="col-md-12">
-                {% block saas_help %}{% endblock %}
-                {% block saas_content %}{% endblock %}
-            </div>
+  <div class="container">
+  {% block saas_page_layout %}
+  <div>
+    <div class="row">
+      <div class="col-12">
+        {% block saas_help %}{% endblock %}
         </div>
-    {% endblock %}
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {% block saas_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  </div>
+</div>
 {% endblock %}
 
 {% block bodyscripts %}

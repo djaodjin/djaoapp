@@ -131,7 +131,7 @@ configuration file and restart the server.
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                <form style="display:inline-block;" method="post" action="{{urls.provider.deauthorize_processor}}">
+                <form class="d-inline-block" method="post" action="{{urls.provider.deauthorize_processor}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                   <input type="hidden" name="stripeToken" value="{% trans %}OOPS{% endtrans %}" />
                   <button id="de-authorize-action-btn" type="submit"
@@ -143,6 +143,8 @@ configuration file and restart the server.
 </div>
 {% endblock %}
 
-{% block saas_lead_help %}
+{% block saas_help %}
+<p>
 {% trans organization=organization.printable_name %}Connect a payment processor to create charges on behalf of {{organization}}.{% endtrans %}
+</p>
 {% endblock %}

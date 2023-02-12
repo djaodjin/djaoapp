@@ -4,7 +4,7 @@
 <section id="app">
   <div class="jumbotron mt-4">
     <div class="jumbotron-text">
-      <div class="center" style="display:block;">
+      <div class="d-block center">
         <h1 id="app-title" class="editable text-center" data-intro="Editable title" data-position="bottom">Welcome to {{provider.printable_name}}!</h1>
         <p id="app-jumbotron" class="text-center editable edit-markdown"></p>
       </div>
@@ -19,7 +19,7 @@
       {% endif %}
     </div>
   </div>
-  <div class="text-center" style="margin-bottom:25px;">
+  <div class="text-center mb-3">
     Quick links:
     <a href="{{request|url_profile}}">My Profile</a> |
     <a href="{{urls.organization.subscriptions}}">My Subscriptions</a> |

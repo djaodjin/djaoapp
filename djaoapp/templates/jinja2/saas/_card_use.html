@@ -6,15 +6,19 @@
       <fieldset class="col-lg-5 col-md-5">
         <legend>
           {% trans %}Credit Card Information{% endtrans %}
-          <a id="card-update" href="" class="btn btn-link"
-            v-show="haveCardData && !updateCard"
-            {% if not (last4 and not force_update) %}style="display:none;"{% endif %}>
+          <a id="card-update" href=""
+             {% if not (last4 and not force_update) %}
+             class="btn btn-link d-none"
+             {% else %}
+             class="btn btn-link"
+             {% endif %}
+             v-show="haveCardData && !updateCard">
             {% trans %}Update{% endtrans %}
           </a>
         </legend>
         <div id="card-data"
             v-show="haveCardData"
-            {% if not (last4) %}style="display:none;"{% endif %}>
+            {% if not (last4) %} class="d-none"{% endif %}>
             {# XXX cannot use v-cloak (cart.html) #}
           <dl class="dl-horizontal">
             <dt>{% trans %}card{% endtrans %}</dt>
@@ -26,8 +30,8 @@
           </dl>
         </div>
         <div id="card-no-data"
-            v-show="!haveCardData || updateCard"
-            {% if not (not last4 or force_update) %}style="display:none;"{% endif %}>
+            {% if not (not last4 or force_update) %} class="d-none"{% endif %}
+            v-show="!haveCardData || updateCard">
           <div id="card-element">
             <div class="form-group">
               <div class="card-icons text-center">
@@ -93,16 +97,16 @@
                 </div>
               </div>
             </div>
-            <p class="form-group" style="font-size:0.8em;">
+            <small>
             {% trans %}We keep on top of all best practices to secure the information you provide us. See the <a href="/legal/security/" target="_blank">security policy</a> for details.{% endtrans %}
+            </small>
             </p>
           </div>
         </div>{# /!haveCardData #}
       </fieldset>
       <fieldset id="card-billing-address"
-              class="col-lg-5 col-md-5 offset-lg-1 offset-md-1"
-              v-show="!haveCardData || updateCard"
-              {% if not (not last4 or force_update) %}style="display:none;"{% endif %}>
+              class="col-lg-5 col-md-5 offset-lg-1 offset-md-1{% if not (not last4 or force_update) %} d-none{% endif %}"
+              v-show="!haveCardData || updateCard">
               {# XXX technically could be `!haveBillingAddress` #}
         <legend>{% trans %}Billing Address{% endtrans %}</legend>
         {{input_field(form['card_name'], form.hide_labels)}}

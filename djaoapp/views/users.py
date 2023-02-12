@@ -101,6 +101,8 @@ class UserAccessiblesView(UserMixin, UserAccessiblesBaseView):
 
     def get_context_data(self, **kwargs):
         context = super(UserAccessiblesView, self).get_context_data(**kwargs)
+        # We have to add 'site' to the context here because the connected
+        # profiles page inherits from UserMixin, not OrganizationMixin.
         context.update({
             'site': get_current_site()
         })

@@ -1,48 +1,80 @@
 // These are extensions of the bootstrap v4 classes.
 // to support djaoapp templates.
 
+// XXX `$navbar-height` used to be defined
+// in Bootstrap3 (it is not in Bootstrap4). We redefine it here use it stick the
+// footer at the bottom of the screen when a page is less that screen height.
+$navbar-height: max($nav-link-height, $navbar-brand-height) + $navbar-padding-y * 2;
 $footer-height: 150px;
+$plan-footer-height: 70px;
 
-
-// specific to legal agreements
-.agreement h1 {
-  font-size: $h4-font-size;
+/* used only in templates/base.html */
+html, body {
+  height: 100%;
 }
 
-.agreement h2 {
-  padding-top: $h4-font-size !important;
-  font-size: $h4-font-size;
+body{
+  min-width:100%;
+  background:#FFF;
 }
 
-.page-header {
-   margin-bottom: $spacer;
+#wrap{
+  width: 100%;
+  min-height: 100%;
 }
 
-// XXX unsorted yet.
+/* 
+  Unless the font-size for #main and .footer match, using ``em`` metrics will
+  create bottom and overlap margins that have different heights, hence
+  sticking the footer to the bottom while introducing a "border" above it.
+*/
+#main {
+  min-height: 100%;
+  padding-bottom: $footer-height; /* must be in pixel (see comment abolve) */
+}
+
+.footer {
+  position: relative;
+  height: $footer-height;         /* must be in pixel (see comment abolve) */
+  bottom: 0;
+  margin: -$footer-height 0 0 0;
+  padding: 20px 0;
+  clear:both;
+  text-align:center;
+  font-size: 12px;
+  flex-shrink: 0;
+  color: #FFF;
+  background-color: theme-color(primary);
+  width: 100%;
+}
+
+.footer a {
+  color: #FFFFFF;
+}
+
+.footer a i {
+  font-size: 24px;
+}
+
+.footer-links {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+.footer-links a i {
+  font-size: 24px;
+}
+
+/* -- end of css found only in templates/base.html */
+
 
 .leaderboard.jumbotron {
   background: theme-color(primary);
   color: #fff;
-}
-
-.site-jumbotron {
-  padding-bottom: 40px;
-  margin-bottom:20px;
-  background: theme-color(primary);
-  color:#FFF;
-}
-
-.site-jumbotron-text {
-  display:table-cell;
-  width:100%;
-  vertical-align:middle;
-  text-align:center;
-  position:relative;
-  text-align:center;
-}
-
-.site-jumbotron-text h1 {
-  font-size: 52px;
 }
 
 .site-landing {
@@ -89,42 +121,114 @@ $footer-height: 150px;
 }
 
 
-.product-featurette {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.product-featurette > .title > .name {
-  margin-top: 5px;
-  text-transform: uppercase;
-}
-.product-featurette img {
-  margin: 0 auto;
-  box-shadow: 3px 3px 1px rgba(50, 50, 50, 1);
-}
-
 // Help blocks about DjaoDjin
 // --------------------------
-.about-us {
-  background:#c6dcef;
-  padding: 10px;
+.about-us
+{
+  background: #c6dcef9e;
+  padding: 30px 20px;
+  border-radius: 3px;
+  text-align: left;
 }
 
-.about-us dt {
-  font-weight: bold;
+.about-us>div
+{
+  margin-bottom: 0;
+}
+
+.about-us p
+{
+  padding-top: 10px;
+  line-height: 1.6em;
+}
+
+.about-us header
+{
+  font-size: 18px;
   margin-bottom: 10px;
-}
-.about-us dd {
-  font-style: italic;
+  margin-left: 10px;
 }
 
-ol.tutorials, ul.tutorials {
-  visibility: visible;
+.about-us dt
+{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-ol.tutorials > .active, ul.tutorials > .active {
-  font-weight: bold;
-  font-size: 1.5em;
+.about-us dl
+{
+    margin: 0;
 }
+
+.about-us dd
+{
+    font-style: normal;
+}
+
+.about-us dd a
+{
+    display: block;
+    margin-top: 10px;
+}
+
+// API docs
+// --------
+.faq-list li
+{
+    margin: 10px 0;
+    font-size: 15px;
+}
+
+.faq-list > li
+{
+    margin: 20px 0;
+}
+
+.faq-list
+{
+    box-shadow: 0px 0px 20px #eee;
+    border-radius: 3px;
+}
+
+.faq-list,
+.faq-list ul
+{
+    padding: 0;
+    text-align: left !important;
+    margin-top: 30px;
+}
+
+.faq-list-container h3
+{
+    text-align: center;
+    margin-bottom: 40px !important;
+}
+
+.faq-list li
+{
+    margin: 10px 0;
+    font-size: 15px;
+    list-style: none;
+}
+
+.faq-list > li
+{
+    margin: 20px 0;
+    font-size: 20px;
+    padding: 25px 30px 10px;
+}
+
+.faq-list > li:last-child
+{
+    padding-left: 30px;
+}
+
+.faq-list ul li
+{
+    margin: 15px 0 !important;
+}
+
 
 // Login page
 // ----------
@@ -147,13 +251,6 @@ ol.tutorials > .active, ul.tutorials > .active {
   border-color: rgba(0,0,0,.2);
 }
 
-.signup-group div .btn-social {
-  font-size: 1.3em;
-  height: 45px;
-  margin: 10px 0;
-  padding: 10px 12px;
-}
-
 // Cart/Checkout
 // -------------
 
@@ -163,184 +260,12 @@ ol.tutorials > .active, ul.tutorials > .active {
   text-transform: lowercase;
 }
 
-@include media-breakpoint-up(sm) {
-  .signup-group .left-delimiter {
-    border-left: 1px solid #ccc;
-  }
-}
 
-
-/* used only in templates/base.html */
-html, body {
-  height: 100%;
-}
-
-body{
-  min-width:100%;
-  background:#FFF;
-}
-
-#wrap{
-  width: 100%;
-  min-height: 100%;
-}
-
-/* 
-  Unless the font-size for #main and .footer match, using ``em`` metrics will
-  create bottom and overlap margins that have different heights, hence
-  sticking the footer to the bottom while introducing a "border" above it.
-*/
-#main {
-  min-height: 100%;
-  padding-bottom: $footer-height; /* must be in pixel (see comment abolve) */
-}
-
-.footer {
-  position: relative;
-  height: $footer-height;         /* must be in pixel (see comment abolve) */
-  margin-top: -$footer-height;    /* stick to bottom (see comment above) */
-  clear:both;
-  bottom: 0;
-  font-size: 12px;
-  flex-shrink: 0;
-  color: #FFF;
-  background-color: theme-color(primary);
-}
-
-.footer a {
-  color: #FFFFFF;
-}
-
-.footer a i {
-  font-size: 24px;
-}
-
-.content-block-wrapper {
-  margin-top: 50px;
-}
-
-/* -- end of css found only in templates/base.html */
-
-
-/* 
-  somewhat generic classes
-*/
-.btn-xlg, .btn-group-xlg > .btn {
-  padding: 10px 12px;
-  font-size: 25px;
-  line-height: 2;
-  border-radius: 2px;
-}
-
+// Somewhat generic classes
+// Used to display pricing plans
 .btn-block {
   display: block;
   width: 100%;
-}
-
-.btn-outline-inverse {
-  background: transparent;
-  border: 1px solid #FFF;
-  text-shadow: none;
-}
-
-.btn-outline-inverse:hover,
-.btn-outline-inverse:focus {
-  background: #FFF;
-  color:theme-color(primary) !important ;
-}
-
-.btn-social, .btn-social-icon {
-    position: relative;
-    padding-left: 44px;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* XXX These look like bootstrap overrides but they are not. */
-blockquote.blockquote-right:after, blockquote.blockquote-right:before,
-blockquote.blockquote-left:after, blockquote.blockquote-left:before {
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-blockquote.blockquote-right:after, blockquote.blockquote-right:before{
-  right: 100%;
-}
-
-blockquote.blockquote-left:after, blockquote.blockquote-left:before {
-  left: 100%;
-}
-
-blockquote.blockquote-right:after {
-  border-color: transparent;
-  border-right-color: gray();
-  border-width: 15px;
-  margin-top: -15px;
-}
-
-blockquote.blockquote-right:before {
-  border-color: transparent;
-  border-right-color: gray();
-  border-width: 17px;
-  margin-top: -17px;
-}
-
-blockquote.blockquote-left:after {
-  border-color: transparent;
-  border-left-color: gray();
-  border-width: 15px;
-  margin-top: -15px;
-}
-
-blockquote.blockquote-left:before {
-  border-color: transparent;
-  border-left-color: gray();
-  border-width: 17px;
-  margin-top: -17px;
-}
-
-@media screen and (max-width: 767px){
-  blockquote.blockquote-right,
-  blockquote.blockquote-left{
-    margin-top: 19px;
-  }
-
-  blockquote.blockquote-right:after, blockquote.blockquote-right:before,
-   blockquote.blockquote-left:after, blockquote.blockquote-left:before{
-    top:auto;
-    right:auto;
-    bottom: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  blockquote.blockquote-right:after,
-   blockquote.blockquote-left:after {
-    border-color: transparent;
-    border-bottom-color: gray();
-    border-width: 15px;
-    margin-left: -15px;
-  }
-
-  blockquote.blockquote-right:before,
-   blockquote.blockquote-left:before{
-    border-color: transparent;
-    border-bottom-color: gray();
-    border-width: 17px;
-    margin-left: -17px;
-  }
 }
 
 .center { /* XXX better to use bootstrap .center-block instead? */
@@ -354,245 +279,91 @@ blockquote.blockquote-left:before {
   text-decoration-style: dashed;
 }
 
-.editable {
-  cursor: text;
+/* upload private key and public certificate in domain.html */
+.dropzone-previews {
+    min-height: 150px;
+    padding: 54px 54px;
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    margin-bottom: 10px;
 }
 
-/*BLOG*/
-.tag-navbar {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  background: #F3F3F3;
-  margin-bottom: 20px;
+.page-header {
+  text-align: center;
 }
 
-.welcome-blog {
-  color:#FFF;
-  background: -moz-linear-gradient(-45deg, theme-color(primary) 51%, #4dd0ea 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(51%,theme-color(primary)), color-stop(100%,#4dd0ea)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(-45deg, theme-color(primary) 51%,#4dd0ea 100%); /* IE10+ */
-    background: linear-gradient(135deg, theme-color(primary) 51%,#4dd0ea 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='theme-color(primary)', endColorstr='#4dd0ea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-.light-link {
-  color: rgba(255,255,255,0.8);
-}
-
-.light-link:hover {
-  color: rgba(255,255,255,1);
-}
-
-.em-quote {
-  font-family: Georgia,"Times New Roman",Times,serif;
-  font-weight: bold;
-  font-size: 1.3em;
-  margin: 10px;
-}
-
-.img-text {
-  border:1px solid #CCC;
-  margin: 10px;
-}
-
-.postCaption {
-  color:#777;
-  font-style:italic;
-  text-align: left;
-  font-size: 1.1em;
-  padding-bottom: 1em;
-}
-
-.postCaption h1 {
-  font-style:normal;
-  color:#333;
-  text-align: left;
-  font-size: 30px;
-}
-
-.postOdd,
-.postEven {
-  clear:both;
-  border-bottom:1px solid #CCC;
-  min-height:200px;
-  padding-bottom: 25px;
-}
-
-.postBody p:first-child {
-  display: inline-block;
-}
-
-pre.code {
-  margin:10px 0;
-  border:none;
-  padding:0;
-  font-size: 14;
-  background-color: #f3f3f3;
-  /*border:1px solid #CCC;*/
-}
-
-pre.code code {
-  background-color: transparent;
-}
-
-.djaodjin-annotate-demo { /* jquery-plugin-to-annotate-images.blog */
-  position:relative;
-  width:100%;
-}
-
-
-/* djaodjin/index.html */
-section#hosting {
-  padding:30px 0;
-}
-
-.custom-list-index {
-  list-style: none;
-  padding-left: 5px;
-}
-
-.custom-list-index li {
-  margin-top:15px;
-}
-
-.custom-list-index li:before {
-  font-family: 'FontAwesome';
-  content: "\f105";
-  margin:0 5px 0 0;
-  color: theme-color(primary);
-}
-
-/* contact page */
-.survey .controls {
-  margin-left: 20px;
-}
-
-#div_id_question-1 .control-label,
-#div_id_question-2 .control-label,
-#div_id_question-3 .control-label,
-#div_id_question-4 .control-label,
-#div_id_question-5 .control-label,
-#div_id_question-6 .control-label {
-  text-transform: uppercase;
-  text-decoration: underline;
-}
-
-
-#toast-container > div,
-#toast-container > :hover {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-#toast-container > div {
-  opacity: 0.9;
-  padding: 15px 15px 15px 15px;
-}
-#toast-container > .toast {
-  background-image: none !important;
-  border-radius:0;
-}
-
-#toast-container > .toast:first-child {
-  margin-top: 10px;
-}
-
-#toast-container > .toast:before {
-  position: fixed;
-  font-size: 24px;
-  line-height: 18px;
-  float: left;
-  color: #FFF;
-  padding-right:0;
-  margin: 0;
-  content:"";
-}
-
-.toast-success {
-  background-color: #5cb85c;
-}
-
-.toast-error {
-  background-color: #d9534f;
-}
-
-.toast-info {
-  background-color: #5bc0de;
-}
-
-.toast-warning {
-  background-color: #f0ad4e;
-}
-
-#toast-container a{
-  color:#F4F4F4;
-  text-decoration: underline;
-}
-
-#toast-container a:hover{
-  color: #FFF;
-  text-decoration: underline;
+.page-header:after {
+  background: theme-color(primary);
+  content: "";
+  position: relative;
+  height: 3px;
+  width: 100px;
+  display: block;
+  text-align: center;
+  margin: 13px auto;
+  -webkit-border-radius: 5em;
+  -moz-border-radius: 5em;
+  -ms-border-radius: 5em;
+  -o-border-radius: 5em;
+  border-radius: 5em;
 }
 
 // These are used in accounts/*.html templates
 // --------
-.container-vertical-middle {
+.flex-vertical-middle {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - (#{$navbar-height} + #{$footer-height}));
 }
 
-.has-error .form-check {
-  border: 1px solid red;
-}
-
-// .form-container is used in saas/organization_redirects.html template
-// --------
-.form-container {
-  margin-top: 40px;
-  border:1px solid theme-color(primary);
-  border-radius: 4px;
-  padding:20px;
-  padding-top: 0px;
-  margin-bottom: 20px;
-}
-
 // Pricing plans (templates/saas/pricing.html, templates/saas/plan_short.html)
 // --------
-
-.plan-short {
-  margin-top: 40px;
-  margin-bottom: 70px;
-  background-color: #F7F7F7;
-  border-radius: 4px;
-  position: relative;
-  min-width: 100%;
+.plan {
 }
 
+.plan-short {
+  min-width:100%;
+  min-height:100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0px 0px 20px #eee;
+  border-radius: 7px;
+  margin-top: 40px;
+}
+
+.plan-short:hover {
+  cursor: pointer;
+  background-color: lighten(theme-color(primary), 75%);
+}
+
+.plan-wrap {
+  min-height: 100%;
+}
+
+.plan-main {
+  min-height: 100%;
+}
+
+.plan-footer {
+  position: relative;
+  height: $plan-footer-height;
+  bottom: $plan-footer-height;
+  text-align: center;
+}
+
+
 .plan-pricing {
-  color: #333;
+  color: theme-color(primary);
+  text-align: center !important;
 }
 
 .plan-pricing h2 {
   font-size: 36px;
-}
-
-.plan-main {
-  margin: 0 20px 30px 20px;
-}
-
-.plan-footer {
-  position: absolute;
-  bottom: -70px;
-  width: 100%;
-  text-align: center;
-}
-
-.plan-footer .btn-primary {
-  width: 100%;
 }
 
 .plan-desc ul {
@@ -606,111 +377,161 @@ section#hosting {
   color: steelblue;
 }
 
-.add-plan-placeholder {
-  cursor: pointer;
-  opacity: 0.4;
+// Code samples and API documentation
+// ----------------------------------
+.param-indent-1 {
+  border-left: 1px solid #ddd;
+  padding-left: 5px;
 }
 
-.add-plan-placeholder:hover {
-  opacity: 1;
+.param-indent-2 {
+  border-left: 3px solid #ddd;
+  padding-left: 5px;
 }
 
-@include media-breakpoint-up(sm) {
-  .row-flex > div[class$="-2"] {
-    max-width: 16.66666667% !important;
+.param-indent-3 {
+  border-left: 6px solid #ddd;
+  padding-left: 5px;
+}
+
+.param-indent-4 {
+  border-left: 9px solid #ddd;
+  padding-left: 5px;
+}
+
+a.header-anchor {
+  opacity: 0;
+}
+a.header-anchor:hover{
+  opacity: 1.0;
+}
+
+.example {
+    color: rgb(105, 115, 134);
+    background: rgb(247, 250, 252);
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 0px 1px;
+    margin-bottom: 12px;
+}
+
+.example-title {
+    background-color: rgb(227, 232, 238);
+    text-transform: uppercase;
+    padding: 10px 12px;
+    font-size: $badge-font-size;
+    font-weight: 500;
+}
+
+.example-body {
+  padding: 12px 20px;
+}
+
+.code {
+  background-color: #222527;
+  color: rgb(105, 115, 134);
+}
+
+pre.code{
+  background-color:inherit;
+  color:inherit;
+  margin:0;
+  font-size: $font-size-sm;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  text-align: left;
+  word-spacing: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.code.json .name {
+  color: #c1ef65;
+}
+
+.code.json .literal.string {
+  color: #d0d0d0;
+}
+
+.code.json .literal.number {
+  color: #77bcd7;
+}
+
+.code.json .keyword {
+  color: #ebde68;
+}
+
+.param-list-header {
+    border-bottom: 1px solid rgba(38, 50, 56, 0.3);
+    margin: 3em 0 1em 0;
+    color: rgba(38, 50, 56, 0.5);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.param-name {
+    display: table-cell;
+    width: 25%;
+    vertical-align: top;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.param-type {
+    margin: 25px 0 5px 0;
+    text-transform: capitalize;
+}
+
+.param-required {
+  display: inline-block;
+  padding: $badge-padding-y $badge-padding-x;
+  padding-right: $badge-pill-padding-x;
+  padding-left: $badge-pill-padding-x;
+  font-size: $badge-font-size;
+  font-weight: $badge-font-weight;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  color: red;
+  border: 1px solid red;
+  background-color: transparent;
+  @include border-radius($badge-pill-border-radius);
+
+  // Empty badges collapse automatically
+  &:empty {
+    display: none;
   }
 
-  .row-flex > div.col-xs-3,
-  .row-flex > div.col-sm-3,
-  .row-flex > div.col-md-3,
-  .row-flex > div.col-lg-3 {
-    max-width: 25% !important;
-  }
-
-  .row-flex > div.col-xs-4,
-  .row-flex > div.col-sm-4,
-  .row-flex > div.col-md-4,
-  .row-flex > div.col-lg-4 {
-    max-width: 33.33333333% !important;
-  }
-
-  .row-flex > div.col-xs-5,
-  .row-flex > div.col-sm-5,
-  .row-flex > div.col-md-5,
-  .row-flex > div.col-lg-5 {
-    max-width: 41.66666667% !important;
-  }
-
-  .row-flex > div.col-xs-6,
-  .row-flex > div.col-sm-6,
-  .row-flex > div.col-md-6,
-  .row-flex > div.col-lg-6 {
-    max-width: 50 !important;
-  }
-
-  .row-flex, .row-flex > div[class*="col-"] {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex:1 1 auto;
-  }
-
-  .row-flex > div[class*="col-"]{
-    margin:-.2px;
-  }
-
 }
 
-.footer-links {
-  margin-bottom: 10px;
+.params-wrap {
+    display: table;
+    width: 100%;
 }
 
-.footer-links a {
-  margin: 0 5px;
-  font-size: 14px;
+.param {
+    display: table-row;
 }
 
-.footer-links a i {
-  font-size: 24px;
+.param-info {
+    display: table-cell;
+    width: 75%;
+    padding-top: 10px;
+    padding-left: 5px;
+    box-sizing: border-box;
 }
 
-.nvtooltip {
-  z-index: 3;
-}
-
-.dashboard-top-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  margin-right: 15px;
-  display: none;
-}
-
-.dashboard-top-menu li {
-  margin: 0 10px;
-  font-size: 15px;
-}
-
-.table>tbody+tbody {
-  border-top: 0;
-}
-
-.table>thead>tr>th,
-.table>tbody>tr>th,
-.table>tfoot>tr>th,
-.table>thead>tr>td,
-.table>tbody>tr>td,
-.table>tfoot>tr>td {
-  border-top: 0;
-  padding: 10px 15px;
-}
-
-.table>thead>tr>th {
-  border-bottom: 1px solid #e0e0e0;
+.param-builtin {
+    border-bottom: 1px solid #9fb4be;
+    padding-bottom: 10px;
 }
 
 // Fix for FOUC

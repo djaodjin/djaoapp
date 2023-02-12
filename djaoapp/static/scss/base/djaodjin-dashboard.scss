@@ -1,5 +1,5 @@
-// CSS specific to the DjaoDjin dashboard
-
+// CSS specific to layout the djaoapp dashboard pages
+// Colors are setup in djaoapp-dashboard-theme.scss
 
 // XXX `$navbar-height` used to be defined
 // in Bootstrap3 (it is not in Bootstrap4). We redefine it here use it stick the
@@ -11,11 +11,49 @@ $dashboard-sidebar-toggle:      20px;
 $dashboard-nav-footer-height:   94px;
 $dashboard-sidebar-logo-height: 72px;
 
+// CSS specific to color the djaoapp dashboard pages
 $dashboard-content-bg:          white;
 $dashboard-sidebar-bg:          theme-color(primary);
 $dashboard-sidebar-color:       white;
 $dashboard-icon-color:          $dashboard-sidebar-color;
 $dashboard-icon-color-active:   $dashboard-sidebar-bg;
+$code-bg:                       #222527;
+$code-color:                    #a3acb9;
+$box-shadow-color:              rgba(0, 0, 0, 0.05);
+
+
+// Somewhat generic classes
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+// Code snipset in theme and rules pages
+// -------------------------------------
+.code {
+  // colors
+}
+
+pre.code{
+  background-color:inherit;
+  color:inherit;
+  margin:0;
+  font-size: $font-size-sm;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  text-align: left;
+  word-spacing: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
 
 
 // Icons to show credit card provider
@@ -25,8 +63,8 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
   padding: 9px;
   margin-top: 10px;
   margin-bottom: 0px;
-  background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -66,11 +104,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
   font-size: 0.8em;
 }
 
-.date-chooser .dropdown-menu {
-   left: auto !important;
-   right: 0px;
-}
-
 .dashboard-container {
     clear: left;
     float: left;
@@ -83,12 +116,11 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    color: black;
 }
 
 .dashboard-nav {
-  display:block;
-  width: $dashboard-sidebar-width; // .col-md-2 width: 16.66666667%;
+  display: none;
+  width: $dashboard-sidebar-width; // col-md-2 width: 16.66666667%;
   overflow: hidden;
   -webkit-transition: right 0.25s ease-in-out;
   -moz-transition: right 0.25s ease-in-out;
@@ -153,10 +185,7 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 }
 
 .dashboard-content {
-    vertical-align: top;
-    background-color: $dashboard-content-bg;
-    color: black;
-    width: 100%;
+    // colors
 }
 
 .dashboard-inner-container .dashboard-content-body {
@@ -192,31 +221,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
    text-align:center;
 }
 
-.no-results {
-    color: #888;
-    text-align: center;
-    padding: 20px 10px;
-    margin: 0;
-    font-size: 14px;
-}
-
-.dashboard-home-title {
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.navbar {
-    height: $navbar-height; // See comment about $navbar-height
-}
-
-.navbar .nav-item {
-    margin: 0 10px;
-}
-
-.dashboard-nav {
-    // sidebar not visible on frontend on desktops
-    display: none;
-}
-
 .dashboard-inner-container .dashboard-nav {
     // sidebar is visible on dashboard on desktops
     display: block;
@@ -226,9 +230,22 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     padding: 20px;
 }
 
-.navbar-nav .dropdown-menu {
-    position: absolute;
+
+.navbar {
+    height: $navbar-height; // See comment about $navbar-height
 }
+
+.navbar .nav-item {
+    margin: 0 10px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
 
 .navbar-nav {
     flex-direction: row;
@@ -240,14 +257,11 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     padding: 9px 10px;
     border-radius: 3px;
     z-index: 1000;
-    color: $dashboard-sidebar-color;
-    background: $dashboard-sidebar-bg;
 }
 
 .sidebar-toggle > .bar1, .bar2, .bar3  {
   width: 25px;
   height: 2px;
-  background-color: white;
   margin: 3px 0;
   transition: 0.4s;
 }
@@ -281,103 +295,28 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     display: block;
 }
 
-.typeahead-dropdown .dropdown-menu > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}
-
-
-// colors for sidebar
-// ------------------
-.dashboard-nav-color-theme {
-    background-color: $dashboard-sidebar-bg;
-    color: $dashboard-sidebar-color;
-}
-
-.dashboard-nav-color-theme .navbar-light {
-    background-color: $dashboard-sidebar-bg;
-}
-
-.dashboard-nav a,
-.dashboard-nav a:active,
-.dashboard-nav a:hover,
-.dashboard-nav a:focus,
-.dashboard-nav a:visited {
-    color: $dashboard-sidebar-color;
-}
-
-.dashboard-nav .navbar-light a.navbar-brand,
-.dashboard-nav .navbar-light a.navbar-brand:active,
-.dashboard-nav .navbar-light a.navbar-brand:hover,
-.dashboard-nav .navbar-light a.navbar-brand:focus,
-.dashboard-nav .navbar-light a.navbar-brand:visited {
-    color: $dashboard-sidebar-color;
-}
 
 .opened .dashboard-nav-main {
     box-shadow: 10px 0 100px #ccc;
 }
 
-.dashboard-nav-footer {
-    border-top-color: $dashboard-sidebar-color;
-}
-
-.dashboard-nav-footer .footer-links a {
-    color: $dashboard-sidebar-color;
-}
-
 .dashboard-nav-menu > hr {
-    border-top: 1px solid $dashboard-sidebar-color;
-}
-
-.dashboard-nav-menu > .nav li > a {
-    background-color:transparent;
-    color: $dashboard-sidebar-color;
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
 .dashboard-nav-menu > .nav li.active > a {
-    background-color: $dashboard-sidebar-color;
-    color: $dashboard-sidebar-bg;
     border-radius: 4px;
     text-decoration: none;
 }
 
 .dashboard-nav-menu > .nav li:not(.active) > a:hover {
-    color: $dashboard-sidebar-color;
     text-decoration: none;
 }
 
-.dashboard-nav .footer {
-    color: $dashboard-sidebar-color;
-}
-
-.dropdown-menu .dropdown-label {
-    color: $dashboard-sidebar-bg;
-}
-
-.dropdown-menu .dropdown-label .dropdown-label-role {
-    color: $dashboard-sidebar-color;
-    background: $dashboard-sidebar-bg;
-}
-
 .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle {
-    border: 1px solid $dashboard-sidebar-color;
-    background: $dashboard-sidebar-bg;
-}
-
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover {
-    color: $dashboard-sidebar-color;
-}
-
-.dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
-.dashboard-nav-color-theme .dropdown-toggle {
-    color: $dashboard-sidebar-color;
+    border-width: 1px;
+    border-style: solid;
 }
 
 #subscriptions table td {
@@ -385,21 +324,8 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 }
 
 .pending-users-container {
-    background: #f3f3f3;
     padding: 10px 20px;
     border-radius: 3px;
-}
-
-.pending-users-container h4 {
-    color: #333;
-}
-
-.card-inactive {
-    background-color: #ddd;
-}
-
-.card-inactive .list-group-item {
-    background-color: #ddd;
 }
 
 .user-password-modal .invalid-feedback {
@@ -409,14 +335,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 .card-organization .card-img-top {
     width: 50%;
     margin: 20px auto 0;
-}
-
-.card-organization .card-title a {
-    color: black;
-}
-
-.card-organization .badge {
-    font-weight: normal;
 }
 
 .card-organization .organization-buttons {
@@ -429,7 +347,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 #recent-activity-container .item-name {
     /* TODO need to divide into three columns (a grid or smth similar) */
     width: 200px;
-    color: #333;
 }
 
 #recent-activity-container a:hover {
@@ -449,7 +366,7 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     word-break: break-word;
 }
 
-.coupon-title .btn-danger {
+.coupon-title .remove {
     align-self: flex-start;
 }
 
@@ -547,13 +464,14 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 
 .icon {
     display: inline-block;
-    background: $dashboard-icon-color;
     -webkit-mask-size: cover;
     mask-size: cover;
 }
 
-.icon-active {
-    background: $dashboard-icon-color-active;
+// Charts
+// ------
+.nvtooltip {
+  z-index: 3;
 }
 
 .chart-area {
@@ -564,7 +482,6 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 .graph-legend-dot {
     height: 12px;
     width: 12px;
-    background: #ccc;
     border-radius: 50%;
     display: inline-block;
 }
@@ -577,9 +494,9 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
 .dropzone-previews {
   min-height: 150px;
   padding: 54px 54px;
-  border: 2px dashed theme-color(primary);
+  border-width: 2px;
+  border-style: dashed;
   border-radius: 5px;
-  background: #ccc;
   margin-bottom: 10px;
 }
 
@@ -601,7 +518,7 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     }
 
     .dashboard-content > .fullviewport > header.scrolled {
-      background-color: $primary;
+      // colors
     }
 
     .dashboard-nav,
@@ -626,18 +543,8 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
         display: inline-block !important;
     }
 
-    .header-menubar .dropdown {
-        position: static;
-    }
-
-    .header-menubar .dropdown-menu {
-        left: auto;
-        right: 5px;
-    }
-
     .row-header {
         position: absolute;
-        background: white;
         width: 115px;
         height: 36px;
         left: 0;
@@ -674,4 +581,173 @@ $dashboard-icon-color-active:   $dashboard-sidebar-bg;
     margin-left: 0;
   }
 
+}
+
+// Theme colors
+// ------------
+// We have to define this class here otherwise the sidebar is visible
+// public pages.
+.dashboard-nav {
+    display: none;
+}
+
+.code {
+  background-color: $code-bg;
+  color: $code-color;
+}
+
+// Icons to show credit card provider
+// ----------------------------------
+.card-icons {
+  background-color: #f5f5f5;
+  border-color: #e3e3e3;
+  -webkit-box-shadow: inset 0 1px 1px $box-shadow-color;
+  box-shadow: inset 0 1px 1px $box-shadow-color;
+}
+
+
+// dashboard scaffolding
+// ---------------------
+.dashboard-content {
+    background-color: $dashboard-content-bg;
+    color: $body-color;
+}
+
+.sidebar-toggle {
+    color: $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
+}
+
+.sidebar-toggle > .bar1, .bar2, .bar3  {
+  background-color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme {
+    background-color: $dashboard-sidebar-bg;
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme .navbar-light {
+    background-color: $dashboard-sidebar-bg;
+}
+
+.dashboard-nav a,
+.dashboard-nav a:active,
+.dashboard-nav a:hover,
+.dashboard-nav a:focus,
+.dashboard-nav a:visited {
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav .navbar-light a.navbar-brand,
+.dashboard-nav .navbar-light a.navbar-brand:active,
+.dashboard-nav .navbar-light a.navbar-brand:hover,
+.dashboard-nav .navbar-light a.navbar-brand:focus,
+.dashboard-nav .navbar-light a.navbar-brand:visited {
+    color: $dashboard-sidebar-color;
+}
+
+.opened .dashboard-nav-main {
+    box-shadow: 10px 0 100px #ccc;
+}
+
+.dashboard-nav-footer {
+    border-top-color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-footer .footer-links a {
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > hr {
+    border-top-color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav li > a {
+    background-color:transparent;
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-menu > .nav li.active > a {
+    background-color: $dashboard-sidebar-color;
+    color: $dashboard-sidebar-bg;
+}
+
+.dashboard-nav-menu > .nav li:not(.active) > a:hover {
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav .footer {
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle {
+    border-color: $dashboard-sidebar-color;
+    background: $dashboard-sidebar-bg;
+}
+
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
+.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover {
+    color: $dashboard-sidebar-color;
+}
+
+.dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
+.dashboard-nav-color-theme .dropdown-toggle {
+    color: $dashboard-sidebar-color;
+}
+
+.pending-users-container {
+    background: #f3f3f3;
+}
+
+.pending-users-container h4 {
+    color: #333;
+}
+
+.card-inactive {
+    background-color: #ddd;
+}
+
+.card-inactive .list-group-item {
+    background-color: #ddd;
+}
+
+.card-organization .card-title a {
+    color: black;
+}
+
+#recent-activity-container .item-name {
+    color: #333;
+}
+
+.icon {
+    background: $dashboard-icon-color;
+}
+
+.icon-active {
+    background: $dashboard-icon-color-active;
+}
+
+// Charts
+// ------
+.graph-legend-dot {
+    background: #ccc;
+}
+
+/* upload themes */
+.dropzone-previews {
+  border-color: theme-color(primary);
+  background: #ccc;
+}
+
+
+@include media-breakpoint-down(xs) {
+
+    .dashboard-content > .fullviewport > header.scrolled {
+      background-color: $primary;
+    }
+
+    .row-header {
+        background: $dashboard-content-bg;
+    }
 }

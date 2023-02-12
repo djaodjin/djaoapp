@@ -1,15 +1,29 @@
 {% extends "accounts/base.html" %}
 
-{% block localheader_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
+{% block localheader_title %}{% trans %}Get started!{% endtrans %}{% endblock %}
 
 {% block accounts_title %}{% trans %}Get started!{% endtrans %}{% endblock %}
 
 {% block accounts_content %}
-<div class="signup-group row">
-  <div class="offset-sm-2 col-sm-8">
-    {% if form %}
+<div>
+  {% if form %}
+  {% block activate_form %}
+  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {% include "accounts/activate/_index_form.html" %}
-    {% endif %}
-  </div>
+    <p class="text-center">
+      <small>
+        <em>
+{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before entering any information.{% endtrans %}
+        </em>
+      </small>
+    </p>
+    <div class="form-action text-center">
+      <button type="submit" class="btn btn-block btn-primary btn-md">
+        {% trans %}Activate{% endtrans %}
+      </button>
+    </div>
+  </form>
+  {% endblock %}
+  {% endif %}
 </div>
 {% endblock %}

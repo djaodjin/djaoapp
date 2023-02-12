@@ -4,8 +4,6 @@
 <link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/dashboard.css" />
 {% endblock %}
 
-{% block navbar_extra_classes %}dashboard-nav-color-theme {% endblock %}
-
 {% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
 
 {# XXX next is for ichamp until we re-test everything #}
@@ -20,40 +18,6 @@
 <ul class="nav flex-column d-md-none">
     {% include "_generic_navbar.html" %}
 </ul>
-{% endblock %}
-
-{% block content %}
-<div id="app">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="page-header">
-          <h3 class="mb-0">
-            {% block saas_title %}{% endblock %}
-            <div class="d-inline">
-              <sup style="display: none;font-size:0.5em;cursor:pointer;">
-                <i id="help-request" class="fa fa-question-circle"></i>
-              </sup>
-            </div>
-          </h3>
-        </div>
-      </div>
-    </div>
-
-    {% block saas_page_layout %}
-    <p class="lead">
-      {% block saas_lead_help %}{% endblock %}
-    </p>
-    <div class="row">
-      <div class="col-md-12">
-        {% block saas_help %}{% endblock %}
-        {% block saas_content %}{% endblock %}
-      </div>
-    </div>
-    {% endblock %}
-
-  </div><!-- /container -->
-</div>
 {% endblock %}
 
 {% block saas_bodyscripts %}

@@ -111,7 +111,9 @@
                              name="new_rule_path" type="text"
                              autofocus
                              v-model="newRule.path">
-                      <p class="form-text">{% trans %}Your path should end with '/'. If not it will be automatically added.{% endtrans %}</p>
+                      <p class="form-text">
+                        {% trans %}Your path should end with '/'. If not it will be automatically added.{% endtrans %}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -278,19 +280,25 @@
               <dl id="session-data">
                 <dt>{% trans %}Session Data{% endtrans %}</dt>
                 <dd>
-                  <pre class="code p-3"><code>[[forward_session]]</code></pre>
+                  <div class="code">
+                    <pre class="code p-3">[[forward_session]]</pre>
+                  </div>
                 </dd>
               </dl>
               <dl id="session-header">
                 <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
                 <dd>
-                  <pre class="code p-3"><code>[[forward_session_header]]</code></pre>
+                  <div class="code">
+                    <pre class="code p-3">[[forward_session_header]]</pre>
+                  </div>
                 </dd>
               </dl>
               <dl>
                 <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
                 <dd>
-                  <pre class="code p-3"><code>[[forward_url]]</code></pre>
+                  <div class="code">
+                    <pre class="code p-3">[[forward_url]]</pre>
+                  </div>
                 </dd>
               </dl>
             </div>

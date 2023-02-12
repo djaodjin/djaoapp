@@ -5,10 +5,10 @@ The basic command to run the Docker container on port 8000 looks like this:
 
     .. code-block:: shell
 
-        $ docker run -d -p 8000:80 -t docker.pkg.github.com/djaodjin/djaoapp/djaoapp:2020-06-08
+        $ docker run -d -p 8000:80 -t ghcr.io/djaodjin/djaoapp/djaoapp:master
 
 We can browse the public pages to check basic connectivity. Since there are no
-user accounts in the embed database, we cannnot login or do anything useful.
+user accounts in the embed database, we cannot login or do anything useful.
 
 
 Using a local database
@@ -44,6 +44,7 @@ as /app/var in the container, so we set ``DB_ENGINE`` and ``DB_NAME`` as such:
     .. code-block:: shell
 
         $ cat mounted_config/site.conf
+        ...
         DB_ENGINE="django.db.backends.sqlite3"
         DB_NAME="/app/var/db.sqlite3"
 
@@ -53,7 +54,7 @@ and configuration file reside, as we define the environment variable
 
     .. code-block:: shell
 
-        $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t docker.pkg.github.com/djaodjin/djaoapp/djaoapp:2020-06-08
+        $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t ghcr.io/djaodjin/djaoapp/djaoapp:master
 
 
 Configuring the SMTP settings to send email
@@ -70,6 +71,7 @@ the following definitions:
     .. code-block:: shell
 
         $ cat mounted_config/site.conf
+        ...
         EMAIL_HOST    = "localhost"
         EMAIL_PORT    = 1025    # matches SMTP_PORT in test driver
         EMAIL_USE_TLS = False
@@ -79,15 +81,24 @@ Then, as usual, we start the Docker container as:
 
     .. code-block:: shell
 
-        $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t docker.pkg.github.com/djaodjin/djaoapp/djaoapp:2020-06-08
+        $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t ghcr.io/djaodjin/djaoapp/djaoapp:master
 
 
 Configuring where assets are stored
 -----------------------------------
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = '*bucket_name*'
+    .. code-block:: shell
 
+        $ cat mounted_config/site.conf
+        ...
+        DEFAULT_FILE_STORAGE    = "storages.backends.s3boto3.S3Boto3Storage"
+        AWS_STORAGE_BUCKET_NAME = "*bucket_name*"
+
+Then, as usual, we start the Docker container as:
+
+    .. code-block:: shell
+
+        $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t ghcr.io/djaodjin/djaoapp/djaoapp:master
 
 
 Reference for configuration variables
@@ -111,21 +122,21 @@ General behavior
 
 Variable for database connection
 
-+--------------------+------------+-----------------------------------------------+
-|Name                | Default    | Description                                   |
-+====================+============+===============================================+
-|DB_ENGINE           |"sqlite3"   | Database engine (sqlite3, postgresql)         |
-+--------------------+------------+-----------------------------------------------+
-|DB_NAME             |"db.sqlite" | Name of the database                          |
-+--------------------+------------+-----------------------------------------------+
-|DB_HOST             |            | Hostname where the database is located        |
-+--------------------+------------+-----------------------------------------------+
-|DB_PORT             |            | Port number on the host to connect to the db  |
-+--------------------+------------+-----------------------------------------------+
-|DB_USER             |""          | Username to identify with the database        |
-+--------------------+------------+-----------------------------------------------+
-|DB_PASSWORD         |""          | Password to identify with the database        |
-+--------------------+------------+-----------------------------------------------+
++--------------------+------------+--------------------------------------------+
+|Name                | Default    | Description                                |
++====================+============+============================================+
+|DB_ENGINE           |"sqlite3"   | Database engine (sqlite3, postgresql)      |
++--------------------+------------+--------------------------------------------+
+|DB_NAME             |"db.sqlite" | Name of the database                       |
++--------------------+------------+--------------------------------------------+
+|DB_HOST             |            | Hostname where the database is located     |
++--------------------+------------+--------------------------------------------+
+|DB_PORT             |            | Port number (on host) to connect to the db |
++--------------------+------------+--------------------------------------------+
+|DB_USER             |""          | Username to identify with the database     |
++--------------------+------------+--------------------------------------------+
+|DB_PASSWORD         |""          | Password to identify with the database     |
++--------------------+------------+--------------------------------------------+
 
 
 Variables to send notification e-mails
@@ -156,15 +167,15 @@ Variables to send notification e-mails
 
 Variable for billing processor
 
-+--------------------+------------+----------------------------------------------+
-|Name                | Default    | Description                                  |
-+====================+============+==============================================+
-|STRIPE_PUB_KEY      |""          | Stripe public key                            |
-+--------------------+------------+----------------------------------------------+
-|STRIPE_PRIV_KEY     |""          | Stripe private key                           |
-+--------------------+------------+----------------------------------------------+
-|STRIPE_CLIENT_ID    |""          | StripeConnect clientID                       |
-+--------------------+------------+----------------------------------------------+
++--------------------+------------+--------------------------------------------+
+|Name                | Default    | Description                                |
++====================+============+============================================+
+|STRIPE_PUB_KEY      |""          | Stripe public key                          |
++--------------------+------------+--------------------------------------------+
+|STRIPE_PRIV_KEY     |""          | Stripe private key                         |
++--------------------+------------+--------------------------------------------+
+|STRIPE_CLIENT_ID    |""          | StripeConnect clientID                     |
++--------------------+------------+--------------------------------------------+
 
 
 Variable for social login

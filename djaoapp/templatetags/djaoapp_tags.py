@@ -182,10 +182,6 @@ def url_contact(request): #pylint:disable=unused-argument
     return reverse('contact')
 
 @register.filter()
-def url_home(request): #pylint:disable=unused-argument
-    return reverse('rules_page')
-
-@register.filter()
 def url_pricing(request): #pylint:disable=unused-argument
     return reverse('saas_cart_plan_list')
 

@@ -8,7 +8,7 @@
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-secondary" role="button"
          :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
-      <div style="display:inline-block">
+      <div class="d-inline-block">
           {% include "_params_ends_at_field.html" %}
       </div>
   </div>
@@ -18,7 +18,7 @@
               <th>{% trans %}Rank{% endtrans %}</th>
               <th>{% trans %}Delete{% endtrans %}</th>
               <th>{% trans %}Title{% endtrans %}</th>
-              <td style="text-align:right;"
+              <td class="text-right"
                   v-for="col in values" v-cloak>
                   [[monthHeading(col[0])]]
               </td>
@@ -50,7 +50,7 @@
                       <i class="fa fa-trash-o"></i></button>
               </td>
               <td>[[row.key]]</td>
-              <td style="text-align:right;"
+              <td class="text-right"
                   v-for="col in row.values">
                   <a target="_blank"
                      :href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">

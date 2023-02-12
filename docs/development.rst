@@ -4,15 +4,9 @@ Working with the code base
 CSS
 ---
 
-There is one ``base.css`` file to style the website. The css is built on
-[Boostrap](https://getbootstrap.com/) with custom modifications
-through saasc.
+The css files are built through saasc.
 
-You can find the ``.scss`` source files in the
-[djaoapp/static/scss](https://github.com/djaodjin/djaoapp/djaoapp/static/scss)
-directory.
-
-To rebuild the base.css files run the following make command:
+To rebuild the css files run the following make command:
 
 .. code-block:: shell
 
@@ -111,15 +105,11 @@ Updating the Python code and debugging changes works as expected. You will
 notice that the website code base itself contains very little Python code
 itself - mostly to tie the major Django apps together.
 
-- [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/)
-  for authentication and user profile pages
-- [djaodjin-saas](https://github.com/djaodjin/djaodjin-saas/)
-  for billing profiles and subscriptions
-- [djaodjin-rules](https://github.com/djaodjin/djaodjin-rules/)
-  for role-based access control
-- [djaodjin-extended-templates](https://github.com/djaodjin/djaodjin-extended-templates/)
-  for online page editors
-
+- `djaodjin-signup`_ for authentication pages and APIs
+- `djaodjin-saas`_ for subscription-based payment pages and APIs
+- `djaodjin-rules`_ for role-based access control and HTTP request forwarding
+- `djaodjin-deployutils`_ for encoding/decoding sessions
+- `djaodjin-extended-templates`_ for live editing of theme templates
 
 Translation
 -----------
@@ -127,12 +117,14 @@ Translation
 Whenever possible translated strings should be written in the HTML templates
 within ``{% trans %}{% endtrans %}`` markers.
 
-We initially [generated translation units for the Vue components](https://www.djaodjin.com/blog/integrating-django-i18-with-jinja2-and-vuejs.blog)
+We initially `generated translation units for the Vue components <https://www.djaodjin.com/blog/integrating-django-i18-with-jinja2-and-vuejs.blog>`_
 but it had many drawbacks:
+
 1. It required to load a djaoapp-i18n.js file at runtime.
+
 2. It required to re-bundle the assets to fix a typo.
-3. Translation strings were in two separate ``.po`` files (one for
-the Python/HTML templates and one for the Javascript).
+
+3. Translation strings were in two separate ``.po`` files (one for the Python/HTML templates and one for the Javascript).
 
 Since then we made it a policy that there should not be any translation
 strings within the .js files. If it is necessary to pass translatable text
@@ -178,10 +170,21 @@ an OpenAPI schema.
 
 
 Building the Docker container
-----------------------------
+-----------------------------
 
 Run the following command
 
 .. code-block:: shell
 
     make package-docker
+
+
+.. _djaodjin-signup: https://github.com/djaodjin/djaodjin-signup/
+
+.. _djaodjin-saas: https://github.com/djaodjin/djaodjin-saas/
+
+.. _djaodjin-rules: https://github.com/djaodjin/djaodjin-rules/
+
+.. _djaodjin-deployutils: https://github.com/djaodjin/djaodjin-deployutils/
+
+.. _djaodjin-extended-templates: https://github.com/djaodjin/extended-templates/

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container py-5">
   <div class="row py-5">
-    <div class="offset-sm-2 col-sm-8 text-center px-4" style="margin-top: 50px;">
+    <div class="offset-sm-2 col-sm-8 text-center mt-4 px-4">
       <h3>{% trans %}Couldn't reach destination.{% endtrans %}</h3>
       <p class="text-secondary">
           {% trans %}503 Service Unavailable{% endtrans %}
@@ -27,31 +27,26 @@ to help. Thank you!{% endtrans %}
         <dl>
           <dt>{% trans %}Session Data{% endtrans %}</dt>
           <dd>
-            <pre class="code">
-              <code>
-                  {{forward_session}}
-              </code>
-            </pre>
+            <div class="code">
+              <pre class="code p-3">{{forward_session}}</pre>
+            </div>
           </dd>
         </dl>
         <dl>
-          <dt>{% trans %}As HTTP Cookie Header{% endtrans %}</dt>
+          <dt>{% trans %}As HTTP Header{% endtrans %}</dt>
           <dd>
-            <pre class="code">
-              <code>
-                  {{forward_session_cookie}}
-              </code>
-            </pre>
+            <div class="code">
+              <pre class="code p-3">{{forward_session_cookie}}</pre>
+              </pre>
+            </div>
           </dd>
         </dl>
         <dl>
           <dt>{% trans %}Forwarding requests to{% endtrans %}</dt>
           <dd>
-            <pre class="code">
-              <code>
-                  {{forward_url}}
-              </code>
-            </pre>
+            <div class="code">
+              <pre class="code p-3">{{forward_url}}</pre>
+            </div>
           </dd>
         </dl>
       </div>

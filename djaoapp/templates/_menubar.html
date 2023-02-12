@@ -1,51 +1,53 @@
-<ul>
-  <li class="nav-item dropdown align-self-center">
+<ul>{# This tag with be replaced by header-menubar #}
+  <li class="menubar">
     {% if active_organization %}
-      <a href="#" class="nav-link dropdown-toggle" style="padding-top:0;padding-bottom:0"
-         data-toggle="dropdown" role="button"
+      <a class="menubar-label menubar-label-dropdown-toggle"
+         data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
-        <div style="display:inline-block;">
-          <span class="menubar-label-title" style="line-height:1rem;" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
-          <span class="menubar-label-subtitle" style="line-height:1rem;">{{request.user.username}}</span>
+        <div>
+          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
+          <span class="menubar-label-subtitle">{{request.user.username}}</span>
         </div>
       </a>
     {% else %}
-      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-        aria-haspopup="true" aria-expanded="false">
-        <span class="menubar-label" data-trnc data-trnc-len="8">{{request.user.username}}</span>
+      <a class="menubar-label menubar-label-dropdown-toggle"
+         data-toggle="dropdown" role="button" href="#"
+         aria-haspopup="true" aria-expanded="false">
+        <span data-trnc data-trnc-len="8">{{request.user.username}}</span>
       </a>
     {% endif %}
 
-    <ul class="dropdown-menu" role="menu">
+    <ul class="menubar-dropdown-menu dropdown-menu" role="menu">
       {% if top_accessibles|length > 0 %}
-        <li class="dropdown-label" role="presentation">
+        <li class="menubar-dropdown-label" role="presentation">
           {{request.user.username}}
         </li>
       {% endif %}
       <li role="presentation">
-        <a id="authenticated-user" class="dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
+        <a id="authenticated-user" class="menubar-dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
           {% trans %}Profile{% endtrans %}
         </a>
       </li>
       <li role="presentation">
-        <a class="dropdown-item" href="{{request|url_logout}}?next={{request|url_home}}" role="menuitem" tabindex="-1">
+        <a class="menubar-dropdown-item" href="{{request|url_logout}}"
+           role="menuitem" tabindex="-1">
           {% trans %}Sign out{% endtrans %}
         </a>
       </li>
       {% if top_accessibles|length > 0 %}
         {% for accessible in top_accessibles %}
-          <li class="dropdown-divider" role="separator"></li>
-          <li class="dropdown-label" role="presentation">
+          <li class="menubar-dropdown-divider" role="separator"></li>
+          <li class="menubar-dropdown-label" role="presentation">
             <span>{{accessible.printable_name}}</span>
-            <span class="dropdown-label-role">{{accessible.role_title}}</span>
+            <span class="menubar-dropdown-label-role">{{accessible.role_title}}</span>
           </li>
           <li role="presentation">
-            <a class="dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
+            <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
               {% trans %}Home{% endtrans %}
             </a>
           </li>
           <li role="presentation">
-            <a class="dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">
+            <a class="menubar-dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">
               {% trans %}Settings{% endtrans %}
             </a>
           </li>
@@ -53,9 +55,9 @@
       {% endif %}
     </ul>
   </li>
-  <li class="nav-item align-self-center">
-      <a class="nav-link" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{request|url_logout}}">
-        <span class="d-none d-sm-inline-block mr-sm-2">
+  <li class="menubar">
+      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{request|url_logout}}">
+        <span class="menubar-label-expanded">
           {% trans %}Sign out{% endtrans %}
         </span>
         <span class="fa fa-sign-out fa-lg"></span>

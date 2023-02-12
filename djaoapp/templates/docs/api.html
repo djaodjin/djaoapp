@@ -107,7 +107,7 @@
 </ul>
 {% endblock %}
 
-{% block content_area_classes %} style="padding-left: 20px;"{% endblock %}
+{% block content_area_classes %} class="pl-4"{% endblock %}
 
 {% block content %}
 <div id="api-doc-content">
@@ -144,7 +144,7 @@ Browse the API endpoints by ...
     </div>
     <div class="row"> {#row-eq-height">#}
       <div class="col-sm-4">
-        <div class="faq-list" style="height:92%;">
+        <div class="faq-list">
           <div class="p-4">
             <h3>workflows</h3>
             <ul>
@@ -160,7 +160,7 @@ Browse the API endpoints by ...
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="faq-list" style="height:92%;">
+        <div class="faq-list">
           <div class="p-4">
             <h3>roles</h3>
             <ul>
@@ -174,7 +174,7 @@ Browse the API endpoints by ...
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="faq-list" style="height:92%;">
+        <div class="faq-list">
           <div class="p-4">
             <h3>models</h3>
             <ul>
@@ -699,7 +699,7 @@ This section contains APIs related to site theme and operations.
     <section class="row">
       <div class="col-sm-7">
         <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
-        <pre class="end-point-url" style="background:#eee;">{{api_end_point.func|upper}} {{api_end_point.path}}</pre>
+        <pre class="end-point-url">{{api_end_point.func|upper}} {{api_end_point.path}}</pre>
         <div>
           {{api_end_point.description}}
         </div>

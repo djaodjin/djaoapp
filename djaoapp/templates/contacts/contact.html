@@ -2,10 +2,8 @@
 
 {% block saas_content %}
 <contact-update inline-template class="container">
+  <h1>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h1>
   <div class="row">
-    <div class="page-header">
-      <h2>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h2>
-    </div>
     <div class="col-sm-6">
       <dl>
         <dt>{% trans %}Nick name{% endtrans %}</dt>
@@ -39,7 +37,7 @@
       <form class="form" @submit.prevent="createActivity">
         <div class="form-group">
           <label>{% trans %}Account{% endtrans %}</label>
-          <input class="form-control form-control-sm" style="width: 100%;"
+          <input class="form-control form-control-sm w-100"
                  name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
                  autocomplete="off"
                  v-model="itemSelected.slug">

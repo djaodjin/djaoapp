@@ -26,7 +26,7 @@ SEND_EMAIL = settings.SEND_EMAIL
 @python_2_unicode_compatible
 class App(BaseApp):
 
-    show_edit_tools = models.NullBooleanField(default=True,
+    show_edit_tools = models.BooleanField(null=True, default=True,
         help_text=_("Show the online editor tools"))
 
     class Meta:

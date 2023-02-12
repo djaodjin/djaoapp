@@ -15,103 +15,95 @@
 {% block saas_page_layout %}
 <{% if urls.user %}user{% else %}profile{% endif %}-update inline-template id="profile-container">
 <div>
-  <div class="container">
-    <div class="row">
-      <div class="col-6">
-        {# We use the hidden input to pass the picture URL to the Vue component. #}
-        <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
-        <img :src="formFields.picture" width="100" height="100" data-toggle="modal" data-target="#upload-picture-modal">
-      </div>
-      <div class="col-6">
-          {% block saas_help %}
-          {% trans %}Update your contact information, password, etc.{% endtrans %}
-          {% endblock %}
-      </div>
+  <div class="row">
+    <div class="col-md-6">
+    {# We use the hidden input to pass the picture URL to the Vue component. #}
+      <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
+      <img :src="formFields.picture" width="100" height="100" data-toggle="modal" data-target="#upload-picture-modal">
     </div>
-    <div class="row pb-3">
-      <div class="col-md-6">
-        {% include "saas/profile/_form.html" %}
-      </div>
+    <div class="col-md-6">
+      {% block saas_help %}
+      {% trans %}Update your contact information, password, etc.{% endtrans %}
+      {% endblock %}
+    </div>
+  </div>
+  <div class="row pb-3">
+    <div class="col-md-6">
+      {% include "saas/profile/_form.html" %}
     </div>
   </div>
   <!-- End Form Inputs -->
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <hr class="my-0" />
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <hr class="my-0" />
     </div>
   </div>
 
-  <div class="container">
-    <div class="row">
+  <div class="row">
+    {% if urls.user %}
+    <div class="col-md-6 mt-4">
+      <div class="card border-secondary">
+        <div class="card-body text-secondary">
 
-      {% if urls.user %}
-      <div class="col-md-6 mt-4">
-          <div class="card border-secondary">
-            <div class="card-body text-secondary">
-
-              <!-- Update Password -->
-              {% if urls.user.password_change %}
-                <div class="row align-items-center mb-3">
-                  <div class="col-md-12">
-                    <a id="change-password" class="btn btn-secondary btn-block mb-2" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
-                  </div>
-                  <div class="col-md-12">
-                    {% trans %}Use a new password to login.{% endtrans %}
-                  </div>
-                </div>
-              {% endif %}
-
-              {% if urls.user.api_generate_keys %}
-                <div class="row align-items-center" style="margin-top:15px;">
-                  <div class="col-md-12">
-                    <button id="generate-key-open" class="btn btn-secondary btn-block mb-2" data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
-                  </div>
-                  <div class="col-md-12">
-                    {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
-                  </div>
-                </div>
-              {% endif %}
-
-              {% if urls.user.api_activate %}
-              <div class="row align-items-center">
-                <div class="col-sm-5">
-                  <button id="activate-user" class="btn btn-secondary btn-block" @click="activate">{% trans %}Activate{% endtrans %}</button>
-                </div>
-                <div class="col-sm-7">
-                  {% trans %}Send an activation e-mail to the user.{% endtrans %}
-                </div>
-              </div>
-              {% endif %}
-            </div>
+        <!-- Update Password -->
+        {% if urls.user.password_change %}
+        <div class="row align-items-center mb-3">
+          <div class="col-md-12">
+            <a id="change-password" class="btn btn-secondary btn-block mb-2" href="{{urls.user.password_change}}">{% trans %}Change Password{% endtrans %}</a>
           </div>
+          <div class="col-md-12">
+            {% trans %}Use a new password to login.{% endtrans %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if urls.user.api_generate_keys %}
+        <div class="row align-items-center mt-2">
+          <div class="col-md-12">
+            <button id="generate-key-open" class="btn btn-secondary btn-block mb-2" data-toggle="modal" data-target="#generate-key">{% trans %}Reset API Key{% endtrans %}</button>
+          </div>
+          <div class="col-md-12">
+              {% trans %}Obtain a new API Key to authenticate.{% endtrans %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if urls.user.api_activate %}
+        <div class="row align-items-center">
+          <div class="col-sm-5">
+            <button id="activate-user" class="btn btn-secondary btn-block" @click="activate">{% trans %}Activate{% endtrans %}</button>
+          </div>
+          <div class="col-sm-7">
+              {% trans %}Send an activation e-mail to the user.{% endtrans %}
+          </div>
+        </div>
+        {% endif %}
+        </div>
       </div>
-      {% endif %}
+    </div>
+    {% endif %}
 
-      <!-- Danger Zone -->
-      <div class="col-md-6 mt-4">
-        <div class="card border-danger h-100">
-          <div class="card-header">
-            {% trans %}Danger Zone{% endtrans %}
-          </div>
-          <div class="card-body text-danger">
-            <div class="row align-items-center">
-              <div class="col-md-12">
-                <button id="delete-action-open"
-                        class="btn btn-danger btn-block mb-3"
-                        data-toggle="modal"
-                        data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
-              </div>
-              <div class="col-md-12">
+    <!-- Danger Zone -->
+    <div class="col-md-6 mt-4">
+      <div class="card border-danger h-100">
+        <div class="card-header">
+          {% trans %}Danger Zone{% endtrans %}
+        </div>
+        <div class="card-body text-danger">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <button id="delete-action-open"
+                      class="btn btn-danger btn-block mb-3"
+                      data-toggle="modal"
+                      data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+            </div>
+            <div class="col-md-12">
                 {% trans %}This operation cannot be reversed.{% endtrans %}
-              </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -134,7 +126,7 @@
                     data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
-          <div class="text-center" style="border: 1px solid grey;">
+          <div class="text-center border">
             <croppa v-model="picture" :width="300" :height="300"></croppa>
           </div>
         </div>

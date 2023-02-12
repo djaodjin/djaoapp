@@ -15,7 +15,7 @@
     <div v-show="itemsLoaded">
       <div v-for="roleDescription in items.results">
         <div>
-        <h3 style="display:inline-block">[[roleDescription.title]]
+        <h3 class="d-inline-block">[[roleDescription.title]]
         <button class="btn btn-danger btn-sm" type="button"
                 @click.prevent="remove(roleDescription)"
                 v-show="!roleDescription.is_global" v-cloak>
@@ -27,7 +27,7 @@
             <div class="input-group" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Start typing the username or email of the person you want to add.{% endtrans %}</p>" data-trip-position="s">
               <input name="user" type="text" placeholder="{% trans %}Username or e-mail{% endtrans %}"
                      autocomplete="off"
-                     class="form-control form-control-sm" style="width: 100%;">
+                     class="form-control form-control-sm w-100">
               <div class="input-group-btn">
                 <button class="btn btn-primary btn-sm" type="submit">{% trans %}Add{% endtrans %} [[roleDescription.title]]</button>
               </div>
@@ -54,12 +54,11 @@
               </tr>
               <tr :id="item.user.slug" v-for="(item, index) in items.results"
                   v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <td style="vertical-align:middle;">[[item.user.slug]]</td>
-                <td style="vertical-align:middle;">[[item.user.email]] <button
+                <td>[[item.user.slug]]</td>
+                <td>[[item.user.email]] <button
                     class="btn btn-secondary btn-sm"
                     v-if="item.request_key" @click="save(item.user)">{% trans %}grant{% endtrans %}</button></td>
-                <td style="vertical-align:middle;"><button
-                   class="btn btn-danger btn-sm"
+                <td><button class="btn btn-danger btn-sm"
                    data-trip data-trip-index="3"
                    data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
                    data-trip-position="s"
@@ -91,7 +90,7 @@
                 </div>
                 <div class="controls col-sm-10">
                     <input id="new-request-email"
-                           class="form-control" style="width:100%;"
+                           class="form-control w-100"
                            name="email" type="text" max-length="150"
                            placeholder="invitee@example.com"
                            autofocus />
@@ -133,7 +132,7 @@ Thank you,
                       <label class="col-form-label">{% trans %}Title{% endtrans %}</label>
                   </div>
                   <div class="col-sm-10">
-                      <input class="form-control" style="width:100%;"
+                      <input class="form-control w-100"
                              v-model="role.title"
                              name="name" type="text" max-length="150"
                              placeholder="{% trans %}ex: Sales associate{% endtrans %}"

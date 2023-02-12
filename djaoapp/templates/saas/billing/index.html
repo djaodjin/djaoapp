@@ -2,9 +2,10 @@
 
 {% block saas_title %}{% trans organization=organization.printable_name %}Billing for {{organization}}{% endtrans %}{% endblock %}
 
-{% block saas_lead_help %}{% trans %}Payments made on the platform.{% endtrans %}{% endblock %}
-
 {% block saas_help %}
+<p class="lead">
+{% trans %}Payments made on the platform.{% endtrans %}
+</p>
 <p>
 {% trans %}You can manage the Credit Card on file for your subscription. You can also see the list of all payments made here.{% endtrans %}
 </p>

@@ -66,14 +66,11 @@
         {% endif %}
     </div>
     <div class="col-sm-6">
-        <p class="lead">
-            {% block saas_lead_help %}{% endblock %}
-        </p>
-        {% block saas_help %}
-        <p>
-            {% trans %}Users can only subscribe to active plans.{% endtrans %}
-        </p>
-        {% endblock %}
+      {% block saas_help %}
+      <p>
+        {% trans %}Users can only subscribe to active plans.{% endtrans %}
+      </p>
+      {% endblock %}
     </div>
   </div>
 </div>

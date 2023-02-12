@@ -1,35 +1,26 @@
-{% extends "_form.html" %}
+{% extends "_form_fields.html" %}
 
 {% block form_block %}
-<form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-    class="form-horizontal"
-    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    <fieldset>
-        <legend>{% trans %}Login Credentials{% endtrans %}</legend>
-        {{ input_field(form['username'], form.hide_labels) }}
-        {{ input_field(form['new_password'], form.hide_labels) }}
-        {{ input_field(form['new_password2'], form.hide_labels) }}
-        {{ input_field(form['full_name'], form.hide_labels) }}
-        {{ input_field(form['email'], form.hide_labels) }}
-    </fieldset>
-    <fieldset>
-        <legend>{% trans %}Organization Information{% endtrans %}</legend>
-        {{ input_field(form['organization_name'], form.hide_labels) }}
-        {{ input_field(form['street_address'], form.hide_labels) }}
-        {{ input_field(form['country'], form.hide_labels) }}
-        {{ input_field(form['region'], form.hide_labels) }}
-        {{ input_field(form['locality'], form.hide_labels) }}
-        {{ input_field(form['postal_code'], form.hide_labels) }}
-        {{ input_field(form['phone'], form.hide_labels) }}
-    </fieldset>
-    <fieldset>
-      {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
-    </fieldset>
-    <div class="row">
-      <div class="col-12">
-        <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
-      </div>
-    </div>
-</form>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+<fieldset>
+  <legend>{% trans %}Login Credentials{% endtrans %}</legend>
+  {{ input_field(form['username'], form.hide_labels) }}
+  {{ input_field(form['new_password'], form.hide_labels) }}
+  {{ input_field(form['new_password2'], form.hide_labels) }}
+  {{ input_field(form['full_name'], form.hide_labels) }}
+  {{ input_field(form['email'], form.hide_labels) }}
+</fieldset>
+<fieldset>
+  <legend>{% trans %}Organization Information{% endtrans %}</legend>
+  {{ input_field(form['organization_name'], form.hide_labels) }}
+  {{ input_field(form['street_address'], form.hide_labels) }}
+  {{ input_field(form['country'], form.hide_labels) }}
+  {{ input_field(form['region'], form.hide_labels) }}
+  {{ input_field(form['locality'], form.hide_labels) }}
+  {{ input_field(form['postal_code'], form.hide_labels) }}
+  {{ input_field(form['phone'], form.hide_labels) }}
+</fieldset>
+<fieldset>
+  {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
+</fieldset>
 {% endblock %}

@@ -77,17 +77,16 @@
 
                   <!-- Start Dashboard Footer -->
                   {% block dashboard_footer %}
-                      <div class="dashboard-nav-footer dashboard-nav-color-theme">
-                          <div class="footer-links">
-                              <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-2"></i></a>
-                              <a href="https://twitter.com/djaodjin"  target="_blank"><i class="fa fa-twitter fa-sm pr-2"></i></a>
-                              <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
-                          </div>
+                  <div class="text-center dashboard-nav-footer dashboard-nav-color-theme">
+                    <div class="footer-links">
+                      <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-2"></i></a>
+                      <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+                    </div>
 
-                          <div>
-                          {% trans %}Powered by &copy; 2023 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
-                          </div>
-                      </div>
+                    <div>
+                      {% trans %}Powered by &copy; 2023 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
+                    </div>
+                  </div>
                   {% endblock %}
                   <!-- End Dashboard Footer -->
 
@@ -198,11 +197,8 @@
 
 {% block _bodyscripts %}
 <script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.cookie.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/popper.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootbox.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/toastr.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/popper.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap.min.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
@@ -210,35 +206,6 @@
 {% else %}
 <script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
 {% endif %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-full-width",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": 200,
-        "hideDuration": 200,
-        "timeOut": "0",
-        "extendedTimeOut": "0",
-        "showEasing": "linear",
-        "hideEasing": "linear",
-        "showMethod": "slideDown",
-        "hideMethod": "slideUp",
-        containerId: "messages-content",
-        toastClass: "alert",
-        iconClasses: {
-            error: "alert-danger",
-            info: "alert-info",
-            success: "alert-success",
-            warning: "alert-warning"
-        },
-    };
-});
-</script>
 {% block bodyscripts %}
 {% endblock %}
 {% endblock %}

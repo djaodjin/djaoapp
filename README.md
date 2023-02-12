@@ -1,12 +1,11 @@
 DjaoDjin subscriber session proxy
 =================================
 
-This repository contains the code for DjaoDjin subscriber session proxy.
-It is a core part of the infrastructure that makes it possible to bring
-fully-featured SaaS products to production faster. To learn more visit
-[DjaoDjin's Website](https://djaodjin.com/).
+DjaoApp brings fully-featured profile, billing and role-based access control
+pages so you can start building your SaaS product faster.
+To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
 
-The session proxy is built on
+DjaoApp is built on
 [Django](https://www.djangoproject.com/),
 [Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
 frameworks and many more Open Source projects. Thank you for the support!
@@ -18,14 +17,15 @@ frameworks and many more Open Source projects. Thank you for the support!
 </p>
 
 If you are looking to update the client front-end, you can browse through
-the [API documentation](/docs/djaoapp/latest/api/) and
-[theme templates documentation](https://www.djaodjin.com/docs/guides/themes/).
+the [API documentation](https://www.djaodjin.com/docs/reference/djaoapp/latest/api/)
+and [theme templates documentation](https://www.djaodjin.com/docs/guides/themes/).
 
 If you are looking to add features, this project integrates
 - [djaodjin-signup](https://github.com/djaodjin/djaodjin-signup/) for authentication pages and APIs
 - [djaodjin-saas](https://github.com/djaodjin/djaodjin-saas/) for subscription-based payment pages and APIs
 - [djaodjin-rules](https://github.com/djaodjin/djaodjin-rules/) for role-based access control and HTTP request forwarding
-- [djaodjin-pages](https://github.com/djaodjin/djaodjin-pages/) for live editingof self-hosted HTML pages
+- [djaodjin-deployutils](https://github.com/djaodjin/djaodjin-deployutils/) for encoding/decoding sessions
+- [djaodjin-extended-templates](https://github.com/djaodjin/djaodjin-extended-templates/) for live editing of theme templates
 
 Tested with
 

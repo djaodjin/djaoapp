@@ -9,10 +9,12 @@
     {{input_field(form['description'], form.hide_labels)}}
     <fieldset>
         <legend>{% trans %}Pricing{% endtrans %}</legend>
-        <div class="row" style="margin-left:0;margin-right:0;">
+        <div class="row">
+          <div class="col-12">
             {{input_field(form['unit'], form.hide_labels)}}
             {{input_field(form['period_amount'], form.hide_labels)}}
             {{input_field(form['period_type'], form.hide_labels)}}
+          </div>
         </div>
         {{input_field(form['period_length'], form.hide_labels)}}
     </fieldset>

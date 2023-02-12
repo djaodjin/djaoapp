@@ -95,14 +95,14 @@
                   <td>
                     [[$globals.humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
-                  <td style="text-align: right;" v-if="!entry.request_key">
+                  <td class="text-right" v-if="!entry.request_key">
                     <button class="btn btn-danger unsubscribe"
                             data-toggle="modal" data-target="#unsubscribe-action"
                             @click="unsubscribeConfirm(entry.profile.slug, entry.plan.slug)">
                       {% trans %}Unsubscribe Now{% endtrans %}
                     </button>
                   </td>
-                  <td style="text-align: right;" v-if="entry.request_key && entry.editable">
+                  <td class="text-right" v-if="entry.request_key && entry.editable">
                     <button class="btn btn-danger unsubscribe"
                             data-toggle="modal" data-target="#unsubscribe-action"
                             @click="unsubscribeConfirm(entry.profile.slug, entry.plan.slug)">
@@ -113,7 +113,7 @@
                       {% trans %}Accept subscription{% endtrans %}
                     </button>
                   </td>
-                  <td style="text-align: right;" v-if="entry.request_key && !entry.editable">
+                  <td class="text-right" v-if="entry.request_key && !entry.editable">
                     {% trans %}Request pending approval ...{% endtrans %}
                   </td>
                 </tr>
@@ -200,7 +200,7 @@
                     <a :href="entry.app_url">[[entry.plan.title]]</a>
                   </td>
                   <td>
-                    <span style="display: inline-block;">
+                    <span class="d-inline-block">
                       [[entry.ends_at ? $globals.humanizeDate(entry.ends_at) : "{% trans %}Never{% endtrans %}" ]]
                     </span>
                   </td>

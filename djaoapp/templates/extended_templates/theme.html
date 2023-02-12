@@ -13,8 +13,9 @@
             <form method="post">
               <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
               <div class="form-group form-check">
-                  <input id="show_edit_tools" class="form-check-input" type="checkbox"
+                  <input id="show_edit_tools" class="form-check-input"
                       name="show_edit_tools"
+                      type="checkbox"
                       v-model="showEditTools" @change="save">
                   <label class="form-check-label" for="show_edit_tools">
                     {% trans %}Show inline template editor tools{% endtrans %}
@@ -55,7 +56,9 @@
         <p>
           {% trans profile_url=urls.profile_redirect %}You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.{% endtrans %}
         </p>
-        <pre class="code p-3"><code>curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</code></pre>
+        <div class="code">
+          <pre class="code p-3">curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</pre>
+        </div>
         <p>
           <a target="_blank" href="https://www.djaodjin.com/docs/guides/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
         </p>
@@ -105,7 +108,10 @@
                       <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_grant_created/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
                       <p class="card-text">
                       </p>
-                      <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
+                      <a class="btn btn-primary"
+                         href="{{urls.notifications}}{{key}}/" >
+                        {% trans %}Edit{% endtrans %}
+                      </a>
                       <notification-test inline-template :notification-id="'{{key}}'">
                         <div>
                           <button class="btn btn-outline-secondary"

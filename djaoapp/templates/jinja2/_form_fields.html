@@ -25,7 +25,9 @@
 
 {% macro date_input_field(name, timezone, label, required=True, help_text="", value="", disabled=False, errors="", hide_labels=False, nameOpened="", toggleNameOpened="", nameOpenedRef="", extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if errors %} has-error{% endif %}">
-  <div class="{% if extra_control_classes %} {{extra_control_classes}}{% endif %}"{% if not show_as_text %}id="dateinput"{% endif %}>
+  <div
+    {% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}
+    {% if not show_as_text %} id="dateinput"{% endif %}>
     <div class="input-group mr-2">
       {% if not hide_labels %}
       <div class="input-group-prepend">
@@ -248,5 +250,10 @@
     {% for name, field in form.fields.items() %}
       {{input_field(form[name], form.hide_labels)}}
     {% endfor %}
+    {% if not form.hide_labels %}
+    <div class="w-100 mb-4">
+      <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
+    </div>
+    {% endif %}
   {% endif %}
 {% endblock %}

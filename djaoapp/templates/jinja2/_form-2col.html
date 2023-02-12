@@ -1,24 +1,29 @@
-{% extends "_form_fields-2col.html" %}
+{% extends "_form_fields.html" %}
 
 {% block form_block %}
-    <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-        method="post" action=".{% if next %}/?next={{next}}{% endif %}">
-        <div class="row">
-            {{ super() }}
-        </div>
+<form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
+  method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+  <div class="row">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {% for name, field in form.fields.items() %}
+    <div class="col-md-6 pb-3">
+      {{input_field(form[name], form.hide_labels)}}
+    </div>
+    {% endfor %}
+  </div>
 
-        <div class="row mb-4">
-            <div class="offset-md-6 col-md-6">
-                <div class="form-action text-center">
-                    <button type="submit" class="btn btn-primary btn-md w-100">
-                        {% if form.submit_title %}
-                            {{form.submit_title}}
-                        {% else %}
-                            {% trans %}Submit{% endtrans %}
-                        {% endif %}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
+  <div class="row mb-4">
+    <div class="offset-md-6 col-md-6">
+      <div class="form-action text-center">
+        <button type="submit" class="btn btn-primary btn-md w-100">
+          {% if form.submit_title %}
+          {{form.submit_title}}
+          {% else %}
+          {% trans %}Submit{% endtrans %}
+          {% endif %}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
 {% endblock %}

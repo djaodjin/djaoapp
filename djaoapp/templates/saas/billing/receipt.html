@@ -3,7 +3,7 @@
 {% block saas_title %}{% trans %}Charge receipt{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<div class="row" style="margin-bottom: 15px;">
+<div class="row mb-2">
     <div class="col-sm-10">
         <div class="btn-group pull-right">
             <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
@@ -36,23 +36,23 @@
         {% endif %}
       </p>
     </section>
-    <section class="info">
-    <dl class="dl-horizontal">
-      <dt>{% trans %}REFERENCE{% endtrans %}</dt>
-      <dd>#{{charge.processor_key}}</dd>
-    </dl>
-    <dl class="dl-horizontal">
-      <dt>{% trans %}amount{% endtrans %}</dt>
-      <dd id="amount-info">{{charge.price|humanize_money}}</dd>
-    </dl>
-    <dl class="dl-horizontal">
-      <dt>{% trans %}card{% endtrans %}</dt>
-      <dd>**** - {{last4}}</dd>
-    </dl>
-    <dl class="dl-horizontal">
-      <dt>{% trans %}expires{% endtrans %}</dt>
-      <dd>{{exp_date}}</dd>
-    </dl>
+    <section id="info">
+      <dl class="dl-horizontal">
+        <dt>{% trans %}REFERENCE{% endtrans %}</dt>
+        <dd>#{{charge.processor_key}}</dd>
+      </dl>
+      <dl class="dl-horizontal">
+        <dt>{% trans %}amount{% endtrans %}</dt>
+        <dd id="amount-info">{{charge.price|humanize_money}}</dd>
+      </dl>
+      <dl class="dl-horizontal">
+        <dt>{% trans %}card{% endtrans %}</dt>
+        <dd>**** - {{last4}}</dd>
+      </dl>
+      <dl class="dl-horizontal">
+        <dt>{% trans %}expires{% endtrans %}</dt>
+        <dd>{{exp_date}}</dd>
+      </dl>
     </section>
   </div>
   <section id="invoiced_items">

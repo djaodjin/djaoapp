@@ -1,6 +1,6 @@
 {% extends "accounts/register.html" %}
 
-{% block localheader_title %}{% trans %}Sign In{% endtrans %}{% endblock %}
+{% block localheader_title %}{% trans %}Activate{% endtrans %}{% endblock %}
 
 {% block accounts_title %}{% trans %}Activate{% endtrans %}{% endblock %}
 
@@ -21,7 +21,7 @@
 
 {% if form %}
   {% if form.email or form.phone %}
-  <div class="text-right" style="margin-bottom: 15px;">
+  <div class="text-right mb-2">
     {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
   </div>
   {% endif %}
