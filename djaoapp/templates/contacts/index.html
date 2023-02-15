@@ -14,7 +14,7 @@
         </div>
         <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak infinite-wrapper>
           <div v-for="entry in items.results">
-            <p><a :href="'{{urls.contacts}}' + entry.slug + '/'">[[entry.full_name]] - [[entry.email]]</a></p>
+            <p><a :href="'{{urls.contacts}}' + entry.slug + '/'">[[entry.printable_name]] - [[entry.email]]</a></p>
           </div>
         </div>
         {% include "_pagination.html" %}

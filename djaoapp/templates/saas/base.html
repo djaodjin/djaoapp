@@ -13,15 +13,27 @@
 
 {% block content %}
 <div id="app">
-  <h1>{% block saas_title %}{% endblock %}
-    <div class="d-inline">
-      <sup class="d-none" role="button">
-        <small>
-          <i id="help-request" class="fa fa-question-circle"></i>
-        </small>
-      </sup>
+  <div class="row">
+    <div class="col-md-6">
+      <h1>{% block saas_title %}{% endblock %}
+        <div class="d-inline">
+          <sup class="d-none" role="button">
+            <small>
+              <i id="help-request" class="fa fa-question-circle"></i>
+            </small>
+          </sup>
+        </div>
+      </h1>
     </div>
-  </h1>
+    <div class="col-md-6">
+      <nav class="navbar">
+        <ul class="navbar-nav nav-pills ml-auto">
+          {% block help_menus %}
+          {% endblock %}
+        </ul>
+      </nav>
+    </div>
+  </div>
 
   <div class="container">
   {% block saas_page_layout %}

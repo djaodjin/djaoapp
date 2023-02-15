@@ -2,71 +2,76 @@
 
 {% block saas_title %}{% trans %}Plans{% endtrans %}{% endblock %}
 
+{% block help_menus %}
+<li class="nav-item">
+  <a id="plan-new" class="nav-link{% if request.path == urls.provider.plan_new %} active{% endif %}" href="{{urls.provider.plan_new}}">{% trans %}New Plan{% endtrans %}</a>
+</li>
+{% endblock %}
+
+
 {% block saas_content %}
-<plan-list inline-template id="plan-list-container">
-    <div class="row my-3">
-        {% include "saas/_filter.html" %}
-        <div class="col-2 text-right">
-            <a class="btn btn-sm btn-primary" id="plan-new" href="{{urls.provider.plan_new}}" title="{% trans %}Create plan{% endtrans %}">{% trans %}New Plan{% endtrans %} ...</a>
-        </div>
-    </div>
-    <div class="table-responsive">
-    <table id="coupon-list" class="table table table-sm table-striped" infinite-wrapper>
-        <thead>
-        <tr>
-            <th>{% trans %}Title{% endtrans %}
+<div>
+  <plan-list inline-template id="plan-list-container">
+    <div>
+      {% include "saas/_filter.html" %}
+      <div class="table-responsive">
+        <table id="plan-list" class="table table table-sm table-striped" infinite-wrapper>
+          <thead>
+            <tr>
+              <th>{% trans %}Title{% endtrans %}
                 <a href="#" class="btn-sort"
-                  @click.prevent="sortBy('title')">
+                   @click.prevent="sortBy('title')">
                   <i :class="sortIcon('title')"></i>
                 </a>
-            </th>
-            <th>{% trans %}Status{% endtrans %}
+              </th>
+              <th>{% trans %}Status{% endtrans %}
                 <a href="#" class="btn-sort"
-                  @click.prevent="sortBy('is_active')">
+                   @click.prevent="sortBy('is_active')">
                   <i :class="sortIcon('is_active')"></i>
                 </a>
-            </th>
-            <th>{% trans %}Period price{% endtrans %}
+              </th>
+              <th>{% trans %}Created at{% endtrans %}
                 <a href="#" class="btn-sort"
-                  @click.prevent="sortBy('period_amount')">
-                  <i :class="sortIcon('period_amount')"></i>
-                </a>
-            </th>
-            <th>{% trans %}Created at{% endtrans %}
-                <a href="#" class="btn-sort"
-                  @click.prevent="sortBy('created_at')">
+                   @click.prevent="sortBy('created_at')">
                   <i :class="sortIcon('created_at')"></i>
                 </a>
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tr v-show="!itemsLoaded">
-            <td colspan="3">
-                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+              </th>
+              <th>{% trans %}Period price{% endtrans %}
+                <a href="#" class="btn-sort"
+                   @click.prevent="sortBy('period_amount')">
+                  <i :class="sortIcon('period_amount')"></i>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tr v-show="!itemsLoaded">
+            <td colspan="4">
+              <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
             </td>
-        </tr>
-        <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
-            <td colspan="3">
-                <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+          </tr>
+          <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
+            <td colspan="4">
+              <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
             </td>
-        </tr>
-        <tr :id="item.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          </tr>
+          <tr :id="item.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <td>
-                <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
+              <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
             </td>
-            <td>[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</td>
-            <td>[[item.period_amount]]</td>
-            <td class="date">[[$globals.humanizeDate(item.created_at)]]</td>
-        </tr>
-    </table>
-    {% include "_pagination.html" %}
+            <td>
+              <span class="badge" :class="{ 'badge-success': item.is_active, 'badge-secondary': !item.is_active }">[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</span>
+            </td>
+            <td class="date">
+              [[$globals.humanizeDate(item.created_at)]]
+            </td>
+            <td class="text-right">
+              [[$globals.humanizeNumber(item.period_amount, item.unit, 0.01)]]
+            </td>
+          </tr>
+        </table>
+        {% include "_pagination.html" %}
+      </div>
     </div>
-    <div class="row mt-3">
-        <div class="col text-right">
-            <a id="download" class="btn btn-secondary btn-sm mr-1" role="button"
-               :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-        </div>
-    </div>
-</plan-list>
+  </plan-list>
+</div>
 {% endblock %}

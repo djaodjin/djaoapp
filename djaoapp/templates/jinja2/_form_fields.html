@@ -25,30 +25,27 @@
 
 {% macro date_input_field(name, timezone, label, required=True, help_text="", value="", disabled=False, errors="", hide_labels=False, nameOpened="", toggleNameOpened="", nameOpenedRef="", extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if errors %} has-error{% endif %}">
-  <div
-    {% if extra_control_classes %} class="{{extra_control_classes}}"{% endif %}
-    {% if not show_as_text %} id="dateinput"{% endif %}>
-    <div class="input-group mr-2">
-      {% if not hide_labels %}
-      <div class="input-group-prepend">
-        <label class="input-group-text{% if required %} requiredField{% endif %}">{{label}}</label>
-      </div>
-      {% endif %}
-      {% if nameOpened %}
-      <span class="form-control"
-            v-show="!{{nameOpened}} && !{{name}}">{% trans %}Never{% endtrans %}</span>
-      <div class="input-group-append"
-           v-show="!{{nameOpened}} && !{{name}}">
-        <button class="input-group-text"
-                {% if disabled %}
-                disabled
-                {% else %}
-                @click.prevent="{{toggleNameOpened}}"
-                {% endif %}
-                ><span class="fa fa-calendar"></span></button>
-      </div>
-      {% endif %}
-      <input class="form-control{% if errors %} is-invalid{% endif %}"
+  <div class="input-group input-group-md">
+    {% if not hide_labels %}
+    <div class="input-group-prepend">
+      <label class="text-monospace input-group-text{% if required %} requiredField{% endif %}">{{label|safe}}</label>
+    </div>
+    {% endif %}
+    {% if nameOpened %}
+    <span class="form-control"
+          v-show="!{{nameOpened}} && !{{name}}">{% trans %}Never{% endtrans %}</span>
+    <div class="input-group-append"
+         v-show="!{{nameOpened}} && !{{name}}">
+      <button class="input-group-text"
+              {% if disabled %}
+              disabled
+              {% else %}
+              @click.prevent="{{toggleNameOpened}}"
+              {% endif %}
+              ><span class="fa fa-calendar"></span></button>
+    </div>
+    {% endif %}
+    <input class="form-control{% if errors %} is-invalid{% endif %}"
            type="date"
            name="{{name}}"
            {% if nameOpened %}
@@ -61,7 +58,6 @@
            {% endif %}
            {% if value %}value="{{value}}"{% endif %}
            {% if disabled %} disabled{% endif %} />
-    </div>
   </div>
   <div class="form-text help-block invalid-feedback">
     {% for error in errors %}

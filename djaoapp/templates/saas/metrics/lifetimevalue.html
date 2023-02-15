@@ -1,0 +1,92 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+Lifetime value
+{% endblock %}
+
+{% block saas_content %}
+<lifetimevalue-list inline-template id="lifetimevalue-list">
+  <div>
+    <div class="row my-3">
+        {% include "saas/_filter.html" %}
+    </div>
+    <div class="row mt-3">
+        <div class="col text-right">
+            <a id="download" class="btn btn-secondary btn-sm mr-1" role="button"
+               :href="'{{urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+    <table class="table table table-sm table-striped" infinite-wrapper>
+        <thead>
+        <tr>
+            <th>{% trans %}Name{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('printable_name')">
+                  <i :class="sortIcon('printable_name')"></i>
+                </a>
+            </th>
+            <th>{% trans %}Contract Value{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('contract_value')">
+                  <i :class="sortIcon('contract_value')"></i>
+                </a>
+            </th>
+            <th>{% trans %}Cash Payments{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('cash_payments')">
+                  <i :class="sortIcon('cash_payments')"></i>
+                </a>
+            </th>
+            <th>{% trans %}Deferred Revenue{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('deferred_revenue')">
+                  <i :class="sortIcon('deferred_revenue')"></i>
+                </a>
+            </th>
+            <th>{% trans %}Created at{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('created_at')">
+                  <i :class="sortIcon('created_at')"></i>
+                </a>
+            </th>
+            <th>{% trans %}Ends at{% endtrans %}
+                <a href="#" class="btn-sort"
+                  @click.prevent="sortBy('ends_at')">
+                  <i :class="sortIcon('ends_at')"></i>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tr v-show="!itemsLoaded">
+            <td colspan="3">
+                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </td>
+        </tr>
+        <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
+            <td colspan="3">
+                <h4 class="text-center"><em>{% trans %}No Profile{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+            </td>
+        </tr>
+        <tr :id="item.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+            <td>
+                <a :href="'{{urls.profile_redirect}}' + item.slug + '/'">[[item.printable_name]]</a>
+            </td>
+            <td class="text-right">
+                [[$globals.humanizeNumber(item.contract_value, item.unit)]]
+            </td>
+            <td class="text-right">
+                [[$globals.humanizeNumber(item.cash_payments, item.unit)]]
+            </td>
+            <td class="text-right">
+                [[$globals.humanizeNumber(item.deferred_revenue, item.unit)]]
+            </td>
+            <td class="date">[[$globals.humanizeDate(item.created_at)]]</td>
+            <td class="date">[[$globals.humanizeDate(item.ends_at)]]</td>
+        </tr>
+    </table>
+    {% include "_pagination.html" %}
+    </div>
+  </div>
+</lifetimevalue-list>
+{% endblock %}

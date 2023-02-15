@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -10,9 +10,10 @@ from multitier.thread_locals import get_current_site
 from saas.models import Organization
 from saas.utils import update_context_urls
 from signup.views.users import (
-    UserProfileView as UserProfileBaseView,
+    PasswordChangeView as UserPasswordUpdateBaseView,
     UserNotificationsView as UserNotificationsBaseView,
-    PasswordChangeView as UserPasswordUpdateBaseView)
+    UserProfileView as UserProfileBaseView,
+    UserPublicKeyUpdateView as UserPublicKeyUpdateBaseView)
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 
 from ..compat import gettext_lazy as _, reverse
@@ -113,5 +114,5 @@ class UserPasswordUpdateView(UserMixin, UserPasswordUpdateBaseView):
     pass
 
 
-class UserPublicKeyUpdateView(UserMixin, UserPasswordUpdateBaseView):
+class UserPublicKeyUpdateView(UserMixin, UserPublicKeyUpdateBaseView):
     pass

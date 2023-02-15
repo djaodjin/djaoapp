@@ -1,17 +1,17 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{{title}} for {{organization.printable_name}}
+{% trans %}Subscribers activity{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <div class="row">
 <div class="col-sm-6">
   <div>
-    <h1 class="text-center">Active within the last 7 days</h1>
+    <h1 class="text-center">{% trans %}Active within the last 7 days{% endtrans %}</h1>
   </div>
   <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
-    <active-reporting-entities inline-template id="active-reporting-entities">
+    <engaged-subscribers inline-template id="engaged-subscribers">
       <div>
         <div>
           <div v-if="!itemsLoaded">
@@ -21,7 +21,7 @@
           </div>
           <div v-if="itemsLoaded">
             <div class="p-4 text-center">
-              <strong>[[items.count]] users</strong>
+              <strong>[[items.count]] {% trans %}users{% endtrans %}</strong>
             </div>
           </div>
         </div>
@@ -30,19 +30,19 @@
           <thead>
             <tr>
               <th class="text-nowrap">
-                Last login
+                {% trans %}Last login{% endtrans %}
                 <a href="#" class="text-nowrap btn-link btn-sort ml-2" @click.prevent="sortBy('created_at')">
                   <i :class="sortIcon('created_at')"></i>
                 </a>
               </th>
               <th class="text-nowrap">
-                Full name
+                {% trans %}Full name{% endtrans %}
                 <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('first_name')">
                   <i :class="sortIcon('first_name')"></i>
                 </a>
               </th>
               <th class="text-nowrap">
-                Profile
+                {% trans %}Profile{% endtrans %}
                 <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('profile_full_name')">
                   <i :class="sortIcon('profile_full_name')"></i>
                 </a>
@@ -63,7 +63,7 @@
           <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <tr>
               <td colspan="4">
-                <h3 class="text-center"><em>No items<span v-show="params.q"> [[params.q]]</span></em></h3>
+                <h3 class="text-center"><em>{% trans %}No items{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h3>
               </td>
             </tr>
           </tbody>
@@ -71,7 +71,7 @@
           <!-- Show Data Entries -->
           <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
-              <td class="text-nowrap">[[ (humanizeDate(entry.last_login)) ]]</td>
+              <td class="text-nowrap">[[ ($globals.humanizeDate(entry.last_login)) ]]</td>
               <td>[[entry.first_name]] [[entry.last_name]]</td>
               <td class="text-nowrap">[[entry.organization]]</td>
             </tr>
@@ -80,16 +80,16 @@
 
         {% include "_pagination.html" %}
       </div>
-    </active-reporting-entities>
+    </engaged-subscribers>
   </div>
 </div>
 
 <div class="col-sm-6">
   <div>
-    <h1 class="text-center">Inactive since {{expires_at|date}}</h1>
+    <h1 class="text-center">{% trans expires_at= expires_at %}Inactive since {{expires_at}}{% endtrans %}</h1>
   </div>
   <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
-    <inactive-reporting-entities inline-template id="inactive-reporting-entities">
+    <unengaged-subscribers inline-template id="unengaged-subscribers">
       <div>
         <div>
           <div v-if="!itemsLoaded">
@@ -99,7 +99,7 @@
           </div>
           <div v-if="itemsLoaded">
             <div class="p-4 text-center">
-              <strong>[[items.count]] reporting entities</strong>
+              <strong>[[items.count]] {% trans %}subscribers{% endtrans %}</strong>
             </div>
           </div>
         </div>
@@ -108,14 +108,14 @@
           <thead>
             <tr>
               <th class="text-nowrap">
-                Profile
+                {% trans %}Profile{% endtrans %}
                 <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('profile_full_name')">
                   <i :class="sortIcon('profile_full_name')"></i>
                 </a>
               </th>
             </tr>
             <tr>
-              <td>Click on a name to show contacts at the organization.</td>
+              <td>{% trans %}Click on a name to show user with roles on the profile.{% endtrans %}</td>
             </tr>
           </thead>
 
@@ -132,7 +132,7 @@
           <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
             <tr>
               <td>
-                <h3 class="text-center"><em>No items<span v-show="params.q"> [[params.q]]</span></em></h3>
+                <h3 class="text-center"><em>{% trans %}No items{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h3>
               </td>
             </tr>
           </tbody>
@@ -159,7 +159,7 @@
 
         {% include "_pagination.html" %}
       </div>
-    </inactive-reporting-entities>
+    </unengaged-subscribers>
   </div>
 </div>
 </div>

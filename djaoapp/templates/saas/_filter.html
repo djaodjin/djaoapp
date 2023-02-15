@@ -1,15 +1,26 @@
-<div class="col-md-4">
-  <div class="pb-3">
-    {% include "saas/_filter_match.html" %}
+<form action="." method="post" id="filter-form" class="form-horizontal pl-2 mb-3">
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+  <div class="row">
+    <div class="col-sm-6 col-lg-3 px-1">
+      {# specify start of date range #}
+      {% include "_params_start_at_field.html" %}
+    </div>
+    <div class="col-sm-6 col-lg-3 px-1">
+      {# specify end of date range #}
+      {% include "_params_ends_at_field.html" %}
+    </div>
+    <div class="col-sm-6 col-lg-4 px-1">
+      {% include "saas/_filter_match.html" %}
+    </div>
+    <div class="col-sm-3 col-lg-1 px-1">
+      <button id="update" class="btn btn-primary w-100" role="button"
+              href="#">{% trans %}Update{% endtrans %}</button>
+    </div>
+    {% if urls.download %}
+    <div class="col-sm-3 col-lg-1 p-0">
+      <a id="download" class="btn btn-secondary" role="button"
+         :href="'{{urls.download}}' + getQueryString(['page'])">{% trans %}Download{% endtrans %}</a>
+    </div>
+    {% endif %}
   </div>
-</div>
-
-<div class="col-md-4 mb-3">
-  <!-- specify start of date range -->
-  {% include "_params_start_at_field.html" %}
-</div>
-
-<div class="col-md-4 mb-3">
-  <!-- specify end of date range -->
-  {% include "_params_ends_at_field.html" %}
-</div>
+</form>

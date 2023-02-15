@@ -101,16 +101,16 @@ Templates mapped to UI paths through the sidebar menus:
 | UI Path                                | Template name                       |
 +========================================+=====================================+
 | Profile                                | saas/profile/index.html             |
-+----------------------+-------------------------------------------------------+
-| Profile > Password                     | users/password.html                 |
 +----------------------------------------+-------------------------------------+
-| Profile > **unaccessible**             | users/pubkey.html                   |
+| Profile > Change Password              | users/password.html                 |
++----------------------------------------+-------------------------------------+
+| Profile > Rotate Keys                  | users/pubkey.html                   |
 +----------------------------------------+-------------------------------------+
 | Connected profiles                     | saas/users/roles.html               |
 +----------------------------------------+-------------------------------------+
 | Profile managers                       | saas/profile/roles/role.html        |
 +----------------------------------------+-------------------------------------+
-| **unaccessible**                       | saas/profile/roles/index.html       |
+| **unaccessible**  (TODO: All roles)    | saas/profile/roles/index.html       |
 +----------------------------------------+-------------------------------------+
 | Notifications                          | users/notifications.html            |
 +----------------------------------------+-------------------------------------+
@@ -125,20 +125,34 @@ Templates mapped to UI paths through the sidebar menus:
 |                                        | | saas/printable_charge_receipt.html|
 |                                        |                                     |
 +----------------------------------------+-------------------------------------+
-| Plans > Plan Table                     | saas/profile/plans/plan.html        |
-+----------------------------------------+-------------------------------------+
 | Dashboard                              | saas/metrics/dashboard.html         |
 +----------------------------------------+-------------------------------------+
 | Dashboard > Engagement details         | rules/engagement.html               |
 +----------------------------------------+-------------------------------------+
 | Dashboard                              | contacts/index.html                 |
 | > Engagement details                   |                                     |
-| > **unaccessible**                     |                                     |
+| > Contacts                             |                                     |
 +----------------------------------------+-------------------------------------+
 | Dashboard                              | contacts/contact.html               |
 | > Engagement details                   |                                     |
-| > **unaccessible**                     |                                     |
+| > Contacts                             |                                     |
 | > Contact Details                      |                                     |
++----------------------------------------+-------------------------------------+
+| Reports                                | saas/metrics/revenue.html           |
++----------------------------------------+-------------------------------------+
+| Reports > Balances > Balance Sheet     | saas/metrics/balances.html          |
++----------------------------------------+-------------------------------------+
+| Reports > Customers > Lifetime value   | saas/metrics/lifetimevalue.html     |
++----------------------------------------+-------------------------------------+
+| Subscribers                            | saas/profile/subscribers.html       |
++----------------------------------------+-------------------------------------+
+| Subscribers > Subscribers activity     | saas/metrics/activity.html          |
++----------------------------------------+-------------------------------------+
+| Plans                                  | saas/profile/plans/index.html       |
++----------------------------------------+-------------------------------------+
+| Plans > Plan Table                     | saas/profile/plans/plan.html        |
++----------------------------------------+-------------------------------------+
+| Plans > Plan Table > Subscribers       | saas/profile/plans/subscribers.html |
 +----------------------------------------+-------------------------------------+
 | Coupons                                | saas/billing/coupons.html           |
 +----------------------------------------+-------------------------------------+
@@ -146,29 +160,13 @@ Templates mapped to UI paths through the sidebar menus:
 +----------------------------------------+-------------------------------------+
 | Funds                                  | saas/billing/transfers.html         |
 +----------------------------------------+-------------------------------------+
-| Funds > Add Transaction                | saas/billing/import.html            |
-+----------------------------------------+-------------------------------------+
 | Funds > Deposit Information            | saas/billing/bank.html              |
 +----------------------------------------+-------------------------------------+
-| Funds > **unaccessible**               | saas/billing/transactions.html      |
+| Funds > Add Transaction                | saas/billing/import.html            |
 +----------------------------------------+-------------------------------------+
-| Funds > **unaccessible**               | saas/billing/charges.html           |
+| Funds > Raw Transactions Ledger        | saas/billing/transactions.html      |
 +----------------------------------------+-------------------------------------+
-| Revenue                                | saas/metrics/revenue.html           |
-+----------------------------------------+-------------------------------------+
-| Revenue > **unaccessible**             | saas/metrics/balances.html          |
-+----------------------------------------+-------------------------------------+
-| Revenue  > **unaccessible**            | saas/metrics/lifetimevalue.html     |
-+----------------------------------------+-------------------------------------+
-| Plans                                  | saas/metrics/plans.html             |
-+----------------------------------------+-------------------------------------+
-| **unaccessible**                       | saas/profile/plans/index.html       |
-+----------------------------------------+-------------------------------------+
-| Plans > Plan Table > Subscribers       | saas/profile/plans/subscribers.html |
-+----------------------------------------+-------------------------------------+
-| Subscriptions                          | saas/profile/subscribers.html       |
-+----------------------------------------+-------------------------------------+
-| Subscriptions > **unaccessible**       | saas/metrics/activity.html          |
+| Funds > Charges                        | saas/billing/charges.html           |
 +----------------------------------------+-------------------------------------+
 | Theme                                  | extended_templates/theme.html       |
 +----------------------------------------+-------------------------------------+

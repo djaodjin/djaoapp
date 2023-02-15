@@ -28,34 +28,7 @@
         </div>
         <!-- Display as a table -->
         <div class="table-responsive">
-          <table class="table" id="data-in-rows" style="font-size:0.7em;">
-            <tr class="position-relative">
-              <td class="row-header"></td>
-              <td v-for="col in currentTableDates" class="row-body" v-cloak>
-                  [[monthHeading(col[0])]]
-              </td>
-            </tr>
-            <tr :id="row.key" v-for="(row, index) in currentTableData.data" :key="row.key" class="position-relative">
-              <td class="text-nowrap row-header" v-cloak>
-                <div v-if="row.location">
-                  <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
-                  <a :href="row.location" v-cloak>[[row.title ? row.title : row.key]]</a>
-                  <span class="badge" :class="{ 'badge-success': row.is_active, 'badge-secondary': !row.is_active }">[[row.is_active ? 'active' : 'inactive']]</span>
-                </div>
-                <div v-if="!row.location">
-                  <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
-                  <span class="align-middle">[[row.title ? row.title : row.key]]</span>
-                </div>
-              </td>
-              <td v-for="col in row.values" :key="col[0].toISOString()" :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
-                  [[$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
-              </td>
-            </tr>
-            {% block metrics_extra_data %}
-            {% endblock %}
-          </table>
-          {% block metrics_extra_info %}
-          {% endblock %}
+          {% include "saas/metrics/_table.html" %}
         </div>
       </div>
     </div>
@@ -65,6 +38,26 @@
 
 {% block dashboard_bodyscripts %}
 <script type="text/javascript">
+Vue.prototype.$tables = [{
+    "key": "cash",
+    "title": "Amounts",
+    "unit": "usd", // XXX
+    "location": "{{urls.provider.api_revenue}}"
+}, {
+    "key": "balances",
+    "title": "Balances",
+    "unit": "usd", // XXX
+    "location": {% if urls.provider.api_balances %}"{{urls.provider.api_balances}}"{% else %}null{% endif %}
+}, {
+    "key": "customer",
+    "title": "Customers",
+    "location": {% if urls.provider.api_customer %}"{{urls.provider.api_customer}}"{% else %}null{% endif %}
+}, {
+    "key": "plan",
+    "title": "Active subscribers",
+    "location": {% if urls.provider.api_metrics_plans %}"{{urls.provider.api_metrics_plans}}"{% else %}null{% endif %}
+}];
+
 Vue.prototype.colorFn = nv.utils.defaultColor();
 jQuery(document).ready(function($) {
     // Copy/Paste from vendor/js/bootstrap.js and inserted

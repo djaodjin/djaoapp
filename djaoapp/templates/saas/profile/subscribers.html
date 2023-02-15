@@ -4,13 +4,21 @@
   {% trans organization=organization.printable_name%}Subscriptions to {{organization}}{% endtrans %}
 {% endblock %}
 
+{% block help_menus %}
+{% if urls.provider and urls.provider.subscribers_activity %}
+<li class="nav-item">
+  <a id="subscribers-activity" class="nav-link{% if request.path == urls.provider.subscribers_activity %} active{% endif %}" href="{{urls.provider.subscribers_activity}}">{% trans %}Subscribers Activity{% endtrans %}</a>
+</li>
+{% endif %}
+{% endblock %}
+
+
 {% block saas_content %}
 <section id="subscribers">
   <div id="subscribers-list-container"
        data-trip data-trip-index="1"
        data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
        data-trip-position="screen-center">
-
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       {% if registered %}
       <li class="nav-item">
@@ -31,16 +39,8 @@
       <registered inline-template id="registered" class="tab-pane" role="tabpanel">
         <div id="registered-tab-container">
           <div class="mt-2">
-            <div class="form-group d-inline-block">
-              <input class="form-control" type="text" placeholder="{% trans %}Match{% endtrans %}" v-model="params.q" @input="filterList"></input>
-            </div>
-            <div class="pull-right d-inline-block">
-              <a id="download-registered"
-                 class="btn btn-secondary pull-right" role="button"
-                 :href="'{{registered.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-            </div>
+            {% include "saas/_filter.html" %}
           </div>
-
           <div class="table-responsive">
             <table class="table table-sm table-striped w-100" infinite-wrapper>
               <thead>
@@ -85,18 +85,8 @@
           role="tabpanel">
         <div id="{{tab.slug}}-tab-container">
           <div class="mt-2">
-            <div class="form-group d-inline-block">
-              <input class="form-control d-inline-block"
-                     type="text" placeholder="{% trans %}Match{% endtrans %}"
-                     v-model="params.q" @input="filterList"></input>
-            </div>
-            <div class="pull-right d-inline-block">
-              <a id="download-{{tab.slug}}"
-                 class="btn btn-secondary pull-right" role="button"
-                 :href="'{{tab.urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-            </div>
+            {% include "saas/_filter.html" %}
           </div>
-
           <div class="table-responsive">
             <table class="table table-sm table-striped" infinite-wrapper>
               <thead>

@@ -1,8 +1,9 @@
 {% extends "contacts/base.html" %}
 
+{% block saas_title %}{% trans name=contact.printable_name %}{{name}} Contact{% endtrans %}{% endblock %}
+
 {% block saas_content %}
 <contact-update inline-template class="container">
-  <h1>{% trans name=contact.printable_name %}{{name}} Profile{% endtrans %}</h1>
   <div class="row">
     <div class="col-sm-6">
       <dl>
@@ -16,6 +17,10 @@
       <dl>
         <dt>{% trans %}E-mail address{% endtrans %}</dt>
         <dd>{{contact.email}}</dd>
+      </dl>
+      <dl>
+        <dt>{% trans %}Phone{% endtrans %}</dt>
+        <dd>{{contact.phone}}</dd>
       </dl>
       <h3>{% trans %}Activities{% endtrans %}</h3>
       <div v-show="!itemsLoaded">

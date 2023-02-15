@@ -4,6 +4,26 @@
   {{organization.printable_name}} {% trans %}Funds{% endtrans %}
 {% endblock %}
 
+
+{% block help_menus %}
+{% if urls.raw_charges %}
+<li class="nav-item">
+  <a id="row-charges" class="nav-link{% if request.path == urls.raw_charges %} active{% endif %}" href="{{urls.raw_charges}}">{% trans %}Charges{% endtrans %}</a>
+</li>
+<li class="divider-vertical"></li>
+{% endif %}
+{% if urls.raw_transactions %}
+<li class="nav-item">
+  <a id="row-transactions" class="nav-link{% if request.path == urls.raw_transactions %} active{% endif %}" href="{{urls.raw_transactions}}">{% trans %}Transaction Ledger{% endtrans %}</a>
+</li>
+<li class="divider-vertical"></li>
+{% endif %}
+<li class="nav-item">
+  <a id="add-offline-transaction" class="nav-link{% if request.path == urls.provider.import_transactions %} active{% endif %}" href="{{urls.provider.import_transactions}}">{% trans %}Add Transactions{% endtrans %}</a>
+</li>
+{% endblock %}
+
+
 {% block saas_page_layout %}
 <transfers-statement inline-template>
     <div class="container pt-3">
@@ -73,16 +93,6 @@
               href="{{urls.provider.withdraw_funds}}"><i class="fa fa-sign-out">
               </i> Withdraw from processor</a>
             -->
-            <div class="col-md-6 mb-3">
-              <a id="add-offline-transaction" class="btn btn-secondary btn-md w-100" href="{{urls.provider.import_transactions}}">
-                <i class="fa fa-plus mr-3"></i> {% trans %}Add Offline Transactions{% endtrans %}
-              </a>
-            </div>
-            <div class="col-md-6 mb-3">
-              <a id="download" class="btn btn-secondary btn-md w-100" role="button" :href="'{{download_url}}' + getQueryString(['page'])">
-                <i class="fa fa-cloud-download mr-3"></i> {% trans %}Download .CSV{% endtrans %}
-              </a>
-            </div>
           </div>
 
           <!-- Transaction Details -->

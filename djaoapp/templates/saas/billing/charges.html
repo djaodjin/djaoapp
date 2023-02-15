@@ -1,0 +1,67 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<charge-list inline-template id="charge-list-container">
+  <div>
+    <section id="charges">
+      <div class="mt-3">
+        {% include "saas/_filter.html" %}
+      </div>
+      <table class="table table-striped" infinite-wrapper>
+        <thead>
+          <tr>
+            <th>{% trans %}Date{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('created_at')">
+                <i :class="sortIcon('created_at')"></i>
+              </a>
+            </th>
+            <th>{% trans %}Amount{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('amount')">
+                <i :class="sortIcon('amount')"></i>
+              </a>
+            </th>
+            <th>{% trans %}State{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('state')">
+                <i :class="sortIcon('state')"></i>
+              </a>
+            </th>
+            <th>{% trans %}Description{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('description')">
+                <i :class="sortIcon('description')"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody v-show="!itemsLoaded">
+          <tr>
+            <td colspan="4">
+              <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+          <tr>
+            <td colspan="4">
+              <h4 class="text-center"><em>{% trans %}No charges{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+            </td>
+          </tr>
+        </tbody>
+        <tbody id="has-charges"
+               v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <tr v-for="entry in items.results">
+            <td>[[$globals.humanizeDate(entry.created_at)]]</td>
+            <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+            <td>[[entry.state]]</td>
+            <td v-html="entry.description"></td>
+          </tr>
+        </tbody>
+        </table>
+      {% include "_pagination.html" %}
+    </section>
+  </div>
+</charge-list>
+{% endblock %}

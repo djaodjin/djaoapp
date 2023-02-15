@@ -1,7 +1,124 @@
 {% extends "saas/metrics/base.html" %}
 
-{% block metrics_extra_info %}
-<p>
-  <a href="https://djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
-</p>
+
+{% block saas_title %}
+{% trans organization=organization.printable_name %}{{organization}} Reports{% endtrans %}
+{% endblock %}
+
+{% block help_menus %}
+{% if urls.provider and urls.provider.metrics_lifetimevalue %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="plan-new" class="nav-link{% if request.path == urls.provider.metrics_lifetimevalue %} active{% endif %}" href="{{urls.provider.metrics_lifetimevalue}}">{% trans %}Lifetime value{% endtrans %}</a>
+</li>
+{% endif %}
+{% if urls.provider and urls.provider.ledger_balances %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="plan-new" class="nav-link{% if request.path == urls.provider.ledger_balances %} active{% endif %}" href="{{urls.provider.ledger_balances}}">{% trans %}Balance Sheet{% endtrans %}</a>
+</li>
+{% endif %}
+{% endblock %}
+
+
+{% block saas_content %}
+<metrics-charts inline-template id="metrics-container">
+  <div data-trip data-trip data-trip-index="1"
+       data-trip-content="<p>{% trans %}Track monthly revenue and monthly subscribers.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
+       data-trip-position="screen-center">
+    <ul class="nav nav-tabs dashboard-tab table-chooser">
+      <li>
+        <a data-toggle="tab" href="#cash" :class="activeClass(0)" @click="tabClicked(0)" v-cloak>
+            {% trans %}Amounts ($){% endtrans %}
+        </a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#balances" :class="activeClass(1)" @click="tabClicked(1)" v-cloak>
+            {% trans %}Balances ($){% endtrans %}
+        </a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#customer" :class="activeClass(2)" @click="tabClicked(2)" v-cloak>
+            {% trans %}Customers{% endtrans %}
+        </a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#plan" :class="activeClass(3)" @click="tabClicked(3)" v-cloak>
+            {% trans %}Active subscribers{% endtrans %}
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" id="cash" :class="['tab-pane', activeClass(0)]" key="cash">
+        <form class="form-inline date-chooser pull-right mb-3">
+          {% include "_params_ends_at_field.html" %}
+        </form>
+        <div class="chart-content saas-metrics-chart">
+          <h3 class="text-center">
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+          </h3>
+        </div>
+        <!-- Display as a table -->
+        <div class="table-responsive">
+          {% include "saas/metrics/_table.html" %}
+        </div>
+        <p>
+          <a href="https://www.djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
+        </p>
+      </div>
+
+      {# balances #}
+      <div role="tabpanel" id="balances" :class="['tab-pane', activeClass(1)]" key="balances">
+        <form class="form-inline date-chooser pull-right mb-3">
+          {% include "_params_ends_at_field.html" %}
+        </form>
+        <div class="chart-content saas-metrics-chart">
+          <h3 class="text-center">
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+          </h3>
+        </div>
+        <!-- Display as a table -->
+        <div class="table-responsive">
+          {% include "saas/metrics/_table.html" %}
+        </div>
+        <p>
+          <a href="https://www.djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Income, Backlog, and Receivable{% endtrans %}</a>
+        </p>
+      </div>
+
+      {# customer #}
+      <div role="tabpanel" id="customer" :class="['tab-pane', activeClass(2)]" key="customer">
+        <form class="form-inline date-chooser pull-right mb-3">
+          {% include "_params_ends_at_field.html" %}
+        </form>
+        <div class="chart-content saas-metrics-chart">
+          <h3 class="text-center">
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+          </h3>
+        </div>
+        <!-- Display as a table -->
+        <div class="table-responsive">
+          {% include "saas/metrics/_table.html" %}
+        </div>
+      </div>
+
+      {# plan #}
+      <div role="tabpanel" id="plan" :class="['tab-pane', activeClass(3)]" key="plan">
+        <form class="form-inline date-chooser pull-right mb-3">
+          {% include "_params_ends_at_field.html" %}
+        </form>
+        <div class="chart-content saas-metrics-chart">
+          <h3 class="text-center">
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+          </h3>
+        </div>
+        <!-- Display as a table -->
+        <div class="table-responsive">
+          {% include "saas/metrics/_table.html" %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</metrics-charts>
 {% endblock %}

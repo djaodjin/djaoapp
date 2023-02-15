@@ -48,6 +48,12 @@
         </a>
       </li>
     {% endfor %}
+      <li{% if urls.organization.role_list == request.path %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="{{urls.organization.role_list}}">
+          <span class="icon icon-connected align-top{% if role_url == request.path %} icon-active{% endif %}"></span>
+          <span class="pl-1">{% trans %}All roles{% endtrans %}</span>
+        </a>
+      </li>
   {% endif %}
 
   {% if urls.user and urls.user.accessibles %}
@@ -120,6 +126,39 @@
       </a>
     </li>
     {% endif %}
+    {% if urls.provider and urls.provider.metrics_sales %}
+    <li {% if urls.provider.metrics_sales == request.path %} class="nav-item active"{% endif %}>
+      <a class="nav-link" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}">
+
+        <!-- Revenue -->
+        <span class="icon icon-revenue align-bottom{% if urls.provider.metrics_sales == request.path %} icon-active{% endif %}"></span>
+        <span class="pl-1">{% trans %}Reports{% endtrans %}</span></a>
+
+    </li>
+    {% endif %}
+
+    {% if urls.provider and urls.provider.subscribers %}
+    <li {% if urls.provider.subscribers == request.path %} class="nav-item active"{% endif %}>
+      <a class="nav-link" id="saas_subscriber_list" href="{{urls.provider.subscribers}}">
+
+        <!-- Subscribers -->
+        <span class="icon icon-subscribers align-top{% if urls.provider.subscribers == request.path %} icon-active{% endif %}"></span>
+        <span class="pl-1">{% trans %}Subscribers{% endtrans %}</span>
+
+      </a>
+    </li>
+    {% endif %}
+    {% if urls.provider and urls.provider.plans %}
+    <li {% if urls.provider.plans == request.path %} class="nav-item active"{% endif %}>
+      <a class="nav-link" id="saas_plans" href="{{urls.provider.plans}}">
+
+        <!-- Plans -->
+        <span class="icon icon-plans align-middle{% if urls.provider.plans == request.path %} icon-active{% endif %}"></span>
+        <span class="pl-1">{% trans %}Plans{% endtrans %}</span></a>
+
+    </li>
+    {% endif %}
+
     {% if urls.provider and urls.provider.coupons %}
     <li {% if urls.provider.coupons == request.path %} class="nav-item active"{% endif %}>
       <a class="nav-link" id="saas_coupon_list" href="{{urls.provider.coupons}}">
@@ -140,37 +179,6 @@
         <span class="icon icon-funds align-top{% if urls.provider.transfers == request.path %} icon-active{% endif %}"></span>
         <span class="pl-1">{% trans %}Funds{% endtrans %}</span></a>
 
-    </li>
-    {% endif %}
-    {% if urls.provider and urls.provider.metrics_sales %}
-    <li {% if urls.provider.metrics_sales == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_metrics_summary" href="{{urls.provider.metrics_sales}}">
-
-        <!-- Revenue -->
-        <span class="icon icon-revenue align-bottom{% if urls.provider.metrics_sales == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Revenue{% endtrans %}</span></a>
-
-    </li>
-    {% endif %}
-    {% if urls.provider and urls.provider.metrics_plans %}
-    <li {% if urls.provider.metrics_plans == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_metrics_plans" href="{{urls.provider.metrics_plans}}">
-
-        <!-- Plans -->
-        <span class="icon icon-plans align-middle{% if urls.provider.metrics_plans == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Plans{% endtrans %}</span></a>
-
-    </li>
-    {% endif %}
-    {% if urls.provider and urls.provider.subscribers %}
-    <li {% if urls.provider.subscribers == request.path %} class="nav-item active"{% endif %}>
-      <a class="nav-link" id="saas_subscriber_list" href="{{urls.provider.subscribers}}">
-
-        <!-- Subscribers -->
-        <span class="icon icon-subscribers align-top{% if urls.provider.subscribers == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Subscribers{% endtrans %}</span>
-
-      </a>
     </li>
     {% endif %}
   </ul>

@@ -95,6 +95,8 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                         'api_pubkey', args=(attached_user,)),
                     'password_change': reverse(
                         'password_change', args=(attached_user,)),
+                    'keys_update': reverse(
+                        'pubkey_update', args=(attached_user,)),
                     # For sidebar menu items on personal profiles.
                     'accessibles': reverse(
                         'saas_user_product_list', args=(attached_user,)),

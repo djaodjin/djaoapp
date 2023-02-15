@@ -2,12 +2,26 @@
 
 {% block saas_title %}{% trans %}User engagement{% endtrans %}{% endblock %}
 
+
+{% block help_menus %}
+{% if urls.contacts %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="contact" class="nav-link{% if request.path == urls.contacts %} active{% endif %}" href="{{urls.contacts}}">{% trans %}Contacts{% endtrans %}</a>
+</li>
+{% endif %}
+{% endblock %}
+
+
 {% block saas_page_layout %}
 <user-engagement inline-template id="user-engagement-container">
   <div>
+    <div class="mt-3">
+      {% include "saas/_filter.html" %}
+    </div>
     <table class="table table-bordered table-condensed">
       <thead>
-        <th>Username</th>
+        <th>{% trans %}Username{% endtrans %}</th>
         <th v-for="tag in tags">[[tag]]</th>
       </thead>
       <tbody>

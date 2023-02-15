@@ -1,6 +1,8 @@
+<div class="form-group">
 <div class="input-group input-group-md">
   <div class="input-group-prepend">
-    <span class="input-group-text" id="filter-inp">{% trans %}Match{% endtrans %}</span>
+    <label class="text-monospace input-group-text" id="filter-inp">{% trans %}Match{% endtrans %}</label>
   </div>
   <input class="form-control" type="text" v-model="params.q" @input="filterList" />
+</div>
 </div>

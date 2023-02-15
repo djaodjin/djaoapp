@@ -548,93 +548,6 @@ LOGGING = {
 }
 
 
-# Authentication
-# --------------
-SIGNUP = {
-    'ACCOUNT_MODEL': 'saas.Organization',
-    'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
-    'ACCOUNT_ACTIVATION_DAYS': 30,
-    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK':
-        BYPASS_VERIFICATION_KEY_EXPIRED_CHECK,
-    'DISABLED_AUTHENTICATION':
-        'djaoapp.thread_locals.get_disabled_authentication',
-    'DISABLED_REGISTRATION':
-        'djaoapp.thread_locals.get_disabled_registration',
-    'EMAIL_DYNAMIC_VALIDATOR': getattr(
-        sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
-    'LOGIN_THROTTLE': getattr(
-        sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
-    'NOTIFICATION_TYPE': (
-        ('card_updated', "Card updated"),
-        ('charge_receipt', "Charge receipt"),
-        ('claim_code_generated', "Claim code"),
-        ('expires_soon', "Expires soon"),
-        ('order_executed', "Order confirmation"),
-        ('profile_updated', "Profile updated"),
-        ('password_reset', "Password reset"),
-        ('user_activated', "User activated"),
-        ('user_contact', "User contact"),
-        ('user_registered', "User registered"),
-        ('user_welcome', "User welcome"),
-        ('role_request_created', "Role requested"),
-        ('verification', "Verification"),
-        ('sales_report', "Weekly sales report"),
-    ),
-    'PASSWORD_RESET_THROTTLE': getattr(
-        sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
-    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
-    'RANDOM_SEQUENCE': getattr(
-        sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', []),
-    'SSO_PROVIDERS': {
-        'azuread-oauth2': {'name': 'Microsoft', 'icon': 'microsoft'},
-        'github': {'name': 'GitHub', 'icon': 'github'},
-        'google-oauth2': {'name': 'Google', 'icon': 'google'},
-    },
-}
-for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
-    # This parameters are optional in site.conf.
-    if hasattr(sys.modules[__name__], config_param):
-        SIGNUP.update({config_param:
-            getattr(sys.modules[__name__], config_param)})
-
-ACCOUNT_ACTIVATION_DAYS = 2
-
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
-SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
-SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
-SOCIAL_AUTH_USER_FIELDS = ['username', 'email', 'first_name', 'last_name']
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'signup.utils.social_uid',
-    'social_core.pipeline.social_auth.auth_allowed',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    # adds the following to the default pipeline because sites offer
-    # login by e-mail, which be definition then is unique in `auth_user`.
-    'social_core.pipeline.social_auth.associate_by_email',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
-
-NOCAPTCHA = True
-
-# User settings
-# -------------
-LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
-
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.azuread.AzureADOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.github.GithubOAuth2',
-# disables SAML so it is simpler to configure on a developer machine.
-#    'social_core.backends.saml.SAMLAuth',
-    'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
-    'django.contrib.auth.backends.ModelBackend'
-)
-
 # API settings
 # ------------
 REST_FRAMEWORK = {
@@ -824,6 +737,99 @@ RULES = {
     'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
     'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
 }
+
+# Authentication
+# --------------
+
+# Implementation note: this import must be after multitier and rules
+# have been loaded otherwise multitier.settings.ROUTER_TABLES is [].
+import djaoapp.extras.signup
+
+SIGNUP = {
+    'ACCOUNT_MODEL': 'saas.Organization',
+    'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
+    'ACCOUNT_ACTIVATION_DAYS': 30,
+    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK':
+        BYPASS_VERIFICATION_KEY_EXPIRED_CHECK,
+    'DISABLED_AUTHENTICATION':
+        'djaoapp.thread_locals.get_disabled_authentication',
+    'DISABLED_REGISTRATION':
+        'djaoapp.thread_locals.get_disabled_registration',
+    'EMAIL_DYNAMIC_VALIDATOR': getattr(
+        sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
+    'EXTRA_MIXIN': djaoapp.extras.signup.ExtraMixin,
+    'LOGIN_THROTTLE': getattr(
+        sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
+    'NOTIFICATION_TYPE': (
+        ('card_updated', "Card updated"),
+        ('charge_receipt', "Charge receipt"),
+        ('claim_code_generated', "Claim code"),
+        ('expires_soon', "Expires soon"),
+        ('order_executed', "Order confirmation"),
+        ('profile_updated', "Profile updated"),
+        ('password_reset', "Password reset"),
+        ('user_activated', "User activated"),
+        ('user_contact', "User contact"),
+        ('user_registered', "User registered"),
+        ('user_welcome', "User welcome"),
+        ('role_request_created', "Role requested"),
+        ('verification', "Verification"),
+        ('sales_report', "Weekly sales report"),
+    ),
+    'PASSWORD_RESET_THROTTLE': getattr(
+        sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
+    'RANDOM_SEQUENCE': getattr(
+        sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', []),
+    'SSO_PROVIDERS': {
+        'azuread-oauth2': {'name': 'Microsoft', 'icon': 'microsoft'},
+        'github': {'name': 'GitHub', 'icon': 'github'},
+        'google-oauth2': {'name': 'Google', 'icon': 'google'},
+    },
+}
+for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
+    # This parameters are optional in site.conf.
+    if hasattr(sys.modules[__name__], config_param):
+        SIGNUP.update({config_param:
+            getattr(sys.modules[__name__], config_param)})
+
+ACCOUNT_ACTIVATION_DAYS = 2
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
+SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
+SOCIAL_AUTH_USER_FIELDS = ['username', 'email', 'first_name', 'last_name']
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'signup.utils.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    # adds the following to the default pipeline because sites offer
+    # login by e-mail, which be definition then is unique in `auth_user`.
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+NOCAPTCHA = True
+
+# User settings
+# -------------
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.azuread.AzureADOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+# disables SAML so it is simpler to configure on a developer machine.
+#    'social_core.backends.saml.SAMLAuth',
+    'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 # Demo mode ...
 REUSABLE_PRODUCTS = ('livedemo',)

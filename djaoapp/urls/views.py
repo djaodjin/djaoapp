@@ -79,7 +79,6 @@ urlpatterns = [
         pattern_name='saas_organization_profile'),
         name='saas_profile'),
     url_authenticated(r'^', include('saas.urls.views.headredirects')),
-    url_authenticated(r'^', include('saas.urls.views.tailredirects')),
 
     # Profiles
     url_agreement(r'users/roles/accept/$',
@@ -100,8 +99,8 @@ urlpatterns = [
         UserProfileView.as_view(), name='users_profile'),
     url_direct(r'contacts/', include('signup.urls.views.contacts')),
 
-    url_prefixed(r'^pricing/$', PricingView.as_view(),
-        name='saas_cart_plan_list'),
+    url_prefixed(r'^pricing/$',
+        PricingView.as_view(), name='saas_cart_plan_list'),
     url_prefixed(r'^', include('saas.urls.views.noauth')),
     url_direct(r'^', include('saas.urls.views.broker')),
     url_direct(r'^metrics/(?P<%s>%s)/dashboard/$' % (
@@ -116,6 +115,8 @@ urlpatterns = [
         OrganizationProfileView.as_view(),
             name='saas_organization_profile'),
     url_provider(r'^', include('saas.urls.views.subscriber.profile')),
+    url_authenticated(r'^', include('saas.urls.views.tailredirects')),
+
     url_dashboard_iframe(r'^proxy/notifications/(?P<template>%s)/iframe/' %
         SLUG_RE, NotificationInnerFrameView.as_view(),
         name='notification_inner_frame'),

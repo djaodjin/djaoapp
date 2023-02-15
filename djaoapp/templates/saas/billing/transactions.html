@@ -1,8 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Transactions{% endtrans %}{% endblock %}
+{% block saas_title %}{% trans %}Raw Transactions Ledger{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
+<transfers-statement inline-template>
 <div class="col-md-12">
   <div id="transactions-container" class="row">
     <section id="total">
@@ -15,7 +16,7 @@
               {% include "saas/_filter.html" %}
               <div class="col">
                     <a id="download" class="btn btn-secondary btn-sm" role="button"
-                       :href="'{{download_url}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
+                       :href="'{{urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
               </div>
             </div>
         </form>
@@ -98,4 +99,5 @@
     </section>
   </div>
 </div>
+</transfers-statement>
 {% endblock %}
