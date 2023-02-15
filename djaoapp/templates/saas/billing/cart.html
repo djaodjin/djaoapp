@@ -57,7 +57,10 @@
           {# element. #}
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <a href="" class="collapsible text-decoration-none">{% trans %}Have a registration code?{% endtrans %}</a>
-          <div class="mt-3 d-none">
+          {# Implementation note: If we use `d-block` instead of    #}
+          {# `style="display: block;"` the dropdown shows even when #}
+          {# `hasItems` is `False`.                                 #}
+          <div class="mt-3" style="display:none;">
             <div class="row justify-content-end">
               <div class="col-12 col-md-4">
                 <div class="input-group input-group mb-1">

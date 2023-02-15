@@ -2,29 +2,33 @@
 
 {% block saas_title %}{% trans %}Charge receipt{% endtrans %}{% endblock %}
 
+{% block help_menus %}
+{% if urls.raw_charges %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
+</li>
+{% endif %}
+{% if urls.charge and urls.charge.printable_receipt %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="charge-printable" class="btn btn-secondary" href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
+</li>
+{% endif %}
+{% endblock %}
+
+
 {% block saas_content %}
-<div class="row mb-2">
-    <div class="col-sm-10">
-        <div class="btn-group pull-right">
-            <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
-            {% if urls.charge and urls.charge.printable_receipt %}
-            <a id="charge-printable" class="btn btn-secondary" target="_blank"
-               href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-<div class="col-md-12">
-  <div id="{{charge}}">
-    <section id="status">
-      <p>
+<div id="{{charge}}">
+  <section id="status">
+    <p>
 {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for the amount of {{price}}.{% endtrans %}
-      </p>
-      <p class="charge-status"
-         data-charge-done="{% trans %}The charge succeeded.{% endtrans %}"
-         data-charge-failed="{% trans %}The charge failed.{% endtrans %}"
-         data-charge-disputed="{% trans %}The charge was disputed.{% endtrans %}"
-         data-charge-created="{% trans %}The charge is in progress...{% endtrans %}">
+    </p>
+    <p class="charge-status"
+       data-charge-done="{% trans %}The charge succeeded.{% endtrans %}"
+       data-charge-failed="{% trans %}The charge failed.{% endtrans %}"
+       data-charge-disputed="{% trans %}The charge was disputed.{% endtrans %}"
+       data-charge-created="{% trans %}The charge is in progress...{% endtrans %}">
         {% if charge.is_paid %}
         {% trans %}The charge succeeded.{% endtrans %}
         {% elif charge.is_failed %}
@@ -34,27 +38,26 @@
         {% elif charge.is_progress %}
         {% trans %}The charge is in progress...{% endtrans %} <i class="fa fa-spin"></i>
         {% endif %}
-      </p>
-    </section>
-    <section id="info">
-      <dl class="dl-horizontal">
-        <dt>{% trans %}REFERENCE{% endtrans %}</dt>
-        <dd>#{{charge.processor_key}}</dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>{% trans %}amount{% endtrans %}</dt>
-        <dd id="amount-info">{{charge.price|humanize_money}}</dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>{% trans %}card{% endtrans %}</dt>
-        <dd>**** - {{last4}}</dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>{% trans %}expires{% endtrans %}</dt>
-        <dd>{{exp_date}}</dd>
-      </dl>
-    </section>
-  </div>
+    </p>
+  </section>
+  <section id="info">
+    <dl class="dl-horizontal">
+      <dt>{% trans %}REFERENCE{% endtrans %}</dt>
+      <dd>#{{charge.processor_key}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>{% trans %}amount{% endtrans %}</dt>
+      <dd id="amount-info">{{charge.price|humanize_money}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>{% trans %}card{% endtrans %}</dt>
+      <dd>**** - {{last4}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>{% trans %}expires{% endtrans %}</dt>
+      <dd>{{exp_date}}</dd>
+    </dl>
+  </section>
   <section id="invoiced_items">
     <table class="table table-striped">
       <thead>

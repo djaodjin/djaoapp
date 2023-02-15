@@ -7,19 +7,20 @@
         <legend>
           {% trans %}Credit Card Information{% endtrans %}
           <a id="card-update" href=""
-             {% if not (last4 and not force_update) %}
-             class="btn btn-link d-none"
-             {% else %}
              class="btn btn-link"
-             {% endif %}
+             {# Implementation note: If we use `d-block` instead of     #}
+             {# `style="display: block;"` `!important` gets in the way. #}
+             {% if not (last4 and not force_update) %}style="display:none;"{% endif %}
              v-show="haveCardData && !updateCard">
             {% trans %}Update{% endtrans %}
           </a>
         </legend>
         <div id="card-data"
-            v-show="haveCardData"
-            {% if not (last4) %} class="d-none"{% endif %}>
-            {# XXX cannot use v-cloak (cart.html) #}
+             {# Implementation note: If we use `d-block` instead of     #}
+             {# `style="display: block;"` `!important` gets in the way. #}
+             {# XXX cannot use v-cloak (cart.html) #}
+             {% if not (last4) %}style="display:none;"{% endif %}
+             v-show="haveCardData">
           <dl class="dl-horizontal">
             <dt>{% trans %}card{% endtrans %}</dt>
             <dd data-last4="{% if last4 %}{{last4}}{% endif %}" v-text="savedCard.last4">{% if last4 %}{{last4}}{% endif %}</dd>
@@ -30,8 +31,10 @@
           </dl>
         </div>
         <div id="card-no-data"
-            {% if not (not last4 or force_update) %} class="d-none"{% endif %}
-            v-show="!haveCardData || updateCard">
+             {# Implementation note: If we use `d-block` instead of     #}
+             {# `style="display: block;"` `!important` gets in the way. #}
+             {% if not (not last4 or force_update) %} style="display:none;"{% endif %}
+             v-show="!haveCardData || updateCard">
           <div id="card-element">
             <div class="form-group">
               <div class="card-icons text-center">
@@ -105,9 +108,12 @@
         </div>{# /!haveCardData #}
       </fieldset>
       <fieldset id="card-billing-address"
-              class="col-lg-5 col-md-5 offset-lg-1 offset-md-1{% if not (not last4 or force_update) %} d-none{% endif %}"
-              v-show="!haveCardData || updateCard">
-              {# XXX technically could be `!haveBillingAddress` #}
+                class="col-lg-5 col-md-5 offset-lg-1 offset-md-1"
+                {# Implementation note: If we use `d-block` instead of     #}
+                {# `style="display: block;"` `!important` gets in the way. #}
+                {% if not (not last4 or force_update) %}style="display:none;"{% endif %}
+                v-show="!haveCardData || updateCard">
+                {# XXX technically could be `!haveBillingAddress` #}
         <legend>{% trans %}Billing Address{% endtrans %}</legend>
         {{input_field(form['card_name'], form.hide_labels)}}
         {{input_field(form['card_address_line1'], form.hide_labels)}}

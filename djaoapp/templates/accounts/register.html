@@ -12,7 +12,7 @@
   </p>
   {% if form %}
   {% block register_form %}
-  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+  <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {% include "accounts/_register_form.html" %}
     <p class="text-center">
       <small>

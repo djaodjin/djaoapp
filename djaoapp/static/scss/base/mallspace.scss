@@ -315,7 +315,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - (#{$navbar-height} + #{$footer-height}));
+  min-height: calc(100vh - (#{$navbar-height} + #{$footer-height}));
 }
 
 // Pricing plans (templates/saas/pricing.html, templates/saas/plan_short.html)

@@ -9,13 +9,13 @@
 {% if urls.provider and urls.provider.metrics_lifetimevalue %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
-  <a id="plan-new" class="nav-link{% if request.path == urls.provider.metrics_lifetimevalue %} active{% endif %}" href="{{urls.provider.metrics_lifetimevalue}}">{% trans %}Lifetime value{% endtrans %}</a>
+  <a id="lifetimevalue" class="nav-link{% if request.path == urls.provider.metrics_lifetimevalue %} active{% endif %}" href="{{urls.provider.metrics_lifetimevalue}}">{% trans %}Lifetime value{% endtrans %}</a>
 </li>
 {% endif %}
 {% if urls.provider and urls.provider.ledger_balances %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
-  <a id="plan-new" class="nav-link{% if request.path == urls.provider.ledger_balances %} active{% endif %}" href="{{urls.provider.ledger_balances}}">{% trans %}Balance Sheet{% endtrans %}</a>
+  <a id="balance-sheet" class="nav-link{% if request.path == urls.provider.ledger_balances %} active{% endif %}" href="{{urls.provider.ledger_balances}}">{% trans %}Balance Sheet{% endtrans %}</a>
 </li>
 {% endif %}
 {% endblock %}
