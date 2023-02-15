@@ -1,20 +1,14 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-Lifetime value
+{% trans organization=organization.printable_name %}{{organization}} Customer Lifetime Value{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
 <lifetimevalue-list inline-template id="lifetimevalue-list">
   <div>
-    <div class="row my-3">
+    <div class="my-3">
         {% include "saas/_filter.html" %}
-    </div>
-    <div class="row mt-3">
-        <div class="col text-right">
-            <a id="download" class="btn btn-secondary btn-sm mr-1" role="button"
-               :href="'{{urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-        </div>
     </div>
     <div class="table-responsive">
     <table class="table table table-sm table-striped" infinite-wrapper>
@@ -26,19 +20,19 @@ Lifetime value
                   <i :class="sortIcon('printable_name')"></i>
                 </a>
             </th>
-            <th>{% trans %}Contract Value{% endtrans %}
+            <th class="text-right">{% trans %}Contract Value{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('contract_value')">
                   <i :class="sortIcon('contract_value')"></i>
                 </a>
             </th>
-            <th>{% trans %}Cash Payments{% endtrans %}
+            <th class="text-right">{% trans %}Cash Payments{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('cash_payments')">
                   <i :class="sortIcon('cash_payments')"></i>
                 </a>
             </th>
-            <th>{% trans %}Deferred Revenue{% endtrans %}
+            <th class="text-right">{% trans %}Deferred Revenue{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('deferred_revenue')">
                   <i :class="sortIcon('deferred_revenue')"></i>
@@ -73,13 +67,13 @@ Lifetime value
                 <a :href="'{{urls.profile_redirect}}' + item.slug + '/'">[[item.printable_name]]</a>
             </td>
             <td class="text-right">
-                [[$globals.humanizeNumber(item.contract_value, item.unit)]]
+                [[$globals.humanizeNumber(item.contract_value, item.unit, 0.01)]]
             </td>
             <td class="text-right">
-                [[$globals.humanizeNumber(item.cash_payments, item.unit)]]
+                [[$globals.humanizeNumber(item.cash_payments, item.unit, 0.01)]]
             </td>
             <td class="text-right">
-                [[$globals.humanizeNumber(item.deferred_revenue, item.unit)]]
+                [[$globals.humanizeNumber(item.deferred_revenue, item.unit, 0.01)]]
             </td>
             <td class="date">[[$globals.humanizeDate(item.created_at)]]</td>
             <td class="date">[[$globals.humanizeDate(item.ends_at)]]</td>

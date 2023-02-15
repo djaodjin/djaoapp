@@ -1,11 +1,12 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-  {% trans organization=organization.printable_name%}Subscriptions to {{organization}}{% endtrans %}
+  {% trans organization=organization.printable_name%}{{organization}} Subscriptions{% endtrans %}
 {% endblock %}
 
 {% block help_menus %}
 {% if urls.provider and urls.provider.subscribers_activity %}
+<li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="subscribers-activity" class="nav-link{% if request.path == urls.provider.subscribers_activity %} active{% endif %}" href="{{urls.provider.subscribers_activity}}">{% trans %}Subscribers Activity{% endtrans %}</a>
 </li>

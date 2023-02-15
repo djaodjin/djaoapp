@@ -52,7 +52,7 @@
       <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
           <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
-          <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+          <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.amount]]</td>
           <td class="text-nowrap" colspan="2" v-html="entry.description"></td>
         </tr>
       </tbody>

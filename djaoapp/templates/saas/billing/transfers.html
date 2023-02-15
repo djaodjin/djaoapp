@@ -1,23 +1,23 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-  {{organization.printable_name}} {% trans %}Funds{% endtrans %}
+{% trans organization=organization.printable_name %}{{organization}} Funds{% endtrans %}
 {% endblock %}
-
 
 {% block help_menus %}
 {% if urls.raw_charges %}
+<li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="row-charges" class="nav-link{% if request.path == urls.raw_charges %} active{% endif %}" href="{{urls.raw_charges}}">{% trans %}Charges{% endtrans %}</a>
 </li>
-<li class="divider-vertical"></li>
 {% endif %}
 {% if urls.raw_transactions %}
+<li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="row-transactions" class="nav-link{% if request.path == urls.raw_transactions %} active{% endif %}" href="{{urls.raw_transactions}}">{% trans %}Transaction Ledger{% endtrans %}</a>
 </li>
-<li class="divider-vertical"></li>
 {% endif %}
+<li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="add-offline-transaction" class="nav-link{% if request.path == urls.provider.import_transactions %} active{% endif %}" href="{{urls.provider.import_transactions}}">{% trans %}Add Transactions{% endtrans %}</a>
 </li>
@@ -59,12 +59,7 @@
 
             <section id="info" class="col-md-8 mb-4">
               <div class="p-4 border rounded">
-                <h3>
-                  {% trans %}Deposit Information{% endtrans %}
-                  <a id="update_bank" class="btn btn-link" href="{{ urls.provider.bank }}" data-trip data-trip-index="3" data-trip-content="<p>{% trans %}Update your bank information so funds can be transfered to you.{% endtrans %}</p>" data-trip-position="s">
-                    {% trans %}Update{% endtrans %}
-                  </a>
-                </h3>
+                <h3>{% trans %}Deposit Information{% endtrans %}</h3>
                 <dl class="dl-horizontal">
                   <dt>{% trans %}Institution{% endtrans %}</dt>
                   <dd class="bank-name">
@@ -79,6 +74,11 @@
                     <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
                   </dd>
                 </dl>
+                <div class="text-center">
+                  <a id="update_bank" href="{{ urls.provider.bank }}" data-trip data-trip-index="3" data-trip-content="<p>{% trans %}Update your bank information so funds can be transfered to you.{% endtrans %}</p>" data-trip-position="s">
+                    {% trans %}Update{% endtrans %}
+                  </a>
+                </div>
               </div>
             </section>
           </div>

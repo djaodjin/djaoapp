@@ -48,12 +48,14 @@
         </a>
       </li>
     {% endfor %}
+      <!--
       <li{% if urls.organization.role_list == request.path %} class="nav-item active"{% endif %}>
         <a class="nav-link" href="{{urls.organization.role_list}}">
           <span class="icon icon-connected align-top{% if role_url == request.path %} icon-active{% endif %}"></span>
           <span class="pl-1">{% trans %}All roles{% endtrans %}</span>
         </a>
       </li>
+      -->
   {% endif %}
 
   {% if urls.user and urls.user.accessibles %}

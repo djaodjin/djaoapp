@@ -1,65 +1,56 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Raw Transactions Ledger{% endtrans %}{% endblock %}
+{% block saas_title %}{% trans %}Ledger{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
 <transfers-statement inline-template>
 <div class="col-md-12">
   <div id="transactions-container" class="row">
-    <section id="total">
-      <strong>{% trans %}Balance{% endtrans %}</strong> <span>[[$globals.humanizeNumber(items.balance_amount, items.balance_unit, 0.01)]]</span>
-    </section>
     <section id="transactions">
       <div>
-        <form class="form my-3">
-            <div class="form-row">
-              {% include "saas/_filter.html" %}
-              <div class="col">
-                    <a id="download" class="btn btn-secondary btn-sm" role="button"
-                       :href="'{{urls.download}}' + getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}CSV Download{% endtrans %}</a>
-              </div>
-            </div>
-        </form>
+        <div class="my-3">
+          {% include "saas/_filter.html" %}
+        </div>
         <table class="table table-striped" infinite-wrapper>
           <thead>
             <tr>
-                <th>{% trans %}Date{% endtrans %}
+                <th class="text-nowrap">{% trans %}Date{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('created_at')">
                     <i :class="sortIcon('created_at')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Amount{% endtrans %}
+                <th class="text-nowrap">{% trans %}Amount{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('amount')">
                     <i :class="sortIcon('amount')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Origin Profile{% endtrans %}
+                <th class="text-nowrap">{% trans %}Origin Profile{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('orig_profile')">
                     <i :class="sortIcon('orig_profile')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Origin Account{% endtrans %}
+                <th class="text-nowrap">{% trans %}Origin Account{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('orig_account')">
                     <i :class="sortIcon('orig_account')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Destination Profile{% endtrans %}
+                <th class="text-nowrap">{% trans %}Destination Profile{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('dest_profile')">
                     <i :class="sortIcon('dest_profile')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Destination Account{% endtrans %}
+                <th class="text-nowrap">{% trans %}Destination Account{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('dest_account')">
                     <i :class="sortIcon('dest_account')"></i>
                   </a>
                 </th>
-                <th>{% trans %}Description{% endtrans %}
+                <th class="text-nowrap">{% trans %}Description{% endtrans %}
                   <a class="btn-sort"
                     @click.prevent="sortBy('description')">
                     <i :class="sortIcon('description')"></i>
@@ -84,13 +75,13 @@
           <tbody id="has-transactions"
             v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <tr v-for="entry in items.results">
-              <td>[[$globals.humanizeDate(entry.created_at)]]</td>
-              <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
-              <td>[[entry.orig_profile.printable_name]]</td>
-              <td>[[entry.orig_account]]</td>
-              <td>[[entry.dest_profile.printable_name]]</td>
-              <td>[[entry.dest_account]]</td>
-              <td v-html="entry.description"></td>
+              <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
+              <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.amount]]</td>
+              <td class="text-nowrap">[[entry.orig_profile.printable_name]]</td>
+              <td class="text-nowrap">[[entry.orig_account]]</td>
+              <td class="text-nowrap">[[entry.dest_profile.printable_name]]</td>
+              <td class="text-nowrap">[[entry.dest_account]]</td>
+              <td class="text-nowrap" v-html="entry.description"></td>
             </tr>
           </tbody>
         </table>

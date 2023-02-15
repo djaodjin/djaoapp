@@ -1,5 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block saas_title %}
+  {% trans %}Charges{% endtrans %}
+{% endblock %}
+
 {% block saas_content %}
 <charge-list inline-template id="charge-list-container">
   <div>
@@ -54,7 +58,7 @@
                v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <tr v-for="entry in items.results">
             <td>[[$globals.humanizeDate(entry.created_at)]]</td>
-            <td :class="entry.is_debit ? 'text-danger' : ''">[[entry.amount]]</td>
+            <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.readable_amount]]</td>
             <td>[[entry.state]]</td>
             <td v-html="entry.description"></td>
           </tr>
