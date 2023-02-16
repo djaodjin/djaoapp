@@ -11,23 +11,16 @@
     <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
   </p>
   {% if form %}
-  {% block register_form %}
   <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+    {% block register_form %}
     {% include "accounts/_register_form.html" %}
-    <p class="text-center">
-      <small>
-        <em>
-{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before entering any information.{% endtrans %}
-        </em>
-      </small>
-    </p>
+    {% endblock %}
     <div class="form-action text-center">
       <button type="submit" class="btn btn-block btn-primary btn-md">
         {% trans %}Sign Up{% endtrans %}
       </button>
     </div>
   </form>
-  {% endblock %}
   {% endif %}
   <p class="text-center mt-3">
     {% trans %}Already have an account?{% endtrans %}
