@@ -2,7 +2,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.24.48
-Django==3.2.18
+Django==2.2.28
 django-phonenumber-field==6.3.0
 django-recaptcha==2.0.6
 djangorestframework==3.12.4
