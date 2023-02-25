@@ -70,7 +70,7 @@
 
           <!-- Show Data Entries -->
           <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
+            <tr v-for="(entry, index) in items.results">
               <td class="text-nowrap">[[ ($globals.humanizeDate(entry.last_login)) ]]</td>
               <td>[[entry.first_name]] [[entry.last_name]]</td>
               <td class="text-nowrap">[[entry.organization]]</td>

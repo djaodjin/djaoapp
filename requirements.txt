@@ -2,16 +2,16 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.24.48
-Django==3.2.16
+Django==3.2.18
 django-phonenumber-field==6.3.0
 django-recaptcha==2.0.6
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.10.5
-djaodjin-extended-templates==0.4.1
+djaodjin-extended-templates==0.4.2
 djaodjin-multitier==0.1.25
 djaodjin-rules==0.4.1
-djaodjin-saas==0.15.4
+djaodjin-saas==0.15.5
 djaodjin-signup==0.7.7
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==3.1.2

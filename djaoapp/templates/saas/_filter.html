@@ -14,12 +14,18 @@
     </div>
     <div class="col-sm-3 col-lg-1 px-1">
       <button id="update" class="btn btn-primary w-100" role="button"
+              :disabled="!outdated" @click.prevent="reload()"
               href="#">{% trans %}Update{% endtrans %}</button>
     </div>
-    {% if urls.download %}
+    {% if tab and tab.urls and tab.urls.download %}
     <div class="col-sm-3 col-lg-1 p-0">
       <a id="download" class="btn btn-secondary w-100" role="button"
-         :href="'{{urls.download}}' + getQueryString(['page'])">{% trans %}Download{% endtrans %}</a>
+         :href="'{{tab.urls.download}}' + getQueryString()">{% trans %}Download{% endtrans %}</a>
+    </div>
+    {% elif urls.download %}
+    <div class="col-sm-3 col-lg-1 p-0">
+      <a id="download" class="btn btn-secondary w-100" role="button"
+         :href="'{{urls.download}}' + getQueryString()">{% trans %}Download{% endtrans %}</a>
     </div>
     {% endif %}
   </div>

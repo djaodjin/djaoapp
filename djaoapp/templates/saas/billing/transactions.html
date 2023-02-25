@@ -3,90 +3,91 @@
 {% block saas_title %}{% trans %}Ledger{% endtrans %}{% endblock %}
 
 {% block saas_page_layout %}
-<transfers-statement inline-template>
-<div class="col-md-12">
-  <div id="transactions-container" class="row">
+<transfers-statement inline-template id="transactions-container">
+<div class="row">
+  <div class="col-md-12">
     <section id="transactions">
-      <div>
-        <div class="my-3">
-          {% include "saas/_filter.html" %}
-        </div>
-        <table class="table table-striped" infinite-wrapper>
-          <thead>
-            <tr>
-                <th class="text-nowrap">{% trans %}Date{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('created_at')">
-                    <i :class="sortIcon('created_at')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Amount{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('amount')">
-                    <i :class="sortIcon('amount')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Origin Profile{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('orig_profile')">
-                    <i :class="sortIcon('orig_profile')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Origin Account{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('orig_account')">
-                    <i :class="sortIcon('orig_account')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Destination Profile{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('dest_profile')">
-                    <i :class="sortIcon('dest_profile')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Destination Account{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('dest_account')">
-                    <i :class="sortIcon('dest_account')"></i>
-                  </a>
-                </th>
-                <th class="text-nowrap">{% trans %}Description{% endtrans %}
-                  <a class="btn-sort"
-                    @click.prevent="sortBy('description')">
-                    <i :class="sortIcon('description')"></i>
-                  </a>
-                </th>
-            </tr>
-          </thead>
-          <tbody v-show="!itemsLoaded">
-            <tr>
-              <td colspan="4">
-                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
-            <tr>
-              <td colspan="7">
-                <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
-              </td>
-            </tr>
-          </tbody>
-          <tbody id="has-transactions"
-            v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            <tr v-for="entry in items.results">
-              <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
-              <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.amount]]</td>
-              <td class="text-nowrap">[[entry.orig_profile.printable_name]]</td>
-              <td class="text-nowrap">[[entry.orig_account]]</td>
-              <td class="text-nowrap">[[entry.dest_profile.printable_name]]</td>
-              <td class="text-nowrap">[[entry.dest_account]]</td>
-              <td class="text-nowrap" v-html="entry.description"></td>
-            </tr>
-          </tbody>
-        </table>
-        {% include "_pagination.html" %}
+      <div class="my-3">
+        {% include "saas/_filter.html" %}
       </div>
+      <table class="table table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>
+            </th>
+            <th class="text-nowrap">{% trans %}Date{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('created_at')">
+                <i :class="sortIcon('created_at')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Amount{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('amount')">
+                <i :class="sortIcon('amount')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Origin Profile{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('orig_profile')">
+                <i :class="sortIcon('orig_profile')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Origin Account{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('orig_account')">
+                <i :class="sortIcon('orig_account')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Destination Profile{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('dest_profile')">
+                <i :class="sortIcon('dest_profile')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Destination Account{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('dest_account')">
+                <i :class="sortIcon('dest_account')"></i>
+              </a>
+            </th>
+            <th class="text-nowrap">{% trans %}Description{% endtrans %}
+              <a class="btn-sort"
+                 @click.prevent="sortBy('description')">
+                <i :class="sortIcon('description')"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody v-show="!itemsLoaded">
+          <tr>
+            <td colspan="8">
+              <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+          <tr>
+            <td colspan="8">
+              <h4 class="text-center"><em>{% trans %}No transactions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+            </td>
+          </tr>
+        </tbody>
+        <tbody id="has-transactions"
+               v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <tr v-for="(entry, index) in items.results">
+            <td class="text-right">[[index + 1]]</td>
+            <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
+            <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.amount]]</td>
+            <td class="text-nowrap">[[entry.orig_profile.printable_name]]</td>
+            <td class="text-nowrap">[[entry.orig_account]]</td>
+            <td class="text-nowrap">[[entry.dest_profile.printable_name]]</td>
+            <td class="text-nowrap">[[entry.dest_account]]</td>
+            <td class="text-nowrap" v-html="entry.description"></td>
+          </tr>
+        </tbody>
+      </table>
+      {% include "_pagination.html" %}
     </section>
   </div>
 </div>

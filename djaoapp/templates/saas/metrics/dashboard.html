@@ -22,7 +22,7 @@
               <div class="card-body pb-0">
                 <div class="row">
                   <div class="col">
-                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="filterList" />
+                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="debouncedAutoReload" />
                   </div>
                 </div>
                 <table class="table table-striped">
