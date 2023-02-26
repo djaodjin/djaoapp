@@ -13,40 +13,58 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-lg-8">
-          <!-- User Search Input -->
-          <search-profile inline-template id="search-list-container">
-            <div class="card">
-              <div class="card-body border-bottom">
-                <h5 class="card-title mb-0">{% trans %}Find a profile{% endtrans %}</h5>
-              </div>
-              <div class="card-body pb-0">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control" type="text" placeholder="{% trans %}Search...{% endtrans %}" v-model="params.q" @input="debouncedAutoReload" />
-                  </div>
-                </div>
-                <table class="table table-striped">
-                  <tbody id="search-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                    <tr v-for="entry in items.results">
-                      <td>
-                      <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.printable_name]]</a>
-                      </td>
-                      <td>
-                        [[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+          <!-- Profile/user search input -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">{% trans %}Find a profile{% endtrans %}</h5>
             </div>
-          </search-profile>
+            <div class="card-body pb-0">
+              <search-profile inline-template data-url="'{{urls.provider.api_accounts}}'" id="search-list-container">
+                <div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <!-- optional indicators -->
+                      <span class="input-group-text">
+                        <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                        <template v-else>
+                          <i class="fa fa-search" v-show="isEmpty"></i>
+                          <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                        </template>
+                      </span>
+                    </div>
+                    <!-- the input field -->
+                    <input class="form-control"
+                           type="text"
+                           placeholder="{% trans %}Search...{% endtrans %}"
+                           autocomplete="off"
+                           v-model="query"
+                           @keydown.enter.prevent="hit"
+                           @blur="clear"
+                           @input="update" />
+                  </div>
+                  <table class="table table-striped">
+                    <tbody id="search-results" v-show="hasItems" v-cloak>
+                      <tr v-for="entry in items">
+                        <td>
+                          <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.printable_name]]</a>
+                        </td>
+                        <td>
+                          [[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </search-profile>
+            </div>
+          </div>{# /.card #}
 
           <!-- Recent Users Chart -->
           {% if urls and urls.recent_activity %}
           <recent-activity inline-template id="recent-activity-container">
             <div class="card my-4">
-              <div class="card-body">
-                <h5 class="card-title mb-0">Recently Active Users</h5>
+              <div class="card-header">
+                <h5 class="card-title">Recently Active Users</h5>
               </div>
               <div class="card-body" v-show="!itemsLoaded">
                 <p>

@@ -106,6 +106,7 @@ def environment(**options):
 
     env.globals.update({
         'DATETIME_FORMAT': "MMM dd, yyyy",
+        'FEATURES_REVERT_TO_VUE2': settings.FEATURES_REVERT_TO_VUE2
     })
     if settings.DEBUG:
         env.filters['addslashes'] = django.template.defaultfilters.addslashes

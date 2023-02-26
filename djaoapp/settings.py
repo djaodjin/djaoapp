@@ -37,8 +37,9 @@ RULES_APP_MODEL = 'djaoapp_extras.App'
 
 #pylint: disable=undefined-variable
 STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
-FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
+FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
+FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
 
 CONTACT_DYNAMIC_VALIDATOR = None
 

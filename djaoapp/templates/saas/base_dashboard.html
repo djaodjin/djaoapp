@@ -83,10 +83,15 @@ humanizeTimeDelta.$labels = {
 
 <script type="text/javascript">
 Vue.use(Croppa);
-
+{% if FEATURES_REVERT_TO_VUE2 %}
 var app = new Vue({
   el: '#app',
   delimiters: ["[[","]]"],
 });
+{% else %}
+var app = createApp({
+  delimiters: ["[[","]]"],
+}).mount('#app');
+{% endif %}
 </script>
 {% endblock %}
