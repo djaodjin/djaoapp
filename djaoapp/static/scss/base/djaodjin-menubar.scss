@@ -1,50 +1,45 @@
+// CSS for the authenticated user dynamic menbuar
 
-.djaodjin-overlay
-{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 4;
-    display: none;
-    left: 0;
-    top: 0;
+$menubar-link-active-color:             $nav-tabs-link-active-color;
+$menubar-link-active-bg:                $nav-tabs-link-active-bg;
+
+$menubar-dropdown-bg:                   white;
+$menubar-dropdown-color:                theme-color(primary);
+$menubar-dropdown-link-color:           $dropdown-link-color;
+$menubar-dropdown-link-hover-color:     $dropdown-link-hover-color;
+$menubar-dropdown-link-hover-bg:        $dropdown-link-hover-bg;
+$menubar-dropdown-link-active-color:    $dropdown-link-active-color;
+$menubar-dropdown-link-active-bg:       $dropdown-link-active-bg;
+$menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
+
+.menubar {
+    position: relative;
+    align-self: center !important;
+    color: $menubar-link-active-color;
+    background-color: $menubar-link-active-bg;
+
+    @include hover-focus {
+        text-decoration: none;
+    }
 }
 
-.header-menubar-overlay
-{
-    z-index: 4;
+.menubar-label {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-decoration: none;
 }
 
-.menubar-dropdown-container
-{
-    z-index: 5;
-}
-
-.menubar-dropdown-container .dropdown-menu
-{
-    z-index: 6;
-    white-space: nowrap;
-}
-
-.dropdown-menu .dropdown-label
-{
-    text-transform: lowercase;
-    padding: 2px 0 7px 10px;
-    font-size: 13px;
-}
-
-.dropdown-menu .dropdown-label .dropdown-label-role
-{
-    margin-left: 10px;
-    border-radius: 3px;
-    padding: 0 5px;
-    font-size: 12px;
+.menubar-label > div {
     display: inline-block;
+    line-height:1rem;
 }
 
 .menubar-label-title {
     display: block;
     padding-bottom: 0;
+}
+
+.menubar-label-subtitle {
 }
 
 [data-trnc]
@@ -54,4 +49,154 @@
     white-space: nowrap;
     overflow: hidden;
     visibility: hidden;
+}
+
+.menubar-label.menubar-label-dropdown-toggle {
+  white-space: nowrap;
+  text-decoration: none;
+  // Generate the caret automatically
+  @include caret(down);
+}
+
+
+.menubar-dropdown-menu
+{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    text-align: left;
+    list-style: none;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+
+    color: $menubar-dropdown-link-color;
+    background-color: $menubar-dropdown-bg;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.menubar-dropdown-menu.show
+{
+    display: block;
+    position: absolute;
+}
+
+.menubar-dropdown-menu .menubar-dropdown-label
+{
+    text-transform: lowercase;
+    padding: 2px 0 7px 10px;
+    font-size: 13px;
+    color: $menubar-dropdown-color;
+}
+
+.menubar-dropdown-menu .menubar-dropdown-label .menubar-dropdown-label-role
+{
+    margin-left: 10px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
+    color: $menubar-dropdown-bg;
+    background: $menubar-dropdown-color;
+}
+
+.menubar-dropdown-menu .menubar-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    text-align: inherit;
+    white-space: nowrap;
+    border: 0;
+    text-decoration: none;
+    background-color: $menubar-dropdown-bg;
+    color: $menubar-dropdown-link-color;
+
+  @include hover-focus {
+    color: $menubar-dropdown-link-hover-color;
+    text-decoration: none;
+    @include gradient-bg($menubar-dropdown-link-hover-bg);
+  }
+
+  &.active,
+  &:active {
+    color: $menubar-dropdown-link-active-color;
+    text-decoration: none;
+    @include gradient-bg($menubar-dropdown-link-active-bg);
+  }
+
+  &.disabled,
+  &:disabled {
+    color: $menubar-dropdown-link-disabled-color;
+    pointer-events: none;
+    background-color: transparent;
+    // Remove CSS gradients if they're enabled
+    @if $enable-gradients {
+      background-image: none;
+    }
+  }
+}
+
+
+.menubar-dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+
+.menubar-sign-out {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 6px;
+    height: 16px;
+    border: 2px solid;
+    transform: scale(var(--ggs,1));
+    border-right: 0;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.menubar-sign-out::after,
+.menubar-sign-out::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute
+}
+
+.menubar-sign-out::after {
+    border-top: 2px solid;
+    border-left: 2px solid;
+    transform: rotate(135deg);
+    width: 8px;
+    height: 8px;
+    left: 4px;
+    bottom: 2px
+}
+.menubar-sign-out::before {
+    border-radius: 3px;
+    width: 10px;
+    height: 2px;
+    background: currentColor;
+    left: 2px;
+    bottom: 5px
+}
+
+@include media-breakpoint-down(sm) {
+
+    .menubar-label-expanded {
+        display: none;
+        margin-right: 0.5rem !important;
+    }
 }

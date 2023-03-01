@@ -18,6 +18,7 @@
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
       <dep name="Django" target="python" includes="3.2.16">
+        <!-- Django>=2 requires SQLite>=3.8.3 -->
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>
       <dep name="django-webpack-loader" target="python">
@@ -56,7 +57,8 @@
       </dep>
       <dep name="gunicorn" target="python" excludes="19.0,20.0.2">
         <!-- gunicorn 18.0 does not send accesslog to syslog.
-             gunicorn 19.0 is currently broken (see github issue 787) -->
+             gunicorn 19.0 is currently broken (see github issue 787)
+             gunicorn 20.0.2 generates an exception -->
         <bin>gunicorn</bin>
       </dep>
       <dep name="jinja2" target="python">
@@ -176,6 +178,9 @@
           <dep name="python36-lxml">
             <lib>.*/(lxml)/etree.*</lib>
           </dep>
+          <dep name="python36-pillow">
+            <lib>.*/(PIL)/__init__.py</lib>
+          </dep>
           <!-- next dependencies: because python27 and python36 are both
                installed, we make sure to look for a relevant v3 file.
                We can't use `target=` here since we install a native package.
@@ -290,7 +295,7 @@
         <share>(dws)/prefix.mk</share>
       </dep>
       <alternates>
-        <alternate name="CentOS">
+        <alternate name="RedHat">
           <dep name="freetype-devel">
             <!-- freetype-devel is required to compile podofo-flatfrom
             on CentOS 7. Apparently it is not required or pulled through
