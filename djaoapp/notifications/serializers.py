@@ -180,8 +180,8 @@ class ChargeNotificationSerializer(OrderNotificationSerializer):
 
 class RenewalFailedNotificationSerializer(ProfileNotificationSerializer):
 
-    charge_items = ChargeItemSerializer(many=True,
-        help_text=_("the line items on the charge receipt"))
+    invoiced_items = TransactionSerializer(many=True,
+        help_text=_("Line items to charge for renewal"))
     charge_total = PriceSerializer(
         help_text=_("Total amount for the charge"))
     nb_renewal_attempts = serializers.IntegerField(

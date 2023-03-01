@@ -13,7 +13,7 @@
             {% trans %}Subscription{% endtrans %}
           </label>
           <subscription-typeahead inline-template ref="subscription"
-                     :url="typeaheadUrl"
+              data-url="{{urls.provider.api_subscribers_active}}"
                      v-on:selectitem="updateItemSelected">
             <div>
               <div class="input-group mb-3">
@@ -45,8 +45,10 @@
                 <ul class="dropdown-menu nav-pills p-1"
                     style="display: block;"
                     v-show="hasItems">
-                  <li v-for="(item, $item) in items" :class="activeClass($item)" @mousedown="hit" @mousemove="setActive($item)">
-                    <a v-text="item.printable_name"></a>
+                  <li v-for="(item, $item) in items" class="nav-item"
+                      @mousedown="hit"
+                      @mousemove="setActive($item)">
+                    <a :class="'nav-link' + activeClass($item)" v-text="item.profile.printable_name + ' - ' + item.plan.title"></a>
                   </li>
                 </ul>
               </div>
@@ -66,12 +68,19 @@
           <label class="col-form-label" for="amount">
             {% trans %}Amount{% endtrans %}
           </label>
-          <input class="form-control"
-              name="amount"
-              type="number"
-              min="0" step="any"
-              placeholder="{% trans %}Amount{% endtrans %}"
-              v-model="entry.amount">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                [[(itemSelected && itemSelected.plan) ? itemSelected.plan.unit : 'usd']]
+              </span>
+            </div>
+            <input class="form-control"
+                   name="amount"
+                   type="number"
+                   min="0" step="any"
+                   placeholder="{% trans %}Amount{% endtrans %}"
+                   v-model="entry.amount">
+          </div>
           {% for error in form.amount.errors %}
           <span class="form-text"><strong>{{error}}</strong></span>
           {% endfor %}
