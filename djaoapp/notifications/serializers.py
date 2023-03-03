@@ -180,6 +180,8 @@ class ChargeNotificationSerializer(OrderNotificationSerializer):
 
 class RenewalFailedNotificationSerializer(ProfileNotificationSerializer):
 
+    provider = ProfileSerializer(required=False,
+        help_text=_("provider when different from broker"))
     invoiced_items = TransactionSerializer(many=True,
         help_text=_("Line items to charge for renewal"))
     charge_total = PriceSerializer(
