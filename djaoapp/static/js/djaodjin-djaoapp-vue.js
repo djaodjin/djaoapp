@@ -32,10 +32,6 @@ var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
   }
 }));
 
-var SubscriptionTypeAhead = Vue.component('subscription-typeahead',
-    TypeAhead.extend({
-}));
-
 
 Vue.component('notification-test', {
     mixins: [

@@ -153,7 +153,7 @@ def get_active_theme():
     return get_current_site().slug
 
 
-def get_disabled_authentication(request):
+def get_disabled_authentication(request, user):
     app = get_current_app()
     return (app.authentication == app.AUTH_DISABLED
         and not _valid_manager(request, [get_current_broker()]))

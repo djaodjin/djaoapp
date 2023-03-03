@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -13,15 +13,52 @@ from rules.mixins import AppMixin
 from rules.utils import get_current_app
 from saas.models import Agreement
 from saas.mixins import OrganizationMixin
-from signup.api.auth import JWTRegister as JWTRegisterBase
+from signup.api.auth import (
+    JWTActivate as JWTActivateBase,
+    JWTRegister as JWTRegisterBase)
 from signup.backends.sts_credentials import aws_bucket_context
 
-from ..mixins import RegisterMixin
+from ..mixins import RegisterMixin, VerifyMixin
 from .serializers import RegisterSerializer
 from ..compat import gettext_lazy as _
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+class DjaoAppJWTActivate(AppMixin, VerifyMixin, JWTActivateBase):
+    """
+    Retrieves an activation key
+
+    This API is typically used to pre-populate a registration form
+    when a user was invited to the site by another user.
+
+    The response is usually presented in an HTML
+    `activate page </docs/guides/themes/#workflow_activate>`_
+    as present in the default theme.
+
+    **Tags: auth, visitor, usermodel
+
+    **Example
+
+    .. code-block:: http
+
+        GET /api/auth/activate/16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6\
+ HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+        {
+          "slug": "joe1",
+          "username": "joe1",
+          "email": "joe1@localhost.localdomain",
+          "full_name": "Joe Act",
+          "printable_name": "Joe Act",
+          "created_at": "2020-05-30T00:00:00Z"
+        }
+    """
 
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
@@ -74,37 +111,6 @@ JwcBUUMECj8AKxsHtRHUSypco"
                 serializers.CharField(required=False, help_text=agreement.title)
             serializer_class.Meta.fields += (agreement.slug,)
         return serializer_class
-
-    def register(self, serializer):
-        #pylint: disable=maybe-no-member,too-many-boolean-expressions
-        # XXX incorrect use of `type` which is derived from
-        # Organization.ACCOUNT_TYPE vs. rules.app.REGISTRATION_TYPE
-        registration = serializer.validated_data.get('type',
-            self.app.IMPLICIT_REGISTRATION)
-        full_name = serializer.validated_data.get('full_name', None)
-        if 'organization_name' in serializer.validated_data:
-            # We have a registration of a user and organization together.
-            registration = self.app.TOGETHER_REGISTRATION
-            organization_name = serializer.validated_data.get(
-                'organization_name', None)
-            if full_name and full_name == organization_name:
-                # No we have a personal registration after all
-                registration = self.app.PERSONAL_REGISTRATION
-        elif (serializer.validated_data.get('street_address', None) or
-            serializer.validated_data.get('locality', None) or
-            serializer.validated_data.get('region', None) or
-            serializer.validated_data.get('postal_code', None) or
-            serializer.validated_data.get('country', None)):
-            # We have enough information for a billing profile
-            registration = self.app.PERSONAL_REGISTRATION
-
-        if registration == self.app.PERSONAL_REGISTRATION:
-            user = self.register_personal(**serializer.validated_data)
-        elif registration == self.app.TOGETHER_REGISTRATION:
-            user = self.register_together(**serializer.validated_data)
-        else:
-            user = self.register_user(**serializer.validated_data)
-        return user
 
 
 class AuthRealmsSerializer(serializers.Serializer):
@@ -163,7 +169,7 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
     serializer_class = AuthRealmsSerializer
 
     def get(self, request, *args, **kwargs):
-        #pylint:disable=unused-argument,no-self-use
+        #pylint:disable=unused-argument
         context = {}
         app = get_current_app()
         try:

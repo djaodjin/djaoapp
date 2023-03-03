@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -52,7 +52,7 @@ class DjaoAppMixin(object):
         # The edition tools will already be injected through
         # the url decorator (`inject_edition_tools` defined in decorators.py)
         # as it is added to `url_prefixed` in urlbuilders.py
-        #pylint:disable=unused-argument,no-self-use
+        #pylint:disable=unused-argument
         return None
 
     @property
@@ -101,6 +101,30 @@ class DjaoAppMixin(object):
         else:
             context.update({'urls': urls})
         return context
+
+
+class NotificationsMixin(object):
+
+    def get_notifications(self, user=None):
+        from .views.docs import NotificationDocGenerator
+        broker = get_broker()
+        generator = NotificationDocGenerator()
+        schema = generator.get_schema(request=self.request)
+        notifications = {notification_slug: {
+            'summary': notification.get('GET').get('summary'),
+            'description': notification.get('GET').get('description'),
+        }
+            for notification_slug, notification in schema.get('paths').items()}
+        # user with profile manager of broker (or theme editor)
+        if not user or broker.with_role(
+                saas_settings.MANAGER).filter(pk=user.pk).exists():
+            return notifications
+
+        # regular subscriber
+        return {key: notifications[key] for key in [
+            'charge_receipt', 'card_updated', 'order_executed',
+            'profile_updated', 'expires_soon',
+            'role_grant_created', 'role_request_created']}
 
 
 class RegisterMixin(object):
@@ -242,26 +266,56 @@ class RegisterMixin(object):
 
         return user
 
+    def create_user(self, **cleaned_data):
+        #pylint:disable=too-many-boolean-expressions
+        # We use the following line to understand better what kind of data
+        # bad bots post to a registration form.
+        LOGGER.debug("calling RegisterMixin.create_user(**%s)",
+            str({field_name: ('*****' if field_name.startswith('password')
+            else val) for field_name, val in six.iteritems(cleaned_data)}))
+        registration = self.app.USER_REGISTRATION
+        full_name = cleaned_data.get('full_name', None)
+        if 'organization_name' in cleaned_data:
+            # We have a registration of a user and organization together.
+            registration = self.app.TOGETHER_REGISTRATION
+            organization_name = cleaned_data.get('organization_name', None)
+            if full_name and full_name == organization_name:
+                # No we have a personal registration after all
+                registration = self.app.PERSONAL_REGISTRATION
+        elif (cleaned_data.get('street_address', None) or
+            cleaned_data.get('locality', None) or
+            cleaned_data.get('region', None) or
+            cleaned_data.get('postal_code', None) or
+            cleaned_data.get('country', None) or
+            cleaned_data.get('phone', None)):
+            # We have enough information for a billing profile
+            registration = self.app.PERSONAL_REGISTRATION
 
-class NotificationsMixin(object):
+        if registration == self.app.PERSONAL_REGISTRATION:
+            user = self.register_personal(**cleaned_data)
+        elif registration == self.app.TOGETHER_REGISTRATION:
+            user = self.register_together(**cleaned_data)
+        else:
+            user = self.register_user(**cleaned_data)
 
-    def get_notifications(self, user=None):
-        from .views.docs import NotificationDocGenerator
-        broker = get_broker()
-        generator = NotificationDocGenerator()
-        schema = generator.get_schema(request=self.request)
-        notifications = {notification_slug: {
-            'summary': notification.get('GET').get('summary'),
-            'description': notification.get('GET').get('description'),
-        }
-            for notification_slug, notification in schema.get('paths').items()}
-        # user with profile manager of broker (or theme editor)
-        if not user or broker.with_role(
-                saas_settings.MANAGER).filter(pk=user.pk).exists():
-            return notifications
+        return user
 
-        # regular subscriber
-        return {key: notifications[key] for key in [
-            'charge_receipt', 'card_updated', 'order_executed',
-            'profile_updated', 'expires_soon',
-            'role_grant_created', 'role_request_created']}
+
+class VerifyMixin(object):
+
+    def create_user(self, **cleaned_data):
+        agreements = list(Agreement.objects.filter(
+            slug__in=six.iterkeys(cleaned_data)))
+        for agreement in agreements:
+            not_signed = str(cleaned_data.get(agreement.slug, "")).lower() in [
+                'false', 'f', '0']
+            if not_signed:
+                raise ValidationError({agreement.slug:
+                    _("You must read and agree to the %(agreement)s.") % {
+                    'agreement': agreement.title}})
+
+        user = super(VerifyMixin, self).create_user(**cleaned_data)
+        if user:
+            for agreement in agreements:
+                Signature.objects.create_signature(agreement.slug, user)
+        return user
