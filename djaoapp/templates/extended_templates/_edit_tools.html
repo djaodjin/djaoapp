@@ -227,7 +227,7 @@ jQuery(document).ready(function($) {
     // media gallery
     $(".dj-gallery").djaoAppMediaGallery({
         mediaUrl: "{{urls.edit.api_medias}}",
-        S3DirectUploadUrl: "{{urls.edit.media_upload}}",
+        S3DirectUploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}?public=1{% endif %}",
         saveDroppedMediaUrl: "{{urls.edit.api_page_element_base}}",
         {% if templates %}hints: {{templates|safe}},{% endif %}
 
