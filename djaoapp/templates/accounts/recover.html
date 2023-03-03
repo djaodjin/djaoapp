@@ -25,7 +25,7 @@
   {% endif %}
   <div>
     <p class="text-center mt-3">
-      <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Back to Sign In?{% endtrans %}</a>
+      <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Back to Sign In{% endtrans %}</a>
       {% if urls.user.register %}
       {% trans %}or{% endtrans %}
       <a href="{{urls.user.register}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up{% endtrans %}</a>

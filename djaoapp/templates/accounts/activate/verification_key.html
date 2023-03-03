@@ -4,7 +4,7 @@
 
 {% block accounts_title %}{% trans %}Activate{% endtrans %}{% endblock %}
 
-{% block accounts_content %}
+{% block accounts_help %}
 {% if object %}
 <p class="text-center">
 {% if reason %}
@@ -18,36 +18,35 @@
 {% trans %}Thank you for verifying your phone number. Please enter your password to login.{% endtrans %}
 {% endif %}
 </p>
-
-{% if form %}
-  {% if form.email or form.phone %}
-  <div class="text-right mb-2">
-    {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-  </div>
-  {% endif %}
-  {% include "_form.html" %}
-  <hr />
-  <div class="row">
-    <div class="col-md-4">
-      <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
-    </div>
-    <div class="col-md-8 text-right">
-      {% if form.email or form.phone %}
-      {% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-      {% else %}
-      <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
-      {% endif %}
-    </div>
-  </div>
-{% endif %} {# form #}
-
-{% else %} {# not object #}
-<p>
-{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
-</p>
-<p>
-{% trans %}You already have an account?{% endtrans %} <i class="fa fa-long-arrow-right"></i> <a href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign in{% endtrans %}</a>
-</p>
 {% endif %}
+{% endblock %}
 
+
+{% block accounts_content %}
+<div>
+  {% if object and form %}
+  <p class="text-center mb-2">
+    {% trans %}Already have an account?{% endtrans %}
+    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+  </p>
+  <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+    {% block register_form %}
+    {% include "accounts/_register_form_fields.html" %}
+    {% endblock %}
+    <div class="form-action text-center">
+      <button type="submit" class="btn btn-block btn-primary btn-md">
+        {% trans %}Sign Up{% endtrans %}
+      </button>
+    </div>
+  </form>
+  {% else %}
+  <p class="text-center">
+{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
+  </p>
+  {% endif %}
+  <p class="text-center mt-3">
+    {% trans %}Already have an account?{% endtrans %}
+    <a id="login-instead" href="{{urls.user.login}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign In{% endtrans %}</a>
+  </p>
+</div>
 {% endblock %}

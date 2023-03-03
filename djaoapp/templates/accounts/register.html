@@ -13,7 +13,7 @@
   {% if form %}
   <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {% block register_form %}
-    {% include "accounts/_register_form.html" %}
+    {% include "accounts/_register_form_fields.html" %}
     {% endblock %}
     <div class="form-action text-center">
       <button type="submit" class="btn btn-block btn-primary btn-md">

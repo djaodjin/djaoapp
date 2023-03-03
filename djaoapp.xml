@@ -17,7 +17,7 @@
     <repository>
       <!-- XXX If srcTop is not *siteTop*/reps, this will not fetch
            resources at the expected place. -->
-      <dep name="Django" target="python" includes="3.2.16">
+      <dep name="Django" target="python" includes="3.2.18">
         <!-- Django>=2 requires SQLite>=3.8.3 -->
         <lib>.*/(django)/core/wsgi.py</lib>
       </dep>

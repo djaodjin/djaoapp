@@ -12,6 +12,8 @@
         <div class="page-header my-4">
           <h3 class="text-center">{% block accounts_title %}{% endblock %}</h3>
         </div>
+        {% block accounts_help %}
+        {% endblock %}
         {% if sso_required %}
         <p>
 {% trans %}You are required to login through the following Single Sign On (SSO) provider{% endtrans %}:

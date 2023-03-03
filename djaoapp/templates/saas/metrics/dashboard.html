@@ -19,7 +19,7 @@
               <h5 class="card-title">{% trans %}Find a profile{% endtrans %}</h5>
             </div>
             <div class="card-body pb-0">
-              <search-profile inline-template data-url="'{{urls.provider.api_accounts}}'" id="search-list-container">
+              <search-profile inline-template data-url="{{urls.provider.api_accounts}}" id="search-list-container">
                 <div>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -39,7 +39,6 @@
                            autocomplete="off"
                            v-model="query"
                            @keydown.enter.prevent="hit"
-                           @blur="clear"
                            @input="update" />
                   </div>
                   <table class="table table-striped">
