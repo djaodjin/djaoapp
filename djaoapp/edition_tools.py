@@ -107,7 +107,7 @@ def inject_edition_tools(response, request, context=None,
         try:
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
-            _ = get_storage_class().bucket_name
+            _ = get_storage_class().access_key_names
             edit_urls.update({
                 'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
