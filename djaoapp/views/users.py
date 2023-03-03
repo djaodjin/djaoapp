@@ -9,20 +9,21 @@ from django.http import HttpResponseRedirect
 from multitier.thread_locals import get_current_site
 from saas.models import Organization
 from saas.utils import update_context_urls
+from saas.views.users import ProductListView as UserAccessiblesBaseView
 from signup.views.users import (
     PasswordChangeView as UserPasswordUpdateBaseView,
     UserNotificationsView as UserNotificationsBaseView,
     UserProfileView as UserProfileBaseView,
     UserPublicKeyUpdateView as UserPublicKeyUpdateBaseView)
-from saas.views.users import ProductListView as UserAccessiblesBaseView
 
 from ..compat import gettext_lazy as _, reverse
 from ..mixins import NotificationsMixin
+from ..extras.signup import ExtraMixin
 
 LOGGER = logging.getLogger(__name__)
 
 
-class UserProfileView(UserProfileBaseView):
+class UserProfileView(ExtraMixin, UserProfileBaseView):
 
     template_name = 'saas/profile/index.html'
 
@@ -47,27 +48,28 @@ class UserProfileView(UserProfileBaseView):
         return super(UserProfileView, self).get(request, *args, **kwargs)
 
 
-class UserNotificationsView(NotificationsMixin, UserNotificationsBaseView):
+class UserNotificationsView(NotificationsMixin, ExtraMixin,
+                            UserNotificationsBaseView):
     """
     A view where a user can configure their notification settings
     """
 
 
-class UserAccessiblesView(UserAccessiblesBaseView):
+class UserAccessiblesView(ExtraMixin, UserAccessiblesBaseView):
 
     def get_context_data(self, **kwargs):
         context = super(UserAccessiblesView, self).get_context_data(**kwargs)
         # We have to add 'site' to the context here because the connected
-        # profiles page inherits from UserMixin, not OrganizationMixin.
+        # profiles page inherits from ExtraMixin, not OrganizationMixin.
         context.update({
             'site': get_current_site()
         })
         return context
 
 
-class UserPasswordUpdateView(UserPasswordUpdateBaseView):
+class UserPasswordUpdateView(ExtraMixin, UserPasswordUpdateBaseView):
     pass
 
 
-class UserPublicKeyUpdateView(UserPublicKeyUpdateBaseView):
+class UserPublicKeyUpdateView(ExtraMixin, UserPublicKeyUpdateBaseView):
     pass

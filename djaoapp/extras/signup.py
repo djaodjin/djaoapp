@@ -3,24 +3,22 @@
 
 from __future__ import absolute_import
 
-from extended_templates.extras import AccountMixinBase
-from rules.extras import AppMixinBase
 from saas.extras import OrganizationMixinBase
-from signup.helpers import update_context_urls
 
 from ..compat import reverse
 
 
-class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
+class ExtraMixin(object):
 
     def get_organization(self):
         from saas.utils import get_organization_model # to avoid import loops
         return get_organization_model().objects.attached(self.user)
 
     def get_context_data(self, **kwargs):
+        from saas.utils import update_context_urls # to avoid import loops
         context = super(ExtraMixin, self).get_context_data(**kwargs)
 
-        self.update_context_urls(context, {
+        update_context_urls(context, {
             'user': {
                 # The following are copy/pasted
                 # from `signup.UserProfileView`
@@ -48,12 +46,11 @@ class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
         }})
 
         organization = self.get_organization()
-        if not organization or not organization.is_broker:
-            if 'urls' in context:
-                if 'theme_update' in context['urls']:
-                    del context['urls']['theme_update']
-                if 'rules' in context['urls']:
-                    del context['urls']['rules']
+        if organization and organization.is_broker:
+            update_context_urls(context, {
+                'theme_update': reverse('extended_templates_theme_update'),
+                'rules': {'app': reverse('rules_update')}
+            })
 
         if organization and not organization.is_broker:
             # A broker does not have subscriptions.
