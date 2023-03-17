@@ -74,6 +74,23 @@ class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
 
 class OrganizationProfileView(OrganizationProfileViewBase):
 
+    @property
+    def contact(self):
+        if not hasattr(self, '_contact'):
+            self._contact = get_user_contact(self.object.attached_user())
+        return self._contact
+
+
+    def get_context_data(self, **kwargs):
+        context = super(OrganizationProfileView, self).get_context_data(
+            **kwargs)
+        if self.contact:
+            context.update({
+                'email_verified_at': self.contact.email_verified_at,
+                'phone_verified_at': self.contact.phone_verified_at
+            })
+        return context
+
     def update_attached_user(self, form):
         validated_data = form.cleaned_data
         user = self.object.attached_user()
@@ -110,9 +127,8 @@ class OrganizationProfileView(OrganizationProfileViewBase):
     def get_initial(self):
         kwargs = super(OrganizationProfileView, self).get_initial()
         if self.object.attached_user():
-            contact = get_user_contact(self.object.attached_user())
-            if contact:
-                kwargs.update({'lang': contact.lang})
+            if self.contact:
+                kwargs.update({'lang': self.contact.lang})
         return kwargs
 
 

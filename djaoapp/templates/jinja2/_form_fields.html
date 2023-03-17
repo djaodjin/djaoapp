@@ -134,6 +134,65 @@
 {%- endmacro %}
 
 
+{% macro verified_input_field(input_type, verified_at, max_length, min_value, max_value, step, placeholder, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+<div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
+  {% if not hide_labels %}
+  <label class="col-form-label row{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}">
+    <div class="col-6">
+      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {% if verified_at %}
+      <i class="fa fa-check text-green"></i>
+      {% endif %}
+    </div>
+    <div class="col-6 text-right">
+      <a href=""
+         data-toggle="modal"
+         data-target="#verify-{{name}}">
+        {% if verified_at %}{% trans date=verified_at %}verify again{% endtrans %}{% else %}{% trans %}verify{% endtrans %}{% endif %}
+      </a>
+    </div>
+  </label>
+  {% endif %}
+  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
+    <input class="form-control{% if errors %} is-invalid{% endif %}" ref="{{name}}" name="{{name}}"
+          {% if value is not none %}
+          value="{{value}}"
+          {% endif %}
+          {% if placeholder %}
+          placeholder="{{placeholder}}"
+          {% endif %}
+          type="{{input_type}}"
+          {% if max_length %}
+          maxlength="{{max_length}}"
+          {% endif %}
+          {% if min_value %}
+          min="{{min_value}}"
+          {% endif %}
+          {% if max_value %}
+          max="{{max_value}}"
+          {% endif %}
+          {% if step %}
+          step="{{step}}"
+          {% endif %}
+          {% if disabled %}
+          disabled
+          {% endif %}
+           />
+    <div class="form-text help-block invalid-feedback errorlist">
+      {% for error in errors %}
+      {{error}}
+      {% endfor %}
+    </div>
+    <div class="form-text help-block">
+      {% if help_text %}
+      <small class="form-text text-muted">{{help_text}}</small>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+
 {% macro text_input_field(input_type, max_length, min_value, max_value, step, placeholder, name, required, label, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
@@ -210,6 +269,15 @@
 {%- endmacro %}
 
 
+{% macro email_input_field(bound_field, verified_at, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+{%- endmacro %}
+
+{% macro phone_input_field(bound_field, verified_at, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+{%- endmacro %}
+
+
 {% macro input_field(bound_field, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
 {% if bound_field.field.widget.recaptcha_response_name %}
 <div>
@@ -243,9 +311,11 @@
 {% block form_block %}
   {% if form %}
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+    {% block form_fields_block %}
     {% for name, field in form.fields.items() %}
       {{input_field(form[name], form.hide_labels)}}
     {% endfor %}
+    {% endblock %}
     {% if not form.hide_labels %}
     <div class="w-100 mb-4">
       <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>

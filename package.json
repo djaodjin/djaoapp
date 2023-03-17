@@ -21,6 +21,7 @@
         "moment-timezone": "0.5.14",
         "nvd3": "v1.8.1",
         "pagedown": "1.1.0",
+        "qrcode": "1.5.1",
         "sass": "1.51.0",
         "skrollr": "0.6.26",
         "swagger-cli": "^2.2.2",

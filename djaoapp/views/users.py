@@ -40,7 +40,6 @@ class UserProfileView(UserProfileBaseView):
 
     def get(self, request, *args, **kwargs):
         attached_organization = self.get_organization()
-        print("XXX UserProfileView.get ... attached_organization=%s" % str(attached_organization))
         if attached_organization:
             return HttpResponseRedirect(reverse('saas_organization_profile',
                 args=(attached_organization,)))

@@ -1590,7 +1590,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
             " to join %(organization)s.") % {
             'organization': role.organization.printable_name}
         Contact.objects.prepare_email_verification(
-            user, user.email, reason=reason)
+            user.email, user=user, reason=reason)
     context = {
         'broker': get_broker(),
         'back_url': site.as_absolute_uri(back_url),

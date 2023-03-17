@@ -15,10 +15,18 @@ class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
 
     def get_organization(self):
         from saas.utils import get_organization_model # to avoid import loops
-        return get_organization_model().objects.attached(self.user)
+        from saas.models import get_broker
+        if hasattr(self, 'user'):
+            # ContactListView
+            return get_organization_model().objects.attached(self.user)
+        return get_broker()
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
+
+        if not hasattr(self, 'user'):
+            # ContactListView
+            return context
 
         self.update_context_urls(context, {
             'user': {

@@ -148,15 +148,6 @@ class RegisterMixin(object):
         'username',
     )
 
-    def register_personal(self, **cleaned_data):
-        """
-        Registers both a User and an Organization at the same time
-        with the added constraint that username and organization slug
-        are identical such that it creates a transparent user billing profile.
-        """
-        return self.register_together(organization_selector='full_name',
-            **cleaned_data)
-
     def register_together(self,
                           user_selector='full_name',
                           organization_selector='organization_name',
@@ -195,7 +186,7 @@ class RegisterMixin(object):
         try:
             with transaction.atomic():
                 # Create a ``User``
-                user = self.register_user(**cleaned_data)
+                user = super(RegisterMixin, self).create_user(**cleaned_data)
                 if user_selector == organization_selector:
                     # We have a personal registration
                     organization_slug = user.username
@@ -247,10 +238,10 @@ class RegisterMixin(object):
 
         return user
 
-    def register_user(self, **cleaned_data):
-        agreements = list(Agreement.objects.filter(
+    def register_check_data(self, **cleaned_data):
+        self.agreements = list(Agreement.objects.filter(
             slug__in=six.iterkeys(cleaned_data)))
-        for agreement in agreements:
+        for agreement in self.agreements:
             not_signed = cleaned_data.get(agreement.slug, "").lower() in [
                 'false', 'f', '0']
             if not_signed:
@@ -258,19 +249,13 @@ class RegisterMixin(object):
                     _("You must read and agree to the %(agreement)s.") % {
                     'agreement': agreement.title}})
 
-        user = super(RegisterMixin, self).register_user(**cleaned_data)
-        if user:
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            for agreement in agreements:
-                Signature.objects.create_signature(agreement.slug, user)
-
-        return user
+        super(RegisterMixin, self).register_check_data(**cleaned_data)
 
     def create_user(self, **cleaned_data):
         #pylint:disable=too-many-boolean-expressions
         # We use the following line to understand better what kind of data
         # bad bots post to a registration form.
-        LOGGER.debug("calling RegisterMixin.create_user(**%s)",
+        LOGGER.debug("calling djaoapp.RegisterMixin.create_user(**%s)",
             str({field_name: ('*****' if field_name.startswith('password')
             else val) for field_name, val in six.iteritems(cleaned_data)}))
         registration = self.app.USER_REGISTRATION
@@ -292,30 +277,38 @@ class RegisterMixin(object):
             registration = self.app.PERSONAL_REGISTRATION
 
         if registration == self.app.PERSONAL_REGISTRATION:
-            user = self.register_personal(**cleaned_data)
+            # Registers both a User and an Organization at the same time
+            # with the added constraint that username and organization slug
+            # are identical such that it creates a transparent user billing
+            # profile.
+            user = self.register_together(organization_selector='full_name',
+                **cleaned_data)
         elif registration == self.app.TOGETHER_REGISTRATION:
             user = self.register_together(**cleaned_data)
         else:
-            user = self.register_user(**cleaned_data)
+            user = self.create_user(**cleaned_data)
 
         return user
 
 
 class VerifyMixin(object):
 
-    def create_user(self, **cleaned_data):
-        agreements = list(Agreement.objects.filter(
+    def register_check_data(self, **cleaned_data):
+        self.agreements = list(Agreement.objects.filter(
             slug__in=six.iterkeys(cleaned_data)))
-        for agreement in agreements:
-            not_signed = str(cleaned_data.get(agreement.slug, "")).lower() in [
+        for agreement in self.agreements:
+            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
                 'false', 'f', '0']
             if not_signed:
                 raise ValidationError({agreement.slug:
                     _("You must read and agree to the %(agreement)s.") % {
                     'agreement': agreement.title}})
 
+        super(VerifyMixin, self).register_check_data(**cleaned_data)
+
+    def create_user(self, **cleaned_data):
         user = super(VerifyMixin, self).create_user(**cleaned_data)
         if user:
-            for agreement in agreements:
+            for agreement in self.agreements:
                 Signature.objects.create_signature(agreement.slug, user)
         return user

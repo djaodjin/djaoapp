@@ -29,6 +29,6 @@ class ExtraMixin(OrganizationMixinBase, AccountMixinBase):
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
             'notifications': reverse('notification_base'),
-            'contacts': reverse('contacts')
+            'contacts': reverse('signup_contacts')
         })
         return context

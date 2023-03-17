@@ -173,14 +173,15 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/jquery.payment/lib/jquery.payment.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Converter.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper-utils.min.js* $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/qrcode/build/qrcode.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
