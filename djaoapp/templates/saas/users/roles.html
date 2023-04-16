@@ -7,7 +7,8 @@
 
 {% block saas_content %}
 <role-user-list-modal inline-template >
-  <role-profile-list inline-template
+  <role-profile-list inline-template ref="profiles"
+        :request-user="'{{request.user.email}}'"
         @create="create" @create-completed="createCompleted"
         @remove="remove" @remove-completed="removeCompleted"
         id="accessible-list-container">
@@ -27,18 +28,18 @@
         </div>
         <div id="add-or-create" v-bind:class="itemsLoaded && items.results.length == 0 ? 'collapse show' : 'collapse'" v-cloak>
           <div class="row">
-            <div class="col-md-6 mt-3">
-              <div v-bind:class="profileRequestDone ? 'card bg-light' : 'card'">
+            <div class="col-md-12 mt-3">
+              <div class="card bg-light">
                 <div class="card-header">
-              A profile already exists on the site and you would like
-              to access to it?
+{% trans %}Request access to an existing profile or create a new profile{% endtrans %}
                 </div>
                 <div class="card-body">
                   <form id="add-profile" @submit.prevent="submit">
                     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                    <account-typeahead inline-template ref="account"
+                    <account-typeahead inline-template ref="typeahead"
                                        v-bind:dataset="items.results"
-                                       v-on:selectitem="updateItemSelected">
+                                       v-on:selectitem="updateItemSelected"
+                                       v-show="!inNewProfileFlow">
                       <div>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
@@ -54,31 +55,72 @@
                           <!-- the input field -->
                           <input class="form-control"
                                  type="text"
-                                 name="organization"
-                                 placeholder="{% trans %}Profile name or e-mail{% endtrans %}"
+                                 name="profile"
+                                 placeholder="{% trans %}Start typing an organization name or a contact e-mail ...{% endtrans %}"
                                  autocomplete="off"
+                                 ref="input"
                                  v-model="query"
-                                 @keydown.down="down"
-                                 @keydown.up="up"
-                                 @keydown.enter.prevent="hit"
-                                 @blur="clear"
-                         @input="update" />
+                                 @input="update" />
                           <!-- the list -->
                           {# Implementation note: If we use `d-block` instead of    #}
                           {# `style="display: block;"` the dropdown shows even when #}
                           {# `hasItems` is `False`.                                 #}
-                          <ul class="dropdown-menu nav-pills p-1"
-                              style="display: block;"
-                              v-show="hasItems">
-                            <li v-for="(item, $item) in items" class="nav-item"
-                                @mousedown="hit"
-                                @mousemove="setActive($item)">
-                              <a :class="'nav-link' + activeClass($item)" v-text="item.printable_name"></a>
-                            </li>
-                          </ul>
+                        </div>
+                        <div style="display: block;"
+                             v-for="(item, $item) in items"
+                             v-show="hasItems">
+                            {% include "saas/_request_profile_card.html" %}
+                        </div>{# /v-show="hasItems" #}
+                        <div v-show="!hasItems && query">
+                          <p>
+{% trans %}We couldn't find a profile matching your search criteria, or there are too many profiles matching your search criteria. Please keep typing to narrow the search, or create a new profile.{% endtrans %}
+                          </p>
+                          {% include "saas/_create_profile_card.html" %}
                         </div>
                       </div>
                     </account-typeahead>
+                    <!-- Workflow to create a new profile  -->
+                    <div class="card" v-show="inNewProfileFlow">
+                      <div class="card-body text-left"
+                           aria-labelledby="{% trans %}Create profile{% endtrans %}" aria-hidden="true">
+                        <p>
+{% trans %}You are about to create a new profile for yourself or for your organization. We need a gather some information to create the profile.{% endtrans %}
+                        </p>
+                        <div class="form-group">
+                          <label>{% trans %}Profile name{% endtrans %}</label>
+                          <input class="form-control w-100"
+                                 name="full_name" type="text"
+                                 max-length="150" placeholder="My Profile"
+                                 v-model="newProfile.full_name" />
+                        </div>
+                        <div class="form-group">
+                          <label>{% trans %}Profile email{% endtrans %}</label>
+                          <input class="email form-control w-100"
+                                 name="email" type="text"
+                                 max-length="150" placeholder="myprofile@example.com"
+                                 v-model="newProfile.email" />
+                        </div>
+                        <div class="form-group">
+                          <label>{% trans %}Unique ID (as shown in URLs){% endtrans %}</label>
+                          <input class="form-control w-100"
+                                 name="slug" type="text"
+                                 max-length="150" placeholder="my-profile"
+                                 autofocus
+                                 v-model="newProfile.slug" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <button class="btn btn-secondary btn-md btn-block"
+                                  @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                        </div>
+                        <div class="col-sm-6">
+                          <button class="btn btn-primary btn-md btn-block"
+                                  type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                        </div>
+                      </div>
+                    </div>
+
                     <!-- Request to add a role to a user on a profile.  -->
                     <div aria-labelledby="{% trans %}Request access{% endtrans %}"
                          aria-hidden="true"
@@ -110,49 +152,12 @@ Thank you,
                           </textarea>
                         </div>
                       </div>
+                      <button class="btn btn-primary btn-md btn-block mt-3"
+                              type="submit">{% trans %}Request access{% endtrans %}</button>
                     </div><!-- /.add-add-role-modal -->
-                    <button class="btn btn-primary btn-md btn-block mt-3"
-                            type="submit">{% trans %}Request access{% endtrans %}</button>
                   </form>
                 </div>
               </div><!-- /.card -->
-            </div>
-            <div class="col-md-6 mt-3 text-right">
-              <div v-bind:class="inNewProfileFlow ? 'card bg-light' : 'card'">
-                <div class="card-header text-left">
-                  Looking to start a completely new profile?
-                </div>
-                <div class="card-body text-left">
-                  <form @submit.prevent="create">
-                    <div class="create-profile collapse" tabindex="-1"
-                         aria-labelledby="{% trans %}Create profile{% endtrans %}" aria-hidden="true">
-                      <div class="form-group">
-                        <label>{% trans %}Screen name{% endtrans %}</label>
-                        <input class="form-control w-100"
-                               name="slug" type="text"
-                               max-length="150" placeholder="unique-id"
-                               autofocus
-                               v-model="newProfile.slug" />
-                      </div>
-                      <div class="form-group">
-                        <label>{% trans %}Full name{% endtrans %}</label>
-                        <input class="form-control w-100"
-                               name="full_name" type="text"
-                               max-length="150" placeholder="My Profile"
-                               v-model="newProfile.full_name" />
-                      </div>
-                      <div class="form-group">
-                        <label>{% trans %}Email{% endtrans %}</label>
-                        <input class="email form-control w-100"
-                               name="email" type="text"
-                               max-length="150" placeholder="myprofile@example.com"
-                               v-model="newProfile.email" />
-                      </div>
-                    </div>
-                    <button class="btn btn-primary btn-md btn-block" type="submit">{% trans %}Create Profile{% endtrans %}</button>
-                  </form>
-                </div>
-              </div>
             </div>
           </div>
         </div><!-- /#add-or-create -->

@@ -1,0 +1,18 @@
+<div id="newProfile" class="card mt-1">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-2">
+        <img class="img-fluid" style="max-height:64px;" src="{{'/static/img/default-organization.png'|asset}}" >
+      </div>
+      <div class="col-5">
+[[query]]
+      </div>
+      <div class="col-5 text-right">
+      {% block actions %}
+      <button class="btn btn-primary btn-md btn-block"
+        @click.prevent="onHit()">{% trans %}Create profile{% endtrans %}</button>
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>{# /.card #}
