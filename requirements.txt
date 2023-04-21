@@ -39,7 +39,7 @@ WeasyPrint==52.5
 # setproctitle==1.2.3
 
 # To run with DEBUG=1
-django-debug-toolbar==3.5.2       # 3.4.0 requires Django>=3.2
+django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2
                                   # 3.2.4 fails with SQLPanel is not scriptable
                                   # 2.2.1 is the last version for Django2.2
                                   # 1.11 does not support Django 2.2
