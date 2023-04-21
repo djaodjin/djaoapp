@@ -18,12 +18,11 @@ from signup.views.users import (
 
 from ..compat import gettext_lazy as _, reverse
 from ..mixins import NotificationsMixin
-from ..extras.signup import ExtraMixin
 
 LOGGER = logging.getLogger(__name__)
 
 
-class UserProfileView(ExtraMixin, UserProfileBaseView):
+class UserProfileView(UserProfileBaseView):
 
     template_name = 'saas/profile/index.html'
 
@@ -47,28 +46,27 @@ class UserProfileView(ExtraMixin, UserProfileBaseView):
         return super(UserProfileView, self).get(request, *args, **kwargs)
 
 
-class UserNotificationsView(NotificationsMixin, ExtraMixin,
-                            UserNotificationsBaseView):
+class UserNotificationsView(NotificationsMixin, UserNotificationsBaseView):
     """
     A view where a user can configure their notification settings
     """
 
 
-class UserAccessiblesView(ExtraMixin, UserAccessiblesBaseView):
+class UserAccessiblesView(UserAccessiblesBaseView):
 
     def get_context_data(self, **kwargs):
         context = super(UserAccessiblesView, self).get_context_data(**kwargs)
         # We have to add 'site' to the context here because the connected
-        # profiles page inherits from ExtraMixin, not OrganizationMixin.
+        # profiles page inherits from UserMixin, not OrganizationMixin.
         context.update({
             'site': get_current_site()
         })
         return context
 
 
-class UserPasswordUpdateView(ExtraMixin, UserPasswordUpdateBaseView):
+class UserPasswordUpdateView(UserPasswordUpdateBaseView):
     pass
 
 
-class UserPublicKeyUpdateView(ExtraMixin, UserPublicKeyUpdateBaseView):
+class UserPublicKeyUpdateView(UserPublicKeyUpdateBaseView):
     pass
