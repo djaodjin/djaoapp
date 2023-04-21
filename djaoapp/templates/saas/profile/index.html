@@ -178,6 +178,81 @@
       </div>
     </form>
   </div><!-- end modal to delete profile -->
+
+  <!-- modal dialog to verifiy email -->
+  <div class="modal fade"
+       id="verify-email" tabindex="-1" role="dialog"
+       aria-labelledby="{% trans %}Verify e-mail{% endtrans %}"
+       aria-hidden="true">
+    <form class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans %}Verify e-mail{% endtrans %} ...</h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+{% trans %}We will send an e-mail with a one-time verification link. Please click, or copy/paste the link in a browser window, to verify the e-mail address.{% endtrans %}
+          </p>
+          <p>
+            {% trans %}Are you ready to verify the email address?{% endtrans %}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete"
+                  data-dismiss="modal"
+                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+          <button type="button" id="verify-email-btn"
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  @click="verifyEmail">{% trans %}Email link{% endtrans %}</button>
+        </div>
+      </div>
+    </form>
+  </div><!-- /#verify-email -->
+
+  <!-- modal dialog to verifiy phone -->
+  <div class="modal fade"
+       id="verify-phone" tabindex="-1" role="dialog"
+       aria-labelledby="{% trans %}Verify phone{% endtrans %}"
+       aria-hidden="true">
+    <form class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans %}Verify phone number{% endtrans %} ...</h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body" v-if="!codeSent">
+          <p>
+{% trans %}We will text a one-time code to the phone number. We will then ask you to enter this code to verify the phone number.{% endtrans %}
+          </p>
+          <p>
+            {% trans %}Are you ready to verify the phone number?{% endtrans %}
+          </p>
+        </div>
+        <div class="modal-body" v-if="codeSent">
+            <label>Code</label>
+            <input class="form-control" type="text" maxlength="4" ref="code">
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete"
+                  data-dismiss="modal"
+                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+          <button type="button" id="verify-phone-btn"
+                  class="btn btn-primary"
+                  @click.prevent="verifyPhone" v-if="!codeSent">{% trans %}Text a code{% endtrans %}</button>
+          <button type="button" id="verify-phone-btn"
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  @click.prevent="submitCode"
+                  v-if="codeSent">{% trans %}Submit code{% endtrans %}</button>
+        </div>
+      </div>
+    </form>
+  </div><!-- /#verify-phone -->
+
 </div>
 </{% if urls.user %}user{% else %}profile{% endif %}-update>
 {% endblock %}

@@ -79,7 +79,7 @@ module.exports = {
          httpRequestMixin: ['js/djaodjin-resources-vue.js', 'httpRequestMixin'],
           itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
           itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
-          TypeAhead: ['js/djaodjin-resources-vue.js', 'TypeAhead'],
+          typeAheadMixin: ['js/djaodjin-resources-vue.js', 'typeAheadMixin'],
 
           clearMessages: ['js/djaodjin-resources.js', 'clearMessages'],
           showMessages: ['js/djaodjin-resources.js', 'showMessages'],

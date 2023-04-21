@@ -1,6 +1,9 @@
 // specifics to DjaoApp
 
-var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
+var AccountTypeAhead = Vue.component('account-typeahead', {
+  mixins: [
+      typeAheadMixin
+  ],
   props: ['dataset'],
   data: function data() {
     return {
@@ -26,15 +29,10 @@ var AccountTypeAhead = Vue.component('account-typeahead', TypeAhead.extend({
     onHit: function onHit(newItem) {
       var vm = this;
       vm.$emit('selectitem', newItem);
-      vm.reset();
       vm.clear();
     }
   }
-}));
-
-var SubscriptionTypeAhead = Vue.component('subscription-typeahead',
-    TypeAhead.extend({
-}));
+});
 
 
 Vue.component('notification-test', {
@@ -59,7 +57,7 @@ Vue.component('notification-test', {
 Vue.component('role-user-list-modal', {
     methods: {
         create: function() {
-            var dialog = $(".create-profile");
+            var dialog = $("#add-or-create");
             if( dialog.length > 0 ) {
                if( dialog.hasClass('modal') ) {
                    dialog.modal("show");
@@ -69,7 +67,7 @@ Vue.component('role-user-list-modal', {
             }
         },
         createCompleted: function() {
-            var dialog = $(".create-profile");
+            var dialog = $("#add-or-create");
             if( dialog.length > 0 ) {
                if( dialog.hasClass('modal') ) {
                    dialog.modal("hide");
@@ -98,6 +96,14 @@ Vue.component('role-user-list-modal', {
                }
             }
         }
+    },
+    mounted: function() {
+        var vm = this;
+        jQuery(document).ready(function($) {
+            jQuery('#add-or-create').on('shown.bs.collapse', function () {
+                vm.$refs.profiles.$refs.typeahead.$refs.input.focus();
+            });
+        });
     }
 });
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -16,8 +16,7 @@ from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
 from signup.forms import (ActivationForm as ActivationFormBase,
-    FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm,
-    UserActivateForm as UserActivateFormBase)
+    FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm)
 
 from .fields import PhoneNumberField
 from ..compat import gettext_lazy as _, reverse, six
@@ -64,11 +63,6 @@ class ActivationForm(MissingFieldsMixin, ActivationFormBase):
                     required=extra_field[2])
 
 
-class UserActivateForm(MissingFieldsMixin, UserActivateFormBase):
-
-    pass
-
-
 class PasswordForm(MissingFieldsMixin, PasswordResetForm):
 
     submit_title = _("Reset")
@@ -80,7 +74,6 @@ class PasswordForm(MissingFieldsMixin, PasswordResetForm):
 class SigninForm(MissingFieldsMixin, AuthenticationForm):
 
     submit_title = _("Sign in")
-    hide_labels = True
 
 
 class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,

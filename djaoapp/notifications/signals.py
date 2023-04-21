@@ -490,11 +490,14 @@ def user_mfa_code_notice(sender, user, code, request, **kwargs):
     contact = user
     LOGGER.debug("[signal] user_mfa_code_notice(user=%s, code=%s,"\
         " request=%s)", contact.user, code, request)
+    site = get_current_site()
+    back_url = site.as_absolute_uri(reverse('login'))
     context = {
         'broker': get_broker(),
         'user': contact.user,
         'nb_expiration_days': 1, # XXX
         'code': code,
+        'back_url': back_url
     }
     get_current_app().send_notification('user_mfa_code',
         context=OneTimeCodeNotificationSerializer().to_representation(context))
@@ -1590,7 +1593,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
             " to join %(organization)s.") % {
             'organization': role.organization.printable_name}
         Contact.objects.prepare_email_verification(
-            user, user.email, reason=reason)
+            user.email, user=user, reason=reason)
     context = {
         'broker': get_broker(),
         'back_url': site.as_absolute_uri(back_url),

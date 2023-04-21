@@ -14,7 +14,7 @@ from ..api.organizations import (DjaoAppProfileDetailAPIView,
 from ..api.roles import DjaoAppRoleByDescrListAPIView
 from ..api.todos import DjaoAppAPIVersion, TodosAPIView
 from ..api.users import (RecentActivityAPIView, DjaoAppUserDetailAPIView,
-    DjaoAppUserNotificationsAPIView)
+    DjaoAppUserNotificationsAPIView, DjaoAppUserOTPAPIView)
 from ..urlbuilders import (url_authenticated, url_direct,
     url_frictionless_direct, url_frictionless_provider,
     url_frictionless_self_provider, url_prefixed,
@@ -91,6 +91,9 @@ urlpatterns = [
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)/notifications$' %
         USERNAME_PAT, DjaoAppUserNotificationsAPIView.as_view(),
         name='api_user_notifications'),
+    url_frictionless_self_provider(r'^api/users/(?P<user>%s)/otp$' %
+        USERNAME_PAT,
+        DjaoAppUserOTPAPIView.as_view(), name='api_user_otp_change'),
     url_self_provider(r'^api/', include('signup.urls.api.users')),
     # `{user}` is not a url parameter, hence we cannot use `url_self_provider`.
     # Furthermore we restrict verification and refresh of JWT

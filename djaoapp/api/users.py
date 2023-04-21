@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,10 +8,11 @@ from operator import itemgetter
 from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView
 
-from saas.models import Charge
+from saas.models import get_broker, Charge
 from saas.metrics.base import day_periods
 from saas.utils import get_role_model
-from signup.api.users import (UserDetailAPIView as UserDetailBaseAPIView,
+from signup.api.users import (OTPChangeAPIView as OTPChangeBaseAPIView,
+    UserDetailAPIView as UserDetailBaseAPIView,
     UserNotificationsAPIView as UserNotificationsBaseAPIView)
 
 from ..mixins import NotificationsMixin
@@ -170,3 +171,9 @@ class RecentActivityAPIView(ListAPIView):
                 'slug': charge.customer.slug}
         data = sorted(data.values(), key=itemgetter('printable_name'))
         return data
+
+
+class DjaoAppUserOTPAPIView(OTPChangeBaseAPIView):
+
+    def get_issuer_name(self):
+        return get_broker().printable_name

@@ -53,9 +53,11 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'user_mfa_code',
             'user_welcome',
             'role_grant_created',):
-        user_email = context.get('user', {}).get('email', "")
-        if user_email:
-            recipients = [user_email]
+        user = context.get('user')
+        if user:
+            user_email = user.get('email')
+            if user_email:
+                recipients = [user_email]
 
     # Notify the profile primary contact e-mail address
     elif notification_slug in (

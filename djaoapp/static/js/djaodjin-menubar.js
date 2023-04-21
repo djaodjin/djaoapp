@@ -2,40 +2,21 @@
    see LICENSE
 */
 
-/* global document jQuery */
-
-// XXX If we don't define this polyfill, bootstrap-vue does not load
-// correctly on phantomjs.
-// We put it here so it gets loaded before `vendor-vue.js`
-if (typeof Object.assign !== 'function') {
-  // Must be writable: true, enumerable: false, configurable: true
-  Object.defineProperty(Object, "assign", {
-    value: function assign(target, varArgs) { // .length of function is 2
-      'use strict';
-      if (target === null || target === undefined) {
-        throw new TypeError('Cannot convert undefined or null to object');
-      }
-
-      var to = Object(target);
-
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
-
-        if (nextSource !== null && nextSource !== undefined) {
-          for (var nextKey in nextSource) {
-            // Avoid bugs when hasOwnProperty is shadowed
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    },
-    writable: true,
-    configurable: true
-  });
-}
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['exports', 'jQuery'], factory);
+    } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+        // CommonJS
+        factory(exports, require('jQuery'));
+    } else {
+        // Browser true globals added to `window`.
+        factory(root, root.jQuery);
+        // If we want to put the exports in a namespace, use the following line
+        // instead.
+        // factory((root.djResources = {}), root.jQuery);
+    }
+}(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
 
 
 (function ($) {
@@ -46,11 +27,11 @@ $(document).ready(function(){
         // menubar
         var menubar = $('.menubar');
         var overlay = menubar.find('.header-menubar-overlay');
-        var dpdwnMenu = menubar.find('.dropdown-menu');
+        var dpdwnMenu = menubar.find('.menubar-dropdown-menu');
         var dpdwnToggle = menubar.find('.menubar-dropdown-toggle')
         var open = false;
         overlay.add(dpdwnToggle).click(function(e) {
-            if($(this).closest('.dropdown-menu').length === 0 ) {
+            if($(this).closest('.menubar-dropdown-menu').length === 0 ) {
                 if(open){
                     open = false;
                     dpdwnMenu.hide();
@@ -64,7 +45,7 @@ $(document).ready(function(){
             if(!open){
                 e.stopPropagation();
                 $t.siblings('.menubar-dropdown-container')
-                  .find('.dropdown-menu')
+                  .find('.menubar-dropdown-menu')
                   .show();
                 overlay.show();
                 open = true;
@@ -84,3 +65,6 @@ $(document).ready(function(){
 });
 
 })(jQuery);
+
+    // no exports
+}));

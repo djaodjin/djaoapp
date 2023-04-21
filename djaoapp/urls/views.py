@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
@@ -19,8 +19,8 @@ from ..urlbuilders import (url_active, url_agreement, url_authenticated,
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
     ProcessorAuthorizeView, OrganizationProfileView)
-from ..views.custom_signup import (ActivationView, PasswordResetView,
-    PasswordResetConfirmView, SigninView, SignoutView, SignupView)
+from ..views.custom_signup import (ActivationView, RecoverView,
+    SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
@@ -51,15 +51,12 @@ urlpatterns = [
     url_prefixed('', include('social_django.urls', namespace='social')),
     url_prefixed(r'^login/', SigninView.as_view(), name='login'),
     url_prefixed(r'^logout/', SignoutView.as_view(), name='logout'),
-    url_prefixed(r'^recover/',
-        PasswordResetView.as_view(), name='password_reset'),
+    url_prefixed(r'^recover/', RecoverView.as_view(), name='password_reset'),
     # We want to give the opportunity to have multiple registration page
     # (ex: frictionless).`
     url_prefixed(r'^register/((?P<path>\w+)/)?',
         SignupView.as_view(),
         name='registration_register'),
-    url_prefixed(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/', #pylint: disable=line-too-long
-        PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url_prefixed(r'^saml/', saml_metadata_view),
 
     # Redirects

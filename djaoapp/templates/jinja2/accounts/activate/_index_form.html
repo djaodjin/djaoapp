@@ -2,14 +2,22 @@
 
 {% block form_block %}
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-{{ input_field(form['username'], form.hide_labels) }}
+{% if form['code'] %}
+{{ input_field(form['username'], False, form.hide_labels) }}
+{{ input_field(form['password'], False, form.hide_labels) }}
+<p class="text-center">
+    {% trans %}Please enter your OTP code{% endtrans %}
+</p>
+{{ input_field(form['code'], True, form.hide_labels) }}
+{% else %}
 {% if form['password'] %}
-<p>
+{{ input_field(form['username'], False, form.hide_labels) }}
+<p class="text-center">
     {% trans %}We found your account! Please enter your password{% endtrans %}
 </p>
-{{ input_field(form['password'], True) }}
-<p class="text-center mt-3">
-  <a href="{{urls.user.password_reset}}{% if next %}?next={{next}}{% endif %}">{% trans %}Forgot password?{% endtrans %}</a>
-</p>
+{{ input_field(form['password'], True, form.hide_labels) }}
+{% else %}
+{{ input_field(form['username'], True, form.hide_labels) }}
+{% endif %}
 {% endif %}
 {% endblock %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -52,7 +52,7 @@ class DjaoAppMixin(object):
         # The edition tools will already be injected through
         # the url decorator (`inject_edition_tools` defined in decorators.py)
         # as it is added to `url_prefixed` in urlbuilders.py
-        #pylint:disable=unused-argument,no-self-use
+        #pylint:disable=unused-argument
         return None
 
     @property
@@ -103,146 +103,6 @@ class DjaoAppMixin(object):
         return context
 
 
-class RegisterMixin(object):
-
-    registration_fields = (
-        'country',
-        'email',
-        'first_name',
-        'full_name',
-        'lang',
-        'last_name',
-        'locality',
-        'postal_code',
-        'new_password',
-        'new_password2',
-        'organization_name',
-        'password',
-        'phone',
-        'region',
-        'street_address',
-        'username',
-    )
-
-    def register_personal(self, **cleaned_data):
-        """
-        Registers both a User and an Organization at the same time
-        with the added constraint that username and organization slug
-        are identical such that it creates a transparent user billing profile.
-        """
-        return self.register_together(organization_selector='full_name',
-            **cleaned_data)
-
-    def register_together(self,
-                          user_selector='full_name',
-                          organization_selector='organization_name',
-                          **cleaned_data):
-        """
-        Registers both a User and an Organization at the same time.
-        """
-        #pylint:disable=too-many-arguments,too-many-locals
-        first_name = cleaned_data.get('first_name', "")
-        last_name = cleaned_data.get('last_name', "")
-        full_name = cleaned_data.get(user_selector,
-            cleaned_data.get('full_name', None))
-        if not first_name:
-            # If the form does not contain a first_name/last_name pair,
-            # we assume a full_name was passed instead.
-            #pylint:disable=unused-variable
-            first_name, mid, last_name = full_name_natural_split(full_name)
-        if not full_name:
-            full_name = ("%s %s" % (first_name, last_name)).strip()
-
-        organization_name = cleaned_data.get(organization_selector, full_name)
-
-        organization_extra = {}
-        role_extra = {}
-        for field_name, field_value in six.iteritems(cleaned_data):
-            if field_name not in self.registration_fields:
-                if field_name.startswith('organization_'):
-                    organization_extra.update({field_name[13:]: field_value})
-                if field_name.startswith('role_'):
-                    role_extra.update({field_name[5:]: field_value})
-        if not organization_extra:
-            organization_extra = None
-        if not role_extra:
-            role_extra = None
-
-        try:
-            with transaction.atomic():
-                # Create a ``User``
-                user = self.register_user(**cleaned_data)
-                if user_selector == organization_selector:
-                    # We have a personal registration
-                    organization_slug = user.username
-                else:
-                    organization_slug = slugify(organization_name)
-                if not organization_slug:
-                    raise ValidationError({organization_selector:
-                        _("The organization name must contain"\
-                        " some alphabetical characters.")})
-
-                # Create an ``Organization`` and set the user as its manager.
-                organization_kwargs = {}
-                if ('type' in cleaned_data and
-                    cleaned_data['type'] == Organization.ACCOUNT_PROVIDER):
-                    organization_kwargs = {'is_provider': True}
-                account = get_organization_model().objects.create(
-                    slug=organization_slug,
-                    full_name=organization_name,
-                    email=_clean_field(cleaned_data, 'email'),
-                    phone=_clean_field(cleaned_data, 'phone'),
-                    street_address=_clean_field(
-                        cleaned_data, 'street_address'),
-                    locality=_clean_field(cleaned_data, 'locality'),
-                    region=_clean_field(cleaned_data, 'region'),
-                    postal_code=_clean_field(cleaned_data, 'postal_code'),
-                    country=_clean_field(cleaned_data, 'country'),
-                    extra=organization_extra,
-                    **organization_kwargs)
-                account.add_manager(user, extra=role_extra)
-                LOGGER.info("created organization '%s' with"\
-                    " full name: '%s', email: '%s', phone: '%s',"\
-                    " street_address: '%s', locality: '%s', region: '%s',"\
-                    " postal_code: '%s', country: '%s'.", account.slug,
-                    account.full_name, account.email, account.phone,
-                    account.street_address, account.locality,
-                    account.region, account.postal_code, account.country,
-                    extra={'event': 'create',
-                        'request': self.request, 'user': user,
-                        'type': 'organization', 'slug': account.slug,
-                        'full_name': account.full_name,
-                        'email': account.email,
-                        'street_address': account.street_address,
-                        'locality': account.locality,
-                        'region': account.region,
-                        'postal_code': account.postal_code,
-                        'country': account.country})
-        except IntegrityError as err:
-            handle_uniq_error(err, renames={'slug': organization_selector})
-
-        return user
-
-    def register_user(self, **cleaned_data):
-        agreements = list(Agreement.objects.filter(
-            slug__in=six.iterkeys(cleaned_data)))
-        for agreement in agreements:
-            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
-                'false', 'f', '0']
-            if not_signed:
-                raise ValidationError({agreement.slug:
-                    _("You must read and agree to the %(agreement)s.") % {
-                    'agreement': agreement.title}})
-
-        user = super(RegisterMixin, self).register_user(**cleaned_data)
-        if user:
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            for agreement in agreements:
-                Signature.objects.create_signature(agreement.slug, user)
-
-        return user
-
-
 class NotificationsMixin(object):
 
     def get_notifications(self, user=None):
@@ -265,3 +125,184 @@ class NotificationsMixin(object):
             'charge_receipt', 'card_updated', 'order_executed',
             'profile_updated', 'expires_soon',
             'role_grant_created', 'role_request_created']}
+
+
+class RegisterMixin(object):
+
+    registration_fields = (
+        'country',
+        'email',
+        'first_name',
+        'full_name',
+        'lang',
+        'last_name',
+        'locality',
+        'postal_code',
+        'new_password',
+        'new_password2',
+        'organization_name',
+        'password',
+        'phone',
+        'region',
+        'street_address',
+        'username',
+    )
+
+    def register_check_data(self, **cleaned_data):
+        self.agreements = list(Agreement.objects.filter(
+            slug__in=six.iterkeys(cleaned_data)))
+        for agreement in self.agreements:
+            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+                'false', 'f', '0']
+            if not_signed:
+                raise ValidationError({agreement.slug:
+                    _("You must read and agree to the %(agreement)s.") % {
+                    'agreement': agreement.title}})
+
+        super(RegisterMixin, self).register_check_data(**cleaned_data)
+
+    def create_user(self, **cleaned_data):
+        #pylint:disable=too-many-arguments,too-many-locals
+        #pylint:disable=too-many-boolean-expressions
+        # We use the following line to understand better what kind of data
+        # bad bots post to a registration form.
+        LOGGER.debug("calling djaoapp.RegisterMixin.create_user(**%s)",
+            str({field_name: ('*****' if field_name.startswith('password')
+            else val) for field_name, val in six.iteritems(cleaned_data)}))
+        registration = self.app.USER_REGISTRATION
+        user_selector = 'full_name'
+        organization_selector = 'organization_name'
+        full_name = cleaned_data.get('full_name', None)
+        if 'organization_name' in cleaned_data:
+            # We have a registration of a user and organization together.
+            registration = self.app.TOGETHER_REGISTRATION
+            organization_name = cleaned_data.get('organization_name', None)
+            if full_name and full_name == organization_name:
+                # No we have a personal registration after all
+                registration = self.app.PERSONAL_REGISTRATION
+                organization_selector = 'full_name'
+        elif (cleaned_data.get('street_address', None) or
+            cleaned_data.get('locality', None) or
+            cleaned_data.get('region', None) or
+            cleaned_data.get('postal_code', None) or
+            cleaned_data.get('country', None) or
+            cleaned_data.get('phone', None)):
+            # We have enough information for a billing profile
+            registration = self.app.PERSONAL_REGISTRATION
+            organization_selector = 'full_name'
+        try:
+            with transaction.atomic():
+                # Create a ``User``
+                user = super(RegisterMixin, self).create_user(**cleaned_data)
+                if user:
+                    for agreement in self.agreements:
+                        Signature.objects.create_signature(agreement.slug, user)
+
+                if registration in (self.app.PERSONAL_REGISTRATION,
+                                    self.app.TOGETHER_REGISTRATION):
+                    # Registers both a User and an Organization at the same time
+                    # with the added constraint that username and organization
+                    # slug are identical such that it creates a transparent
+                    # user billing profile.
+                    first_name = cleaned_data.get('first_name', "")
+                    last_name = cleaned_data.get('last_name', "")
+                    full_name = cleaned_data.get(user_selector,
+                        cleaned_data.get('full_name', None))
+                    if not first_name:
+                        # If the form does not contain a first_name/last_name
+                        # pair, we assume a full_name was passed instead.
+                        #pylint:disable=unused-variable
+                        first_name, mid, last_name = full_name_natural_split(
+                            full_name)
+                    if not full_name:
+                        full_name = ("%s %s" % (first_name, last_name)).strip()
+                    organization_name = cleaned_data.get(
+                        organization_selector, full_name)
+                    organization_extra = {}
+                    role_extra = {}
+                    for field_name, field_value in six.iteritems(cleaned_data):
+                        if field_name not in self.registration_fields:
+                            if field_name.startswith('organization_'):
+                                organization_extra.update({
+                                    field_name[13:]: field_value})
+                            if field_name.startswith('role_'):
+                                role_extra.update({field_name[5:]: field_value})
+                    if not organization_extra:
+                        organization_extra = None
+                    if not role_extra:
+                        role_extra = None
+                    if user_selector == organization_selector:
+                        # We have a personal registration
+                        organization_slug = user.username
+                    else:
+                        organization_slug = slugify(organization_name)
+                    if not organization_slug:
+                        raise ValidationError({organization_selector:
+                            _("The organization name must contain"\
+                            " some alphabetical characters.")})
+
+                    # Create an ``Organization`` and set the user
+                    # as its manager.
+                    organization_kwargs = {}
+                    if ('type' in cleaned_data and
+                        cleaned_data['type'] == Organization.ACCOUNT_PROVIDER):
+                        organization_kwargs = {'is_provider': True}
+                    account = get_organization_model().objects.create(
+                        slug=organization_slug,
+                        full_name=organization_name,
+                        email=_clean_field(cleaned_data, 'email'),
+                        phone=_clean_field(cleaned_data, 'phone'),
+                        street_address=_clean_field(
+                            cleaned_data, 'street_address'),
+                        locality=_clean_field(cleaned_data, 'locality'),
+                        region=_clean_field(cleaned_data, 'region'),
+                        postal_code=_clean_field(cleaned_data, 'postal_code'),
+                        country=_clean_field(cleaned_data, 'country'),
+                        extra=organization_extra,
+                        **organization_kwargs)
+                    account.add_manager(user, extra=role_extra)
+                    LOGGER.info("created organization '%s' with"\
+                        " full name: '%s', email: '%s', phone: '%s',"\
+                        " street_address: '%s', locality: '%s', region: '%s',"\
+                        " postal_code: '%s', country: '%s'.", account.slug,
+                        account.full_name, account.email, account.phone,
+                        account.street_address, account.locality,
+                        account.region, account.postal_code, account.country,
+                        extra={'event': 'create',
+                            'request': self.request, 'user': user,
+                            'type': 'organization', 'slug': account.slug,
+                            'full_name': account.full_name,
+                            'email': account.email,
+                            'street_address': account.street_address,
+                            'locality': account.locality,
+                            'region': account.region,
+                            'postal_code': account.postal_code,
+                            'country': account.country})
+        except IntegrityError as err:
+            handle_uniq_error(err, renames={'slug': organization_selector})
+
+        return user
+
+
+class VerifyMixin(object):
+
+    def register_check_data(self, **cleaned_data):
+        self.agreements = list(Agreement.objects.filter(
+            slug__in=six.iterkeys(cleaned_data)))
+        for agreement in self.agreements:
+            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+                'false', 'f', '0']
+            if not_signed:
+                raise ValidationError({agreement.slug:
+                    _("You must read and agree to the %(agreement)s.") % {
+                    'agreement': agreement.title}})
+
+        super(VerifyMixin, self).register_check_data(**cleaned_data)
+
+    def create_user(self, **cleaned_data):
+        with transaction.atomic():
+            user = super(VerifyMixin, self).create_user(**cleaned_data)
+            if user:
+                for agreement in self.agreements:
+                    Signature.objects.create_signature(agreement.slug, user)
+        return user

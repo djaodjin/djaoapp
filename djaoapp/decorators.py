@@ -125,7 +125,7 @@ def fail_authenticated(request, verification_key=None):
                             Q(grant_key=verification_key)
                             | Q(request_key=verification_key)).get()
                         contact, _ = Contact.objects.prepare_email_verification(
-                            role.user, role.user.email)
+                            role.user.email, user=role.user)
                         verification_key = contact.email_verification_key
                     except role_model.DoesNotExist:
                         pass

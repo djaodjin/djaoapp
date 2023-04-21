@@ -10,20 +10,52 @@
   {% block activate_form %}
   <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {% include "accounts/activate/_index_form.html" %}
-    <p class="text-center">
-      <small>
-        <em>
-{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before entering any information.{% endtrans %}
-        </em>
-      </small>
-    </p>
-    <div class="form-action text-center">
-      <button type="submit" class="btn btn-block btn-primary btn-md">
-        {% trans %}Activate{% endtrans %}
-      </button>
+    <div class="row">
+      <div class="col-9">
+        <p class="text-left">
+          <small>
+            <em>
+{% trans %}TIP: You are advised to verify the certificate in the URL bar before entering any information.{% endtrans %}
+            </em>
+          </small>
+        </p>
+      </div>
+      <div class="col-3">
+        <div class="form-action text-right">
+          <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Next{% endtrans %}
+          </button>
+        </div>
+      </div>
     </div>
   </form>
+  {% if email_verification_link %}
+  <hr />
+  <div class="text-center">
+    <p>
+      Or
+    </p>
+    <form method="post" action="{{urls.user.password_reset}}{% if next %}/?next={{next}}{% endif %}">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <input type="hidden" name="username" value="{{form['username'].value()}}">
+      <button id="email-verification-link" class="btn btn-secondary">Email me a one-time link</button>
+    </form>
+  </div>
+  {% endif %}
+  {% if register_link %}
+  <hr />
+  <div class="bg-warning p-4">
+    <p>
+We couldn't find your account. If you believe you already have an account
+on this website, please verify the spelling. Otherwise <a id="register-link" href="{{register_link}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up &raquo;{% endtrans %}</a>
+    </p>
+  </div>
+  {% endif %}
   {% endblock %}
   {% endif %}
 </div>
+{% endblock %}
+
+{% block accounts_scripts %}
+{% include "_password_strength_scripts.html" %}
 {% endblock %}

@@ -11,6 +11,9 @@ from ..compat import gettext_lazy as _, six
 
 class PersonalProfileForm(OrganizationForm):
 
+    nick_name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': _("Short casual name")}),
+        max_length=254, label=_("Nick name"))
     lang = forms.CharField(
         label=_("Language"),
         widget=forms.Select(
