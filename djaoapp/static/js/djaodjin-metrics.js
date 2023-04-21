@@ -137,7 +137,7 @@ function updateChart(container, data, unit, dataScale, extra) {
             chart.width(chartMobileWidth);
         }
 
-        chart.legend.key(function(d){return d.title ? d.title : d.key; })
+        chart.legend.key(function(d){return d.title ? d.title : d.slug; })
         chart.interactiveLayer.tooltip.contentGenerator(function(d) {
             var hoverDate = d.value;
 
@@ -158,14 +158,14 @@ function updateChart(container, data, unit, dataScale, extra) {
             // Replacing slug with title
             $.each($html.find("td.key"), function(index, element){
                 var title = data[index].title ?
-                    data[index].title : data[index].key;
+                    data[index].title : data[index].slug;
                 $(element).text(title);
             });
 
             // if extra data add it to tooltip
             if (extra && extra.length > 0){
               $.each(extra, function(index, element){
-                var extraKey = element.key;
+                var extraKey = element.slug;
                 var extraValue = $.grep(element.values, function(v){
                   return hoverDate === v[0];
                 })[0];

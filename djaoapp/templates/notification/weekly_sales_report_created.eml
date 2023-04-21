@@ -43,7 +43,7 @@
     <tbody>
         {% for row in table %}
             <tr>
-                <td>{{row.key}}</td>
+                <td>{{row.title}}</td>
                 <td>{{row.vals.last}}</td>
                 <td>{{row.vals.prev}}</td>
                 <td>{{row.vals.prev_year}}</td>

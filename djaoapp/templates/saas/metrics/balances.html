@@ -31,15 +31,15 @@
               </td>
           </tr>
       </tbody>
-      <tbody v-show="itemsLoaded && items.table.length == 0" v-cloak>
+      <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
           <tr>
               <td colspan="16">
                   <h4 class="text-center"><em>{% trans %}No aggregated balances defined for this report. Add the first one with the form below.{% endtrans %}</em></h4>
               </td>
           </tr>
       </tbody>
-      <tbody v-show="itemsLoaded && items.table.length > 0" v-cloak>
-          <tr v-for="(row, index) in items.table">
+      <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <tr v-for="(row, index) in items.results">
               <td>
                   <div class="btn btn-secondary btn-sm">
                       <i class="fa fa-bars"></i></div>
