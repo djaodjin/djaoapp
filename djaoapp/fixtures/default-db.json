@@ -1716,4 +1716,36 @@
       "plan": 5
     },
     "model": "saas.subscription", "pk": 25
+},
+{
+    "fields": {
+      "date_joined": "2020-01-01T00:00:00-09:00",
+      "email": "steve@localhost.localdomain",
+      "username": "steve",
+      "first_name": "Steve",
+      "last_name": "MFA",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2020-01-01T00:00:00-09:00"
+    },
+    "model": "auth.User", "pk": 26
+},
+{
+    "fields": {
+      "created_at": "2020-01-01T00:00:00-09:00",
+      "user": 3,
+      "slug": "steve",
+      "email": "steve@localhost.localdomain",
+      "otc_backend": 1
+    },
+    "model": "signup.Contact", "pk": 26
+},
+{
+    "fields": {
+      "user": 26,
+      "priv_key": "abc123"
+    },
+    "model": "signup.OTPGenerator", "pk": 26
 }]

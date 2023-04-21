@@ -11,8 +11,8 @@ djaodjin-deployutils==0.10.5
 djaodjin-extended-templates==0.4.2
 djaodjin-multitier==0.1.25
 djaodjin-rules==0.4.1
-djaodjin-saas==0.16.0
-djaodjin-signup==0.8.0
+djaodjin-saas==0.16.1
+djaodjin-signup==0.8.1
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==3.1.2
 MarkupSafe==2.1.1

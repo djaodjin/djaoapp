@@ -20,7 +20,7 @@
           <form id="add-user" class="mb-4" @submit.prevent="submit">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
             {# The following div is required for the typeahead dropbox to show under the input field. #}
-            <account-typeahead inline-template ref="account"
+            <account-typeahead inline-template ref="typeahead"
                                v-bind:dataset="items.results"
                                v-on:selectitem="updateItemSelected">
               <div>

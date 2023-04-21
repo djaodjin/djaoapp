@@ -186,7 +186,11 @@
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
-        <input class="form-control{% if errors %} is-invalid{% endif %}" name="{{name}}"
+        <input class="form-control{% if errors %} is-invalid{% endif %}"
+          name="{{name}}"
+          {% if name == 'username' %} autocomplete="username"{% endif %}
+          {% if name == 'password' %} autocomplete="current-password"{% endif %}
+          {% if name == 'new_password' or name == 'new_password2' %} autocomplete="new-password"{% endif %}
           {% if value is not none %} value="{{value}}"{% endif %}
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
           type="{{input_type}}"

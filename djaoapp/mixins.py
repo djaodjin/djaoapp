@@ -290,8 +290,13 @@ class VerifyMixin(object):
         self.agreements = list(Agreement.objects.filter(
             slug__in=six.iterkeys(cleaned_data)))
         for agreement in self.agreements:
-            not_signed = cleaned_data.get(agreement.slug, "").lower() in [
-                'false', 'f', '0']
+            try:
+                # In case we have a string instead of a bool.
+                not_signed = cleaned_data.get(agreement.slug, "").lower() in [
+                    'false', 'f', '0']
+            except AttributeError:
+                not_signed = not(cleaned_data.get(agreement.slug, False))
+                pass
             if not_signed:
                 raise ValidationError({agreement.slug:
                     _("You must read and agree to the %(agreement)s.") % {
