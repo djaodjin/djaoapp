@@ -1,5 +1,5 @@
-FROM python:3.9-slim-bullseye
-# As of 2021-10-04: Python 3.9.7, Debian 11.0 (Bullseye)
+FROM python:3.10-slim-bullseye
+# As of 2023-04-21: Python 3.10.11, Debian 11.0 (Bullseye)
 # RUN which python3
 # RUN python3 --version
 # RUN cat /etc/debian_version
@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install python3-psycopg2 
 # (Dockerfile), if we use version 52.5, it leads to
 # `OSError: cannot load library 'pangocairo-1.0'`
 RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
-RUN /app/bin/pip install boto3==1.24.48 Django==3.2.16 django-phonenumber-field==6.3.0 django-recaptcha==2.0.6 djangorestframework==3.12.4 djaodjin-deployutils==0.10.3 djaodjin-extended-templates==0.3.4 djaodjin-multitier==0.1.24 djaodjin-rules==0.3.0 djaodjin-saas==0.15.2 djaodjin-signup==0.7.4 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.12.54 PyJWT==2.4.0 pytz==2022.1 social-auth-app-django==5.0.0 whitenoise==5.1.0 WeasyPrint==53.3 django-debug-toolbar==3.5.0 django-extensions==3.2.0 django-storages==1.13.1
+RUN /app/bin/pip install boto3==1.26.84 Django==3.2.18 django-phonenumber-field==6.3.0 django-recaptcha==2.0.6 djangorestframework==3.14.0 djaodjin-deployutils==0.10.5 djaodjin-extended-templates==0.4.2 djaodjin-multitier==0.1.25 djaodjin-rules==0.4.1 djaodjin-saas==0.16.0 djaodjin-signup==0.8.0 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.12.54 PyJWT==2.6.0 pytz==2022.7.1 social-auth-app-django==5.0.0 whitenoise==6.4.0 WeasyPrint==53.3 django-debug-toolbar==3.5.0 django-extensions==3.2.1 django-storages==1.13.2
 
 # ==== Cleans up native package only necessary while installing pip packages
 RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev
