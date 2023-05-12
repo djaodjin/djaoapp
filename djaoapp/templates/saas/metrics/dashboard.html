@@ -48,7 +48,7 @@
                           <a :href="(entry.type == 'user' ? '{{urls.profile_redirect}}' : '{{urls.accounts_base}}') + entry.slug + '/'">[[entry.printable_name]]</a>
                         </td>
                         <td>
-                          [[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]
+                          [[$globals.humanizeTimeDelta(entry.created_at)]]
                         </td>
                       </tr>
                     </tbody>
