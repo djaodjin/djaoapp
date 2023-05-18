@@ -164,7 +164,8 @@ class SessionSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_site(obj): #pylint:disable=unused-argument
         broker = get_broker()
-        return {'printable_name': broker.printable_name, 'email': broker.email}
+        return {'slug': broker.slug, 'printable_name': broker.printable_name,
+            'email': broker.email}
 
     def get_invoice_keys(self, request):
         rule = self.context.get('rule', None)
