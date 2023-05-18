@@ -759,6 +759,10 @@ SIGNUP = {
     'EMAIL_DYNAMIC_VALIDATOR': getattr(
         sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
     'EXTRA_MIXIN': djaoapp.extras.signup.ExtraMixin,
+    'LDAP': {
+        'SERVER_URI': getattr(sys.modules[__name__], 'LDAP_SERVER_URI', ""),
+        'USER_SEARCH_DN': getattr(sys.modules[__name__], 'LDAP_USER_SEARCH_DN', ""),
+    },
     'LOGIN_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
     'NOTIFICATION_TYPE': (
@@ -828,6 +832,8 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
 # disables SAML so it is simpler to configure on a developer machine.
 #    'social_core.backends.saml.SAMLAuth',
+# disables LDAP so a few dependencies do not need to be installed either.
+#    'signup.backends.auth_ldap.LDAPBackend',
     'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
