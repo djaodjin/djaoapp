@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 -include $(buildTop)/share/dws/prefix.mk
@@ -23,7 +23,7 @@ NPM           ?= npm
 PIP           ?= pip
 PYTHON        ?= python
 SASSC         ?= sassc
-SQLITE        ?= sqlite3
+SQLITE        ?= sqlite3 -unsafe-testing
 WEBPACK       ?= NODE_PATH=$(libDir)/node_modules:$(NODE_PATH) webpack --stats-error-details
 #WEBPACK       ?= webpack --stats verbose
 #WEBPACK       ?= webpack --profile --json > build.json
