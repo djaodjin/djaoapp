@@ -42,7 +42,7 @@
 {
     "fields":{
         "slug":"premium",
-        "title":"Prremium",
+        "title":"Premium",
         "created_at":"2023-01-01T00:00:00-00:00",
         "setup_amount": 0,
         "period_amount": 39900,
@@ -132,7 +132,7 @@
       "created_at": "2023-01-01T00:00:00-00:00",
       "slug": "cowork",
       "full_name": "Cowork",
-      "email": "xia@localhost.localdomain",
+      "email": "livedemo+cowork@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -156,15 +156,15 @@
 {
     "fields": {
       "date_joined": "2023-01-01T00:00:00-00:00",
-      "email": "livedemo@localhost.localdomain",
-      "first_name": "Xia",
+      "email": "livedemo+steve@localhost.localdomain",
+      "first_name": "Steve",
       "last_name": "Lee",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2023-01-01T00:00:00-00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "xia"
+      "username": "steve"
     },
     "model": "auth.User", "pk": 3
 },
@@ -179,8 +179,8 @@
 {
     "fields": {
       "created_at": "2023-01-01T00:00:00-09:00",
-      "slug": "xia",
-      "email": "xia@localhost.localdomain",
+      "slug": "steve",
+      "email": "livedemo+steve@localhost.localdomain",
       "picture": "/media/livedemo/profiles/xia.jpg",
       "user": 3
     },
@@ -189,9 +189,9 @@
 {
     "fields": {
       "created_at": "2023-01-01T00:00:00-00:00",
-      "slug": "xia",
-      "full_name": "Xia Lee",
-      "email": "xia@localhost.localdomain",
+      "slug": "supplier-1",
+      "full_name": "S1 - Tamerin (Demo)",
+      "email": "livedemo+supplier1@localhost.localdomain",
       "picture": "/media/livedemo/profiles/xia.jpg",
       "phone": "555-555-5555",
       "street_address": "350 Bay St.",
@@ -212,15 +212,6 @@
       "user": 3
     },
     "model": "saas.Role", "pk": 3
-},
-{
-    "fields": {
-      "slug": "djaoapp",
-      "account": 2,
-      "authentication": 1,
-      "registration": 3
-    },
-    "model": "rules.App", "pk": 1
 },
 {
     "fields": {
@@ -285,6 +276,205 @@
       "description": "By enabling this notification, you will receive e-mails when a subscription is about to expire."
     },
     "model": "signup.Notification", "pk": 8
-}
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "account": 2,
+      "authentication": 1,
+      "registration": 3,
+      "session_backend": 2,
+      "entry_point": "http://localhost:8040",
+      "enc_key": "m55*tp*jxti7uylwa-"
+    },
+    "model": "rules.App", "pk": 1
+},
+{ "fields": {
+    "app": 1,
+    "rank": 1,
+    "path": "/api/content/editables/{profile}/",
+    "rule_op": 3
+  },
+  "model": "rules.Rule", "pk": 1
+},
+{ "fields": {
+    "app": 1,
+    "rank": 2,
+    "path": "/api/content/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 2
+},
+{ "fields": {
+    "app": 1,
+    "rank": 3,
+    "path": "/api/profile/{profile}/roles/{role}",
+    "rule_op": 6
+  },
+  "model": "rules.Rule", "pk": 3
+},
+{ "fields": {
+    "app": 1,
+    "rank": 4,
+    "path": "/api/profile/{profile}/roles",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 4
+},
+{ "fields": {
+    "app": 1,
+    "rank": 5,
+    "path": "/api/profile/{profile}",
+    "rule_op": 6
+  },
+  "model": "rules.Rule", "pk": 5
+},
 
-]
+{ "fields": {
+    "app": 1,
+    "rank": 6,
+    "path": "/api/profile/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 6
+},
+
+{ "fields": {
+    "app": 1,
+    "rank": 7,
+    "path": "/api/units",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 7
+},
+{ "fields": {
+    "app": 1,
+    "rank": 8,
+    "path": "/api/timer",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 8
+},
+{ "fields": {
+    "app": 1,
+    "rank": 9,
+    "path": "/api/{profile}/campaigns",
+    "rule_op": 16,
+    "kwargs": "{\"plan\": \"premium\"}"
+  },
+  "model": "rules.Rule", "pk": 9
+},
+{ "fields": {
+    "app": 1,
+    "rank": 10,
+    "path": "/api/{profile}/reporting/",
+    "rule_op": 18,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 10
+},
+{ "fields": {
+    "app": 1,
+    "rank": 11,
+    "path": "/api/{profile}/",
+    "rule_op": 4,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 11
+},
+
+{ "fields": {
+    "app": 1,
+    "rank": 12,
+    "path": "/app/assess/",
+    "rule_op": 1,
+    "engaged": "app,info"
+  },
+  "model": "rules.Rule", "pk": 12
+},
+{ "fields": {
+    "app": 1,
+    "rank": 13,
+    "path": "/app/reporting/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 13
+},
+{ "fields": {
+    "app": 1,
+    "rank": 14,
+    "path": "/app/info/courses/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 14
+},
+{ "fields": {
+    "app": 1,
+    "rank": 15,
+    "path": "/app/info/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 15
+},
+{ "fields": {
+    "app": 1,
+    "rank": 16,
+    "path": "/app/{profile}/improve/",
+    "rule_op": 1,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 16
+},
+{ "fields": {
+    "app": 1,
+    "rank": 17,
+    "path": "/app/{profile}/assess/",
+    "rule_op": 1,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 17
+},
+{ "fields": {
+    "app": 1,
+    "rank": 18,
+    "path": "/app/{profile}/reporting/",
+    "rule_op": 1,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 18
+},
+{ "fields": {
+    "app": 1,
+    "rank": 19,
+    "path": "/app/{profile}/",
+    "rule_op": 3,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+  },
+  "model": "rules.Rule", "pk": 19
+},
+{ "fields": {
+    "app": 1,
+    "rank": 20,
+    "path": "/app/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 20
+},
+{ "fields": {
+    "app": 1,
+    "rank": 21,
+    "path": "/getstarted/",
+    "rule_op": 0,
+    "is_forward": true
+  },
+  "model": "rules.Rule", "pk": 21
+},
+{ "fields": {
+    "app": 1,
+    "rank": 23,
+    "path": "/",
+    "rule_op": 0,
+    "is_forward": false
+  },
+  "model": "rules.Rule", "pk": 23
+}]

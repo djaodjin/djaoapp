@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install python3-psycopg2 
 # (Dockerfile), if we use version 52.5, it leads to
 # `OSError: cannot load library 'pangocairo-1.0'`
 RUN /usr/local/bin/python3 -m venv --upgrade-deps --system-site-packages /app
-RUN /app/bin/pip install boto3==1.26.84 Django==3.2.18 django-phonenumber-field==6.3.0 django-recaptcha==2.0.6 djangorestframework==3.14.0 djaodjin-deployutils==0.10.5 djaodjin-extended-templates==0.4.2 djaodjin-multitier==0.1.25 djaodjin-rules==0.4.1 djaodjin-saas==0.16.0 djaodjin-signup==0.8.0 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.12.54 PyJWT==2.6.0 pytz==2022.7.1 social-auth-app-django==5.0.0 whitenoise==6.4.0 WeasyPrint==53.3 django-debug-toolbar==3.5.0 django-extensions==3.2.1 django-storages==1.13.2
+RUN /app/bin/pip install boto3==1.26.84 Django==3.2.19 django-phonenumber-field==6.3.0 django-recaptcha==3.0.0 djangorestframework==3.14.0 djaodjin-deployutils==0.10.6 djaodjin-extended-templates==0.4.3 djaodjin-multitier==0.1.25 djaodjin-rules==0.4.2 djaodjin-saas==0.17.0 djaodjin-signup==0.8.3 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.12.54 PyJWT==2.6.0 pytz==2022.7.1 social-auth-app-django==5.2.0 whitenoise==6.4.0 WeasyPrint==53.3 django-debug-toolbar==3.5.0 django-extensions==3.2.1 django-storages==1.13.2
 
 # ==== Cleans up native package only necessary while installing pip packages
 RUN DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y autoremove pkg-config gcc libxmlsec1-dev

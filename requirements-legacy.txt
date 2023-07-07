@@ -12,12 +12,12 @@ django-phonenumber-field==2.4.0
 django-recaptcha==2.0.5
 djangorestframework==3.9.4
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.10.5
-djaodjin-extended-templates==0.4.2
+djaodjin-deployutils==0.10.6
+djaodjin-extended-templates==0.4.3
 djaodjin-multitier==0.1.25
-djaodjin-rules==0.4.1
-djaodjin-saas==0.15.5
-djaodjin-signup==0.7.7
+djaodjin-rules==0.4.2
+djaodjin-saas==0.17.0
+djaodjin-signup==0.8.3
 jinja2==2.8.1
 MarkupSafe==1.1.0  # force installs in case older version is found (CentOS7)
 # gunicorn 19.0 is broken (see issue 787)

@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -136,19 +136,19 @@ def fail_authenticated(request, verification_key=None):
     return redirect
 
 
-def fail_direct(request, organization=None, roledescription=None):
+def fail_direct(request, profile=None, roledescription=None):
     try:
         app = get_current_app()
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)
     except NoRuleMatch:
-        redirect = fail_direct_default(request, organization=organization,
+        redirect = fail_direct_default(request, profile=profile,
                 roledescription=roledescription)
     return redirect
 
 
-def fail_provider(request, organization=None, roledescription=None):
+def fail_provider(request, profile=None, roledescription=None):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
@@ -169,12 +169,12 @@ def fail_provider(request, organization=None, roledescription=None):
     except NoRuleMatch:
         # By default, we are looking for provider.
         redirect = fail_provider_default(request,
-            organization=organization, roledescription=roledescription)
+            profile=profile, roledescription=roledescription)
     return redirect
 
 
 
-def fail_provider_only(request, organization=None, roledescription=None):
+def fail_provider_only(request, profile=None, roledescription=None):
     """
     Same decorator as saas.requires_provider with the added permissions
     that managers of the site database itself are also able to access
@@ -195,7 +195,7 @@ def fail_provider_only(request, organization=None, roledescription=None):
     except NoRuleMatch:
         # By default, we are looking for provider.
         redirect = fail_provider_only_default(request,
-            organization=organization, roledescription=roledescription)
+            profile=profile, roledescription=roledescription)
     return redirect
 
 

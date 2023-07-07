@@ -14,7 +14,8 @@ from saas import settings as saas_settings
 from saas.decorators import fail_direct
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from saas.utils import get_organization_model
-from signup.helpers import full_name_natural_split
+from signup.helpers import full_name_natural_split, has_invalid_password
+from signup.mixins import IncorrectUser
 from signup.utils import handle_uniq_error
 
 from .compat import gettext_lazy as _, reverse, six
@@ -88,7 +89,7 @@ class DjaoAppMixin(object):
         # ``site.account`` is always in the *default* database, which is not
         # the expected database ``Organization`` are typically queried from.
         provider = app.account
-        if not fail_direct(self.request, organization=provider):
+        if not fail_direct(self.request, profile=provider):
             urls.update({'provider': {
                 'dashboard': reverse('saas_dashboard', args=(provider,)),
             }})
@@ -284,7 +285,7 @@ class RegisterMixin(object):
         return user
 
 
-class VerifyMixin(object):
+class VerifyCompleteMixin(object):
 
     def register_check_data(self, **cleaned_data):
         self.agreements = list(Agreement.objects.filter(
@@ -302,12 +303,26 @@ class VerifyMixin(object):
                     _("You must read and agree to the %(agreement)s.") % {
                     'agreement': agreement.title}})
 
-        super(VerifyMixin, self).register_check_data(**cleaned_data)
+        super(VerifyCompleteMixin, self).register_check_data(**cleaned_data)
 
     def create_user(self, **cleaned_data):
         with transaction.atomic():
-            user = super(VerifyMixin, self).create_user(**cleaned_data)
+            user = super(VerifyCompleteMixin, self).create_user(**cleaned_data)
             if user:
                 for agreement in self.agreements:
                     Signature.objects.create_signature(agreement.slug, user)
         return user
+
+
+class PasswordResetConfirmMixin(VerifyCompleteMixin):
+
+    def check_password(self, user, **cleaned_data):
+        #pylint:disable=unused-argument
+        if self.request.method.lower() == 'get':
+            if user:
+                user.password = '!'
+                user.save()
+            if not user or has_invalid_password(user):
+                raise IncorrectUser({'email': _("Not found.")})
+        return super(PasswordResetConfirmMixin, self).check_password(
+            user, **cleaned_data)

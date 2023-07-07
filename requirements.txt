@@ -2,17 +2,17 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.26.84
-Django==3.2.18
+Django==3.2.19
 django-phonenumber-field==6.3.0
-django-recaptcha==2.0.6
+django-recaptcha==3.0.0           # 2.0.6 requires Django<4.0
 djangorestframework==3.12.4
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.10.5
-djaodjin-extended-templates==0.4.2
+djaodjin-deployutils==0.10.6
+djaodjin-extended-templates==0.4.3
 djaodjin-multitier==0.1.25
-djaodjin-rules==0.4.1
-djaodjin-saas==0.16.2
-djaodjin-signup==0.8.2
+djaodjin-rules==0.4.2
+djaodjin-saas==0.17.0
+djaodjin-signup==0.8.3
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 jinja2==3.1.2
 MarkupSafe==2.1.1
@@ -25,7 +25,8 @@ PyJWT==2.6.0                      # requires Python>=3.7
 pyotp==2.8.0
 python-ldap==3.4.3
 pytz==2022.7.1
-social-auth-app-django==5.0.0 # v1.2.0 does not support Django>=2.1
+social-auth-app-django==5.2.0        # drops support for Django<3.2
+                                     # v1.2.0 does not support Django>=2.1
 whitenoise==6.4.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`

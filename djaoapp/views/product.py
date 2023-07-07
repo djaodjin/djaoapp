@@ -65,7 +65,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         context = super(ProxyPageMixin, self).get_context_data()
         context.update({'err': str(err)})
         template_name = 'rules/forward_error.html'
-        if not fail_direct(self.request, organization=get_broker()):
+        if not fail_direct(self.request, profile=get_broker()):
             template_name = 'rules/forward_error_manager_help.html'
         return TemplateResponse(
             request=self.request,
@@ -234,7 +234,7 @@ class AppPageView(ProxyPageView):
             candidates += [
                 'app/%s/index.html' % profile, 'app/%s.html' % profile]
 
-        if not fail_direct(self.request, organization=get_broker()):
+        if not fail_direct(self.request, profile=get_broker()):
             # XXX testing exception catcher
             if self.kwargs.get('organization') == '500':
                 raise ValueError("Testing 500 exception catcher")
