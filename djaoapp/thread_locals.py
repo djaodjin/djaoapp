@@ -9,7 +9,6 @@ from extended_templates.utils import get_default_storage_base
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
-from multitier.finders import get_current_theme_assets_dirs
 from rules.models import Rule
 from rules.utils import get_app_model
 from saas.decorators import _valid_manager
@@ -41,32 +40,41 @@ def dynamic_processor_keys(provider, livemode=None):
     if livemode is None:
         livemode = bool(not is_testing(site))
 
-    if not livemode:
+    if livemode:
+        try:
+            if site.processor_client_key:
+                processor_backend.pub_key = site.processor_pub_key
+                processor_backend.priv_key = site.processor_priv_key
+                processor_backend.client_id = site.processor_client_key
+                processor_backend.connect_callback_url = \
+                    site.connect_callback_url
+            elif is_current_broker(provider) and is_domain_site(site):
+                # if we are using platform keys but the site is not
+                # the platform, we override the Stripe Connect mode
+                # to be REMOTE.
+                processor_backend.mode = processor_backend.REMOTE
+        except AttributeError:
+            pass
+    else:
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
         processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
         processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
         processor_backend.connect_callback_url = \
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL
-    try:
-        if site.processor_client_key:
-            processor_backend.pub_key = site.processor_pub_key
-            processor_backend.priv_key = site.processor_priv_key
-            processor_backend.client_id = site.processor_client_key
-            processor_backend.connect_callback_url = site.connect_callback_url
-            if not livemode:
+        try:
+            if site.processor_test_client_key:
                 processor_backend.pub_key = site.processor_test_pub_key
                 processor_backend.priv_key = site.processor_test_priv_key
                 processor_backend.client_id = site.processor_test_client_key
                 processor_backend.connect_callback_url = \
                     site.processor_test_connect_callback_url
-    except AttributeError:
-        pass
-
-    # if we are using platform keys but the site is not the platform,
-    # we override the Stripe Connect mode to be REMOTE.
-    if is_domain_site(site) and processor_backend.pub_key in (
-                settings.STRIPE_PUB_KEY, settings.STRIPE_TEST_PUB_KEY):
-        processor_backend.mode = processor_backend.REMOTE
+            elif is_current_broker(provider) and is_domain_site(site):
+                # if we are using platform keys but the site is not
+                # the platform, we override the Stripe Connect mode
+                # to be REMOTE.
+                processor_backend.mode = processor_backend.REMOTE
+        except AttributeError:
+            pass
 
     return processor_backend
 
