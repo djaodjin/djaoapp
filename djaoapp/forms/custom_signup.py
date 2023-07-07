@@ -15,7 +15,9 @@ from django_countries.fields import Country
 from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
-from signup.forms import (ActivationForm as ActivationFormBase,
+from signup.forms import (
+    ActivationForm as ActivationFormBase,
+    PasswordResetConfirmForm as PasswordResetConfirmFormBase,
     FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm)
 
 from .fields import PhoneNumberField
@@ -61,6 +63,11 @@ class ActivationForm(MissingFieldsMixin, ActivationFormBase):
                     label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
                     " conditions</a>") % legal_agreement_url),
                     required=extra_field[2])
+
+
+class PasswordResetConfirmForm(MissingFieldsMixin,
+                               PasswordResetConfirmFormBase):
+    pass
 
 
 class PasswordForm(MissingFieldsMixin, PasswordResetForm):

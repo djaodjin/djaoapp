@@ -10,15 +10,18 @@ from saas.models import Agreement
 from signup.helpers import update_context_urls
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
+    PasswordResetConfirmView as PasswordResetConfirmBaseView,
     RecoverView as RecoverBaseView,
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView)
 
 from ..compat import reverse
-from ..forms.custom_signup import ActivationForm, SigninForm, SignupForm
+from ..forms.custom_signup import (ActivationForm, PasswordResetConfirmForm,
+    SigninForm, SignupForm)
 from ..thread_locals import get_current_broker
-from ..mixins import RegisterMixin, VerifyMixin, social_login_urls
+from ..mixins import (PasswordResetConfirmMixin, RegisterMixin,
+    VerifyCompleteMixin, social_login_urls)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -37,7 +40,8 @@ class AuthMixin(object):
         return context
 
 
-class ActivationView(AuthMixin, AppMixin, VerifyMixin, ActivationBaseView):
+class ActivationView(AuthMixin, AppMixin, VerifyCompleteMixin,
+                     ActivationBaseView):
 
     form_class = ActivationForm
 
@@ -49,6 +53,11 @@ class ActivationView(AuthMixin, AppMixin, VerifyMixin, ActivationBaseView):
         })
         return kwargs
 
+
+class PasswordResetConfirmView(PasswordResetConfirmMixin,
+                               PasswordResetConfirmBaseView):
+
+    form_class = PasswordResetConfirmForm
 
 
 class RecoverView(AuthMixin, AppMixin, RecoverBaseView):

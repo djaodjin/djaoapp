@@ -19,8 +19,8 @@ from ..urlbuilders import (url_active, url_agreement, url_authenticated,
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
     ProcessorAuthorizeView, OrganizationProfileView)
-from ..views.custom_signup import (ActivationView, RecoverView,
-    SigninView, SignoutView, SignupView)
+from ..views.custom_signup import (ActivationView, PasswordResetConfirmView,
+    RecoverView, SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
@@ -40,6 +40,9 @@ def is_anonymous(func, next_url):
 
 urlpatterns = [
     # Authentication (login, registration, etc.)
+    url_prefixed(r'^reset/(?P<verification_key>%s)/'
+        % EMAIL_VERIFICATION_PAT,
+        PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url_prefixed(r'^activate/(?P<verification_key>%s)/'
         % EMAIL_VERIFICATION_PAT,
         ActivationView.as_view(), name='registration_activate'),

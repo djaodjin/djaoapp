@@ -18,7 +18,7 @@ from signup.api.auth import (
     JWTRegister as JWTRegisterBase)
 from signup.backends.sts_credentials import aws_bucket_context
 
-from ..mixins import RegisterMixin, VerifyMixin
+from ..mixins import RegisterMixin, VerifyCompleteMixin
 from .serializers import RegisterSerializer
 from ..compat import gettext_lazy as _
 
@@ -26,7 +26,7 @@ from ..compat import gettext_lazy as _
 LOGGER = logging.getLogger(__name__)
 
 
-class DjaoAppJWTActivate(AppMixin, VerifyMixin, JWTActivateBase):
+class DjaoAppJWTActivate(AppMixin, VerifyCompleteMixin, JWTActivateBase):
     """
     Retrieves an activation key
 
