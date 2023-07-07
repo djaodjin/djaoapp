@@ -1,19 +1,239 @@
 {% extends "saas/base.html" %}
 
-{% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-    <div class="col-md-6 col-12">
-    <div class="page-header mb-4">
-        <h1><i class="fa fa-users fa-lg"></i> {% trans %}Create profile{% endtrans %} ...</h1>
+{% block saas_title %}{% trans %}Create profile ...{% endtrans %}{% endblock %}
+
+{% block saas_content %}
+<role-user-list-modal inline-template >
+  <role-profile-list inline-template ref="profiles"
+        :request-user="'{{request.user.email}}'"
+        @create="create" @create-completed="createCompleted"
+        @remove="remove" @remove-completed="removeCompleted"
+        id="accessible-list-container">
+    <div>
+      <!-- Adds a role for a user to a profile, or create a new profile. -->
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="alert alert-info" v-cloak>
+            {% trans %}You don't have access to any profile yet. Please request access to an existing profile or create a new one.{% endtrans %}
+            </p>
+          </div>
+        </div>
+        <div id="add-or-create" class="collapse show" v-cloak>
+          <div class="row">
+            <div class="col-md-12 mt-3">
+              <div class="card bg-light">
+                <div class="card-header">
+{% trans %}Request access to an existing profile or create a new profile{% endtrans %}
+                </div>
+                <div class="card-body">
+                  <form id="add-profile" @submit.prevent="submit">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                    <account-typeahead inline-template ref="typeahead"
+                                       v-bind:dataset="items.results"
+                                       v-on:selectitem="updateItemSelected"
+                                       v-show="!inNewProfileFlow">
+                      <div>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <!-- optional indicators -->
+                            <span class="input-group-text">
+                              <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                              <template v-else>
+                                <i class="fa fa-search" v-show="isEmpty"></i>
+                                <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                              </template>
+                            </span>
+                          </div>
+                          <!-- the input field -->
+                          <input class="form-control"
+                                 type="text"
+                                 name="profile"
+                                 placeholder="{% trans %}Start typing an organization name or a contact e-mail ...{% endtrans %}"
+                                 autocomplete="off"
+                                 ref="input"
+                                 v-model="query"
+                                 @input="update" />
+                          <!-- the list -->
+                          {# Implementation note: If we use `d-block` instead of    #}
+                          {# `style="display: block;"` the dropdown shows even when #}
+                          {# `hasItems` is `False`.                                 #}
+                        </div>
+                        <div style="display: block;"
+                             v-for="(item, $item) in items"
+                             v-show="hasItems">
+                            {% include "saas/_request_profile_card.html" %}
+                        </div>{# /v-show="hasItems" #}
+                        <div v-show="!hasItems && query">
+                          <p>
+{% trans %}We couldn't find a profile matching your search criteria, or there are too many profiles matching your search criteria. Please keep typing to narrow the search, or create a new profile.{% endtrans %}
+                          </p>
+                          {% include "saas/_create_profile_card.html" %}
+                        </div>
+                      </div>
+                    </account-typeahead>
+                    <!-- Workflow to create a new profile  -->
+                    <div class="card" v-show="inNewProfileFlow">
+                      <div class="card-body text-left"
+                           aria-labelledby="{% trans %}Create profile{% endtrans %}" aria-hidden="true">
+                        <p>
+{% trans %}You are about to create a new profile for yourself or for your organization. We need a gather some information to create the profile.{% endtrans %}
+                        </p>
+                        <div class="form-group">
+                          <label>{% trans %}Profile name{% endtrans %}</label>
+                          <input class="form-control w-100"
+                                 name="full_name" type="text"
+                                 max-length="150" placeholder="My Profile"
+                                 v-model="newProfile.full_name" />
+                        </div>
+                        <div class="form-group">
+                          <label>{% trans %}Profile email{% endtrans %}</label>
+                          <input class="email form-control w-100"
+                                 name="email" type="text"
+                                 max-length="150" placeholder="myprofile@example.com"
+                                 v-model="newProfile.email" />
+                        </div>
+                        <div class="form-group">
+                          <label>{% trans %}Unique ID (as shown in URLs){% endtrans %}</label>
+                          <input class="form-control w-100"
+                                 name="slug" type="text"
+                                 max-length="150" placeholder="my-profile"
+                                 autofocus
+                                 v-model="newProfile.slug" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <button class="btn btn-secondary btn-md btn-block"
+                                  @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                        </div>
+                        <div class="col-sm-6">
+                          <button id="create-profile-submit"
+                                  class="btn btn-primary btn-md btn-block"
+                                  type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Request to add a role to a user on a profile.  -->
+                    <div aria-labelledby="{% trans %}Request access{% endtrans %}"
+                         aria-hidden="true"
+                         class="add-role-modal"
+                         tabindex="-1"
+                         v-show="profileRequestDone" v-cloak>
+                      <p class="text-danger">
+                        {% trans full_name='[[requestedProfilePrintableName]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite this profile to join {{site}}.{% endtrans %}
+                      </p>
+                      <div class="form-group mb-3">
+                        <label>{% trans %}To{% endtrans %}</label>
+                        <input id="new-request-email" class="email form-control w-100"
+                               name="email" type="text"
+                               max-length="150" placeholder="invitee@example.com"
+                               autofocus
+                               v-model="unregistered.email" />
+                      </div>
+                      <div class="form-group">
+                        <div class="controls">
+                          <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                          <textarea class="form-control"
+                                    name="message"
+                                    maxlength="255" type="text" rows="10">{% trans user=request.user.first_name, site=site.printable_name %}Hello,
+
+I would like to request access to your profile on {{site}}.
+
+Thank you,
+- {{user}}{% endtrans %}
+                          </textarea>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary btn-md btn-block mt-3"
+                              type="submit">{% trans %}Request access{% endtrans %}</button>
+                    </div><!-- /.add-add-role-modal -->
+                  </form>
+                </div>
+              </div><!-- /.card -->
+            </div>
+          </div>
+        </div><!-- /#add-or-create -->
+      </div>
+
     </div>
-    <p>
-{% trans %}If you are creating an organization, plan to have multiple managers, etc., please enter a shortID different from your username. Otherwise we will merge the profile with your user account.{% endtrans %}
-    </p>
-    <section id="organization-form" class="mb-3">
-        {% include "_form.html" %}
-    </section>
-    </div>
-    </div>
-</div>
+  </role-profile-list>
+</role-user-list-modal>
+{% endblock %}
+
+
+{% block saas_bodyscripts %}
+<script type="text/javascript" src="{{'/static/vendor/moment.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/moment-timezone-with-data.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/vue.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/lodash.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/vue-croppa.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/dropzone.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/d3.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/nv.d3.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/trip.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaoapp-i18n.js'|djasset}}"></script>
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$labels = {
+    notAvailableLabel: "{% trans %}N/A{% endtrans %}",
+    cardNumberLabel: "{% trans %}Card Number{% endtrans %}",
+    securityCodeLabel: "{% trans %}Security Code{% endtrans %}",
+    expirationLabel: "{% trans %}Expiration{% endtrans %}",
+    cardHolderLabel: "{% trans %}Card Holder{% endtrans %}",
+    streetAddressLabel: "{% trans %}Street address{% endtrans %}",
+    localityLabel: "{% trans %}City/Town{% endtrans %}",
+    regionLabel: "{% trans %}State/Province/County{% endtrans %}",
+    postalCodeLabel: "{% trans %}Zip/Postal code{% endtrans %}",
+    countryLabel: "{% trans %}Country{% endtrans %}",
+    fieldShoundNotBeEmptyError: "{% trans %}This field shouldn't be empty{% endtrans %}",
+    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
+}
+Vue.prototype.$globals = {
+    'humanizeDate': humanizeDate,
+    'humanizeNumber': humanizeNumber,
+    'humanizeTimeDelta': humanizeTimeDelta
+};
+
+humanizeTimeDelta.$labels = {
+    timeAgoTemplate: "{% trans %}%(timedelta)s ago{% endtrans %}",
+    timeLeftTemplate: "{% trans %}%(timedelta)s left{% endtrans %}",
+};
+</script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-upload.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-dashboard.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-resources-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-signup-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-saas-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-rules-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-themes-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-metrics.js'|djasset}}"></script>
+{% else %}
+<script type="text/javascript" charset="utf-8" src="{{'/static/cache/djaodjin-vue.js'|djasset}}"></script>
+{% endif %}
+
+<script type="text/javascript">
+Vue.use(Croppa);
+{% if FEATURES_REVERT_TO_VUE2 %}
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+{% else %}
+var app = createApp({
+  delimiters: ["[[","]]"],
+}).mount('#app');
+{% endif %}
+</script>
 {% endblock %}
