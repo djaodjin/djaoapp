@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -9,10 +9,12 @@ from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
+from rest_framework import serializers
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split, update_context_urls
@@ -50,10 +52,13 @@ class ContactForm(forms.Form):
                         }))
 
     def clean(self):
-        validate_contact_form(
-            self.cleaned_data.get('full_name'),
-            self.cleaned_data.get('email'),
-            self.cleaned_data.get('message'))
+        try:
+            validate_contact_form(
+                self.cleaned_data.get('full_name'),
+                self.cleaned_data.get('email'),
+                self.cleaned_data.get('message'))
+        except serializers.ValidationError as err:
+            raise ValidationError(str(err))
 
 
 class ContactView(ProviderMixin, FormView):
