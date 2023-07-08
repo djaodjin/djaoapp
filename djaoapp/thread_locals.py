@@ -273,7 +273,7 @@ def provider_absolute_url(request,
             # If `site == get_current_site()`, we have a full-proof way
             # to generate the absolute URL with either a domain name or
             # a path prefix depending on the request.
-            return site.as_absolute_uri(path=location)
+            return site.as_absolute_uri(location=location)
         except AttributeError:
             # OK, we'll use the default build_absolute_uri from multitier.
             pass
