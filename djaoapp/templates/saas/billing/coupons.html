@@ -31,10 +31,9 @@
 
     <hr class="mt-0" />
 
+    <!-- From/To/Match Filter Inputs -->
+    {% include "saas/_filter.html" %}
     <div class="row mt-3">
-      <!-- From/To/Match Filter Inputs -->
-      {% include "saas/_filter.html" %}
-
       <div class="col-md-3">
         <!-- Sort Coupons -->
         <div class="pb-3">
@@ -53,87 +52,88 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Loading Spinner -->
-      <div class="text-center py-5 my-5" v-show="!itemsLoaded">
-        <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-      </div>
+    <!-- Loading Spinner -->
+    <div class="text-center py-5 my-5" v-show="!itemsLoaded">
+      <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+    </div>
 
-      <!-- No Coupons Found Msg -->
-      <div class="text-center" v-show="itemsLoaded && items.results.length === 0" v-cloak>
-        <h4 class="text-center"><em>{% trans %}No Coupons{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
-      </div>
+    <!-- No Coupons Found Msg -->
+    <div class="text-center"
+         v-show="itemsLoaded && items.results.length === 0" v-cloak>
+      <h4 class="text-center"><em>{% trans %}No Coupons{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+    </div>
 
-      <div class="row mb-4" id="coupon-list">
-        <div :id="entry.code" class="col-md-4 my-1" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="coupon-title">
-                <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h5>
-                <button class="btn btn-danger btn-sm remove ml-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
-              </div>
+    <div class="row mb-4" id="coupon-list"
+         v-show="itemsLoaded && items.results.length > 0" v-cloak>
+      <div :id="entry.code" class="col-md-4 my-1" v-for="(entry, index) in items.results">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="coupon-title">
+              <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h5>
+              <button class="btn btn-danger btn-sm remove ml-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
             </div>
-            <div class="list-group list-group-flush">
-              <div class="list-group-item">
-                <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[(entry.discount_value / 100).toFixed(0)]]%
-              </div>
-              <div class="list-group-item">
-                <span class="text-muted">{% trans %}Expires At{% endtrans %}:</span> {% include "_entry_ends_at_field.html" %}
-              </div>
-              <div class="list-group-item">
-                  <span class="text-muted" v-show="!entry._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
-                  <span @click="editAttempts(entry)"
+          </div>
+          <div class="list-group list-group-flush">
+            <div class="list-group-item">
+              <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[(entry.discount_value / 100).toFixed(0)]]%
+            </div>
+            <div class="list-group-item">
+              <span class="text-muted">{% trans %}Expires At{% endtrans %}:</span> {% include "_entry_ends_at_field.html" %}
+            </div>
+            <div class="list-group-item">
+              <span class="text-muted" v-show="!entry._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
+              <span @click="editAttempts(entry)"
                     v-show="!entry._editAttempts">
-                    [[entry.nb_attempts === null ? '{% trans %}No limit{% endtrans %}' : entry.nb_attempts]]
-                  </span>
-                  <input type="text" class="form-control"
-                      @blur="saveAttempts(entry)"
-                      @keyup.13="saveAttempts(entry)"
-                      v-model="entry.nb_attempts"
-                      :ref="'editAttempts_' + entry.code"
-                      v-show="entry._editAttempts">
-              </div>
-              <div class="list-group-item">
-                  <span class="text-muted" v-show="!entry._editPlan">{% trans %}Plan{% endtrans %}:</span>
-                  <span @click="editPlan(entry)"
+                [[entry.nb_attempts === null ? '{% trans %}No limit{% endtrans %}' : entry.nb_attempts]]
+              </span>
+              <input type="text" class="form-control"
+                     @blur="saveAttempts(entry)"
+                     @keyup.13="saveAttempts(entry)"
+                     v-model="entry.nb_attempts"
+                     :ref="'editAttempts_' + entry.code"
+                     v-show="entry._editAttempts">
+            </div>
+            <div class="list-group-item">
+              <span class="text-muted" v-show="!entry._editPlan">{% trans %}Plan{% endtrans %}:</span>
+              <span @click="editPlan(entry)"
                     v-show="!entry._editPlan">
-                    [[entry.plan ? planTitle(entry.plan) : "{% trans %}No Plan{% endtrans %}"]]
-                  </span>
-                  <select class="form-control"
+                [[entry.plan ? planTitle(entry.plan) : "{% trans %}No Plan{% endtrans %}"]]
+              </span>
+              <select class="form-control"
                       @blur="savePlan(entry)"
                       @keyup.13="savePlan(entry)"
                       v-model="entry.plan"
                       :ref="'editPlan_' + entry.code"
                       v-show="entry._editPlan">
-                        <option value="">{% trans %}No Plan{% endtrans %}</option>
-                        <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
-                  </select>
-              </div>
+                <option value="">{% trans %}No Plan{% endtrans %}</option>
+                <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
+              </select>
             </div>
-            <div class="card-body">
-              <p class="card-text" data-trip data-trip-index="4"
-              data-trip-content="<p>{% trans %}Add a description for you to easily remember.{% endtrans %}</p>"
-              data-trip-position="s">
-                  <span @click="editDescription(index)"
+          </div>
+          <div class="card-body">
+            <p class="card-text" data-trip data-trip-index="4"
+               data-trip-content="<p>{% trans %}Add a description for you to easily remember.{% endtrans %}</p>"
+               data-trip-position="s">
+              <span @click="editDescription(index)"
                     v-show="!edit_description[index]">
-                      <i class="fa fa-pencil mr-3"></i>
-                      <span class="text-muted" v-if="!entry.description">{% trans %}Edit Description{% endtrans %}</span>
-                      [[entry.description]]
-                  </span>
-                  <input type="text" class="form-control"
-                    ref="edit_description_input"
-                    @keydown="saveDescription(entry, index, $event)"
-                    @blur="saveDescription(entry, index, $event)"
-                    v-model="entry.description"
-                    v-show="edit_description[index]">
-              </p>
-            </div>
+                <i class="fa fa-pencil mr-3"></i>
+                <span class="text-muted" v-if="!entry.description">{% trans %}Edit Description{% endtrans %}</span>
+                [[entry.description]]
+              </span>
+              <input type="text" class="form-control"
+                     ref="edit_description_input"
+                     @keydown="saveDescription(entry, index, $event)"
+                     @blur="saveDescription(entry, index, $event)"
+                     v-model="entry.description"
+                     v-show="edit_description[index]">
+            </p>
           </div>
         </div>
       </div>
-
-      {% include "_pagination.html" %}
-
+    </div>
+    {% include "_pagination.html" %}
   </div>
 </coupon-list>
 {% endblock %}
