@@ -206,5 +206,5 @@ Variable for recaptcha
 Installation Quirks
 -------------------
 
-See `documentation in djaodjin-signup<https://djaodjin-signup.readthedocs.org/en/latest/quirks.html>`_
+See `documentation in djaodjin-signup <https://djaodjin-signup.readthedocs.org/en/latest/quirks.html>`_
 to enable SAML and/or OpenLDAP authentication.
