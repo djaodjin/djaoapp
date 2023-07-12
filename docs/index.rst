@@ -6,8 +6,8 @@ Welcome to DjaoApp's documentation!
 DjaoApp brings fully-featured profile, billing and role-based access control
 pages so you can start building your SaaS product faster.
 
-DjaoApp is built on [Django](https://www.djangoproject.com/),
-[Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
+DjaoApp is built on `Django<https://www.djangoproject.com/>`_,
+`Vue.js<https://vuejs.org/>`_, `Bootstrap<https://getbootstrap.com/>`_
 frameworks and many more Open Source projects. Thank you for the support!
 
 Contents:
