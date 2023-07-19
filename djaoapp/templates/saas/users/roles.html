@@ -61,22 +61,24 @@
                                  ref="input"
                                  v-model="query"
                                  @input="update" />
-                          <!-- the list -->
-                          {# Implementation note: If we use `d-block` instead of    #}
-                          {# `style="display: block;"` the dropdown shows even when #}
-                          {# `hasItems` is `False`.                                 #}
                         </div>
-                        <div style="display: block;"
-                             v-for="(item, $item) in items"
-                             v-show="hasItems">
-                            {% include "saas/_request_profile_card.html" %}
-                        </div>{# /v-show="hasItems" #}
                         <div v-show="!hasItems && query">
                           <p>
 {% trans %}We couldn't find a profile matching your search criteria, or there are too many profiles matching your search criteria. Please keep typing to narrow the search, or create a new profile.{% endtrans %}
                           </p>
+                        </div>
+                        <div v-show="query">
                           {% include "saas/_create_profile_card.html" %}
                         </div>
+                        <!-- the list -->
+                  {# Implementation note: If we use `d-block` instead of    #}
+                  {# `style="display: block;"` the dropdown shows even when #}
+                  {# `hasItems` is `False`.                                 #}
+                        <div style="display: block;"
+                             v-for="(item, $item) in items"
+                             v-show="hasItems">
+                          {% include "saas/_request_profile_card.html" %}
+                        </div>{# /v-show="hasItems" #}
                       </div>
                     </account-typeahead>
                     <!-- Workflow to create a new profile  -->
@@ -90,21 +92,23 @@
                           <label>{% trans %}Profile name{% endtrans %}</label>
                           <input class="form-control w-100"
                                  name="full_name" type="text"
-                                 max-length="150" placeholder="My Profile"
+                                 max-length="150"
+                                 placeholder="ex: My Profile"
                                  v-model="newProfile.full_name" />
                         </div>
                         <div class="form-group">
-                          <label>{% trans %}Profile email{% endtrans %}</label>
+                          <label>{% trans %}Primary contact email{% endtrans %}</label>
                           <input class="email form-control w-100"
                                  name="email" type="text"
-                                 max-length="150" placeholder="myprofile@example.com"
+                                 max-length="150"
+                                 placeholder="ex: myprofile@example.com"
                                  v-model="newProfile.email" />
                         </div>
                         <div class="form-group">
-                          <label>{% trans %}Unique ID (as shown in URLs){% endtrans %}</label>
+                          <label>{% trans %}Unique ID as shown in URL bar (optional){% endtrans %}</label>
                           <input class="form-control w-100"
                                  name="slug" type="text"
-                                 max-length="150" placeholder="my-profile"
+                                 max-length="150" placeholder="ex: my-profile"
                                  autofocus
                                  v-model="newProfile.slug" />
                         </div>

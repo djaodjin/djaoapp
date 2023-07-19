@@ -1,20 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container mb-4">
-    <div class="col-md-6 offset-md-3 col-lg-6">
-      <div class="page-header">
-        <h1 class="text-center"><i class="fa fa-envelope"></i>
-          {% trans %}Contact us{% endtrans %}
-        </h1>
-      </div>
-      <p>
+<div class="flex-vertical-middle">
+  <div class="container">
+    <div class="row">
+      <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
+        <div class="page-header my-4">
+          <h1 class="text-center">{% trans %}Contact us{% endtrans %}</h1>
+        </div>
+        <p>
         {% trans %}Please leave your name and email address.{% endtrans %}
         {% trans %}We do our best to reply to each request individually within 24 hours. Thank you!{% endtrans %}
-      </p>
-      {% if form %}
+        </p>
+        {% if form %}
         {% include "_contact_form.html" %}
-      {% endif %}
+        {% endif %}
+        <hr />
+        <p class="text-center">
+          {% trans %}Or alternatively{% endtrans %}
+        </p>
+        <ul class="text-center list-unstyled">
+          <li>{% trans %}e-mail{% endtrans %} <a href="mailto:{{organization.email}}"><i class="fa fa-envelope"></i> {{organization.email}}</a></li>
+        </ul>
+      </div>
     </div>
   </div>
+</div>
 {% endblock %}

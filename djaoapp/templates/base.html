@@ -11,12 +11,6 @@
     <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
-    <meta name="twitter:account_id" content="1551213320" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:creator" content="@djaodjin" />
-    <meta name="twitter:domain" content="https://djaodjin.com" />
-    <meta name="twitter:image" content="https://djaodjin.com/static/img/og-image.png" />
-    <meta name="twitter:site" content="@djaodjin" />
     {% endblock %}
     <link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/base.css" />
     <style media="screen">
@@ -54,7 +48,7 @@
       <div class="dashboard-container">
         <div class="{% block dashboard_inner_container_classes %}{% endblock %}">
           {% block dashboard_nav %}
-            <div class="dashboard-nav nav-main-frnt">
+            <div class="d-print-none dashboard-nav nav-main-frnt">
               <div class="dashboard-nav-inner-container">
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
@@ -69,7 +63,7 @@
                       {% block sidebar %}
                         <hr />
                         <ul class="nav flex-column d-md-none">
-                            {% include "_generic_navbar.html" %}
+                          {% include "_generic_navbar.html" %}
                         </ul>
                       {% endblock %}
                     </div>
