@@ -11,6 +11,7 @@ from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from rules.models import Rule
 from rules.utils import get_app_model
+from saas import settings as saas_settings
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
 
@@ -236,7 +237,7 @@ def processor_redirect(request, site=None):
     else:
         provider = get_current_broker()
     return build_absolute_uri(request, location=reverse('saas_update_bank',
-        kwargs={'organization': provider}), site=site)
+        kwargs={saas_settings.PROFILE_URL_KWARG: provider}), site=site)
 
 
 def product_url(subscriber=None, plan=None, request=None):
