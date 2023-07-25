@@ -3,11 +3,12 @@ DjaoDjin subscriber session proxy
 
 DjaoApp brings fully-featured profile, billing and role-based access control
 pages so you can start building your SaaS product faster.
-To learn more visit [DjaoDjin's Website](https://djaodjin.com/).
+To learn more visit [DjaoDjin's Website](https://www.djaodjin.com/) or browse
+the project documentation on [Read-the-Docs](https://djaoapp.readthedocs.org/).
 
 DjaoApp is built on
 [Django](https://www.djangoproject.com/),
-[Vue.js](https://vuejs.org/), [Bootstrap 4](https://getbootstrap.com/)
+[Vue.js](https://vuejs.org/), [Bootstrap](https://getbootstrap.com/)
 frameworks and many more Open Source projects. Thank you for the support!
 
 <p align="center">
@@ -121,4 +122,4 @@ base.html is included.
 Release Notes
 =============
 
-See [release notes](https://www.djaodjin.com/docs/djaoapp/releases/)
+See [release notes](https://www.djaodjin.com/docs/reference/djaoapp/releases/) and [roadmap](https://www.djaodjin.com/docs/reference/roadmap/).

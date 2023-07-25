@@ -98,7 +98,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         widget=forms.TextInput(attrs={'placeholder': _("Type e-mail again")}),
         label=_("E-mail confirmation"))
     username = forms.SlugField(required=False,
-        widget=forms.TextInput(attrs={'placeholder': _("Username")}),
+        widget=forms.TextInput(attrs={'placeholder': _("ex: john")}),
         max_length=30, label=_("Username"),
         error_messages={'invalid': _("Username may only contain letters,"\
 " digits and -/_ characters. Spaces are not allowed.")})
@@ -122,7 +122,6 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             " letters, digits, spaces and '-' characters.")})
     country = forms.RegexField(required=False, regex=r'^[a-zA-Z ]+$',
         widget=forms.widgets.Select(choices=countries), label=_("Country"))
-    phone = PhoneNumberField(required=False, label=_('Phone number'))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('instance', None)

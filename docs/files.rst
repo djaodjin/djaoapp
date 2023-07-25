@@ -30,7 +30,7 @@ directory. The files under the ``vendor`` subdirectory come from third-parties
 slight patches as necessary.
 
 The default theme is using four CSS files
-- `base.cs <https://github.com/djaodjin/djaoapp/djaoapp/static/scss/base/base.scss>`_ is the primary stylesheet for the Website.
+- `base.css <https://github.com/djaodjin/djaoapp/djaoapp/static/scss/base/base.scss>`_ is the primary stylesheet for the Website.
 - `dashboard.css <https://github.com/djaodjin/djaoapp/djaoapp/static/scss/dashboard/dashboard.scss>`_ adds classes for charts and onboarding help tooltips that are present on dashboard pages. The public workflow pages do not have charts nor onboarding help tooltips.
 - `email.css <https://github.com/djaodjin/djaoapp/djaoapp/static/scss/email/email.scss>`_ contains styles for e-mail notifications.
 - `pages.css <https://github.com/djaodjin/djaoapp/djaoapp/static/scss/pages/pages.scss>`_ contains styles for the live editing tools.

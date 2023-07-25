@@ -186,9 +186,10 @@ class RegisterMixin(object):
             cleaned_data.get('locality', None) or
             cleaned_data.get('region', None) or
             cleaned_data.get('postal_code', None) or
-            cleaned_data.get('country', None) or
-            cleaned_data.get('phone', None)):
-            # We have enough information for a billing profile
+            cleaned_data.get('country', None)):
+            # XXX We have enough information for a billing profile but it might
+            # not be a good idea to force it here. Maybe using a registration
+            # 'type' field is more appropriate.
             registration = self.app.PERSONAL_REGISTRATION
             organization_selector = 'full_name'
         try:

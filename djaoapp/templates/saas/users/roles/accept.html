@@ -20,7 +20,8 @@
           <a id="ok" class="btn btn-primary btn-lg" href="{{next}}">{% trans %}Continue{% endtrans %}</a>
         </div>
         {% else %}
-{% trans %}You need to verify your e-mail address before going further. Please click on the link in the e-mail we just sent you.{% endtrans %}
+        {# XXX We cannot use "We found a matching profile for your e-mail domain!" since we check emails even when there are no profile. #}
+{% trans %}Please verify your e-mail address before going further. To do so click on the link in the e-mail we just sent you.{% endtrans %}
         {% endif %}
       </div>
     </div>

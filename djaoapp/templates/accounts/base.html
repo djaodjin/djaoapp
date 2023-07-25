@@ -16,7 +16,7 @@
         {% endblock %}
         {% if sso_required %}
         <p>
-{% trans %}You are required to login through the following Single Sign On (SSO) provider{% endtrans %}:
+{% trans %}Based on your e-mail address, you are required to login through the following Single Sign On (SSO) provider{% endtrans %}:
         </p>
         <a href="{{sso_required.url}}">{{sso_required.printable_name}}</a>
         {% else %}
