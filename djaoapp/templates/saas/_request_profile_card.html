@@ -9,8 +9,10 @@
       </div>
       <div class="col-5 text-end">
       {% block actions %}
-      <button class="btn btn-primary btn-md btn-block"
-          @click.prevent="onHit(item)">{% trans %}Request access{% endtrans %}</button>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary btn-md"
+            @click.prevent="onHit(item)">{% trans %}Request access{% endtrans %}</button>
+      </div>
       {% endblock %}
       </div>
     </div>

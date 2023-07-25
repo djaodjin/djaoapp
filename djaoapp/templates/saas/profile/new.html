@@ -102,13 +102,17 @@
                       </div>
                       <div class="row">
                         <div class="col-sm-6">
-                          <button class="btn btn-secondary btn-md btn-block"
-                                  @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-secondary btn-md"
+                                    @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                          </div>
                         </div>
                         <div class="col-sm-6">
-                          <button id="create-profile-submit"
-                                  class="btn btn-primary btn-md btn-block"
-                                  type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                          <div class="d-grid gap-2">
+                            <button id="create-profile-submit"
+                                    class="btn btn-primary btn-md"
+                                    type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -144,8 +148,10 @@ Thank you,
                           </textarea>
                         </div>
                       </div>
-                      <button class="btn btn-primary btn-md btn-block mt-3"
-                              type="submit">{% trans %}Request access{% endtrans %}</button>
+                      <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-md mt-3"
+                                type="submit">{% trans %}Request access{% endtrans %}</button>
+                      </div>
                     </div><!-- /.add-add-role-modal -->
                   </form>
                 </div>

@@ -59,11 +59,13 @@
     </div>
     <footer class="plan-footer"> {# class="plan-footer"> #}
       <div>
-      {% if plan.is_not_priced %}
-        <a class="btn btn-secondary btn-block" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
-      {% else %}
-        <button class="btn btn-primary btn-block" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Buy Now{% endtrans %}</button>
-      {% endif %}
+        <div class="d-grid gap-2">
+        {% if plan.is_not_priced %}
+          <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
+        {% else %}
+          <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Buy Now{% endtrans %}</button>
+        {% endif %}
+        </div>
       </div>
     </footer>
   </div>

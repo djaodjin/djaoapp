@@ -45,10 +45,12 @@
       <div class="card-body text-danger">
         <div class="row align-items-center">
           <div class="col-sm-5">
-            <button id="delete-action-open"
-                  class="btn btn-danger btn-block"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+            <div class="d-grid gap-2">
+              <button id="delete-action-open"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+            </div>
           </div>
           <div class="col-sm-7">
             {% trans %}This operation cannot be reversed.{% endtrans %}
