@@ -44,7 +44,7 @@ body{
   font-size: 12px;
   flex-shrink: 0;
   color: #FFF;
-  background-color: theme-color(primary);
+  background-color: map-get($theme-colors, "primary");
   width: 100%;
 }
 
@@ -73,7 +73,7 @@ body{
 
 
 .leaderboard.jumbotron {
-  background: theme-color(primary);
+  background: map-get($theme-colors, "primary");
   color: #fff;
 }
 
@@ -294,7 +294,7 @@ body{
 }
 
 .page-header:after {
-  background: theme-color(primary);
+  background: map-get($theme-colors, "primary");
   content: "";
   position: relative;
   height: 3px;
@@ -338,7 +338,7 @@ body{
 
 .plan-short:hover {
   cursor: pointer;
-  background-color: lighten(theme-color(primary), 75%);
+  background-color: tint-color(map-get($theme-colors, "primary"), 75%);
 }
 
 .plan-wrap {
@@ -358,7 +358,7 @@ body{
 
 
 .plan-pricing {
-  color: theme-color(primary);
+  color: map-get($theme-colors, "primary");
   text-align: center !important;
 }
 
@@ -492,8 +492,8 @@ pre.code{
 .param-required {
   display: inline-block;
   padding: $badge-padding-y $badge-padding-x;
-  padding-right: $badge-pill-padding-x;
-  padding-left: $badge-pill-padding-x;
+  padding-right: .6em;
+  padding-left: .6em;
   font-size: $badge-font-size;
   font-weight: $badge-font-weight;
   line-height: 1;
@@ -503,7 +503,7 @@ pre.code{
   color: red;
   border: 1px solid red;
   background-color: transparent;
-  @include border-radius($badge-pill-border-radius);
+  @include border-radius(10rem);
 
   // Empty badges collapse automatically
   &:empty {

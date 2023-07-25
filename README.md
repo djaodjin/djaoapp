@@ -48,6 +48,7 @@ vendor prerequisite packages and build the static assets.
     $ python -m venv <em>installTop</em>
     $ source <em>installTop</em>/bin/activate
     $ pip install -r requirements.txt
+    $ make vendor-assets-prerequisites
     $ make install-conf
     $ make build-assets
 </code></pre>

@@ -4,7 +4,7 @@
   <li class="nav-item">
     <a id="profile-app" class="nav-link" href="{{'/app/'|site_url}}{{organization}}/">{# XXX should use `product_url`? #}
       <span class="fa fa-2x fa-home align-middle"></span>
-      <span class="pl-1">{% trans %}Home{% endtrans %}</span>
+      <span class="ps-1">{% trans %}Home{% endtrans %}</span>
     </a>
   </li>
 </ul>
@@ -20,7 +20,7 @@
 
         {# User profiles #}
         <span class="icon icon-user align-top{% if urls.user.profile == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Profile{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Profile{% endtrans %}</span>
 
       </a>
     </li>
@@ -30,7 +30,7 @@
 
         {# Organization Profiles (of type organization and personal) #}
         <span class="icon icon-user align-top{% if urls.organization.profile == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Profile{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Profile{% endtrans %}</span>
 
       </a>
     </li>
@@ -43,7 +43,7 @@
 
           <!-- Managers & Contributors -->
           <span class="icon icon-connected align-top{% if role_url == request.path %} icon-active{% endif %}"></span>
-          <span class="pl-1">{{role_title|pluralize}}</span>
+          <span class="ps-1">{{role_title|pluralize}}</span>
 
         </a>
       </li>
@@ -52,7 +52,7 @@
       <li{% if urls.organization.role_list == request.path %} class="nav-item active"{% endif %}>
         <a class="nav-link" href="{{urls.organization.role_list}}">
           <span class="icon icon-connected align-top{% if role_url == request.path %} icon-active{% endif %}"></span>
-          <span class="pl-1">{% trans %}All roles{% endtrans %}</span>
+          <span class="ps-1">{% trans %}All roles{% endtrans %}</span>
         </a>
       </li>
       -->
@@ -64,7 +64,7 @@
 
         <!-- Connected Profiles -->
         <span class="icon icon-connected align-top{% if urls.user.accessibles == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %} Connected Profiles{% endtrans %}</span>
+        <span class="ps-1">{% trans %} Connected Profiles{% endtrans %}</span>
 
       </a>
     </li>
@@ -77,7 +77,7 @@
 
         <!-- Notifications -->
         <span class="icon icon-notifications align-top{% if urls.user.notifications == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Notifications{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Notifications{% endtrans %}</span>
 
       </a>
     </li>
@@ -92,7 +92,7 @@
 
         <!-- Billing -->
         <span class="icon icon-billing align-top{% if urls.organization.billing == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Billing{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Billing{% endtrans %}</span>
 
       </a>
     </li>
@@ -104,7 +104,7 @@
 
         <!-- Subscriptions -->
         <span class="icon icon-subscriptions align-top{% if urls.organization.subscriptions == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Subscriptions{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Subscriptions{% endtrans %}</span>
 
       </a>
     </li>
@@ -123,7 +123,7 @@
 
         <!-- Dashboard -->
         <span class="icon icon-dashboard align-top{% if urls.provider.dashboard == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Dashboard{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Dashboard{% endtrans %}</span>
 
       </a>
     </li>
@@ -134,7 +134,7 @@
 
         <!-- Revenue -->
         <span class="icon icon-revenue align-bottom{% if urls.provider.metrics_sales == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Reports{% endtrans %}</span></a>
+        <span class="ps-1">{% trans %}Reports{% endtrans %}</span></a>
 
     </li>
     {% endif %}
@@ -145,7 +145,7 @@
 
         <!-- Subscribers -->
         <span class="icon icon-subscribers align-top{% if urls.provider.subscribers == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Subscribers{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Subscribers{% endtrans %}</span>
 
       </a>
     </li>
@@ -156,7 +156,7 @@
 
         <!-- Plans -->
         <span class="icon icon-plans align-middle{% if urls.provider.plans == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Plans{% endtrans %}</span></a>
+        <span class="ps-1">{% trans %}Plans{% endtrans %}</span></a>
 
     </li>
     {% endif %}
@@ -167,7 +167,7 @@
 
         <!-- Coupons -->
         <span class="icon icon-coupons align-top{% if urls.provider.coupons == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Coupons{% endtrans %}</span>
+        <span class="ps-1">{% trans %}Coupons{% endtrans %}</span>
 
       </a>
     </li>
@@ -179,7 +179,7 @@
 
         <!-- Funds -->
         <span class="icon icon-funds align-top{% if urls.provider.transfers == request.path %} icon-active{% endif %}"></span>
-        <span class="pl-1">{% trans %}Funds{% endtrans %}</span></a>
+        <span class="ps-1">{% trans %}Funds{% endtrans %}</span></a>
 
     </li>
     {% endif %}
@@ -197,7 +197,7 @@
 
             <!-- Themes -->
             <span class="icon icon-themes align-top{% if urls.theme_update == request.path %} icon-active{% endif %}"></span>
-            <span class="pl-1">{% trans %}Themes{% endtrans %}</span>
+            <span class="ps-1">{% trans %}Themes{% endtrans %}</span>
 
           </a>
       </li>
@@ -209,7 +209,7 @@
 
             <!-- Rules -->
             <span class="icon icon-rules align-top{% if urls.rules.app == request.path %} icon-active{% endif %}"></span>
-            <span class="pl-1">{% trans %}Rules{% endtrans %}</span>
+            <span class="ps-1">{% trans %}Rules{% endtrans %}</span>
 
           </a>
       </li>

@@ -10,14 +10,14 @@
       <div v-if="row.location">
         <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
         <a :href="row.location" v-cloak>[[row.title ? row.title : row.slug]]</a>
-        <span class="badge" :class="{ 'badge-success': row.is_active, 'badge-secondary': !row.is_active }">[[row.is_active ? 'active' : 'inactive']]</span>
+        <span class="badge" :class="{ 'bg-success': row.is_active, 'bg-secondary': !row.is_active }">[[row.is_active ? 'active' : 'inactive']]</span>
       </div>
       <div v-if="!row.location">
         <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
         <span class="align-middle">[[row.title ? row.title : row.slug]]</span>
       </div>
     </td>
-    <td v-for="col in row.values" :key="col[0].toISOString()" :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-right row-body" v-cloak>
+    <td v-for="col in row.values" :key="col[0].toISOString()" :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-end row-body" v-cloak>
         [[$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
     </td>
   </tr>

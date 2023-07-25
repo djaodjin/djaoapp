@@ -18,7 +18,8 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     color: $menubar-link-active-color;
     background-color: $menubar-link-active-bg;
 
-    @include hover-focus {
+    &:hover,
+    &:focus {
         text-decoration: none;
     }
 }
@@ -120,7 +121,8 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     background-color: $menubar-dropdown-bg;
     color: $menubar-dropdown-link-color;
 
-  @include hover-focus {
+  &:hover,
+  &:focus {
     color: $menubar-dropdown-link-hover-color;
     text-decoration: none;
     @include gradient-bg($menubar-dropdown-link-hover-bg);
@@ -193,7 +195,7 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     bottom: 5px
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
 
     .menubar-label-expanded {
         display: none;

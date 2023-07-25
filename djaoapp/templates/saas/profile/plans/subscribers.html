@@ -17,16 +17,14 @@
                              v-on:selectitem="updateItemSelected">
             <div>
               <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <!-- optional indicators -->
-                  <span class="input-group-text">
-                    <i class="fa fa-spinner fa-spin" v-if="loading"></i>
-                    <template v-else>
-                      <i class="fa fa-search" v-show="isEmpty"></i>
-                      <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
-                    </template>
-                  </span>
-                </div>
+                <!-- optional indicators -->
+                <span class="input-group-text">
+                  <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                  <template v-else>
+                    <i class="fa fa-search" v-show="isEmpty"></i>
+                    <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                  </template>
+                </span>
                 <!-- the input field -->
                 <input class="form-control"
                        type="text"

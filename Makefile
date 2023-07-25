@@ -18,7 +18,7 @@ ASSETS_DIR    := $(srcDir)/htdocs/static
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
 DOCKER        ?= docker
-ESCHECK       ?= es-check
+ESCHECK       ?= eslint
 NPM           ?= npm
 PIP           ?= pip
 PYTHON        ?= python
@@ -59,8 +59,6 @@ all:
 	@echo "Nothing to be done for 'make'."
 
 
-# We need to remove chart.js installed by collectstatic
-# because it is not JS/v5 compatible.
 build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/email.css \
               $(ASSETS_DIR)/cache/dashboard.css \
@@ -68,8 +66,7 @@ build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/saas.js
 	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
-	rm $(ASSETS_DIR)/vendor/chart.js
-	cd $(srcDir) && $(ESCHECK) es5 htdocs/static/cache/*.js htdocs/static/vendor/*.js -v
+	cd $(srcDir) && $(ESCHECK) htdocs/static/cache/*.js htdocs/static/vendor/*.js
 
 
 clean: clean-dbs clean-themes clean-assets
@@ -132,6 +129,7 @@ run-coverage: initdb
 setup-livedemo:
 	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
+	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
@@ -179,8 +177,7 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/nvd3/build/nv.d3.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Converter.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/popper.js/dist/umd/popper-utils.min.js* $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/@popperjs/core/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/qrcode/build/qrcode.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
@@ -254,7 +251,7 @@ migratedb-%:
 $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(libDir)
 	$(NPM) install --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(libDir)
-	[ -e $(binDir)/es-check ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/es-check es-check)
+	[ -e $(binDir)/eslint ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/eslint eslint)
 	[ -e $(binDir)/sassc ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/sass sassc)
 	[ -e $(binDir)/swagger-cli ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/swagger-cli swagger-cli)
 	[ -e $(binDir)/webpack ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/webpack webpack)

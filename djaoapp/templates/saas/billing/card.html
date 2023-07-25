@@ -47,8 +47,8 @@
           <div class="col-sm-5">
             <button id="delete-action-open"
                   class="btn btn-danger btn-block"
-                  data-toggle="modal"
-                  data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+                  data-bs-toggle="modal"
+                  data-bs-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
           </div>
           <div class="col-sm-7">
             {% trans %}This operation cannot be reversed.{% endtrans %}
@@ -65,8 +65,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Delete Card{% endtrans %} ...</h5>
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body">
           <p>
@@ -79,11 +79,11 @@
         </div>
         <div class="modal-footer">
           <button id="cancel-delete"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="delete-card-btn"
                   class="btn btn-danger"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   @click="remove">{% trans %}Delete{% endtrans %}</button>
         </div>
       </div>

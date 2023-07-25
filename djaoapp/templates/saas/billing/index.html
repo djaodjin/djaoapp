@@ -17,7 +17,7 @@
 <li class="nav-item">
     <button id="cancel-balance-btn"
             class="btn btn-danger"
-            data-toggle="modal" data-target="#cancel-balance">
+            data-bs-toggle="modal" data-bs-target="#cancel-balance">
         {% trans %}Cancel Balance{% endtrans %}
     </button>
 </li>
@@ -92,8 +92,8 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close"
-                      data-dismiss="modal" aria-hidden="true">&times;</button>
+              <button type="button" class="btn-close"
+                      data-bs-dismiss="modal" aria-hidden="true"></button>
               <h4 class="modal-title">{% trans %}Cancel balance due{% endtrans %}</h4>
             </div>
             <div class="modal-body">
@@ -103,10 +103,10 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary"
-                  data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                  data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit"
                   class="btn btn-primary"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   @click="cancelBalance">{% trans %}OK{% endtrans %}</button>
             </div>
           </div>

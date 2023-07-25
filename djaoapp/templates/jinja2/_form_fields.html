@@ -27,23 +27,7 @@
 <div class="form-group{% if errors %} has-error{% endif %}">
   <div class="input-group input-group-md">
     {% if not hide_labels %}
-    <div class="input-group-prepend">
-      <label class="text-monospace input-group-text{% if required %} requiredField{% endif %}">{{label|safe}}</label>
-    </div>
-    {% endif %}
-    {% if nameOpened %}
-    <span class="form-control"
-          v-show="!{{nameOpened}} && !{{name}}">{% trans %}Never{% endtrans %}</span>
-    <div class="input-group-append"
-         v-show="!{{nameOpened}} && !{{name}}">
-      <button class="input-group-text"
-              {% if disabled %}
-              disabled
-              {% else %}
-              @click.prevent="{{toggleNameOpened}}"
-              {% endif %}
-              ><span class="fa fa-calendar"></span></button>
-    </div>
+      <label class="font-monospace input-group-text{% if required %} requiredField{% endif %}">{{label|safe}}</label>
     {% endif %}
     <input class="form-control{% if errors %} is-invalid{% endif %}"
            type="date"
@@ -55,10 +39,22 @@
            {% if nameOpenedRef %} :ref="{{nameOpenedRef}}"{% endif %}
            {% else %}
            v-model="{{name}}"
+           style="display: flex;padding:0.375rem 0.75rem;font-size: 1rem; line-height: 1.5;"
            {% endif %}
            {% if value %}value="{{value}}"{% endif %}
            {% if disabled %} disabled{% endif %}
            {% if autofocus %} autofocus{% endif %} />
+    {% if nameOpened %}
+    <span class="form-control"
+          v-show="!{{nameOpened}} && !{{name}}">{% trans %}Never{% endtrans %}</span>
+      <button class="input-group-text" v-show="!{{nameOpened}} && !{{name}}"
+              {% if disabled %}
+              disabled
+              {% else %}
+              @click.prevent="{{toggleNameOpened}}"
+              {% endif %}
+              ><span class="fa fa-calendar"></span></button>
+    {% endif %}
   </div>
   <div class="form-text help-block invalid-feedback errorlist">
     {% for error in errors %}
@@ -142,10 +138,10 @@
       <i class="fa fa-check text-green"></i>
       {% endif %}
     </div>
-    <div class="col-6 text-right">
+    <div class="col-6 text-end">
       <a href=""
-         data-toggle="modal"
-         data-target="#verify-{{name}}">
+         data-bs-toggle="modal"
+         data-bs-target="#verify-{{name}}">
         {% if verified_at %}{% trans date=verified_at %}verify again{% endtrans %}{% else %}{% trans %}verify{% endtrans %}{% endif %}
       </a>
     </div>

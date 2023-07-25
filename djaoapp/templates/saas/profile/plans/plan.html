@@ -12,7 +12,7 @@
 <plan-update inline-template id="plan-container">
   {% if urls.plan_subscribers %}
 <div>
-  <div class="btn-actions text-right">
+  <div class="btn-actions text-end">
     <a href="{{urls.plan_subscribers}}">{% trans %}Plan Subscribers{% endtrans %}</a>
     <button id="activate-plan"
             class="activate btn btn-primary"
@@ -38,7 +38,7 @@
                 {% trans %}Danger Zone{% endtrans %}
             </div>
             <div class="card-body text-danger">
-                <button id="delete-plan-confirm" class="btn btn-danger" data-toggle="modal" data-target="#delete-plan-modal">{% trans %}Delete{% endtrans %}</button> {% trans %}This operation cannot be reversed.{% endtrans %}
+                <button id="delete-plan-confirm" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-plan-modal">{% trans %}Delete{% endtrans %}</button> {% trans %}This operation cannot be reversed.{% endtrans %}
             </div>
             <div id="delete-plan-modal"
                  class="modal fade" tabindex="-1" role="dialog"
@@ -53,10 +53,10 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                                    data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                             <a id="delete-plan"
                                class="btn btn-danger btn-ok delete"
-                               data-dismiss="modal"
+                               data-bs-dismiss="modal"
                                @click="deletePlan">{% trans %}Delete{% endtrans %}</a>
                         </div>
                     </div>

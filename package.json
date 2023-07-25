@@ -2,6 +2,7 @@
     "name": "djaoapp-ui",
     "version": "0.1.0",
     "dependencies": {
+        "@popperjs/core": "^2.11.8",
         "ace-builds": "~1.2.2",
         "bootstrap": "^5.3.0",
         "bootstrap-colorpicker": "~2.5.2",
@@ -35,6 +36,7 @@
         "babel-loader": "^8.2.4",
         "css-loader": "^3.0.0",
         "es-check": "^6.2.1",
+        "eslint": "^8.44.0",
         "webpack": "^5.70.0",
         "webpack-cli": "^4.9.2"
     },
@@ -43,3 +45,4 @@
         "npm": ">=6.9.0"
     }
 }
+

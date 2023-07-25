@@ -18,7 +18,7 @@
       <p>
         {{param.description}}
         {% if (param.type == 'object' or param.type == 'array') and param|schema_properties(definitions) %}
-        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+        <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
         {% endif %}
       </p>
     </div>
@@ -53,7 +53,7 @@
 </ul>
 {% endblock %}
 
-{% block content_area_classes %} class="pl-4"{% endblock %}
+{% block content_area_classes %} class="ps-4"{% endblock %}
 
 {% block content %}
 <div id="api-doc-content">

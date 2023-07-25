@@ -25,7 +25,7 @@
       <p>
         {{param.description}}
         {% if (param.type == 'object' or param.type == 'array') and param|schema_properties(definitions) %}
-        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
+        <button class="btn btn-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{operationId}}-{{param.name}}" aria-expanded="false" aria-controls="collapse-{{operationId}}">...</button>
         {% endif %}
       </p>
     </div>
@@ -55,7 +55,7 @@
   </li>
   <li class="nav-item">
       <a class="nav-link" href="#workflows">By workflows</a>
-      <ul class="list-unstyled ml-2">
+      <ul class="list-unstyled ms-2">
         <li class="nav-item">
           <a class="nav-link" href="#auth">Auth & credentials</a>
         </li>
@@ -69,7 +69,7 @@
   </li>
   <li class="nav-item">
       <a class="nav-link" href="#permissions">By roles</a>
-      <ul class="list-unstyled ml-2">
+      <ul class="list-unstyled ms-2">
         <li class="nav-item">
           <a class="nav-link" href="#subscriber">Subscribers</a>
         </li>
@@ -80,7 +80,7 @@
   </li>
   <li class="nav-item">
       <a class="nav-link" href="#datamodels">By models</a>
-      <ul class="list-unstyled ml-2">
+      <ul class="list-unstyled ms-2">
         <li class="nav-item">
           <a class="nav-link" href="#cartmodel">Cart</a>
         </li>
@@ -107,10 +107,10 @@
 </ul>
 {% endblock %}
 
-{% block content_area_classes %} class="pl-4"{% endblock %}
+{% block content_area_classes %} class="ps-4"{% endblock %}
 
 {% block content %}
-<div id="api-doc-content" class="pl-4">
+<div id="api-doc-content" class="ps-4">
   {# intro #}
   <a name="index"></a>
   <div id="intro">
@@ -705,7 +705,7 @@ This section contains APIs related to site theme and operations.
         </div>
         {% if api_end_point|query_parameters %}
         <div>
-          <h5 class="param-list-header"><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
+          <h5 class="param-list-header"><span rel="tooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parameters that are appended to the URL. For example, in /items?id=###, the query parameter is id">Query parameters</span></h5>
           <div class="params-wrap">
             {% for param in api_end_point|query_parameters %}
             {{ api_param_doc(param, api_end_point.operationId) }}

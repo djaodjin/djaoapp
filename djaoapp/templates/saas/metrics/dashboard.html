@@ -22,16 +22,14 @@
               <search-profile inline-template data-url="{{urls.provider.api_accounts}}" id="search-list-container">
                 <div>
                   <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <!-- optional indicators -->
-                      <span class="input-group-text">
-                        <i class="fa fa-spinner fa-spin" v-if="loading"></i>
-                        <template v-else>
-                          <i class="fa fa-search" v-show="isEmpty"></i>
-                          <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
-                        </template>
-                      </span>
-                    </div>
+                    <!-- optional indicators -->
+                    <span class="input-group-text">
+                      <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                      <template v-else>
+                        <i class="fa fa-search" v-show="isEmpty"></i>
+                        <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                      </template>
+                    </span>
                     <!-- the input field -->
                     <input class="form-control"
                            type="text"
@@ -81,13 +79,13 @@
                   <span>
                     <span v-if="item.printable_name !== ''" class="d-inline-block item-name">[[item.printable_name]]</span>
                     <span v-else>No Username</span>
-                    <span class="badge ml-2" :class="{
-                        'badge-success': item.descr === 'charge paid',
-                        'badge-danger': item.descr === 'charge failed',
-                        'badge-secondary': item.descr === 'recently logged in'
+                    <span class="badge ms-2" :class="{
+                        'bg-success': item.descr === 'charge paid',
+                        'bg-danger': item.descr === 'charge failed',
+                        'bg-secondary': item.descr === 'recently logged in'
                       }">[[item.descr]]</span>
                   </span>
-                  <small class="text-muted ml-2">Last active [[$globals.humanizeTimeDelta(item.created_at, params.ends_at)]]</small>
+                  <small class="text-muted ms-2">Last active [[$globals.humanizeTimeDelta(item.created_at, params.ends_at)]]</small>
                 </a>
               </div>
             </div>

@@ -9,10 +9,10 @@
   <div>
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" href="#active_subscriptions" data-toggle="tab">{% trans %}Active{% endtrans %}</a>
+        <a class="nav-link active" href="#active_subscriptions" data-bs-toggle="tab">{% trans %}Active{% endtrans %}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#expired_subscriptions" data-toggle="tab">{% trans %}Expired{% endtrans %}</a>
+        <a class="nav-link" href="#expired_subscriptions" data-bs-toggle="tab">{% trans %}Expired{% endtrans %}</a>
       </li>
     </ul>
     <div class="tab-content">
@@ -29,7 +29,7 @@
               <form id="subscribe" @submit.prevent="subscribe({slug: '{{organization.slug}}', full_name: '{{organization.full_name}}'})">
                 <div class="row">
                   <div class="col-md-8">
-                    <select class="form-control mr-2" name="plan" v-model="plan">
+                    <select class="form-control me-2" name="plan" v-model="plan">
                       <option selected
                               value="{}"
                               :value="{}">{% trans %}Select a plan...{% endtrans %}</option>
@@ -39,7 +39,7 @@
                       {% endfor %}
                     </select>
                   </div>
-                  <div class="col-md-4 text-right">
+                  <div class="col-md-4 text-end">
                     <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
                   </div>
                 </div>
@@ -95,16 +95,16 @@
                   <td>
                     [[$globals.humanizeTimeDelta(entry.ends_at, ends_at)]]
                   </td>
-                  <td class="text-right" v-if="!entry.request_key">
+                  <td class="text-end" v-if="!entry.request_key">
                     <button class="btn btn-danger unsubscribe"
-                            data-toggle="modal" data-target="#unsubscribe-action"
+                            data-bs-toggle="modal" data-bs-target="#unsubscribe-action"
                             @click="unsubscribeConfirm(entry.profile.slug, entry.plan.slug)">
                       {% trans %}Unsubscribe Now{% endtrans %}
                     </button>
                   </td>
-                  <td class="text-right" v-if="entry.request_key && entry.editable">
+                  <td class="text-end" v-if="entry.request_key && entry.editable">
                     <button class="btn btn-danger unsubscribe"
-                            data-toggle="modal" data-target="#unsubscribe-action"
+                            data-bs-toggle="modal" data-bs-target="#unsubscribe-action"
                             @click="unsubscribeConfirm(entry.profile.slug, entry.plan.slug)">
                       {% trans %}Deny{% endtrans %}
                     </button>
@@ -113,7 +113,7 @@
                       {% trans %}Accept subscription{% endtrans %}
                     </button>
                   </td>
-                  <td class="text-right" v-if="entry.request_key && !entry.editable">
+                  <td class="text-end" v-if="entry.request_key && !entry.editable">
                     {% trans %}Request pending approval ...{% endtrans %}
                   </td>
                 </tr>
@@ -130,8 +130,8 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">{% trans %}Unsubscribe{% endtrans %} ...</h5>
-                  <button type="button" class="close"
-                          data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <button type="button" class="btn-close"
+                          data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                   <p>
@@ -144,10 +144,10 @@
                   <div class="modal-footer">
                     <button id="cancel-unsubscribe"
                             class="btn btn-secondary"
-                            data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                            data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                     <button type="submit" id="unsubscribe-btn"
                             class="btn btn-danger"
-                            data-dismiss="modal"
+                            data-bs-dismiss="modal"
                             @click="unsubscribe">{% trans %}Unsubscribe{% endtrans %}</button>
                   </div>
                 </div>

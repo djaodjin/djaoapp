@@ -57,7 +57,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}"></button>
           <h4>{% trans %}Preview{% endtrans %}</h4>
         </div>
         <div class="modal-body" style="padding:0;">
@@ -85,8 +85,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">{% trans %}URL of the page (ex: /hello) ...{% endtrans %}</h4>
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -98,10 +98,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-                  data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                  data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
           <button id="new-source-submit"
                   type="button" class="btn btn-primary"
-                  data-dismiss="modal">{% trans %}Create{% endtrans %}</button>
+                  data-bs-dismiss="modal">{% trans %}Create{% endtrans %}</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -115,12 +115,12 @@
     <div class="col-sm-10">
       <ul class="nav nav-tabs dashboard-tab" role="tablist">
         {# tabs are inserted here #}
-        <li class="nav-item active">
-          <a class="nav-link" href="#cssfile" data-toggle="tab">base.css</a>
+        <li class="nav-item">
+          <a class="nav-link active" href="#cssfile" data-bs-toggle="tab">base.css</a>
         </li>
       </ul>
     </div>
-    <div class="col-sm-2 text-right">
+    <div class="col-sm-2 text-end">
       <div class="api-spinner" style="padding: 10px 15px;display:none;">
         <i class="fa fa-refresh fa-spin"></i>
       </div>
