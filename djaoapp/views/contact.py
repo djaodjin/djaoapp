@@ -79,7 +79,6 @@ class ContactForm(forms.Form):
 
     def clean(self):
         try:
-            validate_path_pattern(self.request)
             validate_contact_form(
                 self.cleaned_data.get('full_name'),
                 self.cleaned_data.get('email'),
@@ -92,6 +91,11 @@ class ContactView(ProviderMixin, FormView):
 
     form_class = ContactForm
     template_name = 'contact.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # First level for bot prevention
+        validate_path_pattern(self.request)
+        return super(ContactView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)
