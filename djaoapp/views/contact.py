@@ -47,7 +47,7 @@ def validate_path_pattern(request):
         if look:
             extra =  look.group('extra')
             if extra:
-                raise serializers.ValidationError(
+                raise ValidationError(
                     {'detail': _("Bot detection - incorrect inputs")})
     except AttributeError:
         pass # Django<=1.11 ResolverMatch does not have
