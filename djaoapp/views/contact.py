@@ -9,7 +9,7 @@ from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -47,7 +47,7 @@ def validate_path_pattern(request):
         if look:
             extra =  look.group('extra')
             if extra:
-                raise ValidationError(
+                raise serializers.ValidationError(
                     {'detail': _("Bot detection - incorrect inputs")})
     except AttributeError:
         pass # Django<=1.11 ResolverMatch does not have
@@ -93,8 +93,11 @@ class ContactView(ProviderMixin, FormView):
     template_name = 'contact.html'
 
     def dispatch(self, request, *args, **kwargs):
-        # First level for bot prevention
-        validate_path_pattern(self.request)
+        try:
+            # First level for bot prevention
+            validate_path_pattern(self.request)
+        except serializers.ValidationError:
+            raise PermissionDenied()
         return super(ContactView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
