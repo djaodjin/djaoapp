@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 #pylint:disable=invalid-name,too-many-lines
 import logging
@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from multitier.thread_locals import get_current_site
+from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.signals import (card_expires_soon, charge_updated,
@@ -24,7 +25,6 @@ from signup.utils import printable_name as user_printable_name
 from djaoapp.signals import contact_requested
 
 from ..compat import gettext_lazy as _, reverse, six
-from ..thread_locals import get_current_app
 from .serializers import (ContactUsNotificationSerializer,
     UserNotificationSerializer, ExpireUserNotificationSerializer,
     OneTimeCodeNotificationSerializer,
