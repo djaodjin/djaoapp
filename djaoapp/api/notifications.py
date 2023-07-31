@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,13 +8,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
+from rules.utils import get_current_app
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import get_broker
 from signup.serializers_overrides import UserDetailSerializer
 
 from ..api.serializers import ProfileSerializer
 from ..compat import gettext_lazy as _
-from ..thread_locals import get_current_app
 from ..views.docs import get_notification_schema
 from .serializers import DetailSerializer
 

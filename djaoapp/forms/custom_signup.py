@@ -12,6 +12,7 @@ from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django_countries import countries
 from django_countries.fields import Country
+from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
@@ -22,7 +23,6 @@ from signup.forms import (
 
 from .fields import PhoneNumberField
 from ..compat import gettext_lazy as _, reverse, six
-from ..thread_locals import get_current_app
 
 
 class MissingFieldsMixin(object):

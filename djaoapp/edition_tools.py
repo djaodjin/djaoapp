@@ -12,7 +12,6 @@ from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
 from django.utils.module_loading import import_string
-from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from extended_templates.compat import render_template
 from extended_templates.views.pages import (
@@ -24,7 +23,6 @@ from saas.models import get_broker, is_broker
 from saas.utils import get_organization_model, get_role_model
 
 from .compat import csrf, is_authenticated, reverse, six
-from .thread_locals import is_domain_site
 
 
 LOGGER = logging.getLogger(__name__)
@@ -33,7 +31,7 @@ TopAccessibleOrganization = namedtuple('TopAccessibleOrganization',
     ['slug', 'printable_name', 'settings_location', 'role_title',
      'app_location'])
 
-def djaoapp_urls(request, account=None, base=None):
+def djaoapp_urls(request, account=None):
     if account is None:
         account = get_current_app().account
     urls = {
@@ -112,7 +110,6 @@ def inject_edition_tools(response, request, context=None,
                 'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-        site = get_current_site()
         dj_urls = djaoapp_urls(request, account=provider)
         body_bottom_template_name = \
             "extended_templates/_body_bottom_edit_tools.html"
