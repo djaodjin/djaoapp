@@ -3,69 +3,60 @@
   amount will be positive and/or the setup fee will.
 -->
 
-<div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 d-flex flex-column align-items-stretch plan" data-plan="{{plan.slug}}">
-  <div class="plan-short"> {# class=""> #}
-    <div class="plan-wrap"> {#  #}
-      <div class="plan-main">
-      <!-- Plan Title -->
-      <div class="text-center py-3">
+<div id="{{plan.slug}}" class="plan col-sm-6 col-md-4 col-lg-4 align-self-stretch" data-plan="{{plan.slug}}">
+  <div class="plan-short d-flex flex-column justify-content-between">
+    <div>
+      <!-- Plan title, pricing and description -->
+      <div class="plan-title text-center py-3">
         {% if plan.created_at|date_in_future %}
-          <p>{% trans %}Available soon!{% endtrans %}</p>
+        <p>{% trans %}Available soon!{% endtrans %}</p>
         {% endif %}
-
         <div class="page-header pt-3">
           <h5 class="editable-plan fw-light" data-key="title">{{plan.title}}</h5>
         </div>
+      </div>{# /.plan-title #}
+      <div class="plan-pricing">
+        <h2 class="text-center editable-plan edit-currency mb-0" data-key="period_amount">
+          {% if not plan or plan.is_not_priced %}
+          {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
+          {% trans %}Contact Us{% endtrans %}
+          {% else %}
+          {% if plan.discounted_period_price %}
+          {{plan.discounted_period_price|humanize_money}}
+          <small class="text-danger">{% trans price=plan.period_price|humanize_money %}(was {{price}}){% endtrans %}</small>
+          {% else %}
+          {{plan.period_price|humanize_money}}
+          {% endif %}
+          {% endif %}
+        </h2>
+        <p class="text-center mb-0">
+          {% if plan.is_not_priced %}
+          &nbsp;
+          {% else %}
+          <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.period_type}}" data-key="period_type" value="{{plan.period_type}}">
+            {{plan.period_type|humanize_period|title}}
+          </span>
+          {% endif %}
+        </p>
+        <p class="text-center mb-0">
+          {% if plan.setup_price.amount > 0 %}
+          {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
+          {% else %}
+          &nbsp;
+          {% endif %}
+        </p>
+      </div>{# /.plan-pricing #}
+      <div class="plan-desc editable-plan edit-markdown px-2" data-key="description">
+        {{plan.description|md}}
       </div>
-
-      <!-- Plan Description -->
-      <div class="plan-test">
-        <div class="plan-pricing">
-          <h2 class="text-center editable-plan edit-currency mb-0" data-key="period_amount">
-            {% if not plan or plan.is_not_priced %}
-              {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
-              {% trans %}Contact Us{% endtrans %}
-            {% else %}
-              {% if plan.discounted_period_price %}
-                {{plan.discounted_period_price|humanize_money}}
-                <small class="text-danger">{% trans price=plan.period_price|humanize_money %}(was {{price}}){% endtrans %}</small>
-              {% else %}
-                {{plan.period_price|humanize_money}}
-              {% endif %}
-            {% endif %}
-          </h2>
-          <p class="text-center mb-0">
-            {% if plan.is_not_priced %}
-              &nbsp;
-            {% else %}
-              <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.period_type}}" data-key="period_type" value="{{plan.period_type}}">
-                {{plan.period_type|humanize_period|title}}
-              </span>
-            {% endif %}
-          </p>
-          <p class="text-center mb-0">
-            {% if plan.setup_price.amount > 0 %}
-              {% trans price=plan.setup_price|humanize_money %}{{price}} one-time setup{% endtrans %}
-            {% else %}
-              &nbsp;
-            {% endif %}
-          </p>
-        </div>
-        <div class="plan-desc editable-plan edit-markdown px-2" data-key="description">
-          {{plan.description|md}}
-        </div>
-      </div>
-      </div>
-    </div>
-    <footer class="plan-footer"> {# class="plan-footer"> #}
-      <div>
-        <div class="d-grid gap-2">
+    </div>{# /.plan-desc #}
+    <footer class="text-center">
+      <div class="d-grid gap-2">
         {% if plan.is_not_priced %}
-          <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
+        <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
         {% else %}
-          <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Buy Now{% endtrans %}</button>
+        <button class="btn btn-primary" type="submit" name="submit" value="{{plan.slug}}">{% trans %}Buy Now{% endtrans %}</button>
         {% endif %}
-        </div>
       </div>
     </footer>
   </div>

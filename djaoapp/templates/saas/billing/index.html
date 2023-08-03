@@ -87,8 +87,10 @@
       {% if urls.organization.api_cancel_balance_due %}
       <!-- modal dialog for cancelling balance due -->
       <form id="cancel-balance" class="modal fade"
-            tabindex="-1" role="dialog" aria-labelledby="{% trans %}Cancel balance due{% endtrans %}"
-            aria-hidden="true" method="post" action=".">
+            tabindex="-1" role="dialog"
+            aria-labelledby="{% trans %}Cancel balance due{% endtrans %}"
+            aria-hidden="true" method="post" action="."
+            @submit.prevent="cancelBalance">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -106,8 +108,7 @@
                   data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit"
                   class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  @click="cancelBalance">{% trans %}OK{% endtrans %}</button>
+                  data-bs-dismiss="modal">{% trans %}OK{% endtrans %}</button>
             </div>
           </div>
         </div>

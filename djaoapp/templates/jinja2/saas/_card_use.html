@@ -35,7 +35,7 @@
              {# `style="display: block;"` `!important` gets in the way. #}
              {% if not (not last4 or force_update) %} style="display:none;"{% endif %}
              v-show="!haveCardData || updateCard">
-          <div id="card-element">
+          <div id="card-element" style="display:inline-block;">
             <div class="form-group">
               <div class="card-icons text-center">
                 <img id="amex" src="{{'static/img/american-express-curved-32px.png'|djasset}}">
