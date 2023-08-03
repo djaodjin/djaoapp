@@ -49,13 +49,13 @@
                   {# Implementation note: If we use `d-block` instead of    #}
                   {# `style="display: block;"` the dropdown shows even when #}
                   {# `hasItems` is `False`.                                 #}
-                  <ul class="dropdown-menu nav-pills p-1"
+                  <ul class="dropdown-menu nav-pills p-1 top-100"
                       style="display: block;"
                       v-show="hasItems">
                     <li v-for="(item, $item) in items" class="nav-item"
                         @mousedown="hit"
                         @mousemove="setActive($item)">
-                      <a :class="'nav-link' + activeClass($item)" v-text="item.printable_name"></a>
+                      <a :class="'nav-link px-3 py-2' + activeClass($item)" v-text="item.printable_name"></a>
                     </li>
                   </ul>
                 </div>
