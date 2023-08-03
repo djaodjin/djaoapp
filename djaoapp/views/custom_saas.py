@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -132,8 +132,7 @@ class OrganizationProfileView(OrganizationProfileViewBase):
         return kwargs
 
 
-class RoleImplicitGrantAcceptView(ContextMixin, TemplateResponseMixin,
-                                  RoleImplicitGrantAcceptViewBase):
+class RoleImplicitGrantAcceptView(RoleImplicitGrantAcceptViewBase):
 
     template_name = 'saas/users/roles/accept.html'
 
@@ -142,25 +141,6 @@ class RoleImplicitGrantAcceptView(ContextMixin, TemplateResponseMixin,
                              next_url=None):
         return check_email_verified_base(request, user,
             redirect_field_name=redirect_field_name, next_url=next_url)
-
-    def get_context_data(self, **kwargs):
-        context = super(RoleImplicitGrantAcceptView, self).get_context_data(
-            **kwargs)
-        if self.role:
-            context.update({
-                'role': self.role,
-                'contacts': ', '.join([user.get_full_name() for user
-                    in self.role.organization.with_role(
-                        saas_settings.MANAGER).exclude(
-                            pk=self.request.user.pk)])
-            })
-        return context
-
-    def get_implicit_grant_response(self, next_url, role, *args, **kwargs):
-        self.role = role
-        context = self.get_context_data(**kwargs)
-        context.update({REDIRECT_FIELD_NAME: next_url})
-        return self.render_to_response(context)
 
 
 class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):
