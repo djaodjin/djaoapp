@@ -106,7 +106,7 @@ def fail_authenticated(request, verification_key=None):
     instead when Content-Type is showing we are dealing with an API request.
     """
     try:
-        app = get_current_app()
+        app = get_current_app(request)
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)
@@ -138,7 +138,7 @@ def fail_authenticated(request, verification_key=None):
 
 def fail_direct(request, profile=None, roledescription=None):
     try:
-        app = get_current_app()
+        app = get_current_app(request)
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)
@@ -162,7 +162,7 @@ def fail_provider(request, profile=None, roledescription=None):
         if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
-        app = get_current_app()
+        app = get_current_app(request)
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)
@@ -188,7 +188,7 @@ def fail_provider_only(request, profile=None, roledescription=None):
         if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
-        app = get_current_app()
+        app = get_current_app(request)
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)
@@ -213,7 +213,7 @@ def fail_self_provider(request, user=None, roledescription=None):
         if _has_valid_access(request, [get_current_broker()]):
             return False
     try:
-        app = get_current_app()
+        app = get_current_app(request)
         #pylint:disable=unused-variable
         redirect, matched, session = check_matched(request, app,
             prefixes=DEFAULT_PREFIXES)

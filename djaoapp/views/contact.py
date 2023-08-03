@@ -2,19 +2,20 @@
 # see LICENSE
 from __future__ import unicode_literals
 
-import logging, socket
+import logging, re, socket
 from smtplib import SMTPException
 
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from rest_framework import serializers
+from rules.utils import get_current_app
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split, update_context_urls
@@ -22,11 +23,36 @@ from signup.auth import validate_redirect
 
 from ..compat import gettext_lazy as _, reverse, six
 from ..signals import contact_requested
-from ..thread_locals import get_current_app
 from ..validators import validate_contact_form
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+def validate_path_pattern(request):
+    # The authentication URLs are anonymously accessible, hence
+    # prime candidates for bots. These will POST to '/login/.' for
+    # example because there is a `action="."` in the <form> tag
+    # in login.html.
+    # We cannot catch these by restricting the match pattern.
+    # 1. '^login/$' will not match 'login/.' hence trigger the catch
+    #    all pattern that might forward the HTTP request.
+    # 2. 'login/(?P<extra>.*)' will through a missing argument
+    #    exception in `reverse` calls.
+    #pylint:disable=too-many-locals
+    try:
+        pat = (r'(?P<expected_path>%s)(?P<extra>.*)' %
+            request.resolver_match.route)
+        look = re.match(pat, request.path.lstrip('/'))
+        if look:
+            extra =  look.group('extra')
+            if extra:
+                raise serializers.ValidationError(
+                    {'detail': _("Bot detection - incorrect inputs")})
+    except AttributeError:
+        pass # Django<=1.11 ResolverMatch does not have
+             # a route attribute.
+
 
 class ContactForm(forms.Form):
 
@@ -65,6 +91,14 @@ class ContactView(ProviderMixin, FormView):
 
     form_class = ContactForm
     template_name = 'contact.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            # First level for bot prevention
+            validate_path_pattern(self.request)
+        except serializers.ValidationError:
+            raise PermissionDenied()
+        return super(ContactView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)

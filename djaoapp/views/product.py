@@ -32,8 +32,8 @@ from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
 
 from ..compat import gettext_lazy as _
-from ..thread_locals import (get_active_theme, get_current_app,
-    get_current_broker, is_current_broker)
+from ..thread_locals import (get_active_theme, get_current_broker,
+    is_current_broker)
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
 
