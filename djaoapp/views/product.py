@@ -8,16 +8,13 @@ from __future__ import unicode_literals
 
 import logging, os
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.staticfiles.views import serve as debug_serve
 from django.http import Http404
 from django.template import TemplateDoesNotExist
-from django.template.loader import get_template
 from django.template.response import TemplateResponse
 from django.utils._os import safe_join
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.static import serve
 from extended_templates import settings as themes_settings
@@ -36,6 +33,7 @@ from ..thread_locals import (get_active_theme, get_current_broker,
     is_current_broker)
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
+from ..utils import get_show_edit_tools
 
 LOGGER = logging.getLogger(__name__)
 
@@ -197,10 +195,10 @@ class PricingView(DjaoAppMixin, PageMixin, SessionProxyMixin, CartPlanListView):
     def get_context_data(self, **kwargs):
         context = super(PricingView, self).get_context_data(**kwargs)
         if self.edit_perm:
-            app = get_current_app()
-            if app.show_edit_tools:
+            show_edit_tools =get_show_edit_tools(self.request)
+            if show_edit_tools:
                 context.update({
-                    'show_show_edit_tools': app.show_edit_tools,
+                    'show_edit_tools': show_edit_tools,
                     'plan': Plan()
                 })
                 if not self.object_list.exists():

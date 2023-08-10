@@ -617,6 +617,8 @@ for config_param in ['DEFAULT_DOMAIN', 'DEFAULT_SITE']:
 
 
 # Software-as-a-Service (pages editor)
+SHOW_EDIT_TOOLS = False
+
 def theme_dir(account):
     return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
 

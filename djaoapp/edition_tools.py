@@ -23,6 +23,7 @@ from saas.models import get_broker, is_broker
 from saas.utils import get_organization_model, get_role_model
 
 from .compat import csrf, is_authenticated, reverse, six
+from .utils import get_show_edit_tools
 
 
 LOGGER = logging.getLogger(__name__)
@@ -83,10 +84,11 @@ def inject_edition_tools(response, request, context=None,
     # ``app.account`` is guarenteed to be in the same database as ``app``.
     # ``site.account`` is always in the *default* database, which is not
     # the expected database ``Organization`` are typically queried from.
-    app = get_current_app()
+    app = get_current_app(request)
     provider = app.account
     soup = None
-    if app.show_edit_tools and get_role_model().objects.valid_for(
+    show_edit_tools = get_show_edit_tools(request)
+    if show_edit_tools and get_role_model().objects.valid_for(
             organization=provider, user=request.user):
         edit_urls = {
             'api_medias': reverse(
@@ -115,7 +117,7 @@ def inject_edition_tools(response, request, context=None,
             "extended_templates/_body_bottom_edit_tools.html"
 
         context.update({
-            'ENABLE_CODE_EDITOR': app.show_edit_tools,
+            'ENABLE_CODE_EDITOR': show_edit_tools,
             'FEATURE_DEBUG': settings.FEATURES_DEBUG,
             'urls':{
                 'djaodjin': dj_urls,

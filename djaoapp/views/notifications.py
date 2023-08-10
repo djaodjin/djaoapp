@@ -11,6 +11,7 @@ from rules.mixins import AppMixin
 
 from ..api.notifications import get_test_email_context
 from ..compat import reverse
+from ..utils import get_show_edit_tools
 
 LOGGER = logging.getLogger(__name__)
 
@@ -79,7 +80,7 @@ class NotificationDetailView(AppMixin, TemplateView):
         templates = [{'name': base % 'base', 'index': 0},
             {'name': base % template_name, 'index': 1}]
         context.update({
-            'show_edit_tools': self.app.show_edit_tools,
+            'show_edit_tools': get_show_edit_tools(self.request),
             'templates': templates,
             'api_sources': reverse('extended_templates_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
