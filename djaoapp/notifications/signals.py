@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from multitier.thread_locals import get_current_site
-from rules.utils import get_current_app
+from rules.utils import get_current_app # XXX for `welcome_email`
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.signals import (card_expires_soon, charge_updated,
@@ -25,6 +25,7 @@ from signup.utils import printable_name as user_printable_name
 from djaoapp.signals import contact_requested
 
 from ..compat import gettext_lazy as _, reverse, six
+from .recipients import send_notification
 from .serializers import (ContactUsNotificationSerializer,
     UserNotificationSerializer, ExpireUserNotificationSerializer,
     OneTimeCodeNotificationSerializer,
@@ -131,8 +132,9 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
         'originated_by': user,
         'detail': reason
     }
-    get_current_app().send_notification('user_contact',
-        context=ContactUsNotificationSerializer().to_representation(context))
+    send_notification('user_contact',
+        context=ContactUsNotificationSerializer().to_representation(context),
+        site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -202,11 +204,11 @@ def user_registered_notice(sender, user, **kwargs):
         'back_url': site.as_absolute_uri(),
         'user': user
     }
-    app.send_notification('user_registered',
+    send_notification('user_registered',
         context=UserNotificationSerializer().to_representation(context),
         site=site)
     if hasattr(app, 'welcome_email') and app.welcome_email:
-        app.send_notification('user_welcome',
+        send_notification('user_welcome',
             context=UserNotificationSerializer().to_representation(context),
             site=site)
 
@@ -278,8 +280,9 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
         'back_url': site.as_absolute_uri(),
         'user': user,
     }
-    get_current_app().send_notification('user_activated',
-        context=UserNotificationSerializer().to_representation(context))
+    send_notification('user_activated',
+        context=UserNotificationSerializer().to_representation(context),
+        site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -345,14 +348,16 @@ def user_verification_notice(
     """
     LOGGER.debug("[signal] user_verification_notice(user=%s, back_url=%s,"\
         " expiration_days=%s)", user, back_url, expiration_days)
+    site = get_current_site()
     context = {
         'broker': get_broker(),
         'back_url': back_url,
         'user': user,
         'nb_expiration_days': expiration_days
     }
-    get_current_app().send_notification('user_verification',
-        context=ExpireUserNotificationSerializer().to_representation(context))
+    send_notification('user_verification',
+        context=ExpireUserNotificationSerializer().to_representation(context),
+        site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -419,14 +424,16 @@ def user_reset_password_notice(sender, user, request, back_url,
     """
     LOGGER.debug("[signal] user_reset_password_notice(user=%s, back_url=%s,"\
         " expiration_days=%s)", user, back_url, expiration_days)
+    site = get_current_site()
     context = {
         'broker': get_broker(),
         'back_url': back_url,
         'user': user,
         'nb_expiration_days': expiration_days,
     }
-    get_current_app().send_notification('user_reset_password',
-        context=ExpireUserNotificationSerializer().to_representation(context))
+    send_notification('user_reset_password',
+        context=ExpireUserNotificationSerializer().to_representation(context),
+        site=site)
 
 
 @receiver(user_mfa_code, dispatch_uid="user_mfa_code_notice")
@@ -499,9 +506,9 @@ def user_mfa_code_notice(sender, user, code, request, **kwargs):
         'code': code,
         'back_url': back_url
     }
-    get_current_app().send_notification('user_mfa_code',
-        context=OneTimeCodeNotificationSerializer().to_representation(context))
-
+    send_notification('user_mfa_code',
+        context=OneTimeCodeNotificationSerializer().to_representation(context),
+        site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -677,7 +684,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             context.update({'originated_by': user})
         else:
             context.update({'originated_by': None})
-        get_current_app().send_notification('charge_receipt',
+        send_notification('charge_receipt',
             context=ChargeNotificationSerializer().to_representation(context),
             site=site)
 
@@ -791,8 +798,9 @@ def card_updated_notice(sender, organization, user, old_card, new_card,
             }
         }
     }
-    get_current_app().send_notification('card_updated',
-      context=ChangeProfileNotificationSerializer().to_representation(context))
+    send_notification('card_updated',
+      context=ChangeProfileNotificationSerializer().to_representation(context),
+      site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -941,7 +949,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
         'provider': provider,
         'invoiced_items': invoiced_items,
     }
-    get_current_app().send_notification('order_executed',
+    send_notification('order_executed',
         context=InvoiceNotificationSerializer().to_representation(context),
         site=site)
 
@@ -1092,7 +1100,7 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
         'final_notice': final_notice,
         'back_url': back_url
     }
-    get_current_app().send_notification('renewal_charge_failed',
+    send_notification('renewal_charge_failed',
       context=RenewalFailedNotificationSerializer().to_representation(context),
       site=site)
 
@@ -1242,7 +1250,7 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
         'detail': "", # XXX
         'originated_by': user
     }
-    get_current_app().send_notification('claim_code_generated',
+    send_notification('claim_code_generated',
         context=ClaimNotificationSerializer().to_representation(context),
         site=site)
 
@@ -1354,7 +1362,7 @@ def profile_updated_notice(sender, organization, changes, user, **kwargs):
         'profile': organization,
         'changes': changes
     }
-    get_current_app().send_notification('profile_updated',
+    send_notification('profile_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
       site=site)
 
@@ -1475,7 +1483,7 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
     }
     request_user = kwargs.get('request_user', None)
     context.update({'originated_by': request_user if request_user else None})
-    get_current_app().send_notification('processor_setup_error',
+    send_notification('processor_setup_error',
       context=ProcessorSetupNotificationSerializer().to_representation(context),
       site=site)
 
@@ -1609,7 +1617,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
     context.update({'originated_by': request_user if request_user else None})
     LOGGER.debug("[signal] role_grant_created_notice(role=%s,"\
         " reason=%s)", role, reason)
-    get_current_app().send_notification('role_grant_created',
+    send_notification('role_grant_created',
         context=RoleGrantNotificationSerializer().to_representation(context),
         site=site)
 
@@ -1727,7 +1735,7 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
     }
     request_user = kwargs.get('request_user', None)
     context.update({'originated_by': request_user if request_user else None})
-    get_current_app().send_notification('role_request_created',
+    send_notification('role_request_created',
         context=RoleRequestNotificationSerializer().to_representation(context),
         site=site)
 
@@ -1852,7 +1860,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     }
     request_user = kwargs.get('request_user', None)
     context.update({'originated_by': request_user if request_user else None})
-    get_current_app().send_notification('role_grant_accepted',
+    send_notification('role_grant_accepted',
         context=RoleGrantNotificationSerializer().to_representation(context),
         site=site)
 
@@ -1959,7 +1967,7 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
         'subscriber': subscription.organization,
         'originated_by': originated_by
     }
-    get_current_app().send_notification('subscription_grant_accepted',
+    send_notification('subscription_grant_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
         context),
         site=site)
@@ -2077,7 +2085,7 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
             'is_invite': invite,
             'originated_by': origiinated_by
         }
-        get_current_app().send_notification('subscription_grant_created',
+        send_notification('subscription_grant_created',
             context=SubscriptionCreatedNotificationSerializer(
             ).to_representation(context),
             site=site)
@@ -2185,7 +2193,7 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
         'provider': subscription.plan.organization,
         'originated_by': originated_by
     }
-    get_current_app().send_notification('subscription_request_accepted',
+    send_notification('subscription_request_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
         context),
         site=site)
@@ -2297,7 +2305,7 @@ def subscription_request_created_notice(sender, subscription, reason=None,
             'detail': reason if reason is not None else "",
             'originated_by': originated_by
         }
-        get_current_app().send_notification('subscription_request_created',
+        send_notification('subscription_request_created',
             context=SubscriptionCreatedNotificationSerializer(
             ).to_representation(context),
             site=site)
@@ -2385,7 +2393,7 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
         'last4': card.get('last4'),
         'exp_date': card.get('exp_date'),
     }
-    get_current_app().send_notification('card_expires_soon',
+    send_notification('card_expires_soon',
       context=ExpireProfileNotificationSerializer().to_representation(context),
       site=site)
 
@@ -2496,7 +2504,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
         'plan': subscription.plan,
         'provider': subscription.plan.organization
     }
-    get_current_app().send_notification('expires_soon',
+    send_notification('expires_soon',
         context=SubscriptionExpireNotificationSerializer().to_representation(
             context),
         site=site)
@@ -2583,9 +2591,10 @@ def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
         'table': data,
         'date': date
     }
-    get_current_app().send_notification('weekly_sales_report_created',
+    send_notification('weekly_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(
-            context))
+            context),
+        site=site)
 
 
 @receiver(post_save, sender=get_user_model())

@@ -4,11 +4,11 @@ from __future__ import unicode_literals
 
 from django.template import TemplateDoesNotExist
 from extended_templates.backends import get_email_backend
+from multitier.thread_locals import get_current_site
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
-from rules.utils import get_current_app
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import get_broker
 from signup.serializers_overrides import UserDetailSerializer
@@ -73,10 +73,10 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
             }
         """
         try:
-            app = get_current_app()
+            site = get_current_site()
             notification_slug = self.kwargs.get('template')
-            get_email_backend(connection=app.get_connection()).send(
-                from_email=app.get_from_email(),
+            get_email_backend(connection=site.get_email_connection()).send(
+                from_email=site.get_from_email(),
                 recipients=[self.request.user.email],
                 template="notification/%s.eml" % notification_slug,
                 context=get_test_email_context(notification_slug,

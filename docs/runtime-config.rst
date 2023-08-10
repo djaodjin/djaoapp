@@ -119,6 +119,12 @@ key pairs.
 .. autodata:: settings.CONTACT_CAPTCHA_KEYS
 
 
+Overriding the function to send notifications
+---------------------------------------------
+
+.. autodata:: settings.SEND_NOTIFICATION_CALLABLE
+
+
 Reference for configuration variables
 -------------------------------------
 

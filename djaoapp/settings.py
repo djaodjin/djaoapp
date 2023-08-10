@@ -88,7 +88,7 @@ for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
-    RULES_APPS = (RULES_APP_MODEL.split('.')[0],)
+    RULES_APPS = (RULES_APP_MODEL.split('.', maxsplit=1)[0],)
 else:
     RULES_APPS = tuple([])
 
@@ -664,6 +664,13 @@ EXTENDED_TEMPLATES = {
     ],
     'THEME_DIR_CALLABLE': theme_dir
 }
+
+
+#: A callable function, which is passed a event_name and, optionally, a context
+#: dictionnary and site instance.
+#: This function is responsible to notify third-parties of an event. The default
+#: implementation will send an e-mail to users and/or profile managers.
+SEND_NOTIFICATION_CALLABLE = None
 
 
 # imports made here so SECRET_KEY is defined when loading AUTH_USER.

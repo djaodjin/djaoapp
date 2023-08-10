@@ -7,8 +7,6 @@ import logging
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from multitier.thread_locals import get_current_site
-from saas.models import Organization
-from saas.utils import update_context_urls
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 from signup.views.users import (
     PasswordChangeView as UserPasswordUpdateBaseView,

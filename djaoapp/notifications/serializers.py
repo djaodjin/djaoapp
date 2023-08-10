@@ -1,7 +1,5 @@
-# Copyright (c) 2022 DjaoDjin inc.
+# Copyright (c) 2023 DjaoDjin inc.
 # see LICENSE
-
-#pylint: disable=no-init
 
 from rest_framework import serializers
 from saas.api.serializers import (PlanSerializer, ChargeSerializer,
