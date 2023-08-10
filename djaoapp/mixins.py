@@ -9,11 +9,9 @@ from django.contrib.auth import get_backends
 from django.db import transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from rest_framework.exceptions import ValidationError
-from rules.utils import get_current_app
 from saas import settings as saas_settings
-from saas.decorators import fail_direct
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
-from saas.utils import get_organization_model
+from saas.utils import get_organization_model, update_context_urls
 from signup.helpers import full_name_natural_split, has_invalid_password
 from signup.mixins import IncorrectUser
 from signup.utils import handle_uniq_error
@@ -71,36 +69,18 @@ class DjaoAppMixin(object):
                 context.update({'next_url': reverse('saas_cart_plan_list')})
         # URLs for user
         if is_authenticated(self.request):
-            urls = {'user': {
+            update_context_urls(context, {'user': {
                 'logout': reverse('logout'),
                 'profile': reverse('users_profile', args=(self.request.user,)),
-            }}
+            }})
         else:
             login_urls = social_login_urls()
             login_urls.update({
                 'login': reverse('login'),
-               'password_reset': reverse('password_reset'),
-               'register': reverse('registration_register'),
+                'password_reset': reverse('password_reset'),
+                'register': reverse('registration_register'),
             })
-            urls = {'user': login_urls}
-        # URLs for provider
-        app = get_current_app()
-        # ``app.account`` is guarenteed to be in the same database as ``app``.
-        # ``site.account`` is always in the *default* database, which is not
-        # the expected database ``Organization`` are typically queried from.
-        provider = app.account
-        if not fail_direct(self.request, profile=provider):
-            urls.update({'provider': {
-                'dashboard': reverse('saas_dashboard', args=(provider,)),
-            }})
-        if 'urls' in context:
-            for key, val in six.iteritems(urls):
-                if key in context['urls']:
-                    context['urls'][key].update(val)
-                else:
-                    context['urls'].update({key: val})
-        else:
-            context.update({'urls': urls})
+            update_context_urls(context, {'user': login_urls})
         return context
 
 
@@ -298,7 +278,6 @@ class VerifyCompleteMixin(object):
                     'false', 'f', '0']
             except AttributeError:
                 not_signed = not(cleaned_data.get(agreement.slug, False))
-                pass
             if not_signed:
                 raise ValidationError({agreement.slug:
                     _("You must read and agree to the %(agreement)s.") % {

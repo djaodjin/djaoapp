@@ -12,7 +12,6 @@ from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
 from django.utils.module_loading import import_string
-from multitier.mixins import build_absolute_uri
 from extended_templates.compat import render_template
 from extended_templates.views.pages import (
     inject_edition_tools as inject_edition_tools_base)
@@ -20,7 +19,7 @@ from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
 from saas.models import get_broker, is_broker
-from saas.utils import get_organization_model, get_role_model
+from saas.utils import get_organization_model
 
 from .compat import csrf, is_authenticated, reverse, six
 from .utils import get_show_edit_tools
@@ -32,17 +31,6 @@ TopAccessibleOrganization = namedtuple('TopAccessibleOrganization',
     ['slug', 'printable_name', 'settings_location', 'role_title',
      'app_location'])
 
-def djaoapp_urls(request, account=None):
-    if account is None:
-        account = get_current_app().account
-    urls = {
-        'pricing': build_absolute_uri(request, location='/pricing/',
-            site=settings.APP_NAME),
-        'cart': build_absolute_uri(request,
-            location='/billing/%s/cart/' % account,
-            site=settings.APP_NAME)}
-    return urls
-
 
 def fail_edit_perm(request, account=None):
     """
@@ -53,7 +41,9 @@ def fail_edit_perm(request, account=None):
     # which might not be associated to a request.
     if request is not None:
         if account is None:
-            account = get_current_app().account
+            # The call to `get_current_app` here seems valid to check
+            # if the user has permissions to edit pages under a path prefix.
+            account = get_current_app(request).account
         result = not bool(_valid_manager(request, [account]))
     return result
 
@@ -85,11 +75,9 @@ def inject_edition_tools(response, request, context=None,
     # ``site.account`` is always in the *default* database, which is not
     # the expected database ``Organization`` are typically queried from.
     app = get_current_app(request)
-    provider = app.account
     soup = None
     show_edit_tools = get_show_edit_tools(request)
-    if show_edit_tools and get_role_model().objects.valid_for(
-            organization=provider, user=request.user):
+    if show_edit_tools and not fail_edit_perm(request, account=app.account):
         edit_urls = {
             'api_medias': reverse(
                 'extended_templates_api_uploaded_media_elements',
@@ -102,8 +90,8 @@ def inject_edition_tools(response, request, context=None,
                 'extended_templates_api_sources'),
             'api_page_element_base': reverse(
                 'extended_templates_api_edit_template_base'),
-            'api_plans': reverse('saas_api_plans', args=(provider,)),
-            'plan_update_base': reverse('saas_plan_base', args=(provider,))}
+            'api_plans': reverse('saas_api_plans', args=(app.account,)),
+            'plan_update_base': reverse('saas_plan_base', args=(app.account,))}
         try:
             # The following statement will raise an Exception
             # when we are dealing with a ``FileSystemStorage``.
@@ -112,16 +100,13 @@ def inject_edition_tools(response, request, context=None,
                 'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-        dj_urls = djaoapp_urls(request, account=provider)
+
         body_bottom_template_name = \
             "extended_templates/_body_bottom_edit_tools.html"
-
         context.update({
             'ENABLE_CODE_EDITOR': show_edit_tools,
             'FEATURE_DEBUG': settings.FEATURES_DEBUG,
-            'urls':{
-                'djaodjin': dj_urls,
-                'edit': edit_urls}})
+            'urls': {'edit': edit_urls}})
         context.update(csrf(request))
         soup = inject_edition_tools_base(response, request, context=context,
             body_top_template_name=body_top_template_name,
