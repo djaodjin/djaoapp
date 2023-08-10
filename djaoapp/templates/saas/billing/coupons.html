@@ -99,7 +99,7 @@
               <span class="text-muted" v-show="!entry._editPlan">{% trans %}Plan{% endtrans %}:</span>
               <span @click="editPlan(entry)"
                     v-show="!entry._editPlan">
-                [[entry.plan ? planTitle(entry.plan) : "{% trans %}No Plan{% endtrans %}"]]
+                [[entry.plan ? (planTitle(entry.plan) ? planTitle(entry.plan) : "{% trans %}unk{% endtrans %}") : "{% trans %}No Plan{% endtrans %}"]]
               </span>
               <select class="form-control"
                       @blur="savePlan(entry)"

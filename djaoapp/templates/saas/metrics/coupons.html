@@ -67,7 +67,7 @@
             </tr>
             <tr :id="item.user.slug" v-for="item in items.results" v-show="itemsLoaded && items.results.length" v-cloak>
                 <td><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.printable_name]]</a></td>
-                <td>[[item.plan]]</td>
+                <td>[[item.plan.title]]</td>
                 <td>[[$globals.humanizeDate(item.created_at)]]</td>
             </tr>
         </tbody>
