@@ -12,7 +12,6 @@ from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django_countries import countries
 from django_countries.fields import Country
-from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
@@ -21,8 +20,8 @@ from signup.forms import (
     PasswordResetConfirmForm as PasswordResetConfirmFormBase,
     FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm)
 
-from .fields import PhoneNumberField
 from ..compat import gettext_lazy as _, reverse, six
+from ..utils import get_registration_captcha_keys
 
 
 class MissingFieldsMixin(object):
@@ -130,10 +129,13 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         self.fields['type'] = forms.ChoiceField(choices=[
             (slugify(choice[1]), choice[1])
             for choice in Organization.ACCOUNT_TYPE], required=False)
-        if getattr(get_current_app(), 'registration_requires_recaptcha', False):
+        captcha_keys = get_registration_captcha_keys()
+        if captcha_keys:
             # Default captcha field is already appended at the end of the list
             # of fields. We overwrite it here to set the theme.
             self.fields['captcha'] = ReCaptchaField(
+                    public_key=captcha_keys['public_key'],
+                    private_key=captcha_keys['private_key'],
                     widget=ReCaptchaV2Checkbox(
                         attrs={
                             'data-theme': 'clean',

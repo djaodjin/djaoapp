@@ -15,7 +15,6 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from rest_framework import serializers
-from rules.utils import get_current_app
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split, update_context_urls
@@ -23,6 +22,7 @@ from signup.auth import validate_redirect
 
 from ..compat import gettext_lazy as _, reverse, six
 from ..signals import contact_requested
+from ..utils import get_contact_captcha_keys
 from ..validators import validate_contact_form
 
 
@@ -69,8 +69,11 @@ class ContactForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         if not kwargs.get('initial', {}).get('email', None):
-            if getattr(get_current_app(), 'contact_requires_recaptcha', False):
+            captcha_keys = get_contact_captcha_keys()
+            if captcha_keys:
                 self.fields['captcha'] = ReCaptchaField(
+                    public_key=captcha_keys['public_key'],
+                    private_key=captcha_keys['private_key'],
                     widget=ReCaptchaV2Checkbox(
                         attrs={
                             'data-theme': 'clean',

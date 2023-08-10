@@ -101,6 +101,24 @@ Then, as usual, we start the Docker container as:
         $ sudo docker run -d -p 8000:80 -v "${PWD}"/mounted_config:/app/var:z -e DJAOAPP_SETTINGS_LOCATION=/app/var -t ghcr.io/djaodjin/djaoapp/djaoapp:master
 
 
+Configuring re-captcha
+----------------------
+
+By default you can configure
+`reCAPTCHA <https://www.google.com/recaptcha/about/>`_
+on the registration and contact page using the ``RECAPTCHA_PUBLIC_KEY`` and
+``RECAPTCHA_PRIVATE_KEY`` configuration variables.
+
+If you need specific configurations (examples: different captcha keys on the
+registration and contact pages, or show the captcha based on complex fraud
+evaluation logic), you can replace the default functions that return captcha
+key pairs.
+
+.. autodata:: settings.REGISTRATION_CAPTCHA_KEYS
+
+.. autodata:: settings.CONTACT_CAPTCHA_KEYS
+
+
 Reference for configuration variables
 -------------------------------------
 

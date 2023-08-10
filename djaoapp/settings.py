@@ -819,7 +819,21 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
+# Use of reCAPTCHA workflow
 NOCAPTCHA = True
+
+#: A callable function, which is passed a request instance. The function must
+#: return a dictionnary `{'public_key': _*****_, 'private_key': _*****_ }`
+#: with the pair of keys to call the reCAPTACH API with, or an empty
+#: dictionnary if captcha should be disabled on the registration page.
+REGISTRATION_CAPTCHA_KEYS = None
+
+#: A callable function, which is passed a request instance. The function must
+#: return a dictionnary `{'public_key': _*****_, 'private_key': _*****_ }`
+#: with the pair of keys to call the reCAPTACH API with, or an empty
+#: dictionnary if captcha should be disabled on the contact-us page.
+CONTACT_CAPTCHA_KEYS = None
+
 
 # User settings
 # -------------

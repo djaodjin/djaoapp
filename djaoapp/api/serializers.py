@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils.deconstruct import deconstructible
 from rest_framework import serializers
-from rules.utils import get_current_app
+from rules.api.serializers import AppSerializer as RulesAppSerializer
 from saas.api.serializers import (
     OrganizationDetailSerializer as OrganizationBaseSerializer,
     OrganizationWithSubscriptionsSerializer,
@@ -20,11 +20,11 @@ from saas.api.serializers import (
 from saas.models import get_broker, Role, ChargeItem
 from saas.api.serializers import EnumField
 from signup.serializers import ActivitySerializer as UserActivitySerializer
-from rules.api.serializers import AppSerializer as RulesAppSerializer
 from signup.serializers import UserCreateSerializer
 
 from .. import __version__
 from ..compat import gettext_lazy as _, six
+from ..utils import get_contact_captcha_keys
 from ..validators import validate_contact_form
 
 
@@ -314,9 +314,10 @@ class ReCaptchaValidator(object):
 
 class ReCaptchaField(serializers.CharField):
 
-    def __init__(self, **kwargs):
+    def __init__(self, public_key=None, private_key=None, **kwargs):
         super().__init__(**kwargs)
-        validator = ReCaptchaValidator()
+        validator = ReCaptchaValidator(
+            public_key=public_key, private_key=private_key)
         self.validators.append(validator)
 
 
@@ -334,8 +335,11 @@ class ContactUsSerializer(NoModelSerializer):
     def __init__(self, *args, **kwargs):
         super(ContactUsSerializer, self).__init__(*args, **kwargs)
         if not kwargs.get('initial', {}).get('email', None):
-            if getattr(get_current_app(), 'contact_requires_recaptcha', False):
-                self.fields['g-recaptcha-response'] = ReCaptchaField()
+            captcha_keys = get_contact_captcha_keys()
+            if captcha_keys:
+                self.fields['g-recaptcha-response'] = ReCaptchaField(
+                    public_key=captcha_keys['public_key'],
+                    private_key=captcha_keys['private_key'])
 
     def validate(self, attrs):
         validate_contact_form(
