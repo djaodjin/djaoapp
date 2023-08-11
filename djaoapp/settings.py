@@ -46,6 +46,13 @@ CONTACT_DYNAMIC_VALIDATOR = None
 # Defaults for social auth configuration
 SOCIAL_AUTH_SAML_ENABLED_IDPS = {}
 
+# Defaults for captcha keys
+RECAPTCHA_PUBLIC_KEY = None
+RECAPTCHA_PRIVATE_KEY = None
+
+ENABLES_PROCESSOR_TEST_KEYS = True
+
+
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
         verbose=True, debug=DEBUG))
