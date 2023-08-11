@@ -3,8 +3,6 @@
 from __future__ import unicode_literals
 
 from django.template import TemplateDoesNotExist
-from extended_templates.backends import get_email_backend
-from multitier.thread_locals import get_current_site
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
@@ -15,11 +13,12 @@ from signup.serializers_overrides import UserDetailSerializer
 
 from ..api.serializers import ProfileSerializer
 from ..compat import gettext_lazy as _
+from ..notifications.recipients import send_notification
 from ..views.docs import get_notification_schema
 from .serializers import DetailSerializer
 
 
-def get_test_email_context(notification_slug, originated_by=None):
+def get_test_notification_context(notification_slug, originated_by=None):
     schema = get_notification_schema(notification_slug)
     examples = schema.get('examples', [])
     if examples:
@@ -73,13 +72,9 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
             }
         """
         try:
-            site = get_current_site()
             notification_slug = self.kwargs.get('template')
-            get_email_backend(connection=site.get_email_connection()).send(
-                from_email=site.get_from_email(),
-                recipients=[self.request.user.email],
-                template="notification/%s.eml" % notification_slug,
-                context=get_test_email_context(notification_slug,
+            send_notification('user_contact',
+                context=get_test_notification_context(notification_slug,
                     originated_by=self.request.user))
         except TemplateDoesNotExist:
             return Response({'detail':

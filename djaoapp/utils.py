@@ -7,6 +7,11 @@ from rules.utils import get_current_app
 
 from .compat import import_string, six
 
+def enables_processor_test_keys(request=None):
+    if isinstance(settings.ENABLES_PROCESSOR_TEST_KEYS, six.string_types):
+        return import_string(settings.ENABLES_PROCESSOR_TEST_KEYS)(request)
+    return bool(settings.ENABLES_PROCESSOR_TEST_KEYS)
+
 
 def get_registration_captcha_keys(request=None):
     if isinstance(settings.REGISTRATION_CAPTCHA_KEYS, six.string_types):

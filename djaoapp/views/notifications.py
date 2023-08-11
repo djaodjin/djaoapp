@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 import logging
 
@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 from rules.mixins import AppMixin
 
-from ..api.notifications import get_test_email_context
+from ..api.notifications import get_test_notification_context
 from ..compat import reverse
 from ..utils import get_show_edit_tools
 
@@ -32,7 +32,7 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(NotificationInnerFrameView, self).get_context_data(
             **kwargs)
-        context.update(get_test_email_context(self.kwargs.get('template'),
+        context.update(get_test_notification_context(self.kwargs.get('template'),
             originated_by=self.request.user))
         return context
 
@@ -64,7 +64,7 @@ class NotificationDetailView(AppMixin, TemplateView):
 
     def _get_template_names(self):
         # Not `get_template_names` because we do not had
-        # a `get_test_email_context` context.
+        # a `get_test_notification_context` context.
         template_name = self.kwargs.get('template', None)
 
         if template_name.endswith('_role_grant_created'):

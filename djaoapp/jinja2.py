@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
@@ -17,7 +17,7 @@ import multitier.templatetags.multitier_tags
 import saas.templatetags.saas_tags
 
 from .compat import import_string, reverse, six
-import djaoapp.templatetags.djaoapp_tags
+from .templatetags import djaoapp_tags
 
 
 LOGGER = logging.getLogger(__name__)
@@ -29,8 +29,8 @@ class DjaoappEnvironment(Jinja2Environment):
         #pylint:disable=redefined-builtin
         template = super(DjaoappEnvironment, self).get_template(
             name, parent=parent, globals=globals)
-        LOGGER.debug("[DjaoappEnvironment.get_template] loads %s from %s" % (
-            name, template.filename))
+        LOGGER.debug("[DjaoappEnvironment.get_template] loads %s from %s",
+            name, template.filename)
         extended_templates_signals.template_loaded.send(
             sender=self, template=template)
         return template
@@ -65,29 +65,27 @@ def environment(**options):
     env.filters['site_printable_name'] = \
         multitier.templatetags.multitier_tags.site_printable_name
 
-    env.filters['djasset'] = djaoapp.templatetags.djaoapp_tags.djasset
+    env.filters['djasset'] = djaoapp_tags.djasset
     env.filters['host'] = deployutils_extratags.host
-    env.filters['is_authenticated'] = \
-        djaoapp.templatetags.djaoapp_tags.is_authenticated
-    env.filters['is_checkbox'] = djaoapp.templatetags.djaoapp_tags.is_checkbox
-    env.filters['is_radio'] = djaoapp.templatetags.djaoapp_tags.is_radio
-    env.filters['is_textarea'] = djaoapp.templatetags.djaoapp_tags.is_textarea
-    env.filters['iterfields'] = djaoapp.templatetags.djaoapp_tags.iterfields
+    env.filters['is_authenticated'] = djaoapp_tags.is_authenticated
+    env.filters['is_checkbox'] = djaoapp_tags.is_checkbox
+    env.filters['is_radio'] = djaoapp_tags.is_radio
+    env.filters['is_textarea'] = djaoapp_tags.is_textarea
+    env.filters['iterfields'] = djaoapp_tags.iterfields
     env.filters['iteritems'] = saas.templatetags.saas_tags.iteritems
-    env.filters['messages'] = djaoapp.templatetags.djaoapp_tags.messages
-    env.filters['no_cache'] = djaoapp.templatetags.djaoapp_tags.no_cache
-    env.filters['pluralize'] = djaoapp.templatetags.djaoapp_tags.pluralize
+    env.filters['messages'] = djaoapp_tags.messages
+    env.filters['no_cache'] = djaoapp_tags.no_cache
+    env.filters['pluralize'] = djaoapp_tags.pluralize
     env.filters['to_json'] = deployutils_extratags.to_json
 
     # Standard site pages
-    env.filters['url_app'] = djaoapp.templatetags.djaoapp_tags.url_app
-    env.filters['url_contact'] = djaoapp.templatetags.djaoapp_tags.url_contact
-    env.filters['url_login'] = djaoapp.templatetags.djaoapp_tags.url_login
-    env.filters['url_logout'] = djaoapp.templatetags.djaoapp_tags.url_logout
-    env.filters['url_pricing'] = djaoapp.templatetags.djaoapp_tags.url_pricing
-    env.filters['url_profile'] = djaoapp.templatetags.djaoapp_tags.url_profile
-    env.filters['url_register'] \
-        = djaoapp.templatetags.djaoapp_tags.url_register
+    env.filters['url_app'] = djaoapp_tags.url_app
+    env.filters['url_contact'] = djaoapp_tags.url_contact
+    env.filters['url_login'] = djaoapp_tags.url_login
+    env.filters['url_logout'] = djaoapp_tags.url_logout
+    env.filters['url_pricing'] = djaoapp_tags.url_pricing
+    env.filters['url_profile'] = djaoapp_tags.url_profile
+    env.filters['url_register'] = djaoapp_tags.url_register
     # Specific to SaaS
     env.filters['price'] = saas.templatetags.saas_tags.price
     env.filters['dest_price'] = saas.templatetags.saas_tags.dest_price
@@ -117,15 +115,11 @@ def environment(**options):
             'cycle': django.template.defaulttags.cycle,
         })
     if settings.API_DEBUG:
-        env.filters['query_parameters'] = \
-            djaoapp.templatetags.djaoapp_tags.query_parameters
+        env.filters['query_parameters'] = djaoapp_tags.query_parameters
         env.filters['request_body_parameters'] = \
-            djaoapp.templatetags.djaoapp_tags.request_body_parameters
-        env.filters['responses_parameters'] = \
-            djaoapp.templatetags.djaoapp_tags.responses_parameters
-        env.filters['schema_properties'] = \
-            djaoapp.templatetags.djaoapp_tags.schema_properties
-        env.filters['not_key'] = \
-            djaoapp.templatetags.djaoapp_tags.not_key
+            djaoapp_tags.request_body_parameters
+        env.filters['responses_parameters'] = djaoapp_tags.responses_parameters
+        env.filters['schema_properties'] = djaoapp_tags.schema_properties
+        env.filters['not_key'] = djaoapp_tags.not_key
 
     return env

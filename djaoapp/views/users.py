@@ -6,7 +6,6 @@ import logging
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from multitier.thread_locals import get_current_site
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 from signup.views.users import (
     PasswordChangeView as UserPasswordUpdateBaseView,
@@ -51,15 +50,7 @@ class UserNotificationsView(NotificationsMixin, UserNotificationsBaseView):
 
 
 class UserAccessiblesView(UserAccessiblesBaseView):
-
-    def get_context_data(self, **kwargs):
-        context = super(UserAccessiblesView, self).get_context_data(**kwargs)
-        # We have to add 'site' to the context here because the connected
-        # profiles page inherits from UserMixin, not OrganizationMixin.
-        context.update({
-            'site': get_current_site()
-        })
-        return context
+    pass
 
 
 class UserPasswordUpdateView(UserPasswordUpdateBaseView):

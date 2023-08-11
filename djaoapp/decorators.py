@@ -6,11 +6,9 @@ from __future__ import unicode_literals
 import logging
 from functools import wraps
 
-from django.db import DEFAULT_DB_ALIAS
 from django.db.models import Q
 from django.template.response import SimpleTemplateResponse
 import jinja2.exceptions
-from multitier.thread_locals import get_current_site
 from extended_templates.thread_locals import (
     enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
@@ -27,7 +25,7 @@ from signup.helpers import has_invalid_password
 from signup.models import Contact
 
 from .compat import reverse, available_attrs
-from .thread_locals import get_current_broker
+from .thread_locals import get_current_broker, is_platformed_site
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 
 # This logger is really only useful for 'rules' in debug mode.
@@ -154,8 +152,7 @@ def fail_provider(request, profile=None, roledescription=None):
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    site = get_current_site()
-    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+    if is_platformed_site():
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.
@@ -180,8 +177,7 @@ def fail_provider_only(request, profile=None, roledescription=None):
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    site = get_current_site()
-    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+    if is_platformed_site():
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.
@@ -205,8 +201,7 @@ def fail_self_provider(request, user=None, roledescription=None):
     that managers of the site database itself are also able to access
     profiles of registered yet unsubscribed ``Organization``.
     """
-    site = get_current_site()
-    if site.db_name and site.db_name != DEFAULT_DB_ALIAS:
+    if is_platformed_site():
         # We have a separate database so it is OK for a manager
         # of the site to access registered ``Organization`` which
         # are not subscribed yet.

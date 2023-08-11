@@ -1,10 +1,9 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
 
 from extended_templates.extras import AccountMixinBase
-from multitier.thread_locals import get_current_site
 from rules.extras import AppMixinBase
 from rules.utils import get_current_app
 
@@ -21,9 +20,6 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
-        context.update({
-            'site': get_current_site()
-        })
 
         # Flags used in saas/_body_top_template.html to show how processor
         # handles cards and charges.

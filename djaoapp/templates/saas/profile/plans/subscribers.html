@@ -62,7 +62,7 @@
                tabindex="-1"
                v-show="profileRequestDone" v-cloak>
             <p class="text-danger">
-              {% trans full_name='[[requestedProfilePrintableName]]', site=site.printable_name %}{{full_name}} was not found. This is an opportunity to invite this profile to join {{site}}.{% endtrans %}
+              {% trans full_name='[[requestedProfilePrintableName]]', site=request|site_printable_name %}{{full_name}} was not found. This is an opportunity to invite this profile to join {{site}}.{% endtrans %}
             </p>
             <div class="form-group mb-3">
               <label>{% trans %}Profile name{% endtrans %}</label>
@@ -85,7 +85,7 @@
                 <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
                 <textarea class="form-control"
                           name="message"
-                          maxlength="255" type="text" rows="10">{% trans user=request.user.first_name, site=site.printable_name %}Hello,
+                          maxlength="255" type="text" rows="10">{% trans user=request.user.first_name, site=request|site_printable_name %}Hello,
 
 I have subscribed you on {{site}}.
 

@@ -1,8 +1,6 @@
 # Copyright (c) 2023 DjaoDjin inc.
 # see LICENSE
 
-#pylint: disable=no-init
-
 import logging, sys
 
 from captcha import client

@@ -4,6 +4,7 @@
 import logging, os
 
 from django.conf import settings
+from django.db import DEFAULT_DB_ALIAS
 from django.http import Http404
 from extended_templates.utils import get_default_storage_base
 from multitier.thread_locals import get_current_site
@@ -20,8 +21,9 @@ from .compat import reverse
 
 LOGGER = logging.getLogger(__name__)
 
-def is_domain_site(site):
-    return not (get_current_broker()._state.db == 'default')
+def is_platformed_site():
+    #pylint:disable=protected-access
+    return not (get_current_broker()._state.db == DEFAULT_DB_ALIAS)
 
 def is_testing(site):
     return site.tag and 'testing' in site.tag
@@ -39,7 +41,10 @@ def dynamic_processor_keys(provider, livemode=None):
         }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
     site = get_current_site()
     if livemode is None:
-        livemode = bool(not is_testing(site))
+        if provider.processor_pub_key:
+            livemode = provider.processor_pub_key.startswith('pk_live_')
+        else:
+            livemode = bool(not is_testing(site))
 
     if livemode:
         try:
@@ -49,7 +54,7 @@ def dynamic_processor_keys(provider, livemode=None):
                 processor_backend.client_id = site.processor_client_key
                 processor_backend.connect_callback_url = \
                     site.connect_callback_url
-            elif is_current_broker(provider) and is_domain_site(site):
+            elif is_current_broker(provider) and is_platformed_site():
                 # if we are using platform keys but the site is not
                 # the platform, we override the Stripe Connect mode
                 # to be REMOTE.
@@ -69,7 +74,7 @@ def dynamic_processor_keys(provider, livemode=None):
                 processor_backend.client_id = site.processor_test_client_key
                 processor_backend.connect_callback_url = \
                     site.processor_test_connect_callback_url
-            elif is_current_broker(provider) and is_domain_site(site):
+            elif is_current_broker(provider) and is_platformed_site():
                 # if we are using platform keys but the site is not
                 # the platform, we override the Stripe Connect mode
                 # to be REMOTE.
@@ -78,6 +83,13 @@ def dynamic_processor_keys(provider, livemode=None):
             pass
 
     return processor_backend
+
+
+def enables_processor_test_keys(request=None):
+    site = get_current_site()
+    if hasattr(site, 'enables_processor_test_keys'):
+        return site.enables_processor_test_keys
+    return bool(settings.ENABLES_PROCESSOR_TEST_KEYS)
 
 
 def get_current_broker():

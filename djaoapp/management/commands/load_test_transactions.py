@@ -1,7 +1,8 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 import datetime, logging, os, random
+from collections import defaultdict
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -21,11 +22,7 @@ from saas import signals as saas_signals
 from signup.helpers import full_name_natural_split
 from signup import signals as signup_signals
 
-
-
 LOGGER = logging.getLogger(__name__)
-
-from collections import defaultdict
 
 
 class DisableSignals(object):
@@ -196,7 +193,7 @@ class Command(BaseCommand):
         """
         Create Income transactions that represents a growing bussiness.
         """
-        #pylint: disable=too-many-locals
+        #pylint: disable=too-many-locals,too-many-arguments
         from saas.metrics.base import month_periods # avoid import loop
         if not fake:
             fake = Faker()
@@ -237,7 +234,7 @@ class Command(BaseCommand):
                                         0, len(profile_pictures_females) - 1)]
                         slug = slugify('demo%d' % random.randint(1, 1000))
                         email = "%s@%s" % (slug, fake.domain_name())
-                        first_name, mid_name, last_name = \
+                        first_name, _, last_name = \
                             full_name_natural_split(full_name)
                         customer, created = Organization.objects.get_or_create(
                             slug=slug,
