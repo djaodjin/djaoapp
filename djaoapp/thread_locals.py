@@ -52,8 +52,9 @@ def dynamic_processor_keys(provider, livemode=None):
                 processor_backend.pub_key = site.processor_pub_key
                 processor_backend.priv_key = site.processor_priv_key
                 processor_backend.client_id = site.processor_client_key
-                processor_backend.connect_callback_url = \
-                    site.connect_callback_url
+                if site.connect_callback_url:
+                    processor_backend.connect_callback_url = \
+                        site.connect_callback_url
             elif is_current_broker(provider) and is_platformed_site():
                 # if we are using platform keys but the site is not
                 # the platform, we override the Stripe Connect mode
@@ -72,8 +73,9 @@ def dynamic_processor_keys(provider, livemode=None):
                 processor_backend.pub_key = site.processor_test_pub_key
                 processor_backend.priv_key = site.processor_test_priv_key
                 processor_backend.client_id = site.processor_test_client_key
-                processor_backend.connect_callback_url = \
-                    site.processor_test_connect_callback_url
+                if site.connect_test_callback_url:
+                    processor_backend.connect_callback_url = \
+                        site.connect_test_callback_url
             elif is_current_broker(provider) and is_platformed_site():
                 # if we are using platform keys but the site is not
                 # the platform, we override the Stripe Connect mode

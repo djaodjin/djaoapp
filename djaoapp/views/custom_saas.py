@@ -6,6 +6,7 @@ import logging
 
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.exceptions import ValidationError
+from multitier.thread_locals import get_current_site
 from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
@@ -41,6 +42,19 @@ class DashboardView(BaseDashboardView):
 
 
 class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
+
+    def connect_auth(self, auth_code):
+        try:
+            livemode = int(self.request.GET.get('livemode', 1))
+        except ValueError:
+            livemode = 1
+        site = get_current_site()
+        if livemode:
+            site.remove_tags(['testing'])
+        else:
+            site.add_tags(['testing'])
+        site.save()
+        return super(ProcessorAuthorizeView, self).connect_auth(auth_code)
 
     def get_context_data(self, **kwargs):
         context = super(ProcessorAuthorizeView, self).get_context_data(**kwargs)
