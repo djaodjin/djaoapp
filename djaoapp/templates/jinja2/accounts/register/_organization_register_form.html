@@ -23,4 +23,9 @@
 <fieldset>
   {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
 </fieldset>
+{% if 'captcha' in form.fields %}
+<fieldset>
+{{ input_field(form['captcha'], form.hide_labels) }}
+</fieldset>
+{% endif %}
 {% endblock %}

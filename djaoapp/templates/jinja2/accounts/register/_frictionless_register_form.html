@@ -4,4 +4,7 @@
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
 {{ input_field(form['full_name'], form.hide_labels) }}
 {{ input_field(form['email'], form.hide_labels) }}
+{% if 'captcha' in form.fields %}
+{{ input_field(form['captcha'], form.hide_labels) }}
+{% endif %}
 {% endblock %}
