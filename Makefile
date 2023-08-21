@@ -131,7 +131,7 @@ require: require-pip require-resources initdb
 # Once tests are completed, run 'coverage report'.
 run-coverage: initdb
 	cd $(srcDir) && coverage run --source='.,deployutils,extended-templates,rules,saas,signup,' \
-		manage.py runserver $(APP_PORT) --noreload
+		$(MANAGE) runserver $(APP_PORT) --noreload
 
 # Implementation note:
 # We use `$(LIVEDEMO_DB_FILENAME)` and `$(PYTHON) manage.py` in this target,
