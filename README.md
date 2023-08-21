@@ -45,9 +45,16 @@ Install
 First you will need to create a workspace environment, download the 3rd party
 vendor prerequisite packages and build the static assets.
 
+DjaoApp transitively depends on multiple native libraries that could or could
+not be straightforward to install on your Operating System. If you have trouble
+with the `pip install -r requirements-native.txt` command, take a look at
+[installation quirks](https://djaoapp.readthedocs.io/en/latest/quirks.html)
+in the documentation.
+
 <pre><code>
     $ python -m venv <em>installTop</em>
     $ source <em>installTop</em>/bin/activate
+    $ pip install -r requirements-native.txt
     $ pip install -r requirements.txt
     $ make install-conf
     $ make build-assets

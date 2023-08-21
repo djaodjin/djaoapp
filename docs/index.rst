@@ -18,6 +18,7 @@ Contents:
    runtime-config
    development
    files
+   quirks
 
 Indices and tables
 ==================

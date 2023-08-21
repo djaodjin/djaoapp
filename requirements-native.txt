@@ -1,0 +1,17 @@
+# Wheels with native code
+#
+# These could be installed through the Linux distribution package mananager,
+# as binary through pip, or compiled through pip (requires native headers
+# and libraries).
+
+billiard==4.0.0
+cairocffi==1.3.0
+coverage==6.3.2
+cryptography==36.0.2
+psycopg2-binary==2.9.3
+pycairo==1.21.0         # Source wheel. Depends on libcairo2 (Debian).
+setproctitle==1.2.3
+#lxml # Source wheel. Depends on libxml2, libxslt1.1 (Debian). Built as a dependency of another wheel.
+
+# Optional packages
+python-ldap==3.4.3      # to authenticate through LDAP
