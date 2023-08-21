@@ -32,7 +32,7 @@ RUN set -eux; \
         build-essential \
         libcairo2-dev \
         libldap2-dev \
-        libsasl2-dev
+        libsasl2-dev \
         libxmlsec1-dev \
         libxslt1-dev \
         pkg-config; \
