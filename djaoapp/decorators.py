@@ -32,8 +32,8 @@ from .edition_tools import inject_edition_tools as _inject_edition_tools
 LOGGER = logging.getLogger('rules')
 
 DEFAULT_PREFIXES = [
-    '/api/accounts/', '/api/auth/', '/api/billing/', '/api/metrics/',
-    '/api/profile/', '/api/themes', '/api/users/',
+    '/api/accounts', '/api/auth', '/api/agreements', '/api/billing',
+    '/api/metrics', '/api/profile', '/api/themes', '/api/users',
     '/billing/', '/metrics/', '/profile/', '/users/']
 
 

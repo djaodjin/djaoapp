@@ -1,5 +1,6 @@
 {% extends "_form_fields.html" %}
 
 {% block form_block %}
+{# XXX {{date_input_field('entry._created_at', 'params.timezone', "Created At", hide_labels=True, nameOpened='entry._editCreatedAt', toggleNameOpened='toggleCreatedAt(entry, $event)', nameOpenedRef='"editCreatedAt_" + entry.code')}} #}
 {{date_input_field('_created_at', 'params.timezone', "Created At", hide_labels=True, extra_control_classes='w-100')}}
 {% endblock %}

@@ -35,6 +35,73 @@ var AccountTypeAhead = Vue.component('account-typeahead', {
 });
 
 
+Vue.component('agreement-list', {
+    mixins: [
+        itemListMixin,
+    ],
+    data: function() {
+        return {
+            url: this.$urls.provider.api_agreements,
+            newItem: {
+                title: '',
+                slug: '',
+                modified: null,
+                ends_at: null
+            },
+        }
+    },
+    methods: {
+        _asAPIData: function(item) {
+            var data = {};
+            for( var key in item ) {
+                if( item.hasOwnProperty(key) ) {
+                    if( key === 'ends_at' ) {
+                        data['modified'] = item['ends_at'];
+                    } else if( key !== 'modified' ) {
+                        data[key] = item[key];
+                    }
+                }
+            }
+            return data;
+        }
+        remove: function(idx){
+            var vm = this;
+            const slug = vm.items.results[idx].slug;
+            vm.reqDelete(vm._safeUrl(vm.url, slug),
+            function() {
+                vm.get();
+            });
+        },
+        update: function(idx){
+            var vm = this;
+            const slug = vm.items.results[idx].slug;
+            for( var key in vm.items.results[idx] ) {
+                if( vm.items.results[idx].hasOwnProperty(key) ) {
+                    data[key] = vm.items.results[idx][key];
+                }
+            }
+            vm.reqPatch(vm._safeUrl(vm.url, slug),
+                vm._asAPIData(vm.items.results[idx]),
+            function() {
+                vm.get();
+            });
+        },
+        create: function(){
+            var vm = this;
+            vm.reqPost(vm.url, vm._asAPIData(vm.newItem),
+            function() {
+                vm.get();
+                vm.newItem = {
+                    title: '', slug: '', modified: null, ends_at: null}
+            });
+        },
+    },
+    mounted: function(){
+        this.get()
+    }
+});
+
+
 Vue.component('notification-test', {
     mixins: [
         httpRequestMixin

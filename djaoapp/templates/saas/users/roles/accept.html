@@ -6,7 +6,7 @@
     <div class="row">
       <div class="offset-sm-2 col-sm-8 pb-5 pt-0 mt-5 mb-5">
         {% if role %}
-        <p class="text-center">
+        <p class="text-center mt-5">
 {% trans role_descr=role.role_description.title, organization=role.organization.printable_name %}Based on your e-mail address we have granted you a {{role_descr}} role on {{organization}}.{% endtrans %}
         </p>
         <p class="text-center">
@@ -16,12 +16,14 @@
 {% trans %}If you have any questions, please <a href="/contact/">contact us</a>.{% endtrans %}
           {% endif %}
         </p>
-        <div class="text-center">
+        <div class="text-center mt-5">
           <a id="ok" class="btn btn-primary btn-lg" href="{{next}}">{% trans %}Continue{% endtrans %}</a>
         </div>
         {% else %}
+        <p class="text-center mt-5">
         {# XXX We cannot use "We found a matching profile for your e-mail domain!" since we check emails even when there are no profile. #}
-{% trans %}Please verify your e-mail address before going further. To do so click on the link in the e-mail we just sent you.{% endtrans %}
+{% trans %}You need to verify your e-mail address before going further. Please click on the link in the e-mail we just sent you. Thank you.{% endtrans %}
+        </p>
         {% endif %}
       </div>
     </div>
