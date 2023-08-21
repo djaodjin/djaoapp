@@ -25,8 +25,14 @@ PYTHON        ?= python
 SASSC         ?= sassc
 # As of sqlite3 version  3.42.0 (2023-05-16) we need to pass `-unsafe-testing`
 # to make adjustments in the demo database.
-SQLITE_NO_UNSAFE_TESTING := $(shell echo '.schema' | sqlite3 -unsafe-testing > /dev/null 2>&1)
-SQLITE        ?= sqlite3$(if $(SQLITE_NO_UNSAFE_TESTING),, -unsafe-testing)
+SQLITE_NO_UNSAFE_TESTING := $(shell echo '.schema' | sqlite3 -unsafe-testing > /dev/null 2>&1; echo $$?)
+ifeq ($(SQLITE_NO_UNSAFE_TESTING),0)
+SQLITE        ?= sqlite3
+SQLITE_UNSAFE ?= sqlite3 -unsafe-testing
+else
+SQLITE        ?= sqlite3
+SQLITE_UNSAFE ?= $(SQLITE)
+endif
 WEBPACK       ?= NODE_PATH=$(libDir)/node_modules:$(NODE_PATH) webpack --stats-error-details
 #WEBPACK       ?= webpack --stats verbose
 #WEBPACK       ?= webpack --profile --json > build.json
@@ -138,7 +144,7 @@ setup-livedemo:
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
@@ -205,7 +211,7 @@ initdb-cowork: clean-dbs
 	$(if $(dir $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)))
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) migrate $(RUNSYNCDB) --database cowork --noinput
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(MULTITIER_DB_FILENAME)
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
@@ -229,7 +235,7 @@ clean-themes:
 initdb-djaoapp: clean-dbs
 	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
 	cd $(srcDir) && $(MANAGE) migrate $(RUNSYNCDB) --noinput --fake-initial
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(DB_FILENAME)
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 
 
