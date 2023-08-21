@@ -63,7 +63,7 @@ Vue.component('agreement-list', {
                 }
             }
             return data;
-        }
+        },
         remove: function(idx){
             var vm = this;
             const slug = vm.items.results[idx].slug;
