@@ -14,6 +14,7 @@
             {% trans %}In providing the best possible service, you will find here the legal documents that keeps everyone from trouble.{% endtrans %}
           </p>
 
+          {% if show_edit_tools %}
           <agreement-list id="agreement-list" inline-template>
             <div>
               <ul>
@@ -34,7 +35,7 @@
               </form>
             </div>
           </agreement-list>
-
+          {% else %}
           {% if agreement_list %}
           <ul>
             {% for agreement in agreements %}
@@ -45,6 +46,7 @@
           </ul>
           {% else %}
           <em>{% trans %}No Terms nor policies yet{% endtrans %}</em>
+          {% endif %}
           {% endif %}
         </div>
       </div>
