@@ -7,6 +7,7 @@ import json, logging, smtplib
 from deployutils.crypt import JSONEncoder
 from django.conf import settings
 from django.core.mail import get_connection as get_connection_base
+from django.template import TemplateDoesNotExist
 from django.utils import translation
 from extended_templates.backends import get_email_backend
 from multitier.thread_locals import get_current_site
@@ -39,6 +40,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
     """
+    organization_model = get_organization_model()
     recipients = []
     bcc = []
     if not broker:
@@ -76,7 +78,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'profile_updated',
             'order_executed',
             'card_updated',
-            'charge_receipt',
+            'charge_updated',
             'card_expires_soon',
             'expires_soon'):
         organization_email = context.get('profile', {}).get('email', "")
@@ -89,28 +91,41 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'profile_updated',
             'order_executed',
             'card_updated',
-            'charge_receipt',
+            'charge_updated',
             'card_expires_soon',
             'expires_soon'):
-            organization = get_organization_model().objects.get(
-                slug=context.get('profile', {}).get('slug'))
-            bcc = _notified_managers(organization, notification_slug,
-                    originated_by=originated_by)
+            print("XXXXXXX profile=%s" % str(context.get('profile', {})))
+            try:
+                # When the theme editor attempts to "Send Test Email",
+                # it is highly likely the sample data does not exist
+                # in the database.
+                organization = organization_model.objects.get(
+                    slug=context.get('profile', {}).get('slug'))
+                bcc = _notified_managers(organization, notification_slug,
+                        originated_by=originated_by)
+            except organization_model.DoesNotExist:
+                bcc = []
             # We also notify the provider managers that are interested
             # in these events.
             if notification_slug in (
                 'subscription_request_accepted',):
-                provider = get_organization_model().objects.get(
-                    slug=context.get('provider', {}).get('slug'))
-                bcc += _notified_managers(provider, notification_slug,
-                    originated_by=originated_by)
+                try:
+                    # When the theme editor attempts to "Send Test Email",
+                    # it is highly likely the sample data does not exist
+                    # in the database.
+                    provider = organization_model.objects.get(
+                        slug=context.get('provider', {}).get('slug'))
+                    bcc += _notified_managers(provider, notification_slug,
+                        originated_by=originated_by)
+                except organization_model.DoesNotExist:
+                    pass
             # We also notify the broker managers that are interested
             # in these events.
             elif notification_slug in (
                     'profile_updated',
                     'order_executed',
                     'card_updated',
-                    'charge_receipt',
+                    'charge_updated',
                     'card_expires_soon',
                     'expires_soon'):
                 bcc += _notified_managers(broker, notification_slug,
@@ -124,14 +139,26 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'plan', {}).get('organization', {}).get('email', "")
         if provider_email:
             recipients = [provider_email]
-        provider = get_organization_model().objects.get(
-            slug=context.get('profile', {}).get('slug'))
-        subscriber = get_organization_model().objects.get(
-            slug=context.get('subscriber', {}).get('slug'))
-        bcc = (_notified_managers(provider, notification_slug,
-                originated_by=originated_by) +
-               _notified_managers(subscriber, notification_slug,
-                originated_by=originated_by))
+            try:
+                # When the theme editor attempts to "Send Test Email",
+                # it is highly likely the sample data does not exist
+                # in the database.
+                provider = organization_model.objects.get(
+                    slug=context.get('profile', {}).get('slug'))
+                bcc = _notified_managers(provider, notification_slug,
+                    originated_by=originated_by)
+            except organization_model.DoesNotExist:
+                bcc = []
+            try:
+                # When the theme editor attempts to "Send Test Email",
+                # it is highly likely the sample data does not exist
+                # in the database.
+                subscriber = organization_model.objects.get(
+                    slug=context.get('subscriber', {}).get('slug'))
+                bcc += _notified_managers(subscriber, notification_slug,
+                    originated_by=originated_by)
+            except organization_model.DoesNotExist:
+                pass
 
     elif notification_slug in (
             'user_contact',
@@ -152,7 +179,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
     return recipients, bcc, reply_to
 
 
-def send_notification(event_name, context=None, site=None):
+def send_notification(event_name, context=None, site=None, recipients=None):
     """
     Sends a notification e-mail using the current site connection,
     defaulting to sending an e-mail to broker profile managers
@@ -160,7 +187,7 @@ def send_notification(event_name, context=None, site=None):
     """
     if isinstance(settings.SEND_NOTIFICATION_CALLABLE, six.string_types):
         import_string(settings.SEND_NOTIFICATION_CALLABLE)(
-            event_name, context=context, site=site)
+            event_name, context=context, site=site, recipients=recipients)
 
     #pylint:disable=too-many-arguments
     context.update({"event": event_name})
@@ -175,8 +202,12 @@ def send_notification(event_name, context=None, site=None):
     if not site:
         site = get_current_site()
 
-    recipients, bcc, reply_to = notified_recipients(
-        event_name, context)
+    bcc = []
+    reply_to = recipients
+    if not recipients:
+        recipients, bcc, reply_to = notified_recipients(
+            event_name, context)
+
     LOGGER.debug("djaoapp_extras.recipients.send_notification("\
         "recipients=%s, reply_to='%s', bcc=%s"\
         "event=%s)", recipients, reply_to, bcc,
@@ -213,7 +244,7 @@ def send_notification(event_name, context=None, site=None):
                 #pylint:disable=protected-access
                 # We are emailing the owner of the site here so we want
                 # to access the information at the hosting provider.
-                'broker': get_organization_model().objects.using(
+                'broker': organization_model.objects.using(
                     site._state.db).get(pk=site.account_id)})
             if notified_on_errors:
                 get_email_backend(
@@ -222,6 +253,9 @@ def send_notification(event_name, context=None, site=None):
                     recipients=notified_on_errors,
                     template=template,
                     context=context)
+        except TemplateDoesNotExist:
+            # If there is a problem with the template, notify the user.
+            raise
         except Exception as err:
             # Something went horribly wrong, like the email password was not
             # decrypted correctly. We want to notifiy the operations team

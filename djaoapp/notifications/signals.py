@@ -529,7 +529,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
     .. code-block:: json
 
         {
-          "event": "charge_receipt",
+          "event": "charge_updated",
           "broker": {
             "slug": "djaoapp",
             "printable_name": "DjaoApp",
@@ -684,7 +684,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             context.update({'originated_by': user})
         else:
             context.update({'originated_by': None})
-        send_notification('charge_receipt',
+        send_notification('charge_updated',
             context=ChargeNotificationSerializer().to_representation(context),
             site=site)
 

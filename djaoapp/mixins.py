@@ -14,6 +14,7 @@ from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from saas.utils import get_organization_model, update_context_urls
 from signup.helpers import full_name_natural_split, has_invalid_password
 from signup.mixins import IncorrectUser
+from signup.models import Notification
 from signup.utils import handle_uniq_error
 
 from .compat import gettext_lazy as _, reverse, six
@@ -88,24 +89,29 @@ class NotificationsMixin(object):
 
     def get_notifications(self, user=None):
         from .views.docs import NotificationDocGenerator
-        broker = get_broker()
+        notifications = {obj.slug: {
+            'summary': obj.title,
+            'description': obj.description}
+                for obj in Notification.objects.all()}
+
         generator = NotificationDocGenerator()
         schema = generator.get_schema(request=self.request)
-        notifications = {notification_slug: {
+        notifications.update({notification_slug: {
             'summary': notification.get('GET').get('summary'),
-            'description': notification.get('GET').get('description'),
-        }
-            for notification_slug, notification in schema.get('paths').items()}
-        # user with profile manager of broker (or theme editor)
-        if not user or broker.with_role(
+            'description': notification.get('GET').get('description')}
+            for notification_slug, notification in schema.get('paths').items()})
+        # user with profile manager of broker (or theme editor), we do not
+        # filter notifications.
+        broker = get_broker()
+        if user and not broker.with_role(
                 saas_settings.MANAGER).filter(pk=user.pk).exists():
-            return notifications
+            # regular subscriber
+            notifications = {key: notifications[key]
+                for key in notifications if key not in [
+                    'user_contact', 'user_registered', 'user_activated',
+                    'weekly_sales_report_created', 'processor_setup_error']}
 
-        # regular subscriber
-        return {key: notifications[key] for key in [
-            'charge_receipt', 'card_updated', 'order_executed',
-            'profile_updated', 'expires_soon',
-            'role_grant_created', 'role_request_created']}
+        return notifications
 
 
 class RegisterMixin(object):

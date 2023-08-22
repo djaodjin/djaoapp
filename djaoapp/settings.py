@@ -783,7 +783,7 @@ SIGNUP = {
         sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
     'NOTIFICATION_TYPE': (
         ('card_updated', "Card updated"),
-        ('charge_receipt', "Charge receipt"),
+        ('charge_updated', "Charge receipt"),
         ('claim_code_generated', "Claim code"),
         ('expires_soon', "Expires soon"),
         ('order_executed', "Order confirmation"),

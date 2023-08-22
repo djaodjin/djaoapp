@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -894,6 +894,8 @@ def get_notification_schema(notification_slug, api_base_url=None):
     Returns the summary, description and examples for a notification.
     """
     #pylint:disable=too-many-statements
+    serializer = None
+    docstring = None
     if notification_slug == 'user_contact':
         serializer = ContactUsNotificationSerializer()
         docstring = notification_signals.contact_requested_notice.__doc__
@@ -928,7 +930,7 @@ def get_notification_schema(notification_slug, api_base_url=None):
         serializer = AggregatedSalesNotificationSerializer()
         docstring = \
             notification_signals.weekly_sales_report_created_notice.__doc__
-    elif notification_slug == 'charge_receipt':
+    elif notification_slug == 'charge_updated':
         serializer = ChargeNotificationSerializer()
         docstring = notification_signals.charge_updated_notice.__doc__
     elif notification_slug == 'order_executed':
@@ -970,7 +972,10 @@ def get_notification_schema(notification_slug, api_base_url=None):
             notification_signals.subscription_request_created_notice.__doc__
 
     inspector = AutoSchema()
-    content = inspector.map_serializer(serializer)
+    if serializer:
+        content = inspector.map_serializer(serializer)
+    else:
+        content = ""
     schema = {
         'operationId': notification_slug,
         'responses': {
@@ -1017,7 +1022,7 @@ class NotificationDocGenerator(object):
                 api_base_url=api_base_url),
             'weekly_sales_report_created': get_notification_schema(
                 'weekly_sales_report_created', api_base_url=api_base_url),
-            'charge_receipt': get_notification_schema('charge_receipt',
+            'charge_updated': get_notification_schema('charge_updated',
                 api_base_url=api_base_url),
             'order_executed': get_notification_schema('order_executed',
                 api_base_url=api_base_url),

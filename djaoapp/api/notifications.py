@@ -2,6 +2,8 @@
 # see LICENSE
 from __future__ import unicode_literals
 
+import json
+
 from django.template import TemplateDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
@@ -61,7 +63,7 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
 
         .. code-block:: http
 
-            POST /api/notifications/contact_requested_notice HTTP/1.1
+            POST /api/notifications/user_contact HTTP/1.1
 
         responds
 
@@ -73,9 +75,14 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
         """
         try:
             notification_slug = self.kwargs.get('template')
-            send_notification('user_contact',
-                context=get_test_notification_context(notification_slug,
+            context = json.loads(self.request.data) if self.request.data else {}
+            context.update(get_test_notification_context(notification_slug,
                     originated_by=self.request.user))
+            recipients = []
+            if self.request.user.email:
+                recipients = [self.request.user.email]
+            send_notification(notification_slug, context=context,
+                recipients=recipients)
         except TemplateDoesNotExist:
             return Response({'detail':
                 _("Problem with template. Could not send test email.")},
