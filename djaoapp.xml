@@ -24,6 +24,10 @@
       <dep name="djangorestframework" target="python">
         <lib>.*/(rest_framework)/__init__.py</lib>
       </dep>
+      <dep name="docutils" target="python" includes="0.15.2">
+        <!-- botocore has a constraint: docutils<0.16 -->
+        <lib>.*/(docutils)/__init__.py</lib>
+      </dep>
       <dep name="drf-yasg" target="python">
         <lib>.*/(drf_yasg)/__init__.py</lib>
       </dep>
@@ -103,9 +107,8 @@
         <share>(dws)/prefix.mk</share>
       </dep>
       <!-- end of for development -->
-      <!-- XXX impossible to find setproctitle in MacPorts -->
       <alternates>
-        <alternate name="Amazon">
+        <alternate name="RedHat">
           <!-- We rely on the `wheel` module to install pre-compiled versions
                here. Since lxml is required by premailer, cryptography is
                required by pyOpenSSL, they will be included transitively. -->
@@ -115,6 +118,26 @@
           <dep name="coverage" target="python">
             <bin>(coverage)3</bin>
           </dep>
+          <dep name="openldap">
+            <lib>openldap.so</lib>
+          </dep>
+          <dep name="openldap-devel">
+            <!-- There is no version of `python-ldap` pre-compiled for Py37
+                 so we need to include the headers. -->
+            <include>lber.h</include>
+          </dep>
+          <dep name="python3-devel">
+            <!-- `python-ldap` requires to compile a native module.
+                 XXX We found `yum search ldap | grep python`
+                 python36-ldap3.noarch
+                 "Strictly RFC 4511 conforming LDAP V3 pure Python client".
+                 to investigate.
+            -->
+            <include>.*/(python3.7m)/Python.h</include>
+          </dep>
+          <dep name="python-ldap" target="python">
+            <lib>.*/(ldap)/__init__.py</lib>
+          </dep>
           <dep name="psycopg2-binary" target="python">
             <!-- because we connect to postgresql and it is not automatically
                  pulled from Django.
@@ -122,13 +145,15 @@
                  `psycopg2-binary` works.
 
                  Django2.2 is incompatible with psycopg2 2.9, use 2.8.6 then.
+
+                 2.8 because Django2.2 is incompatible with psycopg2 2.9.
             -->
             <lib>.*/(psycopg2)/__init__.py</lib>
           </dep>
+
           <dep name="setproctitle" target="python">
             <lib>.*/setproctitle.cpython-37m-x86_64-linux-gnu.so</lib>
           </dep>
-
           <!-- djaodjin-extended-templates native dependencies -->
           <!-- We rely on the `wheel` module to install pre-compiled versions
                here. Since pillow is required by WeasyPrint, it will be included
@@ -150,55 +175,30 @@
             <lib>.*/(cairocffi)/_generated/ffi.py</lib>
           </dep>
           <dep name="cairo">
-            <lib>cairo</lib>
+            <lib>cairo.so</lib>
           </dep>
           <dep name="pango">
-            <lib>pango-1.0</lib>
+            <lib>pango-1.0.so</lib>
           </dep>
           <!-- We need to install the xmlsec1 include headers such
                that the Python native module xmlsec can be built. -->
+          <dep name="libtool-ltdl-devel">
+            <!-- also required to build xmlsec python bindinds. -->
+            <include>ltdl.h</include>
+            <lib>ltdl.so</lib>
+          </dep>
           <dep name="xmlsec1-devel">
-            <lib>xmlsec1</lib>
+            <include>(xmlsec1)/xmlsec/version.h</include>
+            <!-- adds lib prefix and .* so we don't pick libxmlsec1-gcrypt.so
+                 as a candidate -->
+            <lib>libxmlsec1.so.*</lib>
           </dep>
           <dep name="xmlsec1-openssl">
-            <lib>xmlsec1-openssl</lib>
-          </dep>
-        </alternate>
-        <alternate name="CentOS">
-          <!-- We couldn't find a native python36- package for those,
-               so we will have to rely on pip compiling them with gcc. -->
-          <dep name="billiard" target="python">
-            <lib>.*/(billiard)/__init__.py</lib>
-          </dep>
-          <!-- XXX We found python36- package for those but they might be
-               older incompatible versions. -->
-          <dep name="python36-lxml">
-            <lib>.*/(lxml)/etree.*</lib>
-          </dep>
-          <dep name="python36-pillow">
-            <lib>.*/(PIL)/__init__.py</lib>
-          </dep>
-          <!-- next dependencies: because python27 and python36 are both
-               installed, we make sure to look for a relevant v3 file.
-               We can't use `target=` here since we install a native package.
-          -->
-          <dep name="python36-cryptography">
-            <!-- Native code (used by python-social-auth) -->
-            <lib>.*/(cryptography)/hazmat/bindings/_openssl.abi3.so</lib>
-          </dep>
-          <dep name="python36-coverage">
-            <bin>(coverage)-3.6</bin>
-          </dep>
-          <dep name="python36-psycopg2">
-            <!-- because we connect to postgresql and it is not automatically
-                 pulled from Django. -->
-            <lib>.*/(psycopg2)/_psycopg.cpython-36m-x86_64-linux-gnu.so</lib>
-          </dep>
-          <dep name="python36-setproctitle">
-            <lib>.*/setproctitle.cpython-36m-x86_64-linux-gnu.so</lib>
+            <lib>xmlsec1-openssl.so</lib>
           </dep>
         </alternate>
         <alternate name="Darwin">
+          <!-- XXX impossible to find setproctitle in MacPorts -->
           <dep name="py36-cryptography">
             <!-- Native code (used by python-social-auth) -->
             <lib>.*/(cryptography)/__init__.py</lib>
@@ -224,36 +224,7 @@
             <lib>.*/setproctitle.*.so</lib>
           </dep>
           <dep name="xmlsec1">
-            <lib>xmlsec1</lib>
-          </dep>
-        </alternate>
-        <alternate name="Fedora">
-          <dep name="python3-cryptography">
-            <!-- Native code (used by python-social-auth) -->
-            <lib>.*/(cryptography)/__init__.py</lib>
-          </dep>
-          <dep name="python3-coverage">
-            <bin>(coverage).*</bin>
-          </dep>
-          <dep name="python3-billiard">
-            <lib>.*/(billiard)/__init__.py</lib>
-          </dep>
-          <dep name="python3-lxml">
-            <lib>.*/(lxml)/etree.*</lib>
-          </dep>
-          <dep name="python3-psycopg2">
-            <!-- because we connect to postgresql and it is not automatically
-                 pulled from Django. -->
-            <lib>.*/(psycopg2)/__init__.py</lib>
-          </dep>
-          <dep name="python3-setproctitle">
-            <lib>.*/setproctitle.*.so</lib>
-          </dep>
-          <dep name="xmlsec1-devel">
-            <lib>xmlsec1</lib>
-          </dep>
-          <dep name="xmlsec1-openssl">
-            <lib>xmlsec1-openssl</lib>
+            <lib>xmlsec1.so</lib>
           </dep>
         </alternate>
       </alternates>
@@ -298,7 +269,7 @@
             on CentOS 7. Apparently it is not required or pulled through
             other prerequisites on Fedora. -->
             <include>(freetype)/freetype.h</include>
-            <lib>freetype</lib>
+            <lib>freetype.so</lib>
           </dep>
           <dep name="gcc-c++">
             <bin>g++</bin>
@@ -306,9 +277,15 @@
           <dep name="openssl">
             <lib>crypto.so</lib>
           </dep>
-          <dep name="podofo-devel">
+          <dep name="podofo-devel" excludes="0.9.1">
+            <!-- 0.9.1. will link but the text is not substituted in
+                 the PDF template. Unfortunately 0.9.1. is the version
+                 available by default on CentOS7. -->
+            <!-- look for PODOFO_VERSION_MAJOR, PODOFO_VERSION_MINOR
+                 and PODOFO_VERSION_PATCH
+                 in /usr/include/podofo/base/podofo_config.h -->
             <include>(podofo)/podofo.h</include>
-            <lib>podofo</lib>
+            <lib>podofo.so</lib>
           </dep>
         </alternate>
         <alternate name="Darwin">
@@ -323,27 +300,25 @@
             <lib>podofo.so</lib>
           </dep>
         </alternate>
-        <alternate name="Fedora">
-          <dep name="gcc-c++">
-            <bin>g++</bin>
-          </dep>
-          <dep name="openssl">
-            <lib>crypto.so</lib>
-          </dep>
-          <dep name="podofo-devel">
-            <include>(podofo)/podofo.h</include>
-            <lib>podofo</lib>
-          </dep>
-        </alternate>
       </alternates>
     </repository>
+    <package name="Amazon">
+      <fetch>
+        <url>https://www.djaodjin.com/pub/amzn2/x86_64/podofo-flatform-0.2-0.x86_64.rpm</url>
+        <sha1>84421a4934f4a1adb0e1226812ea01802f21c588</sha1>
+      </fetch>
+      <fetch>
+        <url>https://www.djaodjin.com/pub/amzn2/x86_64/podofo-libs-0.9.7-18.amzn2.x86_64.rpm</url>
+        <sha1>671b94d1feb08fd408b43fecfaf7a8b3eff06d6c</sha1>
+      </fetch>
+    </package>
     <package name="Fedora">
       <fetch>
-        <url>https://djaodjin.com/pub/fedora/linux/updates/fc25/x86_64/podofo-flatform-0.1-0.x86_64.rpm</url>
+        <url>https://www.djaodjin.com/pub/fedora/linux/updates/fc25/x86_64/podofo-flatform-0.1-0.x86_64.rpm</url>
         <sha1>bf9953c2bde1950c29f10fb70f1fff856f2592c1</sha1>
       </fetch>
       <fetch>
-        <url>https://djaodjin.com/pub/fedora/linux/updates/fc25/x86_64/podofo-libs-0.9.4-18.fc25.x86_64.rpm</url>
+        <url>https://www.djaodjin.com/pub/fedora/linux/updates/fc25/x86_64/podofo-libs-0.9.4-18.fc25.x86_64.rpm</url>
         <sha1>e71493ebceda2d9833cb18b84d11256ee232afeb</sha1>
       </fetch>
     </package>
