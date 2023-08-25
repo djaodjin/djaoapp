@@ -11,9 +11,9 @@
 <div class="form-group{% if bound_field.errors %} has-error{% endif %}">
     {% if bound_field.field|is_checkbox %}
     <div class="form-check">
+        <input id="{{bound_field.id_for_label}}" class="form-check-input" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value %}checked="checked"{% endif %}>
         <label class="{% if bound_field.field.required %}requiredField{% endif %}" for="{{bound_field.id_for_label}}">
-            <input id="{{bound_field.id_for_label}}" class="form-check-input" name="{{bound_field.name}}" type="checkbox" {% if bound_field.value %}checked="checked"{% endif %}>
-            {{ bound_field.label|safe }}
+          {{ bound_field.label|safe }}
         </label>
     </div>
     {% else %}
@@ -26,9 +26,8 @@
       {% elif bound_field.field|is_radio %}
           {% for choice in bound_field.field.widget.choices %}
           <div class="form-check">
-            <label>
-              <input type="radio" name="{{bound_field.name}}"{% if bound_field.value == choice.0 %} selected="1"{% endif %} value="{{choice.0}}">{{choice.1}}
-            </label>
+            <input id="{{bound_field.id_for_label}}" type="radio" name="{{bound_field.name}}"{% if bound_field.value == choice.0 %} selected="1"{% endif %} value="{{choice.0}}">
+            <label for="{{bound_field.id_for_label}}">{{choice.1}}</label>
           </div>
           {% endfor %}
       {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type != 'select' %}

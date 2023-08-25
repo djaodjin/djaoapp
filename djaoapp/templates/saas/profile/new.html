@@ -35,16 +35,14 @@
                                        v-show="!inNewProfileFlow">
                       <div>
                         <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <!-- optional indicators -->
-                            <span class="input-group-text">
-                              <i class="fa fa-spinner fa-spin" v-if="loading"></i>
-                              <template v-else>
-                                <i class="fa fa-search" v-show="isEmpty"></i>
-                                <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
-                              </template>
-                            </span>
-                          </div>
+                          <!-- optional indicators -->
+                          <span class="input-group-text">
+                            <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                            <template v-else>
+                              <i class="fa fa-search" v-show="isEmpty"></i>
+                              <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                            </template>
+                          </span>
                           <!-- the input field -->
                           <input class="form-control"
                                  type="text"
@@ -74,7 +72,7 @@
                     </account-typeahead>
                     <!-- Workflow to create a new profile  -->
                     <div class="card" v-show="inNewProfileFlow">
-                      <div class="card-body text-left"
+                      <div class="card-body text-start"
                            aria-labelledby="{% trans %}Create profile{% endtrans %}" aria-hidden="true">
                         <p>
 {% trans %}You are about to create a new profile for yourself or for your organization. We need a gather some information to create the profile.{% endtrans %}
@@ -104,13 +102,17 @@
                       </div>
                       <div class="row">
                         <div class="col-sm-6">
-                          <button class="btn btn-secondary btn-md btn-block"
-                                  @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-secondary btn-md"
+                                    @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
+                          </div>
                         </div>
                         <div class="col-sm-6">
-                          <button id="create-profile-submit"
-                                  class="btn btn-primary btn-md btn-block"
-                                  type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                          <div class="d-grid gap-2">
+                            <button id="create-profile-submit"
+                                    class="btn btn-primary btn-md"
+                                    type="submit">{% trans %}Create Profile{% endtrans %}</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -146,8 +148,10 @@ Thank you,
                           </textarea>
                         </div>
                       </div>
-                      <button class="btn btn-primary btn-md btn-block mt-3"
-                              type="submit">{% trans %}Request access{% endtrans %}</button>
+                      <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-md mt-3"
+                                type="submit">{% trans %}Request access{% endtrans %}</button>
+                      </div>
                     </div><!-- /.add-add-role-modal -->
                   </form>
                 </div>

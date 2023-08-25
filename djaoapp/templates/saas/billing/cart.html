@@ -51,7 +51,7 @@
         {% endif %}
 
         {% block order_footer %}
-        <div id="redeem-code" class="text-right mt-3 mb-5">
+        <div id="redeem-code" class="text-end mt-3 mb-5">
           {# `csrfmiddlewaretoken` is added back here because the `Redeem`    #}
           {# javascript component will look for it within the "#redeem-code"  #}
           {# element. #}
@@ -65,11 +65,9 @@
               <div class="col-12 col-md-4">
                 <div class="input-group input-group mb-1">
                   <input class="form-control" name="code" type="text" placeholder="{% trans %}Enter Code{% endtrans %}">
-                  <div class="input-group-append">
-                    <button class="btn btn-primary submit-code">{% trans %}Apply{% endtrans %}</button>
-                  </div>
+                  <button class="btn btn-primary submit-code">{% trans %}Apply{% endtrans %}</button>
                 </div>
-                <!-- <small class="form-text text-muted text-left">
+                <!-- <small class="form-text text-muted text-start">
                      {% trans %}If you received a registration code, please enter it here.{% endtrans %}
                      </small> -->
               </div>

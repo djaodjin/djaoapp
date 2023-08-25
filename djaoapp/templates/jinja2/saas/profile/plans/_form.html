@@ -29,7 +29,9 @@
         {{input_field(form['renewal_type'], form.hide_labels)}}
     </fieldset>
     <div class="form-action text-center">
-        <button type="submit" class="btn btn-block btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+        </div>
     </div>
 </form>
 {% endblock %}

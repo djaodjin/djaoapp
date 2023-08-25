@@ -34,9 +34,11 @@
     {% include "accounts/_register_form_fields.html" %}
     {% endblock %}
     <div class="form-action text-center">
-      <button type="submit" class="btn btn-block btn-primary btn-md">
-        {% trans %}Sign Up{% endtrans %}
-      </button>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary btn-md">
+          {% trans %}Sign Up{% endtrans %}
+        </button>
+      </div>
     </div>
   </form>
   {% else %}

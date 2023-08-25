@@ -36,7 +36,7 @@ You will be able to create charges and payout funds with this processor.
         </div>
         {% if urls.provider.deauthorize_processor %}
         <button id="de-authorize-btn" class="btn btn-danger"
-          data-toggle="modal" data-target="#de-authorize">{% trans %}De-authorize{% endtrans %}</button>
+          data-bs-toggle="modal" data-bs-target="#de-authorize">{% trans %}De-authorize{% endtrans %}</button>
         {% endif %}
       </div>
     </div>
@@ -57,7 +57,7 @@ You will be able to create real charges on valid credit cards.
 If you already have a Stripe account, we recommend that you first login into
 your Stripe account before clicking the button below.
             </p>
-            <p class="card-text text-right">
+            <p class="card-text text-end">
               <a href="https://stripe.com/login/" target="_blank">Login to Stripe &raquo;</a>
             </p>
             <a class="text-center" href="{{urls.authorize_processor}}">
@@ -83,7 +83,7 @@ You will be able to create test charges using
 If you already have a Stripe account, we recommend that you first login into
 your Stripe account before clicking the button below.
             </p>
-            <p class="card-text text-right">
+            <p class="card-text text-end">
               <a href="https://stripe.com/login/" target="_blank">Login to Stripe &raquo;</a>
             </p>
             <a class="text-center" href="{{urls.authorize_processor_test}}">
@@ -130,7 +130,7 @@ configuration file and restart the server.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                        data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <form class="d-inline-block" method="post" action="{{urls.provider.deauthorize_processor}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                   <input type="hidden" name="stripeToken" value="{% trans %}OOPS{% endtrans %}" />

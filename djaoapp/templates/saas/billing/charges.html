@@ -58,7 +58,7 @@
                v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <tr v-for="entry in items.results">
             <td>[[$globals.humanizeDate(entry.created_at)]]</td>
-            <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.readable_amount]]</td>
+            <td :class="entry.is_debit ? 'text-end text-danger' : 'text-end'">[[entry.readable_amount]]</td>
             <td>[[entry.state]]</td>
             <td v-html="entry.description"></td>
           </tr>

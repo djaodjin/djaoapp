@@ -19,7 +19,7 @@
     <div class="col-md-6">
     {# We use the hidden input to pass the picture URL to the Vue component. #}
       <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/static/img/default-user.png'}}{% endif %}" type="hidden">
-      <img :src="formFields.picture" width="100" height="100" data-toggle="modal" data-target="#upload-picture-modal">
+      <img :src="formFields.picture" width="100" height="100" data-bs-toggle="modal" data-bs-target="#upload-picture-modal">
     </div>
     <div class="col-md-6">
       {% block saas_help %}
@@ -73,7 +73,9 @@
         {% if urls.user.api_activate %}
         <div class="row align-items-center">
           <div class="col-sm-5">
-            <button id="activate-user" class="btn btn-secondary btn-block" @click="activate">{% trans %}Activate{% endtrans %}</button>
+            <div class="d-grid gap-2">
+              <button id="activate-user" class="btn btn-secondary" @click="activate">{% trans %}Activate{% endtrans %}</button>
+            </div>
           </div>
           <div class="col-sm-7">
               {% trans %}Send an activation e-mail to the user.{% endtrans %}
@@ -94,10 +96,12 @@
         <div class="card-body text-danger">
           <div class="row align-items-center">
             <div class="col-md-12">
-              <button id="delete-action-open"
-                      class="btn btn-danger btn-block mb-3"
-                      data-toggle="modal"
-                      data-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+              <div class="d-grid gap-2">
+                <button id="delete-action-open"
+                        class="btn btn-danger mb-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete-action">{% trans %}Delete{% endtrans %}</button>
+              </div>
             </div>
             <div class="col-md-12">
                 {% trans %}This operation cannot be reversed.{% endtrans %}
@@ -123,8 +127,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">{% trans %}Upload picture ...{% endtrans %}</h4>
-            <button type="button" class="close"
-                    data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body">
           <div class="text-center border">
@@ -134,9 +138,9 @@
         <div class="modal-footer">
             <button type="button"
                     class="btn btn-secondary"
-                    data-dismiss="modal">
+                    data-bs-dismiss="modal">
                 {% trans %}Cancel{% endtrans %}</button>
-            <button type="submit" class="btn btn-primary" data-dismiss="modal" @click="uploadProfilePicture">{% trans %}Save picture{% endtrans %}</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="uploadProfilePicture">{% trans %}Save picture{% endtrans %}</button>
         </div>
       </div>
     </div>
@@ -150,8 +154,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Delete Profile{% endtrans %} ...</h5>
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body">
           <p>
@@ -168,11 +172,11 @@
         </div>
         <div class="modal-footer">
           <button id="cancel-delete"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="delete-organization-btn"
                   class="btn btn-danger"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   @click="deleteProfile">{% trans %}Delete{% endtrans %}</button>
         </div>
       </div>
@@ -188,8 +192,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Verify e-mail{% endtrans %} ...</h5>
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body">
           <p>
@@ -201,11 +205,11 @@
         </div>
         <div class="modal-footer">
           <button id="cancel-delete"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-email-btn"
                   class="btn btn-primary"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   @click="verifyEmail">{% trans %}Email link{% endtrans %}</button>
         </div>
       </div>
@@ -221,8 +225,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Verify phone number{% endtrans %} ...</h5>
-          <button type="button" class="close"
-                  data-dismiss="modal" aria-hidden="true">&times;</button>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
         <div class="modal-body" v-if="!codeSent">
           <p>
@@ -238,14 +242,14 @@
         </div>
         <div class="modal-footer">
           <button id="cancel-delete"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-phone-btn"
                   class="btn btn-primary"
                   @click.prevent="verifyPhone" v-if="!codeSent">{% trans %}Text a code{% endtrans %}</button>
           <button type="button" id="verify-phone-btn"
                   class="btn btn-primary"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                   @click.prevent="submitCode"
                   v-if="codeSent">{% trans %}Submit code{% endtrans %}</button>
         </div>

@@ -18,7 +18,7 @@
               <th>{% trans %}Rank{% endtrans %}</th>
               <th>{% trans %}Delete{% endtrans %}</th>
               <th>{% trans %}Title{% endtrans %}</th>
-              <td class="text-right"
+              <td class="text-end"
                   v-for="col in values" v-cloak>
                   [[monthHeading(col[0])]]
               </td>
@@ -50,7 +50,7 @@
                       <i class="fa fa-trash-o"></i></button>
               </td>
               <td>[[row.key]]</td>
-              <td class="text-right"
+              <td class="text-end"
                   v-for="col in row.values">
                   <a target="_blank"
                      :href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">

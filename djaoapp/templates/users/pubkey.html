@@ -15,9 +15,7 @@
             <input class="form-control" type="text"
                    name="apiKey" placeholder="********" disabled
                    v-model="apiKey">
-            <div class="input-group-append">
-              <button id="generate-key-open" class="btn btn-secondary btn-block mb-2">{% trans %}Reset API Key{% endtrans %}</button>
-            </div>
+              <button id="generate-key-open" class="btn btn-secondary ">{% trans %}Reset API Key{% endtrans %}</button>
           </div>
           <div class="form-text help-block" v-show="apiKey">
             <small class="text-muted">This is the only time the API Key will be displayed. Copy it before you reload this page or browse to another page.</small>
@@ -35,7 +33,7 @@
     <div>
       <form @submit.prevent="modalShow">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-        <div class="form-group">
+        <div class="form-group mb-2">
           <label class="control-label requiredField">{% trans %}Public Key (in PEM format){% endtrans %}<span class="asteriskField">*</span></label>
           <div class="controls">
             <textarea class="textarea form-control" cols="40" name="pubkey" rows="10" v-model="pubkey"></textarea>

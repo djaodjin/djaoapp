@@ -25,16 +25,14 @@
                                v-on:selectitem="updateItemSelected">
               <div>
                 <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <!-- optional indicators -->
-                    <span class="input-group-text">
-                      <i class="fa fa-spinner fa-spin" v-if="loading"></i>
-                      <template v-else>
-                        <i class="fa fa-search" v-show="isEmpty"></i>
-                        <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
-                      </template>
-                    </span>
-                  </div>
+                  <!-- optional indicators -->
+                  <span class="input-group-text">
+                    <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                    <template v-else>
+                      <i class="fa fa-search" v-show="isEmpty"></i>
+                      <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                    </template>
+                  </span>
                   <!-- the input field -->
                   <input class="form-control"
                          type="text"
@@ -51,13 +49,13 @@
                   {# Implementation note: If we use `d-block` instead of    #}
                   {# `style="display: block;"` the dropdown shows even when #}
                   {# `hasItems` is `False`.                                 #}
-                  <ul class="dropdown-menu nav-pills p-1"
+                  <ul class="dropdown-menu nav-pills p-1 top-100"
                       style="display: block;"
                       v-show="hasItems">
                     <li v-for="(item, $item) in items" class="nav-item"
                         @mousedown="hit"
                         @mousemove="setActive($item)">
-                      <a :class="'nav-link' + activeClass($item)" v-text="item.printable_name"></a>
+                      <a :class="'nav-link px-3 py-2' + activeClass($item)" v-text="item.printable_name"></a>
                     </li>
                   </ul>
                 </div>
@@ -114,8 +112,10 @@ Thank you,
                 </div>
               </div>
             </div><!-- add-role-modal -->
-            <button class="btn btn-primary btn-md btn-block mt-3"
-                    type="submit">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-md mt-3"
+                      type="submit">{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}</button>
+            </div>
           </form>
         </div>
       </div>
@@ -124,10 +124,10 @@ Thank you,
         <div class="col-12">
           <div class="btn-group" role="group" aria-label="{% trans %}Group of buttons to show or hide invited and requested roles{% endtrans %}" v-cloak>
             <button type="button" class="btn" :class="showInvited ? 'btn-primary' : 'btn-outline-primary'" @click="showInvited = !showInvited" v-if="items.invited_count > 0">
-              <i class="fa" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Pending Invites{% endtrans %} <span class="badge" :class="showInvited ? 'badge-light' : 'badge-primary'">[[items.invited_count]]</span>
+              <i class="fa" :class="showInvited ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Pending Invites{% endtrans %} <span class="badge" :class="showInvited ? 'bg-light' : 'bg-primary'">[[items.invited_count]]</span>
             </button>
             <button type="button" class="btn" :class="showRequested ? 'btn-primary' : 'btn-outline-primary'" @click="showRequested = !showRequested" v-if="items.requested_count > 0">
-              <i class="fa" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Roles Requested{% endtrans %} <span class="badge" :class="showRequested ? 'badge-light' : 'badge-primary'">[[items.requested_count]]</span>
+              <i class="fa" :class="showRequested ? 'fa-check-circle' : 'fa-circle-o'"></i> {% trans %}Roles Requested{% endtrans %} <span class="badge" :class="showRequested ? 'bg-light' : 'bg-primary'">[[items.requested_count]]</span>
             </button>
           </div>
         </div>
@@ -161,8 +161,8 @@ Thank you,
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">{% trans %}Revoke{% endtrans %} ...</h5>
-              <button type="button" class="close"
-                      data-dismiss="modal" aria-hidden="true">&times;</button>
+              <button type="button" class="btn-close"
+                      data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body">
               <p>
@@ -174,10 +174,10 @@ Thank you,
               <div class="modal-footer">
                 <button id="cancel-revoke"
                         class="btn btn-secondary"
-                        data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                        data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit" id="revoke-btn"
                         class="btn btn-danger"
-                        data-dismiss="modal"
+                        data-bs-dismiss="modal"
                         @click="remove">{% trans %}Revoke{% endtrans %}</button>
               </div>
             </div>

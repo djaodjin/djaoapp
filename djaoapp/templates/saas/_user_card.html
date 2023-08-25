@@ -1,6 +1,6 @@
 <div :id="item.user.slug" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
   <div>
-    <button class="btn btn-danger btn-sm remove float-right"
+    <button class="btn btn-danger btn-sm remove float-end"
             data-trip data-trip-index="3"
             data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
             data-trip-position="s"
@@ -16,16 +16,16 @@
       <div class="col-9">
         <h5 class="card-title"><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.printable_name]]</a></h5>
         <h6 class="card-subtitle">[[item.user.email]]</h6>
-        <div class="text-left" v-if="item.accept_request_api_url">
+        <div class="text-start" v-if="item.accept_request_api_url">
           <hr class="my-2" />
           <small class="text-muted">{% trans %}requested{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
-          <button class="btn btn-secondary btn-sm float-right"
+          <button class="btn btn-secondary btn-sm float-end"
                   @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
         </div>
-        <div class="text-left" v-if="item.grant_key">
+        <div class="text-start" v-if="item.grant_key">
           <hr class="my-2" />
           <small class="text-muted">{% trans %}invited{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
-          <button class="btn btn-secondary btn-sm float-right"
+          <button class="btn btn-secondary btn-sm float-end"
                   @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
         </div>
       </div>

@@ -11,14 +11,14 @@
                   {% trans %}Selected Plan{% endtrans %}:
                   <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
                 </th>
-                <th class="text-right">
+                <th class="text-end">
                   <a id="{{invoicables.0.subscription.plan.slug}}" class="remove-cart-item" href="">{% trans %}Remove from Cart{% endtrans %}</a>
                 </th>
               </tr>
               {% if invoicables.0.options %}
               <tr class="py-0">
-                  <th colspan="2" class="font-weight-normal">{% trans %}Payment Options{% endtrans %}</th>
-                  <th class="font-weight-normal text-right">{% trans %}Totals{% endtrans %}</th>
+                  <th colspan="2" class="fw-normal">{% trans %}Payment Options{% endtrans %}</th>
+                  <th class="fw-normal text-end">{% trans %}Totals{% endtrans %}</th>
               </tr>
               {% endif %}
               <tr>
@@ -54,14 +54,14 @@
                         {% trans %}Selected Plan{% endtrans %}:
                         <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
                       </th>
-                      <th class="text-right">
+                      <th class="text-end">
                         <a id="{{entry.subscription.plan.slug}}" class="remove-cart-item" href="">{% trans %}Remove from Cart{% endtrans %}</a>
                       </th>
                     </tr>
                     {% if entry.options %}
                     <tr class="py-0">
-                      <th colspan="2" class="font-weight-normal">{% trans %}Payment Options{% endtrans %}</th>
-                      <th class="font-weight-normal text-right">{% trans %}Totals{% endtrans %}</th>
+                      <th colspan="2" class="fw-normal">{% trans %}Payment Options{% endtrans %}</th>
+                      <th class="fw-normal text-end">{% trans %}Totals{% endtrans %}</th>
                     </tr>
                     {% endif %}
                     <tr>
@@ -76,7 +76,7 @@
                   <tr class="invoice-item">
                     <td></td>
                     <td class="line-descr">{{line|describe_no_links}}</td>
-                    <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
+                    <td class="line-amount text-end">{{line.dest_price|humanize_money}}</td>
                   </tr>
                 {% endfor %}
 
@@ -87,7 +87,7 @@
                       <input type="radio" name="{{entry.name}}" data-amount="{{line.dest_amount}}" value="{{line.rank}}" {% if line.rank == entry.selected_option %}checked="1"{% endif %}></input>
                     </td>
                     <td class="line-descr">{{line|describe_no_links}}</td>
-                    <td class="line-amount text-right">{{line.dest_price|humanize_money}}</td>
+                    <td class="line-amount text-end">{{line.dest_price|humanize_money}}</td>
                   </tr>
                 {% endfor %}
               {% endfor %}
@@ -123,7 +123,7 @@
       <div class="col-md-6">
         {% trans %}Charged Today{% endtrans %}
       </div>
-      <div class="col-md-6 total-amount text-right">
+      <div class="col-md-6 total-amount text-end">
         {{lines_price|humanize_money}}
       </div>
     </div>

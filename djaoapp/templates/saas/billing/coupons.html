@@ -12,12 +12,12 @@
       <div class="row">
         <!-- Create a New Coupon -->
         <div class="col-md-3">
-          <div class="mr-2 mb-3 w-100">
+          <div class="me-2 mb-3 w-100">
             <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount Code{% endtrans %}" v-model="newCoupon.code">
           </div>
         </div>
         <div class="col-md-3">
-          <div class="mr-2 mb-3 w-100">
+          <div class="me-2 mb-3 w-100">
             <input type="text" class="form-control form-control-md w-100" placeholder="{% trans %}Discount %{% endtrans %}" v-model="newCoupon.discount_value">
           </div>
         </div>
@@ -33,14 +33,13 @@
 
     <!-- From/To/Match Filter Inputs -->
     {% include "saas/_filter.html" %}
+
     <div class="row mt-3">
       <div class="col-md-3">
         <!-- Sort Coupons -->
         <div class="pb-3">
           <div class="input-group input-group-md">
-            <div class="input-group-prepend">
-              <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
-            </div>
+            <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
             <select id="order-by" class="form-control">
               <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
               <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
@@ -72,7 +71,7 @@
           <div class="card-body">
             <div class="coupon-title">
               <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h5>
-              <button class="btn btn-danger btn-sm remove ml-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
+              <button class="btn btn-danger btn-sm remove ms-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
             </div>
           </div>
           <div class="list-group list-group-flush">
@@ -118,7 +117,7 @@
                data-trip-position="s">
               <span @click="editDescription(index)"
                     v-show="!edit_description[index]">
-                <i class="fa fa-pencil mr-3"></i>
+                <i class="fa fa-pencil me-3"></i>
                 <span class="text-muted" v-if="!entry.description">{% trans %}Edit Description{% endtrans %}</span>
                 [[entry.description]]
               </span>

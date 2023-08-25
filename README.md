@@ -56,6 +56,7 @@ in the documentation.
     $ source <em>installTop</em>/bin/activate
     $ pip install -r requirements-native.txt
     $ pip install -r requirements.txt
+    $ make vendor-assets-prerequisites
     $ make install-conf
     $ make build-assets
 </code></pre>

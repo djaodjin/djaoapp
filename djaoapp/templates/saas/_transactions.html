@@ -13,19 +13,19 @@
         <tr>
           <th class="text-nowrap">
             {% trans %}Date{% endtrans %}
-            <a href="#" class="text-nowrap btn-link btn-sort ml-2" @click.prevent="sortBy('created_at')">
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
               <i :class="sortIcon('created_at')"></i>
             </a>
           </th>
           <th class="text-nowrap">
             {% trans %}Amount{% endtrans %}
-            <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('amount')">
+            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('amount')">
               <i :class="sortIcon('amount')"></i>
             </a>
           </th>
           <th class="text-nowrap">
             {% trans %}Description{% endtrans %}
-            <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('description')">
+            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('description')">
               <i :class="sortIcon('description')"></i>
             </a>
           </th>
@@ -52,7 +52,7 @@
       <tbody id="has-transactions" v-show="itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="(entry, index) in items.results">
           <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
-          <td :class="entry.is_debit ? 'text-right text-danger' : 'text-right'">[[entry.amount]]</td>
+          <td :class="entry.is_debit ? 'text-end text-danger' : 'text-end'">[[entry.amount]]</td>
           <td class="text-nowrap" colspan="2" v-html="entry.description"></td>
         </tr>
       </tbody>

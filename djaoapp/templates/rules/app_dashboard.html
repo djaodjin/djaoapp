@@ -84,7 +84,7 @@
                 <tr>
                   <td colspan="6">
                     <a id="add-rule" href="#"
-                       data-toggle="modal" data-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
+                       data-bs-toggle="modal" data-bs-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
                   </td>
                 </tr>
               </tbody>
@@ -99,8 +99,8 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">{% trans %}Path accessed ...{% endtrans %}</h5>
-                  <button type="button" class="close"
-                          data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <button type="button" class="btn-close"
+                          data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                   <div id="div_id_new_rule_path" class="form-group">
@@ -119,10 +119,10 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"
-                          data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                          data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                   <button id="new-rule-submit"
                           type="button" class="btn btn-primary"
-                          data-dismiss="modal"
+                          data-bs-dismiss="modal"
                           @click="create">{% trans %}Create{% endtrans %}</button>
                 </div>
               </div>
@@ -150,9 +150,9 @@
               </div>
               <div class="form-group col-md-3">
                 <label for="">&nbsp;</label>
-                <div class="form-check pl-0">
+                <div class="form-check ps-0">
                   <label for="cors-restricted">
-                    <input id="cors-restricted" class="checkboxinput mr-2"
+                    <input id="cors-restricted" class="checkboxinput me-2"
                            name="cors-restricted"
                            ref="corsRestricted"
                            type="checkbox"
@@ -163,9 +163,9 @@
               </div>
               <div class="form-group col-md-3">
                 <label for="">&nbsp;</label>
-                <div class="form-check pl-0">
+                <div class="form-check ps-0">
                   <label for="welcome-email">
-                    <input id="welcome-email" class="checkboxinput mr-2"
+                    <input id="welcome-email" class="checkboxinput me-2"
                            name="welcome-email"
                            ref="welcomeEmail"
                            type="checkbox"
@@ -190,7 +190,7 @@
                            value="{% if form.instance.entry_point %}{{form.instance.entry_point}}{% endif %}"
                            data-trip data-trip-index="4"
                            data-trip-content="<p>{% trans %}Set the entry point where authorized requests should be forwarded to.{% endtrans %}</p>" data-trip-position="s">
-                    <button type="submit" class="input-group-append btn btn-primary">{% trans %}Update{% endtrans %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans %}Update{% endtrans %}</button>
                   </div>
                 </form>
               </div>
@@ -206,7 +206,7 @@
                   <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>{% trans %}JWT-based Session Backend{% endtrans %}</option>
                 </select>
                 <div class="form-group mt-3">
-                  <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-toggle="modal" data-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
+                  <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-bs-toggle="modal" data-bs-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
                 </div>
               </div>
             </div>
@@ -219,7 +219,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">{% trans %}Encrypted Session Key{% endtrans %}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                   </div>
                   <div class="modal-body">
                     <div class="form-group">
@@ -244,7 +244,7 @@
                   </div>
                   <div class="modal-footer">
                     <button id="regenerate-key" class="btn btn-secondary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}OK{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{% trans %}OK{% endtrans %}</button>
                   </div>
                 </div>
               </div>
@@ -267,16 +267,14 @@
                     <input id="id_username" class="form-control"
                            maxlength="100" name="username" type="text"
                            v-model="testUsername">
-                    <span class="input-group-append">
                       <button type="submit" class="btn btn-primary">{% trans %}Check{% endtrans %}</button>
-                    </span>
                   </div>
                 </div>
               </div>
             </form>
 
             <!-- Session Data -->
-            <div class="text-left">
+            <div class="text-start">
               <dl id="session-data">
                 <dt>{% trans %}Session Data{% endtrans %}</dt>
                 <dd>

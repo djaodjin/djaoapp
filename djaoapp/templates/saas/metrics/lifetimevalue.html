@@ -20,19 +20,19 @@
                   <i :class="sortIcon('printable_name')"></i>
                 </a>
             </th>
-            <th class="text-right">{% trans %}Contract Value{% endtrans %}
+            <th class="text-end">{% trans %}Contract Value{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('contract_value')">
                   <i :class="sortIcon('contract_value')"></i>
                 </a>
             </th>
-            <th class="text-right">{% trans %}Cash Payments{% endtrans %}
+            <th class="text-end">{% trans %}Cash Payments{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('cash_payments')">
                   <i :class="sortIcon('cash_payments')"></i>
                 </a>
             </th>
-            <th class="text-right">{% trans %}Deferred Revenue{% endtrans %}
+            <th class="text-end">{% trans %}Deferred Revenue{% endtrans %}
                 <a href="#" class="btn-sort"
                   @click.prevent="sortBy('deferred_revenue')">
                   <i :class="sortIcon('deferred_revenue')"></i>
@@ -66,13 +66,13 @@
             <td>
                 <a :href="'{{urls.profile_redirect}}' + item.slug + '/'">[[item.printable_name]]</a>
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 [[$globals.humanizeNumber(item.contract_value, item.unit, 0.01)]]
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 [[$globals.humanizeNumber(item.cash_payments, item.unit, 0.01)]]
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 [[$globals.humanizeNumber(item.deferred_revenue, item.unit, 0.01)]]
             </td>
             <td class="date">[[$globals.humanizeDate(item.created_at)]]</td>

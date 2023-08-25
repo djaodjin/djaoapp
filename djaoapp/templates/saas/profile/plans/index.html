@@ -64,12 +64,12 @@
                 <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
               </td>
               <td>
-                <span class="badge" :class="{ 'badge-success': item.is_active, 'badge-secondary': !item.is_active }">[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</span>
+                <span class="badge" :class="{ 'bg-success': item.is_active, 'bg-secondary': !item.is_active }">[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</span>
               </td>
               <td class="date">
                 [[$globals.humanizeDate(item.created_at)]]
               </td>
-              <td class="text-right">
+              <td class="text-end">
                 [[$globals.humanizeNumber(item.period_amount, item.unit, 0.01)]]
               </td>
             </tr>

@@ -11,7 +11,7 @@
        data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab table-chooser">
       <li v-for="(table, index) in tables" class="nav-item">
-        <a data-toggle="tab" :href="'#' + table.key" :class="activeClass(index)" @click="tabClicked(index)" v-cloak>
+        <a data-bs-toggle="tab" :href="'#' + table.key" :class="activeClass(index)" @click="tabClicked(index)" v-cloak>
             [[tabTitle(table)]]
         </a>
       </li>
@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
     // Copy/Paste from vendor/js/bootstrap.js and inserted
     // a forced trigger of 'resize' for NVD3 to redraw the chart
     // using correct dimensions.
-    $(document).on('shown.bs.tab', '[data-toggle="tab"], [data-toggle="pill"]',
+    $(document).on('shown.bs.tab', '[data-bs-toggle="tab"], [data-toggle="pill"]',
     function (e) {
       window.dispatchEvent(new Event('resize'));
     });

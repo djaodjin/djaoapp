@@ -6,7 +6,7 @@ var confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString()
 
 module.exports = {
   mode: 'production',
-  target: ['web', 'es5'],
+  target: ['web', 'es6'],
   entry: {
       auth: [
           'js/djaodjin-postal.js',

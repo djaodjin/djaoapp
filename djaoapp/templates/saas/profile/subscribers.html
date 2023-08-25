@@ -23,13 +23,13 @@
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       {% if registered %}
       <li class="nav-item">
-        <a class="nav-link" href="#registered" data-toggle="tab">{% trans %}Registered{% endtrans %}</a>
+        <a class="nav-link" href="#registered" data-bs-toggle="tab">{% trans %}Registered{% endtrans %}</a>
       </li>
       {% endif %}
 
       {% for tab in tabs %}
       <li class="nav-item">
-        <a class="nav-link{% if tab.is_active %} active{% endif %}" href="#{{tab.slug}}" data-toggle="tab">{{tab.title}}</a>
+        <a class="nav-link{% if tab.is_active %} active{% endif %}" href="#{{tab.slug}}" data-bs-toggle="tab">{{tab.title}}</a>
       </li>
       {% endfor %}
     </ul>
@@ -47,7 +47,7 @@
               <thead>
                 <tr>
                   <th>{% trans %}Full name{% endtrans %}</th>
-                  <th class="text-right">
+                  <th class="text-end">
                   </th>
                 </tr>
               </thead>
@@ -97,25 +97,25 @@
                   <th>
                     {% trans %}Subscriber{% endtrans %}
                     <a href="#" @click.prevent="sortBy('profile')">
-                      <i :class="sortIcon('profile')" class="pl-2"></i>
+                      <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a href="#" @click.prevent="sortBy('plan')">
-                      <i :class="sortIcon('plan')" class="pl-2"></i>
+                      <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
                     <a href="#" @click.prevent="sortBy('created_at')">
-                      <i :class="sortIcon('created_at')" class="pl-2"></i>
+                      <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends at{% endtrans %}
                     <a href="#" @click.prevent="sortBy('ends_at')">
-                      <i :class="sortIcon('ends_at')" class="pl-2"></i>
+                      <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>{% trans %}Description{% endtrans %}</th>
@@ -124,25 +124,25 @@
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a href="#" @click.prevent="sortBy('plan')">
-                      <i :class="sortIcon('plan')" class="pl-2"></i>
+                      <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
                     <a href="#" @click.prevent="sortBy('profile')">
-                      <i :class="sortIcon('profile')" class="pl-2"></i>
+                      <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
                     <a href="#" @click.prevent="sortBy('created_at')">
-                      <i :class="sortIcon('created_at')" class="pl-2"></i>
+                      <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends At{% endtrans %}
                     <a href="#" @click.prevent="sortBy('ends_at')">
-                      <i :class="sortIcon('ends_at')" class="pl-2"></i>
+                      <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>{% trans %}Description{% endtrans %}</th>
@@ -153,25 +153,25 @@
                   <th>
                     {% trans %}Since{% endtrans %}
                     <a href="#" @click.prevent="sortBy('created_at')">
-                      <i :class="sortIcon('created_at')" class="pl-2"></i>
+                      <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
                     <a href="#" @click.prevent="sortBy('profile')">
-                      <i :class="sortIcon('profile')" class="pl-2"></i>
+                      <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a href="#" @click.prevent="sortBy('plan')">
-                      <i :class="sortIcon('plan')" class="pl-2"></i>
+                      <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends At{% endtrans %}
                     <a href="#" @click.prevent="sortBy('ends_at')">
-                      <i :class="sortIcon('ends_at')" class="pl-2"></i>
+                      <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>{% trans %}Description{% endtrans %}</th>
@@ -180,25 +180,25 @@
                   <th>
                     {% trans %}Ends At{% endtrans %}
                     <a href="#" @click.prevent="sortBy('ends_at')">
-                      <i :class="sortIcon('ends_at')" class="pl-2"></i>
+                      <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
                     <a href="#" @click.prevent="sortBy('profile')">
-                      <i :class="sortIcon('profile')" class="pl-2"></i>
+                      <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a href="#" @click.prevent="sortBy('plan')">
-                      <i :class="sortIcon('plan')" class="pl-2"></i>
+                      <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
                     <a href="#" @click.prevent="sortBy('created_at')">
-                      <i :class="sortIcon('created_at')" class="pl-2"></i>
+                      <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>{% trans %}Description{% endtrans %}</th>

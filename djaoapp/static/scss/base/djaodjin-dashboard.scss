@@ -13,7 +13,7 @@ $dashboard-sidebar-logo-height: 72px;
 
 // CSS specific to color the djaoapp dashboard pages
 $dashboard-content-bg:          white;
-$dashboard-sidebar-bg:          theme-color(primary);
+$dashboard-sidebar-bg:          map-get($theme-colors, "primary");
 $dashboard-sidebar-color:       white;
 $dashboard-icon-color:          $dashboard-sidebar-color;
 $dashboard-icon-color-active:   $dashboard-sidebar-bg;
@@ -163,6 +163,16 @@ pre.code{
 .dashboard-nav-menu {
   height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$dashboard-sidebar-logo-height}));
   overflow-y: auto;
+}
+
+.dashboard-nav-inner-container .navbar-brand > img {
+    max-height: 30px;
+}
+
+.dashboard-nav-inner-container .navbar {
+    padding-left: 4px;
+    padding-right: 4px;
+    height: 4.33rem;
 }
 
 .dashboard-nav-footer {
@@ -516,8 +526,17 @@ header > .navbar {
   margin-bottom: 10px;
 }
 
+.navbar-brand > img {
+    max-height: 30px;
+}
 
-@include media-breakpoint-down(xs) {
+// https://github.com/twbs/bootstrap/pull/37350
+input::-webkit-datetime-edit {
+    display: block;
+    padding: 0;
+}
+
+@include media-breakpoint-down(sm) {
 
     .dashboard-content > .fullviewport {
       padding-top: $navbar-height;
@@ -648,6 +667,7 @@ header > .navbar {
 
 .dashboard-nav-menu > hr {
     border-top-color: $dashboard-sidebar-color;
+    opacity: 1;
 }
 
 .dashboard-nav-menu > .nav li > a {
@@ -723,8 +743,7 @@ header > .navbar {
 
 /* upload themes */
 .dropzone-previews {
-  border-color: theme-color(primary);
+  border-color: map-get($theme-colors, "primary");
   background: #ccc;
 }
-
 

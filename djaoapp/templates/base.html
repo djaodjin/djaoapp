@@ -53,9 +53,11 @@
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
                     <header>
-                      <nav class="navbar{% block _navbar_extra_classes %} navbar-light{% endblock %}">
-                        <div class="navbar-header">
-                          {% include "_navbarbrand.html" %}
+                      <nav class="navbar navbar-expand-sm{% block _navbar_extra_classes %} navbar-light{% endblock %}">
+                        <div class="container-fluid">
+                          <div class="navbar-header">
+                            {% include "_navbarbrand.html" %}
+                          </div>
                         </div>
                       </nav>
                     </header>
@@ -73,7 +75,7 @@
                   {% block dashboard_footer %}
                   <div class="text-center dashboard-nav-footer dashboard-nav-color-theme">
                     <div class="footer-links">
-                      <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-2"></i></a>
+                      <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pe-2"></i></a>
                       <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
                     </div>
 
@@ -93,36 +95,38 @@
             <div class="d-print-none fullviewport">
               <header>
                 <nav class="navbar navbar-expand-md{% block navbar_extra_classes %} navbar-light border-bottom{% endblock %}">
-                  <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
-                    <div class="bar1 closed"></div>
-                    <div class="bar2 closed"></div>
-                    <div class="bar3 closed"></div>
-                  </a>
+                  <div class="container-fluid">
+                    <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
+                      <div class="bar1 closed"></div>
+                      <div class="bar2 closed"></div>
+                      <div class="bar3 closed"></div>
+                    </a>
 
-                  {% block content_navbarbrand %}
-                    <div class="navbar-brand-container">
-                      {% include "_navbarbrand.html" %}
-                    </div>
-                  {% endblock %}
+                    {% block content_navbarbrand %}
+                      <div class="navbar-brand-container">
+                        {% include "_navbarbrand.html" %}
+                      </div>
+                    {% endblock %}
 
-                  {% block header_navbar_large %}
-                    <div class="navbar-collapse collapse navbar-right">
-                      <ul class="nav navbar-nav ml-auto mt-lg-0">
-                        {% include "_generic_navbar.html" %}
+                    {% block header_navbar_large %}
+                      <div class="navbar-collapse collapse navbar-right">
+                        <ul class="nav navbar-nav ms-auto mt-lg-0">
+                          {% include "_generic_navbar.html" %}
+                        </ul>
+                      </div>
+                      <ul class="nav navbar-nav ms-auto mt-lg-0 header-menubar">
+                        {# The content here will be replaced by _menubar.html #}
+                        <li class="nav-item">
+                          {% if request and request|is_authenticated %}
+                          <a class="nav-link">{{request.user.username}}</a>
+                          {% else %}
+                          <a id="login" class="nav-link" href="{{'/login/'|site_url}}">Sign In</a>
+                          {% endif %}
+                        </li>
+                        {# end of replaced by _menubar.html #}
                       </ul>
-                    </div>
-                    <ul class="nav navbar-nav ml-auto mt-lg-0 header-menubar">
-                      {# The content here will be replaced by _menubar.html #}
-                      <li class="nav-item">
-                        {% if request and request|is_authenticated %}
-                        <a class="nav-link">{{request.user.username}}</a>
-                        {% else %}
-                        <a id="login" class="nav-link" href="{{'/login/'|site_url}}">Sign In</a>
-                        {% endif %}
-                      </li>
-                      {# end of replaced by _menubar.html #}
-                    </ul>
-                  {% endblock %}
+                    {% endblock %}
+                  </div>
                 </nav>
               </header>
               {% block fullviewport %}
@@ -133,21 +137,21 @@
                 <div id="messages-content">
                   {% if request %}
                     {% for message in request|messages %}
-                      <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <div class="alert alert-dismissible fade show{% if message.tags %} alert-{{message.tags}}{% endif %}">
                         {% if 'safe' in message.tags %}
                           <div>{{message|safe}}</div>
                         {% else %}
                           <div>{{message}}</div>
                         {% endif %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
                     {% endfor %}
                   {% endif %}
                   {% if form %}
                     {% for message in form|messages %}
-                      <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <div class="alert alert-dismissible fade show alert-danger">
                         <div>{{message}}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
                     {% endfor %}
                   {% endif %}
@@ -178,8 +182,8 @@
           | <a href="{{'/contact/'|site_url}}" target="_blank">{% trans %}Contact{% endtrans %}</a>
         </div>
         <div class="my-2">
-          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pr-1"></i></a>
-          <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm pl-1"></i></a>
+          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pe-1"></i></a>
+          <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm ps-1"></i></a>
         </div>
         <div class="my-2">
           {% trans %}Powered by DjaoDjin. &copy; 2023 All rights reserved.{% endtrans %}

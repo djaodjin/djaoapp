@@ -31,19 +31,19 @@
             <tr>
               <th class="text-nowrap">
                 {% trans %}Last login{% endtrans %}
-                <a href="#" class="text-nowrap btn-link btn-sort ml-2" @click.prevent="sortBy('created_at')">
+                <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
                   <i :class="sortIcon('created_at')"></i>
                 </a>
               </th>
               <th class="text-nowrap">
                 {% trans %}Full name{% endtrans %}
-                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('first_name')">
+                <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('first_name')">
                   <i :class="sortIcon('first_name')"></i>
                 </a>
               </th>
               <th class="text-nowrap">
                 {% trans %}Profile{% endtrans %}
-                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('profile_full_name')">
+                <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')">
                   <i :class="sortIcon('profile_full_name')"></i>
                 </a>
               </th>
@@ -109,7 +109,7 @@
             <tr>
               <th class="text-nowrap">
                 {% trans %}Profile{% endtrans %}
-                <a href="#" class="btn-link btn-sort ml-2" @click.prevent="sortBy('profile_full_name')">
+                <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')">
                   <i :class="sortIcon('profile_full_name')"></i>
                 </a>
               </th>
@@ -141,7 +141,7 @@
           <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <tr v-for="(entry, index) in items.results" :class="{'bg-info': isInfiniteScroll && params.page > 1 && (itemsPerPage * (params.page - 1)) === index}">
               <td class="text-nowrap">
-                <a data-toggle="collapse"
+                <a data-bs-toggle="collapse"
                    :href="'#collapse-'+ entry.slug"
                    @click="showHideRoles(entry)">[[entry.printable_name]]</a>
                 <div :id="'collapse-'+ entry.slug" class="collapse">

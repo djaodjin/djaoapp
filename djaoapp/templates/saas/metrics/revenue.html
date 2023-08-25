@@ -28,22 +28,22 @@
        data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab table-chooser">
       <li>
-        <a data-toggle="tab" href="#cash" :class="activeClass(0)" @click="tabClicked(0)" v-cloak>
+        <a data-bs-toggle="tab" href="#cash" :class="activeClass(0)" @click="tabClicked(0)" v-cloak>
             {% trans %}Amounts ($){% endtrans %}
         </a>
       </li>
       <li>
-        <a data-toggle="tab" href="#balances" :class="activeClass(1)" @click="tabClicked(1)" v-cloak>
+        <a data-bs-toggle="tab" href="#balances" :class="activeClass(1)" @click="tabClicked(1)" v-cloak>
             {% trans %}Balances ($){% endtrans %}
         </a>
       </li>
       <li>
-        <a data-toggle="tab" href="#customer" :class="activeClass(2)" @click="tabClicked(2)" v-cloak>
+        <a data-bs-toggle="tab" href="#customer" :class="activeClass(2)" @click="tabClicked(2)" v-cloak>
             {% trans %}Customers{% endtrans %}
         </a>
       </li>
       <li>
-        <a data-toggle="tab" href="#plan" :class="activeClass(3)" @click="tabClicked(3)" v-cloak>
+        <a data-bs-toggle="tab" href="#plan" :class="activeClass(3)" @click="tabClicked(3)" v-cloak>
             {% trans %}Active subscribers{% endtrans %}
         </a>
       </li>

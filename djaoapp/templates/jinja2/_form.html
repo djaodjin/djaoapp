@@ -5,13 +5,15 @@
     method="post" action=".{% if next %}/?next={{next}}{% endif %}">
     {{super()}}
   <div class="form-action text-center">
-    <button type="submit" class="btn btn-primary btn-block btn-lg">
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-lg">
         {% if form.submit_title %}
         {{form.submit_title}}
         {% else %}
         {% trans %}Submit{% endtrans %}
         {% endif %}
-    </button>
+      </button>
+    </div>
   </div>
 </form>
 {% endblock %}

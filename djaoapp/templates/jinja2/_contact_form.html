@@ -10,6 +10,8 @@
     {% if 'captcha' in form.fields %}
       {{input_field(form["captcha"], form.hide_labels)}}
     {% endif %}
-    <button type="submit" class="btn btn-block btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-lg">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+    </div>
 </form>
 {% endblock %}
