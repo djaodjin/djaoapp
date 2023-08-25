@@ -1,6 +1,8 @@
 FROM python:3.10-slim-bullseye
 # As of 2023-04-21: Python 3.10.11, Debian 11.0 (Bullseye)
 
+LABEL org.opencontainers.image.source https://github.com/djaodjin/djaoapp
+
 # Print version info for build log
 RUN echo "Building with" `python --version` '('`which python`')' "on Debian" `cat /etc/debian_version` "(Bullseye Slim)..."
 
