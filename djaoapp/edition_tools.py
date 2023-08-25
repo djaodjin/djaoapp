@@ -100,7 +100,6 @@ def inject_edition_tools(response, request, context=None,
                 'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
-
         body_bottom_template_name = \
             "extended_templates/_body_bottom_edit_tools.html"
         context.update({

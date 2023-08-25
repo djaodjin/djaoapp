@@ -9,14 +9,14 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid container-margered">
+        <div class="container-fluid">
             <form method="post" action=".">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                <div class="row">
+                <div class="row mt-4">
                     {% for plan in plan_list %}
                         {% if plan.is_line_break %}
                             </div>
-                            <div class="row">
+                            <div class="row mt-4">
                                 {% if plan_list|length == 1 %}
                                 <div class="col-md-4"></div>
                                 {% endif %}
@@ -27,7 +27,7 @@
 
                     {% if plan_list.is_line_break %}
                         </div>
-                        <div class="row">
+                        <div class="row mt-4">
                     {% endif %}
 
                     {% if show_edit_tools and plan %}

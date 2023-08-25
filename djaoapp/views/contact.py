@@ -15,6 +15,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from rest_framework import serializers
+from rules.utils import get_current_app
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split, update_context_urls
