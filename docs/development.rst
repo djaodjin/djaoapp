@@ -1,6 +1,17 @@
 Working with the code base
 ===========================
 
+Installing dependencies
+-----------------------
+
+To run djaoapp locally, you will need to install 3 types of dependencies
+
+- Javascript dependencies (see package.json)
+- Pure Python dependencies (see requirements.txt)
+- Python bindings and native libraries (see requirements-native.txt and
+`quirks` for debugging version issues)
+
+
 CSS
 ---
 

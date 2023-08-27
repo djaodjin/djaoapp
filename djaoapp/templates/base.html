@@ -82,6 +82,33 @@
                     <div>
                       {% trans %}Powered by &copy; 2023 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
                     </div>
+                    {# Theme color mode selection #}
+                    <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
+                      <li class="nav-item dropup">
+                        <a id="color-mode" class="nav-link dropdown-toggle" href="#" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (dark)">
+                          <span class="fa fa-paint-brush align-middle"></span>
+                          {% trans %}Color mode{% endtrans %}
+                          <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li role="presentation">
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                              {% trans %}Light{% endtrans %}
+                            </button>
+                          </li>
+                          <li role="presentation">
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                              {% trans %}Dark{% endtrans %}
+                            </button>
+                          </li>
+                          <li role="presentation">
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+                              {% trans %}Auto{% endtrans %}
+                            </button>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>{# /theme color mode #}
                   </div>
                   {% endblock %}
                   <!-- End Dashboard Footer -->
@@ -191,6 +218,33 @@
         <div class="my-2">
           {% trans %}Powered by DjaoDjin. &copy; 2023 All rights reserved.{% endtrans %}
         </div>
+      {# Theme color mode selection #}
+      <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
+        <li class="nav-item dropup">
+          <a id="color-mode" class="nav-link dropdown-toggle" href="#" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (dark)">
+            <span class="fa fa-paint-brush align-middle"></span>
+            {% trans %}Color mode{% endtrans %}
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation">
+              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                {% trans %}Light{% endtrans %}
+              </button>
+            </li>
+            <li role="presentation">
+              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                {% trans %}Dark{% endtrans %}
+              </button>
+            </li>
+            <li role="presentation">
+              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+                {% trans %}Auto{% endtrans %}
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
       </div>
     </footer>
   {% endblock footer %}
@@ -204,6 +258,7 @@
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaoapp-theme-color-mode.js'|asset}}"></script>
 {% else %}
 <script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
 {% endif %}

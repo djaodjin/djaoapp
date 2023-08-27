@@ -1,6 +1,8 @@
 DjaoDjin subscriber session proxy
 =================================
 
+[![Documentation Status](https://readthedocs.org/projects/djaoapp/badge/?version=latest)](https://djaoapp.readthedocs.io/en/latest/?badge=latest)
+
 DjaoApp brings fully-featured profile, billing and role-based access control
 pages so you can start building your SaaS product faster.
 To learn more visit [DjaoDjin's Website](https://www.djaodjin.com/) or browse

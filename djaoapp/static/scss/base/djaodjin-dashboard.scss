@@ -8,16 +8,16 @@ $navbar-height: max($nav-link-height, $navbar-brand-height) + $navbar-padding-y 
 
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
-$dashboard-nav-footer-height:   94px;
+$dashboard-nav-footer-height:   134px;
 $dashboard-sidebar-logo-height: 72px;
 
 // CSS specific to color the djaoapp dashboard pages
-$dashboard-content-bg:          white;
+$dashboard-content-bg:          var(--bs-body-bg);
 $dashboard-sidebar-bg:          map-get($theme-colors, "primary");
 $dashboard-sidebar-color:       white;
 $dashboard-icon-color:          $dashboard-sidebar-color;
 $dashboard-icon-color-active:   $dashboard-sidebar-bg;
-$code-bg:                       #222527;
+$code-bg:                       var(--bs-body-bg);
 $code-color:                    #a3acb9;
 $box-shadow-color:              rgba(0, 0, 0, 0.05);
 
@@ -207,8 +207,6 @@ pre.code{
 
 .dashboard-content {
     width: 100%;
-    background-color: $dashboard-content-bg;
-    color: $body-color;
 }
 
 .dashboard-inner-container .dashboard-content-body {
@@ -550,9 +548,6 @@ input::-webkit-datetime-edit {
       z-index: 4;
       width: 100%;
       left: 0;
-    }
-
-    .dashboard-content > .fullviewport > header.scrolled {
       background-color: $dashboard-sidebar-bg;
     }
 

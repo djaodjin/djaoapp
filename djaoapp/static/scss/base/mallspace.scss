@@ -15,7 +15,6 @@ html, body {
 
 body{
   min-width:100%;
-  background:#FFF;
 }
 
 #wrap{
@@ -23,7 +22,7 @@ body{
   min-height: 100%;
 }
 
-/* 
+/*
   Unless the font-size for #main and .footer match, using ``em`` metrics will
   create bottom and overlap margins that have different heights, hence
   sticking the footer to the bottom while introducing a "border" above it.

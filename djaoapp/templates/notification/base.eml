@@ -58,7 +58,7 @@
           <table>
             <tr>
               <td class="page-footer">
-                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://www.djaodjin.com/static/img/logo-djaodjin-bgblue-320.png" width="128" height="128"> <a href="https://www.djaodjin.com/"> djaodjin.com</a>
+                <p>{% trans %}Powered by{% endtrans %} <img class="poweredby-logo" src="https://www.djaodjin.com/static/img/logo-djaodjin-darkmode-320.png" width="128" height="128"> <a href="https://www.djaodjin.com/"> djaodjin.com</a>
                 </p>
               </td>
             </tr>
