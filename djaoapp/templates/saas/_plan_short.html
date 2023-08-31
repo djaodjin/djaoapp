@@ -3,12 +3,11 @@
   amount will be positive and/or the setup fee will.
 -->
 
-<div id="{{plan.slug}}" class="col-sm-6 col-md-4 col-lg-4 d-flex flex-column align-items-stretch position-relative plan" data-plan="{{plan.slug}}">
-  <div class="plan-short"> {# class=""> #}
-    <div class="plan-wrap"> {#  #}
-      <div class="plan-main">
-      <!-- Plan Title -->
-      <div class="text-center py-3">
+<div id="{{plan.slug}}" class="plan col-sm-6 col-md-4 col-lg-4 align-items-stretch" data-plan="{{plan.slug}}">
+  <div class="plan-short d-flex flex-column justify-content-between">
+    <div>
+      <!-- Plan title, pricing and description -->
+      <div class="plan-title text-center py-3">
         {% if plan.created_at|date_in_future %}
         <p>{% trans %}Available soon!{% endtrans %}</p>
         {% endif %}
@@ -49,9 +48,9 @@
       </div>{# /.plan-pricing #}
       <div class="plan-desc editable-plan edit-markdown px-2" data-key="description">
         {{plan.description|md}}
-      </div>
-    </div>{# /.plan-desc #}
-    <footer class="text-center">
+      </div>{# /.plan-desc #}
+    </div>
+    <footer class="plan-footer mb-2">
       <div class="d-grid gap-2">
         {% if plan.is_not_priced %}
         <a class="btn btn-secondary" href="{{request|url_contact}}?next={{request.path}}">{% trans %}Contact Us{% endtrans %}</a>
@@ -60,5 +59,5 @@
         {% endif %}
       </div>
     </footer>
-  </div>
+  </div>{# /.plan-short #}
 </div>

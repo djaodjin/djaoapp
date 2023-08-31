@@ -338,18 +338,7 @@ body{
   background-color: tint-color(map-get($theme-colors, "primary"), 75%);
 }
 
-.plan-wrap {
-  min-height: 100%;
-}
-
-.plan-main {
-  min-height: 100%;
-}
-
 .plan-footer {
-  position: relative;
-  height: $plan-footer-height;
-  bottom: $plan-footer-height;
   text-align: center;
 }
 
