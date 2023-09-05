@@ -268,7 +268,7 @@ $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 
 
 schema.yml:
-	cd $(srcDir) && $(MANAGE) generateschema > $@
+	cd $(srcDir) && DEBUG=0 API_DEBUG=1 $(MANAGE) generateschema > $@
 	cd $(srcDir) && swagger-cli validate $@
 
 

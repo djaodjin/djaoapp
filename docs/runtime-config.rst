@@ -114,15 +114,15 @@ registration and contact pages, or show the captcha based on complex fraud
 evaluation logic), you can replace the default functions that return captcha
 key pairs.
 
-.. autodata:: settings.REGISTRATION_CAPTCHA_KEYS
+.. autodata:: djaoapp.settings.REGISTRATION_CAPTCHA_KEYS
 
-.. autodata:: settings.CONTACT_CAPTCHA_KEYS
+.. autodata:: djaoapp.settings.CONTACT_CAPTCHA_KEYS
 
 
 Overriding the function to send notifications
 ---------------------------------------------
 
-.. autodata:: settings.SEND_NOTIFICATION_CALLABLE
+.. autodata:: djaoapp.settings.SEND_NOTIFICATION_CALLABLE
 
 
 Reference for configuration variables
