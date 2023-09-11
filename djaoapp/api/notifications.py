@@ -16,7 +16,7 @@ from signup.serializers_overrides import UserDetailSerializer
 
 from ..api.serializers import ProfileSerializer
 from ..compat import gettext_lazy as _
-from ..notifications.recipients import send_notification
+from ..notifications import send_notification
 from ..views.docs import get_notification_schema
 from .serializers import DetailSerializer
 

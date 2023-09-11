@@ -25,7 +25,6 @@ from signup.utils import printable_name as user_printable_name
 from djaoapp.signals import contact_requested
 
 from ..compat import gettext_lazy as _, reverse, six
-from .recipients import send_notification
 from .serializers import (ContactUsNotificationSerializer,
     UserNotificationSerializer, ExpireUserNotificationSerializer,
     OneTimeCodeNotificationSerializer,
@@ -38,6 +37,7 @@ from .serializers import (ContactUsNotificationSerializer,
     RoleRequestNotificationSerializer, RoleGrantNotificationSerializer,
     SubscriptionAcceptedNotificationSerializer,
     SubscriptionCreatedNotificationSerializer)
+from . import send_notification
 
 #pylint: disable=unused-argument
 #pylint: disable=protected-access
