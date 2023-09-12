@@ -12,16 +12,13 @@ class NotificationWebhookBackend(object):
     def send_notification(self, event_name, context=None, site=None, recipients=None):
         webhook_url = settings.NOTIFICATION_WEBHOOK_URL
 
-        context.update({"event": event_name})
-
         if not site:
             site = get_current_site()
 
-        body = json.dumps({
-            'context': context,
-            'site': site.slug,
-            'recipients': recipients
-        }).encode('utf8')
+        context.update({"event": event_name, 'site': site.slug,
+            'recipients': recipients})
+
+        body = json.dumps(context).encode('utf8')
 
         req = request.Request(webhook_url, data=body, headers={
             'Content-Type': 'application/json'})
