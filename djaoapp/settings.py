@@ -727,7 +727,6 @@ SAAS = {
 RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'APP_SERIALIZER': 'djaoapp.api.serializers.AppSerializer',
-    'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'RULE_OPERATORS': (

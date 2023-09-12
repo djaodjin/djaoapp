@@ -171,7 +171,7 @@ class CredentialsAPIView(OrganizationMixin, generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         #pylint:disable=unused-argument
         context = {}
-        app = get_current_app()
+        app = get_current_app(request)
         try:
             storage = get_default_storage(request, account=app.account)
             # The following statement will raise an Exception

@@ -9,7 +9,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
-from rules.utils import get_current_app
 from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
 from saas.models import get_broker
 from signup.serializers_overrides import UserDetailSerializer

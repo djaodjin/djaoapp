@@ -190,6 +190,7 @@ def send_notification(event_name, context=None, site=None, recipients=None):
             event_name, context=context, site=site, recipients=recipients)
 
     #pylint:disable=too-many-arguments
+    organization_model = get_organization_model()
     context.update({"event": event_name})
     template = 'notification/%s.eml' % event_name
     if event_name in ('role_grant_created',):

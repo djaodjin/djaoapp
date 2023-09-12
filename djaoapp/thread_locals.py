@@ -11,7 +11,7 @@ from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from rules.models import Rule
-from rules.utils import get_app_model
+from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
@@ -114,34 +114,6 @@ def get_current_broker():
         thread_local_site.broker = get_current_app().account
         broker = thread_local_site.broker
     return broker
-
-
-def get_current_app(request=None):
-    """
-    Returns the provider ``rules.App`` as read in the active database
-    for the ``rules`` and ``extended_templates`` application.
-    """
-    # If we don't write the code as such, we might end-up generating
-    # an extra SQL query every time ``get_current_app`` is called.
-    thread_local_site = get_current_site()
-    app = getattr(thread_local_site, 'app', None)
-    if thread_local_site and not app:
-        app_model = get_app_model()
-        try:
-            thread_local_site.app = app_model.objects.get(
-                slug=thread_local_site.slug)
-        except app_model.DoesNotExist:
-            #pylint:disable=protected-access
-            msg = "No %s with slug '%s' can be found." % (
-                app_model._meta.object_name, thread_local_site.slug)
-            if request is not None:
-                LOGGER.exception(
-                    "get_current_app: %s", msg, extra={'request': request})
-            else:
-                LOGGER.exception("get_current_app: %s", msg)
-            raise Http404(msg)
-        app = thread_local_site.app
-    return app
 
 
 def get_current_assets_dirs():
