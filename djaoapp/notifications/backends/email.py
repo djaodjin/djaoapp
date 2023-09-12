@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 import json, logging, smtplib
 
-from urllib import request
 from deployutils.crypt import JSONEncoder
 from django.conf import settings
 from django.core.mail import get_connection as get_connection_base
@@ -18,7 +17,7 @@ from saas.utils import get_organization_model
 from signup.models import Contact
 from signup.settings import NOTIFICATIONS_OPT_OUT
 
-from ..compat import six, import_string, gettext_lazy as _
+from ...compat import six, import_string, gettext_lazy as _
 
 
 LOGGER = logging.getLogger(__name__)
@@ -264,28 +263,3 @@ class NotificationEmailBackend(object):
                 # but the end user shouldn't see a 500 error as a result
                 # of notifications sent in the HTTP request pipeline.
                 LOGGER.exception(err)
-
-
-class NotificationWebhookBackend(object):
-    def send_notification(self, event_name, context=None, site=None, recipients=None):
-        webhook_url = settings.NOTIFICATION_WEBHOOK_URL
-
-        context.update({"event": event_name})
-
-        if not site:
-            site = get_current_site()
-
-        body = json.dumps({
-            'event': event_name,
-            'context': context,
-            'site': site.slug,
-            'recipients': recipients
-            # TODO add more data?
-        }).encode('utf8')
-
-        req = request.Request(webhook_url, data=body, headers={
-            'Content-Type': 'application/json'})
-        try:
-            request.urlopen(req)
-        except Exception as err:
-            LOGGER.exception(err)
