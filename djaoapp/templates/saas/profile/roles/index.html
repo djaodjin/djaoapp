@@ -8,18 +8,51 @@
     data-trip-content="<h2>{% trans %}Add/Remove roles{% endtrans %}</h2><p>{% trans %}Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
   <div>
-    <button class="btn btn-primary" @click="modalOpen=true">{% trans %}Create role{% endtrans %} ...</button>
+    <form id="roledescr-create" @submit.prevent="save">
+      <div class="row">
+        <!-- Create a New Role Description -->
+        <div class="col-md-3">
+          <div class="me-2 mb-3 w-100">
+            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Title{% endtrans %}" name="new-roledescr" v-model="newItem.title">
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <button type="submit" class="btn btn-primary btn-md w-100">
+            {% trans %}Create role{% endtrans %}
+          </button>
+        </div>
+      </div>
+    </form>
+    <hr />
+
+    <!-- spinner while loading -->
     <div v-show="!itemsLoaded">
       <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
     </div>
-    <div v-for="roleDescription in items.results" v-show="itemsLoaded">
-        <div>
-          <h3 class="d-inline-block">[[roleDescription.title]]
+
+    <!-- display list -->
+    <div :id="roleDescription.slug"
+         v-for="roleDescription in items.results" v-show="itemsLoaded">
+      <div class="row">
+        <div class="col-4">
+          <a :href="roleDescription.slug + '/'">[[roleDescription.title]]</a>
+        </div>
+        <div class="col-2">
+          [[roleDescription.is_global ? {% trans %}"global"{% endtrans %} : ""]]
+        </div>
+        <div class="col-2">
+            [[roleDescription.skip_optin_on_grant ? {% trans %}"skip optin on grant"{% endtrans %} : "requires optin on grant"]]
+        </div>
+        <div class="col-2">
+            [[roleDescription.implicit_create_on_none ? {% trans %}"implicit_create_on_none"{% endtrans %} : "no implicit creation"]]
+        </div>
+        <div class="col-2 text-end">
           <button class="btn btn-danger btn-sm" type="button"
                   @click.prevent="remove(roleDescription)"
-                  v-show="!roleDescription.is_global" v-cloak>
-            <i class="fa fa-trash-o"></i></button></h3>
+                  v-show="roleDescription.editable" v-cloak>
+              <i class="fa fa-trash-o"></i></button>
         </div>
+      </div>
     </div>{# /roleDescription itemsLoaded #}
   </div>
 </roledescr-list>

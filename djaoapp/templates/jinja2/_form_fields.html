@@ -128,7 +128,7 @@
 {%- endmacro %}
 
 
-{% macro verified_input_field(input_type, verified_at, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
+{% macro verified_input_field(input_type, verified_at, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, verification_enabled=True, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="col-form-label row{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}">
@@ -138,13 +138,16 @@
       <i class="fa fa-check text-green"></i>
       {% endif %}
     </div>
+    {% if verification_enabled %}
     <div class="col-6 text-end">
-      <a href=""
+      <a href="#"
+         class="btn btn-link"
          data-bs-toggle="modal"
          data-bs-target="#verify-{{name}}">
         {% if verified_at %}{% trans date=verified_at %}verify again{% endtrans %}{% else %}{% trans %}verify{% endtrans %}{% endif %}
       </a>
     </div>
+    {% endif %}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
@@ -243,11 +246,11 @@
 
 
 {% macro email_input_field(bound_field, verified_at, autofocus=False, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, True, extra_label_classes, extra_control_classes)}}
 {%- endmacro %}
 
 {% macro phone_input_field(bound_field, verified_at, autofocus=False, hide_labels=False, extra_label_classes="", extra_control_classes="") -%}
-{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, extra_label_classes, extra_control_classes)}}
+{{verified_input_field(bound_field.field.widget.input_type, verified_at, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, bound_field.field.verification_enabled, extra_label_classes, extra_control_classes)}}
 {%- endmacro %}
 
 

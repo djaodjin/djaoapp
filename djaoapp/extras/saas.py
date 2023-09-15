@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from extended_templates.extras import AccountMixinBase
 from rules.extras import AppMixinBase
 from rules.utils import get_current_app
+from signup.helpers import has_invalid_password, update_context_urls
 
 from ..compat import reverse
 
@@ -68,43 +69,78 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
         })
+
         # `ExtraMixin.get_context_data` is called before
         # `OrganizationMixin.get_context_data` had an opportunity to
         # add the organization to the `context`, so we call
         # `OrganizationMixin.organization` here. hmmm.
-        attached_user = self.organization.attached_user()
-        if attached_user:
+        user = self.organization.attached_user()
+        if user:
+            # The following are copy/pasted
+            # from `signup.UserProfileView`
+            # to be used in the personal profile page.
+            setattr(user, 'full_name', user.get_full_name())
+            primary_contact = user.contacts.filter(
+                email__iexact=user.email).order_by('created_at').first()
+            if primary_contact:
+                context.update({
+                    'email_verified_at': primary_contact.email_verified_at,
+                    'phone_verified_at': primary_contact.phone_verified_at
+                })
+            if primary_contact and primary_contact.picture:
+                setattr(user, 'picture', primary_contact.picture)
+            else:
+                picture_candidate = user.contacts.filter(
+                    picture__isnull=False).order_by('created_at').first()
+                if picture_candidate:
+                    setattr(user, 'picture', picture_candidate.picture)
+
             self.update_context_urls(context, {
+                # The following are copy/pasted
+                # from `signup.UserProfileView`
+                # to be used in the personal profile page.
+                'api_recover': reverse('api_recover'),
                 'user': {
-                    # The following are copy/pasted
-                    # from `signup.UserProfileView`
-                    # to be used in the personal profile page.
                     'api_generate_keys': reverse(
-                        'api_generate_keys', args=(attached_user,)),
+                        'api_generate_keys', args=(user,)),
                     'api_profile': reverse(
-                        'api_user_profile', args=(attached_user,)),
+                        'api_user_profile', args=(user,)),
                     'api_password_change': reverse(
-                        'api_user_password_change', args=(attached_user,)),
+                        'api_user_password_change', args=(user,)),
+                    'api_otp_change': reverse(
+                        'api_user_otp_change', args=(user,)),
+                    'api_profile_picture': reverse(
+                        'saas_api_organization_picture', args=(
+                        self.organization,)),
                     'api_contact': reverse(
-                        'api_contact', args=(attached_user.username,)), #XXX
+                        'api_contact', args=(user.username,)), #XXX
                     'api_pubkey': reverse(
-                        'api_pubkey', args=(attached_user,)),
+                        'api_pubkey', args=(user,)),
                     'password_change': reverse(
-                        'password_change', args=(attached_user,)),
+                        'password_change', args=(user,)),
                     'keys_update': reverse(
-                        'pubkey_update', args=(attached_user,)),
+                        'pubkey_update', args=(user,)),
+
                     # For sidebar menu items on personal profiles.
                     'accessibles': reverse(
-                        'saas_user_product_list', args=(attached_user,)),
+                        'saas_user_product_list', args=(user,)),
                     'notifications': reverse(
-                        'users_notifications', args=(attached_user,)),
-                    'profile': reverse('users_profile', args=(attached_user,)),
+                        'users_notifications', args=(user,)),
+                    'profile': reverse('users_profile', args=(user,)),
             }})
-            # XXX we can't enable this code until we remove references
-            # to `User = get_user_model()` in signup.compat.
-            #if has_valid_password(attached_user):
-            #    self.update_context_urls(context, {'user': {
-            #        'api_activate': reverse(
-            #            'api_user_activate', args=(attached_user,)),
-            #    }})
+            print("XXX context.urls.user=%s" % str(context['urls']['user']))
+            # The following are copy/pasted
+            # from `signup.UserProfileView`
+            # to be used in the personal profile page.
+            if has_invalid_password(user):
+                update_context_urls(context, {'user': {
+                    'api_activate': reverse(
+                        'api_user_activate', args=(user,)),
+                }})
+
+            from signup.models import OTPGenerator
+            context.update({
+                'otp_enabled': OTPGenerator.objects.filter(
+                    user=user).exists()})
+
         return context

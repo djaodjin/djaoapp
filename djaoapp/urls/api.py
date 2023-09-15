@@ -10,7 +10,7 @@ from ..api.contact import ContactUsAPIView
 from ..api.custom_themes import DjaoAppThemePackageListAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (DjaoAppProfileDetailAPIView,
-    DjaoAppProfileListAPIView)
+    DjaoAppProfileListAPIView, DjaoAppProfilePictureAPIView)
 from ..api.roles import DjaoAppRoleByDescrListAPIView
 from ..api.todos import DjaoAppAPIVersion, TodosAPIView
 from ..api.users import (RecentActivityAPIView, DjaoAppUserDetailAPIView,
@@ -60,6 +60,11 @@ urlpatterns = [
         r'^api/', include('saas.urls.api.provider.plans')),
     url_frictionless_direct(
         r'^api/', include('saas.urls.api.provider.metrics')),
+    url_frictionless_provider(
+        r'^api/profile/(?P<%s>%s)/picture$' % (
+        PROFILE_URL_KWARG, SLUG_RE),
+        DjaoAppProfilePictureAPIView.as_view(),
+        name='saas_api_organization_picture'),
     url_frictionless_provider(
         r'^api/profile/(?P<%s>%s)$' % (
         PROFILE_URL_KWARG, SLUG_RE),

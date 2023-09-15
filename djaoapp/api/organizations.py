@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -6,7 +6,8 @@ import logging
 
 from saas.api.organizations import (
     OrganizationDetailAPIView as OrganizationDetailBaseAPIView,
-    OrganizationListAPIView as OrganizationListBaseAPIView)
+    OrganizationListAPIView as OrganizationListBaseAPIView,
+    OrganizationPictureAPIView as OrganizationPictureBaseAPIView)
 from saas.utils import get_organization_model
 from signup.models import Contact
 
@@ -189,3 +190,36 @@ class DjaoAppProfileListAPIView(ProfileDecorateMixin,
         }
     """
     serializer_class = ProfileSerializer
+
+
+class DjaoAppProfilePictureAPIView(ProfileDecorateMixin,
+                                   OrganizationPictureBaseAPIView):
+    """
+        Uploads a static asset file
+
+        **Examples
+
+        .. code-block:: http
+
+            POST /api/profile/xia/picture HTTP/1.1
+
+        responds
+
+        .. code-block:: json
+
+            {
+              "location": "https://cowork.net/picture.jpg"
+            }
+    """
+
+    def post(self, request, *args, **kwargs):
+        resp = super(DjaoAppProfilePictureAPIView, self).post(
+            request, *args, **kwargs)
+        location = resp.get('location')
+        print("location=%s" % str(location))
+        user = self.organization.attached_user()
+        if user:
+            Contact.objects.update_or_create(
+                slug=self.kwargs.get(self.lookup_url_kwarg),
+                defaults={'picture': location, 'user': user})
+        return resp

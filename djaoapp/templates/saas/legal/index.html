@@ -14,39 +14,16 @@
             {% trans %}In providing the best possible service, you will find here the legal documents that keeps everyone from trouble.{% endtrans %}
           </p>
 
-          {% if show_edit_tools %}
-          <agreement-list id="agreement-list" inline-template>
-            <div>
-              <ul>
-                <li v-for="item in items" v-show="itemsLoaded">
-                  <a :id="item.slug" target="_blank" href="">[[item.title]]</a>
-                  <div class="list-group-item">
-                    <span class="text-muted">{% trans %}Modified At{% endtrans %}:</span> {% include "_entry_ends_at_field.html" %}
-                  </div>
-                  <button class="btn btn-danger btn-sm remove" @click="remove(index)"><i class="fa fa-remove"></i></button>
-                </li>
-              </ul>
-              <form @submit.prevent="create">
-                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                <input type="text" class="form-control form-control-md" placeholder="{% trans %}Title{% endtrans %}" v-model="newItem.title">
-                <button type="submit" class="btn btn-primary btn-md w-100">
-                  {% trans %}Create Agreement{% endtrans %}
-                </button>
-              </form>
-            </div>
-          </agreement-list>
-          {% else %}
           {% if agreement_list %}
           <ul>
             {% for agreement in agreements %}
             <li>
-              <a id="{{agreement.slug}}" target="_blank" href="{{agreement.location}}">{{agreement.title}}</a>
+              <a id="{{agreement.slug}}" target="_blank" href="{{agreement.location}}">{{agreement.title}}</a> &dash; updated <span class="editable edit-date">{{agreement.updated_at|short_date}}</span>
             </li>
             {% endfor %}
           </ul>
           {% else %}
           <em>{% trans %}No Terms nor policies yet{% endtrans %}</em>
-          {% endif %}
           {% endif %}
         </div>
       </div>

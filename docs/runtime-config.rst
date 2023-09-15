@@ -1,6 +1,9 @@
 Container runtime configuration
 ===============================
 
+If you are in a hurry, or just browsing to understand what this project
+is about, visit the `livedemo<https://livedemo.djaoapp.com/>`_ website.
+
 The basic command to run the Docker container on port 8000 looks like this:
 
     .. code-block:: shell

@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
   });
 
   $('.editable').editor({
-    baseUrl: '{{urls.edit.api_page_element_base}}',
+    baseUrl: '{{urls.edit.api_page_element_base}}', // XXX need special URL for .edit-date on legal index page?
     emptyInputText: "{% trans %}placeholder, type to overwrite...{% endtrans %}",
     hints: {{templates|safe}}
   });

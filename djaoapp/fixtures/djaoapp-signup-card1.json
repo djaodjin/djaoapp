@@ -32,17 +32,7 @@
 {
     "fields": {
       "slug": "djaoapp-signup-card1",
-      "is_active": true,
-      "account": 42,
-      "domain": null,
-      "is_path_prefix": true,
-      "tag": "streetside"
-    },
-    "model": "multitier.Site", "pk": 40
-},
-{
-    "fields": {
-      "slug": "djaoapp-signup-card1",
+      "path_prefix": "/djaoapp-signup-card1",
       "account": 42,
       "authentication": 1
     },
@@ -105,17 +95,7 @@
 {
     "fields": {
       "slug": "djaoapp-signup-card2",
-      "is_active": true,
-      "account": 43,
-      "domain": null,
-      "is_path_prefix": true,
-      "tag": "streetside"
-    },
-    "model": "multitier.Site", "pk": 41
-},
-{
-    "fields": {
-      "slug": "djaoapp-signup-card2",
+      "path_prefix": "/djaoapp-signup-card2",
       "account": 43,
       "authentication": 4
     },

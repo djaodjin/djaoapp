@@ -25,7 +25,6 @@
         display: none !important;
       }
     </style>
-    <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
 
     {% if csrf_token %}
       <meta name="csrf-token" content="{{csrf_token}}">
@@ -162,9 +161,6 @@
             <div{% block content_area_classes %} class="content-area-container"{% endblock %}>
               <div id="messages">
                 <div id="messages-content">
-                  <div class="alert alert-dismissible fade show" style="display:none;">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
                   {% if request %}
                     {% for message in request|messages %}
                       <div class="alert alert-dismissible fade show{% if message.tags %} alert-{{message.tags}}{% endif %}">
@@ -185,6 +181,9 @@
                       </div>
                     {% endfor %}
                   {% endif %}
+                  <div class="alert alert-dismissible fade" style="display:none;">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
                   <script type="text/javascript">
                     var _showErrorMessagesProviderNotified = "{% trans %}We have been notified and have started on fixing the error. We apologize for the inconvenience.{% endtrans %}";
                   </script>

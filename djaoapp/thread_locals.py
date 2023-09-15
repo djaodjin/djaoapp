@@ -149,13 +149,13 @@ def get_active_theme():
 
 
 def get_disabled_authentication(request, user):
-    app = get_current_app()
+    app = get_current_app(request)
     return (app.authentication == app.AUTH_DISABLED
         and not _valid_manager(request, [get_current_broker()]))
 
 
 def get_disabled_registration(request):#pylint:disable=unused-argument
-    app = get_current_app()
+    app = get_current_app(request)
     return app.authentication != app.AUTH_ENABLED
 
 

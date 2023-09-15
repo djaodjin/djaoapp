@@ -277,7 +277,7 @@
     "fields": {
       "slug": "terms-of-use",
       "title": "Terms Of Use",
-      "modified": "2023-01-01T00:00:00-00:00"
+      "updated_at": "2023-01-01T00:00:00-00:00"
     },
     "model": "saas.agreement", "pk": 1
 },
@@ -285,7 +285,7 @@
     "fields": {
       "slug": "security",
       "title": "Security Policy",
-      "modified": "2023-01-01T00:00:00-00:00"
+      "updated_at": "2023-01-01T00:00:00-00:00"
     },
     "model": "saas.agreement", "pk": 2
 },

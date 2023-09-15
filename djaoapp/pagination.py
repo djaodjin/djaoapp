@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,9 @@ from rest_framework.pagination import (
     PageNumberPagination as BasePageNumberPagination)
 
 class PageNumberPagination(BasePageNumberPagination):
+
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
     def get_paginated_response_schema(self, schema):
         return {

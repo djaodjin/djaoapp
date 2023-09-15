@@ -32,14 +32,7 @@ If you are looking to add features, this project integrates
 
 Tested with
 
-- **Python:** 3.6, **Django:** 2.2 ([LTS](https://www.djangoproject.com/download/)), **Django Rest Framework:** 3.12
-- **Python:** 3.6, **Django:** 3.2 (latest), **Django Rest Framework:** 3.12
-- **Python:** 2.7, **Django:** 1.11 (legacy), **Django Rest Framework:** 3.9.4
-
-Note: Support on Python2 was officially ended on Jan 1st 2020. The core
-application works on Python2.7 but some extra commands, like generating
-the OpenAPI spec do not. Please use `requirements-legacy.txt` instead
-of `requirements.txt` to install Python2 prerequisites.*
+- **Python:** 3.10, **Django:** 3.2 ([LTS](https://www.djangoproject.com/download/))
 
 Install
 -------
@@ -130,5 +123,9 @@ base.html is included.
 
 Release Notes
 =============
+
+- Sep 6th 2023
+  Support on Python2 was officially ended on Jan 1st 2020. As of Sep 6th 2023,
+  we no longer test this project for compatibillity with Py2.7.
 
 See [release notes](https://www.djaodjin.com/docs/reference/djaoapp/releases/) and [roadmap](https://www.djaodjin.com/docs/reference/roadmap/).
