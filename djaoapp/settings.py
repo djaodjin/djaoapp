@@ -52,6 +52,7 @@ RECAPTCHA_PRIVATE_KEY = ""
 
 ENABLES_PROCESSOR_TEST_KEYS = True
 
+NOTIFICATION_WEBHOOK_URL = None
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
@@ -681,6 +682,7 @@ EXTENDED_TEMPLATES = {
 #: implementation will send an e-mail to users and/or profile managers.
 SEND_NOTIFICATION_CALLABLE = None
 
+NOTIFICATION_BACKEND = 'djaoapp.notifications.backends.NotificationEmailBackend'
 
 # imports made here so SECRET_KEY is defined when loading AUTH_USER.
 import djaoapp.extras.saas, djaoapp.extras.rules
