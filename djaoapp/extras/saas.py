@@ -128,7 +128,6 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                         'users_notifications', args=(user,)),
                     'profile': reverse('users_profile', args=(user,)),
             }})
-            print("XXX context.urls.user=%s" % str(context['urls']['user']))
             # The following are copy/pasted
             # from `signup.UserProfileView`
             # to be used in the personal profile page.
