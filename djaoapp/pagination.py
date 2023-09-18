@@ -25,10 +25,15 @@
 from rest_framework.pagination import (
     PageNumberPagination as BasePageNumberPagination)
 
+from .compat import gettext_lazy as _
+
+
 class PageNumberPagination(BasePageNumberPagination):
 
-    page_size_query_param = 'page_size'
     max_page_size = 100
+    page_size_query_param = 'page_size'
+    page_size_query_description = _("Number of results to return per page"\
+    " between 1 and 100 (defaults to 25).")
 
     def get_paginated_response_schema(self, schema):
         return {

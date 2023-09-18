@@ -28,7 +28,7 @@ LOGGER = logging.getLogger(__name__)
 
 class DjaoAppJWTActivate(AppMixin, VerifyCompleteMixin, JWTActivateBase):
     """
-    Retrieves an activation key
+    Retrieves contact from an activation key
 
     This API is typically used to pre-populate a registration form
     when a user was invited to the site by another user.

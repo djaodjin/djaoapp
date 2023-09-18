@@ -628,7 +628,7 @@ input::-webkit-datetime-edit {
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-color-theme .navbar-light {
+.dashboard-nav-color-theme .bg-primary {
     background-color: $dashboard-sidebar-bg;
 }
 
@@ -640,11 +640,11 @@ input::-webkit-datetime-edit {
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav .navbar-light a.navbar-brand,
-.dashboard-nav .navbar-light a.navbar-brand:active,
-.dashboard-nav .navbar-light a.navbar-brand:hover,
-.dashboard-nav .navbar-light a.navbar-brand:focus,
-.dashboard-nav .navbar-light a.navbar-brand:visited {
+.dashboard-nav .bg-primary a.navbar-brand,
+.dashboard-nav .bg-primary a.navbar-brand:active,
+.dashboard-nav .bg-primary a.navbar-brand:hover,
+.dashboard-nav .bg-primary a.navbar-brand:focus,
+.dashboard-nav .bg-primary a.navbar-brand:visited {
     color: $dashboard-sidebar-color;
 }
 
@@ -693,7 +693,7 @@ input::-webkit-datetime-edit {
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-nav-color-theme.navbar-light .navbar-nav .nav-link,
+.dashboard-nav-color-theme.bg-primary .navbar-nav .nav-link,
 .dashboard-nav-color-theme .dropdown-toggle {
     color: $dashboard-sidebar-color;
 }

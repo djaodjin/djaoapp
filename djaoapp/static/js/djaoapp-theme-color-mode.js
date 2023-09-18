@@ -16,11 +16,27 @@
 }(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
 
     function setThemeColorMode(colorMode) {
-        if (colorMode === 'auto' && window.matchMedia(
-            '(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark')
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', colorMode)
+        if( colorMode ) {
+            const currentColorMode = document.documentElement.getAttribute(
+                'data-bs-theme')
+            if( colorMode === 'auto' ) {
+                if( window.matchMedia(
+                    '(prefers-color-scheme: dark)').matches ) {
+                    if( currentColorMode !== 'dark' ) {
+                        document.documentElement.setAttribute(
+                            'data-bs-theme', 'dark')
+                    }
+                } else if( window.matchMedia(
+                    '(prefers-color-scheme: light)').matches ) {
+                    if( currentColorMode !== 'light' ) {
+                        document.documentElement.setAttribute(
+                            'data-bs-theme', 'light')
+                    }
+                }
+            } else if( colorMode != currentColorMode ) {
+                document.documentElement.setAttribute(
+                    'data-bs-theme', colorMode)
+            }
         }
     }
 
@@ -34,17 +50,8 @@
         localStorage.setItem('theme', colorMode)
     }
 
-    function getPreferredThemeColorMode() {
-        const colorMode = getStoredThemeColorMode()
-        if( colorMode ) {
-            return colorMode;
-        }
-        return window.matchMedia(
-            '(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-
     // Dynamically set/update theme color mode.
-    setThemeColorMode(getPreferredThemeColorMode());
+    setThemeColorMode(getStoredThemeColorMode());
 
     window.addEventListener('DOMContentLoaded', () => {
 

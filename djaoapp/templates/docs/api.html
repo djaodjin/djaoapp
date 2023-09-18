@@ -107,10 +107,9 @@
 </ul>
 {% endblock %}
 
-{% block content_area_classes %} class="ps-4"{% endblock %}
 
 {% block content %}
-<div id="api-doc-content" class="ps-4">
+<div id="api-doc-content">
   {# intro #}
   <a name="index"></a>
   <div id="intro">
@@ -121,7 +120,7 @@
 Once you have registered an account on
 <a href="https://www.djaodjin.com/register/">djaodjin.com</a> and
 created a site, the following Application Programmable Interface
-(API) will be available on your site will to provide profiles, billing and
+(API) will be available on your site to provide profiles, billing and
 service access control - i.e. the administrative features required to run
 Software, as-a-Service, on the Internet.
         </p>
@@ -143,7 +142,7 @@ Browse the API endpoints by ...
       </div>
     </div>
     <div class="row"> {#row-eq-height">#}
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <div class="faq-list">
           <div class="p-4">
             <h3>workflows</h3>
@@ -159,7 +158,7 @@ Browse the API endpoints by ...
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <div class="faq-list">
           <div class="p-4">
             <h3>roles</h3>
@@ -173,7 +172,7 @@ Browse the API endpoints by ...
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-md-4">
         <div class="faq-list">
           <div class="p-4">
             <h3>models</h3>
@@ -203,7 +202,7 @@ Browse the API endpoints by ...
     <a name="auth"></a>
     <h3>Auth & credentials <a href="#auth" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'auth' in summary_end_point.tags %}
@@ -212,7 +211,7 @@ Browse the API endpoints by ...
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to authenticating users such as registration,
 login, updating a user password, etc.
@@ -223,7 +222,7 @@ login, updating a user password, etc.
     <a name="billing"></a>
     <h3>Billing <a href="#billing" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'billing' in summary_end_point.tags %}
@@ -232,7 +231,7 @@ login, updating a user password, etc.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs to manage the checkout, billing and accounting
 workflows, including shopping carts, coupons, charges and balance statements.
@@ -243,7 +242,7 @@ workflows, including shopping carts, coupons, charges and balance statements.
     <a name="metrics"></a>
     <h3>Metrics <a href="#metrics" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'metrics' in summary_end_point.tags %}
@@ -252,7 +251,7 @@ workflows, including shopping carts, coupons, charges and balance statements.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 The metrics APIs crunch the numbers and return various insight into
 the performance for the business. They are used to implement
@@ -265,7 +264,7 @@ dashboard</a> for example.
     <a name="profile"></a>
     <h3>Profile <a href="#profile" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'profile' in summary_end_point.tags %}
@@ -274,7 +273,7 @@ dashboard</a> for example.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs to manage the identity, such as name or email
 address, of users and organizations registered to the site.
@@ -285,7 +284,7 @@ address, of users and organizations registered to the site.
     <a name="rbac"></a>
     <h3>Roles & rules <a href="#rbac" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'rbac' in summary_end_point.tags %}
@@ -294,7 +293,7 @@ address, of users and organizations registered to the site.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs to manage roles and access rules.
         </p>
@@ -304,7 +303,7 @@ This section contains APIs to manage roles and access rules.
     <a name="subscriptions"></a>
     <h3>Subscriptions <a href="#subscriptions" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'subscriptions' in summary_end_point.tags %}
@@ -313,7 +312,7 @@ This section contains APIs to manage roles and access rules.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs to manage subscriptions.
         </p>
@@ -323,7 +322,7 @@ This section contains APIs to manage subscriptions.
     <a name="themes"></a>
     <h3>Themes <a href="#themes" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'themes' in summary_end_point.tags %}
@@ -332,7 +331,7 @@ This section contains APIs to manage subscriptions.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs to upload new templates for all pages, from login
 to checkout, or reset to the default theme.
@@ -349,7 +348,7 @@ to checkout, or reset to the default theme.
     <a name="visitor"></a>
     <h3>Visitors <a href="#visitor" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'visitor' in summary_end_point.tags %}
@@ -358,7 +357,7 @@ to checkout, or reset to the default theme.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to unauthenticated users.
         </p>
@@ -368,7 +367,7 @@ This section contains APIs related to unauthenticated users.
     <a name="user"></a>
     <h3>Users <a href="#user" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'user' in summary_end_point.tags %}
@@ -377,7 +376,7 @@ This section contains APIs related to unauthenticated users.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to authenticated <a href="/docs/guides/accounts/#user-accounts">users</a>.
         </p>
@@ -387,7 +386,7 @@ This section contains APIs related to authenticated <a href="/docs/guides/accoun
     <a name="subscriber"></a>
     <h3>Subscribers <a href="#subscriber" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'subscriber' in summary_end_point.tags %}
@@ -396,7 +395,7 @@ This section contains APIs related to authenticated <a href="/docs/guides/accoun
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to <a href="/docs/guides/accounts/#subscriber-profiles">subscribers</a>.
         </p>
@@ -406,7 +405,7 @@ This section contains APIs related to <a href="/docs/guides/accounts/#subscriber
     <a name="provider"></a>
     <h3>Providers <a href="#provider" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'provider' in summary_end_point.tags %}
@@ -415,7 +414,7 @@ This section contains APIs related to <a href="/docs/guides/accounts/#subscriber
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to <a href="/docs/guides/accounts/#provider-profiles">providers</a>.
         </p>
@@ -425,7 +424,7 @@ This section contains APIs related to <a href="/docs/guides/accounts/#provider-p
     <a name="broker"></a>
     <h3>Broker <a href="#broker" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'broker' in summary_end_point.tags %}
@@ -434,7 +433,7 @@ This section contains APIs related to <a href="/docs/guides/accounts/#provider-p
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to the <a href="/docs/guides/accounts/#broker">broker</a>.
         </p>
@@ -450,7 +449,7 @@ This section contains APIs related to the <a href="/docs/guides/accounts/#broker
     <a name="usermodel"></a>
     <h3>Users <a href="#usermodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'usermodel' in summary_end_point.tags %}
@@ -459,7 +458,7 @@ This section contains APIs related to the <a href="/docs/guides/accounts/#broker
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to users.
         </p>
@@ -477,7 +476,7 @@ Users are required to sign the terms of use of a site.
     <a name="profilemodel"></a>
     <h3>Profiles <a href="#profilemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'profilemodel' in summary_end_point.tags %}
@@ -486,7 +485,7 @@ Users are required to sign the terms of use of a site.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to billing profiles.
         </p>
@@ -508,7 +507,7 @@ a <a href="/docs/guides/accounts/#provider-profiles">provider</a> or
     <a name="rolemodel"></a>
     <h3>Roles <a href="#rolemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'rolemodel' in summary_end_point.tags %}
@@ -517,7 +516,7 @@ a <a href="/docs/guides/accounts/#provider-profiles">provider</a> or
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to <a href="/docs/guides/accounts/#roles">roles</a>.
         </p>
@@ -541,7 +540,7 @@ RoleDescription.
     <a name="planmodel"></a>
     <h3>Plans <a href="#planmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'planmodel' in summary_end_point.tags %}
@@ -550,7 +549,7 @@ RoleDescription.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to subscription plans.
         </p>
@@ -563,7 +562,7 @@ subscribers of that provider.
     <a name="subscriptionmodel"></a>
     <h3>Subscriptions <a href="#subscriptionmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'subscriptionmodel' in summary_end_point.tags %}
@@ -572,7 +571,7 @@ subscribers of that provider.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to subscriptions.
         </p>
@@ -585,7 +584,7 @@ a provider through a plan.
     <a name="cartmodel"></a>
     <h3>Carts <a href="#cartmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'cartmodel' in summary_end_point.tags %}
@@ -594,7 +593,7 @@ a provider through a plan.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to cart items.
         </p>
@@ -607,7 +606,7 @@ then checkout that cart, entering a payment method in the process.
     <a name="chargemodel"></a>
     <h3>Charges <a href="#chargemodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'chargemodel' in summary_end_point.tags %}
@@ -616,7 +615,7 @@ then checkout that cart, entering a payment method in the process.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to charges.
         </p>
@@ -628,7 +627,7 @@ Payments for subscriptions results in charges on the payment processor.
     <a name="couponmodel"></a>
     <h3>Coupons <a href="#couponmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'couponmodel' in summary_end_point.tags %}
@@ -637,7 +636,7 @@ Payments for subscriptions results in charges on the payment processor.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to ad-hoc discounts.
         </p>
@@ -646,7 +645,7 @@ This section contains APIs related to ad-hoc discounts.
     <a name="transactionmodel"></a>
     <h3>Transactions <a href="#transactionmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'transactionmodel' in summary_end_point.tags %}
@@ -655,7 +654,7 @@ This section contains APIs related to ad-hoc discounts.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to transactions.
         </p>
@@ -667,7 +666,7 @@ Transactions are recorded in an append-only double-entry book keeping ledger.
     <a name="appmodel"></a>
     <h3>Site <a href="#appmodel" class="header-anchor"><i class="fa fa-link"></i></a></h3>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ul>
           {% for summary_end_point in api_end_points_by_summary %}
           {% if 'appmodel' in summary_end_point.tags %}
@@ -676,7 +675,7 @@ Transactions are recorded in an append-only double-entry book keeping ledger.
           {% endfor %}
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <p>
 This section contains APIs related to site theme and operations.
         </p>
@@ -688,18 +687,25 @@ This section contains APIs related to site theme and operations.
   {# alphabetically listed #}
   <div id="alphabetical">
     <section class="row">
-      <div class="col-sm-7">
+      <div class="col-md-7">
         <a name="alphabetical"></a>
         <h2 class="mt-4">Alphabetical <a href="#alphabetical" class="header-anchor"><i class="fa fa-link"></i></a></h2>
       </div>
-      <div class="col-sm-5 code">
+      <div class="col-md-5 code">
       </div>
     </section>
     {% for api_end_point in api_end_points %}
     <section class="row">
-      <div class="col-sm-7">
+      <div class="col-md-7">
         <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
-        <pre class="end-point-url">{{api_end_point.func|upper}} {{api_end_point.path}}</pre>
+        <div class="example">
+            <div class="example-title">
+                endpoint
+            </div>
+            <div class="example-body">
+                <pre class="code">{{api_end_point.func|upper}} {{api_end_point.path}}</pre>
+            </div>
+        </div>
         <div>
           {{api_end_point.description}}
         </div>
@@ -716,11 +722,15 @@ This section contains APIs related to site theme and operations.
         {% if api_end_point|request_body_parameters(definitions) %}
         <div>
           <h5 class="param-list-header">Request body</h5>
-          <div class="params-wrap">
-            {% for param in api_end_point|request_body_parameters(definitions) %}
-            {{ api_param_doc(param, api_end_point.operationId, response=False) }}
-            {% endfor %}
-          </div>
+          <zippy>
+            <div class="zippy">
+              <div class="zippy-content">
+                {% for param in api_end_point|request_body_parameters(definitions) %}
+                {{ api_param_doc(param, api_end_point.operationId, response=False) }}
+                {% endfor %}
+              </div>
+            </div>
+          </zippy>
         </div> {# .param-list-header #}
         {% endif %}
         <responses-list>
@@ -745,16 +755,22 @@ This section contains APIs related to site theme and operations.
           {% endfor %}
         </responses-list>{# .responses-list #}
       </div>
-      <div class="col-sm-5 code">
-        <h3>Examples</h3>
-        {# getting api_jwt_* tokens curl -X POST -H 'Content-Type: application/json; charset=UTF-8' -d '{"username":"xia", "password": "yoyo"}' http://localhost:8020/api/auth/ #}
-        {% for example in api_end_point.examples %}
-        <pre class="code http literal-block"><code>curl{% if 'user' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_user|safe}}'{% endif %}{% if 'subscriber' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_subscriber|safe}}'{% endif %}{% if 'provider' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_provider|safe}}'{% endif %}{% if 'broker' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_broker|safe}}'{% endif %}{% if example.func in ('POST', 'PUT', 'PATCH', 'DELETE') %} -X {{example.func}}{% endif %}{% if example.requestBody %} -H 'Content-Type: application/json; charset=UTF-8' -d '{{example.requestBody}}'{% endif %}{# <span class="name function">{{example.func}}</span> #} <span class="name api_base_url">{{api_base_url}}</span><span class="name namespace">{% if example.path %}{{example.path.replace('&', '\&')}}{% else %}XXX{% endif %}</span></code></pre>
-        {% if example.resp %}
-        responds
-        <pre class="code json literal-block">{{example.resp}}</pre>
-        {% endif %}
-        {% endfor %}
+      <div class="col-md-5 col-example">
+        <h3 class="mt-4">&nbsp;</h3>
+        <div class="example">
+          <div class="example-title">
+            Examples
+          </div>
+          <div class="example-body">
+            {% for example in api_end_point.examples %}
+            <pre class="code http literal-block"><code>curl{% if 'user' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_user|safe}}'{% endif %}{% if 'subscriber' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_subscriber|safe}}'{% endif %}{% if 'provider' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_provider|safe}}'{% endif %}{% if 'broker' in api_end_point.tags %} -H 'Authorization: Bearer {{api_jwt_broker|safe}}'{% endif %}{% if example.func in ('POST', 'PUT', 'PATCH', 'DELETE') %} -X {{example.func}}{% endif %}{% if example.requestBody %} -H 'Content-Type: application/json; charset=UTF-8' -d '{{example.requestBody}}'{% endif %}{# <span class="name function">{{example.func}}</span> #} <span class="name api_base_url">{{api_base_url}}</span><span class="name namespace">{% if example.path %}{{example.path.replace('&', '\&')}}{% else %}XXX{% endif %}</span></code></pre>
+            {% if example.resp %}
+            responds
+            <pre class="code json literal-block">{{example.resp}}</pre>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>{# /.example #}
       </div>
     </section>
     {% endfor %}

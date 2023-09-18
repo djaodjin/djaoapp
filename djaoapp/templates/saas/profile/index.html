@@ -32,12 +32,12 @@
       {% include "saas/profile/_form.html" %}
     </div>
     <div class="col-md-6">
+      <hr />
       {% if organization %}
       {% trans created_at=organization.created_at|short_date %}Created at {{created_at}}{% endtrans %}
       {% elif user %}
       {% trans created_at=user.created_at|short_date %}Created at {{created_at}}{% endtrans %}
       {% endif %}
-      <hr />
     </div>
   </div>
   <!-- End Form Inputs -->

@@ -24,6 +24,12 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     }
 }
 
+.bg-primary .menubar,
+.bg-primary a.menubar-label {
+    color: $white;
+    background-color: map-get($theme-colors, "primary");
+}
+
 .menubar-label {
     padding-left: 1rem;
     padding-right: 1rem;

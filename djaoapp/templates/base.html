@@ -52,7 +52,7 @@
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
                     <header>
-                      <nav class="navbar navbar-expand-sm{% block _navbar_extra_classes %} navbar-light{% endblock %}">
+                      <nav class="navbar navbar-expand-sm{% block _navbar_extra_classes %} bg-primary{% endblock %}">
                         <div class="container-fluid">
                           <div class="navbar-header">
                             {% include "_navbarbrand.html" %}
@@ -120,7 +120,7 @@
           <div class="dashboard-content">
             <div class="d-print-none fullviewport">
               <header>
-                <nav class="navbar navbar-expand-md{% block navbar_extra_classes %} navbar-light border-bottom{% endblock %}">
+                <nav class="navbar navbar-expand-md{% block navbar_extra_classes %} bg-primary border-bottom{% endblock %}">
                   <div class="container-fluid">
                     <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
                       <div class="bar1 closed"></div>
@@ -251,15 +251,15 @@
 
 {% block _bodyscripts %}
 <script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/popper.min.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/popper.min.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/static/vendor/bootstrap.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaoapp-theme-color-mode.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/static/js/djaoapp-theme-color-mode.js'|asset}}" defer></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}" defer></script>
 {% endif %}
 {% block bodyscripts %}
 {% endblock %}

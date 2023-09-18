@@ -8,6 +8,44 @@ $navbar-height: max($nav-link-height, $navbar-brand-height) + $navbar-padding-y 
 $footer-height: 150px;
 $plan-footer-height: 70px;
 
+// variables specific to djaoapp used for code examples
+//$example-title-bg: rgb(62, 68, 88);
+//$example-title-color: rgb(105, 115, 134);
+//$example-bg: #222527;
+//$example-color: rgb(105, 115, 134);
+$example-bg: rgb(247, 250, 252);
+$example-color: rgb(105, 115, 134);
+$example-title-color: rgb(105, 115, 134);
+$example-title-bg: rgb(227, 232, 238);
+
+
+// variables specific to djaoapp used for code examples
+$example-title-bg-dark: rgb(79, 86, 107);
+$example-title-color-dark: rgb(147, 156, 171);
+//$example-bg-dark: rgb(143, 153, 166);
+//$example-color-dark: rgb(45, 49, 68);
+$example-bg-dark: rgb(18, 20, 28);
+$example-color-dark: rgb(193, 193, 193);
+
+:root,
+[data-bs-theme="light"] {
+    --example-title-bg: #{$example-title-bg};
+    --example-title-color: #{$example-title-color};
+    --example-bg: #{$example-bg};
+    --example-color: #{$example-color};
+}
+
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    color-scheme: dark;
+
+    --example-title-bg: #{$example-title-bg-dark};
+    --example-title-color: #{$example-title-color-dark};
+    --example-bg: #{$example-bg-dark};
+    --example-color: #{$example-color-dark};
+  }
+}
+
 /* used only in templates/base.html */
 html, body {
   height: 100%;
@@ -393,28 +431,38 @@ a.header-anchor:hover{
 }
 
 .example {
-    color: rgb(105, 115, 134);
-    background: rgb(247, 250, 252);
+    color: var(--example-color);
+    background-color: var(--example-bg);
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 0px 1px;
     margin-bottom: 12px;
 }
 
+@include media-breakpoint-up(md) {
+
+  .col-example {
+      color: var(--example-color);
+      background-color: var(--example-bg);
+  }
+
+  .col-example > .example {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+}
+
 .example-title {
-    background-color: rgb(227, 232, 238);
-    text-transform: uppercase;
-    padding: 10px 12px;
-    font-size: $badge-font-size;
-    font-weight: 500;
+  color: var(--example-title-color);
+  background-color: var(--example-title-bg);
+  text-transform: uppercase;
+  padding: 10px 12px;
+  font-size: $badge-font-size;
+  font-weight: 500;
 }
 
 .example-body {
   padding: 12px 20px;
-}
-
-.code {
-  background-color: #222527;
-  color: rgb(105, 115, 134);
 }
 
 pre.code{
@@ -455,9 +503,9 @@ pre.code{
 }
 
 .param-list-header {
+    color: var(--bs-body-secondary-color);
     border-bottom: 1px solid rgba(38, 50, 56, 0.3);
     margin: 3em 0 1em 0;
-    color: rgba(38, 50, 56, 0.5);
     font-weight: normal;
     text-transform: uppercase;
 }
