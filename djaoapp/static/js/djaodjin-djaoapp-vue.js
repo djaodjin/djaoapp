@@ -35,6 +35,95 @@ var AccountTypeAhead = Vue.component('account-typeahead', {
 });
 
 
+var AddressTypeAhead = Vue.component('address-typeahead', {
+  mixins: [
+    typeAheadMixin
+  ],
+  data: function data() {
+    return {
+      // TODO make URL dynamic
+      url: '/api/typeahead/q/',
+      query: $('#profile-container').find('input[name="street_address"]').val(),
+     };
+  },
+  methods: {
+    setActiveAndHit: function(item) {
+      var vm = this;
+      vm.setActive(item);
+      vm.hit();
+    },
+
+    hit: function() {
+      var vm = this;
+      if( vm.current !== -1 ) {
+        vm.onHit(vm.items[vm.current]);
+      } else if( vm.query ) {
+        vm.onHit(vm.query);
+      }
+    },
+
+    lookupPlace: function(placeId) {
+      return new Promise(function(resolve, reject) {
+        // TODO make URL dynamic
+        fetch('/api/typeahead/place/' + placeId)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            resolve(data);
+          })
+          .catch(function(error) {
+            reject(error);
+          });
+      });
+    },
+
+    updateForm: function(place) {
+      var vm = this;
+        var container = $('#profile-container');
+        var countryCnt = container.find('select[name="country"] option')
+
+        if (place.locality || place.sublocality) {
+          var locality = place.locality ? place.locality : place.sublocality;
+          container.find('input[name="locality"]').val(locality);
+        }
+        if (place.postal_code) {
+          container.find('input[name="postal_code"]').val(place.postal_code);
+        }
+        if (place.country) {
+          countryCnt.filter('[value="' + place.country_code + '"]').prop('selected', 'selected').trigger('change');
+        }
+        if (place.state) {
+          if (place.country_code === 'US' || place.country_code === 'CA') {
+            var stateCnt = container.find('select[name="region"] option')
+            stateCnt.filter('[value="' + place.state_code + '"]').prop('selected', 'selected');
+          } else {
+            container.find('input[name="region"]').val(place.state_code);
+          }
+        }
+
+        var address = '';
+        if( place.street_number ) {
+          address += place.street_number + ' ';
+        }
+        if (place.route) {
+          address += place.route;
+        }
+        vm.query = address;
+        container.find('input[name="street_address"]').val(address);
+    },
+
+    onHit: function onHit(newItem) {
+      var vm = this;
+      vm.lookupPlace(newItem.place_id).then(function(place) {
+        vm.updateForm(place);
+        vm.clear();
+      });
+    },
+  }
+});
+
+
 Vue.component('agreement-list', {
     mixins: [
         itemListMixin,

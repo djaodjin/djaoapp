@@ -356,3 +356,57 @@ class VersionSerializer(NoModelSerializer):
     def get_version(obj):
         #pylint:disable=unused-argument
         return __version__
+
+class TypeaheadSuggestionSerializer(NoModelSerializer):
+
+    description = serializers.CharField(
+        help_text=_("Human-readable address string"))
+    place_id = serializers.CharField(
+        help_text=_("Placed identifier used to retrieve more"\
+            " details"))
+
+class TypeaheadPlaceSerializer(NoModelSerializer):
+
+    street_number = serializers.CharField(required=False,
+        help_text=_("Street number"))
+    route = serializers.CharField(
+        help_text=_("Street name or route"))
+    postal_code = serializers.CharField(
+        help_text=_("Postal code"))
+    sublocality = serializers.CharField(required=False,
+        help_text=_("Sublocality"))
+    locality = serializers.CharField(required=False,
+        help_text=_("Locality"))
+    state = serializers.CharField(
+        help_text=_("State"))
+    state_code = serializers.CharField(
+        help_text=_("State code"))
+    country = serializers.CharField(
+        help_text=_("Country"))
+    country_code = serializers.CharField(
+        help_text=_("Country code"))
+
+    def __init__(self, *args, **kwargs):
+        if args and args[0]:
+            components = args[0].get('address_components', [])
+            if len(components) > 0:
+                address = {}
+                for component in components:
+                    if 'street_number' in component['types']:
+                        address['street_number'] = component['long_name']
+                    elif 'route' in component['types']:
+                        address['route'] = component['long_name']
+                    elif 'locality' in component['types']:
+                        address['locality'] = component['long_name']
+                    elif 'sublocality' in component['types']:
+                        address['sublocality'] = component['long_name']
+                    elif 'postal_code' in component['types']:
+                        address['postal_code'] = component['long_name']
+                    elif 'administrative_area_level_1' in component['types']:
+                        address['state'] = component['long_name']
+                        address['state_code'] = component['short_name']
+                    elif 'country' in component['types']:
+                        address['country'] = component['long_name']
+                        address['country_code'] = component['short_name']
+                args = (address,) + args[1:]
+        super(TypeaheadPlaceSerializer, self).__init__(*args, **kwargs)

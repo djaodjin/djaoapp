@@ -34,6 +34,7 @@ whitenoise==6.4.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
 WeasyPrint==52.5
+googlemaps==4.10.0
 
 # To run with DEBUG=1
 django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2

@@ -4,12 +4,15 @@ from __future__ import unicode_literals
 
 import logging, socket
 from smtplib import SMTPException
+import googlemaps
 
 from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework import status
 from saas.api.serializers import ValidationErrorSerializer
 from saas.docs import OpenAPIResponse, swagger_auto_schema
 from saas.mixins import ProviderMixin
@@ -18,7 +21,8 @@ from saas.utils import full_name_natural_split
 
 from ..compat import gettext_lazy as _, six
 from ..signals import contact_requested
-from .serializers import ContactUsSerializer
+from .serializers import (ContactUsSerializer,
+    TypeaheadSuggestionSerializer, TypeaheadPlaceSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -111,3 +115,118 @@ _("Your request has been sent. We will reply within 24 hours. Thank you.")})
 _("Sorry, there was an issue sending your request for information"\
 " to '%(full_name)s &lt;%(email)s&gt;'.") % {
     'full_name': provider.full_name, 'email': provider.email}})
+
+
+class TypeaheadQueryAPIView(GenericAPIView):
+    """
+    Returns address typeahead suggestions
+
+    The API is typically used within a profile page.
+
+    **Tags**: profile
+
+    **Examples
+
+    .. code-block:: http
+
+        GET /api/typeahead/q?q=123 HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+       {
+            "count": 5,
+            "results": [
+                {
+                "description": "123 William Street, New York, NY, USA",
+                "place_id": "ChIJIaGbBBhawokRUmbgNsUmr-s"
+                },
+                {
+                "description": "1230 6th Avenue, New York, NY, USA",
+                "place_id": "ChIJC8abO_9YwokRlbzMgC8_XWE"
+                },
+                {
+                "description": "1233 York Avenue, New York, NY, USA",
+                "place_id": "ChIJ1_GF_cJYwokR8u455JHGkBA"
+                },
+                {
+                "description": "123 Melrose Street, Brooklyn, NY, USA",
+                "place_id": "ChIJZbhuygdcwokR_5NT5POb8Z8"
+                },
+                {
+                "description": "1239 Broadway, New York, NY, USA",
+                "place_id": "ChIJMebitahZwokRa9MwUrkbedc"
+                }
+            ]
+        }
+    """
+    serializer_class = TypeaheadSuggestionSerializer
+
+    @swagger_auto_schema(responses={
+        200: OpenAPIResponse("success", ValidationErrorSerializer)})
+    def get(self, request, *args, **kwargs):
+        gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+        query = request.GET.get('q')
+        if query and len(query) > 2:
+            results = gmaps.places_autocomplete(query, types='address')
+        else:
+            results = []
+
+        serializer = self.get_serializer(results, many=True)
+
+        return Response({
+            'count': len(results),
+            'results': serializer.data
+        })
+
+
+class TypeaheadPlaceAPIView(GenericAPIView):
+    """
+    Returns address typeahead place details
+
+    The API is typically used in conjunction with
+    typeahead query API within a profile page.
+
+    **Tags**: profile
+
+    **Examples
+
+    .. code-block:: http
+
+        GET /api/typeahead/place/ChIJIaGbBBhawokRUmbgNsUmr-s HTTP/1.1
+
+    responds
+
+    .. code-block:: json
+
+    {
+        "street_number": "123",
+        "route": "William Street",
+        "postal_code": "10038",
+        "sublocality": "Manhattan",
+        "locality": "New York",
+        "state": "New York",
+        "state_code": "NY",
+        "country": "United States",
+        "country_code": "US"
+    }
+    """
+    serializer_class = TypeaheadPlaceSerializer
+
+    @swagger_auto_schema(responses={
+        200: OpenAPIResponse("success", ValidationErrorSerializer),
+        404: OpenAPIResponse("place not found", ValidationErrorSerializer)})
+    def get(self, request, *args, **kwargs):
+        gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+        place_id = kwargs.get('place_id')
+        if place_id:
+            try:
+                result = gmaps.place(place_id)
+                if result['status'] == 'OK':
+                    serializer = self.get_serializer(result['result'])
+                    return Response(serializer.data)
+            except:
+                pass
+
+        return Response(status=status.HTTP_404_NOT_FOUND)

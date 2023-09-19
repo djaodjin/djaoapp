@@ -6,7 +6,7 @@ from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.settings import USERNAME_PAT
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
-from ..api.contact import ContactUsAPIView
+from ..api.contact import ContactUsAPIView, TypeaheadQueryAPIView, TypeaheadPlaceAPIView
 from ..api.custom_themes import DjaoAppThemePackageListAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (DjaoAppProfileDetailAPIView,
@@ -112,5 +112,9 @@ urlpatterns = [
     url_self_provider(r'^api/todos', TodosAPIView.as_view(), 'api_todos'),
     url_prefixed(r'^api/contact',
         ContactUsAPIView.as_view(), name='api_contact_us'),
+    url_prefixed(r'^api/typeahead/q',
+        TypeaheadQueryAPIView.as_view(), name='api_typeahead_query'),
+    url_prefixed(r'^api/typeahead/place/(?P<place_id>.*)',
+        TypeaheadPlaceAPIView.as_view(), name='api_typeahead_place'),
     url_prefixed(r'^api$', DjaoAppAPIVersion.as_view())
 ]
