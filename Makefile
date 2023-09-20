@@ -106,7 +106,6 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork
         djaoapp/fixtures/djaoapp-signup-card1.json
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
-	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set show_edit_tools=1;"
 
 
 install:: install-conf
@@ -136,16 +135,17 @@ run-coverage: initdb
 # the source directory and thus are able to transfer it onto the Docker
 # container.
 setup-livedemo:
-	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
-	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
-	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
-	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, enc_key='$(DJAODJIN_SECRET_KEY)';"
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
+	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
+	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
+	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
+	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +

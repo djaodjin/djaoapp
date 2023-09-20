@@ -35,6 +35,12 @@
                 </tr>
               </thead>
               <tbody id="rules">
+                <tr>
+                  <td colspan="6">
+                    <a id="add-rule" href="#"
+                       data-bs-toggle="modal" data-bs-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
+                  </td>
+                </tr>
                 <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
                     v-for="(rule, index) in items.results" v-cloak>
                   <td>
@@ -79,12 +85,6 @@
                     <button class="btn btn-danger btn-sm rule-delete"
                             @click="remove(index)">
                       <i class="fa fa-trash-o"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6">
-                    <a id="add-rule" href="#"
-                       data-bs-toggle="modal" data-bs-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
                   </td>
                 </tr>
               </tbody>
