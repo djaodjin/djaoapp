@@ -1858,8 +1858,7 @@
     "app": 1,
     "rank": 1,
     "path": "/api/content/editables/{profile}/",
-    "rule_op": 3,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "rule_op": 3
   },
   "model": "rules.Rule", "pk": 1
 },
@@ -1875,8 +1874,7 @@
     "app": 1,
     "rank": 3,
     "path": "/api/profile/{profile}/roles/{role}",
-    "rule_op": 6,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "rule_op": 6
   },
   "model": "rules.Rule", "pk": 3
 },
@@ -1892,8 +1890,7 @@
     "app": 1,
     "rank": 5,
     "path": "/api/profile/{profile}",
-    "rule_op": 6,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "rule_op": 6
   },
   "model": "rules.Rule", "pk": 5
 },
@@ -1936,8 +1933,7 @@
     "app": 1,
     "rank": 10,
     "path": "/api/{profile}/reporting/",
-    "rule_op": 18,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "rule_op": 18
   },
   "model": "rules.Rule", "pk": 10
 },
@@ -2004,8 +2000,7 @@
     "app": 1,
     "rank": 18,
     "path": "/app/{profile}/reporting/",
-    "rule_op": 18,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "rule_op": 18
   },
   "model": "rules.Rule", "pk": 18
 },
@@ -2014,7 +2009,7 @@
     "rank": 19,
     "path": "/app/{profile}/",
     "rule_op": 3,
-    "kwargs": "{\"profile\": null, \"roledescription\": \"manager\"}"
+    "is_forward": false
   },
   "model": "rules.Rule", "pk": 19
 },
