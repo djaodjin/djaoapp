@@ -369,21 +369,21 @@ class TypeaheadPlaceSerializer(NoModelSerializer):
 
     street_number = serializers.CharField(required=False,
         help_text=_("Street number"))
-    route = serializers.CharField(
+    route = serializers.CharField(required=False,
         help_text=_("Street name or route"))
-    postal_code = serializers.CharField(
+    postal_code = serializers.CharField(required=False,
         help_text=_("Postal code"))
     sublocality = serializers.CharField(required=False,
         help_text=_("Sublocality"))
     locality = serializers.CharField(required=False,
         help_text=_("Locality"))
-    state = serializers.CharField(
+    state = serializers.CharField(required=False,
         help_text=_("State"))
-    state_code = serializers.CharField(
+    state_code = serializers.CharField(required=False,
         help_text=_("State code"))
-    country = serializers.CharField(
+    country = serializers.CharField(required=False,
         help_text=_("Country"))
-    country_code = serializers.CharField(
+    country_code = serializers.CharField(required=False,
         help_text=_("Country code"))
 
     def __init__(self, *args, **kwargs):
