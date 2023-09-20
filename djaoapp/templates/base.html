@@ -52,7 +52,7 @@
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
                     <header>
-                      <nav class="navbar navbar-expand-sm{% block _navbar_extra_classes %} bg-primary{% endblock %}">
+                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-sm bg-primary" data-bs-theme="dark"{% endblock %}>
                         <div class="container-fluid">
                           <div class="navbar-header">
                             {% include "_navbarbrand.html" %}
@@ -120,7 +120,7 @@
           <div class="dashboard-content">
             <div class="d-print-none fullviewport">
               <header>
-                <nav class="navbar navbar-expand-md{% block navbar_extra_classes %} bg-primary border-bottom{% endblock %}">
+                <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"  data-bs-theme="dark"{% endblock %}>
                   <div class="container-fluid">
                     <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
                       <div class="bar1 closed"></div>
@@ -135,8 +135,8 @@
                     {% endblock %}
 
                     {% block header_navbar_large %}
-                      <div class="navbar-collapse collapse navbar-right">
-                        <ul class="nav navbar-nav ms-auto mt-lg-0">
+                      <div class="collapse navbar-collapse navbar-right">
+                        <ul class="navbar-nav ms-auto mt-lg-0">
                           {% include "_generic_navbar.html" %}
                         </ul>
                       </div>
