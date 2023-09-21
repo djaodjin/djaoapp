@@ -362,69 +362,6 @@
 },
 {
     "fields": {
-      "slug": "djaoapp",
-      "is_active": true,
-      "account": 2,
-      "domain": null,
-      "tag": "streetside"
-    },
-    "model": "multitier.Site", "pk": 1
-},
-{
-    "fields": {
-      "slug": "cowork",
-      "is_active": true,
-      "account": 4,
-      "domain": null,
-      "is_path_prefix": true,
-      "db_name": "cowork",
-      "tag": "streetside"
-    },
-    "model": "multitier.Site", "pk": 3
-},
-{
-    "fields": {
-      "slug": "djaoapp",
-      "account": 2,
-      "authentication": 0,
-      "registration": 3,
-      "cors_restricted": false
-    },
-    "model": "rules.App", "pk": 1
-},
-{
-    "fields": {
-        "app": 1,
-        "rank": 1,
-        "path": "/app/",
-        "rule_op": 1,
-        "is_forward": false,
-        "engaged": "app"
-    },
-    "model": "rules.Rule", "pk": 1
-},
-{
-    "fields": {
-        "app": 1,
-        "rank": 2,
-        "path": "/forward/{profile}/",
-        "rule_op": 1,
-        "is_forward": true
-    },
-    "model": "rules.Rule", "pk": 2
-},
-{
-    "fields": {
-        "app": 1,
-        "rank": 3,
-        "path": "/",
-        "rule_op": 0,
-        "is_forward": false
-    },
-    "model": "rules.Rule", "pk": 3
-},
-{
-    "fields": {
       "created_at": "2023-01-01T00:00:00+00:00",
       "full_name": "Marie",
       "email": "marie@localhost.localdomain",
@@ -692,6 +629,15 @@
 {
     "fields": {
       "created_at": "2023-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 14,
+      "user": 2
+    },
+    "model": "saas.Role", "pk": 12
+},
+{
+    "fields": {
+      "created_at": "2023-01-01T00:00:00+00:00",
       "ends_at": "2023-12-31T23:59:59+00:00",
       "organization": 9,
       "plan": 2
@@ -803,7 +749,7 @@
       "organization": 11,
       "user": 10
     },
-    "model": "saas.Role", "pk": 12
+    "model": "saas.Role", "pk": 13
 },
 {
     "fields": {
@@ -1085,7 +1031,7 @@
       "user": 13,
       "grant_key": "b0e0000000ed0123456789012345678901234578"
     },
-    "model": "saas.Role", "pk": 13
+    "model": "saas.Role", "pk": 14
 },
 {
     "fields": {
@@ -1094,7 +1040,7 @@
       "organization": 2,
       "user": 13
     },
-    "model": "saas.Role", "pk": 14
+    "model": "saas.Role", "pk": 15
 },
 {
     "fields": {
@@ -1103,7 +1049,7 @@
       "user": 13,
       "request_key": "b0e000e00e0001234567890123456789012345"
     },
-    "model": "saas.Role", "pk": 15
+    "model": "saas.Role", "pk": 16
 },
 {
     "fields": {
@@ -1113,7 +1059,7 @@
       "user": 13,
       "request_key": "1234567890123456789012345b0e000e00e000"
     },
-    "model": "saas.Role", "pk": 16
+    "model": "saas.Role", "pk": 17
 },
 {
     "fields": {
@@ -1284,7 +1230,7 @@
       "organization": 17,
       "user": 17
     },
-    "model": "saas.Role", "pk": 17
+    "model": "saas.Role", "pk": 18
 },
 {
     "fields": {
@@ -1340,7 +1286,7 @@
       "organization": 18,
       "user": 18
     },
-    "model": "saas.Role", "pk": 18
+    "model": "saas.Role", "pk": 19
 },
 {
     "fields": {
@@ -1881,4 +1827,226 @@
       "plan": 6
     },
     "model": "saas.subscription", "pk": 28
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "is_active": true,
+      "account": 2,
+      "domain": null,
+      "tag": "streetside"
+    },
+    "model": "multitier.Site", "pk": 1
+},
+{
+    "fields": {
+      "slug": "cowork",
+      "is_active": true,
+      "account": 4,
+      "domain": null,
+      "is_path_prefix": true,
+      "db_name": "cowork",
+      "tag": "streetside"
+    },
+    "model": "multitier.Site", "pk": 3
+},
+{
+    "fields": {
+      "slug": "djaoapp",
+      "account": 2,
+      "cors_restricted": false,
+      "authentication": 0,
+      "registration": 3,
+      "session_backend": 2,
+      "entry_point": "http://localhost:8040",
+      "enc_key": ""
+    },
+    "model": "rules.App", "pk": 1
+},
+{ "fields": {
+    "app": 1,
+    "rank": 1,
+    "path": "/api/content/editables/{profile}/",
+    "rule_op": 3
+  },
+  "model": "rules.Rule", "pk": 1
+},
+{ "fields": {
+    "app": 1,
+    "rank": 2,
+    "path": "/api/content/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 2
+},
+{ "fields": {
+    "app": 1,
+    "rank": 3,
+    "path": "/api/profile/{profile}/roles/{role}",
+    "rule_op": 6
+  },
+  "model": "rules.Rule", "pk": 3
+},
+{ "fields": {
+    "app": 1,
+    "rank": 4,
+    "path": "/api/profile/{profile}/roles",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 4
+},
+{ "fields": {
+    "app": 1,
+    "rank": 5,
+    "path": "/api/profile/{profile}",
+    "rule_op": 6
+  },
+  "model": "rules.Rule", "pk": 5
+},
+
+{ "fields": {
+    "app": 1,
+    "rank": 6,
+    "path": "/api/profile/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 6
+},
+
+{ "fields": {
+    "app": 1,
+    "rank": 7,
+    "path": "/api/units",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 7
+},
+{ "fields": {
+    "app": 1,
+    "rank": 8,
+    "path": "/api/timer",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 8
+},
+{ "fields": {
+    "app": 1,
+    "rank": 9,
+    "path": "/api/{profile}/campaigns",
+    "rule_op": 16,
+    "kwargs": "{\"profile\": null, \"plan\": \"premium\"}"
+  },
+  "model": "rules.Rule", "pk": 9
+},
+{ "fields": {
+    "app": 1,
+    "rank": 10,
+    "path": "/api/{profile}/reporting/",
+    "rule_op": 18
+  },
+  "model": "rules.Rule", "pk": 10
+},
+{ "fields": {
+    "app": 1,
+    "rank": 11,
+    "path": "/api/{profile}/",
+    "rule_op": 4,
+    "kwargs": "{\"profile\": null, \"roledescription\": \"contributor\"}"
+  },
+  "model": "rules.Rule", "pk": 11
+},
+
+{ "fields": {
+    "app": 1,
+    "rank": 12,
+    "path": "/app/assess/",
+    "rule_op": 1,
+    "engaged": "app,assess"
+  },
+  "model": "rules.Rule", "pk": 12
+},
+{ "fields": {
+    "app": 1,
+    "rank": 13,
+    "path": "/app/reporting/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 13
+},
+{ "fields": {
+    "app": 1,
+    "rank": 14,
+    "path": "/app/info/courses/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 14
+},
+{ "fields": {
+    "app": 1,
+    "rank": 15,
+    "path": "/app/info/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 15
+},
+{ "fields": {
+    "app": 1,
+    "rank": 16,
+    "path": "/app/{profile}/improve/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 16
+},
+{ "fields": {
+    "app": 1,
+    "rank": 17,
+    "path": "/app/{profile}/assess/",
+    "rule_op": 1
+  },
+  "model": "rules.Rule", "pk": 17
+},
+{ "fields": {
+    "app": 1,
+    "rank": 18,
+    "path": "/app/{profile}/reporting/",
+    "rule_op": 18
+  },
+  "model": "rules.Rule", "pk": 18
+},
+{ "fields": {
+    "app": 1,
+    "rank": 19,
+    "path": "/app/{profile}/",
+    "rule_op": 3,
+    "is_forward": false
+  },
+  "model": "rules.Rule", "pk": 19
+},
+{ "fields": {
+    "app": 1,
+    "rank": 20,
+    "path": "/app/",
+    "rule_op": 1,
+    "engaged": "app",
+    "is_forward": false
+  },
+  "model": "rules.Rule", "pk": 20
+},
+{ "fields": {
+    "app": 1,
+    "rank": 21,
+    "path": "/getstarted/",
+    "rule_op": 0,
+    "is_forward": true
+  },
+  "model": "rules.Rule", "pk": 21
+},
+{ "fields": {
+    "app": 1,
+    "rank": 23,
+    "path": "/",
+    "rule_op": 0,
+    "is_forward": false
+  },
+  "model": "rules.Rule", "pk": 23
 }]

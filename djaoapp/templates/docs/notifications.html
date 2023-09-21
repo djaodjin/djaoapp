@@ -53,7 +53,7 @@
 </ul>
 {% endblock %}
 
-{% block content_area_classes %} class="ps-4"{% endblock %}
+{% block content_area_classes %}{% endblock %}
 
 {% block content %}
 <div id="api-doc-content">
@@ -62,7 +62,7 @@
   <div id="intro">
     <div class="row">
       <div class="col-12">
-        <h1>DjaoApp Notifications Reference <a href="#index" class="header-anchor"><i class="fa fa-link"></i></a></h1>
+        <h1 class="mt-4">DjaoApp Notifications Reference <a href="#index" class="header-anchor"><i class="fa fa-link"></i></a></h1>
         <p>
 These are notifications sent by DjaoApp.
         </p>
@@ -79,30 +79,20 @@ in the <em>Themes dashboard page</em>.
   {# alphabetically listed #}
   <div id="alphabetical">
     <section class="row">
-      <div class="col-sm-7">
+      <div class="col-md-7">
         <a name="alphabetical"></a>
         <h2 class="mt-4">Alphabetical <a href="#alphabetical" class="header-anchor"><i class="fa fa-link"></i></a></h2>
       </div>
-      <div class="col-sm-5 code">
+      <div class="col-md-5 code">
       </div>
     </section>
     {% for api_end_point in api_end_points %}
     <section class="row">
-      <div class="col-sm-7">
+      <div class="col-md-7">
         <a name="{{api_end_point.operationId}}"></a><h3 class="mt-4">{{api_end_point.summary}} <a href="#{{api_end_point.operationId}}" class="header-anchor"><i class="fa fa-link"></i></a></h3>
         <div>
           {{api_end_point.description}}
         </div>
-        {% if api_end_point|request_body_parameters(definitions) %}
-        <div>
-          <h5 class="param-list-header">Request body</h5>
-          <div class="params-wrap">
-            {% for param in api_end_point|request_body_parameters(definitions) %}
-            {{ api_param_doc(param, api_end_point.operationId, response=False) }}
-            {% endfor %}
-          </div>
-        </div> {# .param-list-header #}
-        {% endif %}
         <responses-list>
           <h5 class="responses-list-header param-list-header">Definition</h5>
           {% for resp_code, params in (api_end_point|responses_parameters(definitions)).items() %}
@@ -135,13 +125,20 @@ in the <em>Themes dashboard page</em>.
           {% endfor %}
         </responses-list>{# .responses-list #}
       </div>
-      <div class="col-sm-5 code">
-        <h3>Examples</h3>
-        {% for example in api_end_point.examples %}
-        {% if example.resp %}
-        {{example.resp}}
-        {% endif %}
-        {% endfor %}
+      <div class="col-md-5 col-example">
+        <h3 class="mt-4">&nbsp;</h3>
+        <div class="example">
+          <div class="example-title">
+            Examples
+          </div>
+          <div class="example-body">
+            {% for example in api_end_point.examples %}
+            {% if example.resp %}
+            {{example.resp}}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </section>
     {% endfor %}

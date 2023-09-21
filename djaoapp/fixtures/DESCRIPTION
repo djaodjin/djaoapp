@@ -2,6 +2,14 @@ It is impossible to add comments into a json file and the yaml parser
 used by Django is broken for utc dates. We resort to put the description
 of fixtures here - less than ideal.
 
+Alice is a profile manager for a broker.
+
+Donny is a profile manager for two providers. Two, this way we can take
+screenshots of the organization redirects page.
+
+Xia is a subscriber.
+
+
 default-db.json
     Donny (username: donny, password: yoyo) is a manager for the broker (i.e.
     hosting site).
