@@ -1,11 +1,6 @@
 // CSS specific to layout the djaoapp dashboard pages
 // Colors are setup in djaoapp-dashboard-theme.scss
 
-// XXX `$navbar-height` used to be defined
-// in Bootstrap3 (it is not in Bootstrap4). We redefine it here use it stick the
-// footer at the bottom of the screen when a page is less that screen height.
-$navbar-height: max($nav-link-height, $navbar-brand-height) + $navbar-padding-y * 2;
-
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
 $dashboard-nav-footer-height:   134px;
@@ -249,11 +244,6 @@ pre.code{
 
 .dashboard-inner-container .content-area-container {
     padding: 20px;
-}
-
-
-header > .navbar {
-    height: $navbar-height; // See comment about $navbar-height
 }
 
 .navbar .nav-item {
@@ -537,13 +527,11 @@ input::-webkit-datetime-edit {
 @include media-breakpoint-down(sm) {
 
     .dashboard-content > .fullviewport {
-      padding-top: $navbar-height;
     }
 
     .dashboard-content > header,
     .dashboard-content > .fullviewport > header {
-      position: fixed;
-      height:  $navbar-height;
+      position: sticky;
       top: 0;
       z-index: 4;
       width: 100%;

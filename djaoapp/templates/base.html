@@ -41,7 +41,6 @@
     {% block localheader %}{% endblock %}
 </head>
 <body{% block body_classes %}{% endblock %}>
-  {% block body_top_template %}{% endblock %}
   <div id="wrap">
     <div id="main">
       <div class="dashboard-container">
@@ -120,6 +119,7 @@
           <div class="dashboard-content">
             <div class="d-print-none fullviewport">
               <header>
+                {% block body_top_template %}{% endblock %}
                 <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"  data-bs-theme="dark"{% endblock %}>
                   <div class="container-fluid">
                     <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">

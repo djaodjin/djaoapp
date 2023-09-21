@@ -47,7 +47,7 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         .. code-block:: json
 
             {
-              "version": "2022-09-16"
+              "version": "2023-09-22"
             }
         """
         serializer = VersionSerializer({'version': __version__})
