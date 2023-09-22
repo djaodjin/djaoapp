@@ -1494,7 +1494,7 @@ msgid ""
 "clicking on the previous link or copy/pasting the following link in your "
 "browser:"
 msgstr ""
-"Ahora puede acceder al <a href=\"%(back_url)s\">perfil de %(organization)s"\
+"Ahora puede acceder al <a href=\"%(back_url)s\">perfil de %(organization)s"
 "</a> por haciendo clic en el enlace anterior o copiando/pegando el siguiente "
 "enlace en tu navegador:"
 
