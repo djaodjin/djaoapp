@@ -40,7 +40,7 @@ RUN set -eux; \
         pkg-config; \
       \
       /app/bin/pip install billiard==4.0.0 cairocffi==1.3.0 coverage==6.3.2 cryptography==41.0.3 psycopg2-binary==2.9.3 pycairo==1.21.0 python-ldap==3.4.0 setproctitle==1.2.3; \
-      /app/bin/pip install boto3==1.28.3 Django==3.2.20 django-phonenumber-field==7.1.0 django-recaptcha==3.0.0 djangorestframework==3.12.4 djaodjin-deployutils==0.10.6 djaodjin-extended-templates==0.4.4 djaodjin-multitier==0.1.26 djaodjin-rules==0.4.2 djaodjin-saas==0.17.1 djaodjin-signup==0.8.4 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.13.13 PyJWT==2.6.0 pyotp==2.8.0 pytz==2023.3 social-auth-app-django==5.2.0 whitenoise==6.4.0 WeasyPrint==53.4; \
+      /app/bin/pip install boto3==1.28.3 Django==3.2.20 django-phonenumber-field==7.1.0 django-recaptcha==3.0.0 djangorestframework==3.12.4 djaodjin-deployutils==0.10.6 djaodjin-extended-templates==0.4.4 djaodjin-multitier==0.1.26 djaodjin-rules==0.4.3 djaodjin-saas==0.18.0 djaodjin-signup==0.9.0 docutils==0.15.2 jinja2==3.1.2 MarkupSafe==2.1.1 gunicorn==20.1.0 phonenumbers==8.13.13 PyJWT==2.6.0 pyotp==2.8.0 pytz==2023.3 social-auth-app-django==5.2.0 whitenoise==6.4.0 WeasyPrint==53.4; \
       /app/bin/pip install django-debug-toolbar==3.5.0 django-extensions==3.2.1 django-storages==1.13.2; \
       \
       apt-mark auto '.*'; \
@@ -53,12 +53,13 @@ COPY . /app/reps/djaoapp
 WORKDIR /app/reps/djaoapp
 
 # Create local configuration files
-RUN mkdir -p /etc/djaoapp
+# We remove the `pidfile` settings from the gunicorn.conf conf file
+# such that we are able to run the container as a non-root user.
+RUN mkdir -p /etc/djaoapp /var/run/djaoapp
 RUN sed -e "s,\%(SECRET_KEY)s,`/app/bin/python -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," etc/credentials > /etc/djaoapp/credentials
-RUN sed -e "s,^DB_LOCATION *= *\".*\",DB_LOCATION = \"sqlite3:///app/reps/djaoapp/db.sqlite\"," etc/site.conf > /etc/djaoapp/site.conf
+RUN sed -e "s,^DB_LOCATION *= *\".*\",DB_LOCATION = \"sqlite3:///app/reps/djaoapp/db.sqlite\"," -e 's,%(DB_FILENAME)s,/app/reps/djaoapp/db.sqlite,g' etc/site.conf > /etc/djaoapp/site.conf
 RUN sed -e 's,%(APP_NAME)s,djaoapp,g' -e 's,%(LOCALSTATEDIR)s,/var,g'\
-  -e 's,%(PID_FILE)s,/var/run/djaoapp.pid,g'\
-  -e 's,bind="127.0.0.1:%(APP_PORT)s",bind="0.0.0.0:80",'\
+  -e '/pidfile=/d' -e 's,bind="127.0.0.1:%(APP_PORT)s",bind="0.0.0.0:80",'\
   etc/gunicorn.conf > /etc/djaoapp/gunicorn.conf
 
 # Expose application http port
