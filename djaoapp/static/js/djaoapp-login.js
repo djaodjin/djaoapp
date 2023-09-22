@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const passwordFields = document.querySelectorAll('input[name="password"]');
+  const passwordFields = document.querySelectorAll('input[name="password"], ' +
+      'input[name="new_password"], input[name="new_password2"]');
   passwordFields.forEach(field => {
     const toggleButton = document.createElement('span');
     toggleButton.innerHTML = '<i class="fa fa-eye"></i>';
