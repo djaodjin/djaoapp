@@ -130,11 +130,17 @@ run-coverage: initdb
 		$(MANAGE) runserver $(APP_PORT) --noreload
 
 # Implementation note:
+# We need to install the user photos before running `load_test_transactions`
+# because the command will read that directory.
 # We use `$(LIVEDEMO_DB_FILENAME)` and `$(PYTHON) manage.py` in this target,
 # so no matter the installed config files, we reliably create db.sqlite in
 # the source directory and thus are able to transfer it onto the Docker
 # container.
 setup-livedemo:
+	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
+	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
+	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
+	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
@@ -142,10 +148,6 @@ setup-livedemo:
 	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, enc_key='$(DJAODJIN_SECRET_KEY)';"
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
-	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
-	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
-	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
-	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +
