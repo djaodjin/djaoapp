@@ -140,7 +140,12 @@
         </div>
         <div class="modal-body">
           <div class="text-center border">
-            <croppa v-model="picture" :width="300" :height="300"></croppa>
+            <croppa v-model="picture" v-init-croppa v-zoom-slider
+                    :width="300"
+                    :height="300"
+                    :prevent-white-space="true"
+                    :show-remove-button="false"
+            ></croppa>
           </div>
         </div>
         <div class="modal-footer">

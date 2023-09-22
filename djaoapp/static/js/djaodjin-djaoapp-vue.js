@@ -203,3 +203,38 @@ Vue.component('todo-list', {
         this.get();
     },
 });
+
+Vue.directive('init-croppa', {
+inserted: function(el) {
+    var croppaInstance = el.__vue__;
+
+    if (croppaInstance && typeof croppaInstance.addClipPlugin === 'function') {
+        croppaInstance.addClipPlugin(function(ctx, x, y, w, h) {
+          ctx.beginPath();
+          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true);
+          ctx.closePath();
+        });
+      }
+    }
+});
+
+Vue.directive('zoom-slider', {
+    inserted: function (el) {
+        var croppaInstance = el.__vue__;
+        el.style.position = 'relative';
+        var slider = document.createElement('input');
+        slider.className = 'imageSlider';
+
+        slider.type = 'range';
+        slider.min = '2';
+        slider.max = '10';
+        slider.step = '0.001';
+        slider.value = '2';
+        slider.style.display = 'block';
+        el.appendChild(slider);
+
+        slider.addEventListener('input', function(evt) {
+            croppaInstance.scaleRatio = parseFloat(evt.target.value);
+        });
+    }
+});
