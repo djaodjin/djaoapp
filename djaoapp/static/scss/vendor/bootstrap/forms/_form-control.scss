@@ -212,3 +212,10 @@ textarea {
   &.form-control-sm { height: $input-height-sm; }
   &.form-control-lg { height: $input-height-lg; }
 }
+
+.password-toggle {
+  position: absolute;
+  top: 15%;
+  right: 10px;
+  cursor: pointer;
+}
