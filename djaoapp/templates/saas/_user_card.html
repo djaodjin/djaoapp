@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-3">
           <div>
-            <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'"><img class="card-img-top rounded-circle" v-bind:src="item.user.picture ? item.user.picture : '{{'/static/img/default-user.png'|djasset}}'" alt=""></a>
+            <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'"><img class="card-img-top rounded-circle" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|djasset}}'" alt=""></a>
           </div>
       </div>
       <div class="col-9">

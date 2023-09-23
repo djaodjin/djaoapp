@@ -65,7 +65,7 @@ module.exports = {
     ]
   },
   output: {
-      path: path.resolve(__dirname, 'htdocs/static/cache'),
+      path: path.resolve(__dirname, 'htdocs/assets/cache'),
       filename: '[name].js',
   },
   externals: {

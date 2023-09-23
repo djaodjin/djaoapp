@@ -13,7 +13,7 @@ libDir        ?= $(installTop)/lib
 SYSCONFDIR    := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
 CONFIG_DIR    := $(SYSCONFDIR)/$(APP_NAME)
-ASSETS_DIR    := $(srcDir)/htdocs/static
+ASSETS_DIR    := $(srcDir)/htdocs/assets
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
@@ -75,7 +75,7 @@ build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/saas.js
 	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
-	cd $(srcDir) && $(ESCHECK) htdocs/static/cache/*.js htdocs/static/vendor/*.js
+	cd $(srcDir) && $(ESCHECK) $(ASSETS_DIR)/cache/*.js $(ASSETS_DIR)/vendor/*.js
 
 
 clean: clean-dbs clean-themes clean-assets

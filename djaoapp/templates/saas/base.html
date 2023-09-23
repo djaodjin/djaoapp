@@ -55,14 +55,14 @@
 {% endblock %}
 
 {% block bodyscripts %}
-<script type="text/javascript" src="{{'/static/vendor/jquery.payment.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.payment.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-postal.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-resources.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-saas.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-stripe.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-postal.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-saas.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-stripe.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/saas.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/cache/saas.js'|djasset}}"></script>
 {% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {

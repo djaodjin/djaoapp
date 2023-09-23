@@ -1,7 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-<link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/dashboard.css" />
+<link rel="stylesheet" media="screen" href="{{request|site_url}}/assets/cache/dashboard.css" />
 {% endblock %}
 
 {% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
@@ -21,16 +21,16 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-<script type="text/javascript" src="{{'/static/vendor/moment.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/moment-timezone-with-data.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/vue.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/lodash.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/vue-croppa.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/dropzone.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/d3.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/nv.d3.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/trip.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaoapp-i18n.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/trip.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|djasset}}"></script>
 <script type="text/javascript">
 Vue.prototype.$itemsPerPage =
     {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
@@ -68,17 +68,17 @@ humanizeTimeDelta.$labels = {
 </script>
 {% block dashboard_bodyscripts %}{% endblock %}
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-upload.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-dashboard.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-resources-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-signup-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-saas-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-rules-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-themes-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/static/js/djaodjin-metrics.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" charset="utf-8" src="{{'/static/cache/djaodjin-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|djasset}}"></script>
 {% endif %}
 
 <script type="text/javascript">
