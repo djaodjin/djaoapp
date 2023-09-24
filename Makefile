@@ -145,7 +145,7 @@ setup-livedemo:
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, enc_key='$(DJAODJIN_SECRET_KEY)';"
+	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='http://djaopsp-demo', enc_key='$(DJAODJIN_SECRET_KEY)';"
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --provider=djaopsp --profile-pictures htdocs/media/livedemo/profiles
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
@@ -374,7 +374,7 @@ $(DESTDIR)$(CONFIG_DIR)/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
-		-e 's,%(APP_NAME)s,$(APP_NAME),' \
+		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(APP_PORT)s,$(APP_PORT),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
