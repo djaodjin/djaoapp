@@ -357,7 +357,7 @@ class VersionSerializer(NoModelSerializer):
         #pylint:disable=unused-argument
         return __version__
 
-class TypeaheadSuggestionSerializer(NoModelSerializer):
+class PlacesSuggestionsSerializer(NoModelSerializer):
 
     description = serializers.CharField(
         help_text=_("Human-readable address string"))
@@ -365,7 +365,7 @@ class TypeaheadSuggestionSerializer(NoModelSerializer):
         help_text=_("Placed identifier used to retrieve more"\
             " details"))
 
-class TypeaheadPlaceSerializer(NoModelSerializer):
+class PlacesDetailSerializer(NoModelSerializer):
 
     street_number = serializers.CharField(required=False,
         help_text=_("Street number"))
@@ -409,4 +409,4 @@ class TypeaheadPlaceSerializer(NoModelSerializer):
                         address['country'] = component['long_name']
                         address['country_code'] = component['short_name']
                 args = (address,) + args[1:]
-        super(TypeaheadPlaceSerializer, self).__init__(*args, **kwargs)
+        super(PlacesDetailSerializer, self).__init__(*args, **kwargs)

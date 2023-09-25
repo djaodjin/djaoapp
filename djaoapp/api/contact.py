@@ -10,6 +10,7 @@ from deployutils.apps.django.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from rest_framework.settings import api_settings
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,7 +23,7 @@ from saas.utils import full_name_natural_split
 from ..compat import gettext_lazy as _, six
 from ..signals import contact_requested
 from .serializers import (ContactUsSerializer,
-    TypeaheadSuggestionSerializer, TypeaheadPlaceSerializer)
+    PlacesSuggestionsSerializer, PlacesDetailSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -117,7 +118,7 @@ _("Sorry, there was an issue sending your request for information"\
     'full_name': provider.full_name, 'email': provider.email}})
 
 
-class TypeaheadQueryAPIView(GenericAPIView):
+class PlacesSuggestionsAPIView(GenericAPIView):
     """
     Returns address typeahead suggestions
 
@@ -129,7 +130,7 @@ class TypeaheadQueryAPIView(GenericAPIView):
 
     .. code-block:: http
 
-        GET /api/typeahead/q?q=123 HTTP/1.1
+        GET /api/accounts/places?q=123 HTTP/1.1
 
     responds
 
@@ -161,13 +162,15 @@ class TypeaheadQueryAPIView(GenericAPIView):
             ]
         }
     """
-    serializer_class = TypeaheadSuggestionSerializer
+    serializer_class = PlacesSuggestionsSerializer
+    pagination_class = None
 
     @swagger_auto_schema(responses={
-        200: OpenAPIResponse("success", ValidationErrorSerializer)})
+        200: OpenAPIResponse("success", PlacesSuggestionsSerializer)})
     def get(self, request, *args, **kwargs):
         gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
-        query = request.GET.get('q')
+        query = request.query_params.get(api_settings.SEARCH_PARAM)
+
         if query and len(query) > 2:
             results = gmaps.places_autocomplete(query, types='address')
         else:
@@ -181,7 +184,7 @@ class TypeaheadQueryAPIView(GenericAPIView):
         })
 
 
-class TypeaheadPlaceAPIView(GenericAPIView):
+class PlacesDetailAPIView(GenericAPIView):
     """
     Returns address typeahead place details
 
@@ -194,7 +197,7 @@ class TypeaheadPlaceAPIView(GenericAPIView):
 
     .. code-block:: http
 
-        GET /api/typeahead/place/ChIJIaGbBBhawokRUmbgNsUmr-s HTTP/1.1
+        GET /api/accounts/places/ChIJIaGbBBhawokRUmbgNsUmr-s HTTP/1.1
 
     responds
 
@@ -212,11 +215,10 @@ class TypeaheadPlaceAPIView(GenericAPIView):
         "country_code": "US"
     }
     """
-    serializer_class = TypeaheadPlaceSerializer
+    serializer_class = PlacesDetailSerializer
 
     @swagger_auto_schema(responses={
-        200: OpenAPIResponse("success", ValidationErrorSerializer),
-        404: OpenAPIResponse("place not found", ValidationErrorSerializer)})
+        200: OpenAPIResponse("success", PlacesDetailSerializer)})
     def get(self, request, *args, **kwargs):
         gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
         place_id = kwargs.get('place_id')
