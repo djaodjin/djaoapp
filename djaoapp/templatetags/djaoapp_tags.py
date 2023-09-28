@@ -46,7 +46,12 @@ def pluralize(text):
 @register.filter()
 def djasset(path):
     path_prefix = '/'
-    return urljoin(path_prefix, path)
+    url_path = urljoin(path_prefix, path)
+    # If we run the following code, we can remove the prefix in templates
+    # but we loose the ability to pick an assets anywhere in 'htdocs'.
+    #if not url_path.startswith(settings.STATIC_URL):
+    #    url_path = urljoin(settings.STATIC_URL, url_path)
+    return url_path
 
 
 @register.simple_tag

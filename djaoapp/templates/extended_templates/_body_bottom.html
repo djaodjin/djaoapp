@@ -1,4 +1,4 @@
-<link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/pages.css" />
+<link rel="stylesheet" media="screen" href="{{request|site_url}}/assets/cache/pages.css" />
 
 {# Scripts that need to be injected into the page actually being edited #}
 {# (i.e. iframe or current page).                                       #}
@@ -80,22 +80,22 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<script type="text/javascript" src="{{'/static/vendor/dropzone.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.selection.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.autosize.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.textarea_autosize.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery.ui.touch-punch.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/rangy-core.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/Markdown.Converter.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/Markdown.Sanitizer.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/hallo.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.selection.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.autosize.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.textarea_autosize.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.ui.touch-punch.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/rangy-core.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Converter.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Sanitizer.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/hallo.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-resources.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-editor.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-upload.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-sidebar-gallery.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-plan-edition.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/pages.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/cache/pages.js'|djasset}}"></script>
 {% endif %}

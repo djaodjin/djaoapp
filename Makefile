@@ -13,7 +13,7 @@ libDir        ?= $(installTop)/lib
 SYSCONFDIR    := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
 CONFIG_DIR    := $(SYSCONFDIR)/$(APP_NAME)
-ASSETS_DIR    := $(srcDir)/htdocs/static
+ASSETS_DIR    := $(srcDir)/htdocs/assets
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
@@ -75,7 +75,7 @@ build-assets: $(ASSETS_DIR)/cache/base.css \
               $(ASSETS_DIR)/cache/saas.js
 	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
-	cd $(srcDir) && $(ESCHECK) htdocs/static/cache/*.js htdocs/static/vendor/*.js
+	cd $(srcDir) && $(ESCHECK) $(ASSETS_DIR)/cache/*.js $(ASSETS_DIR)/vendor/*.js
 
 
 clean: clean-dbs clean-themes clean-assets
@@ -130,22 +130,24 @@ run-coverage: initdb
 		$(MANAGE) runserver $(APP_PORT) --noreload
 
 # Implementation note:
+# We need to install the user photos before running `load_test_transactions`
+# because the command will read that directory.
 # We use `$(LIVEDEMO_DB_FILENAME)` and `$(PYTHON) manage.py` in this target,
 # so no matter the installed config files, we reliably create db.sqlite in
 # the source directory and thus are able to transfer it onto the Docker
 # container.
 setup-livedemo:
-	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, enc_key='$(DJAODJIN_SECRET_KEY)';"
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
+	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='http://djaopsp-demo', enc_key='$(DJAODJIN_SECRET_KEY)';"
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
+	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --provider=djaopsp --profile-pictures htdocs/media/livedemo/profiles
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +
@@ -372,7 +374,7 @@ $(DESTDIR)$(CONFIG_DIR)/gunicorn.conf: $(srcDir)/etc/gunicorn.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
-		-e 's,%(APP_NAME)s,$(APP_NAME),' \
+		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
 		-e 's,%(APP_PORT)s,$(APP_PORT),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \

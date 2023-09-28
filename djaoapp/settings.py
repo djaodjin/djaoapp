@@ -279,8 +279,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-APP_STATIC_ROOT = HTDOCS + '/static'
-STATIC_URL = '/static/'
+APP_STATIC_ROOT = HTDOCS + '/assets'
+STATIC_URL = '/assets/'
 STATIC_ROOT = APP_STATIC_ROOT
 if DEBUG:
     STATIC_ROOT = ''
@@ -730,6 +730,7 @@ SAAS = {
 RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'APP_SERIALIZER': 'djaoapp.api.serializers.AppSerializer',
+    'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'RULE_OPERATORS': (

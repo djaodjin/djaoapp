@@ -55,8 +55,8 @@ if settings.DEBUG:
         url(r'^__debug__/', include(debug_toolbar.urls)),
 
         # You need to run `python manage.py --nostatic` to enable hotreload.
-        url(r'static/(?P<path>.*)', AssetView.as_view()),
-
+        url(r'%s/(?P<path>.*)' % settings.STATIC_URL.lstrip('/'),
+            AssetView.as_view()),
         url(r'^media/(?P<path>.*)$',
             django_static_serve, {'document_root': settings.MEDIA_ROOT}),
         url(r'^csrf-error/',

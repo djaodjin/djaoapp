@@ -166,7 +166,6 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
 
     By default redirects to the profile App page.
     """
-    template_name = 'accesible_apps.html'
     pattern_name = 'organization_app'
 
     def get_context_data(self, **kwargs):

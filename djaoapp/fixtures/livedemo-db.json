@@ -1,5 +1,23 @@
 [
 {
+    "fields": {
+      "slug": "djaopsp",
+      "full_name": "DjaoPsp",
+      "created_at": "2023-01-01T00:00:00+00:00",
+      "email": "alice+djaoapp@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "",
+      "locality":  "",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 2
+},
+{
     "fields":{
         "code": "HALLOWEEN",
         "created_at":"2023-01-01T00:00:00-00:00",
@@ -91,7 +109,7 @@
       "slug": "alice",
       "created_at": "2023-01-01T00:00:00-00:00",
       "user": 1,
-      "picture": "/static/img/alice.jpg"
+      "picture": "/media/livedemo/profiles/alice.jpg"
     },
     "model": "signup.Contact", "pk": 1
 },
@@ -279,7 +297,7 @@
 },
 {
     "fields": {
-      "slug": "djaoapp",
+      "slug": "djaopsp",
       "account": 2,
       "authentication": 1,
       "registration": 3,

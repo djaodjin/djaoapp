@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>{% block subject %}{% trans %}DjaoApp Notification{% endtrans %}{% endblock %}</title>
-<link rel="stylesheet" media="screen" href="{{'/static/cache/email.css'|asset}}" />
+<link rel="stylesheet" media="screen" href="{{'/assets/cache/email.css'|asset}}" />
 </head>
 <body>
   {% if errors %}

@@ -1,4 +1,4 @@
-<link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/pages.css" />
+<link rel="stylesheet" media="screen" href="{{request|site_url}}/assets/cache/pages.css" />
 
 {# media editors #}
 {# ------------- #}
@@ -175,44 +175,44 @@
   <a id="toggle-media-gallery" class="btn btn-primary"
           style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: 0;border-top-right-radius:4px;border-top-left-radius:4px;border-bottom-right-radius:0;border-bottom-left-radius:0;"
           data-target="#media-gallery" data-default-width="300" data-intro="{% trans %}Image gallery{% endtrans %}" data-position="left">
-    <img src="{{'/static/img/fa-picture.png'|djasset}}" width="22" height="22" />
+    <img src="{{'/assets/img/fa-picture.png'|djasset}}" width="22" height="22" />
   </a>
   {% if ENABLE_CODE_EDITOR %}
   <a id="toggle-code-editor" class="btn btn-primary"
           style="display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;text-transform: none;overflow: visible;white-space: nowrap;user-select: none;box-sizing: border-box;font: inherit;margin: -1px 0 0 0;"
           data-target="#code-editor" data-default-width="800" data-intro="{% trans %}Code Editor{% endtrans %}" data-position="left">
-    <img src="{{'/static/img/fa-code.png'|djasset}}" width="22" height="22" />
+    <img src="{{'/assets/img/fa-code.png'|djasset}}" width="22" height="22" />
   </a>
   {% endif %}
   {% if FEATURES_DEBUG %}
   <a id="take_screenshot" href="" class="btn btn-primary screenshot"
      style="border-radius: 0;margin: -1px 0 0 0;display:block;float: none;width: 100%;max-width: 100%;position: relative;padding: 5px 10px;font-size: 12px;line-height: 1.5;font-weight: normal;text-align: center;vertical-align: middle;touch-action: manipulation;cursor: pointer;background-image: none;border: 1px solid transparent;white-space: nowrap;text-decoration: none;box-sizing: border-box;"
      title="Report todo...">
-    <img src="{{'/static/img/fa-ambulance.png'|djasset}}" width="22" height="22" />
+    <img src="{{'/assets/img/fa-ambulance.png'|djasset}}" width="22" height="22" />
   </a>
   {% endif %}
 </div>
 
 {# aggregated, minified scripts #}
-<script type="text/javascript" src="{{'/static/vendor/jquery.ba-throttle-debounce.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap-colorpicker.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ace.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-language_tools.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-modelist.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/ext-emmet.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/theme-monokai.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-html.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-css.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/mode-javascript.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-html.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-css.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/worker-javascript.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.ba-throttle-debounce.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/bootstrap-colorpicker.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ace.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-language_tools.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-modelist.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-emmet.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/theme-monokai.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-javascript.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-html.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-css.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-javascript.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaoapp-theme-editors.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-code-editor.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-style-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-editors.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-code-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-style-editor.js'|djasset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/theme-editors.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/cache/theme-editors.js'|djasset}}"></script>
 {% endif %}
 
 <script type="text/javascript">

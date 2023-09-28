@@ -105,11 +105,11 @@ class Command(BaseCommand):
         db_name = options['database']
         if db_name:
             set_current_site(get_site_model().objects.get(
-                slug=options['provider'], db_name=db_name),
+                db_name=db_name),
                 path_prefix='')
         else:
             set_current_site(get_site_model().objects.get(
-                slug=options['provider']),
+                slug=settings.APP_NAME),
                 path_prefix='')
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
         from_date = now

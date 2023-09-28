@@ -5,13 +5,14 @@ import logging, os
 
 from django.conf import settings
 from django.db import DEFAULT_DB_ALIAS
+from django.db.models import Q
 from django.http import Http404
 from extended_templates.utils import get_default_storage_base
 from multitier.thread_locals import get_current_site
 from multitier.mixins import build_absolute_uri
 from multitier.utils import get_site_model
 from rules.models import Rule
-from rules.utils import get_current_app
+from rules.utils import get_app_model, get_current_app
 from saas import settings as saas_settings
 from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
@@ -92,6 +93,22 @@ def enables_processor_test_keys(request=None):
     if hasattr(site, 'enables_processor_test_keys'):
         return site.enables_processor_test_keys
     return bool(settings.ENABLES_PROCESSOR_TEST_KEYS)
+
+
+def djaoapp_get_current_app(request=None):
+    site = get_current_site()
+    app = get_app_model().objects.filter(slug=site.slug).order_by(
+        'path_prefix', '-pk').first()
+    if not app:
+        flt = Q(path_prefix__isnull=True)
+        if request:
+            request_path_parts = request.path.lstrip('/').split('/')
+            if request_path_parts:
+                flt = flt | Q(path_prefix='/%s' % request_path_parts[0])
+        app = get_app_model().objects.filter(flt).order_by(
+            'path_prefix', '-pk').first()
+    return app
+
 
 
 def get_current_broker():

@@ -7,11 +7,12 @@
 billiard==4.0.0
 cairocffi==1.3.0
 coverage==6.3.2
-cryptography==41.0.3
+cryptography==41.0.4
 psycopg2-binary==2.9.3
 pycairo==1.21.0         # Source wheel. Depends on libcairo2 (Debian).
 setproctitle==1.2.3
 #lxml # Source wheel. Depends on libxml2, libxslt1.1 (Debian). Built as a dependency of another wheel.
+xmlsec==1.3.13          # picked up transitively by social_core.backends.saml
 
 # Optional packages
 python-ldap==3.4.3      # to authenticate through LDAP

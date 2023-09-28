@@ -2,7 +2,7 @@
   <li class="menubar">
     {% if active_organization %}
       <a class="menubar-label menubar-label-dropdown-toggle"
-         data-bs-toggle="dropdown" role="button" href="#"
+         data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
           <span class="menubar-label-title" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
@@ -11,7 +11,7 @@
       </a>
     {% else %}
       <a class="menubar-label menubar-label-dropdown-toggle"
-         data-bs-toggle="dropdown" role="button" href="#"
+         data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <span data-trnc data-trnc-len="8">{{request.user.username}}</span>
       </a>

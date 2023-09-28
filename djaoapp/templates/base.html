@@ -12,7 +12,7 @@
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
     {% endblock %}
-    <link rel="stylesheet" media="screen" href="{{request|site_url}}/static/cache/base.css" />
+    <link rel="stylesheet" media="screen" href="{{request|site_url}}/assets/cache/base.css" />
     <style media="screen">
       [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
         display: none !important;
@@ -250,16 +250,16 @@
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
-<script type="text/javascript" src="{{'/static/vendor/jquery.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/static/vendor/popper.min.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/static/vendor/bootstrap.min.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/static/vendor/jquery-ui.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|djasset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/static/js/djaodjin-dashboard.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/static/js/djaodjin-menubar.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/static/js/djaoapp-theme-color-mode.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|djasset}}" defer></script>
 {% else %}
-<script type="text/javascript" src="{{'/static/cache/base.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/cache/base.js'|djasset}}" defer></script>
 {% endif %}
 {% block bodyscripts %}
 {% endblock %}
