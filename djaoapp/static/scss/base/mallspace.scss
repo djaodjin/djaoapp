@@ -573,3 +573,21 @@ html {
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+.croppa-container {
+   background-color: transparent;
+   margin-bottom: 25px;
+}
+
+.croppa--has-target {
+  background-color: white;
+}
+
+.imageSlider {
+  width: 25rem;
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+}
