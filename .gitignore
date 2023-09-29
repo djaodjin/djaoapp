@@ -17,4 +17,3 @@ package-lock.json
 webpack-conf-paths.json
 node_modules
 djaoapp/static/vendor/chart.js
-.idea/
