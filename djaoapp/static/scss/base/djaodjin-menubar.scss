@@ -118,6 +118,8 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     display: block;
     width: 100%;
     padding: 0.25rem 1.5rem;
+    padding-left: 2.75rem;
+    position: relative;
     clear: both;
     font-weight: 400;
     text-align: inherit;
@@ -207,4 +209,18 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
         display: none;
         margin-right: 0.5rem !important;
     }
+}
+
+.avatar-top {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.avatar {
+    position: absolute;
+    left: 15px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
 }

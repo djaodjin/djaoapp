@@ -305,7 +305,6 @@ ASSETS_MAP = {
             'vendor/bootstrap/utilities/*.scss',
             'vendor/djaodjin/*.scss',
             'vendor/toastr/*.scss',
-            'vendor/bootstrap/forms/*.scss'
         )
     ),
     'cache/pages.css': (
