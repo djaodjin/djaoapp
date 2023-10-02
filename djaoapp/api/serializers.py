@@ -357,13 +357,22 @@ class VersionSerializer(NoModelSerializer):
         #pylint:disable=unused-argument
         return __version__
 
-class PlacesSuggestionsSerializer(NoModelSerializer):
+class PlacesSuggestionSerializer(NoModelSerializer):
 
     description = serializers.CharField(
         help_text=_("Human-readable address string"))
     place_id = serializers.CharField(
         help_text=_("Placed identifier used to retrieve more"\
             " details"))
+
+
+class PlacesSuggestionsSerializer(NoModelSerializer):
+
+    count = serializers.IntegerField(
+        help_text=_("Number of place suggestions returned"))
+    results = PlacesSuggestionSerializer(many=True,
+        help_text=_("List of place suggestions"))
+
 
 class PlacesDetailSerializer(NoModelSerializer):
 

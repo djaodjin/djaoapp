@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from saas.api.serializers import ValidationErrorSerializer
 from saas.docs import OpenAPIResponse, swagger_auto_schema
+from rest_framework.filters import SearchFilter
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.utils import full_name_natural_split
@@ -164,6 +165,7 @@ class PlacesSuggestionsAPIView(GenericAPIView):
     """
     serializer_class = PlacesSuggestionsSerializer
     pagination_class = None
+    filter_backends = (SearchFilter, )
 
     @swagger_auto_schema(responses={
         200: OpenAPIResponse("success", PlacesSuggestionsSerializer)})
@@ -176,12 +178,12 @@ class PlacesSuggestionsAPIView(GenericAPIView):
         else:
             results = []
 
-        serializer = self.get_serializer(results, many=True)
-
-        return Response({
+        serializer = self.get_serializer({
             'count': len(results),
-            'results': serializer.data
+            'results': results
         })
+
+        return Response(serializer.data)
 
 
 class PlacesDetailAPIView(GenericAPIView):
