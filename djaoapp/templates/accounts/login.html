@@ -35,4 +35,9 @@
     </p>
   </div>
 </div>
+
+{% block bodyscripts %}
+  <script type="text/javascript" src="{{ '/static/js/djaoapp-login.js' | asset }}" defer></script>
+{% endblock %}
+
 {% endblock %}
