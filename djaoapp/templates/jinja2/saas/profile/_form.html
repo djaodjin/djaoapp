@@ -21,6 +21,10 @@
 {{ phone_input_field(form['phone'], phone_verified_at, form.hide_labels) }}
 {% endif %}
 
+{% if form['street_address'] %}
+{{ street_address_input_field(form['street_address'], form.hide_labels) }}
+{% endif %}
+
 {% if form['country'] %}
 {{ input_field(form['country'], form.hide_labels) }}
 {% endif %}
@@ -29,9 +33,6 @@
 {% endif %}
 {% if form['locality'] %}
 {{ input_field(form['locality'], form.hide_labels) }}
-{% endif %}
-{% if form['street_address'] %}
-{{ input_field(form['street_address'], form.hide_labels) }}
 {% endif %}
 {% if form['postal_code'] %}
 {{ input_field(form['postal_code'], form.hide_labels) }}
