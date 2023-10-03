@@ -6,7 +6,8 @@ from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.settings import USERNAME_PAT
 
 from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
-from ..api.contact import ContactUsAPIView
+from ..api.contact import (ContactUsAPIView, PlacesSuggestionsAPIView,
+    PlacesDetailAPIView)
 from ..api.custom_themes import DjaoAppThemePackageListAPIView
 from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (DjaoAppProfileDetailAPIView,
@@ -112,5 +113,9 @@ urlpatterns = [
     url_self_provider(r'^api/todos', TodosAPIView.as_view(), 'api_todos'),
     url_prefixed(r'^api/contact',
         ContactUsAPIView.as_view(), name='api_contact_us'),
+    url_authenticated(r'^api/accounts/places/(?P<place_id>.*)',
+        PlacesDetailAPIView.as_view(), name='api_places_detail'),
+    url_authenticated(r'^api/accounts/places',
+        PlacesSuggestionsAPIView.as_view(), name='api_places_suggestions'),
     url_prefixed(r'^api$', DjaoAppAPIVersion.as_view())
 ]

@@ -54,6 +54,8 @@ ENABLES_PROCESSOR_TEST_KEYS = True
 
 NOTIFICATION_WEBHOOK_URL = None
 
+GOOGLE_API_KEY = ""
+
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
         verbose=True, debug=DEBUG))

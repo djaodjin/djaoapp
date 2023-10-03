@@ -68,6 +68,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                     del context['urls']['rules']
         self.update_context_urls(context, {
             'profile_redirect': reverse('accounts_profile'),
+            'api_places_suggestions': reverse('api_places_suggestions'),
         })
 
         # `ExtraMixin.get_context_data` is called before
