@@ -29,7 +29,7 @@ LOGGER = logging.getLogger(__name__)
 
 TopAccessibleOrganization = namedtuple('TopAccessibleOrganization',
     ['slug', 'printable_name', 'settings_location', 'role_title',
-     'app_location'])
+     'app_location', 'org_picture'])
 
 
 def fail_edit_perm(request, account=None):
@@ -47,6 +47,19 @@ def fail_edit_perm(request, account=None):
         result = not bool(_valid_manager(request, [account]))
     return result
 
+def get_user_picture(user, default='/static/img/default-user.png'):
+    contacts_with_pictures = user.contacts.filter(
+        picture__isnull=False).order_by('created_at')
+    picture_contact = contacts_with_pictures.first() if (contacts_with_pictures.
+                                                         exists()) else None
+    if picture_contact:
+        return picture_contact.picture, False
+    else:
+        return default, True
+
+def get_organization_picture(organization, default='/static/img/default-organization.png'):
+    picture = organization.get('picture')
+    return picture if picture else default
 
 def inject_edition_tools(response, request, context=None,
                          body_top_template_name=None,
@@ -131,6 +144,7 @@ def inject_edition_tools(response, request, context=None,
             top_accessibles = []
             has_broker_role = False
             active_organization = None
+            user_picture, is_default_picture = get_user_picture(request.user)
 
             # Loads Organization models from database because we need
             # the `is_provider` flag.
@@ -139,11 +153,15 @@ def inject_edition_tools(response, request, context=None,
                     serializer.data.get('roles', {})):
                 for organization_dict in organization_list:
                     slugs.add(organization_dict.get('slug'))
+                    if (organization_dict['slug'] == request.user.username
+                            and organization_dict['picture']):
+                        user_picture = organization_dict['picture']
+                        is_default_picture = False
+
             organizations = {}
             for organization in get_organization_model().objects.filter(
                     slug__in=slugs): # XXX Remove query.
                 organizations[organization.slug] = organization
-
             for role, organization_list in six.iteritems(
                     serializer.data['roles']):
                 for organization in organization_list:
@@ -151,6 +169,7 @@ def inject_edition_tools(response, request, context=None,
                         # Personal Organization
                         continue
                     db_obj = organizations[organization['slug']]
+                    org_picture = get_organization_picture(organization)
                     if db_obj.is_provider:
                         settings_location = reverse('saas_dashboard',
                             args=(organization['slug'],))
@@ -165,17 +184,19 @@ def inject_edition_tools(response, request, context=None,
                         active_organization = TopAccessibleOrganization(
                             organization['slug'],
                             organization['printable_name'],
-                            settings_location, role, app_location)
+                            settings_location, role, app_location, org_picture)
                     if is_broker(organization['slug']):
                         has_broker_role = True
                     top_accessibles += [TopAccessibleOrganization(
                         organization['slug'],
                         organization['printable_name'],
-                        settings_location, role, app_location)]
+                        settings_location, role, app_location, org_picture)]
             if not active_organization and has_broker_role:
                 active_organization = get_broker()
             context.update({'active_organization':active_organization})
             context.update({'top_accessibles': top_accessibles})
+            context.update({'user_picture': user_picture,
+                            'is_default_picture': is_default_picture})
             template = loader.get_template(user_menu_template)
             user_menu = render_template(template, context, request).strip()
             auth_user.clear()

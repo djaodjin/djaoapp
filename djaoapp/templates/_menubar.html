@@ -5,15 +5,23 @@
          data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
-          <span class="menubar-label-subtitle">{{request.user.username}}</span>
+        {% if not is_default_picture %}
+            <img src="{{user_picture}}" class="avatar-top">
+        {% else %}
+            <span class="menubar-label-title" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
+            <span class="menubar-label-subtitle">{{request.user.username}}</span>
+        {% endif %}
         </div>
       </a>
     {% else %}
       <a class="menubar-label menubar-label-dropdown-toggle"
          data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
+         {% if not is_default_picture %}
+          <img src="{{user_picture}}" class="avatar-top">
+        {% else %}
         <span data-trnc data-trnc-len="8">{{request.user.username}}</span>
+        {% endif %}
       </a>
     {% endif %}
 
@@ -25,7 +33,8 @@
       {% endif %}
       <li role="presentation">
         <a id="authenticated-user" class="menubar-dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
-          {% trans %}Profile{% endtrans %}
+            <img src="{{user_picture}}" class="avatar">
+            {% trans %}Profile{% endtrans %}
         </a>
       </li>
       <li role="presentation">
@@ -41,11 +50,12 @@
             <span>{{accessible.printable_name}}</span>
             <span class="menubar-dropdown-label-role">{{accessible.role_title}}</span>
           </li>
-          <li role="presentation">
-            <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
-              {% trans %}Home{% endtrans %}
-            </a>
-          </li>
+            <li role="presentation">
+                <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
+                    <img src="{{accessible.org_picture}}" class="avatar">
+                    {% trans %}Home{% endtrans %}
+                </a>
+            </li>
           <li role="presentation">
             <a class="menubar-dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">
               {% trans %}Settings{% endtrans %}
