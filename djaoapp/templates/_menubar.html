@@ -28,12 +28,16 @@
     <ul class="menubar-dropdown-menu dropdown-menu" role="menu">
       {% if top_accessibles|length > 0 %}
         <li class="menubar-dropdown-label" role="presentation">
-          {{request.user.username}}
+          <div class="d-inline-block" style="vertical-align:middle;">
+            <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+          </div>
+          <div class="d-inline-block">
+            {{request.user.username}}
+          </div>
         </li>
       {% endif %}
       <li role="presentation">
         <a id="authenticated-user" class="menubar-dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
-            <img src="{{user_picture}}" class="avatar">
             {% trans %}Profile{% endtrans %}
         </a>
       </li>
@@ -47,12 +51,16 @@
         {% for accessible in top_accessibles %}
           <li class="menubar-dropdown-divider" role="separator"></li>
           <li class="menubar-dropdown-label" role="presentation">
-            <span>{{accessible.printable_name}}</span>
-            <span class="menubar-dropdown-label-role">{{accessible.role_title}}</span>
+            <div class="d-inline-block">
+              <img class="avatar-top" src="{{accessible.org_picture}}">
+            </div>
+            <div class="d-inline-block">
+              <div>{{accessible.printable_name}}</div>
+              <span class="menubar-dropdown-label-role">{{accessible.role_title}}</span>
+            </div>
           </li>
             <li role="presentation">
                 <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
-                    <img src="{{accessible.org_picture}}" class="avatar">
                     {% trans %}Home{% endtrans %}
                 </a>
             </li>
