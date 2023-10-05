@@ -857,7 +857,7 @@ CONTACT_CAPTCHA_KEYS = None
 
 # User settings
 # -------------
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy('registration_activate_start')
 LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
 
 AUTHENTICATION_BACKENDS = (
