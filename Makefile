@@ -22,7 +22,7 @@ ESCHECK       ?= eslint
 NPM           ?= npm
 PIP           ?= pip
 PYTHON        ?= python
-SASSC         ?= sassc
+SASSC         ?= sassc --style=compressed
 # As of sqlite3 version  3.42.0 (2023-05-16) we need to pass `-unsafe-testing`
 # to make adjustments in the demo database.
 SQLITE_NO_UNSAFE_TESTING := $(shell echo '.schema' | sqlite3 -unsafe-testing > /dev/null 2>&1; echo $$?)

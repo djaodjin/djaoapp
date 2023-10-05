@@ -8,6 +8,11 @@ function humanizeDate(at_time) {
 }
 
 
+function humanizeMonthDay(at_time) {
+    return moment(at_time).format('MMM DD');
+}
+
+
 function humanizeNumber(cell, unit, scale) {
     scale = scale || 1;
     var value = cell * scale;

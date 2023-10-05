@@ -5,23 +5,23 @@
          data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-        {% if not is_default_picture %}
-            <img src="{{user_picture}}" class="avatar-top">
-        {% else %}
-            <span class="menubar-label-title" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
-            <span class="menubar-label-subtitle">{{request.user.username}}</span>
-        {% endif %}
+          <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+        </div>
+        <div class="menubar-label-expanded">
+          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{request.user.username}}</span>
+          <span class="menubar-label-subtitle" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
         </div>
       </a>
     {% else %}
       <a class="menubar-label menubar-label-dropdown-toggle"
          data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
-         {% if not is_default_picture %}
-          <img src="{{user_picture}}" class="avatar-top">
-        {% else %}
-        <span data-trnc data-trnc-len="8">{{request.user.username}}</span>
-        {% endif %}
+        <div>
+          <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+        </div>
+        <div class="menubar-label-expanded">
+          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{request.user.username}}</span>
+        </div>
       </a>
     {% endif %}
 

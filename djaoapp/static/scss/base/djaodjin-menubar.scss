@@ -4,7 +4,7 @@ $menubar-link-active-color:             $nav-tabs-link-active-color;
 $menubar-link-active-bg:                $nav-tabs-link-active-bg;
 
 $menubar-dropdown-bg:                   white;
-$menubar-dropdown-color:                theme-color(primary);
+$menubar-dropdown-color:                map-get($theme-colors, "primary");
 $menubar-dropdown-link-color:           $dropdown-link-color;
 $menubar-dropdown-link-hover-color:     $dropdown-link-hover-color;
 $menubar-dropdown-link-hover-bg:        $dropdown-link-hover-bg;
@@ -203,17 +203,10 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     bottom: 5px
 }
 
-@include media-breakpoint-down(md) {
-
-    .menubar-label-expanded {
-        display: none;
-        margin-right: 0.5rem !important;
-    }
-}
-
 .avatar-top {
-    height: 30px;
-    width: 30px;
+    height: 32px;
+    width: 32px;
+    vertical-align: baseline;
     border-radius: 50%;
 }
 
@@ -223,4 +216,12 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     height: 25px;
     width: 25px;
     border-radius: 50%;
+}
+
+@include media-breakpoint-down(md) {
+
+    .menubar-label .menubar-label-expanded {
+        display: none;
+        margin-right: 0.5rem !important;
+    }
 }
