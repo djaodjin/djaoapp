@@ -11,19 +11,20 @@ django-phonenumber-field==7.1.0
 django-recaptcha==3.0.0           # 2.0.6 requires Django<4.0
 djangorestframework==3.14.0       # 3.13.1 is last version supporting Django 2.2
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.10.6
-djaodjin-extended-templates==0.4.4
-djaodjin-multitier==0.1.26
+djaodjin-deployutils==0.10.7
+djaodjin-extended-templates==0.4.5
+djaodjin-multitier==0.2.1
 djaodjin-rules==0.4.3
 djaodjin-saas==0.18.0
 djaodjin-signup==0.9.0
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
-jinja2==3.1.2
-MarkupSafe==2.1.1
+googlemaps==4.10.0
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
 #   but it still seems to work ...
 gunicorn==20.1.0
+jinja2==3.1.2
+MarkupSafe==2.1.1
 phonenumbers==8.13.13
 PyJWT==2.6.0                      # requires Python>=3.7
 pyotp==2.8.0
@@ -34,7 +35,6 @@ whitenoise==6.4.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
 WeasyPrint==52.5
-googlemaps==4.10.0
 
 # To run with DEBUG=1
 django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2

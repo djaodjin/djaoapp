@@ -17,7 +17,8 @@ $example-bg: rgb(247, 250, 252);
 $example-color: rgb(105, 115, 134);
 $example-title-color: rgb(105, 115, 134);
 $example-title-bg: rgb(227, 232, 238);
-
+$jumbotron-shadow-start-color: #000;
+$jumbotron-shadow-end-color: #eee;
 
 // variables specific to djaoapp used for code examples
 $example-title-bg-dark: rgb(79, 86, 107);
@@ -26,6 +27,8 @@ $example-title-color-dark: rgb(147, 156, 171);
 //$example-color-dark: rgb(45, 49, 68);
 $example-bg-dark: rgb(18, 20, 28);
 $example-color-dark: rgb(193, 193, 193);
+$jumbotron-shadow-start-color-dark: $jumbotron-shadow-end-color;
+$jumbotron-shadow-end-color-dark: $jumbotron-shadow-start-color;
 
 :root,
 [data-bs-theme="light"] {
@@ -33,6 +36,8 @@ $example-color-dark: rgb(193, 193, 193);
     --example-title-color: #{$example-title-color};
     --example-bg: #{$example-bg};
     --example-color: #{$example-color};
+    --jumbotron-shadow-start-color: #{$jumbotron-shadow-start-color};
+    --jumbotron-shadow-end-color: #{$jumbotron-shadow-end-color};
 }
 
 @if $enable-dark-mode {
@@ -43,6 +48,8 @@ $example-color-dark: rgb(193, 193, 193);
     --example-title-color: #{$example-title-color-dark};
     --example-bg: #{$example-bg-dark};
     --example-color: #{$example-color-dark};
+    --jumbotron-shadow-start-color: #{$jumbotron-shadow-start-color-dark};
+    --jumbotron-shadow-end-color: #{$jumbotron-shadow-end-color-dark};
   }
 }
 
@@ -224,7 +231,7 @@ body{
 
 .faq-list
 {
-    box-shadow: 0px 0px 20px #eee;
+    box-shadow: 3px 3px var(--jumbotron-shadow-start-color) 0.5em 0.5em var(--jumbotron-shadow-end-color);
     border-radius: 3px;
 }
 
@@ -568,12 +575,6 @@ pre.code{
     padding-bottom: 10px;
 }
 
-// Fix for FOUC
-html {
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
 .croppa-container {
    background-color: transparent;
    margin-bottom: 25px;
@@ -590,4 +591,17 @@ html {
   left: 50%;
   transform: translateX(-50%);
   display: block;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 15%;
+  right: 10px;
+  cursor: pointer;
+}
+
+// Fix for FOUC
+html {
+  visibility: visible !important;
+  opacity: 1 !important;
 }

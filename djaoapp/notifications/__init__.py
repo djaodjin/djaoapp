@@ -1,13 +1,14 @@
+# Copyright (c) 2023, DjaoDjin inc.
+# see LICENSE
 from importlib import import_module
 
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 
 def get_notification_backend():
-    WEBHOOK_BACKEND = 'djaoapp.notifications.backends.NotificationWebhookBackend'
-
-    if settings.NOTIFICATION_BACKEND == WEBHOOK_BACKEND and \
-        not getattr(settings, 'NOTIFICATION_WEBHOOK_URL', None):
+    if ((settings.NOTIFICATION_BACKEND ==
+        'djaoapp.notifications.backends.NotificationWebhookBackend') and
+        not getattr(settings, 'NOTIFICATION_WEBHOOK_URL', None)):
         raise ImproperlyConfigured('You must set NOTIFICATION_WEBHOOK_URL if '\
             'you are using the webhook backend')
 

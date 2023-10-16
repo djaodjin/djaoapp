@@ -3,6 +3,7 @@
 {% block saas_title %}{% trans %}Plans{% endtrans %}{% endblock %}
 
 {% block help_menus %}
+<li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="plan-new" class="nav-link{% if request.path == urls.provider.plan_new %} active{% endif %}" href="{{urls.provider.plan_new}}">{% trans %}New Plan{% endtrans %}</a>
 </li>

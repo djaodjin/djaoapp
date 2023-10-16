@@ -33,7 +33,7 @@ DB_USER = None
 DB_PASSWORD = None
 
 SEND_EMAIL = True
-RULES_APP_MODEL = 'djaoapp_extras.App'
+MULTITIER_SITE_MODEL = None
 
 #pylint: disable=undefined-variable
 STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
@@ -49,12 +49,12 @@ SOCIAL_AUTH_SAML_ENABLED_IDPS = {}
 # Defaults for captcha keys
 RECAPTCHA_PUBLIC_KEY = ""
 RECAPTCHA_PRIVATE_KEY = ""
+GOOGLE_API_KEY = ""
 
 ENABLES_PROCESSOR_TEST_KEYS = True
 
 NOTIFICATION_WEBHOOK_URL = None
 
-GOOGLE_API_KEY = ""
 
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
@@ -97,10 +97,10 @@ for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
 
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
-if getattr(sys.modules[__name__], 'RULES_APP_MODEL', None):
-    RULES_APPS = (RULES_APP_MODEL.split('.', maxsplit=1)[0],)
+if getattr(sys.modules[__name__], 'MULTITIER_SITE_MODEL', None):
+    MULTITIER_APPS = (MULTITIER_SITE_MODEL.split('.', maxsplit=1)[0],)
 else:
-    RULES_APPS = tuple([])
+    MULTITIER_APPS = tuple([])
 
 if DEBUG:
     if not FEATURES_REVERT_TO_DJANGO:
@@ -108,17 +108,17 @@ if DEBUG:
         # for DjangoTemplates will fail when we are using Jinja2 templates
         if DJANGO_VERSION[0] >= 2:
             # django-debug-toolbar==1.11 does not support Django2.2
-            DEBUG_APPS = RULES_APPS + (
+            DEBUG_APPS = MULTITIER_APPS + (
                 'django_extensions',
             )
         else:
-            DEBUG_APPS = RULES_APPS + (
+            DEBUG_APPS = MULTITIER_APPS + (
                 'debug_toolbar',
                 'debug_panel',
                 'django_extensions',
             )
     else:
-        DEBUG_APPS = RULES_APPS + (
+        DEBUG_APPS = MULTITIER_APPS + (
             'django.contrib.admin',
             'django.contrib.admindocs',
             'debug_toolbar',
@@ -126,7 +126,7 @@ if DEBUG:
             'django_extensions',
         )
 else:
-    DEBUG_APPS = RULES_APPS
+    DEBUG_APPS = MULTITIER_APPS
 
 if API_DEBUG:
     ENV_INSTALLED_APPS = DEBUG_APPS + (
@@ -627,8 +627,6 @@ for config_param in ['DEFAULT_DOMAIN', 'DEFAULT_SITE']:
 
 
 # Software-as-a-Service (pages editor)
-SHOW_EDIT_TOOLS = False
-
 def theme_dir(account):
     return os.path.join(MULTITIER['THEMES_DIRS'][0], str(account))
 
@@ -730,7 +728,6 @@ SAAS = {
 # Software-as-a-Service (forward requests with session data)
 RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
-    'APP_SERIALIZER': 'djaoapp.api.serializers.AppSerializer',
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,

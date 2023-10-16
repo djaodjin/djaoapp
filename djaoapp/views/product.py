@@ -18,6 +18,7 @@ from django.utils._os import safe_join
 from django.views.generic import TemplateView
 from django.views.static import serve
 from extended_templates import settings as themes_settings
+from extended_templates.models import get_show_edit_tools
 from extended_templates.views.pages import PageMixin
 from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
@@ -33,7 +34,6 @@ from ..thread_locals import (get_active_theme, get_current_broker,
     is_current_broker)
 from ..mixins import DjaoAppMixin
 from .redirects import OrganizationRedirectView
-from ..utils import get_show_edit_tools
 
 LOGGER = logging.getLogger(__name__)
 

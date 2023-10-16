@@ -37,7 +37,7 @@
     </p>
     <form method="post" action="{{urls.user.password_reset}}?noreset=1{% if next %}&next={{next}}{% endif %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-      <input type="hidden" name="username" value="{{form['username'].value()}}">
+      <input type="hidden" name="username" value="{{form['username'].value()}}" autocomplete="username">
       <button id="email-verification-link" class="btn btn-secondary">Email me a one-time link</button>
     </form>
   </div>

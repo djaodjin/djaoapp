@@ -49,7 +49,7 @@
       "account": 2,
       "is_active": true,
       "domain": null,
-      "tag": "streetside"
+      "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 1
 },

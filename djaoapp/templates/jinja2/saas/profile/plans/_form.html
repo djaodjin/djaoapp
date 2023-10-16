@@ -4,34 +4,88 @@
 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
     method="post" action=".{% if next %}/?next={{next}}{% endif %}"
     @submit.prevent="updatePlan">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-    {{input_field(form['title'], form.hide_labels)}}
-    {{input_field(form['description'], form.hide_labels)}}
-    <fieldset>
-        <legend>{% trans %}Pricing{% endtrans %}</legend>
-        <div class="row">
-          <div class="col-12">
-            {{input_field(form['unit'], form.hide_labels)}}
-            {{input_field(form['period_amount'], form.hide_labels)}}
-            {{input_field(form['period_type'], form.hide_labels)}}
-          </div>
-        </div>
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+  <div class="row">
+    <div class="col-md-6">
+      {{input_field(form['title'], form.hide_labels)}}
+      {{input_field(form['description'], form.hide_labels)}}
+    </div>
+    <div class="col-md-6">
+      <p>
+      </p>
+    </div>
+  </div>
+  <fieldset>
+    <legend>{% trans %}Pricing{% endtrans %}</legend>
+    <div class="row">
+      <div class="col-md-6">
+        {{input_field(form['unit'], form.hide_labels)}}
+        {{input_field(form['period_amount'], form.hide_labels)}}
+        {{input_field(form['period_type'], form.hide_labels)}}
         {{input_field(form['period_length'], form.hide_labels)}}
-    </fieldset>
-    <fieldset>
-        <legend>{% trans %}Advance discounts{% endtrans %}</legend>
+      </div>
+      <div class="col-md-6">
+        <p>
+        </p>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>{% trans %}Options{% endtrans %}</legend>
+    <div class="row">
+      <div class="col-md-6">
+        {{input_field(form['renewal_type'], form.hide_labels)}}
+      </div>
+      <div class="col-md-6">
+        <p>
+        </p>
+      </div>
+    </div>
+  </fieldset>
+  <hr />
+  <fieldset>
+    <legend>{% trans %}Advance discounts{% endtrans %}</legend>
+    <div class="row">
+      <div class="col-md-6">
         {{input_field(form['advance_discount_type'], form.hide_labels)}}
         {{input_field(form['advance_discount_value'], form.hide_labels)}}
         {{input_field(form['advance_discount_length'], form.hide_labels)}}
-    </fieldset>
-    <fieldset>
-        <legend>{% trans %}Extra Options{% endtrans %}</legend>
-        {{input_field(form['renewal_type'], form.hide_labels)}}
-    </fieldset>
-    <div class="form-action text-center">
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
-        </div>
+      </div>
+      <div class="col-md-6 text-muted">
+        <p>
+{% trans %}A 20% discount on a monthly plan for a year paid in advance would be entered as{% endtrans %}:
+        </p>
+        <small>
+          <div>
+            <strong>Type</strong>: <span>percentage</span>
+          </div>
+          <div>
+            <strong>Value</strong>: <span>20</span>
+          </div>
+          <div>
+            <strong>Length</strong>: <span>12</span>
+          </div>
+        </small>
+        <p class="mt-3">
+{% trans %}This would result in the following options at checkout{% endtrans %}:
+        </p>
+        <small>
+          <table class="table">
+            <tr><td class="text-end">$29</td><td>{% trans %}Subscription to plan (1 month){% endtrans %}</td></tr>
+            <tr><td class="text-end">$278</td><td>{% trans %}Subscription to plan (12 months a 20% off){% endtrans %}</td></tr>
+          </table>
+        </small>
+      </div>
     </div>
+  </fieldset>
+  <div class="form-action text-center">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">{% if form.submit_title %}{{form.submit_title}}{% else %}{% trans %}Submit{% endtrans %}{% endif %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
 {% endblock %}

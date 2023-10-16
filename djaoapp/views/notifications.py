@@ -6,12 +6,12 @@ from django.template.exceptions import (
     TemplateDoesNotExist as DjangoTemplateDoesNotExist)
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.generic import TemplateView
+from extended_templates.models import get_show_edit_tools
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 from rules.mixins import AppMixin
 
 from ..api.notifications import get_test_notification_context
 from ..compat import reverse
-from ..utils import get_show_edit_tools
 
 LOGGER = logging.getLogger(__name__)
 

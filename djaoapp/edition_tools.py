@@ -13,6 +13,7 @@ from django.core.files.storage import get_storage_class
 from django.template import loader
 from django.utils.module_loading import import_string
 from extended_templates.compat import render_template
+from extended_templates.models import get_show_edit_tools
 from extended_templates.views.pages import (
     inject_edition_tools as inject_edition_tools_base)
 from rules import settings as rules_settings
@@ -22,7 +23,6 @@ from saas.models import get_broker, is_broker
 from saas.utils import get_organization_model
 
 from .compat import csrf, is_authenticated, reverse, six
-from .utils import get_show_edit_tools
 
 
 LOGGER = logging.getLogger(__name__)

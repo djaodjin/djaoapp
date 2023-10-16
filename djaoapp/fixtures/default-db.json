@@ -1834,7 +1834,7 @@
       "is_active": true,
       "account": 2,
       "domain": null,
-      "tag": "streetside"
+      "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 1
 },
@@ -1846,7 +1846,7 @@
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
-      "tag": "streetside"
+      "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 3
 },

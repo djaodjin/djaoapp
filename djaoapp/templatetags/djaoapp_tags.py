@@ -1,4 +1,4 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import (
@@ -7,6 +7,7 @@ from django import template
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
+from multitier.mixins import build_absolute_uri
 from saas.templatetags.saas_tags import attached_organization
 
 from ..compat import force_str, reverse, six, urljoin
@@ -44,14 +45,17 @@ def pluralize(text):
 
 
 @register.filter()
-def djasset(path):
-    path_prefix = '/'
-    url_path = urljoin(path_prefix, path)
-    # If we run the following code, we can remove the prefix in templates
-    # but we loose the ability to pick an assets anywhere in 'htdocs'.
-    #if not url_path.startswith(settings.STATIC_URL):
-    #    url_path = urljoin(settings.STATIC_URL, url_path)
-    return url_path
+def djasset(request):
+    if isinstance(request, six.string_types):
+        path_prefix = '/'
+        path = request
+        url_path = urljoin(path_prefix, path)
+        # If we run the following code, we can remove the prefix in templates
+        # but we loose the ability to pick an assets anywhere in 'htdocs'.
+        #if not url_path.startswith(settings.STATIC_URL):
+        #    url_path = urljoin(settings.STATIC_URL, url_path)
+        return url_path
+    return build_absolute_uri(request).rstrip('/')
 
 
 @register.simple_tag

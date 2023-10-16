@@ -179,9 +179,9 @@ class Command(BaseCommand):
         for _ in range(0, nb_subscriptions):
             rank = random.randint(1, nb_plans - 1)
             plan = Plan.objects.all().order_by('pk')[rank]
-            created_at = fake.date_time_between_dates(
+            created_at = datetime_or_now(fake.date_time_between_dates(
                 datetime_start=at_time - datetime.timedelta(365),
-                datetime_end=at_time + datetime.timedelta(365))
+                datetime_end=at_time + datetime.timedelta(365)))
             Subscription.objects.create(
                 organization=subscriber,
                 plan=plan,

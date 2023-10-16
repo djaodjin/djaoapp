@@ -27,7 +27,7 @@ def is_platformed_site():
     return not (get_current_broker()._state.db == DEFAULT_DB_ALIAS)
 
 def is_testing(site):
-    return site.tag and 'testing' in site.tag
+    return site.extra and 'testing' in site.extra
 
 
 def dynamic_processor_keys(provider, livemode=None):
