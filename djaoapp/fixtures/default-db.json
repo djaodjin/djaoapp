@@ -720,12 +720,37 @@
 },
 {
     "fields": {
+      "date_joined": "2022-01-01T00:00:00+00:00",
+      "email": "xia+12@localhost.localdomain",
+      "first_name": "Xia12",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2022-01-01T00:00:00+00:00",
+      "last_name": "ResetPasswordEmailScanner",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "reset-passwd-email-scanner"
+    },
+    "model": "auth.User", "pk": 12
+},
+{
+    "fields": {
+      "slug": "reset-passwd-email-scanner",
+      "created_at": "2023-01-10T00:00:00-00:00",
+      "email": "xia+12@localhost.localdomain",
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe279",
+      "user": 12
+    },
+    "model": "signup.Contact", "pk": 12
+},
+{
+    "fields": {
       "slug": "contact-bot-activate15",
       "created_at": "2023-01-10T00:00:00-00:00",
       "email": "contact.bot.activate.api15@locahost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe278"
     },
-    "model": "signup.Contact", "pk": 12
+    "model": "signup.Contact", "pk": 13
 },
 {
     "fields": {

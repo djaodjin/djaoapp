@@ -28,13 +28,12 @@
         {% if urls.plan_subscribers %}
         <div class="btn-actions text-end">
           <button id="activate-plan"
-                  class="activate btn btn-primary"
+                  class="btn btn-primary"
                   value="{% if form.instance.is_active %}1{% else %}0{% endif %}"
                   data-trip-index="2"
                   data-trip-position="s"
                   data-trip-content="<p>{% trans %}Toggle this plan between available for subscription or not.{% endtrans %}</p>"
                   @click="togglePlanStatus"
-                  v-bind:class="{activated: isActive}"
                   v-text="isActive ? '{% trans %}Deactivate{% endtrans %}' : '{% trans %}Activate{% endtrans %}'"></button>
           {% trans %}Users can only subscribe to active plans.{% endtrans %}
         </div>

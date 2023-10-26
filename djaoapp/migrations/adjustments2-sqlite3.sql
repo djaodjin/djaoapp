@@ -1,1 +1,1 @@
-CREATE UNIQUE INDEX uniq_email ON auth_user(email) WHERE email IS NOT NULL;
+CREATE UNIQUE INDEX uniq_email ON auth_user(email COLLATE NOCASE) WHERE email IS NOT NULL;
