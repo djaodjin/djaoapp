@@ -177,7 +177,7 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
         return context
 
 
-class PricingView(DjaoAppMixin, PageMixin, SessionProxyMixin, CartPlanListView):
+class PricingView(ProxyPageMixin, CartPlanListView):
     """
     WYSIWYG editable pricing page for a ``rules.App``.
 

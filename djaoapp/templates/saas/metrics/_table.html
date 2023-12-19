@@ -1,9 +1,9 @@
 <table class="table" id="data-in-rows" style="font-size:0.7em;">
   <tr class="position-relative">
     <td class="row-header"></td>
-    <td v-for="col in currentTableDates" class="row-body" v-cloak>
-        [[monthHeading(col[0])]]
-    </td>
+    <th v-for="col in currentTableDates" class="row-body" v-cloak>
+        [[ $globals.humanizePeriodHeading(col[0], params.period, '{{organization.default_timezone}}') ]]
+    </th>
   </tr>
   <tr :id="row.slug" v-for="(row, index) in currentTableData.data" :key="row.slug" class="position-relative">
     <td class="text-nowrap row-header" v-cloak>
@@ -17,7 +17,8 @@
         <span class="align-middle">[[row.title ? row.title : row.slug]]</span>
       </div>
     </td>
-    <td v-for="col in row.values" :key="col[0].toISOString()" :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-end row-body" v-cloak>
+    <td v-for="col in row.values"
+        :title="$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale, false)" class="text-end row-body" v-cloak>
         [[$globals.humanizeNumber(col[1], currentTableData.unit, currentTableData.scale)]]
     </td>
   </tr>

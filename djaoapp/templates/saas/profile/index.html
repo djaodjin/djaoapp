@@ -184,8 +184,7 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button id="cancel-delete"
-                  data-bs-dismiss="modal"
+          <button data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="delete-organization-btn"
                   class="btn btn-danger"
@@ -201,14 +200,15 @@
        id="verify-email" tabindex="-1" role="dialog"
        aria-labelledby="{% trans %}Verify e-mail{% endtrans %}"
        aria-hidden="true">
-    <form class="modal-dialog">
+    <form class="modal-dialog" method="POST" @submit.prevent="updateProfile">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Verify e-mail{% endtrans %} ...</h5>
           <button type="button" class="btn-close"
                   data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" v-show="!codeSent">
           <p>
 {% trans %}We will send an e-mail with a one-time verification link. Please click, or copy/paste the link in a browser window, to verify the e-mail address.{% endtrans %}
           </p>
@@ -216,14 +216,23 @@
             {% trans %}Are you ready to verify the email address?{% endtrans %}
           </p>
         </div>
+        <div class="modal-body" v-show="codeSent">
+          <p>
+            {% trans %}We sent a code to your e-mail address.{% endtrans %}
+          </p>
+          <label class="form-label">{% trans %}Verification Code{% endtrans %}</label>
+          <input class="form-control" type="text" name="email_code" v-model="emailCode"></input>
+        </div>
         <div class="modal-footer">
-          <button id="cancel-delete"
-                  data-bs-dismiss="modal"
+          <button data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-email-btn"
                   class="btn btn-primary"
+                  @click.prevent="verifyEmail" v-if="!codeSent">{% trans %}Email link{% endtrans %}</button>
+          <button type="submit" id="verify-email-code"
+                  class="btn btn-primary"
                   data-bs-dismiss="modal"
-                  @click="verifyEmail">{% trans %}Email link{% endtrans %}</button>
+                  v-if="codeSent">{% trans %}Verify{% endtrans %}</button>
         </div>
       </div>
     </form>
@@ -234,7 +243,8 @@
        id="verify-phone" tabindex="-1" role="dialog"
        aria-labelledby="{% trans %}Verify phone{% endtrans %}"
        aria-hidden="true">
-    <form class="modal-dialog">
+    <form class="modal-dialog" method="POST" @submit.prevent="updateProfile">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{% trans %}Verify phone number{% endtrans %} ...</h5>
@@ -250,21 +260,19 @@
           </p>
         </div>
         <div class="modal-body" v-if="codeSent">
-            <label>Code</label>
-            <input class="form-control" type="text" maxlength="4" ref="code">
+            <label class="form-label">{% trans %}Verification Code{% endtrans %}</label>
+            <input class="form-control" type="text" name="phone_code" v-model="phoneCode"></input>
         </div>
         <div class="modal-footer">
-          <button id="cancel-delete"
-                  data-bs-dismiss="modal"
+          <button data-bs-dismiss="modal"
                   class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-phone-btn"
                   class="btn btn-primary"
                   @click.prevent="verifyPhone" v-if="!codeSent">{% trans %}Text a code{% endtrans %}</button>
-          <button type="button" id="verify-phone-btn"
+          <button type="submit" id="verify-phone-code"
                   class="btn btn-primary"
                   data-bs-dismiss="modal"
-                  @click.prevent="submitCode"
-                  v-if="codeSent">{% trans %}Submit code{% endtrans %}</button>
+                  v-if="codeSent">{% trans %}Verify{% endtrans %}</button>
         </div>
       </div>
     </form>

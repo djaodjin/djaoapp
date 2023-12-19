@@ -8,8 +8,9 @@ from operator import itemgetter
 from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView
 
+from saas import humanize
 from saas.models import get_broker, Charge
-from saas.metrics.base import day_periods
+from saas.metrics.base import generate_periods
 from saas.utils import get_role_model
 from signup.api.users import (OTPChangeAPIView as OTPChangeBaseAPIView,
     UserDetailAPIView as UserDetailBaseAPIView,
@@ -147,7 +148,7 @@ class RecentActivityAPIView(ListAPIView):
     serializer_class = RecentActivitySerializer
 
     def get_queryset(self):
-        start_at = day_periods()[0]
+        start_at = generate_periods(humanize.DAILY)[0]
         users = get_user_model().objects.filter(
             last_login__gt=start_at).order_by('-last_login')[:5]
         charges = Charge.objects.filter(

@@ -1,0 +1,57 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{% trans %}Weekly sales report{% endtrans %}
+{% endblock %}
+
+{% block html_content %}
+<h4 id="sales-title">{% trans %}Sales report for the week ending {{date}}{% endtrans %}</h4>
+
+<style>
+    #sales-title
+    {
+        text-align: center;
+    }
+
+    #sales-data
+    {
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+        margin: 30px 0;
+    }
+
+    #sales-data th,
+    #sales-data td
+    {
+        border: 1px solid #ccc;
+        padding: 7px 10px;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: right;
+    }
+</style>
+
+<table id="sales-data">
+    <thead>
+        <tr>
+            <th>{% trans %}Description{% endtrans %}</th>
+            <th>{% trans %}Total in USD{% endtrans %}</th>
+            <th>{% trans %}vs. last week{% endtrans %}</th>
+            <th>{% trans %}vs. same week a year ago{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in table %}
+            <tr>
+                <td>{{row.title}}</td>
+                <td>{{row.vals.last}}</td>
+                <td>{{row.vals.prev}}</td>
+                <td>{{row.vals.prev_year}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>
+<a href="https://djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
+</p>
+{% endblock %}

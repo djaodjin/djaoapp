@@ -101,14 +101,20 @@ function updateChart(container, data, unit, dataScale, extra) {
         var labels = data.length > 0 ? data[0].values : [];
         var j = 0;
         var i = 0;
+        for( i = 0; i < labels.length; ++i ) {
+            if( typeof labels[i][0] === 'string' ) {
+                labels[i][0] = new Date(labels[i][0]);
+            }
+            dateTicks.push(labels[i][0]);
+        }
         for( j = 0; j < data.length; ++j ) {
             var values = data[j].values;
             for( i = 0; i < values.length; ++i ) {
                 if( values[i][1] > maxY ) { maxY = values[i][1]; }
+                if( typeof data[j].values[i][0] === 'string' ) {
+                    data[j].values[i][0] = dateTicks[i];
+                }
             }
-        }
-        for( i = 0; i < labels.length; ++i ) {
-            dateTicks.push(labels[i][0]);
         }
 
         var marginLeft = maxY * dataScale;
@@ -194,11 +200,8 @@ function updateChart(container, data, unit, dataScale, extra) {
             .showMaxMin(false)     // removes max and min as ticks in x-axis
             .tickValues(dateTicks) // forces ticks to match dates in tooltip
             .tickFormat(function(d) {
-                if(d.date() !== 1 || d.hour() !== 0
-                   || d.minute() !== 0 || d.second() !== 0 ) {
-                    return d.format("MMM'YY*");
-                }
-                return d.clone().subtract(1, 'months').format("MMM'YY");
+                const tickLabel = humanizePeriodHeading(d, 'monthly');
+                return tickLabel;
             });
         chart.xScale(d3.time.scale());
 
@@ -299,11 +302,7 @@ function updateBarChart(container, data, unit, dataScale, extra) {
             .groupSpacing(0.1);   // Distance between each group of bars.
         chart.xAxis
             .tickFormat(function(d) {
-                if(d.date() !== 1 || d.hour() !== 0
-                   || d.minute() !== 0 || d.second() !== 0 ) {
-                    return d.format("MMM'YY*");
-                }
-                return d.clone().subtract(1, 'months').format("MMM'YY");
+                return humanizePeriodHeading(d, 'monthly');
             });
         if( unit ) {
             // If we have a unit display it along the axis.

@@ -57,7 +57,7 @@ WORKDIR /app/reps/djaoapp
 # such that we are able to run the container as a non-root user.
 RUN mkdir -p /etc/djaoapp /var/run/djaoapp
 RUN sed -e "s,\%(SECRET_KEY)s,`/app/bin/python -c 'import sys ; from random import choice ; sys.stdout.write("".join([choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^*-_=+") for i in range(50)]))'`," etc/credentials > /etc/djaoapp/credentials
-RUN sed -e "s,^DB_LOCATION *= *\".*\",DB_LOCATION = \"sqlite3:///app/reps/djaoapp/db.sqlite\"," -e 's,%(DB_FILENAME)s,/app/reps/djaoapp/db.sqlite,g' etc/site.conf > /etc/djaoapp/site.conf
+RUN sed -e "s,^DB_SECRET_LOCATION *= *\".*\",DB_SECRET_LOCATION = \"sqlite3:///app/reps/djaoapp/db.sqlite\"," -e 's,%(DB_FILENAME)s,/app/reps/djaoapp/db.sqlite,g' etc/site.conf > /etc/djaoapp/site.conf
 RUN sed -e 's,%(APP_NAME)s,djaoapp,g' -e 's,%(LOCALSTATEDIR)s,/var,g'\
   -e '/pidfile=/d' -e 's,bind="127.0.0.1:%(APP_PORT)s",bind="0.0.0.0:80",'\
   etc/gunicorn.conf > /etc/djaoapp/gunicorn.conf

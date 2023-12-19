@@ -3,13 +3,9 @@
 
 var DATE_FORMAT = 'MMM DD, YYYY';
 
+
 function humanizeDate(at_time) {
     return moment(at_time).format(DATE_FORMAT);
-}
-
-
-function humanizeMonthDay(at_time) {
-    return moment(at_time).format('MMM DD');
 }
 
 
@@ -66,6 +62,89 @@ function humanizeNumber(cell, unit, scale) {
 
     return symbolOnLeft ?
         symbol + valueFormatted : valueFormatted + symbol;
+};
+
+
+function humanizePeriodHeading(atTime, periodType, tzString) {
+    // XXX duplicate of `asPeriodHeading` in djaodjin-saas-vue.js
+    var datetime = null;
+    if( typeof atTime === 'string' ) {
+        datetime = new Date(atTime);
+    } else {
+        datetime = new Date(atTime.valueOf());
+    }
+    // `datetime` contains aggregated metrics before
+    // (not including) `datetime`.
+    datetime = new Date(datetime.valueOf() - 1);
+    if( typeof tzString === 'undefined' ) {
+        tzString = "UTC";
+    }
+    // `datetime` is in UTC but the heading must be printed
+    // in the provider timezone, and not the local timezone
+    // of the browser.
+    datetime = datetime.toLocaleString('en-US', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false,
+        timeZone: tzString});
+    const regx = new RegExp(
+        '(?<month>\\d\\d)/(?<day>\\d\\d)/(?<year>\\d\\d\\d\\d), (?<hour>\\d\\d):(?<minute>\\d\\d):(?<second>\\d\\d)');
+    const parts = regx.exec(datetime);
+    const year = parseInt(parts.groups['year']);
+    const monthIndex = parseInt(parts.groups['month']) - 1;
+    const day = parseInt(parts.groups['day']);
+    const hour = parseInt(parts.groups['hour']);
+    const minute = parseInt(parts.groups['minute']);
+    const second = parseInt(parts.groups['second']);
+    const lang = navigator.language;
+    if( periodType == 'yearly' ) {
+        return parts.groups['year'] + (
+            monthIndex !== 11 ? '*' : '');
+    }
+    if( periodType == 'monthly' ) {
+        const dateTimeFormat = new Intl.DateTimeFormat(lang, {
+            year: 'numeric',
+            month: 'short'
+        });
+        return dateTimeFormat.format(
+            new Date(year, monthIndex)) + ((hour !== 23 &&
+                minute !== 59 && second !== 59)  ? '*' : '');
+    }
+    if( periodType == 'weekly' ) {
+        const dateTimeFormat = new Intl.DateTimeFormat(lang, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short'
+        });
+        return dateTimeFormat.format(
+            new Date(year, monthIndex, day)) + ((hour !== 23 &&
+                minute !== 59 && second !== 59)  ? '*' : '');
+    }
+    if( periodType == 'daily' ) {
+        const dateTimeFormat = new Intl.DateTimeFormat(lang, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short'
+        });
+        return dateTimeFormat.format(
+            new Date(year, monthIndex, day)) + ((hour !== 23 &&
+                minute !== 59 && second !== 59)  ? '*' : '');
+    }
+    if( periodType == 'hourly' ) {
+        const dateTimeFormat = new Intl.DateTimeFormat(lang, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false,
+        });
+        return dateTimeFormat.format(
+            new Date(year, monthIndex, day, hour)) + ((minute !== 59 &&
+                second !== 59)  ? '*' : '');
+    }
+    return datetime.toISOString();
 };
 
 

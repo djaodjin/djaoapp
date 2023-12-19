@@ -18,6 +18,12 @@
   <a id="balance-sheet" class="nav-link{% if request.path == urls.provider.ledger_balances %} active{% endif %}" href="{{urls.provider.ledger_balances}}">{% trans %}Balance Sheet{% endtrans %}</a>
 </li>
 {% endif %}
+{% if urls.provider and urls.provider.metrics_balances_due %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="balance-due" class="nav-link{% if request.path == urls.provider.metrics_balances_due %} active{% endif %}" href="{{urls.provider.metrics_balances_due}}">{% trans %}Balances Due{% endtrans %}</a>
+</li>
+{% endif %}
 {% endblock %}
 
 
@@ -50,8 +56,24 @@
     </ul>
     <div class="tab-content">
       <div role="tabpanel" id="cash" :class="['tab-pane', activeClass(0)]" key="cash">
-        <form class="form-inline date-chooser pull-right mb-3">
-          {% include "_params_ends_at_field.html" %}
+        <form class="my-3 pull-right">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="row">
+            <div class="col-auto">
+              <select class="form-control" name="period"
+                      v-model="period"
+                      @change="prepareCurrentTabData">
+                <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
+                <option value="daily">{% trans %}Daily{% endtrans %}</option>
+                <option value="weekly">{% trans %}Weekly{% endtrans %}</option>
+                <option value="monthly">{% trans %}Monthly{% endtrans %}</option>
+                <option value="yearly">{% trans %}Yearly{% endtrans %}</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              {% include "_params_ends_at_field.html" %}
+            </div>
+          </div>
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">
@@ -69,8 +91,24 @@
 
       {# balances #}
       <div role="tabpanel" id="balances" :class="['tab-pane', activeClass(1)]" key="balances">
-        <form class="form-inline date-chooser pull-right mb-3">
-          {% include "_params_ends_at_field.html" %}
+        <form class="my-3 pull-right">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="row">
+            <div class="col-auto">
+              <select class="form-control" name="period"
+                      v-model="period"
+                      @change="prepareCurrentTabData">
+                <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
+                <option value="daily">{% trans %}Daily{% endtrans %}</option>
+                <option value="weekly">{% trans %}Weekly{% endtrans %}</option>
+                <option value="monthly">{% trans %}Monthly{% endtrans %}</option>
+                <option value="yearly">{% trans %}Yearly{% endtrans %}</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              {% include "_params_ends_at_field.html" %}
+            </div>
+          </div>
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">
@@ -88,8 +126,24 @@
 
       {# customer #}
       <div role="tabpanel" id="customer" :class="['tab-pane', activeClass(2)]" key="customer">
-        <form class="form-inline date-chooser pull-right mb-3">
-          {% include "_params_ends_at_field.html" %}
+        <form class="my-3 pull-right">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="row">
+            <div class="col-auto">
+              <select class="form-control" name="period"
+                      v-model="period"
+                      @change="prepareCurrentTabData">
+                <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
+                <option value="daily">{% trans %}Daily{% endtrans %}</option>
+                <option value="weekly">{% trans %}Weekly{% endtrans %}</option>
+                <option value="monthly">{% trans %}Monthly{% endtrans %}</option>
+                <option value="yearly">{% trans %}Yearly{% endtrans %}</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              {% include "_params_ends_at_field.html" %}
+            </div>
+          </div>
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">
@@ -104,8 +158,24 @@
 
       {# plan #}
       <div role="tabpanel" id="plan" :class="['tab-pane', activeClass(3)]" key="plan">
-        <form class="form-inline date-chooser pull-right mb-3">
-          {% include "_params_ends_at_field.html" %}
+        <form class="my-3 pull-right">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="row">
+            <div class="col-auto">
+              <select class="form-control" name="period"
+                      v-model="period"
+                      @change="prepareCurrentTabData">
+                <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
+                <option value="daily">{% trans %}Daily{% endtrans %}</option>
+                <option value="weekly">{% trans %}Weekly{% endtrans %}</option>
+                <option value="monthly">{% trans %}Monthly{% endtrans %}</option>
+                <option value="yearly">{% trans %}Yearly{% endtrans %}</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              {% include "_params_ends_at_field.html" %}
+            </div>
+          </div>
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">

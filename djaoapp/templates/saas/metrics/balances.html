@@ -20,7 +20,7 @@
               <th>{% trans %}Title{% endtrans %}</th>
               <td class="text-end"
                   v-for="col in values" v-cloak>
-                  [[monthHeading(col[0])]]
+                  [[ $globals.humanizePeriodHeading(col[0], params.period, '{{organization.default_timezone}}') ]]
               </td>
           </tr>
       </thead>

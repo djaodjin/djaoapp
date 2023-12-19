@@ -16,7 +16,7 @@ from saas.signals import (card_expires_soon, charge_updated,
     renewal_charge_failed, role_grant_created, role_request_created,
     role_grant_accepted, subscription_grant_accepted,
     subscription_grant_created, subscription_request_accepted,
-    subscription_request_created, weekly_sales_report_created)
+    subscription_request_created, period_sales_report_created)
 from signup.helpers import has_invalid_password
 from signup.models import Contact
 from signup.signals import (user_registered, user_activated,
@@ -2513,9 +2513,9 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(weekly_sales_report_created,
-          dispatch_uid="weekly_sales_report_created_notice")
-def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
+@receiver(period_sales_report_created,
+          dispatch_uid="period_sales_report_created_notice")
+def period_sales_report_created_notice(sender, provider, dates, data, **kwargs):
     """
     Weekly sales report
 
@@ -2528,7 +2528,7 @@ def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
     .. code-block:: json
 
        {
-          "event": "weekly_sales_report_created",
+          "event": "period_sales_report_created",
           "broker": {
             "slug": "djaoapp",
             "printable_name": "DjaoApp",
@@ -2591,7 +2591,7 @@ def weekly_sales_report_created_notice(sender, provider, dates, data, **kwargs):
         'table': data,
         'date': date
     }
-    send_notification('weekly_sales_report_created',
+    send_notification('period_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(
             context),
         site=site)

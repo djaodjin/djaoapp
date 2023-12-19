@@ -936,7 +936,7 @@ def get_notification_schema(notification_slug, api_base_url=None):
     elif notification_slug == 'card_updated':
         serializer = ChangeProfileNotificationSerializer()
         docstring = notification_signals.card_updated_notice.__doc__
-    elif notification_slug == 'weekly_sales_report_created':
+    elif notification_slug == 'period_sales_report_created':
         serializer = AggregatedSalesNotificationSerializer()
         docstring = \
             notification_signals.weekly_sales_report_created_notice.__doc__

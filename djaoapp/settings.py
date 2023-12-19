@@ -23,7 +23,7 @@ USE_FIXTURES = True
 SAAS_ORGANIZATION_MODEL = 'saas.Organization'
 
 ALLOWED_HOSTS = ('*',)
-BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = False
+SKIP_EXPIRATION_CHECK = False
 
 DB_ENGINE = 'sqlite3'
 DB_NAME = os.path.join(BASE_DIR, 'db.sqlite')
@@ -40,6 +40,7 @@ STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
+OPENAPI_SPEC_COMPLIANT = False
 
 CONTACT_DYNAMIC_VALIDATOR = None
 
@@ -70,12 +71,11 @@ if sys.version_info[0] < 3:
     # Requires Python3+ to create API docs
     API_DEBUG = False
 
+# OPENAPI_SPEC_COMPLIANT
 # Remove extra information used for documentation like examples, etc.
-OPENAPI_SPEC_COMPLIANT = (int(os.getenv('OPENAPI_SPEC_COMPLIANT', "0")) > 0)
-
-if os.getenv('BYPASS_VERIFICATION_KEY_EXPIRED_CHECK'):
-    BYPASS_VERIFICATION_KEY_EXPIRED_CHECK = (int(os.getenv(
-        'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK', "0")) > 0)
+for env_var in ['OPENAPI_SPEC_COMPLIANT', 'SKIP_EXPIRATION_CHECK']:
+    if os.getenv(env_var):
+        setattr(sys.modules[__name__], env_var, (int(os.getenv(env_var)) > 0))
 
 # Implementation Note: To simplify quick tests. The `SECRET_KEY` should
 # be defined in the `credentials` otherwise all HTTP session will become
@@ -706,6 +706,8 @@ SAAS = {
     'BYPASS_PROCESSOR_AUTH': getattr(
         sys.modules[__name__], 'USE_FIXTURES', False),
     'MAX_TYPEAHEAD_CANDIDATES': 5,
+    'PHONE_VERIFICATION_BACKEND': getattr(
+        sys.modules[__name__], 'SIGNUP_PHONE_VERIFICATION_BACKEND', None),
     'PROCESSOR': {
         'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
         'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
@@ -767,8 +769,7 @@ SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
     'ACCOUNT_ACTIVATION_DAYS': 30,
-    'BYPASS_VERIFICATION_KEY_EXPIRED_CHECK':
-        BYPASS_VERIFICATION_KEY_EXPIRED_CHECK,
+    'SKIP_EXPIRATION_CHECK': SKIP_EXPIRATION_CHECK,
     'DISABLED_AUTHENTICATION':
         'djaoapp.thread_locals.get_disabled_authentication',
     'DISABLED_REGISTRATION':
@@ -789,17 +790,19 @@ SIGNUP = {
         ('expires_soon', "Expires soon"),
         ('order_executed', "Order confirmation"),
         ('profile_updated', "Profile updated"),
-        ('password_reset', "Password reset"),
+        ('user_reset_password', "Password reset"),
         ('user_activated', "User activated"),
         ('user_contact', "User contact"),
         ('user_registered', "User registered"),
         ('user_welcome', "User welcome"),
         ('role_request_created', "Role requested"),
-        ('verification', "Verification"),
-        ('sales_report', "Weekly sales report"),
+        ('user_verification', "Verification"),
+        ('weekly_sales_report_created', "Weekly sales report"),
     ),
     'PASSWORD_RESET_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
+    'PHONE_VERIFICATION_BACKEND': getattr(
+        sys.modules[__name__], 'SIGNUP_PHONE_VERIFICATION_BACKEND', None),
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
     'RANDOM_SEQUENCE': getattr(
         sys.modules[__name__], 'SIGNUP_RANDOM_SEQUENCE', []),
