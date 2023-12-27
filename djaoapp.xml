@@ -56,6 +56,9 @@
       <dep name="djaodjin-signup" target="python">
         <lib>.*/(signup)/__init__.py</lib>
       </dep>
+      <dep name="googlemaps" target="python">
+        <lib>.*/(googlemaps)/__init__.py</lib>
+      </dep>
       <dep name="gunicorn" target="python" excludes="19.0,20.0.2">
         <!-- gunicorn 18.0 does not send accesslog to syslog.
              gunicorn 19.0 is currently broken (see github issue 787)
