@@ -130,7 +130,7 @@ else:
 
 if API_DEBUG:
     ENV_INSTALLED_APPS = DEBUG_APPS + (
-        'drf_yasg',
+        'drf_spectacular',
     )
 else:
     ENV_INSTALLED_APPS = DEBUG_APPS
@@ -572,13 +572,19 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS':
         'djaoapp.pagination.PageNumberPagination',
-    'DEFAULT_SCHEMA_CLASS': 'djaoapp.views.docs.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'djaoapp.api_docs.schemas.AutoSchema',
     'EXCEPTION_HANDLER': 'djaoapp.views.errors.drf_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'detail',
     'ORDERING_PARAM': 'o',
     'PAGE_SIZE': 25,
     'SEARCH_PARAM': 'q',
 }
+
+SPECTACULAR_SETTINGS = {
+    'ENUM_GENERATE_CHOICE_DESCRIPTION': False,
+    'AUTHENTICATION_WHITELIST': []
+}
+
 if not DEBUG:
     # We are using Jinja2 templates so there are no templates
     # for `rest_framework.renderers.BrowsableAPIRenderer`.
@@ -695,6 +701,8 @@ SAAS = {
         'BUILD_ABSOLUTE_URI_CALLABLE':
             'djaoapp.thread_locals.provider_absolute_url',
     },
+    'EMAIL_VERIFICATION_BACKEND':
+        'djaoapp.notifications.backends.email.EmailVerificationBackend',
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
     'PRODUCT_URL_CALLABLE': 'djaoapp.thread_locals.product_url',

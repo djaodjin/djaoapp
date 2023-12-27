@@ -60,8 +60,8 @@
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="row">
             <div class="col-auto">
-              <select class="form-control" name="period"
-                      v-model="period"
+              <select class="form-control" name="period_type"
+                      v-model="periodType"
                       @change="prepareCurrentTabData">
                 <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
                 <option value="daily">{% trans %}Daily{% endtrans %}</option>
@@ -95,8 +95,8 @@
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="row">
             <div class="col-auto">
-              <select class="form-control" name="period"
-                      v-model="period"
+              <select class="form-control" name="period_type"
+                      v-model="periodType"
                       @change="prepareCurrentTabData">
                 <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
                 <option value="daily">{% trans %}Daily{% endtrans %}</option>
@@ -130,8 +130,8 @@
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="row">
             <div class="col-auto">
-              <select class="form-control" name="period"
-                      v-model="period"
+              <select class="form-control" name="period_type"
+                      v-model="periodType"
                       @change="prepareCurrentTabData">
                 <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
                 <option value="daily">{% trans %}Daily{% endtrans %}</option>
@@ -162,8 +162,8 @@
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="row">
             <div class="col-auto">
-              <select class="form-control" name="period"
-                      v-model="period"
+              <select class="form-control" name="period_type"
+                      v-model="periodType"
                       @change="prepareCurrentTabData">
                 <option value="hourly">{% trans %}Hourly{% endtrans %}</option>
                 <option value="daily">{% trans %}Daily{% endtrans %}</option>

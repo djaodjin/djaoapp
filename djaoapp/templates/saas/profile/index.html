@@ -36,7 +36,7 @@
       {% if organization %}
       {% trans created_at=organization.created_at|short_date %}Created at {{created_at}}{% endtrans %}
       {% elif user %}
-      {% trans created_at=user.created_at|short_date %}Created at {{created_at}}{% endtrans %}
+      {% trans created_at=user.date_joined|short_date %}Created at {{created_at}}{% endtrans %}
       {% endif %}
     </div>
   </div>

@@ -121,24 +121,35 @@ def query_parameters(api_endpoint):
 
 @register.filter()
 def request_body_parameters(api_endpoint, defs):
-    if 'requestBody' in api_endpoint:
-        results = []
-        schema = \
-            api_endpoint['requestBody']['content']['application/json']['schema']
-        if 'properties' in schema:
-            for prop_name, prop in schema['properties'].items():
-                prop.update({'name': prop_name})
-                if prop_name in schema.get('required', []):
-                    prop.update({'required': True})
-                if 'type' not in prop and 'enum' in prop:
-                    prop.update({'type': "String"}) # XXX Country enum
-                results += [prop]
-            return results
-    return []
+    if 'requestBody' not in api_endpoint:
+        return []
+
+    results = []
+    schema = \
+        api_endpoint['requestBody']['content']['application/json']['schema']
+    if '$ref' in schema:
+        key = schema['$ref'].split('/')[-1]
+        schema = defs[(key, 'schemas')].schema
+    if 'properties' in schema:
+        for prop_name, prop in schema['properties'].items():
+            if ('required' not in prop and
+                prop_name in schema.get('required', [])):
+                prop.update({'required': True})
+            if 'type' not in prop:
+                first_enum = prop.get('allOf',[{}])[0]
+                if '$ref' in first_enum:
+                    key = first_enum['$ref'].split('/')[-1]
+                    prop.update(defs[(key, 'schemas')].schema)
+            prop.update({'name': prop_name})
+            if 'type' not in prop and 'enum' in prop:
+                prop.update({'type': "String"}) # XXX Country enum
+            results += [prop]
+    return results
 
 
 @register.filter()
 def responses_parameters(api_endpoint, defs):
+    #pylint:disable=too-many-nested-blocks
     if 'responses' not in api_endpoint:
         return []
     results = {}
@@ -146,11 +157,17 @@ def responses_parameters(api_endpoint, defs):
         params = []
         if 'content' in param:
             schema = param['content']['application/json']['schema']
+            if '$ref' in schema:
+                key = schema['$ref'].split('/')[-1]
+                schema = defs[(key, 'schemas')].schema
             if 'properties' in schema:
                 for prop_name, prop in schema['properties'].items():
+                    if 'type' not in prop:
+                        first_enum = prop.get('allOf',[{}])[0]
+                        if '$ref' in first_enum:
+                            key = first_enum['$ref'].split('/')[-1]
+                            prop.update(defs[(key, 'schemas')].schema)
                     prop.update({'name': prop_name})
-                    #if prop_name in schema.get('required', []):
-                    #    prop.update({'required': True})
                     if 'type' not in prop and 'enum' in prop:
                         prop.update({'type': "String"}) # XXX Country enum
                     params += [prop]
@@ -162,8 +179,23 @@ def schema_properties(schema, defs):
     params = []
     if schema['type'] == 'array':
         schema = schema.get('items', {})
+    if '$ref' in schema:
+        key = schema['$ref'].split('/')[-1]
+        schema = defs[(key, 'schemas')].schema
     if 'properties' in schema:
         for prop_name, prop in schema['properties'].items():
+            try:
+                if ('required' not in prop and
+                    prop_name in schema.get('required', [])):
+                    prop.update({'required': True})
+            except TypeError:
+                # `required` is not always a dictionnary. It could be a `bool`??
+                pass
+            if 'type' not in prop:
+                first_enum = prop.get('allOf',[{}])[0]
+                if '$ref' in first_enum:
+                    key = first_enum['$ref'].split('/')[-1]
+                    prop.update(defs[(key, 'schemas')].schema)
             prop.update({'name': prop_name})
             if 'type' not in prop and 'enum' in prop:
                 prop.update({'type': "String"}) # XXX Country enum

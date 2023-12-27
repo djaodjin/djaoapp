@@ -36,6 +36,8 @@ class PageNumberPagination(BasePageNumberPagination):
     " between 1 and 100 (defaults to 25).")
 
     def get_paginated_response_schema(self, schema):
+        if 'description' not in schema:
+            schema.update({'description': "Records in the queryset"})
         return {
             'type': 'object',
             'properties': {
@@ -46,14 +48,14 @@ class PageNumberPagination(BasePageNumberPagination):
                 'next': {
                     'type': 'string',
                     'description': "API end point to get the next page"\
-                        "of records matching the query",
+                        " of records matching the query",
                     'nullable': True,
                     'format': 'uri',
                 },
                 'previous': {
                     'type': 'string',
                     'description': "API end point to get the previous page"\
-                        "of records matching the query",
+                        " of records matching the query",
                     'nullable': True,
                     'format': 'uri',
                 },

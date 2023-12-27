@@ -86,11 +86,10 @@ class Command(BaseCommand):
             saas_signals.subscription_grant_created,
             saas_signals.subscription_request_accepted,
             saas_signals.subscription_request_created,
-            saas_signals.weekly_sales_report_created,
+            saas_signals.period_sales_report_created,
             signup_signals.user_registered,
             signup_signals.user_activated,
-            signup_signals.user_reset_password,
-            signup_signals.user_verification
+            signup_signals.user_reset_password
         ]
         # disabling email notifications
         with DisableSignals(sigs):

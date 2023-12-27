@@ -36,7 +36,6 @@
 {
     "fields": {
       "created_at": "2023-01-01T00:00:00+00:00",
-      "organization": 2,
       "slug": "contributor",
       "title": "Contributor"
     },
@@ -45,6 +44,7 @@
 {
     "fields": {
       "created_at": "2023-01-01T00:00:00+00:00",
+      "organization": 2,
       "slug": "viewer",
       "title": "Viewer"
     },
@@ -1148,7 +1148,7 @@
 },
 {
     "fields": {
-      "slug": "contact_requested",
+      "slug": "user_contact",
       "title": "Messages through the website contact page",
       "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."
     },

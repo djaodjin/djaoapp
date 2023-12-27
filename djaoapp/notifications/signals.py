@@ -19,15 +19,13 @@ from saas.signals import (card_expires_soon, charge_updated,
     subscription_request_created, period_sales_report_created)
 from signup.helpers import has_invalid_password
 from signup.models import Contact
-from signup.signals import (user_registered, user_activated,
-    user_reset_password, user_verification, user_mfa_code)
+from signup.signals import user_registered, user_activated
 from signup.utils import printable_name as user_printable_name
-from djaoapp.signals import contact_requested
+from djaoapp.signals import user_contact
 
 from ..compat import gettext_lazy as _, reverse, six
 from .serializers import (ContactUsNotificationSerializer,
-    UserNotificationSerializer, ExpireUserNotificationSerializer,
-    OneTimeCodeNotificationSerializer,
+    UserNotificationSerializer,
     ExpireProfileNotificationSerializer,
     SubscriptionExpireNotificationSerializer,
     ChangeProfileNotificationSerializer, AggregatedSalesNotificationSerializer,
@@ -61,8 +59,8 @@ def get_user_context_deprecated(user, site=None):
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(contact_requested, dispatch_uid="contact_requested_notice")
-def contact_requested_notice(sender, provider, user, reason, **kwargs):
+@receiver(user_contact, dispatch_uid="user_contact_notice")
+def user_contact_notice(sender, provider, user, reason, **kwargs):
     """
     Contact us
 
@@ -121,7 +119,7 @@ def contact_requested_notice(sender, provider, user, reason, **kwargs):
     broker = get_broker()
     if provider is None:
         provider = broker
-    LOGGER.debug("[signal] contact_requested_notice(provider=%s, user=%s)",
+    LOGGER.debug("[signal] user_contact_notice(provider=%s, user=%s)",
         provider, user)
     site = get_current_site()
     back_url = site.as_absolute_uri()
@@ -282,232 +280,6 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     }
     send_notification('user_activated',
         context=UserNotificationSerializer().to_representation(context),
-        site=site)
-
-
-# We insure the method is only bounded once no matter how many times
-# this module is loaded by using a dispatch_uid as advised here:
-#   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(user_verification, dispatch_uid="user_verification_notice")
-def user_verification_notice(
-        sender, user, request, back_url, expiration_days, **kwargs):
-    """
-    Verification of e-mail address
-
-    This notification is sent to verify an e-mail address of a user.
-
-    **Tags: notification
-
-    **Example
-
-    .. code-block:: json
-
-        {
-          "event": "user_verification",
-          "broker": {
-            "slug": "djaoapp",
-            "printable_name": "DjaoApp",
-            "full_name": "DjaoApp inc.",
-            "nick_name": "DjaoApp",
-            "picture": null,
-            "type": "organization",
-            "credentials": false,
-            "created_at": "2022-01-01T00:00:00Z",
-            "email": "djaoapp@localhost.localdomain",
-            "phone": "415-555-5555",
-            "street_address": "1 SaaS Road",
-            "locality": "San Francisco",
-            "region": "California",
-            "postal_code": "94133",
-            "country": "US",
-            "default_timezone": "America/Los_Angeles",
-            "is_provider": true,
-            "is_bulk_buyer": false,
-            "lang": "en",
-            "extra": null
-          },
-          "back_url": "{{api_base_url}}activate/abcdef123/",
-          "user": {
-            "slug": "xia",
-            "username": "xia",
-            "printable_name": "Xia",
-            "full_name": "Xia Lee",
-            "nick_name": "Xia",
-            "picture": null,
-            "type": "personal",
-            "credentials": true,
-            "created_at": "2022-01-01T00:00:00Z",
-            "last_login": "2022-01-01T00:00:00Z",
-            "email": "xia@localhost.localdomain",
-            "phone": "415-555-5556",
-            "lang": "en",
-            "extra": null
-          },
-          "nb_expiration_days": 2
-        }
-    """
-    LOGGER.debug("[signal] user_verification_notice(user=%s, back_url=%s,"\
-        " expiration_days=%s)", user, back_url, expiration_days)
-    site = get_current_site()
-    context = {
-        'broker': get_broker(),
-        'back_url': back_url,
-        'user': user,
-        'nb_expiration_days': expiration_days
-    }
-    send_notification('user_verification',
-        context=ExpireUserNotificationSerializer().to_representation(context),
-        site=site)
-
-
-# We insure the method is only bounded once no matter how many times
-# this module is loaded by using a dispatch_uid as advised here:
-#   https://docs.djangoproject.com/en/dev/topics/signals/
-@receiver(user_reset_password, dispatch_uid="user_reset_password_notice")
-def user_reset_password_notice(sender, user, request, back_url,
-                               expiration_days, **kwargs):
-    """
-    Password reset
-
-    This notification is sent to a user that has requested
-    to reset their password through a "forgot password?" link.
-
-    **Tags: notification
-
-    **Example
-
-    .. code-block:: json
-
-        {
-          "event": "user_verification",
-          "broker": {
-            "slug": "djaoapp",
-            "printable_name": "DjaoApp",
-            "full_name": "DjaoApp inc.",
-            "nick_name": "DjaoApp",
-            "picture": null,
-            "type": "organization",
-            "credentials": false,
-            "created_at": "2022-01-01T00:00:00Z",
-            "email": "djaoapp@localhost.localdomain",
-            "phone": "415-555-5555",
-            "street_address": "1 SaaS Road",
-            "locality": "San Francisco",
-            "region": "California",
-            "postal_code": "94133",
-            "country": "US",
-            "default_timezone": "America/Los_Angeles",
-            "is_provider": true,
-            "is_bulk_buyer": false,
-            "lang": "en",
-            "extra": null
-          },
-          "back_url": "{{api_base_url}}activate/abcdef123/",
-          "user": {
-            "slug": "xia",
-            "username": "xia",
-            "printable_name": "Xia",
-            "full_name": "Xia Lee",
-            "nick_name": "Xia",
-            "picture": null,
-            "type": "personal",
-            "credentials": true,
-            "created_at": "2022-01-01T00:00:00Z",
-            "last_login": "2022-01-01T00:00:00Z",
-            "email": "xia@localhost.localdomain",
-            "phone": "415-555-5556",
-            "lang": "en",
-            "extra": null
-          },
-          "nb_expiration_days": 2
-        }
-    """
-    LOGGER.debug("[signal] user_reset_password_notice(user=%s, back_url=%s,"\
-        " expiration_days=%s)", user, back_url, expiration_days)
-    site = get_current_site()
-    context = {
-        'broker': get_broker(),
-        'back_url': back_url,
-        'user': user,
-        'nb_expiration_days': expiration_days,
-    }
-    send_notification('user_reset_password',
-        context=ExpireUserNotificationSerializer().to_representation(context),
-        site=site)
-
-
-@receiver(user_mfa_code, dispatch_uid="user_mfa_code_notice")
-def user_mfa_code_notice(sender, user, code, request, **kwargs):
-    """
-    One-time code generated
-
-    A one-time code was generated for Multi-factor authentication (MFA).
-
-    **Tags: notification
-
-    **Example
-
-    .. code-block:: json
-
-        {
-          "event": "user_mfa_code",
-          "broker": {
-            "slug": "djaoapp",
-            "printable_name": "DjaoApp",
-            "full_name": "DjaoApp inc.",
-            "nick_name": "DjaoApp",
-            "picture": null,
-            "type": "organization",
-            "credentials": false,
-            "created_at": "2022-01-01T00:00:00Z",
-            "email": "djaoapp@localhost.localdomain",
-            "phone": "415-555-5555",
-            "street_address": "1 SaaS Road",
-            "locality": "San Francisco",
-            "region": "California",
-            "postal_code": "94133",
-            "country": "US",
-            "default_timezone": "America/Los_Angeles",
-            "is_provider": true,
-            "is_bulk_buyer": false,
-            "lang": "en",
-            "extra": null
-          },
-          "back_url": "{{api_base_url}}activate/abcdef123/",
-          "user": {
-            "slug": "xia",
-            "username": "xia",
-            "printable_name": "Xia",
-            "full_name": "Xia Lee",
-            "nick_name": "Xia",
-            "picture": null,
-            "type": "personal",
-            "credentials": true,
-            "created_at": "2022-01-01T00:00:00Z",
-            "last_login": "2022-01-01T00:00:00Z",
-            "email": "xia@localhost.localdomain",
-            "phone": "415-555-5556",
-            "lang": "en",
-            "extra": null
-          },
-          "nb_expiration_days": 2,
-          "code": "1234"
-        }
-    """
-    contact = user
-    LOGGER.debug("[signal] user_mfa_code_notice(user=%s, code=%s,"\
-        " request=%s)", contact.user, code, request)
-    site = get_current_site()
-    back_url = site.as_absolute_uri(reverse('login'))
-    context = {
-        'broker': get_broker(),
-        'user': contact.user,
-        'nb_expiration_days': 1, # XXX
-        'code': code,
-        'back_url': back_url
-    }
-    send_notification('user_mfa_code',
-        context=OneTimeCodeNotificationSerializer().to_representation(context),
         site=site)
 
 

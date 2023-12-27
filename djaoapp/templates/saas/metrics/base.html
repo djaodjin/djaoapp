@@ -18,8 +18,13 @@
     </ul>
     <div class="tab-content">
       <div role="tabpanel" :id="table.key" :class="['tab-pane', activeClass(index)]" v-for="(table, index) in tables" :key="table.key">
-        <form class="form-inline date-chooser pull-right mb-3">
-          {% include "_params_ends_at_field.html" %}
+        <form class="my-3 pull-right">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+          <div class="row">
+            <div class="col-auto">
+              {% include "_params_ends_at_field.html" %}
+            </div>
+          </div>
         </form>
         <div class="chart-content saas-metrics-chart">
           <h3 class="text-center">

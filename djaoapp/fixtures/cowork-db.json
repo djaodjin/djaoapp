@@ -810,7 +810,7 @@
 },
 {
     "fields": {
-      "slug": "contact_requested_notice",
+      "slug": "user_contact_notice",
       "title": "Messages through the website contact page",
       "description": "By enabling this notification, you will receive e-mails when a user contacts the website owner through the contact page."
     },

@@ -9,14 +9,14 @@
 
 {% macro api_param_doc(param, operationId, response=True, indent=0) -%}
 {% if response or not param.readOnly %}
-{% if param.type %}
+{% if param.type or param.oneOf %}
 <div class="param">
   <div class="param-name{% if indent %} param-indent-{{indent}}{% endif %}">
     <span class="param-name-wrap">{{param.name}}</span>
   </div>
   <div class="param-info{% if not (param.type == 'object' or param.type == 'array') %} param-builtin{% endif %}">
     <div>
-      <span class="param-type integer" title="">{{param.type}}</span>
+      <span class="param-type integer" title="">{% if param.type %}{{param.type}}{% else %}String{% endif %}</span>
       {% if not response and param.required %}
       <span class="param-required">required</span>
       {% endif %}

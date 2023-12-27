@@ -25,7 +25,13 @@ LOGGER = logging.getLogger(__name__)
 
 class DjaoAppUserDetailAPIView(UserDetailBaseAPIView):
     """
-    Retrieves a login profile
+    Retrieves a user account
+
+    Retrieves details on one single user account with slug ``{user}``.
+
+    The API is typically used within an HTML
+    `contact information page </docs/guides/themes/#dashboard_profile>`_
+    as present in the default theme.
 
     **Tags: profile, user, usermodel
 

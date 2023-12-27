@@ -14,8 +14,8 @@ from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import get_broker
 from saas.utils import get_organization_model
+from signup import settings as signup_settings
 from signup.models import Contact
-from signup.settings import NOTIFICATIONS_OPT_OUT
 
 from ...compat import six, import_string, gettext_lazy as _
 
@@ -28,7 +28,7 @@ def _notified_managers(organization, notification_slug, originated_by=None):
     if originated_by:
         managers = managers.exclude(email=originated_by.get('email', ""))
     # checking whether those users are subscribed to the notification
-    if NOTIFICATIONS_OPT_OUT:
+    if signup_settings.NOTIFICATIONS_OPT_OUT:
         filtered = managers.exclude(notifications__slug=notification_slug)
     else:
         filtered = managers.filter(notifications__slug=notification_slug)
@@ -40,6 +40,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
     """
+    #pylint:disable=too-many-locals
     organization_model = get_organization_model()
     recipients = []
     bcc = []
@@ -192,8 +193,6 @@ class NotificationEmailBackend(object):
             import_string(settings.SEND_NOTIFICATION_CALLABLE)(
                 event_name, context=context, site=site, recipients=recipients)
 
-        organization_model = get_organization_model()
-
         context.update({"event": event_name})
         template = 'notification/%s.eml' % event_name
         if event_name in ('role_grant_created',):
@@ -211,6 +210,21 @@ class NotificationEmailBackend(object):
         if not recipients:
             recipients, bcc, reply_to = notified_recipients(
                 event_name, context)
+
+        self.send_mail(template, context, recipients,
+            bcc=bcc, reply_to=reply_to, site=site)
+
+
+    def send_mail(self, template, context, recipients, bcc=None, reply_to=None,
+                  site=None):
+        #pylint:disable=too-many-arguments
+        organization_model = get_organization_model()
+        if not site:
+            site = get_current_site()
+        if not bcc:
+            bcc = []
+        if not reply_to:
+            site.get_from_email()
 
         LOGGER.debug("djaoapp_extras.recipients.send_notification("\
             "recipients=%s, reply_to='%s', bcc=%s"\
@@ -266,3 +280,17 @@ class NotificationEmailBackend(object):
                 # but the end user shouldn't see a 500 error as a result
                 # of notifications sent in the HTTP request pipeline.
                 LOGGER.exception(err)
+
+
+class EmailVerificationBackend(NotificationEmailBackend):
+
+    def send(self, email, email_code,
+             back_url=None, expiration_days=signup_settings.KEY_EXPIRATION):
+        """
+        Send an e-mail message to the user to verify her e-mail address.
+        """
+        self.send_mail('notification/user_verification.eml', {
+            'back_url': back_url,
+            'code': email_code,
+            'expiration_days': expiration_days
+        }, [email])

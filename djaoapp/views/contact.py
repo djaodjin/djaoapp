@@ -21,7 +21,7 @@ from saas.utils import full_name_natural_split, update_context_urls
 from signup.auth import validate_redirect
 
 from ..compat import gettext_lazy as _, reverse, six
-from ..signals import contact_requested
+from ..signals import user_contact
 from ..utils import get_contact_captcha_keys
 from ..validators import validate_contact_form
 
@@ -148,7 +148,7 @@ class ContactView(ProviderMixin, FormView):
             else:
                 provider = self.provider
             try:
-                contact_requested.send(
+                user_contact.send(
                     sender=__name__, provider=provider,
                     user=user, reason=items, request=self.request)
                 messages.info(self.request,

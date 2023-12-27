@@ -88,7 +88,7 @@ class DjaoAppMixin(object):
 class NotificationsMixin(object):
 
     def get_notifications(self, user=None):
-        from .views.docs import NotificationDocGenerator
+        from .api_docs.views import NotificationDocGenerator
         notifications = {obj.slug: {
             'summary': obj.title,
             'description': obj.description}
@@ -283,7 +283,7 @@ class VerifyCompleteMixin(object):
                 not_signed = cleaned_data.get(agreement.slug, "").lower() in [
                     'false', 'f', '0']
             except AttributeError:
-                not_signed = not(cleaned_data.get(agreement.slug, False))
+                not_signed = not cleaned_data.get(agreement.slug, False)
             if not_signed:
                 raise ValidationError({agreement.slug:
                     _("You must read and agree to the %(agreement)s.") % {

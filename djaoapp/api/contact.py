@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -13,18 +13,19 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.settings import api_settings
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from saas.api.serializers import ValidationErrorSerializer
-from saas.docs import OpenAPIResponse, swagger_auto_schema
+from saas.docs import extend_schema, OpenApiResponse
 from saas.mixins import ProviderMixin
 from saas.models import Organization
+from saas.pagination import TypeaheadPagination
 from saas.utils import full_name_natural_split
 
 from ..compat import gettext_lazy as _, six
-from ..signals import contact_requested
-from .serializers import (ContactUsSerializer,
-    PlacesSuggestionsSerializer, PlacesDetailSerializer)
+from ..signals import user_contact
+from .serializers import (ContactUsSerializer, PlacesSuggestionSerializer,
+    PlacesDetailSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -67,8 +68,8 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
     """
     serializer_class = ContactUsSerializer
 
-    @swagger_auto_schema(responses={
-        200: OpenAPIResponse("success", ValidationErrorSerializer)})
+    @extend_schema(responses={
+        200: OpenApiResponse(ValidationErrorSerializer)})
     def post(self, request, *args, **kwargs):
         #pylint:disable=too-many-locals,unused-argument
         serializer = self.get_serializer(data=request.data)
@@ -105,7 +106,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
         else:
             provider = self.provider
         try:
-            contact_requested.send(
+            user_contact.send(
                 sender=__name__, provider=provider,
                 user=user, reason=items, request=self.request)
             return Response({'detail':
@@ -119,9 +120,9 @@ _("Sorry, there was an issue sending your request for information"\
     'full_name': provider.full_name, 'email': provider.email}})
 
 
-class PlacesSuggestionsAPIView(GenericAPIView):
+class PlacesSuggestionsAPIView(ListAPIView):
     """
-    Returns address typeahead suggestions
+    Lists street address candidates
 
     The API is typically used within a profile page.
 
@@ -163,32 +164,26 @@ class PlacesSuggestionsAPIView(GenericAPIView):
             ]
         }
     """
-    serializer_class = PlacesSuggestionsSerializer
-    pagination_class = None
+    schema = None
+    serializer_class = PlacesSuggestionSerializer
+    pagination_class = TypeaheadPagination
     filter_backends = (SearchFilter, )
 
-    @swagger_auto_schema(responses={
-        200: OpenAPIResponse("success", PlacesSuggestionsSerializer)})
-    def get(self, request, *args, **kwargs):
+    def get_queryset(self):
         gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
-        query = request.query_params.get(api_settings.SEARCH_PARAM)
+        query = self.request.query_params.get(api_settings.SEARCH_PARAM)
 
         if query and len(query) > 2:
             results = gmaps.places_autocomplete(query, types='address')
         else:
             results = []
 
-        serializer = self.get_serializer({
-            'count': len(results),
-            'results': results
-        })
-
-        return Response(serializer.data)
+        return results
 
 
-class PlacesDetailAPIView(GenericAPIView):
+class PlacesDetailAPIView(RetrieveAPIView):
     """
-    Returns address typeahead place details
+    Retrieves a street address candidate
 
     The API is typically used in conjunction with
     typeahead query API within a profile page.
@@ -217,10 +212,11 @@ class PlacesDetailAPIView(GenericAPIView):
         "country_code": "US"
     }
     """
+    schema = None
     serializer_class = PlacesDetailSerializer
 
-    @swagger_auto_schema(responses={
-        200: OpenAPIResponse("success", PlacesDetailSerializer)})
+    @extend_schema(responses={
+        200: OpenApiResponse(PlacesDetailSerializer)})
     def get(self, request, *args, **kwargs):
         gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
         place_id = kwargs.get('place_id')

@@ -9,14 +9,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
-from saas.docs import swagger_auto_schema, no_body, OpenAPIResponse
+from saas.docs import extend_schema, OpenApiResponse
 from saas.models import get_broker
 from signup.serializers_overrides import UserDetailSerializer
 
 from ..api.serializers import ProfileSerializer
 from ..compat import gettext_lazy as _
 from ..notifications import send_notification
-from ..views.docs import get_notification_schema
+from ..api_docs.schemas import get_notification_schema
 from .serializers import DetailSerializer
 
 
@@ -51,8 +51,8 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
     http_method_names = ['post']
     serializer_class = DetailSerializer
 
-    @swagger_auto_schema(request_body=no_body, responses={
-        200: OpenAPIResponse("", DetailSerializer)})
+    @extend_schema(request=None, responses={
+        200: OpenApiResponse(DetailSerializer)})
     def post(self, request, *args, **kwargs):#pylint:disable=unused-argument
         """
         Sends a test notification e-mail

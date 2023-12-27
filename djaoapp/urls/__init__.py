@@ -69,7 +69,7 @@ else:
 
 if settings.API_DEBUG:
     from rest_framework.schemas import get_schema_view
-    from ..views.docs import APIDocView, NotificationDocView
+    from ..api_docs.views import APIDocView, NotificationDocView
     urlpatterns += [
         url(r'^docs/api/schema/$', get_schema_view(
             title="DjaoApp API",

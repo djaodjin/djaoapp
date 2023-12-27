@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block help_menus %}
+{% if urls.raw_cartitems %}
+<li class="divider-vertical"></li>
+<li class="nav-item">
+  <a id="row-cartitems" class="nav-link{% if request.path == urls.raw_cartitems %} active{% endif %}" href="{{urls.raw_cartitems}}">{% trans %}Cart items{% endtrans %}</a>
+</li>
+{% endif %}
 {% if urls.raw_charges %}
 <li class="divider-vertical"></li>
 <li class="nav-item">

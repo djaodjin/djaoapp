@@ -22,32 +22,33 @@
             <button id="generate-key-open" class="btn btn-secondary ">{% trans %}Generate API Key{% endtrans %}</button>
           </div>
         </div>
-        <div class="form-group" v-show="apiKey" v-cloak>
-          <label>API Key</label>
-          <div class="input-group input-group-md">
-            <input class="form-control" type="text"
-                   name="apiKey" placeholder="********" disabled
-                   v-model="apiKey">
-          </div>
-          <div class="form-text help-block" v-show="apiKey">
-            <small class="text-muted">This is the only time the API Key will be displayed. Copy it before you reload this page or browse to another page.</small>
-          </div>
-        </div>
       </form>
       {% include "users/_require_password.html" %}
+    </div>
+
+    <div v-show="apiKey" v-cloak>
+      <label>API Key titled &quot;[[apiTitle]]&quot;:</label>
+      <input class="form-control" type="text"
+             name="apiKey" placeholder="********" disabled
+             v-model="apiKey"></input>
+      <div class="form-text help-block">
+{% trans %}This is the only time the API Key will be displayed. Copy it before you reload this page or browse to another page.{% endtrans %}
+      </div>
+      <hr />
     </div>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Expires</th>
-          <th>Actions</th>
+          <th>{% trans %}Title{% endtrans %}</th>
+          <th>{% trans %}Expires{% endtrans %}</th>
+          <th>{% trans %}Actions{% endtrans %}</th>
         </tr>
       </thead>
+
       <tbody v-show="!itemsLoaded">
         <tr>
-          <td colspan="4">
+          <td colspan="3">
             <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
           </td>
         </tr>
@@ -64,7 +65,8 @@
           <td>[[ key.title ]]</td>
           <td>[[ key.ends_at ]]</td>
           <td>
-            <button class="btn btn-primary" @click="confirmDelete(key)">Delete</button>
+            <button class="btn btn-delete"
+                @click="confirmDelete(key)">Delete</button>
           </td>
         </tr>
       </tbody>

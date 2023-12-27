@@ -110,7 +110,7 @@ class RegisterSerializer(UserCreateSerializer):
 #pylint:disable=protected-access
 RegisterSerializer._declared_fields["type"] = \
     EnumField(choices=ProfileSerializer.Meta.model.ACCOUNT_TYPE, required=False,
-        help_text=_("Type of the accounts being registered"))
+        help_text=_("One of 'organization', 'personal' or 'user'"))
 
 
 class SessionSerializer(serializers.ModelSerializer):
@@ -364,14 +364,6 @@ class PlacesSuggestionSerializer(NoModelSerializer):
     place_id = serializers.CharField(
         help_text=_("Placed identifier used to retrieve more"\
             " details"))
-
-
-class PlacesSuggestionsSerializer(NoModelSerializer):
-
-    count = serializers.IntegerField(
-        help_text=_("Number of place suggestions returned"))
-    results = PlacesSuggestionSerializer(many=True,
-        help_text=_("List of place suggestions"))
 
 
 class PlacesDetailSerializer(NoModelSerializer):

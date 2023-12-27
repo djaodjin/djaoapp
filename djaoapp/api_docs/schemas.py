@@ -1,44 +1,39 @@
 # Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
-
 """
-Default start page for a djaodjin-hosted product.
+OpenAPI schema generator
 """
-#pylint:disable=too-many-lines
-
 import json, logging, os, re, warnings
-from collections import OrderedDict
 
 from django.conf import settings
 from django.http import HttpRequest
 from django.http.response import Http404
 from django.utils.safestring import mark_safe
-from django.views.generic import TemplateView
 from docutils import core
 from docutils import frontend
 from docutils.writers.html5_polyglot import Writer
 from rest_framework import exceptions, serializers
+from rest_framework.generics import GenericAPIView
 from rest_framework.schemas.generators import EndpointEnumerator
 from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
 from saas.pagination import (BalancePagination, RoleListPagination,
     StatementBalancePagination, TotalPagination, TypeaheadPagination)
-from saas.api.billing import CartItemUploadAPIView
-from saas.api.organizations import OrganizationPictureAPIView
-from signup.api.contacts import ContactPictureAPIView
-from signup.api.users import UserPictureAPIView
 
 try:
-    from rest_framework.schemas.openapi import (
-        AutoSchema as BaseAutoSchema, SchemaGenerator)
-except ImportError: # drf < 3.10
-    from rest_framework.schemas import (
-        AutoSchema as BaseAutoSchema, SchemaGenerator)
+    from drf_spectacular.openapi import AutoSchema as BaseAutoSchema
+    from drf_spectacular.generators import SchemaGenerator
+except ImportError: # We cannot find drf_spectacular.
+    try:
+        from rest_framework.schemas.openapi import (SchemaGenerator,
+            AutoSchema as BaseAutoSchema)
+    except ImportError: # drf < 3.10
+        from rest_framework.schemas import (SchemaGenerator,
+            AutoSchema as BaseAutoSchema)
 
 from ..compat import gettext_lazy as _, URLPattern, URLResolver, six
 from ..notifications import signals as notification_signals
 from ..notifications.serializers import (ContactUsNotificationSerializer,
-    UserNotificationSerializer, ExpireUserNotificationSerializer,
-    OneTimeCodeNotificationSerializer,
+    UserNotificationSerializer,
     ExpireProfileNotificationSerializer,
     SubscriptionExpireNotificationSerializer,
     ChangeProfileNotificationSerializer, AggregatedSalesNotificationSerializer,
@@ -271,7 +266,8 @@ def transform_links(line, api_base_url=""):
 
 
 def endpoint_ordering(endpoint):
-    path, method, _ = endpoint
+    path = endpoint[APIDocEndpointEnumerator.PATH_IDX]
+    method = endpoint[APIDocEndpointEnumerator.METHOD_IDX]
     method_priority = {
         'GET': 0,
         'POST': 1,
@@ -321,17 +317,25 @@ def split_descr_and_examples(docstring, api_base_url=None):
     return func_tags, summary, description, examples
 
 
+
 class APIDocEndpointEnumerator(EndpointEnumerator):
 
-    @staticmethod
-    def _insert_api_endpoint(api_endpoints, api_endpoint):
+    PATH_IDX = 0
+    PATH_REGEX_IDX = 1
+    METHOD_IDX = 2
+    CALLBACK_IDX = 3
+
+    def _insert_api_endpoint(self, api_endpoints, api_endpoint):
         found = False
         for endpoint in api_endpoints:
-            if (endpoint[0] == api_endpoint[0] and
-                endpoint[1] == api_endpoint[1]):
+            if (endpoint[self.PATH_IDX] == api_endpoint[self.PATH_IDX] and
+                endpoint[self.METHOD_IDX] == api_endpoint[self.METHOD_IDX]):
                 LOGGER.debug("found duplicate: %s %s (%s vs. %s)",
-                    endpoint[1], endpoint[0], endpoint[2], api_endpoint[2])
-                assert endpoint[2].__name__.startswith('DjaoApp')
+                    endpoint[self.METHOD_IDX], endpoint[self.PATH_IDX],
+                    endpoint[self.CALLBACK_IDX],
+                    api_endpoint[self.CALLBACK_IDX])
+                assert endpoint[self.CALLBACK_IDX].__name__.startswith(
+                    'DjaoApp')
                 found = True
                 break
         if not found:
@@ -353,7 +357,7 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                 callback = pattern.callback
                 if self.should_include_endpoint(path, callback):
                     for method in self.get_allowed_methods(callback):
-                        endpoint = (path, method, callback)
+                        endpoint = (path, path_regex, method, callback)
                         self._insert_api_endpoint(api_endpoints, endpoint)
 
             elif isinstance(pattern, URLResolver):
@@ -367,11 +371,12 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
         return sorted(api_endpoints, key=endpoint_ordering)
 
 
-class AutoSchema(BaseAutoSchema):
+class APIDocGenerator(SchemaGenerator):
 
-    def _get_reference(self, serializer):
-        content = self.map_serializer(serializer)
-        return {'properties': content['properties']}
+    endpoint_inspector_cls = APIDocEndpointEnumerator
+
+
+class AutoSchema(BaseAutoSchema):
 
     def get_request_media_types(self):
         return ['application/json']
@@ -397,32 +402,10 @@ class AutoSchema(BaseAutoSchema):
 
         return name
 
-    def map_field(self, field):
-        if isinstance(field, serializers.ListField):
-            if isinstance(field.child, DatetimeValueTuple):
-                return {
-                    'type': 'array',
-                    'items': {
-                        'type': 'array',
-                        'items': {'oneOf': [
-                            {'type': 'string'}, {'type': 'integer'}]}
-                    }
-                }
 
-        if field.field_name == 'credentials':
-            return {
-                'type': 'boolean',
-            }
-
-        schema = super(AutoSchema, self).map_field(field)
-        if not 'required' in schema:
-            schema.update({'required': field.required})
-        return schema
-
-
-    def get_operation(self, path, method):
+    def get_operation(self, path, path_regex, path_prefix, method, registry):
         self.path = path
-        kwargs = {}
+        extra_fields = {}
         method_obj = getattr(self.view, method.lower())
         docstring = method_obj.__doc__
         if not docstring:
@@ -433,26 +416,28 @@ class AutoSchema(BaseAutoSchema):
             func_tags, summary, description, examples = \
                 split_descr_and_examples(docstring, api_base_url=api_base_url)
             self.examples = format_examples(examples)
-            kwargs['summary'] = summary
-            kwargs['description'] = description
+            extra_fields['summary'] = summary
+            extra_fields['description'] = description
 #            if not description:
 #                warnings.warn("%s %s: no description could be extracted"
 #                    " from '%s'" % (method, path, docstring))
-            kwargs['tags'] = list(func_tags) if func_tags else []
+            extra_fields['tags'] = list(func_tags) if func_tags else []
             if not settings.OPENAPI_SPEC_COMPLIANT:
-                kwargs['examples'] = self.examples
+                extra_fields['examples'] = self.examples
         self.view.request = HttpRequest()
+        self.view.request.path = path
         self.view.request.method = method
-        operation = super(AutoSchema, self).get_operation(path, method)
-        operation.update(kwargs)
+        operation = super(AutoSchema, self).get_operation(
+            path, path_regex, path_prefix, method, registry)
+        operation.update(extra_fields)
         return operation
 
-    def _get_serializer(self, method, serializer_class, many=False):
+    def _guess_serializer_class(self, method, serializer_class, many=False):
         view = self.view
         many = many or (method == 'GET' and hasattr(view, 'list'))
         if many:
             if issubclass(view.pagination_class, BalancePagination):
-                class APISerializer(NoModelSerializer):
+                class BalancePaginationAPISerializer(NoModelSerializer):
                     start_at = serializers.CharField(
                         help_text=_("Start of the date range for which"\
                         " the balance was computed"))
@@ -475,9 +460,10 @@ class AutoSchema(BaseAutoSchema):
                         help_text=_("URL to next page of results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in current page"))
+                serializer_class = BalancePaginationAPISerializer
 
             elif issubclass(view.pagination_class, RoleListPagination):
-                class APISerializer(NoModelSerializer):
+                class RoleListPaginationAPISerializer(NoModelSerializer):
                     invited_count = serializers.IntegerField(
                         help_text=_("Number of user invited to have a role"))
                     requested_count = serializers.IntegerField(
@@ -492,9 +478,10 @@ class AutoSchema(BaseAutoSchema):
                         help_text=_("URL to next page of results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in current page"))
+                serializer_class = RoleListPaginationAPISerializer
 
             elif issubclass(view.pagination_class, StatementBalancePagination):
-                class APISerializer(NoModelSerializer):
+                class StatementBalancePaginationAPISerializer(NoModelSerializer):
                     start_at = serializers.CharField(
                         help_text=_("Start of the date range for which"\
                         " the balance was computed"))
@@ -517,9 +504,10 @@ class AutoSchema(BaseAutoSchema):
                         help_text=_("URL to next page of results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in current page"))
+                serializer_class = StatementBalancePaginationAPISerializer
 
             elif issubclass(view.pagination_class, TotalPagination):
-                class APISerializer(NoModelSerializer):
+                class TotalPaginationAPISerializer(NoModelSerializer):
                     balance_amount = serializers.IntegerField(
                         help_text=_("The sum of all record amounts (in unit)"))
                     balance_unit = serializers.CharField(
@@ -535,13 +523,15 @@ class AutoSchema(BaseAutoSchema):
                         help_text=_("URL to next page of results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in current page"))
+                serializer_class = TotalPaginationAPISerializer
 
             elif issubclass(view.pagination_class, TypeaheadPagination):
-                class APISerializer(NoModelSerializer):
+                class TypeaheadPaginationAPISerializer(NoModelSerializer):
                     count = serializers.IntegerField(
                         help_text=_("Total number of items in the results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in the queryset"))
+                serializer_class = TypeaheadPaginationAPISerializer
 
             else:
                 class APISerializer(NoModelSerializer):
@@ -555,18 +545,15 @@ class AutoSchema(BaseAutoSchema):
                         help_text=_("URL to next page of results"))
                     results = serializer_class(many=hasattr(view, 'list'),
                         help_text=_("items in current page"))
-            serializer_class = APISerializer
+                serializer_class = APISerializer
 
-        serializer = None
-        if serializer_class:
-            serializer = serializer_class(context=view.get_serializer_context())
-        return serializer
+        return serializer_class
 
     @staticmethod
     def _validate_against_schema(data, schema):
         errs = []
         for key, value in six.iteritems(data):
-            if key not in schema['properties']:
+            if key not in schema.get('properties', []):
                 errs += [exceptions.ValidationError({key: "unexpected field"})]
         if errs:
             raise exceptions.ValidationError(errs)
@@ -576,6 +563,13 @@ class AutoSchema(BaseAutoSchema):
                            serializer_class=None, schema=None,
                            example_key='resp'):
         #pylint:disable=too-many-arguments,too-many-locals,too-many-statements
+
+        # prevents circular imports
+        from saas.api.billing import CartItemUploadAPIView
+        from saas.api.organizations import OrganizationPictureAPIView
+        from signup.api.contacts import ContactPictureAPIView
+        from signup.api.users import UserPictureAPIView
+
         view = self.view
         if isinstance(view, (CartItemUploadAPIView, ContactPictureAPIView,
                       OrganizationPictureAPIView, UserPictureAPIView)):
@@ -608,6 +602,8 @@ class AutoSchema(BaseAutoSchema):
                             break
                 if example_key in example:
                     if serializer_class is not None:
+                        serializer_class = self._guess_serializer_class(
+                            method, serializer_class)
                         try:
                             kwargs = {}
                             serializer = serializer_class(
@@ -622,10 +618,14 @@ class AutoSchema(BaseAutoSchema):
                             # is_valid will also run `UniqueValidator` which
                             # is not what we want here, especially
                             # on GET requests.
-                            warnings.warn('%(view)s: %(method)s %(path)s'\
+                            warnings.warn('%(view)s(serializer_class='\
+                                '%(serializer_class)s, schema=%(schema)s):'\
+                                ' %(method)s %(path)s'\
                                 ' invalid example for %(example_key)s:'\
                                 ' %(example)s, err=%(err)s' % {
                                     'view': view.__class__.__name__,
+                                    'serializer_class': serializer_class,
+                                    'schema': schema,
                                     'method': method,
                                     'path': path,
                                     'example_key': example_key,
@@ -654,16 +654,13 @@ class AutoSchema(BaseAutoSchema):
                     'method': method,
                     'path': path})
 
-    def get_request_body(self, path, method):
+
+    def get_request_serializer(self):
+        path = self.view.request.path
+        method = self.view.request.method
         view = self.view
-
-        if method not in ('PUT', 'PATCH', 'POST'):
-            return {}
-
         serializer_class = None
-        if not hasattr(view, 'request'):
-            view.request = HttpRequest()
-            view.request.method = method
+
         if hasattr(view, 'get_serializer_class'):
             serializer_class = view.get_serializer_class()
         view_method = getattr(self.view, method.lower(), None)
@@ -677,28 +674,20 @@ class AutoSchema(BaseAutoSchema):
                     # We assume `request_body=no_body` here.
                     serializer_class = None
 
-        serializer = self._get_serializer(method, serializer_class)
-        if not isinstance(serializer, serializers.Serializer):
-            return {}
+        if not serializer_class:
+            return None
 
-        schema = self.map_serializer(serializer)
-        # No required fields for PATCH
-        if method == 'PATCH' and 'required' in schema:
-            del schema['required']
-        # No read_only fields for request.
-        for name, sub_schema in schema['properties'].copy().items():
-            if 'readOnly' in sub_schema:
-                del schema['properties'][name]
-
+        serializer = serializer_class(context=view.get_serializer_context())
+        component = self.resolve_serializer(serializer, 'request')
+        schema = component.schema
         try:
             if method.lower() != 'patch':
                 # XXX We disable showing patch as they are so close
                 # to put requests.
-                serializer = self._validate_examples(
+                self._validate_examples(
                     self.examples if hasattr(self, 'examples') else [],
                     path, method,
-                    serializer_class=serializer.__class__,
-                    schema=schema,
+                    serializer_class=serializer_class, schema=schema,
                     example_key='requestBody')
         except exceptions.APIException:
             serializer = None
@@ -707,70 +696,37 @@ class AutoSchema(BaseAutoSchema):
                           'generated for {} {}.'
                           .format(view.__class__.__name__, method, path))
 
+        return serializer
 
-        return {
-            'content': {
-                ct: {'schema': schema}
-                for ct in self.get_request_media_types()
-            }
-        }
+    def get_paginated_name(self, serializer_name):
+        if issubclass(self.view.pagination_class, TypeaheadPagination):
+            return 'Typeahead%sList' % serializer_name
+        return super(AutoSchema, self).get_paginated_name(serializer_name)
 
-    def get_responses(self, path, method):
-        # TODO: Handle multiple codes.
+    def get_response_serializers(self):
         schema = {}
+        method = self.view.request.method
+        path = self.view.request.path
         view = self.view
-        serializer = None
 
-        if method in ('DELETE',):
-            return {'204': {'description': "NO CONTENT"}}
+        if method == 'DELETE':
+            return None
 
-        many = False
-        serializer_class = None
-        if not hasattr(view, 'request'):
-            view.request = HttpRequest()
-            view.request.method = method
-        if hasattr(view, 'get_serializer_class'):
-            serializer_class = view.get_serializer_class()
-        view_method = getattr(self.view, method.lower(), None)
-        if view_method and hasattr(view_method, '_swagger_auto_schema'):
-            #pylint:disable=protected-access
-            data = view_method._swagger_auto_schema
-            for resp_code, resp in six.iteritems(data.get('responses', {})):
-                request_body_serializer = resp.schema
-                if request_body_serializer is not None:
-                    serializer_class = request_body_serializer
-                    try:
-                        if not issubclass(
-                                serializer_class, serializers.Serializer):
-                            # We assume `request_body=no_body` here.
-                            serializer_class = None
-                    except TypeError:
-                        # We are dealing with a ListSerializer instance
-                        serializer_class = \
-                            request_body_serializer.child.__class__
-                        many = request_body_serializer.many
-                break # XXX only handles first schema response.
-
-
-        if serializer_class or hasattr(view, 'get_serializer_class'):
-            serializer = self._get_serializer(
-                method, serializer_class, many=many)
+        serializer = self._get_serializer()
+        if serializer:
             if isinstance(serializer, serializers.Serializer):
-                schema = self.map_serializer(serializer)
-                # No write_only fields for response.
-                for name, sub_schema in schema['properties'].copy().items():
-                    if 'writeOnly' in sub_schema:
-                        del schema['properties'][name]
-                        schema['required'] = [
-                            f for f in schema['required'] if f != name]
-
+                responses = self._get_response_for_code(
+                    serializer, '200', direction='response')
+                schema = responses['content']['application/json']['schema']
+                if '$ref' in schema:
+                    key = schema['$ref'].split('/')[-1]
+                    schema = self.registry[(key, 'schemas')].schema
             try:
-                serializer = self._validate_examples(
+                self._validate_examples(
                     self.examples if hasattr(self, 'examples') else [],
                     path, method,
-                    serializer_class=serializer.__class__,
-                    schema=schema)
-            except exceptions.APIException:
+                    serializer_class=serializer.__class__, schema=schema)
+            except exceptions.APIException as err:
                 serializer = None
                 warnings.warn('{}: serializer_class() raised an exception'
                     ' during '
@@ -778,105 +734,7 @@ class AutoSchema(BaseAutoSchema):
                     'generated for {} {}.'.format(
                         view.__class__.__name__, method, path))
 
-        return {
-            '200': {
-                'content': {
-                    ct: {'schema': schema}
-                    for ct in self.get_request_media_types()
-                },
-                'description': "OK"
-            }
-        }
-
-
-class APIDocGenerator(SchemaGenerator):
-
-    endpoint_inspector_cls = APIDocEndpointEnumerator
-
-#    def _initialise_endpoints(self):
-#        if self.endpoints is None:
-#            inspector = self.endpoint_inspector_cls(self.patterns, self.urlconf)
-#            self.endpoints = reversed(inspector.get_api_endpoints())
-
-
-class APIDocView(TemplateView):
-
-    template_name = 'docs/api.html'
-    generator = APIDocGenerator()
-
-    def get_context_data(self, **kwargs):
-        #pylint:disable=too-many-locals,too-many-nested-blocks
-        context = super(APIDocView, self).get_context_data(**kwargs)
-        api_end_points = []
-        api_base_url = getattr(settings, 'API_BASE_URL',
-            self.request.build_absolute_uri(location='/').strip('/'))
-        schema = self.generator.get_schema(request=self.request, public=True)
-        tags = set([])
-        paths = schema.get('paths', [])
-        api_paths = OrderedDict()
-        for path in sorted(paths):
-            api_paths[path] = paths[path]
-        for path, path_details in api_paths.items():
-            for func, func_details in path_details.items():
-                if func.lower() == 'patch':
-                    # We merge PUT and PATCH together.
-                    continue
-                try:
-                    examples = ""
-                    if 'examples' in func_details:
-                        examples = func_details['examples']
-                        for example in examples:
-                            if 'requestBody' in example:
-                                example['requestBody'] = json.dumps(
-                                    example['requestBody'])
-                            if 'resp' in example:
-                                example['resp'] = format_json(
-                                    example['resp'])
-                    description = func_details.get('description', None)
-                    if description is None:
-                        warnings.warn("%s %s: description is None" % (
-                            func.upper(), path))
-                    func_details.update({
-                        'func': func,
-                        'path': '%s' % path,
-                        'description': rst_to_html(description),
-                        'examples': examples
-                    })
-                    if 'tags' in func_details and func_details['tags']:
-                        if ('content' not in func_details['tags'] and
-                            'editors' not in func_details['tags']):
-                            tags |= set(func_details['tags'])
-                            api_end_points += [func_details]
-                except AttributeError:
-#                    raise
-                    pass
-        expanded_tags = OrderedDict({
-            'auth': "Auth & credentials",
-            'billing': "Billing",
-            'metrics': "Metrics",
-            'profile': "Profile",
-            'rbac': "Roles & rules",
-            'subscriptions': "Subscriptions",
-            'themes': "Themes",
-        })
-        for tag in sorted(tags):
-            if not tag in expanded_tags:
-                expanded_tags.update({tag: ""})
-        context.update({
-            'definitions': {}, # XXX No schema.definitions in restframework,
-            'api_end_points': sorted(
-                api_end_points, key=lambda val: val['path']),
-            'api_end_points_by_summary': sorted(
-                api_end_points, key=lambda val: val.get('summary', "")),
-            'tags': expanded_tags,
-#            'api_base_url': api_base_url,
-            'api_base_url': "{{api_base_url}}",
-         'api_jwt_user': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_subscriber': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_provider': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_broker': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-        })
-        return context
+        return serializer
 
 
 def populate_schema_from_docstring(schema, docstring, api_base_url=None):
@@ -908,22 +766,13 @@ def get_notification_schema(notification_slug, api_base_url=None):
     docstring = None
     if notification_slug == 'user_contact':
         serializer = ContactUsNotificationSerializer()
-        docstring = notification_signals.contact_requested_notice.__doc__
+        docstring = notification_signals.user_contact_notice.__doc__
     elif notification_slug == 'user_registered':
         serializer = UserNotificationSerializer()
         docstring = notification_signals.user_registered_notice.__doc__
     elif notification_slug == 'user_activated':
         serializer = UserNotificationSerializer()
         docstring = notification_signals.user_activated_notice.__doc__
-    elif notification_slug == 'user_verification':
-        serializer = ExpireUserNotificationSerializer()
-        docstring = notification_signals.user_verification_notice.__doc__
-    elif notification_slug == 'user_reset_password':
-        serializer = ExpireUserNotificationSerializer()
-        docstring = notification_signals.user_reset_password_notice.__doc__
-    elif notification_slug == 'user_mfa_code':
-        serializer = OneTimeCodeNotificationSerializer()
-        docstring = notification_signals.user_mfa_code_notice.__doc__
     elif notification_slug == 'card_expires_soon':
         serializer = ExpireProfileNotificationSerializer()
         docstring = notification_signals.card_expires_soon_notice.__doc__
@@ -939,7 +788,7 @@ def get_notification_schema(notification_slug, api_base_url=None):
     elif notification_slug == 'period_sales_report_created':
         serializer = AggregatedSalesNotificationSerializer()
         docstring = \
-            notification_signals.weekly_sales_report_created_notice.__doc__
+            notification_signals.period_sales_report_created_notice.__doc__
     elif notification_slug == 'charge_updated':
         serializer = ChargeNotificationSerializer()
         docstring = notification_signals.charge_updated_notice.__doc__
@@ -981,18 +830,29 @@ def get_notification_schema(notification_slug, api_base_url=None):
         docstring = \
             notification_signals.subscription_request_created_notice.__doc__
 
+    generator = APIDocGenerator()
     inspector = AutoSchema()
+    inspector.registry = generator.registry
+    inspector.view = GenericAPIView()
+    inspector.view.request = HttpRequest()
+    inspector.method = 'GET'
+    inspector.path = ''
     if serializer:
-        content = inspector.map_serializer(serializer)
+        responses = inspector._get_response_for_code(
+            serializer, '200', direction='response')
+        schema = responses['content']['application/json']['schema']
+        if '$ref' in schema:
+            key = schema['$ref'].split('/')[-1]
+            schema = inspector.registry[(key, 'schemas')].schema
     else:
-        content = ""
+        schema = ""
     schema = {
         'operationId': notification_slug,
         'responses': {
             '200': {
                 'content': {
                     'application/json': {
-                        'schema': content
+                        'schema': schema
                     }
                 }
             }
@@ -1000,77 +860,3 @@ def get_notification_schema(notification_slug, api_base_url=None):
     }
     populate_schema_from_docstring(schema, docstring, api_base_url=api_base_url)
     return schema
-
-
-class NotificationDocGenerator(object):
-
-    @staticmethod
-    def get_schema(request=None, public=True):
-        #pylint:disable=unused-argument
-        api_base_url = getattr(settings, 'API_BASE_URL',
-            request.build_absolute_uri(location='/').strip('/'))
-        api_end_points = OrderedDict({
-            'user_contact': get_notification_schema('user_contact',
-                api_base_url=api_base_url),
-            'user_registered': get_notification_schema('user_registered',
-                api_base_url=api_base_url),
-            'user_activated': get_notification_schema('user_activated',
-                api_base_url=api_base_url),
-            'user_verification': get_notification_schema('user_verification',
-                api_base_url=api_base_url),
-            'user_reset_password': get_notification_schema(
-                'user_reset_password', api_base_url=api_base_url),
-            'user_mfa_code': get_notification_schema('user_mfa_code',
-                api_base_url=api_base_url),
-            'card_expires_soon': get_notification_schema('card_expires_soon',
-                api_base_url=api_base_url),
-            'expires_soon': get_notification_schema('expires_soon',
-                api_base_url=api_base_url),
-            'profile_updated': get_notification_schema(
-                'profile_updated', api_base_url=api_base_url),
-            'card_updated': get_notification_schema('card_updated',
-                api_base_url=api_base_url),
-            'weekly_sales_report_created': get_notification_schema(
-                'weekly_sales_report_created', api_base_url=api_base_url),
-            'charge_updated': get_notification_schema('charge_updated',
-                api_base_url=api_base_url),
-            'order_executed': get_notification_schema('order_executed',
-                api_base_url=api_base_url),
-            'renewal_charge_failed': get_notification_schema(
-                'renewal_charge_failed', api_base_url=api_base_url),
-            'claim_code_generated': get_notification_schema(
-                'claim_code_generated', api_base_url=api_base_url),
-            'processor_setup_error': get_notification_schema(
-                'processor_setup_error', api_base_url=api_base_url),
-            'role_grant_created': get_notification_schema(
-                'role_grant_created', api_base_url=api_base_url),
-            'role_request_created': get_notification_schema(
-                'role_request_created', api_base_url=api_base_url),
-            'role_grant_accepted': get_notification_schema(
-                'role_grant_accepted', api_base_url=api_base_url),
-            'subscription_grant_accepted': get_notification_schema(
-                'subscription_grant_accepted', api_base_url=api_base_url),
-            'subscription_grant_created': get_notification_schema(
-                'subscription_grant_created', api_base_url=api_base_url),
-            'subscription_request_accepted': get_notification_schema(
-                'subscription_request_accepted', api_base_url=api_base_url),
-            'subscription_request_created': get_notification_schema(
-                'subscription_request_created', api_base_url=api_base_url),
-        })
-        api_paths = {}
-        for api_end_point in api_end_points.values():
-            funcs = {}
-            funcs.update({api_end_point.get('func'): api_end_point})
-            api_paths.update({api_end_point.get('operationId'): funcs})
-        schema = {
-            'paths': api_paths
-        }
-        return schema
-
-
-class NotificationDocView(APIDocView):
-    """
-    Documentation for notifications triggered by the application
-    """
-    template_name = 'docs/notifications.html'
-    generator = NotificationDocGenerator()

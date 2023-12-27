@@ -263,14 +263,13 @@ $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(NPM) install --cache $(installTop)/.npm --tmp $(installTop)/tmp --prefix $(libDir)
 	[ -e $(binDir)/eslint ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/eslint eslint)
 	[ -e $(binDir)/sassc ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/sass sassc)
-	[ -e $(binDir)/swagger-cli ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/swagger-cli swagger-cli)
 	[ -e $(binDir)/webpack ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/webpack webpack)
 	touch $@
 
 
 schema.yml:
-	cd $(srcDir) && DEBUG=0 API_DEBUG=1 $(MANAGE) generateschema > $@
-	cd $(srcDir) && swagger-cli validate $@
+	cd $(srcDir) && DEBUG=0 API_DEBUG=1 OPENAPI_SPEC_COMPLIANT=1 \
+		$(MANAGE) spectacular --color --file $@ --validate
 
 
 $(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \

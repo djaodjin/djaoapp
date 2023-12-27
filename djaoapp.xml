@@ -28,8 +28,8 @@
         <!-- botocore has a constraint: docutils<0.16 -->
         <lib>.*/(docutils)/__init__.py</lib>
       </dep>
-      <dep name="drf-yasg" target="python">
-        <lib>.*/(drf_yasg)/__init__.py</lib>
+      <dep name="drf-spectacular" target="python">
+        <lib>.*/(drf_spectacular)/__init__.py</lib>
       </dep>
       <dep name="whitenoise" target="python">
         <lib>.*/(whitenoise)/__init__.py</lib>

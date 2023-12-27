@@ -2,7 +2,7 @@
   <tr class="position-relative">
     <td class="row-header"></td>
     <th v-for="col in currentTableDates" class="row-body" v-cloak>
-        [[ $globals.humanizePeriodHeading(col[0], params.period, '{{organization.default_timezone}}') ]]
+        [[ $globals.humanizePeriodHeading(col[0], params.period_type, '{{organization.default_timezone}}') ]]
     </th>
   </tr>
   <tr :id="row.slug" v-for="(row, index) in currentTableData.data" :key="row.slug" class="position-relative">

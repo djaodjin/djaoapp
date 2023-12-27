@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DjaoDjin inc.
+# Copyright (c) 2023, DjaoDjin inc.
 # see LICENSE
 
 import json, logging
@@ -7,8 +7,8 @@ from hashlib import sha256
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from ...views.docs import (APIDocGenerator,
-    format_examples, split_descr_and_examples)
+from ...api_docs.schemas import format_examples, split_descr_and_examples
+from ...api_docs.views import APIDocGenerator
 
 
 LOGGER = logging.getLogger(__name__)
