@@ -15,7 +15,7 @@ djaodjin-deployutils==0.10.7
 djaodjin-extended-templates==0.4.5
 djaodjin-multitier==0.2.1
 djaodjin-rules==0.4.3
-djaodjin-saas==0.19.0
+djaodjin-saas==0.19.1
 djaodjin-signup==0.9.1
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 googlemaps==4.10.0
