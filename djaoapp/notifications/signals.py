@@ -1,9 +1,10 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 #pylint:disable=invalid-name,too-many-lines
 import logging
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.signals import user_logged_in, user_login_failed
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from multitier.thread_locals import get_current_site
@@ -133,6 +134,160 @@ def user_contact_notice(sender, provider, user, reason, **kwargs):
     send_notification('user_contact',
         context=ContactUsNotificationSerializer().to_representation(context),
         site=site)
+
+
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(user_logged_in, dispatch_uid="user_logged_in_notice")
+def user_logged_in_notice(sender, request, user, **kwargs):
+    """
+    User logged in
+
+    This notification is sent when a user logged in successfully.
+
+    **Tags: notification
+
+    **Example
+
+    .. code-block:: json
+
+        {
+          "event": "user_logged_in",
+          "broker": {
+            "slug": "djaoapp",
+            "printable_name": "DjaoApp",
+            "full_name": "DjaoApp inc.",
+            "nick_name": "DjaoApp",
+            "picture": null,
+            "type": "organization",
+            "credentials": false,
+            "created_at": "2022-01-01T00:00:00Z",
+            "email": "djaoapp@localhost.localdomain",
+            "phone": "415-555-5555",
+            "street_address": "1 SaaS Road",
+            "locality": "San Francisco",
+            "region": "California",
+            "postal_code": "94133",
+            "country": "US",
+            "default_timezone": "America/Los_Angeles",
+            "is_provider": true,
+            "is_bulk_buyer": false,
+            "lang": "en",
+            "extra": null
+          },
+          "back_url": "{{api_base_url}}",
+          "user": {
+            "slug": "xia",
+            "username": "xia",
+            "printable_name": "Xia",
+            "full_name": "Xia Lee",
+            "nick_name": "Xia",
+            "picture": null,
+            "type": "personal",
+            "credentials": true,
+            "created_at": "2022-01-01T00:00:00Z",
+            "last_login": "2022-01-01T00:00:00Z",
+            "email": "xia@localhost.localdomain",
+            "phone": "415-555-5556",
+            "lang": "en",
+            "extra": null
+          }
+        }
+    """
+    LOGGER.debug("[signal] user_logged_in_notice(user=%s)", user)
+
+    broker = get_broker()
+    site = get_current_site()
+    app = get_current_app()
+    context = {
+        'broker': broker,
+        'back_url': site.as_absolute_uri(),
+        'user': user
+    }
+    send_notification('user_logged_in',
+        context=UserNotificationSerializer().to_representation(context),
+        site=site)
+
+
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(user_login_failed, dispatch_uid="user_login_failed_notice")
+def user_login_failed_notice(sender, credentials, request, **kwargs):
+    """
+    User login failed
+
+    This notification is sent when a user login attempts has failed.
+
+    **Tags: notification
+
+    **Example
+
+    .. code-block:: json
+
+        {
+          "event": "user_login_failed",
+          "broker": {
+            "slug": "djaoapp",
+            "printable_name": "DjaoApp",
+            "full_name": "DjaoApp inc.",
+            "nick_name": "DjaoApp",
+            "picture": null,
+            "type": "organization",
+            "credentials": false,
+            "created_at": "2022-01-01T00:00:00Z",
+            "email": "djaoapp@localhost.localdomain",
+            "phone": "415-555-5555",
+            "street_address": "1 SaaS Road",
+            "locality": "San Francisco",
+            "region": "California",
+            "postal_code": "94133",
+            "country": "US",
+            "default_timezone": "America/Los_Angeles",
+            "is_provider": true,
+            "is_bulk_buyer": false,
+            "lang": "en",
+            "extra": null
+          },
+          "back_url": "{{api_base_url}}/recover/",
+          "user": {
+            "slug": "xia",
+            "username": "xia",
+            "printable_name": "Xia",
+            "full_name": "Xia Lee",
+            "nick_name": "Xia",
+            "picture": null,
+            "type": "personal",
+            "credentials": true,
+            "created_at": "2022-01-01T00:00:00Z",
+            "last_login": "2022-01-01T00:00:00Z",
+            "email": "xia@localhost.localdomain",
+            "phone": "415-555-5556",
+            "lang": "en",
+            "extra": null
+          }
+        }
+    """
+    LOGGER.debug("[signal] user_login_failed_notice(credentials=%s)",
+        credentials)
+    try:
+        model = get_user_model()
+        user = model.objects.find_user(credentials.get('username'))
+
+        broker = get_broker()
+        site = get_current_site()
+        app = get_current_app()
+        context = {
+            'broker': broker,
+            'back_url': site.as_absolute_uri(reverse('password_reset')),
+            'user': user
+        }
+        send_notification('user_login_failed',
+            context=UserNotificationSerializer().to_representation(context),
+            site=site)
+    except model.DoesNotExist:
+        pass
 
 
 # We insure the method is only bounded once no matter how many times

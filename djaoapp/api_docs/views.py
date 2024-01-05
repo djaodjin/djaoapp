@@ -113,54 +113,36 @@ class NotificationDocGenerator(object):
         #pylint:disable=unused-argument
         api_base_url = getattr(settings, 'API_BASE_URL',
             request.build_absolute_uri(location='/').strip('/'))
-        api_end_points = OrderedDict({
-            'user_contact': get_notification_schema('user_contact',
-                api_base_url=api_base_url),
-            'user_registered': get_notification_schema('user_registered',
-                api_base_url=api_base_url),
-            'user_activated': get_notification_schema('user_activated',
-                api_base_url=api_base_url),
-            'user_verification': get_notification_schema('user_verification',
-                api_base_url=api_base_url),
-            'user_reset_password': get_notification_schema(
-                'user_reset_password', api_base_url=api_base_url),
-            'user_mfa_code': get_notification_schema('user_mfa_code',
-                api_base_url=api_base_url),
-            'card_expires_soon': get_notification_schema('card_expires_soon',
-                api_base_url=api_base_url),
-            'expires_soon': get_notification_schema('expires_soon',
-                api_base_url=api_base_url),
-            'profile_updated': get_notification_schema(
-                'profile_updated', api_base_url=api_base_url),
-            'card_updated': get_notification_schema('card_updated',
-                api_base_url=api_base_url),
-            'weekly_sales_report_created': get_notification_schema(
-                'weekly_sales_report_created', api_base_url=api_base_url),
-            'charge_updated': get_notification_schema('charge_updated',
-                api_base_url=api_base_url),
-            'order_executed': get_notification_schema('order_executed',
-                api_base_url=api_base_url),
-            'renewal_charge_failed': get_notification_schema(
-                'renewal_charge_failed', api_base_url=api_base_url),
-            'claim_code_generated': get_notification_schema(
-                'claim_code_generated', api_base_url=api_base_url),
-            'processor_setup_error': get_notification_schema(
-                'processor_setup_error', api_base_url=api_base_url),
-            'role_grant_created': get_notification_schema(
-                'role_grant_created', api_base_url=api_base_url),
-            'role_request_created': get_notification_schema(
-                'role_request_created', api_base_url=api_base_url),
-            'role_grant_accepted': get_notification_schema(
-                'role_grant_accepted', api_base_url=api_base_url),
-            'subscription_grant_accepted': get_notification_schema(
-                'subscription_grant_accepted', api_base_url=api_base_url),
-            'subscription_grant_created': get_notification_schema(
-                'subscription_grant_created', api_base_url=api_base_url),
-            'subscription_request_accepted': get_notification_schema(
-                'subscription_request_accepted', api_base_url=api_base_url),
-            'subscription_request_created': get_notification_schema(
-                'subscription_request_created', api_base_url=api_base_url),
-        })
+        api_end_points = OrderedDict()
+        for notification_slug in [
+                'card_expires_soon',
+                'card_updated',
+                'charge_updated',
+                'claim_code_generated',
+                'expires_soon',
+                'order_executed',
+                'period_sales_report_created',
+                'profile_updated',
+                'processor_setup_error',
+                'renewal_charge_failed',
+                'role_grant_accepted',
+                'role_grant_created',
+                'role_request_created',
+                'subscription_grant_accepted',
+                'subscription_grant_created',
+                'subscription_request_accepted',
+                'subscription_request_created',
+                'user_activated',
+                'user_contact',
+                'user_logged_in',
+                'user_login_failed',
+                'user_registered',
+                'user_reset_password',
+                'user_verification']:
+            api_end_points.update({notification_slug:
+                get_notification_schema(notification_slug,
+                api_base_url=api_base_url)})
+
         api_paths = {}
         for api_end_point in api_end_points.values():
             funcs = {}

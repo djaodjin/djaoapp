@@ -32,7 +32,8 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(NotificationInnerFrameView, self).get_context_data(
             **kwargs)
-        context.update(get_test_notification_context(self.kwargs.get('template'),
+        context.update(
+            get_test_notification_context(self.kwargs.get('template'),
             originated_by=self.request.user))
         return context
 

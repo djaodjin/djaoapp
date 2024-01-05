@@ -58,11 +58,12 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
     # Notify a single user because there is a verification_key
     # in the e-mail body.
     if notification_slug in (
-            'user_verification',
+            'role_grant_created',
             'user_reset_password',
-            'user_mfa_code',
-            'user_welcome',
-            'role_grant_created',):
+            'user_logged_in',
+            'user_login_failed',
+            'user_verification',
+            'user_welcome',):
         user = context.get('user')
         if user:
             user_email = user.get('email')

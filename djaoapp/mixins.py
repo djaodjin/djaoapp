@@ -109,7 +109,7 @@ class NotificationsMixin(object):
             notifications = {key: notifications[key]
                 for key in notifications if key not in [
                     'user_contact', 'user_registered', 'user_activated',
-                    'weekly_sales_report_created', 'processor_setup_error']}
+                    'period_sales_report_created', 'processor_setup_error']}
 
         return notifications
 

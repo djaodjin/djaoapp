@@ -764,55 +764,46 @@ def get_notification_schema(notification_slug, api_base_url=None):
     #pylint:disable=too-many-statements
     serializer = None
     docstring = None
-    if notification_slug == 'user_contact':
-        serializer = ContactUsNotificationSerializer()
-        docstring = notification_signals.user_contact_notice.__doc__
-    elif notification_slug == 'user_registered':
-        serializer = UserNotificationSerializer()
-        docstring = notification_signals.user_registered_notice.__doc__
-    elif notification_slug == 'user_activated':
-        serializer = UserNotificationSerializer()
-        docstring = notification_signals.user_activated_notice.__doc__
-    elif notification_slug == 'card_expires_soon':
+    if notification_slug == 'card_expires_soon':
         serializer = ExpireProfileNotificationSerializer()
         docstring = notification_signals.card_expires_soon_notice.__doc__
-    elif notification_slug == 'expires_soon':
-        serializer = SubscriptionExpireNotificationSerializer()
-        docstring = notification_signals.expires_soon_notice.__doc__
-    elif notification_slug == 'profile_updated':
-        serializer = ChangeProfileNotificationSerializer()
-        docstring = notification_signals.profile_updated_notice.__doc__
     elif notification_slug == 'card_updated':
         serializer = ChangeProfileNotificationSerializer()
         docstring = notification_signals.card_updated_notice.__doc__
+    elif notification_slug == 'charge_updated':
+        serializer = ChargeNotificationSerializer()
+        docstring = notification_signals.charge_updated_notice.__doc__
+    elif notification_slug == 'claim_code_generated':
+        serializer = ClaimNotificationSerializer()
+        docstring = notification_signals.claim_code_generated_notice.__doc__
+    elif notification_slug == 'expires_soon':
+        serializer = SubscriptionExpireNotificationSerializer()
+        docstring = notification_signals.expires_soon_notice.__doc__
+    elif notification_slug == 'order_executed':
+        serializer = InvoiceNotificationSerializer()
+        docstring = notification_signals.order_executed_notice.__doc__
     elif notification_slug == 'period_sales_report_created':
         serializer = AggregatedSalesNotificationSerializer()
         docstring = \
             notification_signals.period_sales_report_created_notice.__doc__
-    elif notification_slug == 'charge_updated':
-        serializer = ChargeNotificationSerializer()
-        docstring = notification_signals.charge_updated_notice.__doc__
-    elif notification_slug == 'order_executed':
-        serializer = InvoiceNotificationSerializer()
-        docstring = notification_signals.order_executed_notice.__doc__
-    elif notification_slug == 'renewal_charge_failed':
-        serializer = RenewalFailedNotificationSerializer()
-        docstring = notification_signals.renewal_charge_failed_notice.__doc__
-    elif notification_slug == 'claim_code_generated':
-        serializer = ClaimNotificationSerializer()
-        docstring = notification_signals.claim_code_generated_notice.__doc__
     elif notification_slug == 'processor_setup_error':
         serializer = ProcessorSetupNotificationSerializer()
         docstring = notification_signals.processor_setup_error_notice.__doc__
+    elif notification_slug == 'profile_updated':
+        serializer = ChangeProfileNotificationSerializer()
+        docstring = notification_signals.profile_updated_notice.__doc__
+    elif notification_slug == 'renewal_charge_failed':
+        serializer = RenewalFailedNotificationSerializer()
+        docstring = notification_signals.renewal_charge_failed_notice.__doc__
+    elif notification_slug == 'role_grant_accepted':
+        serializer = RoleGrantNotificationSerializer()
+        docstring = notification_signals.role_grant_accepted_notice.__doc__
     elif notification_slug == 'role_grant_created':
         serializer = RoleGrantNotificationSerializer()
         docstring = notification_signals.role_grant_created_notice.__doc__
     elif notification_slug == 'role_request_created':
         serializer = RoleRequestNotificationSerializer()
         docstring = notification_signals.role_request_created_notice.__doc__
-    elif notification_slug == 'role_grant_accepted':
-        serializer = RoleGrantNotificationSerializer()
-        docstring = notification_signals.role_grant_accepted_notice.__doc__
     elif notification_slug == 'subscription_grant_accepted':
         serializer = SubscriptionAcceptedNotificationSerializer()
         docstring = \
@@ -829,6 +820,21 @@ def get_notification_schema(notification_slug, api_base_url=None):
         serializer = SubscriptionCreatedNotificationSerializer()
         docstring = \
             notification_signals.subscription_request_created_notice.__doc__
+    elif notification_slug == 'user_activated':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_activated_notice.__doc__
+    elif notification_slug == 'user_contact':
+        serializer = ContactUsNotificationSerializer()
+        docstring = notification_signals.user_contact_notice.__doc__
+    elif notification_slug == 'user_logged_in':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_logged_in_notice.__doc__
+    elif notification_slug == 'user_login_failed':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_login_failed_notice.__doc__
+    elif notification_slug == 'user_registered':
+        serializer = UserNotificationSerializer()
+        docstring = notification_signals.user_registered_notice.__doc__
 
     generator = APIDocGenerator()
     inspector = AutoSchema()
