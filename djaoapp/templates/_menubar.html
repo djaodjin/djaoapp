@@ -52,7 +52,7 @@
           <li class="menubar-dropdown-divider" role="separator"></li>
           <li class="menubar-dropdown-label" role="presentation">
             <div class="d-inline-block">
-              <img class="avatar-top" src="{% if accessible.org_picture %}{{accessible.org_picture}}{% endif %}">
+              <img class="avatar-top" src="{% if accessible.org_picture %}{{accessible.org_picture}}{% else %}{{'/assets/img/default-organization.png'|djasset}}{% endif %}">
             </div>
             <div class="d-inline-block">
               <div>{{accessible.printable_name}}</div>
