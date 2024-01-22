@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -190,10 +190,6 @@ class NotificationEmailBackend(object):
         if there is any problem with the connection settings.
         """
         #pylint:disable=too-many-arguments
-        if isinstance(settings.SEND_NOTIFICATION_CALLABLE, six.string_types):
-            import_string(settings.SEND_NOTIFICATION_CALLABLE)(
-                event_name, context=context, site=site, recipients=recipients)
-
         context.update({"event": event_name})
         template = 'notification/%s.eml' % event_name
         if event_name in ('role_grant_created',):

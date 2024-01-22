@@ -54,7 +54,16 @@ GOOGLE_API_KEY = ""
 
 ENABLES_PROCESSOR_TEST_KEYS = True
 
-NOTIFICATION_WEBHOOK_URL = None
+#: The backend to send notifications to users and/or profile managers.
+#: The two backend bundled with the project are
+#: `djaoapp.notifications.backends.NotificationEmailBackend` to notify users
+#: by e-mail and `djaoapp.notifications.backends.NotificationWebhookBackend` to
+#: `POST` and event to an URL.
+NOTIFICATION_BACKEND = 'djaoapp.notifications.backends.NotificationEmailBackend'
+
+#: A URL, or callable function returning an URL, to which a notification event
+#: will be posted.
+NOTIFICATION_WEBHOOK_URL = ""
 
 
 update_settings(sys.modules[__name__],
@@ -663,14 +672,6 @@ EXTENDED_TEMPLATES = {
     'THEME_DIR_CALLABLE': theme_dir
 }
 
-
-#: A callable function, which is passed a event_name and, optionally, a context
-#: dictionnary and site instance.
-#: This function is responsible to notify third-parties of an event. The default
-#: implementation will send an e-mail to users and/or profile managers.
-SEND_NOTIFICATION_CALLABLE = None
-
-NOTIFICATION_BACKEND = 'djaoapp.notifications.backends.NotificationEmailBackend'
 
 # imports made here so SECRET_KEY is defined when loading AUTH_USER.
 import djaoapp.extras.saas, djaoapp.extras.rules

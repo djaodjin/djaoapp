@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from importlib import import_module
 
@@ -6,12 +6,6 @@ from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 
 def get_notification_backend():
-    if ((settings.NOTIFICATION_BACKEND ==
-        'djaoapp.notifications.backends.NotificationWebhookBackend') and
-        not getattr(settings, 'NOTIFICATION_WEBHOOK_URL', None)):
-        raise ImproperlyConfigured('You must set NOTIFICATION_WEBHOOK_URL if '\
-            'you are using the webhook backend')
-
     return _load_backend(settings.NOTIFICATION_BACKEND)()
 
 
@@ -24,7 +18,7 @@ def _load_backend(path):
         raise ImproperlyConfigured('Error importing notification backend %s: "%s"'
             % (path, err))
     except ValueError:
-        raise ImproperlyConfigured('Error importing emailer backend. '\
+        raise ImproperlyConfigured('Error importing notification backend. '\
 ' Is NOTIFICATION_BACKEND a path to a callable?')
     try:
         cls = getattr(mod, attr)

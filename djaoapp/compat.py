@@ -1,11 +1,11 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 #pylint: disable=no-name-in-module,unused-import,import-error,bad-except-order
 #pylint: disable=invalid-name,unused-argument
 from functools import WRAPPER_ASSIGNMENTS
+from django.utils.functional import lazy
 import six
-
 from six.moves.urllib.parse import urljoin, urlparse, urlunparse
 from six import StringIO
 
@@ -66,6 +66,11 @@ try:
     from django.utils.translation import gettext_lazy
 except ImportError: # django < 3.0
     from django.utils.translation import ugettext_lazy as gettext_lazy
+
+
+def settings_lazy(func_name):
+    return lazy(import_string(func_name), str)()
+
 
 def is_authenticated(request):
     if hasattr(request, 'user'):

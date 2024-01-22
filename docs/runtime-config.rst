@@ -122,10 +122,10 @@ key pairs.
 .. autodata:: djaoapp.settings.CONTACT_CAPTCHA_KEYS
 
 
-Overriding the function to send notifications
----------------------------------------------
+Overriding the backend to send notifications
+--------------------------------------------
 
-.. autodata:: djaoapp.settings.SEND_NOTIFICATION_CALLABLE
+.. autodata:: djaoapp.settings.NOTIFICATION_BACKEND
 
 
 Reference for configuration variables
@@ -164,6 +164,18 @@ Variable for database connection
 +--------------------+------------+--------------------------------------------+
 |DB_PASSWORD         |""          | Password to identify with the database     |
 +--------------------+------------+--------------------------------------------+
+
+
+Variables to POST notifications on an Webhook URL
+
++-------------------------+------------+---------------------------------------+
+|Name                     | Default    | Description                           |
++=========================+============+=======================================+
+|NOTIFICATION_WEBHOOK_URL |""          | A URL, or callable function returning |
+|                         |            | an URL, to which a notification event |
+|                         |            | will be posted.                       |
+|                         |            | ex: http://localhost:8010/postevent   |
++-------------------------+------------+---------------------------------------+
 
 
 Variables to send notification e-mails
