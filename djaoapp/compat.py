@@ -69,7 +69,9 @@ except ImportError: # django < 3.0
 
 
 def settings_lazy(func_name):
-    return lazy(import_string(func_name), str)()
+    def import_and_call_func(func_name):
+        return import_string(func_name)()
+    return lazy(import_and_call_func, str)(func_name)
 
 
 def is_authenticated(request):

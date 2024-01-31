@@ -59,7 +59,9 @@ ENABLES_PROCESSOR_TEST_KEYS = True
 #: `djaoapp.notifications.backends.NotificationEmailBackend` to notify users
 #: by e-mail and `djaoapp.notifications.backends.NotificationWebhookBackend` to
 #: `POST` and event to an URL.
-NOTIFICATION_BACKEND = 'djaoapp.notifications.backends.NotificationEmailBackend'
+NOTIFICATION_BACKENDS = (
+    'djaoapp.notifications.backends.NotificationEmailBackend',
+)
 
 #: A URL, or callable function returning an URL, to which a notification event
 #: will be posted.
