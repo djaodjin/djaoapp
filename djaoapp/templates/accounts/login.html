@@ -35,9 +35,8 @@
     </p>
   </div>
 </div>
-
-{% block bodyscripts %}
-  <script type="text/javascript" src="{{'/assets/js/djaoapp-login.js'|djasset}}" defer></script>
 {% endblock %}
 
+{% block accounts_scripts %}
+{% include "_password_strength_scripts.html" %}
 {% endblock %}
