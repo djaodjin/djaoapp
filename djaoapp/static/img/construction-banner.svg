@@ -1,0 +1,5 @@
+<svg id="main-box" viewBox="0 0 60 5" preserveAspectRatio="1"
+  xmlns="http://www.w3.org/2000/svg">
+  <rect x="2.9" y="0" width="30" height="5"  transform="skewX(-30)" fill="yellow" />
+  <rect x="30" y="0" width="30" height="5"  transform="skewX(-30)" fill="black" />
+</svg>
