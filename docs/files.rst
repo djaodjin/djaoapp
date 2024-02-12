@@ -87,8 +87,6 @@ Dashboard pages extends one of the following base.html templates.
 
     * saas/base_dashboard.html
 
-      * saas/base_dashboard-2col.html
-
       * contacts/base.html
 
       * saas/metrics/base.html

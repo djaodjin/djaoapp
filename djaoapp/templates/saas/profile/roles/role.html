@@ -1,4 +1,4 @@
-{% extends "saas/base_dashboard-2col.html" %}
+{% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
 {% trans organization=organization.printable_name, role_descr=role_descr.title %}{{organization}} {{role_descr}}s{% endtrans %}
@@ -15,6 +15,8 @@
     data-trip-content="<h2>{% trans role_descr=role_descr.title%}Add/Remove {{role_descr}}{% endtrans %}</h2><p>{% trans %}When a user is listed under a role for an organization, she will be able to view pages and execute actions associated with the role.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
     <div id="user-relation-list-container">
+      <div class="row">
+      <div class="col-md-6">
       <div class="card bg-light">
         <div class="card-body">
           <form id="add-user" class="mb-4" @submit.prevent="submit">
@@ -119,6 +121,8 @@ Thank you,
           </form>
         </div>
       </div>
+      </div>
+      </div> {# /.row #}
       <hr />
       <div class="row mb-2" v-show="items.invited_count > 0 || items.requested_count > 0">
         <div class="col-12">
@@ -137,21 +141,66 @@ Thank you,
           {% include "saas/_filter_match.html" %}
         </div>
       </div>
-      <div class="row">
-          <div class="col-12 col-md-6">
-            <div v-show="!itemsLoaded">
-                <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-            </div>
-            <div class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
-                <p class="text-muted mt-2">{% trans role_descr=role_descr.title %}No {{role_descr}}s yet{% endtrans %}</p>
-            </div>
-          </div>
-      </div>
-      <div class="row" infinite-wrapper>
-        <div class="col-12 my-1" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            {% include "saas/_user_card.html" %}
+      <div class="row" v-show="!itemsLoaded">
+        <div class="col-12">
+          <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
         </div>
       </div>
+      <div class="row has-no-results"
+           v-show="itemsLoaded && items.results.length == 0" v-cloak>
+        <div class="col-12">
+          <p class="text-muted mt-2">{% trans role_descr=role_descr.title %}No {{role_descr}}s yet{% endtrans %}</p>
+        </div>
+      </div>
+      <div v-show="itemsLoaded && items.results.length > 0"
+           v-cloak infinite-wrapper>
+        <div v-for="(item, index) in items.results">
+          <div :id="item.user.slug" :class="(item.grant_key || item.request_key) ? 'card card-inactive' : 'card'">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-2">
+                  <div>
+                    <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|djasset}}'" alt=""></a>
+                  </div>
+                </div>
+                <div class="col-9 align-self-center">
+                  <div class="row">
+                    <div class="col col-md-4">
+                      <h5 class="card-title"><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.printable_name]]</a></h5>
+                      <small class="card-subtitle">[[item.user.email]]</small>
+                    </div>
+                    <div class="col col-md-4">
+                      <span v-if="item.user.otp_enabled">
+                        <i class="fa fa-check text-success"></i>{% trans %} OTP enabled{% endtrans %}</span>
+                    </div>
+                    <div class="col col-md-4 text-start" v-if="item.accept_request_api_url">
+                      <hr class="my-2" />
+                      <small class="text-muted">{% trans %}requested{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
+                      <button class="btn btn-secondary btn-sm float-end"
+                              @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
+                    </div>
+                    <div class="col col-md-4 text-start" v-if="item.grant_key">
+                      <hr class="my-2" />
+                      <small class="text-muted">{% trans %}invited{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
+                      <button class="btn btn-secondary btn-sm float-end"
+                              @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
+                    </div>
+                  </div>{# /.row #}
+                </div>
+                <div class="col-1 text-center align-self-center">
+                  <button class="btn btn-danger btn-sm remove"
+                          data-trip data-trip-index="3"
+                          data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
+                          data-trip-position="s"
+                          @click="removeConfirm(index)"><i class="fa fa-remove"></i></button>
+                </div>
+              </div> {# /#item.user.slug #}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% include "_pagination.html" %}
+
       <!-- modal dialog to confirm revoking a role -->
       <div id="revoke-action" class="revoke-modal modal fade"
            tabindex="-1" role="dialog"
