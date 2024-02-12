@@ -117,7 +117,7 @@ makemessages:
 
 
 package-docker: build-assets initdb
-	cd $(srcDir) && echo $(DOCKER) build .
+	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
 
 # download and install prerequisites then create the db.
