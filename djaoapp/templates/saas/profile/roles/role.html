@@ -170,6 +170,9 @@ Thank you,
                       <small class="card-subtitle">[[item.user.email]]</small>
                     </div>
                     <div class="col col-md-4">
+                      <span v-if="!item.user.credentials">
+                        {% trans %}Login disabled{% endtrans %}
+                      </span>
                       <span v-if="item.user.otp_enabled">
                         <i class="fa fa-check text-success"></i>{% trans %} OTP enabled{% endtrans %}</span>
                     </div>
