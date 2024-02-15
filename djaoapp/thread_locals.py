@@ -176,6 +176,11 @@ def get_disabled_registration(request):#pylint:disable=unused-argument
     return app.authentication != app.AUTH_ENABLED
 
 
+def get_user_otp_required(request, user):
+    return user.role.filter(
+        role_description__otp_required=True).exists()
+
+
 def is_current_broker(organization):
     return get_current_broker().slug == str(organization)
 

@@ -2,13 +2,13 @@
 
 {% block form_block %}
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-{% if form['code'] %}
+{% if form['otp_code'] %}
 {{ input_field(form['username'], False, form.hide_labels) }}
 {{ input_field(form['password'], False, form.hide_labels) }}
 <p class="text-center">
     {% trans %}Please enter your OTP code{% endtrans %}
 </p>
-{{ input_field(form['code'], True, form.hide_labels) }}
+{{ input_field(form['otp_code'], True, form.hide_labels) }}
 {% else %}
 {% if form['password'] %}
 {{ input_field(form['username'], False, form.hide_labels) }}

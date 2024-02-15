@@ -89,7 +89,10 @@ urlpatterns = [
         UserRedirectView.as_view(), name='accounts_profile'),
     url_self_provider(r'^users/(?P<user>%s)/roles/$' % USERNAME_PAT,
         UserAccessiblesView.as_view(), name='saas_user_product_list'),
-    url_self_provider(r'^users/(?P<user>%s)/password/' % USERNAME_PAT,
+    url_frictionless_self_provider( # Because we want the user to be able
+                                    # to setup OTP without getting into
+                                    # a loop. See `fail_activate`
+        r'^users/(?P<user>%s)/password/' % USERNAME_PAT,
         UserPasswordUpdateView.as_view(), name='password_change'),
     url_self_provider(r'^users/(?P<user>%s)/pubkey/' % USERNAME_PAT,
         UserPublicKeyUpdateView.as_view(), name='pubkey_update'),

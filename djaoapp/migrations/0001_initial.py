@@ -12,7 +12,7 @@ def load_initial_from_fixture(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('saas', '0018_v0_17_2')
+        ('saas', '0020_v0_20_0')
     ]
 
     operations = [

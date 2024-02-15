@@ -1,6 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}{% trans %}Roles{% endtrans %}{% endblock %}
+{% block saas_title %}{{organization.printable_name}} {% trans %}Roles{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <roledescr-list inline-template id="role-list-container"
@@ -8,21 +8,37 @@
     data-trip-content="<h2>{% trans %}Add/Remove roles{% endtrans %}</h2><p>{% trans %}Managers can view the revenue and subscription metrics. They can<br />transfer funds to the organization bank account, issue refunds, etc.<br />They can add discount coupons and of course, other roles. Contributors have more permissions than normal users<br />but restricted access compared to managers..{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
     data-trip-position="screen-center">
   <div>
-    <form id="roledescr-create" @submit.prevent="save">
-      <div class="row">
-        <!-- Create a New Role Description -->
-        <div class="col-md-3">
-          <div class="me-2 mb-3 w-100">
-            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Title{% endtrans %}" name="new-roledescr" v-model="newItem.title">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card bg-light">
+          <div class="card-body">
+            <form id="roledescr-create" @submit.prevent="save">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+              <div class="me-2 mb-3 w-100">
+                <input type="text" class="form-control form-control-md" placeholder="{% trans %}Title{% endtrans %}" name="new-roledescr" v-model="newItem.title"></input>
+                <button type="submit" class="btn btn-primary btn-md w-100">
+                    {% trans %}Create role{% endtrans %}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        <div class="col-md-3 mb-3">
-          <button type="submit" class="btn btn-primary btn-md w-100">
-            {% trans %}Create role{% endtrans %}
-          </button>
-        </div>
       </div>
-    </form>
+      <div class="col-md-6">
+        <dl>
+          <dt>{% trans %}Requires OTP to sign-in{% endtrans %}</dt>
+          <dd>{% trans %}Requires users with the role to sign-in using an OTP code as a multi-factor authentication.{% endtrans %}</dd>
+        </dl>
+        <dl>
+          <dt>{% trans %}Skip opt-in on grant{% endtrans %}</dt>
+          <dd>{% trans %}Automatically grants the role without requiring a user to accept it.{% endtrans %}</dd>
+        </dl>
+        <dl>
+          <dt>{% trans %}Implicit role{% endtrans %}</dt>
+          <dd>{% trans %}Automatically adds the role when a user and profile share the same e-mail domain.{% endtrans %}</dd>
+        </ul>
+      </div>
+    </div>
     <hr />
 
     <!-- spinner while loading -->
@@ -31,28 +47,59 @@
     </div>
 
     <!-- display list -->
-    <div :id="roleDescription.slug"
-         v-for="roleDescription in items.results" v-show="itemsLoaded">
-      <div class="row">
-        <div class="col-4">
-          <a :href="roleDescription.slug + '/'">[[roleDescription.title]]</a>
-        </div>
-        <div class="col-2">
-          [[roleDescription.is_global ? {% trans %}"global"{% endtrans %} : ""]]
-        </div>
-        <div class="col-2">
-            [[roleDescription.skip_optin_on_grant ? {% trans %}"skip optin on grant"{% endtrans %} : "requires optin on grant"]]
-        </div>
-        <div class="col-2">
-            [[roleDescription.implicit_create_on_none ? {% trans %}"implicit_create_on_none"{% endtrans %} : "no implicit creation"]]
-        </div>
-        <div class="col-2 text-end">
-          <button class="btn btn-danger btn-sm" type="button"
-                  @click.prevent="remove(roleDescription)"
-                  v-show="roleDescription.editable" v-cloak>
-              <i class="fa fa-trash-o"></i></button>
+    <div v-show="itemsLoaded">
+      <div :id="roleDescription.slug"
+           class="card" v-for="roleDescription in items.results">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <a :href="roleDescription.slug + '/'">[[roleDescription.title]]</a>
+                <span class="badge bg-primary" v-if="roleDescription.is_global">{% trans %}global{% endtrans %}</span>
+            </div>
+            <div class="col-md-3">
+              <div class="form-check">
+                <input class="form-check-input" id="requiresOTP" type="checkbox"
+                       v-model="roleDescription.otp_required"
+                       {% if not organization.is_broker %}:disabled="roleDescription.is_global"{% endif %}
+                       @change="update(roleDescription)"></input>
+                  <label class="form-check-label" for="requiresOTP">
+                    {% trans %}Requires OTP to sign-in{% endtrans %}
+                  </label>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-check">
+                <input class="form-check-input" id="requiresOptin" type="checkbox"
+                       v-model="roleDescription.skip_optin_on_grant"
+                       {% if not organization.is_broker %}:disabled="roleDescription.is_global"{% endif %}
+                       @change="update(roleDescription)"></input>
+                  <label class="form-check-label" for="requiresOptin">
+                    {% trans %}Skip opt-in on grant{% endtrans %}
+                  </label>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-check">
+                <input class="form-check-input" id="implicitCreateOnNone" type="checkbox"
+                       v-model="roleDescription.implicit_create_on_none"
+                       {% if not organization.is_broker %}:disabled="roleDescription.is_global"{% endif %}
+                       @change="update(roleDescription)"></input>
+                  <label class="form-check-label" for="implicitCreateOnNone">
+                    {% trans %}Implicit role{% endtrans %}
+                  </label>
+              </div>
+            </div>
+            <div class="col-1 text-end">
+              <button class="btn btn-danger btn-sm" type="button"
+                      @click.prevent="remove(roleDescription)"
+                      v-show="roleDescription.editable" v-cloak>
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+      {% include "_pagination.html" %}
     </div>{# /roleDescription itemsLoaded #}
   </div>
 </roledescr-list>

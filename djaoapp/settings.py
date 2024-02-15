@@ -821,6 +821,7 @@ SIGNUP = {
         'github': {'name': 'GitHub', 'icon': 'github'},
         'google-oauth2': {'name': 'Google', 'icon': 'google'},
     },
+    'USER_OTP_REQUIRED': 'djaoapp.thread_locals.get_user_otp_required',
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
