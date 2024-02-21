@@ -18,6 +18,7 @@ from signup import settings as signup_settings
 from signup.models import Contact
 
 from ...compat import six, import_string, gettext_lazy as _
+from ..serializers import ExpireUserNotificationSerializer
 
 
 LOGGER = logging.getLogger(__name__)
@@ -285,9 +286,62 @@ class EmailVerificationBackend(NotificationEmailBackend):
              back_url=None, expiration_days=signup_settings.KEY_EXPIRATION):
         """
         Send an e-mail message to the user to verify her e-mail address.
+
+        **Example
+
+        .. code-block:: json
+
+        {
+          "broker": {
+            "slug": "djaoapp",
+            "printable_name": "DjaoApp",
+            "full_name": "DjaoApp inc.",
+            "nick_name": "DjaoApp",
+            "picture": null,
+            "type": "organization",
+            "credentials": false,
+            "created_at": "2022-01-01T00:00:00Z",
+            "email": "djaoapp@localhost.localdomain",
+            "phone": "415-555-5555",
+            "street_address": "1 SaaS Road",
+            "locality": "San Francisco",
+            "region": "California",
+            "postal_code": "94133",
+            "country": "US",
+            "default_timezone": "America/Los_Angeles",
+            "is_provider": true,
+            "is_bulk_buyer": false,
+            "lang": "en",
+            "extra": null
+          },
+          "back_url": "{{api_base_url}}activate/abcdef123/",
+          "user": {
+            "slug": "xia",
+            "username": "xia",
+            "printable_name": "Xia",
+            "full_name": "Xia Lee",
+            "nick_name": "Xia",
+            "picture": null,
+            "type": "personal",
+            "credentials": true,
+            "created_at": "2022-01-01T00:00:00Z",
+            "last_login": "2022-01-01T00:00:00Z",
+            "email": "xia@localhost.localdomain",
+            "phone": "415-555-5556",
+            "lang": "en",
+            "extra": null
+          },
+          "nb_expiration_days": 2
+        }
         """
-        self.send_mail('notification/user_verification.eml', {
+        user = Contact.objects.filter(email__iexact=email).first()
+        context = {
+            'broker': get_broker(),
+            'user': user,
             'back_url': back_url,
             'code': email_code,
-            'expiration_days': expiration_days
-        }, [email])
+            'nb_expiration_days': expiration_days
+        }
+        self.send_mail('notification/user_verification.eml',
+            ExpireUserNotificationSerializer().to_representation(context),
+            [email])

@@ -686,8 +686,6 @@ SAAS = {
         'BUILD_ABSOLUTE_URI_CALLABLE':
             'djaoapp.thread_locals.provider_absolute_url',
     },
-    'EMAIL_VERIFICATION_BACKEND':
-        'djaoapp.notifications.backends.email.EmailVerificationBackend',
     'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
     'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
     'PRODUCT_URL_CALLABLE': 'djaoapp.thread_locals.product_url',
@@ -786,6 +784,8 @@ SIGNUP = {
         'djaoapp.thread_locals.get_disabled_registration',
     'EMAIL_DYNAMIC_VALIDATOR': getattr(
         sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
+    'EMAIL_VERIFICATION_BACKEND':
+        'djaoapp.notifications.backends.email.EmailVerificationBackend',
     'EXTRA_MIXIN': djaoapp.extras.signup.ExtraMixin,
     'LDAP': {
         'SERVER_URI': getattr(sys.modules[__name__], 'LDAP_SERVER_URI', ""),
