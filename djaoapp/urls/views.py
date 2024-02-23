@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
@@ -27,7 +27,8 @@ from ..views.notifications import (NotificationDetailView,
 from ..views.users import (UserProfileView, UserNotificationsView,
     UserAccessiblesView, UserPasswordUpdateView, UserPublicKeyUpdateView)
 from ..views.product import (AppPageView, AppPageRedirectView,
-    ProxyPageView, PricingView, AppDashboardView)
+    ProxyPageView, PricingView, AppDashboardView,
+    TrustComplianceView, TrustComplianceDownloadView)
 from ..views.redirects import OrganizationCreateView, OrganizationRedirectView
 
 
@@ -116,7 +117,15 @@ urlpatterns = [
     url_provider(r'^profile/(?P<%s>%s)/contact/$' % (
         PROFILE_URL_KWARG, SLUG_RE),
         OrganizationProfileView.as_view(),
-            name='saas_organization_profile'),
+        name='saas_organization_profile'),
+    url_direct(r'^profile/(?P<%s>%s)/compliance/(?P<document>%s)' % (
+        PROFILE_URL_KWARG, SLUG_RE, SLUG_RE),
+        TrustComplianceDownloadView.as_view(),
+        name='trust_compliance_download'),
+    url_direct(r'^profile/(?P<%s>%s)/compliance/$' % (
+        PROFILE_URL_KWARG, SLUG_RE),
+        TrustComplianceView.as_view(),
+        name='trust_compliance'),
     url_provider(r'^', include('saas.urls.views.subscriber.profile')),
     url_authenticated(r'^', include('saas.urls.views.tailredirects')),
 

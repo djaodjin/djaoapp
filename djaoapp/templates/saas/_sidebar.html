@@ -216,3 +216,16 @@
     {% endif %}
   </ul>
 {% endif %}
+
+{% if urls.trust_compliance %}
+  <hr class="my-1" />
+  <ul class="nav flex-column pb-2" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
+    <li {% if urls.trust_compliance == request.path %} class="nav-item active"{% endif %}>
+      <a id="trust-compliance" class="nav-link" href="{{urls.trust_compliance}}">
+        <span class="icon icon-rules align-top{% if urls.trust_compliance == request.path %} icon-active{% endif %}"></span>
+        <span class="ps-1">{% trans %}Trust &amp; Compliance{% endtrans %}</span>
+
+      </a>
+    </li>
+  </ul>
+{% endif %}

@@ -205,9 +205,9 @@ def user_logged_in_notice(sender, request, user, **kwargs):
         'back_url': site.as_absolute_uri(),
         'user': user
     }
-    send_notification('user_logged_in',
-        context=UserNotificationSerializer().to_representation(context),
-        site=site)
+    #send_notification('user_logged_in',
+    #    context=UserNotificationSerializer().to_representation(context),
+    #    site=site)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -283,9 +283,9 @@ def user_login_failed_notice(sender, credentials, request, **kwargs):
             'back_url': site.as_absolute_uri(reverse('password_reset')),
             'user': user
         }
-        send_notification('user_login_failed',
-            context=UserNotificationSerializer().to_representation(context),
-            site=site)
+        #send_notification('user_login_failed',
+        #    context=UserNotificationSerializer().to_representation(context),
+        #    site=site)
     except model.DoesNotExist:
         pass
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -6,13 +6,14 @@ Default start page for a djaodjin-hosted product.
 """
 from __future__ import unicode_literals
 
-import logging, os
+import io, logging, os
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.staticfiles.views import serve as debug_serve
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.template import TemplateDoesNotExist
+from django.template.loader import get_template
 from django.template.response import TemplateResponse
 from django.utils._os import safe_join
 from django.views.generic import TemplateView
@@ -24,7 +25,7 @@ from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 from saas.decorators import fail_direct
-from saas.mixins import UserMixin
+from saas.mixins import OrganizationMixin, UserMixin
 from saas.models import ChargeItem, Plan, get_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
@@ -252,3 +253,42 @@ class AppPageView(ProxyPageView):
 
 class AppPageRedirectView(ProxyPageMixin, DjaoAppPageRedirectView):
     pass
+
+
+class TrustComplianceView(OrganizationMixin, TemplateView):
+
+    template_name = 'saas/profile/compliance/index.html'
+
+
+class TrustComplianceDownloadView(OrganizationMixin, TemplateView):
+
+    content_type = 'application/pdf'
+
+    def render_to_response(self, context, **response_kwargs):
+        security_document = self.kwargs.get('document') + '.pdf'
+        try:
+            template = get_template(
+                "saas/profile/compliance/%s" % security_document)
+        except TemplateDoesNotExist:
+            raise Http404("cannot find '%s'" % security_document)
+
+        user = self.request.user
+        LOGGER.info("'%s %s <%s>' downloaded document '%s' through %s",
+            user.first_name, user.last_name, user.email, security_document,
+            self.organization, extra={'event': 'document-download',
+            'user': user, 'profile': self.organization,
+            'document': security_document})
+
+        if template.origin:
+            template_path = template.origin.name
+        else:
+            template_path = template.name
+
+        content = io.BytesIO()
+        with open(template_path, "rb") as template_file:
+            content.write(template_file.read())
+        content.seek(0)
+        resp = HttpResponse(content, content_type=self.content_type)
+        resp['Content-Disposition'] = \
+            'attachment; filename="{}"'.format(security_document)
+        return resp

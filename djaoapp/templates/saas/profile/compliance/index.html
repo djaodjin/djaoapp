@@ -1,0 +1,17 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+{% trans %}Trust and Compliance{% endtrans %}
+{% endblock %}
+
+
+{% block saas_content %}
+<div>
+  <p>
+If you have any questions about trust and compliance of the platform,
+you can find information on the
+<a href="{{'/legal/'|site_url}}">legal agreements</a> page, or just
+<a href="{{'/contact/'|site_url}}">contact us</a>.
+  </p>
+</div>
+{% endblock %}
