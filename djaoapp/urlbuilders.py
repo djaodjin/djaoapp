@@ -1,7 +1,7 @@
-# Copyright (c) 2022, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
-from rules.urldecorators import url
+from rules.urldecorators import re_path
 from saas.decorators import fail_agreement
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.decorators import fail_active
@@ -15,14 +15,14 @@ def url_prefixed(regex, view, name=None):
     """
     Returns a urlpattern for public pages.
     """
-    return url(regex, view, name=name, decorators=[inject_edition_tools])
+    return re_path(regex, view, name=name, decorators=[inject_edition_tools])
 
 
 def url_authenticated(regex, view, name=None):
     """
     Returns a urlpattern accessible to an authenticated user.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
@@ -34,7 +34,7 @@ def url_agreement(regex, view, name=None):
     """
     Returns a urlpattern accessible to a user that signed the terms-of-use.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
@@ -47,7 +47,7 @@ def url_active(regex, view, name=None):
     """
     Returns a urlpattern accessible to an active user.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
         view, name=name,
         redirects=[
@@ -61,7 +61,7 @@ def url_direct(regex, view, name=None):
     """
     Builds URLs for a direct decorator.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
@@ -78,7 +78,7 @@ def url_frictionless_direct(regex, view, name=None):
     Builds URLs for a direct decorator that does not require
     an activated account.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
@@ -93,7 +93,7 @@ def url_dashboard(regex, view, name=None):
     to force use of default templates. This is used for managers
     dashboard functionality, hence the name ``url_dashboard``.
     """
-    return url(regex % {
+    return re_path(regex % {
             "app": r'(?P<app>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
@@ -110,7 +110,7 @@ def url_dashboard_iframe(regex, view, name=None):
     Same as ``url_dashboard``, but without inject_edition_tools.
     Used in notifications template iframe
     """
-    return url(regex % {
+    return re_path(regex % {
             "app": r'(?P<app>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
@@ -128,7 +128,7 @@ def url_provider(regex, view, name=None):
     of a plan the organization is subscribed to have permission
     to access the urlpattern built from *regex*.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
@@ -148,7 +148,7 @@ def url_frictionless_provider(regex, view, name=None):
 
     The request user is not require to have activated their account yet.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
@@ -161,7 +161,7 @@ def url_provider_only(regex, view, name=None):
     """
     Builds URLs for a provider-only decorator.
     """
-    return url(regex % {
+    return re_path(regex % {
             PROFILE_URL_KWARG: r'(?P<%s>%s)' % (PROFILE_URL_KWARG, SLUG_RE)},
                view, name=name,
                redirects=[
@@ -180,7 +180,7 @@ def url_self_provider(regex, view, name=None):
     of a plan an organization managed in common is subscribed to,
     have permission to access the urlpattern built from *regex*.
     """
-    return url(regex % {
+    return re_path(regex % {
             "user": r'(?P<user>%s)' % SLUG_RE},
                view, name=name,
                redirects=[
@@ -196,7 +196,7 @@ def url_frictionless_self_provider(regex, view, name=None):
     This set of decorators is a little more relaxed than ``url_self_provider``.
     It will also let user (self) which have not activated their account through.
     """
-    return url(regex % {
+    return re_path(regex % {
             "user": r'(?P<user>%s)' % SLUG_RE},
                view, name=name,
                redirects=[

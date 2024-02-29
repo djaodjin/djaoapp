@@ -196,7 +196,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'djaoapp.tex', u'django\\_saas Documentation',
+  ('index', 'djaoapp.tex', u'DjaoApp Documentation',
    u'DjaoDjin inc.', 'manual'),
 ]
 
