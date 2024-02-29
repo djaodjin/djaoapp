@@ -50,29 +50,13 @@
   </head>
   <body>
     <div>
-      <h1>{% trans provider=provider.printable_name %}{{provider}} Charge Receipt{% endtrans %}</h1>
+      <h1>{% if charge_total %}{% trans name=profile.printable_name %}Refund Receipt for {{name}}{% endtrans %}{% else %}{% trans name=profile.printable_name %}Charge Receipt for {{name}}{% endtrans %}{% endif %}</h1>
     </div>
     <div id="status">
-      {% if charge.is_paid %}
-        <p>
-          {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}. Payment Information:{% endtrans %}
-        </p>
-      {% elif charge.is_failed %}
-        <p>
-          {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for an amount of {{price}}.{% endtrans %}
-          {% trans %}The charge failed.{% endtrans %}
-        </p>
-      {% elif charge.is_disputed %}
-        <p>
-          {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for an amount of {{price}}.{% endtrans %}
-          {% trans %}The charge was disputed.{% endtrans %}
-        </p>
-      {% elif charge.is_progress %}
-        <p>
-          {% trans created_at=charge.created_at, price=charge.price|humanize_money %}On {{created_at}}, we attempted to charge your card for an amount of {{price}}.{% endtrans %}
-          {% trans %}The charge is in progress...{% endtrans %}
-        </p>
-      {% endif %}
+      <p>
+      {% trans created_at=charge.created_at|short_date, price=charge|price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
+      {% trans %}Payment Information{% endtrans %}:
+      </p>
     </div>
     <div class="info">
       <table>
@@ -83,15 +67,15 @@
           </tr>
           <tr>
             <th class="info-row-header">{% trans %}amount{% endtrans %}&nbsp;&nbsp;</th>
-            <td>{{charge.price|humanize_money}}</td>
+            <td>{% if charge_total %}{% trans amount=charge_total|price|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge|price|humanize_money}}{% endif %}</td>
           </tr>
           <tr>
             <th class="info-row-header">{% trans %}card{% endtrans %}&nbsp;&nbsp;</th>
-            <td>**** - {{last4}}</td>
+            <td>**** - {{charge.last4}}</td>
           </tr>
           <tr>
             <th class="info-row-header">{% trans %}expires{% endtrans %}&nbsp;&nbsp;</th>
-            <td>{{exp_date}}</td>
+            <td>{{charge.exp_date}}</td>
           </tr>
         </tbody>
       </table>
@@ -110,14 +94,14 @@
 
           {% for line in charge_items %}
             <tr>
-              <td>{{line.invoiced.dest_price|humanize_money}}</td>
+              <td>{{line.invoiced|dest_price|humanize_money}}</td>
               <td>{{line.invoiced|describe}}</td>
               <td></td>
             </tr>
 
             {% for refund in line.refunded %}
               <tr>
-                <td>-{{refund.orig_price|humanize_money}}</td>
+                <td>-{{refund|orig_price|humanize_money}}</td>
                 <td>{{refund|describe}}</td>
                 <td></td>
               </tr>

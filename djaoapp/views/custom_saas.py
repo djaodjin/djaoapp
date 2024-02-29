@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -11,6 +11,8 @@ from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
     ProcessorAuthorizeView as BaseProcessorAuthorizeView)
+from saas.views.extra import (
+    PrintableChargeReceiptView as PrintableChargeReceiptBaseView)
 from saas.views.profile import (DashboardView as BaseDashboardView,
     OrganizationProfileView as OrganizationProfileViewBase)
 from saas.views.roles import (
@@ -22,6 +24,8 @@ from signup.models import get_user_contact
 
 from ..compat import reverse
 from ..forms.profile import PersonalProfileForm
+from ..notifications.signals import get_charge_updated_context
+from ..notifications.serializers import ChargeNotificationSerializer
 from ..thread_locals import dynamic_processor_keys
 from ..utils import enables_processor_test_keys
 
@@ -148,3 +152,12 @@ class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):
         if self.request.path.endswith('/test/'):
             url += "&livemode=0"
         return url
+
+
+class PrintableChargeReceiptView(PrintableChargeReceiptBaseView):
+    """
+    """
+    def get_context_data(self, **kwargs):
+        context = ChargeNotificationSerializer().to_representation(
+            get_charge_updated_context(self.get_object()))
+        return context

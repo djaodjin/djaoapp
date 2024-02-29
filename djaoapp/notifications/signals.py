@@ -438,6 +438,34 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
         site=site)
 
 
+def get_charge_updated_context(charge, site=None):
+    if not site:
+        site = get_current_site()
+    back_url = site.as_absolute_uri(reverse('saas_charge_receipt', args=(
+        charge.customer, charge)))
+    context = {
+        'broker': get_broker(),
+        'back_url': back_url,
+        'created_by': charge.created_by,
+        'profile': charge.customer,
+        'charge': charge,
+        'charge_items': [{
+            'invoiced': item.invoiced,
+            'refunded': item.refunded,
+            } for item in charge.line_items],
+        'provider': charge.broker,
+        'originated_by': charge.created_by,
+    }
+    if charge.refunded.exists():
+        total_refunded = charge.invoiced_total_after_refund
+        context.update({
+            'charge_total': {
+                'amount': total_refunded.amount,
+                'unit': total_refunded.unit
+            }})
+    return context
+
+
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
@@ -586,27 +614,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
         LOGGER.debug("[signal] charge_updated_notice(charge=%s, user=%s)",
             charge, user)
         site = get_current_site()
-        back_url = site.as_absolute_uri(reverse('saas_charge_receipt', args=(
-            charge.customer, charge)))
-        context = {
-            'broker': get_broker(),
-            'back_url': back_url,
-            'created_by': charge.created_by,
-            'profile': charge.customer,
-            'charge': charge,
-            'charge_items': [{
-                'invoiced': item.invoiced,
-                'refunded': item.refunded,
-                } for item in charge.line_items],
-            'provider': charge.broker,
-        }
-        if charge.refunded.exists():
-            total_refunded = charge.invoiced_total_after_refund
-            context.update({
-                'charge_total': {
-                    'amount': total_refunded.amount,
-                    'unit': total_refunded.unit
-                }})
+        context = get_charge_updated_context(charge, site=site)
         if user and charge.created_by != user:
             context.update({'originated_by': user})
         else:

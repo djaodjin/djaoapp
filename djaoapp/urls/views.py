@@ -18,7 +18,7 @@ from ..urlbuilders import (url_active, url_agreement, url_authenticated,
     url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
-    ProcessorAuthorizeView, OrganizationProfileView)
+    ProcessorAuthorizeView, OrganizationProfileView, PrintableChargeReceiptView)
 from ..views.custom_signup import (ActivationView, PasswordResetConfirmView,
     RecoverView, SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
@@ -113,6 +113,10 @@ urlpatterns = [
     url_direct(r'^billing/(?P<%s>%s)/bank/$' % (PROFILE_URL_KWARG, SLUG_RE),
         ProcessorAuthorizeView.as_view(), name='saas_update_bank'),
     url_direct(r'^', include('saas.urls.views.provider')),
+    url_provider(r'^billing/(?P<%s>%s)/receipt/(?P<charge>%s)/printable/' %
+            (PROFILE_URL_KWARG, SLUG_RE, SLUG_RE),
+            PrintableChargeReceiptView.as_view(),
+            name='saas_printable_charge_receipt'),
     url_provider(r'^', include('saas.urls.views.subscriber.billing')),
     url_provider(r'^profile/(?P<%s>%s)/contact/$' % (
         PROFILE_URL_KWARG, SLUG_RE),

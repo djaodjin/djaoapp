@@ -12,7 +12,7 @@
 {% if urls.charge and urls.charge.printable_receipt %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
-  <a id="charge-printable" class="btn btn-secondary" href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
+  <a id="charge-printable" class="btn btn-secondary" target="_blank" href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
 </li>
 {% endif %}
 {% endblock %}
