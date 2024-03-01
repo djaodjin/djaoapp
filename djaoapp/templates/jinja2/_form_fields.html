@@ -228,7 +228,7 @@
     </div>
     <div class="form-text help-block">
       {% if help_text %}
-      <small class="form-text text-muted">{{help_text}}</small>
+      <small class="form-text text-muted">{{help_text|safe}}</small>
       {% endif %}
     </div>
   </div>

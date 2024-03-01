@@ -32,7 +32,7 @@ class OrganizationRedirectView(AppMixin, BaseOrganizationRedirectView):
                              redirect_field_name=REDIRECT_FIELD_NAME,
                              next_url=None):
         return check_email_verified_base(request, user,
-            redirect_field_name=redirect_field_name, next_url=next_url)
+            redirect_field_name=redirect_field_name, next_url=next_url) is None
 
     def get_implicit_create_on_none(self):
         if self.app and self.app.get_implicit_create_on_none():

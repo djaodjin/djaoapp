@@ -301,14 +301,8 @@ class VerifyCompleteMixin(object):
 
 
 class PasswordResetConfirmMixin(VerifyCompleteMixin):
-
-    def check_password(self, user, **cleaned_data):
-        #pylint:disable=unused-argument
-        if self.request.method.lower() == 'get':
-            if user:
-                user.password = '!'
-                user.save()
-            if not user or has_invalid_password(user):
-                raise IncorrectUser({'email': _("Not found.")})
-        return super(PasswordResetConfirmMixin, self).check_password(
-            user, **cleaned_data)
+    """
+    Just to look nice. `VerifyCompleteMixin.register_check_data` and
+    `VerifyCompleteMixin.create_user` will not do anything from a view
+    using this mixin.
+    """

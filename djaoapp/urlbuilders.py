@@ -40,7 +40,7 @@ def url_agreement(regex, view, name=None):
         redirects=[
             fail_authenticated,
             fail_agreement
-        ])
+        ], decorators=[inject_edition_tools])
 
 
 def url_active(regex, view, name=None):
@@ -54,7 +54,7 @@ def url_active(regex, view, name=None):
             fail_authenticated,
             fail_active,
             fail_agreement
-        ])
+        ], decorators=[inject_edition_tools])
 
 
 def url_direct(regex, view, name=None):
@@ -103,23 +103,6 @@ def url_dashboard(regex, view, name=None):
                    fail_active_roles,
                    fail_direct
                ], decorators=[inject_edition_tools])
-
-
-def url_dashboard_iframe(regex, view, name=None):
-    """
-    Same as ``url_dashboard``, but without inject_edition_tools.
-    Used in notifications template iframe
-    """
-    return re_path(regex % {
-            "app": r'(?P<app>%s)' % SLUG_RE},
-               view, name=name,
-               redirects=[
-                   fail_authenticated,
-                   fail_active,
-                   fail_agreement,
-                   fail_active_roles,
-                   fail_direct
-               ])
 
 
 def url_provider(regex, view, name=None):
@@ -203,3 +186,21 @@ def url_frictionless_self_provider(regex, view, name=None):
                    fail_authenticated,
                    fail_self_provider
                ], decorators=[inject_edition_tools])
+
+
+# XXX might be deprecated
+def url_dashboard_iframe(regex, view, name=None):
+    """
+    Same as ``url_dashboard``, but without inject_edition_tools.
+    Used in notifications template iframe
+    """
+    return re_path(regex % {
+            "app": r'(?P<app>%s)' % SLUG_RE},
+               view, name=name,
+               redirects=[
+                   fail_authenticated,
+                   fail_active,
+                   fail_agreement,
+                   fail_active_roles,
+                   fail_direct
+               ])

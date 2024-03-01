@@ -141,7 +141,7 @@ class RoleImplicitGrantAcceptView(RoleImplicitGrantAcceptViewBase):
                              redirect_field_name=REDIRECT_FIELD_NAME,
                              next_url=None):
         return check_email_verified_base(request, user,
-            redirect_field_name=redirect_field_name, next_url=next_url)
+            redirect_field_name=redirect_field_name, next_url=next_url) is None
 
 
 class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):
