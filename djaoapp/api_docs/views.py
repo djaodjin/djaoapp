@@ -21,7 +21,7 @@ LOGGER = logging.getLogger(__name__)
 
 class APIDocView(TemplateView):
 
-    template_name = 'docs/api.html'
+    template_name = 'api_docs/index.html'
     generator = APIDocGenerator()
 
     def get_context_data(self, **kwargs):
