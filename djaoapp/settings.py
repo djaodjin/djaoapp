@@ -32,8 +32,13 @@ DB_PORT = 5432
 DB_USER = None
 DB_PASSWORD = None
 
-SEND_EMAIL = True
+DISABLED_USER_UPDATE = False
+
 MULTITIER_SITE_MODEL = None
+RULES_ENC_KEY_OVERRIDE = None
+RULES_ENTRY_POINT_OVERRIDE = None
+
+SEND_EMAIL = True
 
 #pylint: disable=undefined-variable
 STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
@@ -723,6 +728,8 @@ RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
+    'ENC_KEY_OVERRIDE': RULES_ENC_KEY_OVERRIDE,
+    'ENTRY_POINT_OVERRIDE': RULES_ENTRY_POINT_OVERRIDE,
     'EXTRA_MIXIN': djaoapp.extras.rules.ExtraMixin,
     'RULE_OPERATORS': (
         '',                                            # 0
@@ -782,6 +789,7 @@ SIGNUP = {
         'djaoapp.thread_locals.get_disabled_authentication',
     'DISABLED_REGISTRATION':
         'djaoapp.thread_locals.get_disabled_registration',
+    'DISABLED_USER_UPDATE': DISABLED_USER_UPDATE,
     'EMAIL_DYNAMIC_VALIDATOR': getattr(
         sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
     'EMAIL_VERIFICATION_BACKEND':
