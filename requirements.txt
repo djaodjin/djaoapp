@@ -15,7 +15,7 @@ djangorestframework==3.14.0       # 3.13.1 is last version supporting Django 2.2
 djaodjin-deployutils==0.10.9
 djaodjin-extended-templates==0.4.6
 djaodjin-multitier==0.2.1
-djaodjin-rules==0.4.5
+djaodjin-rules==0.4.6
 djaodjin-saas==0.20.1
 djaodjin-signup==0.9.5
 docutils==0.15.2  # botocore has a constraint: docutils<0.16

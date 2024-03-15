@@ -37,6 +37,7 @@ DISABLED_USER_UPDATE = False
 MULTITIER_SITE_MODEL = None
 RULES_ENC_KEY_OVERRIDE = None
 RULES_ENTRY_POINT_OVERRIDE = None
+REQUESTS_TIMEOUT = 120
 
 SEND_EMAIL = True
 
@@ -754,6 +755,7 @@ RULES = {
     ),
     'PATH_PREFIX_CALLABLE': 'multitier.thread_locals.get_path_prefix',
     'SESSION_SERIALIZER': 'djaoapp.api.serializers.SessionSerializer',
+    'TIMEOUT': REQUESTS_TIMEOUT,
 }
 
 # Authentication
