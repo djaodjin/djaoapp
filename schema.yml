@@ -214,8 +214,8 @@ paths:
         required: true
       tags:
       - profile
-      - profilemodel
       - subscriber
+      - profilemodel
       security:
       - {}
       responses:
@@ -536,8 +536,8 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       requestBody:
         content:
@@ -590,8 +590,8 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       security:
       - {}
@@ -624,8 +624,8 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       requestBody:
         content:
@@ -689,8 +689,8 @@ paths:
         as present in the default theme.
 
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       requestBody:
         content:
@@ -734,8 +734,8 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       requestBody:
         content:
@@ -779,8 +779,8 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
       - visitor
+      - auth
       - usermodel
       security:
       - {}
@@ -958,8 +958,8 @@ paths:
           type: string
       tags:
       - subscriber
-      - transactionmodel
       - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1025,9 +1025,9 @@ paths:
           type: string
         required: true
       tags:
-      - transactionmodel
-      - billing
       - provider
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1056,8 +1056,8 @@ paths:
         required: true
       tags:
       - profilemodel
-      - billing
       - provider
+      - billing
       security:
       - {}
       responses:
@@ -1098,8 +1098,8 @@ paths:
           type: boolean
         description: Adds context to update a payment method on file.
       tags:
-      - subscriber
       - profilemodel
+      - subscriber
       - billing
       security:
       - {}
@@ -1129,8 +1129,8 @@ paths:
           type: string
         required: true
       tags:
-      - subscriber
       - profilemodel
+      - subscriber
       - billing
       requestBody:
         content:
@@ -1178,8 +1178,8 @@ paths:
           type: string
         required: true
       tags:
-      - subscriber
       - profilemodel
+      - subscriber
       - billing
       requestBody:
         content:
@@ -1220,8 +1220,8 @@ paths:
           type: string
         required: true
       tags:
-      - subscriber
       - profilemodel
+      - subscriber
       - billing
       security:
       - {}
@@ -1315,9 +1315,9 @@ paths:
           type: string
         required: true
       tags:
+      - provider
       - chargemodel
       - billing
-      - provider
       requestBody:
         content:
           application/json:
@@ -1368,9 +1368,9 @@ paths:
           type: string
         required: true
       tags:
+      - cartmodel
       - subscriber
       - billing
-      - cartmodel
       security:
       - {}
       responses:
@@ -1406,9 +1406,9 @@ paths:
           type: string
         required: true
       tags:
+      - cartmodel
       - subscriber
       - billing
-      - cartmodel
       requestBody:
         content:
           application/json:
@@ -1500,9 +1500,9 @@ paths:
           type: string
       tags:
       - list
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       security:
       - {}
       responses:
@@ -1531,9 +1531,9 @@ paths:
           type: string
         required: true
       tags:
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       requestBody:
         content:
           application/json:
@@ -1577,9 +1577,9 @@ paths:
           type: string
         required: true
       tags:
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       security:
       - {}
       responses:
@@ -1610,9 +1610,9 @@ paths:
           type: string
         required: true
       tags:
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       requestBody:
         content:
           application/json:
@@ -1655,9 +1655,9 @@ paths:
           type: string
         required: true
       tags:
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       requestBody:
         content:
           application/json:
@@ -1704,9 +1704,9 @@ paths:
           type: string
         required: true
       tags:
-      - couponmodel
-      - billing
       - provider
+      - billing
+      - couponmodel
       security:
       - {}
       responses:
@@ -1786,8 +1786,8 @@ paths:
       tags:
       - list
       - subscriber
-      - transactionmodel
       - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1869,9 +1869,9 @@ paths:
           type: string
       tags:
       - list
-      - transactionmodel
-      - billing
       - provider
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1947,9 +1947,9 @@ paths:
           type: string
       tags:
       - list
-      - transactionmodel
-      - billing
       - provider
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1976,9 +1976,9 @@ paths:
           type: string
         required: true
       tags:
-      - transactionmodel
-      - billing
       - provider
+      - billing
+      - transactionmodel
       requestBody:
         content:
           application/json:
@@ -2062,9 +2062,9 @@ paths:
         schema:
           type: string
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       security:
       - {}
       responses:
@@ -2082,9 +2082,9 @@ paths:
         This endpoint lets broker to add items into a user cart.
 
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       requestBody:
         content:
           application/json:
@@ -2124,9 +2124,9 @@ paths:
           type: integer
         required: true
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       security:
       - {}
       responses:
@@ -2153,9 +2153,9 @@ paths:
           type: integer
         required: true
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       requestBody:
         content:
           application/json:
@@ -2193,9 +2193,9 @@ paths:
           type: integer
         required: true
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       requestBody:
         content:
           application/json:
@@ -2233,9 +2233,9 @@ paths:
           type: integer
         required: true
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       security:
       - {}
       responses:
@@ -2308,9 +2308,9 @@ paths:
           type: string
         required: true
       tags:
-      - cart
-      - broker
       - billing
+      - broker
+      - cart
       security:
       - {}
       responses:
@@ -2383,8 +2383,8 @@ paths:
       tags:
       - list
       - chargemodel
-      - broker
       - billing
+      - broker
       security:
       - {}
       responses:
@@ -2458,8 +2458,8 @@ paths:
       tags:
       - list
       - transactionmodel
-      - broker
       - billing
+      - broker
       security:
       - {}
       responses:
@@ -2498,8 +2498,8 @@ paths:
 
       tags:
       - visitor
-      - billing
       - cartmodel
+      - billing
       requestBody:
         content:
           application/json:
@@ -2551,8 +2551,8 @@ paths:
         description: Plan
       tags:
       - visitor
-      - billing
       - cartmodel
+      - billing
       security:
       - {}
       responses:
@@ -2579,8 +2579,8 @@ paths:
           type: string
         required: true
       tags:
-      - billing
       - cartmodel
+      - billing
       requestBody:
         content:
           application/json:
@@ -2613,8 +2613,8 @@ paths:
 
       tags:
       - visitor
-      - billing
       - cartmodel
+      - billing
       requestBody:
         content:
           application/json:
@@ -2721,8 +2721,8 @@ paths:
         required: true
       tags:
       - profile
-      - broker
       - usermodel
+      - broker
       security:
       - {}
       responses:
@@ -2745,8 +2745,8 @@ paths:
         required: true
       tags:
       - profile
-      - broker
       - usermodel
+      - broker
       requestBody:
         content:
           application/json:
@@ -2983,10 +2983,10 @@ paths:
           type: string
         required: true
       tags:
-      - chart
-      - transactionmodel
       - provider
+      - chart
       - metrics
+      - transactionmodel
       security:
       - {}
       responses:
@@ -3012,6 +3012,14 @@ paths:
         description: date/time in ISO 8601 format
         schema:
           type: string
+      - name: o
+        required: false
+        in: query
+        description: sort by Slug, Full Name, Created At. If a field is preceded by
+          a minus sign ('-'), the order will be reversed. Multiple 'o' parameters
+          can be specified to produce a stable result.
+        schema:
+          type: string
       - name: page
         required: false
         in: query
@@ -3030,6 +3038,19 @@ paths:
         schema:
           type: string
         required: true
+      - name: q
+        required: false
+        in: query
+        description: value to search for in the fields specified by q_f
+        schema:
+          type: string
+      - name: q_f
+        required: false
+        in: query
+        description: 'restrict searches to one or more fields in: slug, full_name.
+          searches all fields when unspecified.'
+        schema:
+          type: string
       - name: start_at
         required: false
         in: query
@@ -3037,10 +3058,10 @@ paths:
         schema:
           type: string
       tags:
-      - balance
       - organization
-      - subscribers
       - provider
+      - subscribers
+      - balance
       security:
       - {}
       responses:
@@ -3123,10 +3144,10 @@ paths:
         schema:
           type: string
       tags:
-      - couponmodel
-      - metrics
-      - list
       - provider
+      - couponmodel
+      - list
+      - metrics
       security:
       - {}
       responses:
@@ -3199,9 +3220,9 @@ paths:
           type: string
         required: true
       tags:
+      - provider
       - profilemodel
       - chart
-      - provider
       - metrics
       security:
       - {}
@@ -3228,8 +3249,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - provider
+      - metrics
       security:
       - {}
       responses:
@@ -3254,8 +3275,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - provider
+      - metrics
       security:
       - {}
       responses:
@@ -3310,10 +3331,10 @@ paths:
           type: string
         required: true
       tags:
-      - chart
-      - transactionmodel
       - provider
+      - chart
       - metrics
+      - transactionmodel
       security:
       - {}
       responses:
@@ -3328,6 +3349,11 @@ paths:
     get:
       operationId: metrics_lifetimevalue_list
       description: |2+
+
+        Generates the total amount of the contract for a customer,
+        the amount of cash payments towards the contract value made so far
+        by the customer, and the deferred revenue remaining to be recognized
+        on the contract value.
 
       parameters:
       - name: ends_at
@@ -3361,10 +3387,10 @@ paths:
         schema:
           type: string
       tags:
-      - metrics
-      - list
       - profilemodel
       - provider
+      - list
+      - metrics
       security:
       - {}
       responses:
@@ -3430,10 +3456,10 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - chart
       - provider
+      - chart
       - metrics
+      - planmodel
       security:
       - {}
       responses:
@@ -3486,9 +3512,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       security:
       - {}
       responses:
@@ -3526,9 +3552,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       security:
       - {}
       responses:
@@ -3552,9 +3578,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       requestBody:
         content:
           application/json:
@@ -3592,9 +3618,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       requestBody:
         content:
           application/json:
@@ -3635,9 +3661,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       security:
       - {}
       responses:
@@ -3666,9 +3692,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       requestBody:
         content:
           application/json:
@@ -3709,9 +3735,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       requestBody:
         content:
           application/json:
@@ -3751,9 +3777,9 @@ paths:
           type: string
         required: true
       tags:
+      - transactionmodel
       - metrics
       - broker
-      - transactionmodel
       security:
       - {}
       responses:
@@ -3824,9 +3850,9 @@ paths:
         schema:
           type: string
       tags:
+      - usermodel
       - metrics
       - broker
-      - usermodel
       security:
       - {}
       responses:
@@ -3851,8 +3877,8 @@ paths:
         required: true
       tags:
       - themes
-      - broker
       - notificationmodel
+      - broker
       security:
       - {}
       responses:
@@ -3927,9 +3953,9 @@ paths:
         schema:
           type: string
       tags:
-      - planmodel
       - visitor
       - subscriptions
+      - planmodel
       security:
       - {}
       responses:
@@ -4029,8 +4055,8 @@ paths:
         required: true
       tags:
       - profile
-      - profilemodel
       - subscriber
+      - profilemodel
       security:
       - {}
       responses:
@@ -4054,8 +4080,8 @@ paths:
         required: true
       tags:
       - profile
-      - profilemodel
       - subscriber
+      - profilemodel
       requestBody:
         content:
           application/json:
@@ -4095,8 +4121,8 @@ paths:
         required: true
       tags:
       - profile
-      - profilemodel
       - subscriber
+      - profilemodel
       requestBody:
         content:
           application/json:
@@ -4135,8 +4161,8 @@ paths:
         required: true
       tags:
       - profile
-      - profilemodel
       - subscriber
+      - profilemodel
       security:
       - {}
       responses:
@@ -4244,10 +4270,10 @@ paths:
         schema:
           type: string
       tags:
-      - planmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - planmodel
       security:
       - {}
       responses:
@@ -4272,9 +4298,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - planmodel
       requestBody:
         content:
           application/json:
@@ -4324,9 +4350,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - planmodel
       security:
       - {}
       responses:
@@ -4365,9 +4391,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - planmodel
       requestBody:
         content:
           application/json:
@@ -4415,9 +4441,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - planmodel
       requestBody:
         content:
           application/json:
@@ -4464,9 +4490,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - planmodel
       security:
       - {}
       responses:
@@ -4556,10 +4582,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -4593,9 +4619,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptionmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - subscriptionmodel
       requestBody:
         content:
           application/json:
@@ -4643,9 +4669,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptionmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -4680,9 +4706,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptionmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - subscriptionmodel
       requestBody:
         content:
           application/json:
@@ -4729,9 +4755,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptionmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - subscriptionmodel
       requestBody:
         content:
           application/json:
@@ -4778,9 +4804,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptionmodel
-      - subscriptions
       - provider
+      - subscriptions
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -4864,10 +4890,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -4964,10 +4990,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -5025,10 +5051,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
       - subscriber
-      - rbac
+      - list
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5135,8 +5161,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -5187,8 +5213,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5228,8 +5254,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5286,10 +5312,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
       - subscriber
-      - rbac
+      - list
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5316,8 +5342,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -5360,8 +5386,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5391,8 +5417,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -5434,8 +5460,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -5476,8 +5502,8 @@ paths:
         required: true
       tags:
       - subscriber
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -5487,6 +5513,127 @@ paths:
   /api/profile/{profile}/subscribers:
     get:
       operationId: profile_subscribers_list
+      description: |2+
+
+        Returns a list of `page_size` subscribers which have an active
+        subscription to a plan of the specified provider {profile}.
+
+        The queryset can be filtered for at least one field to match a search
+        term (``q``) and/or intersects a period (``start_at``, ``ends_at``).
+
+        Returned results can be ordered by natural fields (``o``) in either
+        ascending or descending order by using the minus sign ('-') in front
+        of the ordering field name.
+
+        The API is typically used in search forms linked to providers.
+
+      parameters:
+      - name: ends_at
+        required: false
+        in: query
+        description: date/time in ISO 8601 format
+        schema:
+          type: string
+      - name: o
+        required: false
+        in: query
+        description: sort by full_name, created_at. If a field is preceded by a minus
+          sign ('-'), the order will be reversed. Multiple 'o' parameters can be specified
+          to produce a stable result.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page between 1 and 100 (defaults
+          to 25).
+        schema:
+          type: integer
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      - name: q
+        required: false
+        in: query
+        description: value to search for in the fields specified by q_f
+        schema:
+          type: string
+      - name: q_f
+        required: false
+        in: query
+        description: 'restrict searches to one or more fields in: slug, full_name,
+          email, phone, street_address, locality, region, postal_code, country, username,
+          first_name, last_name. searches all fields when unspecified.'
+        schema:
+          type: string
+      - name: start_at
+        required: false
+        in: query
+        description: date/time in ISO 8601 format
+        schema:
+          type: string
+      tags:
+      - profilemodel
+      - provider
+      - subscriptions
+      - list
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrganizationList'
+          description: ''
+      summary: Lists active subscribers
+  /api/profile/{profile}/subscribers/accept/{request_key}:
+    post:
+      operationId: profile_subscribers_accept_create
+      description: |2+
+
+        Accepts a subscription request identified by {request_key}.
+        The subscription must be to a plan that belongs to the specified
+        provider.
+
+      parameters:
+      - in: path
+        name: profile
+        schema:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        required: true
+      - in: path
+        name: request_key
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{40}$
+        required: true
+      tags:
+      - provider
+      - subscriptionmodel
+      - rbac
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvidedSubscription'
+          description: ''
+      summary: Grants a subscription request
+  /api/profile/{profile}/subscribers/all:
+    get:
+      operationId: profile_subscribers_all_list
       description: |2+
 
         Returns a list of `page_size` subscribers which have or
@@ -5556,9 +5703,9 @@ paths:
           type: string
       tags:
       - profilemodel
+      - provider
       - subscriptions
       - list
-      - provider
       security:
       - {}
       responses:
@@ -5569,42 +5716,6 @@ paths:
                 $ref: '#/components/schemas/PaginatedOrganizationList'
           description: ''
       summary: Lists subscribers
-  /api/profile/{profile}/subscribers/accept/{request_key}:
-    post:
-      operationId: profile_subscribers_accept_create
-      description: |2+
-
-        Accepts a subscription request identified by {request_key}.
-        The subscription must be to a plan that belongs to the specified
-        provider.
-
-      parameters:
-      - in: path
-        name: profile
-        schema:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        required: true
-      - in: path
-        name: request_key
-        schema:
-          type: string
-          pattern: ^[a-f0-9]{40}$
-        required: true
-      tags:
-      - subscriptionmodel
-      - rbac
-      - provider
-      security:
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProvidedSubscription'
-          description: ''
-      summary: Grants a subscription request
   /api/profile/{profile}/subscribers/engaged:
     get:
       operationId: profile_subscribers_engaged_list
@@ -5658,10 +5769,10 @@ paths:
         schema:
           type: string
       tags:
+      - provider
       - subscriptions
       - list
       - rolemodel
-      - provider
       security:
       - {}
       responses:
@@ -5751,10 +5862,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -5837,10 +5948,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -5932,10 +6043,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptionmodel
+      - provider
       - subscriptions
       - list
-      - provider
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -6001,9 +6112,9 @@ paths:
           type: string
       tags:
       - profilemodel
+      - provider
       - subscriptions
       - list
-      - provider
       security:
       - {}
       responses:
@@ -6358,7 +6469,8 @@ paths:
         is encoded.
 
         When running tests, you can retrieve the actual session information
-        for a specific user through the `/proxy/sessions/{user}/` API call.
+        for a specific user through the
+        `session API endpoint  <#retrieveGetSessionDetail>`_.
 
       tags:
       - appmodel
@@ -6416,7 +6528,8 @@ paths:
         is encoded.
 
         When running tests, you can retrieve the actual session information
-        for a specific user through the `/proxy/sessions/{user}/` API call.
+        for a specific user through the
+        `session API endpoint  <#retrieveGetSessionDetail>`_.
 
       tags:
       - appmodel
@@ -6541,9 +6654,9 @@ paths:
         schema:
           type: integer
       tags:
+      - appmodel
       - metrics
       - broker
-      - appmodel
       security:
       - {}
       responses:
@@ -6646,11 +6759,11 @@ paths:
       security:
       - {}
       responses:
-        '200':
+        '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleRankUpdate'
+                $ref: '#/components/schemas/PaginatedRuleList'
           description: ''
       summary: Updates order of rules
   /api/proxy/rules/{path}:
@@ -6834,7 +6947,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ThemePackageUploadBody'
+                $ref: '#/components/schemas/ThemePackageUpload'
           description: ''
       summary: Uploads a theme package
     delete:
@@ -6952,7 +7065,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MediaItemList'
+                $ref: '#/components/schemas/PaginatedAssetList'
           description: ''
       summary: Updates meta tags on assets
     delete:
@@ -7386,8 +7499,8 @@ paths:
           type: string
       tags:
       - profile
-      - broker
       - usermodel
+      - broker
       security:
       - {}
       responses:
@@ -7404,8 +7517,8 @@ paths:
 
       tags:
       - profile
-      - broker
       - usermodel
+      - broker
       requestBody:
         content:
           application/json:
@@ -7633,8 +7746,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -7670,8 +7783,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7759,8 +7872,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -7802,8 +7915,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7851,8 +7964,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -7925,8 +8038,8 @@ paths:
         required: true
       tags:
       - user
-      - rbac
       - rolemodel
+      - rbac
       security:
       - {}
       responses:
@@ -8416,8 +8529,8 @@ paths:
       tags:
       - profile
       - user
-      - rbac
       - usermodel
+      - rbac
       security:
       - {}
       responses:
@@ -8448,8 +8561,8 @@ paths:
       tags:
       - profile
       - user
-      - rbac
       - usermodel
+      - rbac
       requestBody:
         content:
           application/json:
@@ -8787,7 +8900,8 @@ components:
           - $ref: '#/components/schemas/SessionBackendEnum'
           description: Format to encode session in the forwarded HTTP request
         authentication:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/AuthenticationEnum'
           description: Restricted authentication and registration
         welcome_email:
           type: boolean
@@ -8883,6 +8997,12 @@ components:
           type: integer
           writeOnly: true
           description: Phone verification code.
+    AuthenticationEnum:
+      enum:
+      - enabled
+      - login-only
+      - disabled
+      type: string
     BalanceLine:
       type: object
       properties:
@@ -9867,7 +9987,8 @@ components:
           type: integer
           description: Number of users that have engaged with the app
         authentication:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/AuthenticationEnum'
           description: Restricted authentication and registration
       required:
       - active_users
@@ -9906,6 +10027,106 @@ components:
       - lines
       - options
       - subscription
+    LangEnum:
+      enum:
+      - af
+      - ar
+      - ar-dz
+      - ast
+      - az
+      - be
+      - bg
+      - bn
+      - br
+      - bs
+      - ca
+      - cs
+      - cy
+      - da
+      - de
+      - dsb
+      - el
+      - en
+      - en-au
+      - en-gb
+      - eo
+      - es
+      - es-ar
+      - es-co
+      - es-mx
+      - es-ni
+      - es-ve
+      - et
+      - eu
+      - fa
+      - fi
+      - fr
+      - fy
+      - ga
+      - gd
+      - gl
+      - he
+      - hi
+      - hr
+      - hsb
+      - hu
+      - hy
+      - ia
+      - io
+      - id
+      - ig
+      - is
+      - it
+      - ja
+      - ka
+      - kab
+      - kk
+      - km
+      - kn
+      - ko
+      - ky
+      - lb
+      - lt
+      - lv
+      - mk
+      - ml
+      - mn
+      - mr
+      - my
+      - nb
+      - ne
+      - nl
+      - nn
+      - 'no'
+      - os
+      - pa
+      - pl
+      - pt
+      - pt-br
+      - ro
+      - ru
+      - sk
+      - sl
+      - sq
+      - sr
+      - sr-latn
+      - sv
+      - sw
+      - ta
+      - te
+      - tg
+      - th
+      - tk
+      - tr
+      - tt
+      - udm
+      - uk
+      - ur
+      - uz
+      - vi
+      - zh-hans
+      - zh-hant
+      type: string
     LessVariable:
       type: object
       properties:
@@ -10053,9 +10274,9 @@ components:
           items:
             type: string
           description: List of notifications from card_updated, charge_updated, claim_code_generated,
-            expires_soon, order_executed, profile_updated, user_reset_password, user_activated,
-            user_contact, user_registered, user_welcome, role_request_created, user_verification,
-            weekly_sales_report_created
+            expires_soon, order_executed, period_sales_report_created, profile_updated,
+            role_request_created, user_activated, user_contact, user_registered, user_reset_password,
+            user_verification, user_welcome
       required:
       - notifications
     OTP:
@@ -10455,15 +10676,15 @@ components:
           description: Number of user requesting a role
         count:
           type: integer
-          description: The number of records
+          description: Total number of items in the results
         next:
           type: string
-          description: API end point to get the next pageof records matching the query
+          description: API end point to get the next pageof results matching the query
           nullable: true
           format: uri
         previous:
           type: string
-          description: API end point to get the previous pageof records matching the
+          description: API end point to get the previous pageof results matching the
             query
           nullable: true
           format: uri
@@ -10471,7 +10692,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Accessible'
-          description: Records in the queryset
+          description: Items in the queryset
     PaginatedActivityList:
       type: object
       properties:
@@ -10618,15 +10839,15 @@ components:
           description: 'three-letter ISO 4217 code for currency unit (ex: usd)'
         count:
           type: integer
-          description: The number of records
+          description: Total number of items in the results
         next:
           type: string
-          description: API end point to get the next pageof records matching the query
+          description: API end point to get the next pageof results matching the query
           nullable: true
           format: uri
         previous:
           type: string
-          description: API end point to get the previous pageof records matching the
+          description: API end point to get the previous pageof results matching the
             query
           nullable: true
           format: uri
@@ -10634,7 +10855,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Charge'
-          description: Records in the queryset
+          description: Items in the queryset
     PaginatedCouponList:
       type: object
       properties:
@@ -10922,15 +11143,15 @@ components:
           description: Number of user requesting a role
         count:
           type: integer
-          description: The number of records
+          description: Total number of items in the results
         next:
           type: string
-          description: API end point to get the next pageof records matching the query
+          description: API end point to get the next pageof results matching the query
           nullable: true
           format: uri
         previous:
           type: string
-          description: API end point to get the previous pageof records matching the
+          description: API end point to get the previous pageof results matching the
             query
           nullable: true
           format: uri
@@ -10938,7 +11159,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Role'
-          description: Records in the queryset
+          description: Items in the queryset
     PaginatedRuleList:
       type: object
       properties:
@@ -11004,15 +11225,15 @@ components:
           description: 'three-letter ISO 4217 code for currency unit (ex: usd)'
         count:
           type: integer
-          description: The number of records
+          description: Total number of items in the results
         next:
           type: string
-          description: API end point to get the next pageof records matching the query
+          description: API end point to get the next pageof results matching the query
           nullable: true
           format: uri
         previous:
           type: string
-          description: API end point to get the previous pageof records matching the
+          description: API end point to get the previous pageof results matching the
             query
           nullable: true
           format: uri
@@ -11020,7 +11241,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Transaction'
-          description: Records in the queryset
+          description: Items in the queryset
     PaginatedUserEngagementList:
       type: object
       properties:
@@ -11131,7 +11352,8 @@ components:
           - $ref: '#/components/schemas/SessionBackendEnum'
           description: Format to encode session in the forwarded HTTP request
         authentication:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/AuthenticationEnum'
           description: Restricted authentication and registration
         welcome_email:
           type: boolean
@@ -11295,9 +11517,9 @@ components:
           items:
             type: string
           description: List of notifications from card_updated, charge_updated, claim_code_generated,
-            expires_soon, order_executed, profile_updated, user_reset_password, user_activated,
-            user_contact, user_registered, user_welcome, role_request_created, user_verification,
-            weekly_sales_report_created
+            expires_soon, order_executed, period_sales_report_created, profile_updated,
+            role_request_created, user_activated, user_contact, user_registered, user_reset_password,
+            user_verification, user_welcome
     PatchedPlanDetail:
       type: object
       properties:
@@ -11495,12 +11717,6 @@ components:
             and 'user' accounts)
     PatchedProvidedSubscription:
       type: object
-      description: |-
-        Base class to serialize `Subscription` instances.
-
-        The actual serializer used in API endpoints will either
-        be `SubscribedSubscriptionSerializer` for subscriber-side APIs
-        or `ProvidedSubscriptionSerializer` for provider-side APIs.
       properties:
         created_at:
           type: string
@@ -11583,6 +11799,10 @@ components:
           type: boolean
           description: Automatically adds the role when a user and profile share the
             same e-mail domain.
+        otp_required:
+          type: boolean
+          description: Requires users with the role to sign-in using an OTP code as
+            a multi-factor authentication.
         is_global:
           type: boolean
           readOnly: true
@@ -11620,12 +11840,6 @@ components:
           maxLength: 100000
     PatchedSubscribedSubscription:
       type: object
-      description: |-
-        Base class to serialize `Subscription` instances.
-
-        The actual serializer used in API endpoints will either
-        be `SubscribedSubscriptionSerializer` for subscriber-side APIs
-        or `ProvidedSubscriptionSerializer` for provider-side APIs.
       properties:
         created_at:
           type: string
@@ -11745,9 +11959,14 @@ components:
           type: string
           description: Short casual name used to address the user
         lang:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
           description: Preferred communication language
         credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
           type: string
           readOnly: true
           description: True if the user has valid login credentials
@@ -12209,12 +12428,6 @@ components:
       - type
     ProvidedSubscription:
       type: object
-      description: |-
-        Base class to serialize `Subscription` instances.
-
-        The actual serializer used in API endpoints will either
-        be `SubscribedSubscriptionSerializer` for subscriber-side APIs
-        or `ProvidedSubscriptionSerializer` for provider-side APIs.
       properties:
         created_at:
           type: string
@@ -12482,9 +12695,14 @@ components:
           type: string
           description: Short casual name used to address the user
         lang:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
           description: Preferred communication language
         credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
           type: string
           readOnly: true
           description: True if the user has valid login credentials
@@ -12544,6 +12762,7 @@ components:
       - credentials
       - full_name
       - last_login
+      - otp_enabled
       - picture
       - printable_name
     RenewalTypeEnum:
@@ -12644,6 +12863,10 @@ components:
           type: boolean
           description: Automatically adds the role when a user and profile share the
             same e-mail domain.
+        otp_required:
+          type: boolean
+          description: Requires users with the role to sign-in using an OTP code as
+            a multi-factor authentication.
         is_global:
           type: boolean
           readOnly: true
@@ -12679,6 +12902,7 @@ components:
         path:
           type: string
           description: OpenAPI path against which requests are matched
+          pattern: ^/?([a-zA-Z0-9:\-\{\}]+/)*[a-zA-Z0-9:\-\{\}]*$
           maxLength: 255
         allow:
           type: string
@@ -12759,12 +12983,6 @@ components:
             $ref: '#/components/schemas/Hint'
     SubscribedSubscription:
       type: object
-      description: |-
-        Base class to serialize `Subscription` instances.
-
-        The actual serializer used in API endpoints will either
-        be `SubscribedSubscriptionSerializer` for subscriber-side APIs
-        or `ProvidedSubscriptionSerializer` for provider-side APIs.
       properties:
         created_at:
           type: string
@@ -12834,12 +13052,6 @@ components:
       - request_key
     Subscription:
       type: object
-      description: |-
-        Base class to serialize `Subscription` instances.
-
-        The actual serializer used in API endpoints will either
-        be `SubscribedSubscriptionSerializer` for subscriber-side APIs
-        or `ProvidedSubscriptionSerializer` for provider-side APIs.
       properties:
         created_at:
           type: string
@@ -12928,6 +13140,15 @@ components:
       - slug
       - title
       - values
+    ThemePackageUpload:
+      type: object
+      properties:
+        location:
+          type: string
+          readOnly: true
+          description: URL where the theme package was uploaded.
+      required:
+      - location
     ThemePackageUploadBody:
       type: object
       properties:
@@ -13018,23 +13239,23 @@ components:
       properties:
         count:
           type: integer
-          description: The number of records available
+          description: Total number of items in the results
         results:
           type: array
           items:
             $ref: '#/components/schemas/Organization'
-          description: Records in the queryset
+          description: Items in the queryset
     TypeaheadUserList:
       type: object
       properties:
         count:
           type: integer
-          description: The number of records available
+          description: Total number of items in the results
         results:
           type: array
           items:
             $ref: '#/components/schemas/User'
-          description: Records in the queryset
+          description: Items in the queryset
     UpdateRank:
       type: object
       properties:
@@ -13175,9 +13396,14 @@ components:
           type: string
           description: Short casual name used to address the user
         lang:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
           description: Preferred communication language
         credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
           type: string
           readOnly: true
           description: True if the user has valid login credentials
@@ -13208,6 +13434,7 @@ components:
       - credentials
       - last_login
       - new_password
+      - otp_enabled
       - picture
       - printable_name
     UserCartItemCreate:
@@ -13290,9 +13517,14 @@ components:
           type: string
           description: Short casual name used to address the user
         lang:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
           description: Preferred communication language
         credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
           type: string
           readOnly: true
           description: True if the user has valid login credentials
@@ -13323,6 +13555,7 @@ components:
       - credentials
       - full_name
       - last_login
+      - otp_enabled
       - picture
       - printable_name
     UserDetail:
@@ -13359,9 +13592,14 @@ components:
           type: string
           description: Short casual name used to address the user
         lang:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
           description: Preferred communication language
         credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
           type: string
           readOnly: true
           description: True if the user has valid login credentials
@@ -13388,6 +13626,7 @@ components:
       - credentials
       - full_name
       - last_login
+      - otp_enabled
       - picture
       - printable_name
       - username

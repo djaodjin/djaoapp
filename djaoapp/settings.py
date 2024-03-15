@@ -663,8 +663,8 @@ EXTENDED_TEMPLATES = {
     'TEMPLATES_BLACKLIST': [
         r'django/.*',
         r'jinja2/debug_toolbar/.*\.html',
-        'docs/api.html',
-        'docs/notifications.html',
+        'api_docs/index.html',
+        'api_docs/notifications.html',
         'extended_templates/_body_bottom.html',
         'extended_templates/_body_bottom_edit_tools.html',
         'extended_templates/_body_top_template.html',

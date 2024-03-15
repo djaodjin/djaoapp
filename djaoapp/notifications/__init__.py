@@ -28,11 +28,12 @@ def _load_backend(path):
 
 
 def send_notification(event_name, context=None, site=None, recipients=None):
-    if not hasattr(sys.modules[__name__], '_NOTIFICATION_BACKENDS'):
+    backends = getattr(sys.modules[__name__], '_NOTIFICATION_BACKENDS')
+    if backends is None:
         backends = OrderedDict()
         for backend_path in settings.NOTIFICATION_BACKENDS:
             backends.update({
                 backend_path: _load_backend(backend_path)()})
         setattr(sys.modules[__name__], '_NOTIFICATION_BACKENDS', backends)
-    for backend in _NOTIFICATION_BACKENDS.values():
+    for backend in backends.values():
         backend.send_notification(event_name, context, site, recipients)

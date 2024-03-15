@@ -155,8 +155,7 @@ class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):
 
 
 class PrintableChargeReceiptView(PrintableChargeReceiptBaseView):
-    """
-    """
+
     def get_context_data(self, **kwargs):
         context = ChargeNotificationSerializer().to_representation(
             get_charge_updated_context(self.get_object()))

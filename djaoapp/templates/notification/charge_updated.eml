@@ -15,7 +15,7 @@ Implementation Note:
 <h3>{% if charge_total %}{% trans name=profile.printable_name %}Refund Receipt for {{name}}{% endtrans %}{% else %}{% trans name=profile.printable_name %}Charge Receipt for {{name}}{% endtrans %}{% endif %}</h3>
 <div id="status">
     <p>
-      {% trans created_at=charge.created_at|short_date, price=charge|price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
+      {% trans created_at=charge.created_at|humanize_short_date, price=charge|price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
       {% trans %}Payment Information{% endtrans %}:
     </p>
 </div>

@@ -1,0 +1,15 @@
+{% extends "notification/base.eml" %}
+
+{% block subject %}
+{% trans broker=broker.printable_name %}[{{broker}}] Use Charge Limit Crossed{% endtrans %}
+{% endblock %}
+
+{% block html_content %}
+<h3>{% trans %}Use Charge Limit Crossed{% endtrans %}</h3>
+
+<p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
+<p>
+{% trans broker=broker.printable_name %}This notification is to let you know that your profile has crossed the use charge limit you set for the billing period.{% endtrans %} - {{back_url}}.
+</p>
+</div>
+{% endblock %}

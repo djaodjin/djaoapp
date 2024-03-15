@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -12,8 +12,7 @@ from rest_framework.exceptions import ValidationError
 from saas import settings as saas_settings
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from saas.utils import get_organization_model, update_context_urls
-from signup.helpers import full_name_natural_split, has_invalid_password
-from signup.mixins import IncorrectUser
+from signup.helpers import full_name_natural_split
 from signup.models import Notification
 from signup.utils import handle_uniq_error
 

@@ -34,9 +34,9 @@
     <div class="col-md-6">
       <hr />
       {% if organization %}
-      {% trans created_at=organization.created_at|short_date %}Created at {{created_at}}{% endtrans %}
+      {% trans created_at=organization.created_at|humanize_short_date %}Created at {{created_at}}{% endtrans %}
       {% elif user %}
-      {% trans created_at=user.date_joined|short_date %}Created at {{created_at}}{% endtrans %}
+      {% trans created_at=user.date_joined|humanize_short_date %}Created at {{created_at}}{% endtrans %}
       {% endif %}
     </div>
   </div>

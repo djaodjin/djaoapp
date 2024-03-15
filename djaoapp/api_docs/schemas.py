@@ -1,9 +1,10 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 """
 OpenAPI schema generator
 """
 import json, logging, os, re, warnings
+from collections import OrderedDict
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -15,7 +16,7 @@ from docutils.writers.html5_polyglot import Writer
 from rest_framework import exceptions, serializers
 from rest_framework.generics import GenericAPIView
 from rest_framework.schemas.generators import EndpointEnumerator
-from saas.api.serializers import DatetimeValueTuple, NoModelSerializer
+from saas.api.serializers import NoModelSerializer
 from saas.pagination import (BalancePagination, RoleListPagination,
     StatementBalancePagination, TotalPagination, TypeaheadPagination)
 
@@ -42,7 +43,7 @@ from ..notifications.serializers import (ContactUsNotificationSerializer,
     ClaimNotificationSerializer, ProcessorSetupNotificationSerializer,
     RoleRequestNotificationSerializer, RoleGrantNotificationSerializer,
     SubscriptionAcceptedNotificationSerializer,
-    SubscriptionCreatedNotificationSerializer)
+    SubscriptionCreatedNotificationSerializer, UseChargeLimitReachedSerializer)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -757,7 +758,58 @@ def populate_schema_from_docstring(schema, docstring, api_base_url=None):
     return schema
 
 
-def get_notification_schema(notification_slug, api_base_url=None):
+
+class NotificationDocGenerator(SchemaGenerator):
+
+    def get_schema(self, request=None, public=True):
+        #pylint:disable=unused-argument
+        api_base_url = getattr(settings, 'API_BASE_URL',
+            request.build_absolute_uri(location='/').strip('/'))
+        api_end_points = OrderedDict()
+        for notification_slug in [
+                'card_expires_soon',
+                'card_updated',
+                'charge_updated',
+                'claim_code_generated',
+                'expires_soon',
+                'order_executed',
+                'period_sales_report_created',
+                'profile_updated',
+                'processor_setup_error',
+                'renewal_charge_failed',
+                'quota_reached',
+                'role_grant_accepted',
+                'role_grant_created',
+                'role_request_created',
+                'subscription_grant_accepted',
+                'subscription_grant_created',
+                'subscription_request_accepted',
+                'subscription_request_created',
+                'use_charge_limit_crossed',
+                'user_activated',
+                'user_contact',
+                'user_logged_in',
+                'user_login_failed',
+                'user_registered',
+                'user_reset_password',
+                'user_verification']:
+            api_end_points.update({notification_slug:
+                get_notification_schema(notification_slug, generator=self,
+                api_base_url=api_base_url)})
+
+        api_paths = {}
+        for api_end_point in api_end_points.values():
+            funcs = {}
+            funcs.update({api_end_point.get('func'): api_end_point})
+            api_paths.update({api_end_point.get('operationId'): funcs})
+        schema = {
+            'paths': api_paths
+        }
+        return schema
+
+
+def get_notification_schema(notification_slug,
+                            generator=None, api_base_url=None):
     """
     Returns the summary, description and examples for a notification.
     """
@@ -792,6 +844,9 @@ def get_notification_schema(notification_slug, api_base_url=None):
     elif notification_slug == 'profile_updated':
         serializer = ChangeProfileNotificationSerializer()
         docstring = notification_signals.profile_updated_notice.__doc__
+    elif notification_slug == 'quota_reached':
+        serializer = UseChargeLimitReachedSerializer()
+        docstring = notification_signals.quota_reached.__doc__
     elif notification_slug == 'renewal_charge_failed':
         serializer = RenewalFailedNotificationSerializer()
         docstring = notification_signals.renewal_charge_failed_notice.__doc__
@@ -820,6 +875,9 @@ def get_notification_schema(notification_slug, api_base_url=None):
         serializer = SubscriptionCreatedNotificationSerializer()
         docstring = \
             notification_signals.subscription_request_created_notice.__doc__
+    elif notification_slug == 'use_charge_limit_crossed':
+        serializer = UseChargeLimitReachedSerializer()
+        docstring = notification_signals.use_charge_limit_crossed.__doc__
     elif notification_slug == 'user_activated':
         serializer = UserNotificationSerializer()
         docstring = notification_signals.user_activated_notice.__doc__
@@ -836,7 +894,8 @@ def get_notification_schema(notification_slug, api_base_url=None):
         serializer = UserNotificationSerializer()
         docstring = notification_signals.user_registered_notice.__doc__
 
-    generator = APIDocGenerator()
+    if not generator:
+        generator = APIDocGenerator()
     inspector = AutoSchema()
     inspector.registry = generator.registry
     inspector.view = GenericAPIView()
@@ -844,6 +903,7 @@ def get_notification_schema(notification_slug, api_base_url=None):
     inspector.method = 'GET'
     inspector.path = ''
     if serializer:
+        inspector.resolve_serializer(serializer, direction='response')
         responses = inspector._get_response_for_code(
             serializer, '200', direction='response')
         schema = responses['content']['application/json']['schema']

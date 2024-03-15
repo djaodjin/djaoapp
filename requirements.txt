@@ -13,10 +13,10 @@ django-recaptcha==3.0.0           # 2.0.6 requires Django<4.0
 djangorestframework==3.14.0       # 3.13.1 is last version supporting Django 2.2
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.10.9
-djaodjin-extended-templates==0.4.5
+djaodjin-extended-templates==0.4.6
 djaodjin-multitier==0.2.1
 djaodjin-rules==0.4.4
-djaodjin-saas==0.20.0
+djaodjin-saas==0.20.1
 djaodjin-signup==0.9.4
 docutils==0.15.2  # botocore has a constraint: docutils<0.16
 googlemaps==4.10.0

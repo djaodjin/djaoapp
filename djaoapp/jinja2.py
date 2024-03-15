@@ -91,9 +91,10 @@ def environment(**options):
     env.filters['dest_price'] = saas.templatetags.saas_tags.dest_price
     env.filters['orig_price'] = saas.templatetags.saas_tags.orig_price
     env.filters['isoformat'] = saas.templatetags.saas_tags.isoformat
-    env.filters['short_date'] = saas.templatetags.saas_tags.short_date
-    env.filters['humanize_percent'] \
-        = saas.templatetags.saas_tags.humanize_percent
+    env.filters['humanize_short_date'] = \
+        saas.templatetags.saas_tags.humanize_short_date
+    env.filters['humanize_percent'] = \
+        saas.templatetags.saas_tags.humanize_percent
     env.filters['humanize_period'] = saas.templatetags.saas_tags.humanize_period
     env.filters['humanize_money'] = saas.templatetags.saas_tags.humanize_money
     env.filters['date_in_future'] = saas.templatetags.saas_tags.date_in_future

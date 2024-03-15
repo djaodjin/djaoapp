@@ -3,12 +3,10 @@
 {% block saas_title %}{% trans %}Charge receipt{% endtrans %}{% endblock %}
 
 {% block help_menus %}
-{% if urls.raw_charges %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
   <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
 </li>
-{% endif %}
 {% if urls.charge and urls.charge.printable_receipt %}
 <li class="divider-vertical"></li>
 <li class="nav-item">

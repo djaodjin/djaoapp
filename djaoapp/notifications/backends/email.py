@@ -17,7 +17,7 @@ from saas.utils import get_organization_model
 from signup import settings as signup_settings
 from signup.models import Contact
 
-from ...compat import six, import_string, gettext_lazy as _
+from ...compat import gettext_lazy as _
 from ..serializers import ExpireUserNotificationSerializer
 
 

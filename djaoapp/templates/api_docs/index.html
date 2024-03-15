@@ -110,12 +110,12 @@
 {% block content_area_classes %}{% endblock %}
 
 {% block content %}
-<div id="api-doc-content">
+<div id="api-doc-content" class="ms-3">
   {# intro #}
   <a name="index"></a>
   <div id="intro">
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-7">
         <h1 class="mt-4">Profiles, Billing and Access Control API Reference <a href="#index" class="header-anchor"><i class="fa fa-link"></i></a></h1>
         <p>
 Once you have registered an account on
@@ -126,8 +126,8 @@ service access control - i.e. the administrative features required to run
 Software, as-a-Service, on the Internet.
         </p>
         <p>
-Most API end points require authentication. DjaoApp supports three methods of
-authentication:
+Most API end points require authentication. Three methods of
+authentication are supported:
         </p>
         <ul>
           <li><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" target="_blank">JSON Web Token</a> through the <a href="#createJWTLogin">Authentication API</a></li>
@@ -138,57 +138,67 @@ authentication:
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail.
         </p>
         <p>
-Browse the API endpoints by ...
+Browse the API endpoints <a href="#alphabetical">alphabetically</a>, or by ...
         </p>
+      </div>
+      <div class="col-md-5">
+          <div class="mt-4 me-4 text-end">
+            <a href="schema.yml" target="_blank">OpenAPI Schema</a>
+            <div class="text-center">
+              <img class="img-fluid" src="{{'/assets/img/djaoapp-sample-pages.png'|asset}}">
+            </div>
+          </div>
       </div>
     </div>
     <div class="row"> {#row-eq-height">#}
       <div class="col-md-4">
         <div class="faq-list">
-          <div class="p-4">
-            <h3>workflows</h3>
-            <ul>
-              <li><a href="#auth">Auth & credentials</a></li>
-              <li><a href="#billing">Billing</a></li>
-              <li><a href="#metrics">Metrics</a></li>
-              <li><a href="#profile">Profile</a></li>
-              <li><a href="#rbac">Roles & rules</a></li>
-              <li><a href="#subscriptions">Subscriptions</a></li>
-              <li><a href="#themes">Themes</a></li>
-            </ul>
-          </div>
+          <h3>workflows</h3>
+          <ul>
+            <li><a href="#auth">Auth & credentials</a></li>
+            <li><a href="#billing">Billing</a></li>
+            <li><a href="#metrics">Metrics</a></li>
+            <li><a href="#profile">Profile</a></li>
+            <li><a href="#rbac">Roles & rules</a></li>
+            <li><a href="#subscriptions">Subscriptions</a></li>
+            <li><a href="#themes">Themes</a></li>
+          </ul>
         </div>
       </div>
       <div class="col-md-4">
         <div class="faq-list">
-          <div class="p-4">
-            <h3>roles</h3>
-            <ul>
-              <li><a href="#visitor">Visitors</a></li>
-              <li><a href="#user">Users</a></li>
-              <li><a href="#subscriber">Subscribers</a></li>
-              <li><a href="#provider">Providers</a></li>
-              <li><a href="#broker">Broker</a></li>
-            </ul>
-          </div>
+          <h3>roles</h3>
+          <ul>
+            <li><a href="#visitor">Visitors</a></li>
+            <li><a href="#user">Users</a></li>
+            <li><a href="#subscriber">Subscribers</a></li>
+            <li><a href="#provider">Providers</a></li>
+            <li><a href="#broker">Broker</a></li>
+          </ul>
         </div>
       </div>
       <div class="col-md-4">
         <div class="faq-list">
-          <div class="p-4">
-            <h3>models</h3>
-            <ul>
-              <li><a href="#cartmodel">Cart</a></li>
-              <li><a href="#chargemodel">Charge</a></li>
-              <li><a href="#couponmodel">Coupon</a></li>
-              <li><a href="#planmodel">Plan</a></li>
-              <li><a href="#profilemodel">Profile</a></li>
-              <li><a href="#rolemodel">Role</a></li>
-              <li><a href="#appmodel">Site</a></li>
-              <li><a href="#subscriptionmodel">Subscription</a></li>
-              <li><a href="#transactionmodel">Transaction</a></li>
-              <li><a href="#usermodel">User</a></li>
-            </ul>
+          <h3>models</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li><a href="#cartmodel">Cart</a></li>
+                <li><a href="#chargemodel">Charge</a></li>
+                <li><a href="#couponmodel">Coupon</a></li>
+                <li><a href="#planmodel">Plan</a></li>
+                <li><a href="#profilemodel">Profile</a></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li><a href="#rolemodel">Role</a></li>
+                <li><a href="#appmodel">Site</a></li>
+                <li><a href="#subscriptionmodel">Subscription</a></li>
+                <li><a href="#transactionmodel">Transaction</a></li>
+                <li><a href="#usermodel">User</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

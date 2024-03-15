@@ -1,10 +1,10 @@
-# Copyright (c) 2023 DjaoDjin inc.
+# Copyright (c) 2024 DjaoDjin inc.
 # see LICENSE
 
 from rest_framework import serializers
 from saas.api.serializers import (PlanSerializer, ChargeSerializer,
     ChargeItemSerializer, CartItemSerializer, PriceSerializer,
-    RoleDescriptionSerializer, TransactionSerializer)
+    RoleDescriptionSerializer, TransactionSerializer, UseChargeSerializer)
 from saas.utils import get_user_serializer
 from signup.serializers_overrides import UserDetailSerializer
 
@@ -102,13 +102,26 @@ class SubscriptionExpireNotificationSerializer(ProfileNotificationSerializer):
     """
     Notification sent when a subscription is about to expire
     """
-    nb_expiration_days = serializers.IntegerField(
-        help_text=_("number of days before the subscription expires"))
     plan = PlanSerializer(
         help_text=_("plan the subscription relates to"))
     provider = ProfileSerializer(required=False,
         help_text=_("provider when different from broker"))
+    nb_expiration_days = serializers.IntegerField(
+        help_text=_("number of days before the subscription expires"))
 
+
+class UseChargeLimitReachedSerializer(ProfileNotificationSerializer):
+    """
+    Notification sent when a subscription is about to expire
+    """
+    plan = PlanSerializer(
+        help_text=_("plan the subscription relates to"))
+    provider = ProfileSerializer(required=False,
+        help_text=_("provider when different from broker"))
+    use_charge = UseChargeSerializer(
+        help_text=_("use charge the notification relates to"))
+    usage = serializers.IntegerField(
+        help_text=_("current usage in billing period"))
 
 class UpdateProfileNotificationSerializer(ProfileNotificationSerializer):
     """

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -13,8 +13,8 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework.request import Request as HttpRequest
 
-from .schemas import (APIDocGenerator, format_json,
-    rst_to_html, get_notification_schema)
+from .schemas import (APIDocGenerator, NotificationDocGenerator,
+    format_json, rst_to_html, get_notification_schema)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -106,57 +106,9 @@ class APIDocView(TemplateView):
         return context
 
 
-class NotificationDocGenerator(object):
-
-    @staticmethod
-    def get_schema(request=None, public=True):
-        #pylint:disable=unused-argument
-        api_base_url = getattr(settings, 'API_BASE_URL',
-            request.build_absolute_uri(location='/').strip('/'))
-        api_end_points = OrderedDict()
-        for notification_slug in [
-                'card_expires_soon',
-                'card_updated',
-                'charge_updated',
-                'claim_code_generated',
-                'expires_soon',
-                'order_executed',
-                'period_sales_report_created',
-                'profile_updated',
-                'processor_setup_error',
-                'renewal_charge_failed',
-                'role_grant_accepted',
-                'role_grant_created',
-                'role_request_created',
-                'subscription_grant_accepted',
-                'subscription_grant_created',
-                'subscription_request_accepted',
-                'subscription_request_created',
-                'user_activated',
-                'user_contact',
-                'user_logged_in',
-                'user_login_failed',
-                'user_registered',
-                'user_reset_password',
-                'user_verification']:
-            api_end_points.update({notification_slug:
-                get_notification_schema(notification_slug,
-                api_base_url=api_base_url)})
-
-        api_paths = {}
-        for api_end_point in api_end_points.values():
-            funcs = {}
-            funcs.update({api_end_point.get('func'): api_end_point})
-            api_paths.update({api_end_point.get('operationId'): funcs})
-        schema = {
-            'paths': api_paths
-        }
-        return schema
-
-
 class NotificationDocView(APIDocView):
     """
     Documentation for notifications triggered by the application
     """
-    template_name = 'docs/notifications.html'
+    template_name = 'api_docs/notifications.html'
     generator = NotificationDocGenerator()
