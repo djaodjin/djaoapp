@@ -116,8 +116,11 @@ makemessages:
 	cd $(srcDir) && $(MANAGE) makemessages -l fr -l es -l pt --symlinks --no-wrap
 	cd $(srcDir) && $(MANAGE) makemessages -d djangojs -l fr -l es -l pt --symlinks --no-wrap
 
-
-package-docker: build-assets initdb
+# !!! Attention !!!
+# You will need to run `make initdb` or `make setup-livedemo` before
+# running `package-docker` in order to create the dummy db.sqilte file
+# to package.
+package-docker: build-assets
 	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
 
