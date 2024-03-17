@@ -14,6 +14,7 @@ SYSCONFDIR    := $(installTop)/etc
 LOCALSTATEDIR := $(installTop)/var
 CONFIG_DIR    := $(SYSCONFDIR)/$(APP_NAME)
 ASSETS_DIR    := $(srcDir)/htdocs/assets
+LIVEDEMO_ENTRY_POINT ?= http://djaopsp-demo
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
@@ -149,7 +150,7 @@ setup-livedemo:
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && APP_NAME=djaopsp $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='http://djaopsp-demo', enc_key='$(DJAODJIN_SECRET_KEY)';"
+	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='$(LIVEDEMO_ENTRY_POINT)', enc_key='$(DJAODJIN_SECRET_KEY)';"
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --provider=djaopsp --profile-pictures htdocs/media/livedemo/profiles
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
