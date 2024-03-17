@@ -78,6 +78,9 @@ update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
         verbose=True, debug=DEBUG))
 
+if os.getenv('APP_NAME'):
+    setattr(sys.modules[__name__], 'APP_NAME', os.getenv('APP_NAME'))
+
 # Enable override on command line even when it is not defined in site.conf
 for env_var in ['DEBUG', 'API_DEBUG', 'ASSETS_DEBUG', 'FEATURES_DEBUG']:
     if os.getenv(env_var):

@@ -148,7 +148,7 @@ setup-livedemo:
 	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
 	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
+	cd $(srcDir) && APP_NAME=djaopsp $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
 	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='http://djaopsp-demo', enc_key='$(DJAODJIN_SECRET_KEY)';"
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --provider=djaopsp --profile-pictures htdocs/media/livedemo/profiles
