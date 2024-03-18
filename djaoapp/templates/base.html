@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="DjaoDjin inc.">
-    <meta name="copyright" content="Copyright (c) 2023 DjaoDjin inc.">
-    {% block localheadermeta %}
-    <title>{% block localheader_title %}{% if request %}{{request|site_printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
-    <meta property="og:image" content="https://djaodjin.com/static/img/og-image.png" />
+    <meta name="copyright" content="Copyright (c) 2024 DjaoDjin inc.">
+    <link rel="icon" href="{{'/favicon.ico'|site_url}}" type="image/x-icon">
     <meta property="og:site_name" content="DjaoDjin" />
     <meta property="og:type" content="website" />
+    {% block localheadermeta %}
+    <title>{% block localheader_title %}{% if request %}{{request|site_printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
+    <meta property="og:image" content="https://www.djaodjin.com/static/img/og-image.png" />
     {% endblock %}
     <link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/base.css" />
     <style media="screen">
@@ -78,7 +79,7 @@
                     </div>
 
                     <div>
-                      {% trans %}Powered by &copy; 2023 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
+                      {% trans %}Powered by &copy; 2024 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
                     </div>
                     {# Theme color mode selection #}
                     <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
@@ -135,18 +136,18 @@
                     {% endblock %}
 
                     {% block header_navbar_large %}
-                      <div class="collapse navbar-collapse navbar-right">
-                        <ul class="navbar-nav ms-auto mt-lg-0">
+                      <div class="collapse navbar-collapse navbar-right justify-content-end">
+                        <ul class="nav navbar-nav ms-auto mt-lg-0">
                           {% include "_generic_navbar.html" %}
                         </ul>
                       </div>
-                      <ul class="nav navbar-nav ms-auto mt-lg-0 header-menubar">
+                      <ul class="nav navbar-nav ms-auto mt-lg-0 header-menubar ml-auto">
                         {# The content here will be replaced by _menubar.html #}
                         <li class="nav-item">
                           {% if request and request|is_authenticated %}
                           <a class="nav-link">{{request.user.username}}</a>
                           {% else %}
-                          <a id="login" class="nav-link" href="{{'/login/'|site_url}}">Sign In</a>
+                          <a id="login" class="nav-link" href="{{'/login/'|site_url}}">{% trans %}Sign In{% endtrans %}</a>
                           {% endif %}
                         </li>
                         {# end of replaced by _menubar.html #}
@@ -193,14 +194,14 @@
               {% endblock %}
             </div>
           </div><!-- /.dashboard-content -->
-        </div><!-- /dashboard_inner_container_classes -->
+        </div><!-- /block dashboard_inner_container_classes -->
       </div><!-- /.dashboard-container -->
     </div><!-- /#main -->
   </div><!-- /.wrap -->
 
   <!-- Start Main Footer -->
   {% block footer %}
-    <footer class="footer text-center w-100 d-flex align-items-center justify-content-center">
+    <footer class="d-print-none footer text-center w-100 d-flex align-items-center justify-content-center">
 
       {% block localfooter %}
       {% endblock %}
@@ -215,7 +216,7 @@
           <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm ps-1"></i></a>
         </div>
         <div class="my-2">
-          {% trans %}Powered by DjaoDjin. &copy; 2023 All rights reserved.{% endtrans %}
+          {% trans %}Powered by DjaoDjin. &copy; 2024 All rights reserved.{% endtrans %}
         </div>
       {# Theme color mode selection #}
       <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
