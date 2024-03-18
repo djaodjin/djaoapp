@@ -170,14 +170,12 @@ class PlacesSuggestionsAPIView(ListAPIView):
     filter_backends = (SearchFilter, )
 
     def get_queryset(self):
-        gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
-        query = self.request.query_params.get(api_settings.SEARCH_PARAM)
-
-        if query and len(query) > 2:
-            results = gmaps.places_autocomplete(query, types='address')
-        else:
-            results = []
-
+        results = []
+        if settings.GOOGLE_API_KEY:
+            gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+            query = self.request.query_params.get(api_settings.SEARCH_PARAM)
+            if query and len(query) > 2:
+                results = gmaps.places_autocomplete(query, types='address')
         return results
 
 
@@ -218,15 +216,16 @@ class PlacesDetailAPIView(RetrieveAPIView):
     @extend_schema(responses={
         200: OpenApiResponse(PlacesDetailSerializer)})
     def get(self, request, *args, **kwargs):
-        gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
-        place_id = kwargs.get('place_id')
-        if place_id:
-            try:
-                result = gmaps.place(place_id)
-                if result['status'] == 'OK':
-                    serializer = self.get_serializer(result['result'])
-                    return Response(serializer.data)
-            except:
-                pass
+        if settings.GOOGLE_API_KEY:
+            gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+            place_id = kwargs.get('place_id')
+            if place_id:
+                try:
+                    result = gmaps.place(place_id)
+                    if result['status'] == 'OK':
+                        serializer = self.get_serializer(result['result'])
+                        return Response(serializer.data)
+                except:
+                    pass
 
         return Response(status=status.HTTP_404_NOT_FOUND)
