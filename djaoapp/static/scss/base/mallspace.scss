@@ -125,10 +125,17 @@ body{
   padding: 35px 0;
 }
 
+
 @include media-breakpoint-up(sm) {
   .site-landing .portrait-and-quote {
     display: flex;
     align-items: center;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  button.full-width {
+      width: 100%;
   }
 }
 

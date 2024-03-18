@@ -4,7 +4,7 @@
 <div class="container">
   <h1 class="text-center mt-4">Practices Survey Platform</h1>
 
-  <div class="mt-4">
+  <div class="my-4">
     <div class="row text-justify">
       <div class="col-md-4 text-center">
         <img class="img-fluid rounded-circle" src="{{'static/img/steve.jpg'|asset}}" role="presentation" loading="lazy">
@@ -15,19 +15,19 @@
 Any supply chain management program require suppliers to answer surveys,
 and take training.
         </p>
-        <form action="{{'/login/'|site_url}}" method="post">
+        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="steve"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as supplier{% endtrans %}</button>
+          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as supplier{% endtrans %}</button>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="mt-4">
+  <div class="my-4">
     <div class="row text-justify mt-4">
-      <div class="col-md-4 text-center order-2">
+      <div class="col-md-4 text-center order-md-2">
         <img class="img-fluid rounded-circle" src="{{'static/img/alice.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
@@ -36,17 +36,17 @@ and take training.
 Any supply chain management program requires to engage with suppliers,
 and track their completion status with regards to various surveys sent to them.
         </p>
-        <form action="{{'/login/'|site_url}}" method="post">
+        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="alice"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as procurement specialist{% endtrans %}</button>
+          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as procurement specialist{% endtrans %}</button>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="mt-4">
+  <div class="my-4">
     <div class="row text-justify">
       <div class="col-md-4 text-center">
         <img class="img-fluid rounded-circle" src="{{'static/img/abby.jpg'|asset}}" role="presentation" loading="lazy">
@@ -57,19 +57,19 @@ and track their completion status with regards to various surveys sent to them.
 Any supply chain management program requires some level of verification
 of the responses submitted by suppliers.
         </p>
-        <form action="{{'/login/'|site_url}}" method="post">
+        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="abby"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as an auditor{% endtrans %}</button>
+          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as an auditor{% endtrans %}</button>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="mt-4">
+  <div class="my-4">
     <div class="row text-justify">
-      <div class="col-md-4 text-center order-2">
+      <div class="col-md-4 text-center order-md-2">
         <img class="img-fluid rounded-circle" src="{{'static/img/kathryn.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
@@ -78,17 +78,17 @@ of the responses submitted by suppliers.
 Any supply chain management program leverages engagement with peers
 in the industry, while adhering to strict anti-trust regulations.
         </p>
-        <form action="{{'/login/'|site_url}}" method="post">
+        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="kathryn"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as an alliance{% endtrans %}</button>
+          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as an alliance{% endtrans %}</button>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="mt-4">
+  <div class="my-4">
     <div class="row text-justify">
       <div class="col-md-4 text-center">
         <img class="img-fluid rounded-circle" src="{{'static/img/donny.jpg'|asset}}" role="presentation" loading="lazy">
@@ -99,11 +99,11 @@ in the industry, while adhering to strict anti-trust regulations.
 Someone has to make sure the site is running properly, and provide technical
 assistance when needed.
         </p>
-        <form action="{{'/login/'|site_url}}" method="post">
+        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="donny"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5" type="submit">{% trans %}Login as a site owner{% endtrans %}</button>
+          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as a site owner{% endtrans %}</button>
         </form>
       </div>
     </div>
