@@ -3,6 +3,3 @@
         <a id="app_home" class="nav-link" href="{{request|url_app}}{% if organization %}{{organization}}/{% endif %}">{% trans %}Home{% endtrans %}</a>
     </li>
 {% endif %}
-<li class="nav-item">
-    <a class="nav-link{% if request and request|url_pricing in request.path %} active{% endif %}" href="{{request|url_pricing}}">{% trans %}Pricing{% endtrans %}</a>
-</li>
