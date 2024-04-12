@@ -41,17 +41,17 @@
         </tr>
     </thead>
     <tbody>
-        {% for row in table %}
+        {% for row in results %}
             <tr>
                 <td>{{row.title}}</td>
-                <td>{{row.vals.last}}</td>
-                <td>{{row.vals.prev}}</td>
-                <td>{{row.vals.prev_year}}</td>
+                {% for key, val in row.values %}
+                <td>{{val}}</td>
+                {% endfor %}
             </tr>
         {% endfor %}
     </tbody>
 </table>
 <p>
-<a href="https://djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
+<a href="https://www.djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
 </p>
 {% endblock %}

@@ -4,7 +4,8 @@
 from rest_framework import serializers
 from saas.api.serializers import (PlanSerializer, ChargeSerializer,
     ChargeItemSerializer, CartItemSerializer, PriceSerializer,
-    RoleDescriptionSerializer, TransactionSerializer, UseChargeSerializer)
+    RoleDescriptionSerializer, TableSerializer, TransactionSerializer,
+    UseChargeSerializer)
 from saas.utils import get_user_serializer
 from signup.serializers_overrides import UserDetailSerializer
 
@@ -136,37 +137,26 @@ class ChangeProfileNotificationSerializer(UpdateProfileNotificationSerializer):
     changes = serializers.DictField( # XXX
         help_text=_("changes to the profile"))
 
-class PeriodValuesSerializer(NoModelSerializer):
-
-    last = serializers.CharField()
-    prev = serializers.CharField()
-    prev_year = serializers.CharField()
-
-    class Meta:
-        fields = ('last', 'prev', 'prev_year')
-        read_only_fields = ('last', 'prev', 'prev_year')
-
-
-class PeriodSalesReportRowSerializer(NoModelSerializer):
-
-    key = serializers.CharField()
-    vals = PeriodValuesSerializer()
-
-    class Meta:
-        fields = ('key', 'vals')
-        read_only_fields = ('key', 'vals')
-
 
 class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):
 
-    table = PeriodSalesReportRowSerializer(many=True)
-    date = serializers.DateTimeField(
-        help_text=_("Date/time of creation (in ISO format)"))
+    # These fields match the definition
+    # in `saas.api.serializers.MetricsSerializer`.
+    scale = serializers.FloatField(required=False,
+        help_text=_("The scale of the number reported in the tables (ex: 1000"\
+        " when numbers are reported in thousands of dollars)"))
+    unit = serializers.CharField(required=False,
+        help_text=_("Three-letter ISO 4217 code for currency unit (ex: usd)"))
+    title = serializers.CharField(
+        help_text=_("Title for the table"))
+    results = TableSerializer(many=True,
+        help_text=_("Data series"))
 
     class Meta(ProfileNotificationSerializer.Meta):
-        fields = ProfileNotificationSerializer.Meta.fields + ('table', 'date')
+        fields = ProfileNotificationSerializer.Meta.fields + ('scale', 'unit',
+            'title', 'results')
         read_only_fields = ProfileNotificationSerializer.Meta.read_only_fields\
-            + ('table', 'date')
+            + ('scale', 'unit', 'title', 'results')
 
 
 class OrderNotificationSerializer(UpdateProfileNotificationSerializer):

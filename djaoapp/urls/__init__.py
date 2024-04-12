@@ -54,15 +54,15 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
 
+        url(r'(?P<path>favicon.ico)', django_static_serve),
         # You need to run `python manage.py --nostatic` to enable hotreload.
-        url(r'%s/(?P<path>.*)' % settings.STATIC_URL.lstrip('/'),
+        url(r'(?P<path>%s/.*)' % settings.STATIC_URL.strip('/'),
             AssetView.as_view()),
         url(r'^media/(?P<path>.*)$',
             django_static_serve, {'document_root': settings.MEDIA_ROOT}),
         url(r'^csrf-error/',
             TemplateView.as_view(template_name='csrf-error.html'),
             name='csrf_error'),
-        url(r'^favicon.ico$', django_static_serve, {'path': 'favicon.ico'}),
     ]
 else:
     urlpatterns = []

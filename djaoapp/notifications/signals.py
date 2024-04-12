@@ -2656,7 +2656,8 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(period_sales_report_created,
           dispatch_uid="period_sales_report_created_notice")
-def period_sales_report_created_notice(sender, provider, dates, data, **kwargs):
+def period_sales_report_created_notice(sender, provider, dates, data,
+                                       unit, scale=1, **kwargs):
     """
     Weekly sales report
 
@@ -2715,8 +2716,10 @@ def period_sales_report_created_notice(sender, provider, dates, data, **kwargs):
             "lang": "en",
             "extra": null
           },
-          "table": [],
-          "date": "2024-01-07T00:00:00Z"
+          "scale": 1,
+          "unit": "usd",
+          "title": "2024-01-07T00:00:00Z",
+          "results": []
         }
     """
     prev_week, notused = dates #pylint:disable=unused-variable
@@ -2729,8 +2732,10 @@ def period_sales_report_created_notice(sender, provider, dates, data, **kwargs):
         'back_url': site.as_absolute_uri(),
         'broker': get_broker(),
         'profile': provider,
-        'table': data,
-        'date': date
+        'scale': scale,
+        'unit': unit,
+        'title': date,
+        'results': data
     }
     send_notification('period_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(

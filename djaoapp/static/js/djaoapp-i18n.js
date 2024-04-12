@@ -8,6 +8,9 @@ function humanizeDate(at_time) {
     return moment(at_time).format(DATE_FORMAT);
 }
 
+function humanizeDuration(duration) {
+    return moment.duration(parseInt(duration, 10)).humanize();
+}
 
 function humanizeNumber(cell, unit, scale) {
     scale = scale || 1;
