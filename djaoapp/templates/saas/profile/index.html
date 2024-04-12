@@ -19,7 +19,9 @@
     <div class="col-md-6">
     {# We use the hidden input to pass the picture URL to the Vue component. #}
       <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{{'/assets/img/default-user.png'}}{% endif %}" type="hidden">
-      <img :src="formFields.picture" width="100" height="100" data-bs-toggle="modal" data-bs-target="#upload-picture-modal">
+      <img class="img-thumbnail{% if urls.user %} rounded-circle{% endif %}"
+           :src="formFields.picture" width="100" height="100"
+           data-bs-toggle="modal" data-bs-target="#upload-picture-modal">
     </div>
     <div class="col-md-6">
       {% block saas_help %}
@@ -280,4 +282,24 @@
 
 </div>
 </{% if urls.user %}user{% else %}profile{% endif %}-update>
+{% endblock %}
+
+{% block dashboard_bodyscripts %}
+{% if urls.user %}
+<script type="text/javascript">
+Vue.directive('init-croppa', {
+inserted: function(el) {
+    var croppaInstance = el.__vue__;
+
+    if (croppaInstance && typeof croppaInstance.addClipPlugin === 'function') {
+        croppaInstance.addClipPlugin(function(ctx, x, y, w, h) {
+          ctx.beginPath();
+          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true);
+          ctx.closePath();
+        });
+      }
+    }
+});
+</script>
+{% endif %}
 {% endblock %}

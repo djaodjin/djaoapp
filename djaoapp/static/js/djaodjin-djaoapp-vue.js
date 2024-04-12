@@ -287,19 +287,6 @@ Vue.component('todo-list', {
     },
 });
 
-Vue.directive('init-croppa', {
-inserted: function(el) {
-    var croppaInstance = el.__vue__;
-
-    if (croppaInstance && typeof croppaInstance.addClipPlugin === 'function') {
-        croppaInstance.addClipPlugin(function(ctx, x, y, w, h) {
-          ctx.beginPath();
-          ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true);
-          ctx.closePath();
-        });
-      }
-    }
-});
 
 Vue.directive('zoom-slider', {
     inserted: function (el) {
