@@ -153,7 +153,9 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
             self.add_postal_region(country=country)
         if force_required:
             for field_name, field in six.iteritems(self.fields):
-                if field_name not in ('organization_name', 'type'):
+                if field_name in ('email', 'email2', 'new_password',
+                    'new_password2', 'street_address', 'locality',
+                    'region', 'postal_code', 'country', 'phone'):
                     field.required = True
         # Define  extra fields dynamically. These are optional but might be
         # enforced as required within `form_valid`
