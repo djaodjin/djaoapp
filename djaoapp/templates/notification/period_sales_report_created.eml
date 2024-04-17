@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block html_content %}
-<h4 id="sales-title">{% trans %}Sales report for the week ending {{date}}{% endtrans %}</h4>
+<h4 id="sales-title">{% trans %}Sales report for the week ending {{title}}{% endtrans %}</h4>
 
 <style>
     #sales-title
