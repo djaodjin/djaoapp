@@ -44,8 +44,8 @@
         {% for row in results %}
             <tr>
                 <td>{{row.title}}</td>
-                {% for key, val in row.values %}
-                <td>{{val}}</td>
+                {% for val in row['values'] %}
+                <td>{{val.1}}</td>
                 {% endfor %}
             </tr>
         {% endfor %}

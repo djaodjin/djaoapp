@@ -167,7 +167,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'processor_setup_error',
             'user_registered',
             'user_activated',
-            'weekly_sales_report_created'):
+            'period_sales_report_created'):
         # We are hanlding `recipients` a bit differently here because contact
         # requests are usually meant to be sent to a ticketing system.
         recipients = [broker.email]
@@ -175,7 +175,7 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
                 'processor_setup_error',
                 'user_registered',
                 'user_activated',
-                'weekly_sales_report_created',):
+                'period_sales_report_created',):
             bcc = _notified_managers(broker, notification_slug)
 
     return recipients, bcc, reply_to
@@ -225,7 +225,7 @@ class NotificationEmailBackend(object):
             site.get_from_email()
 
         LOGGER.debug("djaoapp_extras.recipients.send_notification("\
-            "recipients=%s, reply_to='%s', bcc=%s"\
+            "recipients=%s, reply_to='%s', bcc=%s,"\
             "event=%s)", recipients, reply_to, bcc,
             json.dumps(context, indent=2, cls=JSONEncoder))
         lang_code = None
