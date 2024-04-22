@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 import datetime, logging, os, random
@@ -19,7 +19,6 @@ from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
 from saas import humanize, settings as saas_settings
 from saas.utils import datetime_or_now, generate_random_slug
 from saas import signals as saas_signals
-from signup.helpers import full_name_natural_split
 from signup import signals as signup_signals
 
 LOGGER = logging.getLogger(__name__)
@@ -119,6 +118,7 @@ class Command(BaseCommand):
                 args[0], '%Y-%m-%d')
         provider = Organization.objects.get(slug=options['provider'])
         processor = Organization.objects.get(pk=saas_settings.PROCESSOR_ID)
+        self.generate_optional_plans(provider)
         self.generate_coupons(provider)
         self.generate_transactions(provider, processor, from_date, now,
             profile_pictures_dir=options['profile_pictures'])
@@ -128,6 +128,23 @@ class Command(BaseCommand):
         coupon_code = options['coupon']
         if coupon_code:
             self.generate_coupon_uses(coupon_code, provider=provider)
+
+
+    def generate_optional_plans(self, provider):
+        queryset = Plan.objects.filter(
+            organization=provider, period_amount__gt=0)
+        if not queryset.exists():
+            # We don't have any plans, so we create a few standard ones.
+            Plan.objects.create(
+                slug='demo-basic', title="Basic", period_amount=2000,
+                organization=provider)
+            Plan.objects.create(
+                slug='demo-premium', title="Premium", period_amount=5000,
+                organization=provider)
+            Plan.objects.create(
+                slug='demo-deluxe', title="Deluxe", period_amount=12000,
+                organization=provider)
+
 
     def generate_coupons(self, provider, nb_coupons=None):
         if nb_coupons is None:
@@ -208,33 +225,34 @@ class Command(BaseCommand):
                 else:
                     profile_pictures_females += [
                         "/media/livedemo/profiles/%s" % picture_name]
+        queryset = Plan.objects.filter(
+            organization=provider, period_amount__gt=0)
+        nb_plans = queryset.count()
         for end_period in month_periods(from_date=from_date):
             nb_new_customers = random.randint(0, 9)
             for _ in range(nb_new_customers):
-                queryset = Plan.objects.filter(
-                    organization=provider, period_amount__gt=0)
-                plan = queryset[random.randint(0, queryset.count() - 1)]
+                plan = queryset[random.randint(0, nb_plans - 1)]
                 created = False
                 trials = 0
                 while not created:
                     try:
                         picture = None
                         if random.randint(0, 1):
-                            full_name = fake.name_male()
+                            first_name = fake.first_name_male()
                             if profile_pictures_males:
                                 picture = profile_pictures_males[
                                     random.randint(
                                         0, len(profile_pictures_males) - 1)]
                         else:
-                            full_name = fake.name_female()
+                            first_name = fake.first_name_female()
                             if profile_pictures_females:
                                 picture = profile_pictures_females[
                                     random.randint(
                                         0, len(profile_pictures_females) - 1)]
+                        last_name = fake.last_name()
+                        full_name = "%s %s" % (first_name, last_name)
                         slug = slugify('demo%d' % random.randint(1, 1000))
                         email = "%s@%s" % (slug, fake.domain_name())
-                        first_name, _, last_name = \
-                            full_name_natural_split(full_name)
                         customer, created = Organization.objects.get_or_create(
                             slug=slug,
                             full_name=full_name,
