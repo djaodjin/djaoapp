@@ -105,11 +105,13 @@ def inject_edition_tools(response, request, context=None,
             'api_plans': reverse('saas_api_plans', args=(app.account,)),
             'plan_update_base': reverse('saas_plan_base', args=(app.account,))}
         try:
-            # The following statement will raise an Exception
-            # when we are dealing with a ``FileSystemStorage``.
-            _ = get_storage_class().access_key_names
-            edit_urls.update({
-                'media_upload': reverse('api_credentials_organization')})
+            storage_class = get_storage_class()
+            if storage_class.__name__.endswith('3Storage'):
+                # Hacky way to test for `storages.backends.s3.S3Storage`
+                # and `storages.backends.s3boto3.S3Boto3Storage`
+                # without importing the optional package 'django-storages'.
+                edit_urls.update({
+                    'media_upload': reverse('api_credentials_organization')})
         except AttributeError:
             LOGGER.debug("doesn't look like we have a S3Storage.")
         body_bottom_template_name = \
