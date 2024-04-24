@@ -844,7 +844,7 @@ def get_notification_schema(notification_slug,
         docstring = notification_signals.profile_updated_notice.__doc__
     elif notification_slug == 'quota_reached':
         serializer = UseChargeLimitReachedSerializer()
-        docstring = notification_signals.quota_reached.__doc__
+        docstring = notification_signals.quota_reached_notice.__doc__
     elif notification_slug == 'renewal_charge_failed':
         serializer = RenewalFailedNotificationSerializer()
         docstring = notification_signals.renewal_charge_failed_notice.__doc__
@@ -875,7 +875,7 @@ def get_notification_schema(notification_slug,
             notification_signals.subscription_request_created_notice.__doc__
     elif notification_slug == 'use_charge_limit_crossed':
         serializer = UseChargeLimitReachedSerializer()
-        docstring = notification_signals.use_charge_limit_crossed.__doc__
+        docstring = notification_signals.use_charge_limit_crossed_notice.__doc__
     elif notification_slug == 'user_activated':
         serializer = UserNotificationSerializer()
         docstring = notification_signals.user_activated_notice.__doc__
