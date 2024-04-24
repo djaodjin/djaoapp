@@ -8,7 +8,7 @@
 <plan-subscriber-list inline-template id="plan-subscribers-container">
   <div>
     <div class="col-md-6">
-    <div class="card bg-light">
+    <div class="card">
       <div class="card-body">
         <form id="add-subscriber" class="mb-4" @submit.prevent="submit">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
@@ -154,7 +154,7 @@ Thank you,
                      tooltip-placement="top">
             </td>
             <td>
-              <button class="btn btn-secondary" v-if="entry.grant_key">{% trans %}Revoke grant{% endtrans %}</button>
+              <button class="btn btn-outline-primary" v-if="entry.grant_key">{% trans %}Revoke grant{% endtrans %}</button>
               <button class="btn btn-primary" v-if="entry.request_key">{% trans %}Accept request{% endtrans %}</button>
               <button class="btn btn-danger" v-if="!(entry.grant_key || entry.request_key)">{% trans %}Unsubscribe{% endtrans %}</button>
             </td>

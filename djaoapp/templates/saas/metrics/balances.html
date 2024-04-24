@@ -6,7 +6,7 @@
 <balance-list inline-template id="balance-list-container">
 <div>
   <div class="date-chooser pull-right">
-      <a id="download" class="btn btn-secondary" role="button"
+      <a id="download" class="btn btn-outline-primary" role="button"
          :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
       <div class="d-inline-block">
           {% include "_params_ends_at_field.html" %}
@@ -41,7 +41,7 @@
       <tbody v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <tr v-for="(row, index) in items.results">
               <td>
-                  <div class="btn btn-secondary btn-sm">
+                  <div class="btn btn-outline-primary btn-sm">
                       <i class="fa fa-bars"></i></div>
               </td>
               <td>

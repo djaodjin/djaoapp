@@ -29,7 +29,7 @@
         <div id="add-or-create" v-bind:class="itemsLoaded && items.results.length == 0 ? 'collapse show' : 'collapse'" v-cloak>
           <div class="row">
             <div class="col-md-12 mt-3">
-              <div class="card bg-light">
+              <div class="card">
                 <div class="card-header">
 {% trans %}Request access to an existing profile or create a new profile{% endtrans %}
                 </div>
@@ -114,7 +114,7 @@
                       <div class="row">
                         <div class="col-sm-6">
                           <div class="d-grid gap-2">
-                            <button class="btn btn-secondary btn-md"
+                            <button class="btn btn-outline-primary btn-md"
                                     @click.prevent="reset">{% trans %}Cancel{% endtrans %}</button>
                           </div>
                         </div>
@@ -211,7 +211,7 @@ Thank you,
               </p>
               <div class="modal-footer">
                 <button id="cancel-revoke"
-                        class="btn btn-secondary"
+                        class="btn btn-primary"
                         data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit" id="revoke-btn"
                         class="btn btn-danger"

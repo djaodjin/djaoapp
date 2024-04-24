@@ -129,7 +129,7 @@ configuration file and restart the server.
 {% trans %}Please confirm you want to de-authorize access to your Stripe account. This will prevent you from charging customers.{% endtrans %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
+                <button type="button" class="btn btn-outline-primary"
                         data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <form class="d-inline-block" method="post" action="{{urls.provider.deauthorize_processor}}">
                   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">

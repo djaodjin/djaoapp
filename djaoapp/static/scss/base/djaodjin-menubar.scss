@@ -5,6 +5,8 @@ $menubar-link-active-bg:                $nav-tabs-link-active-bg;
 
 $menubar-dropdown-bg:                   white;
 $menubar-dropdown-color:                map-get($theme-colors, "primary");
+$menubar-dropdown-border-width:         var(--bs-dropdown-border-width);
+$menubar-dropdown-border-color:         var(--bs-dropdown-border-color);
 $menubar-dropdown-link-color:           $dropdown-link-color;
 $menubar-dropdown-link-hover-color:     $dropdown-link-hover-color;
 $menubar-dropdown-link-hover-bg:        $dropdown-link-hover-bg;
@@ -16,7 +18,6 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     position: relative;
     align-self: center !important;
     color: $menubar-link-active-color;
-    background-color: $menubar-link-active-bg;
 
     &:hover,
     &:focus {
@@ -27,13 +28,22 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
 .bg-primary .menubar,
 .bg-primary a.menubar-label {
     color: $white;
-    background-color: map-get($theme-colors, "primary");
+}
+
+.bg-primary a.menubar-label:hover,
+.bg-primary a.menubar-label:focus {
+    color: $primary;
+    background-color: $white;
+}
+
+.bg-primary .menubar {
+    padding: 0 10px;
 }
 
 .menubar-label {
-    padding-left: 1rem;
-    padding-right: 1rem;
     text-decoration: none;
+    display:block;
+    padding: 0 var(--#{$prefix}nav-link-padding-x);
 }
 
 .menubar-label > div {
@@ -70,7 +80,7 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
 {
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0;
     z-index: 1000;
     display: none;
     float: left;
@@ -83,10 +93,6 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     background-clip: padding-box;
     border-radius: 0.25rem;
     white-space: nowrap;
-
-    color: $menubar-dropdown-link-color;
-    background-color: $menubar-dropdown-bg;
-    border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .menubar-dropdown-menu.show
@@ -100,7 +106,6 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     text-transform: lowercase;
     padding: 2px 0 7px 10px;
     font-size: 13px;
-    color: $menubar-dropdown-color;
 }
 
 .menubar-dropdown-menu .menubar-dropdown-label .menubar-dropdown-label-role
@@ -126,8 +131,6 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     white-space: nowrap;
     border: 0;
     text-decoration: none;
-    background-color: $menubar-dropdown-bg;
-    color: $menubar-dropdown-link-color;
 
   &:hover,
   &:focus {
@@ -160,7 +163,7 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     height: 0;
     margin: 0.5rem 0;
     overflow: hidden;
-    border-top: 1px solid #e9ecef;
+    border-top: $menubar-dropdown-border-width solid $menubar-dropdown-border-color;
 }
 
 .menubar-sign-out {

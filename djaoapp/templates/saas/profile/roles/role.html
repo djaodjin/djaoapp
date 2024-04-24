@@ -17,7 +17,7 @@
     <div id="user-relation-list-container">
       <div class="row">
       <div class="col-md-6">
-      <div class="card bg-light">
+      <div class="card">
         <div class="card-body">
           <form id="add-user" class="mb-4" @submit.prevent="submit">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
@@ -179,13 +179,13 @@ Thank you,
                     <div class="col col-md-4 text-start" v-if="item.accept_request_api_url">
                       <hr class="my-2" />
                       <small class="text-muted">{% trans %}requested{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
-                      <button class="btn btn-secondary btn-sm float-end"
+                      <button class="btn btn-primary btn-sm float-end"
                               @click="save(item.user)">{% trans %}Grant{% endtrans %}</button>
                     </div>
                     <div class="col col-md-4 text-start" v-if="item.grant_key">
                       <hr class="my-2" />
                       <small class="text-muted">{% trans %}invited{% endtrans %} [[$globals.humanizeDate(item.created_at)]]</small>
-                      <button class="btn btn-secondary btn-sm float-end"
+                      <button class="btn btn-primary btn-sm float-end"
                               @click="sendInvite(item.user.slug)">{% trans %}Resend Invite{% endtrans %}</button>
                     </div>
                   </div>{# /.row #}
@@ -225,7 +225,7 @@ Thank you,
               </p>
               <div class="modal-footer">
                 <button id="cancel-revoke"
-                        class="btn btn-secondary"
+                        class="btn btn-primary"
                         data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button type="submit" id="revoke-btn"
                         class="btn btn-danger"

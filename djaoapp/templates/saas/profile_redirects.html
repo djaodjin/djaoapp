@@ -11,12 +11,12 @@
 
       {% for redirect in redirects %}
         <div class="center mt-2">
-          <a id="{{redirect.2}}" class="btn btn-secondary btn-redirect w-100" href="{{redirect.0}}">{{redirect.1}}</a>
+          <a id="{{redirect.2}}" class="btn btn-primary btn-redirect w-100" href="{{redirect.0}}">{{redirect.1}}</a>
         </div>
       {% endfor %}
 
       <div class="mt-1">
-        <a id="saas_organization_create" class="btn btn-primary w-100" href="{{urls.organization_create}}">{% trans %}New ...{% endtrans %}</a>
+        <a id="saas_organization_create" class="btn btn-outline-primary w-100" href="{{urls.organization_create}}">{% trans %}New ...{% endtrans %}</a>
       </div>
     </div>
   </section>

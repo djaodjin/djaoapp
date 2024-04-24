@@ -52,11 +52,18 @@
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
                     <header>
-                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-sm bg-primary" data-bs-theme="dark"{% endblock %}>
+                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-sm bg-primary"{% endblock %}>
                         <div class="container-fluid">
                           <div class="navbar-header">
                             {% include "_navbarbrand.html" %}
                           </div>
+                          <div class="text-end">
+                            <button href="" class="sidebar-toggle btn btn-secondary d-inline-block d-sm-none">
+                              <div class="bar1 opened"></div>
+                              <div class="bar2 opened"></div>
+                              <div class="bar3 opened"></div>
+                            </button>
+                           </div>
                         </div>
                       </nav>
                     </header>
@@ -121,13 +128,13 @@
             <div class="d-print-none fullviewport">
               <header>
                 {% block body_top_template %}{% endblock %}
-                <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"  data-bs-theme="dark"{% endblock %}>
+                <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
                   <div class="container-fluid">
-                    <a href="" class="sidebar-toggle d-inline-block d-sm-none position-relative">
+                    <button class="sidebar-toggle btn btn-secondary d-inline-block d-sm-none position-relative">
                       <div class="bar1 closed"></div>
                       <div class="bar2 closed"></div>
                       <div class="bar3 closed"></div>
-                    </a>
+                    </button>
 
                     {% block content_navbarbrand %}
                       <div class="navbar-brand-container">
@@ -137,11 +144,11 @@
 
                     {% block header_navbar_large %}
                       <div class="collapse navbar-collapse navbar-right justify-content-end">
-                        <ul class="nav navbar-nav ms-auto mt-lg-0">
+                        <ul class="navbar-nav ms-auto mt-lg-0">
                           {% include "_generic_navbar.html" %}
                         </ul>
                       </div>
-                      <ul class="nav navbar-nav ms-auto mt-lg-0 header-menubar ml-auto">
+                      <ul class="navbar-nav ms-auto mt-lg-0 header-menubar ml-auto">
                         {# The content here will be replaced by _menubar.html #}
                         <li class="nav-item">
                           {% if request and request|is_authenticated %}

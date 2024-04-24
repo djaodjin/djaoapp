@@ -36,13 +36,17 @@
                 <span class="dz-default dz-message"><i class="fa fa-cloud"></i> {% trans %}Upload theme package (.zip){% endtrans %}</span>
               </div>
             </div>
-            <div class="text-center">
-              <a id="download-theme" class="btn btn-secondary" href="{{urls.theme_download}}" target="_blank"><i class="fa fa-cloud-download me-2"></i> {% trans %}Download .ZIP{% endtrans %}</a>
-              <button id="reset-theme"
-                      class="btn btn-danger"
-                      @click.prevent="reset">
-                {% trans %}Restore to default{% endtrans %}
-              </button>
+            <div class="row text-center">
+              <div class="col-6">
+                <a id="download-theme" class="btn btn-primary" href="{{urls.theme_download}}" target="_blank"><i class="fa fa-cloud-download me-2"></i> {% trans %}Download .ZIP{% endtrans %}</a>
+              </div>
+              <div class="col-6">
+                <button id="reset-theme"
+                        class="btn btn-danger"
+                        @click.prevent="reset">
+                  {% trans %}Restore to default{% endtrans %}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -54,10 +58,15 @@
           {% trans %}When you are modifying root templates (ex: base.html), you may inadvertently break the dashboard and become unable to access this page to upload a fix.{% endtrans %}
         </p>
         <p>
-          {% trans profile_url=urls.profile_redirect %}You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://djaodjin.com/docs/djaoapp-api/#themes_delete">API end point</a> from the command line.{% endtrans %}
+          {% trans profile_url=urls.profile_redirect %}You can reset to the default theme, but you will need an <a href="{{profile_url}}">API key</a> to trigger the <a href="https://www.djaodjin.com/docs/reference/djaoapp/2023-09-22/api/#destroyDjaoAppThemePackageList" target="_blank">API end point</a> from the command line.{% endtrans %}
         </p>
-        <div class="code">
-          <pre class="code p-3">curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</pre>
+        <div class="example">
+          <div class="example-title">
+            Shell
+          </div>
+          <div class="example-body">
+            <pre class="code p-3">curl -i -u *api_key*: -X DELETE {{request|site_url}}/api/themes</pre>
+          </div>
         </div>
         <p>
           <a target="_blank" href="https://www.djaodjin.com/docs/guides/themes/">{% trans %}Read more about theme customization ...{% endtrans %} &raquo;</a>
@@ -86,15 +95,23 @@
                       <p class="card-text">
                         {{vals.description}}
                       </p>
-                      <a href="{{urls.notifications}}{{key}}/" class="btn btn-primary">{% trans %}Edit{% endtrans %}</a>
-                      <notification-test inline-template :notification-id="'{{key}}'">
-                        <div>
-                          <button class="btn btn-outline-secondary send-test-email"
-                                  @click.prevent="submit">
-                            {% trans %}Send Test Email{% endtrans %}
-                          </button>
+                    </div>
+                    <div class="card-footer">
+                      <div class="row">
+                        <div class="col-6 text-center">
+                          <a href="{{urls.notifications}}{{key}}/">{% trans %}Edit{% endtrans %}</a>
                         </div>
-                      </notification-test>
+                        <div class="col-6 text-center">
+                          <notification-test inline-template :notification-id="'{{key}}'">
+                            <div>
+                              <button class="btn btn-outline-primary send-test-email"
+                                      @click.prevent="submit">
+                                {% trans %}Send Test Email{% endtrans %}
+                              </button>
+                            </div>
+                          </notification-test>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

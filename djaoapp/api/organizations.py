@@ -216,7 +216,6 @@ class DjaoAppProfilePictureAPIView(ProfileDecorateMixin,
         resp = super(DjaoAppProfilePictureAPIView, self).post(
             request, *args, **kwargs)
         location = resp.get('location')
-        print("location=%s" % str(location))
         user = self.organization.attached_user()
         if user:
             Contact.objects.update_or_create(

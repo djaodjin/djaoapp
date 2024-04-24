@@ -84,7 +84,7 @@
         <div class="row align-items-center">
           <div class="col-sm-5">
             <div class="d-grid gap-2">
-              <button id="activate-user" class="btn btn-secondary" @click="activate">{% trans %}Activate{% endtrans %}</button>
+              <button id="activate-user" class="btn btn-primary" @click="activate">{% trans %}Activate{% endtrans %}</button>
             </div>
           </div>
           <div class="col-sm-7">
@@ -152,7 +152,7 @@
         </div>
         <div class="modal-footer">
             <button type="button"
-                    class="btn btn-secondary"
+                    class="btn btn-outline-primary"
                     data-bs-dismiss="modal">
                 {% trans %}Cancel{% endtrans %}</button>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="uploadProfilePicture">{% trans %}Save picture{% endtrans %}</button>
@@ -187,7 +187,7 @@
         </div>
         <div class="modal-footer">
           <button data-bs-dismiss="modal"
-                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+                  class="btn btn-outline-primary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="delete-organization-btn"
                   class="btn btn-danger"
                   data-bs-dismiss="modal"
@@ -227,7 +227,7 @@
         </div>
         <div class="modal-footer">
           <button data-bs-dismiss="modal"
-                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+                  class="btn btn-outline-primary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-email-btn"
                   class="btn btn-primary"
                   @click.prevent="verifyEmail" v-if="!codeSent">{% trans %}Email link{% endtrans %}</button>
@@ -267,7 +267,7 @@
         </div>
         <div class="modal-footer">
           <button data-bs-dismiss="modal"
-                  class="btn btn-secondary">{% trans %}Cancel{% endtrans %}</button>
+                  class="btn btn-outline-primary">{% trans %}Cancel{% endtrans %}</button>
           <button type="button" id="verify-phone-btn"
                   class="btn btn-primary"
                   @click.prevent="verifyPhone" v-if="!codeSent">{% trans %}Text a code{% endtrans %}</button>

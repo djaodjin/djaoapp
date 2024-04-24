@@ -44,11 +44,11 @@
                 <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
                     v-for="(rule, index) in items.results" v-cloak>
                   <td>
-                    <button class="btn btn-secondary btn-sm rule-up"
+                    <button class="btn btn-outline-primary btn-sm rule-up"
                             @click.prevent="moveUp(rule, index)">
                       <i class="fa fa-arrow-up"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm rule-down"
+                    <button class="btn btn-outline-primary btn-sm rule-down"
                             @click.prevent="moveDown(rule, index)">
                       <i class="fa fa-arrow-down"></i>
                     </button>
@@ -118,7 +118,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary"
+                  <button type="button" class="btn btn-outline-primary"
                           data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                   <button id="new-rule-submit"
                           type="button" class="btn btn-primary"
@@ -243,7 +243,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button id="regenerate-key" class="btn btn-secondary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
+                    <button id="regenerate-key" class="btn btn-outline-primary" type="button" @click="generateKey">{% trans %}Regenerate{% endtrans %}</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{% trans %}OK{% endtrans %}</button>
                   </div>
                 </div>

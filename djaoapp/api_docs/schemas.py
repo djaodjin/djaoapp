@@ -790,9 +790,7 @@ class NotificationDocGenerator(SchemaGenerator):
                 'user_contact',
                 'user_logged_in',
                 'user_login_failed',
-                'user_registered',
-                'user_reset_password',
-                'user_verification']:
+                'user_registered']:
             api_end_points.update({notification_slug:
                 get_notification_schema(notification_slug, generator=self,
                 api_base_url=api_base_url)})

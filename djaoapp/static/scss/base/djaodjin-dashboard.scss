@@ -24,7 +24,9 @@ $box-shadow-color:              rgba(0, 0, 0, 0.05);
 }
 
 .navbar .divider-vertical {
-  border-right: 1px solid $dashboard-sidebar-bg;
+  border-right: 1px solid var(--bs-body-color);
+  padding-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 // Profile and user pictures
@@ -175,6 +177,11 @@ pre.code{
     width: $dashboard-sidebar-width;
 }
 
+.dashboard-nav-main .navbar-header {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .dashboard-nav-menu {
   height: calc(100vh - (#{$dashboard-nav-footer-height} + #{$dashboard-sidebar-logo-height}));
   overflow-y: auto;
@@ -187,7 +194,6 @@ pre.code{
 .dashboard-nav-inner-container .navbar {
     padding-left: 4px;
     padding-right: 4px;
-    height: 4.33rem;
 }
 
 .dashboard-nav-footer {
@@ -284,8 +290,6 @@ pre.code{
     padding: 9px 10px;
     border-radius: 3px;
     z-index: 1000;
-    color: $dashboard-sidebar-color;
-    background: $dashboard-sidebar-bg;
 }
 
 .sidebar-toggle > .bar1, .bar2, .bar3  {
@@ -687,14 +691,8 @@ input::-webkit-datetime-edit {
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle {
-    border-color: $dashboard-sidebar-color;
-    background: $dashboard-sidebar-bg;
-}
-
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle,
 .dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover {
-    color: $dashboard-sidebar-color;
+    border-color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-color-theme.bg-primary .navbar-nav .nav-link,
@@ -722,10 +720,6 @@ input::-webkit-datetime-edit {
     color: black;
 }
 
-#recent-activity-container .item-name {
-    color: #333;
-}
-
 .icon {
     background: $dashboard-icon-color;
 }
@@ -743,6 +737,5 @@ input::-webkit-datetime-edit {
 /* upload themes */
 .dropzone-previews {
   border-color: map-get($theme-colors, "primary");
-  background: #ccc;
 }
 

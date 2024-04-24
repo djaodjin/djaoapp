@@ -5,12 +5,12 @@
 {% block help_menus %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
-  <a id="email-charge-receipt" class="btn btn-secondary" href="">{% trans %}Email Again{% endtrans %}</a>
+  <a id="email-charge-receipt" class="btn btn-outline-primary" href="">{% trans %}Email Again{% endtrans %}</a>
 </li>
 {% if urls.charge and urls.charge.printable_receipt %}
 <li class="divider-vertical"></li>
 <li class="nav-item">
-  <a id="charge-printable" class="btn btn-secondary" target="_blank" href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
+  <a id="charge-printable" class="btn btn-outline-primary" target="_blank" href="{{urls.charge.printable_receipt}}">{% trans %}Printable{% endtrans %}</a>
 </li>
 {% endif %}
 {% endblock %}
@@ -72,7 +72,7 @@
           <td>{{line.invoiced|describe}}</td>
           <td>
             {% if line.refundable %}
-            <button class="charge-refund btn btn-secondary"
+            <button class="charge-refund btn btn-outline-primary"
                     data-bs-toggle="modal" data-bs-target="#charge-refund"
                     data-available-amount="{{line.invoiced.dest_amount}}"
                     data-linenum="{{line.rank}}">{% trans %}Refund{% endtrans %}</button>
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary"
+                <button class="btn btn-outline-primary"
                         type="button"
                         data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 <button class="submit-refund btn btn-primary"

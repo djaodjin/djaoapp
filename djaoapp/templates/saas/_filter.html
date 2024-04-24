@@ -19,12 +19,12 @@
     </div>
     {% if tab and tab.urls and tab.urls.download %}
     <div class="col-sm-3 col-lg-1 p-0">
-      <a id="download" class="btn btn-secondary w-100" role="button"
+      <a id="download" class="btn btn-outline-primary w-100" role="button"
          :href="'{{tab.urls.download}}' + getQueryString()">{% trans %}Download{% endtrans %}</a>
     </div>
     {% elif urls.download %}
     <div class="col-sm-3 col-lg-1 p-0">
-      <a id="download" class="btn btn-secondary w-100" role="button"
+      <a id="download" class="btn btn-outline-primary w-100" role="button"
          :href="'{{urls.download}}' + getQueryString()">{% trans %}Download{% endtrans %}</a>
     </div>
     {% endif %}

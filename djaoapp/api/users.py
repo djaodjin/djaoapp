@@ -161,7 +161,9 @@ class RecentActivityAPIView(ListAPIView):
             created_at__gt=start_at).order_by('-created_at')[:5]
         data = {}
         for user in users:
-            data[user.username] = {'printable_name': user.get_full_name(),
+            data[user.username] = {
+                'printable_name': (user.get_full_name() if user.get_full_name()
+                    else user.username),
                 'descr': _('recently logged in'), 'slug': user.username,
                 'created_at': user.last_login, 'type': "user"}
         for charge in charges:

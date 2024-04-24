@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -66,6 +66,7 @@ ENABLES_PROCESSOR_TEST_KEYS = True
 #: by e-mail and `djaoapp.notifications.backends.NotificationWebhookBackend` to
 #: `POST` and event to an URL.
 NOTIFICATION_BACKENDS = (
+    'djaoapp.notifications.backends.NotificationWebhookBackend',
     'djaoapp.notifications.backends.NotificationEmailBackend',
 )
 
@@ -818,8 +819,6 @@ SIGNUP = {
         ('user_activated', "User activated"),
         ('user_contact', "User contact"),
         ('user_registered', "User registered"),
-        ('user_reset_password', "Password reset"),
-        ('user_verification', "Verification"),
         ('user_welcome', "User welcome"),
     ),
     'PASSWORD_RESET_THROTTLE': getattr(

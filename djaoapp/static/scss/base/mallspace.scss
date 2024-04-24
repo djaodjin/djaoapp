@@ -77,6 +77,20 @@ body{
   padding-bottom: $footer-height; /* must be in pixel (see comment abolve) */
 }
 
+// top menubar (requires `bg-primary` as background)
+.navbar.bg-primary .navbar-brand,
+.navbar.bg-primary .nav-link {
+  color: $white;
+}
+
+.navbar.bg-primary .navbar-brand:hover,
+.navbar.bg-primary .navbar-brand:focus,
+.navbar.bg-primary .nav-link:hover,
+.navbar.bg-primary .nav-link:focus {
+  color: map-get($theme-colors, "primary");
+  background-color: $white;
+}
+
 .footer {
   position: relative;
   height: $footer-height;         /* must be in pixel (see comment abolve) */
@@ -328,16 +342,6 @@ body{
 .collapsible {
   text-decoration-line: underline;
   text-decoration-style: dashed;
-}
-
-/* upload private key and public certificate in domain.html */
-.dropzone-previews {
-    min-height: 150px;
-    padding: 54px 54px;
-    border: 2px dashed #0087F7;
-    border-radius: 5px;
-    background: white;
-    margin-bottom: 10px;
 }
 
 .page-header {

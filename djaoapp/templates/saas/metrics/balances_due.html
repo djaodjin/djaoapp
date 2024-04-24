@@ -1,0 +1,51 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+{% trans %}Balances due{% endtrans %}
+{% endblock %}
+
+{% block saas_content %}
+<balancesdue-list inline-template>
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{% trans %}Name{% endtrans %}</th>
+          <th>{% trans %}Unit{% endtrans %}</th>
+          <th>{% trans %}Contract Value{% endtrans %}</th>
+          <th>{% trans %}Cash Payments{% endtrans %}</th>
+          <th>{% trans %}Balance Due{% endtrans %}</th>
+          <th>{% trans %}Created at{% endtrans %}</th>
+        </tr>
+      </thead>
+      <tbody v-if="!itemsLoaded">
+        <tr>
+          <td colspan="6">
+            <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
+        <tr>
+          <td colspan="6">
+            <h4 class="text-center"><em>{% trans %}No Balances{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-for="(item, index) in items.results" v-if="itemsLoaded && items.results.length > 0" v-cloak>
+        <tr v-for="(balance, unit) in item.balances" :key="index + '-' + unit">
+          <td>
+            <a :href="'{{urls.profile_redirect}}' + item.slug + '/'">[[item.printable_name]]</a>
+          </td>
+          <td>[[unit]]</td>
+          <td>[[balance.contract_value]]</td>
+          <td>[[balance.cash_payments]]</td>
+          <td>[[balance.balance]]</td>
+          <td>[[item.created_at]]</td>
+        </tr>
+      </tbody>
+    </table>
+    {% include "_pagination.html" %}
+  </div>
+</balancesdue-list>
+{% endblock %}
