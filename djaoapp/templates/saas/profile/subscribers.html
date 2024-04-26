@@ -15,7 +15,7 @@
 
 
 {% block saas_content %}
-<section id="subscribers">
+<lazy-load-tabs inline-template id="subscribers">
   <div id="subscribers-list-container"
        data-trip data-trip-index="1"
        data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
@@ -23,7 +23,8 @@
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       {% if registered %}
       <li class="nav-item">
-        <a class="nav-link" href="#registered" data-bs-toggle="tab">{% trans %}Registered{% endtrans %}</a>
+        <a class="nav-link" href="#registered" data-bs-toggle="tab"
+           @click="tabClicked('registered')">{% trans %}Registered{% endtrans %}</a>
       </li>
       {% endif %}
 
@@ -37,7 +38,8 @@
     <div class="tab-content">
 
       {% if registered %}
-      <registered inline-template id="registered" class="tab-pane" role="tabpanel">
+      <registered inline-template id="registered" class="tab-pane"
+                  role="tabpanel" ref="registered">
         <div id="registered-tab-container">
           <div class="mt-2">
             {% include "saas/_filter.html" %}
@@ -83,7 +85,7 @@
       {% for tab in tabs %}
       <{{tab.slug}} inline-template id="{{tab.slug}}"
           class="tab-pane{% if tab.is_active %} active{% endif %}"
-          role="tabpanel">
+          role="tabpanel" ref="tab.slug">
         <div id="{{tab.slug}}-tab-container">
           <div class="mt-2">
             {% include "saas/_filter.html" %}
@@ -354,5 +356,5 @@
 
     </div>{# /.tab-content #}
   </div>
-</section>
+</lazy-load-tabs>
 {% endblock %}

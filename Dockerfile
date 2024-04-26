@@ -40,7 +40,7 @@ RUN set -eux; \
         pkg-config; \
       \
       /app/bin/pip install billiard==4.0.0 cairocffi==1.3.0 coverage==6.3.2 cryptography==41.0.3 psycopg2-binary==2.9.3 pycairo==1.21.0 python-ldap==3.4.0 setproctitle==1.2.3; \
-      /app/bin/pip install boto3==1.28.3 Django==3.2.25 django-phonenumber-field==7.1.0 django-recaptcha==3.0.0 djangorestframework==3.14.0 djaodjin-deployutils==0.10.9 djaodjin-extended-templates==0.4.6 djaodjin-multitier==0.2.1 djaodjin-rules==0.4.6 djaodjin-saas==0.20.2 djaodjin-signup==0.9.5 docutils==0.15.2 googlemaps==4.10.0 gunicorn==20.1.0 jinja2==3.1.3 MarkupSafe==2.1.1 phonenumbers==8.13.13 PyJWT==2.6.0 pyotp==2.8.0 pytz==2023.3 social-auth-app-django==5.2.0 whitenoise==6.4.0 WeasyPrint==53.4; \
+      /app/bin/pip install boto3==1.28.3 Django==3.2.25 django-phonenumber-field==7.1.0 django-recaptcha==3.0.0 djangorestframework==3.14.0 djaodjin-deployutils==0.10.9 djaodjin-extended-templates==0.4.6 djaodjin-multitier==0.2.1 djaodjin-rules==0.4.6 djaodjin-saas==0.20.3 djaodjin-signup==0.9.5 docutils==0.15.2 googlemaps==4.10.0 gunicorn==20.1.0 jinja2==3.1.3 MarkupSafe==2.1.1 phonenumbers==8.13.13 PyJWT==2.6.0 pyotp==2.8.0 pytz==2023.3 social-auth-app-django==5.2.0 whitenoise==6.4.0 WeasyPrint==53.4; \
       /app/bin/pip install django-debug-toolbar==3.5.0 django-extensions==3.2.3 django-storages==1.14.2; \
       \
       apt-mark auto '.*'; \
