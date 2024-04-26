@@ -34,7 +34,6 @@
     {% block localheader %}{% endblock %}
 </head>
 <body{% block body_classes %}{% endblock %}>
-  {% block body_top_template %}{% endblock %}
   <div id="wrap">
     <div id="main">
       <div class="dashboard-container">
@@ -117,6 +116,7 @@
 
           <div class="dashboard-content">
             <header class="d-print-none">
+              {% block body_top_template %}{% endblock %}
               <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
                 <div class="container-fluid">
                   <button class="sidebar-toggle btn btn-secondary d-inline-block d-md-none position-relative">

@@ -1,7 +1,7 @@
 {% extends "saas/base.html" %}
 
 {% block saas_localheader %}
-<link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/dashboard.css" />
+<link rel="stylesheet" media="screen" href="{{'/assets/cache/dashboard.css'|djasset}}" />
 {% endblock %}
 
 {% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
