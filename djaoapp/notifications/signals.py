@@ -77,7 +77,7 @@ def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
     .. code-block:: json
 
         {
-          "event": "use_charge_limit_crossed",
+          "event": "quota_reached",
           "broker": {
             "slug": "djaoapp",
             "printable_name": "DjaoApp",

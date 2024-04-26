@@ -139,17 +139,10 @@ body{
   padding: 35px 0;
 }
 
-
 @include media-breakpoint-up(sm) {
   .site-landing .portrait-and-quote {
     display: flex;
     align-items: center;
-  }
-}
-
-@include media-breakpoint-down(sm) {
-  button.full-width {
-      width: 100%;
   }
 }
 
@@ -190,10 +183,15 @@ body{
 // --------------------------
 .about-us
 {
-  background: #c6dcef9e;
+  background: #c6dcef;
+  color: $black;
   padding: 30px 20px;
   border-radius: 3px;
   text-align: left;
+}
+
+.about-us a {
+  color: $link-color;
 }
 
 .about-us>div

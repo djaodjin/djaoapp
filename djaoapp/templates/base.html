@@ -31,17 +31,10 @@
       <meta name="csrf-token" content="{{csrf_token}}">
     {% endif %}
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--
-      [if lt IE 9]>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]
-    -->
-
     {% block localheader %}{% endblock %}
 </head>
 <body{% block body_classes %}{% endblock %}>
+  {% block body_top_template %}{% endblock %}
   <div id="wrap">
     <div id="main">
       <div class="dashboard-container">
@@ -52,27 +45,25 @@
                 <div class="dashboard-nav-main dashboard-nav-color-theme">
                   <div>
                     <header>
-                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-sm bg-primary"{% endblock %}>
-                        <div class="container-fluid">
-                          <div class="navbar-header">
-                            {% include "_navbarbrand.html" %}
-                          </div>
+                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
+                        <div class="navbar-header">
+                          {% include "_navbarbrand.html" %}
                           <div class="text-end">
-                            <button href="" class="sidebar-toggle btn btn-secondary d-inline-block d-sm-none">
+                            <button href="" class="sidebar-toggle btn btn-secondary d-inline-block d-md-none">
                               <div class="bar1 opened"></div>
                               <div class="bar2 opened"></div>
                               <div class="bar3 opened"></div>
                             </button>
-                           </div>
+                          </div>
                         </div>
                       </nav>
                     </header>
                     <div class="dashboard-nav-menu">
                       {% block sidebar %}
-                        <hr />
-                        <ul class="nav flex-column d-md-none">
-                          {% include "_generic_navbar.html" %}
-                        </ul>
+                      <hr />
+                      <ul class="nav flex-column d-md-none">
+                        {% include "_generic_navbar.html" %}
+                      </ul>
                       {% endblock %}
                     </div>
                   </div>
@@ -125,44 +116,45 @@
           {% endblock %}
 
           <div class="dashboard-content">
-            <div class="d-print-none fullviewport">
-              <header>
-                {% block body_top_template %}{% endblock %}
-                <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
-                  <div class="container-fluid">
-                    <button class="sidebar-toggle btn btn-secondary d-inline-block d-sm-none position-relative">
-                      <div class="bar1 closed"></div>
-                      <div class="bar2 closed"></div>
-                      <div class="bar3 closed"></div>
-                    </button>
+            <header class="d-print-none">
+              <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
+                <div class="container-fluid">
+                  <button class="sidebar-toggle btn btn-secondary d-inline-block d-md-none position-relative">
+                    <div class="bar1 closed"></div>
+                    <div class="bar2 closed"></div>
+                    <div class="bar3 closed"></div>
+                  </button>
 
-                    {% block content_navbarbrand %}
-                      <div class="navbar-brand-container">
-                        {% include "_navbarbrand.html" %}
-                      </div>
-                    {% endblock %}
-
-                    {% block header_navbar_large %}
-                      <div class="collapse navbar-collapse navbar-right justify-content-end">
-                        <ul class="navbar-nav ms-auto mt-lg-0">
-                          {% include "_generic_navbar.html" %}
-                        </ul>
-                      </div>
-                      <ul class="navbar-nav ms-auto mt-lg-0 header-menubar ml-auto">
-                        {# The content here will be replaced by _menubar.html #}
-                        <li class="nav-item">
-                          {% if request and request|is_authenticated %}
-                          <a class="nav-link">{{request.user.username}}</a>
-                          {% else %}
-                          <a id="login" class="nav-link" href="{{'/login/'|site_url}}">{% trans %}Sign In{% endtrans %}</a>
-                          {% endif %}
-                        </li>
-                        {# end of replaced by _menubar.html #}
-                      </ul>
-                    {% endblock %}
+                  {% block content_navbarbrand %}
+                  <div class="navbar-brand-container">
+                      {% include "_navbarbrand.html" %}
                   </div>
-                </nav>
-              </header>
+                  {% endblock %}
+
+                  {% block header_navbar_large %}
+                  <div class="navbar-collapse collapse navbar-end justify-content-end">
+                    <ul class="navbar-nav ms-auto mt-lg-0">
+                      {% block header_generic_large %}
+                      {% include "_generic_navbar.html" %}
+                      {% endblock %}
+                    </ul>
+                  </div>
+                  <ul class="navbar-nav header-menubar ms-auto mt-lg-0 ml-auto">
+                    {# The content here will be replaced by _menubar.html #}
+                    <li class="nav-item">
+                      {% if request and request|is_authenticated %}
+                      <a class="nav-link">{{request.user.username}}</a>
+                      {% else %}
+                      <a id="login" class="nav-link" href="{{'/login/'|site_url}}">{% trans %}Sign In{% endtrans %}</a>
+                      {% endif %}
+                    </li>
+                    {# end of replaced by _menubar.html #}
+                  </ul>
+                  {% endblock %}
+                </div>
+              </nav>
+            </header>
+            <div class="fullviewport">
               {% block fullviewport %}
               {% endblock %}
             </div><!-- /.fullviewport -->

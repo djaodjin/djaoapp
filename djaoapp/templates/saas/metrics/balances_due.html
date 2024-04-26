@@ -7,15 +7,28 @@
 {% block saas_content %}
 <balancesdue-list inline-template>
   <div>
+
+    <div class="mt-3">
+      {% include "saas/_filter.html" %}
+    </div>
+
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{% trans %}Name{% endtrans %}</th>
+          <th>
+            {% trans %}Created at{% endtrans %}
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
+              <i :class="sortIcon('created_at')"></i>
+            </a>
+          </th>
+          <th>{% trans %}Full Name{% endtrans %}</th>
+          <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('full_name')">
+            <i :class="sortIcon('full_name')"></i>
+          </a>
           <th>{% trans %}Unit{% endtrans %}</th>
           <th>{% trans %}Contract Value{% endtrans %}</th>
           <th>{% trans %}Cash Payments{% endtrans %}</th>
           <th>{% trans %}Balance Due{% endtrans %}</th>
-          <th>{% trans %}Created at{% endtrans %}</th>
         </tr>
       </thead>
       <tbody v-if="!itemsLoaded">
@@ -34,14 +47,20 @@
       </tbody>
       <tbody v-for="(item, index) in items.results" v-if="itemsLoaded && items.results.length > 0" v-cloak>
         <tr v-for="(balance, unit) in item.balances" :key="index + '-' + unit">
+          <td>[[$globals.humanizeDate(item.created_at)]]</td>
           <td>
-            <a :href="'{{urls.profile_redirect}}' + item.slug + '/'">[[item.printable_name]]</a>
+            <a :href="'{{urls.profile_base}}' + item.slug + '/'">[[item.printable_name]]</a>
           </td>
           <td>[[unit]]</td>
-          <td>[[balance.contract_value]]</td>
-          <td>[[balance.cash_payments]]</td>
-          <td>[[balance.balance]]</td>
-          <td>[[item.created_at]]</td>
+          <td class="text-end">
+            [[$globals.humanizeNumber(balance.contract_value, unit, 0.01)]]
+          </td>
+          <td class="text-end">
+            [[$globals.humanizeNumber(balance.cash_payments, unit, 0.01)]]
+          </td>
+          <td class="text-end">
+            [[$globals.humanizeNumber(balance.balance, unit, 0.01)]]
+          </td>
         </tr>
       </tbody>
     </table>
