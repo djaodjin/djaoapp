@@ -49,6 +49,7 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
 .menubar-label > div {
     display: inline-block;
     line-height:1rem;
+    vertical-align: middle;
 }
 
 .menubar-label-title {
@@ -75,6 +76,9 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
   @include caret(down);
 }
 
+.menubar-label.menubar-label-dropdown-toggle:after {
+  vertical-align: middle;
+}
 
 .menubar-dropdown-menu
 {

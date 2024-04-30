@@ -1,79 +1,158 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-  <h1 class="text-center mt-4">Practices Survey Platform</h1>
+<section id="intro" class="container">
+  <h1 class="text-center mt-4">Practices Survey Platform Interactive Demo</h1>
+  <h5 class="text-center"><em>built in California by <a href="https://www.djaodjin.com/">DjaoDjin inc.</a></em></h5>
 
-  <div class="my-4">
-    <div class="row text-justify">
-      <div class="col-md-4 text-center">
-        <img class="img-fluid rounded-circle" src="{{'static/img/steve.jpg'|asset}}" role="presentation" loading="lazy">
+  <div class="pt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <p>
+This website combines <a href="https://github.com/djaodjin/djaoapp/" target="_blank">djaoapp</a>
+and <a href="https://github.com/djaodjin/djaopsp/" target="_blank">djaopsp</a>
+Open Source projects into a fully-functional interactive demo of an
+Environmental &amp; Social Governance product.
+        </p>
+        <p>
+The purpose of this interactive demo is to showcase features and functionality
+you will have access to on <a href="https://www.tspproject.org" target="_blank">tspproject.org</a> at different pricing
+tier.
+        </p>
+        <p>
+For technical folks building on DjaoDjin hosting platform and/or Open Source
+projects, you will find here a working integration of the subscription-based
+access control Web gateway (blue theme) and one business logic application
+here DjaoDjin's practices survey platform (green theme), to run a
+fully-featured Software-as-Service product.
+        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <img class="img-fluid img-thumbnail"
+                 src="https://www.djaodjin.com/static/img/docs/desktop-dashboard_billing_history-alice.png"
+                 loading="lazy" />
+          </div>
+          <div class="col-md-6">
+            <img class="img-fluid img-thumbnail"
+                 src="https://www.tspproject.org/static/img/tutorials/suppliers-3-1.png"
+                 loading="lazy" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="about-us mt-2">
+          <div class="row">
+            <div class="col-3">
+              <img class="img-fluid"
+                 src="https://www.djaodjin.com/static/img/logo-djaodjin-bgblue-320.png"
+                 loading="lazy" />
+            </div>
+            <div class="col-9">
+              <dl style="font-size:0.85rem;">
+                <dt>What does DjaoDjin mean?</dt>
+                <dd>
+&quot;Djao&quot; is a salutation word in Northern Thai that translates
+to welcome. &quot;Djin&quot; refers to a spirit inhabiting trees, lakes
+and mountains in Africa. DjaoDjin is <em>The Welcome Spirit</em>.
+<a href="https://www.djaodjin.com/about/" target="_blank">Learn About Our Values &raquo;</a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr />
+<section id="practices-survey-platform" class="container">
+  <h2 class="text-center mt-4">Try it yourself!</h2>
+
+  <div class="py-4 text-center text-md-start">
+    <div class="row">
+      <div class="offset-md-4 col-md-8">
+        <h5>Suppliers</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 text-md-end">
+        <img class="img-fluid rounded-circle my-2" src="{{'static/img/steve.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <h5>Suppliers</h5>
         <p>
 Any supply chain management program require suppliers to answer surveys,
 and take training.
         </p>
-        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
+        <form action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="steve"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as supplier{% endtrans %}</button>
+          <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-md btn-primary" type="submit">{% trans %}Login as supplier{% endtrans %}</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="my-4">
-    <div class="row text-justify mt-4">
-      <div class="col-md-4 text-center order-md-2">
-        <img class="img-fluid rounded-circle" src="{{'static/img/alice.jpg'|asset}}" role="presentation" loading="lazy">
+  <div class="py-4 text-center text-md-start">
+    <h5>Procurement Departments</h5>
+    <div class="row">
+      <div class="col-md-4 order-md-2 text-md-start">
+        <img class="img-fluid rounded-circle my-2" src="{{'static/img/alice.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <h5>Procurement Departments</h5>
         <p>
 Any supply chain management program requires to engage with suppliers,
 and track their completion status with regards to various surveys sent to them.
         </p>
-        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
+        <form action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="alice"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as procurement specialist{% endtrans %}</button>
+          <div class="d-grid gap-2 d-md-block text-md-end">
+            <button class="btn btn-md btn-primary" type="submit">{% trans %}Login as procurement specialist{% endtrans %}</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="my-4">
-    <div class="row text-justify">
-      <div class="col-md-4 text-center">
-        <img class="img-fluid rounded-circle" src="{{'static/img/abby.jpg'|asset}}" role="presentation" loading="lazy">
+  <div class="py-4 text-center text-md-start">
+    <div class="row">
+      <div class="offset-md-4 col-md-8">
+        <h5>3rd-party Verifiers &amp; Auditors</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 text-md-end">
+        <img class="img-fluid rounded-circle my-2" src="{{'static/img/abby.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <h5>3rd-party Verifiers &amp; Auditors</h5>
         <p>
 Any supply chain management program requires some level of verification
 of the responses submitted by suppliers.
         </p>
-        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
+        <form action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="abby"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as an auditor{% endtrans %}</button>
+          <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-md btn-primary" type="submit">{% trans %}Login as an auditor{% endtrans %}</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="my-4">
-    <div class="row text-justify">
-      <div class="col-md-4 text-center order-md-2">
-        <img class="img-fluid rounded-circle" src="{{'static/img/kathryn.jpg'|asset}}" role="presentation" loading="lazy">
+  <div class="py-4 text-center text-md-start">
+    <h5>Alliances</h5>
+    <div class="row">
+      <div class="col-md-4 order-md-2 text-md-start">
+        <img class="img-fluid rounded-circle my-2" src="{{'static/img/kathryn.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <h5>Alliances</h5>
         <p>
 Any supply chain management program leverages engagement with peers
 in the industry, while adhering to strict anti-trust regulations.
@@ -82,32 +161,40 @@ in the industry, while adhering to strict anti-trust regulations.
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="kathryn"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as an alliance{% endtrans %}</button>
+          <div class="d-grid gap-2 d-md-block text-md-end">
+            <button class="btn btn-md btn-primary" type="submit">{% trans %}Login as an alliance{% endtrans %}</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="my-4">
-    <div class="row text-justify">
-      <div class="col-md-4 text-center">
-        <img class="img-fluid rounded-circle" src="{{'static/img/donny.jpg'|asset}}" role="presentation" loading="lazy">
+  <div class="py-4 text-center text-md-start">
+    <div class="row">
+      <div class="offset-md-4 col-md-8">
+        <h5>Site owner</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 text-center text-md-end">
+        <img class="img-fluid rounded-circle my-2" src="{{'static/img/donny.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <h5>Site owner</h5>
         <p>
 Someone has to make sure the site is running properly, and provide technical
 assistance when needed.
         </p>
-        <form class="text-center" action="{{'/login/'|site_url}}" method="post">
+        <form action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="donny"/>
           <input name="password" type="hidden" value="yoyo"/>
-          <button class="btn btn-md btn-primary px-5 full-width" type="submit">{% trans %}Login as a site owner{% endtrans %}</button>
+          <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-md btn-primary" type="submit">{% trans %}Login as a site owner{% endtrans %}</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-</div>
+</section>
 {% endblock %}

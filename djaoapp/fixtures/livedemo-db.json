@@ -129,6 +129,16 @@
   },
   "model": "auth.User", "pk": 1
 },
+{
+    "fields": {
+      "slug": "donny",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 1,
+      "picture": "/assets/img/donny.jpg"
+    },
+    "model": "signup.Contact", "pk": 1
+},
+
 { "fields": {
     "date_joined": "2024-01-01T00:00:00+00:00",
     "email": "steve@localhost.localdomain",
@@ -138,6 +148,15 @@
     "username": "steve"
   },
   "model": "auth.User", "pk": 7
+},
+{
+    "fields": {
+      "slug": "steve",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 7,
+      "picture": "/assets/img/steve.jpg"
+    },
+    "model": "signup.Contact", "pk": 7
 },
 { "fields": {
     "date_joined": "2024-01-01T00:00:00+00:00",
@@ -158,6 +177,15 @@
     "username": "alice"
   },
   "model": "auth.User", "pk": 10
+},
+{
+    "fields": {
+      "slug": "alice",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 10,
+      "picture": "/assets/img/alice.jpg"
+    },
+    "model": "signup.Contact", "pk": 10
 },
 { "fields": {
     "date_joined": "2024-01-01T00:00:00+00:00",
@@ -202,6 +230,15 @@
     "username": "kathryn"
   },
   "model": "auth.User", "pk": 12
+},
+{
+    "fields": {
+      "slug": "kathryn",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 12,
+      "picture": "/assets/img/kathryn.jpg"
+    },
+    "model": "signup.Contact", "pk": 12
 },
 { "fields": {
     "slug":"managed",
@@ -485,6 +522,15 @@
   },
   "model": "auth.User", "pk": 19
 },
+{
+    "fields": {
+      "slug": "abby",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 19,
+      "picture": "/assets/img/abby.jpg"
+    },
+    "model": "signup.Contact", "pk": 19
+},
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 1,
@@ -743,6 +789,15 @@
     "is_forward": true
   },
   "model": "rules.Rule", "pk": 21
+},
+{ "fields": {
+    "app": 1,
+    "rank": 22,
+    "path": "/static/",
+    "rule_op": 0,
+    "is_forward": true
+  },
+  "model": "rules.Rule", "pk": 22
 },
 { "fields": {
     "app": 1,

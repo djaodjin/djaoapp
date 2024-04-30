@@ -1,0 +1,15 @@
+{% if request and request|is_authenticated %}
+<li class="nav-item">
+  <a id="app_home" class="nav-link" href="{{'/app/'|site_url}}">{% trans %}Home{% endtrans %}</a>
+</li>
+{% endif %}
+<li class="nav-item dropdown{% if request and '/docs/' in request.path %} active{% endif %}">
+ <a href="#" class="nav-link dropdown-toggle"
+    data-bs-toggle="dropdown" data-toggle="dropdown"
+    role="button" aria-haspopup="true" aria-expanded="false">{% trans %}Help{% endtrans %} <span class="caret"></span></a>
+  <ul class="dropdown-menu dropdown-menu-end" role="menu">
+    <li role="presentation"><a class="dropdown-item" role="menuitem" tabindex="-1" href="https://www.tspproject.org/pricing/" target="_blank">{% trans %}Learning about TSP{% endtrans %}</a></li>
+    <li role="presentation"><a class="dropdown-item" role="menuitem" tabindex="-1" href="https://www.djaodjin.com/building-saas/how-to-build-esg-saas-product/" target="_blank">{% trans %}Building an ESG product{% endtrans %}</a></li>
+    <li role="presentation"><a class="dropdown-item" role="menuitem" tabindex="-1" href="{{'/contact/'|site_url}}">{% trans %}Contact us{% endtrans %}</a></li>
+  </ul>
+</li>
