@@ -72,46 +72,43 @@
               <p class="text-danger">
                   {% trans invitee='[[requestedProfilePrintableName]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
               </p>
-              <div class="row form-group">
-                <div class="col-sm-2">
-                  <label>{% trans %}To{% endtrans %}</label>
-                </div>
-                <div class="controls col-sm-10">
+              <div class="form-group mb-3">
+                <label class="form-label">
+                  {% trans %}Full name{% endtrans %}
+                </label>
+                <input id="new-request-full-name"
+                       class="form-control w-100"
+                       name="full_name" type="text" max-length="150"
+                       placeholder="John Doe"
+                       ref="full_name"
+                       v-model="unregistered.full_name" />
+              </div>
+              <div class="form-group mb-3">
+                  <label class="form-label">
+                    {% trans %}To{% endtrans %}
+                  </label>
                   <input id="new-request-email"
                          class="form-control w-100"
                          name="email" type="text" max-length="150"
                          placeholder="invitee@example.com"
                          autofocus
                          v-model="unregistered.email" />
-                </div>
-              </div>
-              <div class="row form-group">
-                <div class="col-sm-2">
-                  <label>{% trans %}Full name{% endtrans %}</label>
-                </div>
-                <div class="controls col-sm-10">
-                  <input id="new-request-full-name"
-                         class="form-control w-100"
-                         name="full_name" type="text" max-length="150"
-                         placeholder="John Doe"
-                         v-model="unregistered.full_name" />
-                </div>
               </div>
               <div class="form-group">
-                <div class="controls">
-                  <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                <label class="form-label">
+                  {% trans %}The following invite message will be sent:{% endtrans %}
+                </label>
                   <!-- textareas are very special in the way they handle whitespaces. Please do
                        not indent default text. -->
-                  <textarea class="form-control"
-                            name="message"
-                            maxlength="255" type="text" rows="10">{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
+                <textarea class="form-control"
+                          name="message"
+                          maxlength="255" type="text" rows="10">{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
 I am adding you as a {{role_descr}} to {{organization}}.
 
 Thank you,
 - {{user}}{% endtrans %}
-                  </textarea>
-                </div>
+                </textarea>
               </div>
             </div><!-- add-role-modal -->
             <div class="d-grid gap-2">

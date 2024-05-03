@@ -7,6 +7,7 @@ import logging
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.exceptions import ValidationError
 from multitier.thread_locals import get_current_site
+from rules.mixins import AppMixin
 from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
@@ -78,6 +79,7 @@ class OrganizationProfileView(OrganizationProfileViewBase):
     @property
     def contact(self):
         if not hasattr(self, '_contact'):
+            #pylint:disable=attribute-defined-outside-init
             self._contact = get_user_contact(self.object.attached_user())
         return self._contact
 
@@ -133,8 +135,9 @@ class OrganizationProfileView(OrganizationProfileViewBase):
         return kwargs
 
 
-class RoleImplicitGrantAcceptView(RoleImplicitGrantAcceptViewBase):
+class RoleImplicitGrantAcceptView(AppMixin, RoleImplicitGrantAcceptViewBase):
 
+    implicit_create_on_none = False
     template_name = 'saas/users/roles/accept.html'
 
     def check_email_verified(self, request, user,
@@ -142,6 +145,13 @@ class RoleImplicitGrantAcceptView(RoleImplicitGrantAcceptViewBase):
                              next_url=None):
         return check_email_verified_base(request, user,
             redirect_field_name=redirect_field_name, next_url=next_url) is None
+
+
+    def get_implicit_create_on_none(self):
+        if self.app and self.app.get_implicit_create_on_none():
+            return True
+        return super(RoleImplicitGrantAcceptView,
+            self).get_implicit_create_on_none()
 
 
 class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):

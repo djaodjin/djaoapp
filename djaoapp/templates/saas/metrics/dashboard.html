@@ -92,6 +92,7 @@
           </recent-activity>
           {% endif %}
 
+          {% if urls and urls.api_todos %}
           <!-- Todos -->
           <todo-list inline-template id="todos-container" class="mt-4">
             <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
@@ -104,6 +105,7 @@
               </div>
             </div>
           </todo-list>
+          {% endif %}
         </div>
 
         <div class="col-md-6 col-lg-4">

@@ -57,7 +57,8 @@ class ActivationView(AuthMixin, AppMixin, VerifyCompleteMixin,
 class PasswordResetConfirmView(PasswordResetConfirmMixin,
                                PasswordResetConfirmBaseView):
 
-    form_class = PasswordResetConfirmForm
+    form_class = ActivationForm
+    password_form_class = PasswordResetConfirmForm
 
 
 class RecoverView(AuthMixin, AppMixin, RecoverBaseView):

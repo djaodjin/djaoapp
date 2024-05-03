@@ -1,7 +1,7 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-  {% trans plan=plan.title() %}{{plan}} plan subscribers{% endtrans %}
+  {% trans plan=plan.title %}{{plan}} active subscribers{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
@@ -63,29 +63,31 @@
               {% trans full_name='[[requestedProfilePrintableName]]', site=request|site_printable_name %}{{full_name}} was not found. This is an opportunity to invite this profile to join {{site}}.{% endtrans %}
             </p>
             <div class="form-group mb-3">
-              <label>{% trans %}Profile name{% endtrans %}</label>
+              <label class="form-label">{% trans %}Subscriber name{% endtrans %}</label>
               <input id="new-profile-full_name"
                      class="full_name form-control w-100"
                      name="full_name" type="text"
-                     max-length="150" placeholder="Full name"
-                     v-model="newItem.full_name" />
+                     max-length="150" placeholder="Ex: The Company inc."
+                     v-model="newItem.full_name"
+                     ref="full_name" />
             </div>
             <div class="form-group mb-3">
-              <label>{% trans %}To{% endtrans %}</label>
+              <label class="form-label">{% trans %}To{% endtrans %}</label>
               <input id="new-profile-email" class="email form-control w-100"
                      name="email" type="text"
                      max-length="150" placeholder="invitee@example.com"
-                     autofocus
                      v-model="newItem.email" />
             </div>
             <div class="form-group">
               <div class="controls">
-                <label>{% trans %}The following invite message will be sent:{% endtrans %}</label>
+                <label class="form-label">
+                  {% trans %}The following invite message will be sent:{% endtrans %}
+                </label>
                 <textarea class="form-control"
                           name="message"
-                          maxlength="255" type="text" rows="10">{% trans user=request.user.first_name, site=request|site_printable_name %}Hello,
+                          maxlength="255" type="text" rows="10">{% trans user=request.user.first_name, plan=plan.title, site=request|site_printable_name %}Hello,
 
-I have subscribed you on {{site}}.
+I have subscribed you to {{plan}} on {{site}}.
 
 Thank you,
 - {{user}}{% endtrans %}
