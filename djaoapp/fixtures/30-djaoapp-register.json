@@ -1,4 +1,18 @@
 [
+{
+    "fields": {
+      "date_joined": "2022-01-01T00:00:00+00:00",
+      "email": "xia+18@localhost.localdomain",
+      "first_name": "Xia18",
+      "last_name": "User",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!cpgaCPDc5qgLhcN7Duge9Nn1Vo6v6VTi67ujPgIc",
+      "username": "xia18"
+    },
+    "model": "auth.User", "pk": 30
+},
 { "fields": {
       "slug": "djaoapp-roles-card1",
       "full_name": "RolesCard1",
@@ -21,12 +35,12 @@
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "xia-roles-card1"
     },
-    "model": "auth.User", "pk": 30
+    "model": "auth.User", "pk": 31
 },
 { "fields": {
       "last_signed": "2024-01-01T00:00:00-00:00",
       "agreement": 1,
-      "user": 30
+      "user": 31
     },
     "model": "saas.signature", "pk": 30
 }]
