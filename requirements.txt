@@ -5,7 +5,7 @@
 #
 # (Javascript prerequisites are specified in package.json)
 
-boto3==1.34.74
+boto3==1.33.13                    # last version compatible with Py3.7
 Django==3.2.25
 django-phonenumber-field==7.1.0
 django-recaptcha==3.0.0           # 2.0.6 requires Django<4.0
