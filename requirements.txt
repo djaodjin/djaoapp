@@ -18,7 +18,8 @@ djaodjin-multitier==0.2.1
 djaodjin-rules==0.4.6
 djaodjin-saas==0.20.4
 djaodjin-signup==0.9.5
-docutils==0.15.2  # botocore has a constraint: docutils<0.16
+docutils==0.15.2                  # botocore has a constraint: docutils<0.16
+drf-spectacular==0.27.0           # to display 'themes' notifications pages
 googlemaps==4.10.0
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
@@ -48,7 +49,6 @@ django-extensions==3.2.3          # 3.2.0 required by Django==4.0
 django-storages==1.14.2           # to upload assets to S3
 
 # development
-drf-spectacular==0.27.0
 Faker==3.0.1
 flex==6.14.0
 pygments== 2.15.0

@@ -221,10 +221,10 @@ class Command(BaseCommand):
             for picture_name in os.listdir(profile_pictures_dir):
                 if picture_name.startswith("1"):
                     profile_pictures_males += [
-                        "/media/livedemo/profiles/%s" % picture_name]
+                        "/assets/img/profiles/%s" % picture_name]
                 else:
                     profile_pictures_females += [
-                        "/media/livedemo/profiles/%s" % picture_name]
+                        "/assets/img/profiles/%s" % picture_name]
         queryset = Plan.objects.filter(
             organization=provider, period_amount__gt=0)
         nb_plans = queryset.count()
