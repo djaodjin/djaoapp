@@ -199,8 +199,9 @@
           {% if min_value %} min="{{min_value}}"{% endif %}
           {% if max_value %} max="{{max_value}}"{% endif %}
           {% if step %} step="{{step}}"{% endif %}
-          {% if disabled %} disabled{% endif %}
           {% if autofocus %} autofocus{% endif %}
+          {% if disabled %} disabled{% endif %}
+          {% if required %} required{% endif %}
         />
         <span class="input-group-text">
           <i class="fa fa-eye-slash"></i>
@@ -219,6 +220,7 @@
           {% if step %} step="{{step}}"{% endif %}
           {% if disabled %} disabled{% endif %}
           {% if autofocus %} autofocus{% endif %}
+          {% if required %} required{% endif %}
         />
     {% endif %}
     <div class="form-text help-block invalid-feedback errorlist">
