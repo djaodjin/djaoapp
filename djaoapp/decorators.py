@@ -12,29 +12,16 @@ import jinja2.exceptions
 from extended_templates.thread_locals import (
     enable_instrumentation, disable_instrumentation,
     get_edition_tools_context_data)
-from rules.perms import NoRuleMatch, check_matched
-from rules.utils import get_current_app
-from saas.decorators import (_has_valid_access,
-    fail_authenticated as fail_authenticated_default,
-    fail_direct as fail_direct_default,
-    fail_provider as fail_provider_default,
-    fail_provider_only as fail_provider_only_default,
-    fail_self_provider as fail_self_provider_default)
+from saas.decorators import fail_authenticated as fail_authenticated_default
 from saas.utils import get_role_model
 from signup.helpers import has_invalid_password
 from signup.models import Contact
 
 from .compat import reverse, available_attrs
-from .thread_locals import get_current_broker, is_platformed_site
 from .edition_tools import inject_edition_tools as _inject_edition_tools
 
 # This logger is really only useful for 'rules' in debug mode.
 LOGGER = logging.getLogger('rules')
-
-DEFAULT_PREFIXES = [
-    '/api/accounts', '/api/auth', '/api/agreements', '/api/billing',
-    '/api/metrics', '/api/profile', '/api/themes', '/api/users',
-    '/billing/', '/metrics/', '/profile/', '/users/']
 
 
 def inject_edition_tools(function=None):
@@ -103,117 +90,26 @@ def fail_authenticated(request, verification_key=None):
     page when required, as well as raise a ``PermissionDenied``
     instead when Content-Type is showing we are dealing with an API request.
     """
-    try:
-        app = get_current_app(request)
-        #pylint:disable=unused-variable
-        redirect, matched, session = check_matched(request, app,
-            prefixes=DEFAULT_PREFIXES)
-    except NoRuleMatch:
-        redirect = fail_authenticated_default(request)
-        if redirect:
-            if verification_key:
-                contact = Contact.objects.filter(
-                    Q(email_verification_key=verification_key) |
-                    Q(phone_verification_key=verification_key)).first()
-                if not contact:
-                    # Not a `Contact`, let's try `Role`.
-                    role_model = get_role_model()
-                    try:
-                        role = role_model.objects.filter(
-                            Q(grant_key=verification_key)
-                            | Q(request_key=verification_key)).get()
-                        contact, _ = Contact.objects.prepare_email_verification(
-                            role.user.email, user=role.user)
-                        verification_key = contact.email_verification_key
-                    except role_model.DoesNotExist:
-                        pass
-                if contact and has_invalid_password(contact.user):
-                    redirect = request.build_absolute_uri(
-                        reverse('registration_activate',
-                            args=(verification_key,)))
-    return redirect
-
-
-def fail_direct(request, profile=None, roledescription=None):
-    try:
-        app = get_current_app(request)
-        #pylint:disable=unused-variable
-        redirect, matched, session = check_matched(request, app,
-            prefixes=DEFAULT_PREFIXES)
-    except NoRuleMatch:
-        redirect = fail_direct_default(request, profile=profile,
-                roledescription=roledescription)
-    return redirect
-
-
-def fail_provider(request, profile=None, roledescription=None):
-    """
-    Same decorator as saas.requires_provider with the added permissions
-    that managers of the site database itself are also able to access
-    profiles of registered yet unsubscribed ``Organization``.
-    """
-    if is_platformed_site():
-        # We have a separate database so it is OK for a manager
-        # of the site to access registered ``Organization`` which
-        # are not subscribed yet.
-        if _has_valid_access(request, [get_current_broker()]):
-            return False
-    try:
-        app = get_current_app(request)
-        #pylint:disable=unused-variable
-        redirect, matched, session = check_matched(request, app,
-            prefixes=DEFAULT_PREFIXES)
-    except NoRuleMatch:
-        # By default, we are looking for provider.
-        redirect = fail_provider_default(request,
-            profile=profile, roledescription=roledescription)
-    return redirect
-
-
-
-def fail_provider_only(request, profile=None, roledescription=None):
-    """
-    Same decorator as saas.requires_provider with the added permissions
-    that managers of the site database itself are also able to access
-    profiles of registered yet unsubscribed ``Organization``.
-    """
-    if is_platformed_site():
-        # We have a separate database so it is OK for a manager
-        # of the site to access registered ``Organization`` which
-        # are not subscribed yet.
-        if _has_valid_access(request, [get_current_broker()]):
-            return False
-    try:
-        app = get_current_app(request)
-        #pylint:disable=unused-variable
-        redirect, matched, session = check_matched(request, app,
-            prefixes=DEFAULT_PREFIXES)
-    except NoRuleMatch:
-        # By default, we are looking for provider.
-        redirect = fail_provider_only_default(request,
-            profile=profile, roledescription=roledescription)
-    return redirect
-
-
-def fail_self_provider(request, user=None, roledescription=None):
-    """
-    Same decorator as saas.requires_self_provider with the added permissions
-    that managers of the site database itself are also able to access
-    profiles of registered yet unsubscribed ``Organization``.
-    """
-    if is_platformed_site():
-        # We have a separate database so it is OK for a manager
-        # of the site to access registered ``Organization`` which
-        # are not subscribed yet.
-        if _has_valid_access(request, [get_current_broker()]):
-            return False
-    try:
-        app = get_current_app(request)
-        #pylint:disable=unused-variable
-        redirect, matched, session = check_matched(request, app,
-            prefixes=DEFAULT_PREFIXES)
-    except NoRuleMatch:
-        # By default, we are looking for provider.
-        redirect = fail_self_provider_default(request,
-            user=user, roledescription=roledescription)
+    redirect = fail_authenticated_default(request)
+    if redirect:
+        if verification_key:
+            contact = Contact.objects.filter(
+                Q(email_verification_key=verification_key) |
+                Q(phone_verification_key=verification_key)).first()
+            if not contact:
+                # Not a `Contact`, let's try `Role`.
+                role_model = get_role_model()
+                try:
+                    role = role_model.objects.filter(
+                        Q(grant_key=verification_key)
+                        | Q(request_key=verification_key)).get()
+                    contact, _ = Contact.objects.prepare_email_verification(
+                        role.user.email, user=role.user)
+                    verification_key = contact.email_verification_key
+                except role_model.DoesNotExist:
+                    pass
+            if contact and has_invalid_password(contact.user):
+                redirect = request.build_absolute_uri(
+                    reverse('registration_activate',
+                        args=(verification_key,)))
     return redirect

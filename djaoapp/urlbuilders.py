@@ -2,12 +2,12 @@
 # see LICENSE
 
 from rules.urldecorators import re_path
-from saas.decorators import fail_agreement
+from saas.decorators import (fail_agreement, fail_direct, fail_provider,
+    fail_provider_only, fail_self_provider)
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.decorators import fail_active
 
 from .decorators import (fail_active_roles, fail_authenticated,
-    fail_direct, fail_provider, fail_provider_only, fail_self_provider,
     inject_edition_tools)
 
 
