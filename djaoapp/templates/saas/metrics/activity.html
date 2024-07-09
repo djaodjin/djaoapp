@@ -6,11 +6,8 @@
 
 {% block saas_content %}
 <div class="row">
-<div class="col-sm-6">
-  <div>
-    <h1 class="text-center">{% trans %}Active within the last 7 days{% endtrans %}</h1>
-  </div>
-  <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
+  <div class="col-md-6">
+    <h2 class="text-center">{% trans %}Active within the last 7 days{% endtrans %}</h2>
     <engaged-subscribers inline-template id="engaged-subscribers">
       <div>
         <div>
@@ -26,7 +23,7 @@
           </div>
         </div>
         <!-- Start Data Tables -->
-        <table class="table table-striped mb-4" infinite-wrapper>
+        <table class="table table-striped mb-4">
           <thead>
             <tr>
               <th class="text-nowrap">
@@ -71,24 +68,19 @@
           <!-- Show Data Entries -->
           <tbody id="has-items" v-show="itemsLoaded && items.results.length > 0" v-cloak>
             <tr v-for="(entry, index) in items.results">
-              <td class="text-nowrap">[[ ($globals.humanizeDate(entry.last_login)) ]]</td>
-              <td>[[entry.first_name]] [[entry.last_name]]</td>
-              <td class="text-nowrap">[[entry.organization]]</td>
+              <td class="text-nowrap">[[ ($globals.humanizeDate(entry.user.last_login)) ]]</td>
+              <td>[[entry.user.printable_name]]</td>
+              <td class="text-nowrap">[[entry.profile.printable_name]]</td>
             </tr>
           </tbody>
         </table>
-
         {% include "_pagination.html" %}
       </div>
     </engaged-subscribers>
   </div>
-</div>
 
-<div class="col-sm-6">
-  <div>
-    <h1 class="text-center">{% trans expires_at= expires_at %}Inactive since {{expires_at}}{% endtrans %}</h1>
-  </div>
-  <div id="panel-icons" class="panel-icons panel-icons-no-benchmark">
+  <div class="col-md-6">
+    <h2 class="text-center">{% trans expires_at=expires_at|humanize_short_date %}Inactive since {{expires_at}}{% endtrans %}</h2>
     <unengaged-subscribers inline-template id="unengaged-subscribers">
       <div>
         <div>
@@ -156,11 +148,9 @@
             </tr>
           </tbody>
         </table>
-
         {% include "_pagination.html" %}
       </div>
     </unengaged-subscribers>
   </div>
-</div>
 </div>
 {% endblock %}

@@ -214,6 +214,7 @@ class Command(BaseCommand):
         if not fake:
             fake = Faker()
         user_model = get_user_model()
+        at_time = datetime_or_now()
         # Load list of profile pcitures
         profile_pictures_males = []
         profile_pictures_females = []
@@ -264,11 +265,16 @@ class Command(BaseCommand):
                             region=fake.state_abbr(),
                             country=fake.country_code(),
                             picture=picture)
+                        last_login = datetime_or_now(
+                            fake.date_time_between_dates(
+                              datetime_start=at_time - datetime.timedelta(365),
+                              datetime_end=at_time))
                         user, created = user_model.objects.get_or_create(
                             username=slug,
                             email=email,
                             first_name=first_name,
-                            last_name=last_name)
+                            last_name=last_name,
+                            last_login=last_login)
                         customer.add_manager(user, at_time=end_period)
                     #pylint: disable=catching-non-exception
                     except IntegrityError:

@@ -733,7 +733,7 @@ RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_PREFIXES': [
-        '/api/accounts', '/api/auth', '/api/agreements', '/api/billing',
+        '/api/accounts', '/api/agreements', '/api/billing',
         '/api/metrics', '/api/profile', '/api/themes', '/api/users',
         '/billing/', '/metrics/', '/profile/', '/users/'],
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
