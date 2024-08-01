@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 import logging
 
 from deployutils.apps.django.compat import is_authenticated
-from django.contrib.auth import get_backends
-from django.db import transaction, IntegrityError
+from django.contrib.auth import get_backends, get_user_model
+from django.db import router, transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from rest_framework.exceptions import ValidationError
 from saas import settings as saas_settings
@@ -178,7 +178,8 @@ class RegisterMixin(object):
             registration = self.app.PERSONAL_REGISTRATION
             organization_selector = 'full_name'
         try:
-            with transaction.atomic():
+            with transaction.atomic(
+                    using=router.db_for_write(get_user_model())):
                 # Create a ``User``
                 user = super(RegisterMixin, self).create_user(**cleaned_data)
                 if user:
