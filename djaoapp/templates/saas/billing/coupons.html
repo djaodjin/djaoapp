@@ -11,17 +11,23 @@
     <form @submit.prevent="save">
       <div class="row">
         <!-- Create a New Coupon -->
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="me-2 mb-3 w-100">
             <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount Code{% endtrans %}" v-model="newCoupon.code">
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="me-2 mb-3 w-100">
-            <input type="text" class="form-control form-control-md w-100" placeholder="{% trans %}Discount %{% endtrans %}" v-model="newCoupon.discount_value">
+        <div class="col-md-4">
+          <div class="input-group me-2 mb-3 w-100">
+            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount amount{% endtrans %}" v-model="newCoupon.discount_value">
+            <select class="form-control form-select input-group-suffix"
+                    v-model="newCoupon.discount_type">
+              <option value="percentage">%</option>
+              <option value="currency">Currency (ex: usd)</option>
+              <option value="period">Period (ex: month)</option>
+            </select>
           </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <button type="submit" class="btn btn-primary btn-md w-100" data-trip data-trip-index="2" data-trip-content="<p>{% trans %}Add a coupon by entering a code, percentage and click 'Create Coupon'.{% endtrans %}</p>" data-trip-position="s">
             {% trans %}Create Coupon{% endtrans %}
           </button>
@@ -76,23 +82,10 @@
           </div>
           <div class="list-group list-group-flush">
             <div class="list-group-item">
-              <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[(entry.discount_value / 100).toFixed(0)]]%
+              <span class="text-muted">{% trans %}Discount{% endtrans %}:</span> [[entry.discount_type == 'period' ? ('' + entry.discount_value + ' period(s)') : (entry.discount_type == 'currency' ? $globals.humanizeNumber(entry.discount_value, 'usd', 0.01) : ('' + (entry.discount_value / 100).toFixed(0) + '%'))]]
             </div>
             <div class="list-group-item">
               <span class="text-muted">{% trans %}Expires At{% endtrans %}:</span> {% include "_entry_ends_at_field.html" %}
-            </div>
-            <div class="list-group-item">
-              <span class="text-muted" v-show="!entry._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
-              <span @click="editAttempts(entry)"
-                    v-show="!entry._editAttempts">
-                [[entry.nb_attempts === null ? '{% trans %}No limit{% endtrans %}' : entry.nb_attempts]]
-              </span>
-              <input type="text" class="form-control"
-                     @blur="saveAttempts(entry)"
-                     @keyup.13="saveAttempts(entry)"
-                     v-model="entry.nb_attempts"
-                     :ref="'editAttempts_' + entry.code"
-                     v-show="entry._editAttempts">
             </div>
             <div class="list-group-item">
               <span class="text-muted" v-show="!entry._editPlan">{% trans %}Plan{% endtrans %}:</span>
@@ -109,6 +102,19 @@
                 <option value="">{% trans %}No Plan{% endtrans %}</option>
                 <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
               </select>
+            </div>
+            <div class="list-group-item">
+              <span class="text-muted" v-show="!entry._editAttempts">{% trans %}Use limit{% endtrans %}:</span>
+              <span @click="editAttempts(entry)"
+                    v-show="!entry._editAttempts">
+                [[entry.nb_attempts === null ? '{% trans %}No limit{% endtrans %}' : entry.nb_attempts]]
+              </span>
+              <input type="text" class="form-control"
+                     @blur="saveAttempts(entry)"
+                     @keyup.13="saveAttempts(entry)"
+                     v-model="entry.nb_attempts"
+                     :ref="'editAttempts_' + entry.code"
+                     v-show="entry._editAttempts">
             </div>
           </div>
           <div class="card-body">
