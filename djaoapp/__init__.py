@@ -2,4 +2,4 @@
 # see LICENSE
 from __future__ import unicode_literals
 
-__version__ = '2024-03-15.2'
+__version__ = '2024-03-15.3'
