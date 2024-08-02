@@ -1896,6 +1896,17 @@
     },
     "model": "saas.subscription", "pk": 29
 },
+{
+    "fields": {
+      "slug": "activate-no-data",
+      "created_at": "2024-01-01T00:00:00-00:00",
+      "email": "xia+14@localhost.localdomain",
+      "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f80",
+      "email_code": 21945
+    },
+    "model": "signup.Contact", "pk": 27
+},
+
 
 {
     "fields": {
