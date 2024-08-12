@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{% block subject %}[{{broker.slug}}] Syntax error in email notification template{% endblock %}</title>
+</head>
+<body>
+{% if errors %}
+{% for error in errors %}
+{{error}}
+
+{% endfor %}
+{% endif %}
+</body>
+</html>

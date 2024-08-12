@@ -166,16 +166,21 @@ Variable for database connection
 +--------------------+------------+--------------------------------------------+
 
 
-Variables to POST notifications on an Webhook URL
+Variables to manage notifications
 
-+-------------------------+------------+---------------------------------------+
-|Name                     | Default    | Description                           |
-+=========================+============+=======================================+
-|NOTIFICATION_WEBHOOK_URL |""          | A URL, or callable function returning |
-|                         |            | an URL, to which a notification event |
-|                         |            | will be posted.                       |
-|                         |            | ex: http://localhost:8010/postevent   |
-+-------------------------+------------+---------------------------------------+
++---------------------------+------------+-------------------------------------+
+|Name                       | Default    | Description                         |
++===========================+============+=====================================+
+|NOTIFICATION_WEBHOOK_URL   |""          | A URL, or callable function         |
+|                           |            | returning an URL, to which a        |
+|                           |            | notification event will be posted.  |
+|                           |            | ex: http://localhost:8010/postevent |
++---------------------------+------------+-------------------------------------+
+|NOTIFICATION_EMAIL_DISABLED|False       | A boolean, or callable function that|
+|                           |            | returns a boolean. When ``True``,   |
+|                           |            | e-mail notifications are disabled   |
+|                           |            | site-wide.                          |
++---------------------------+------------+-------------------------------------+
 
 
 Variables to send notification e-mails
@@ -183,9 +188,6 @@ Variables to send notification e-mails
 +--------------------+------------+--------------------------------------------+
 |Name                | Default    | Description                                |
 +====================+============+============================================+
-|SEND_EMAIL          |True        | Disable notification e-mails altogether    |
-|                    |            | when ``False``                             |
-+--------------------+------------+--------------------------------------------+
 |EMAIL_BACKEND       |            | Django e-mail backend to use               |
 +--------------------+------------+--------------------------------------------+
 |EMAIL_HOST          |"localhost" | Hostname where the SMTP server is located  |

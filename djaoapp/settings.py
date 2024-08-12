@@ -39,8 +39,6 @@ RULES_ENC_KEY_OVERRIDE = None
 RULES_ENTRY_POINT_OVERRIDE = None
 REQUESTS_TIMEOUT = 120
 
-SEND_EMAIL = True
-
 #pylint: disable=undefined-variable
 STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
@@ -73,6 +71,11 @@ NOTIFICATION_BACKENDS = (
 #: A URL, or callable function returning an URL, to which a notification event
 #: will be posted.
 NOTIFICATION_WEBHOOK_URL = ""
+
+#: Sometimes it is simpler to disable e-mail notifications through a settings
+#: boolean, than removing the `NotificationEmailBackend`
+#: from settings.NOTIFICATION_BACKENDS`.
+NOTIFICATION_EMAIL_DISABLED = False
 
 
 update_settings(sys.modules[__name__],

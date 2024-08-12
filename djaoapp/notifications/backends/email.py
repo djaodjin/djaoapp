@@ -6,10 +6,12 @@ import json, logging, smtplib
 
 from deployutils.crypt import JSONEncoder
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.mail import get_connection as get_connection_base
-from django.template import TemplateDoesNotExist
+from django.template import TemplateSyntaxError
 from django.utils import translation
 from extended_templates.backends import get_email_backend
+from extended_templates.backends.eml import EmlTemplateError
 from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import get_broker
@@ -167,7 +169,8 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
             'processor_setup_error',
             'user_registered',
             'user_activated',
-            'period_sales_report_created'):
+            'period_sales_report_created',
+            'notification_error'):
         # We are hanlding `recipients` a bit differently here because contact
         # requests are usually meant to be sent to a ticketing system.
         recipients = [broker.email]
@@ -175,8 +178,22 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
                 'processor_setup_error',
                 'user_registered',
                 'user_activated',
-                'period_sales_report_created',):
+                'period_sales_report_created',
+                'notification_error'):
             bcc = _notified_managers(broker, notification_slug)
+
+    # When we are dealing with personal profiles (or if the e-mail
+    # address of the profile is the same as a the e-mail of a user),
+    # We want to be mindful of a user preferences with regards to
+    # enabled/disabled e-mail notifications.
+    matching_users = get_user_model().objects.filter(email__in=recipients)
+    recipients = [email for email in recipients
+        if not email in matching_users.values_list('email', flat=True)]
+    if signup_settings.NOTIFICATIONS_OPT_OUT:
+        filtered = matching_users.exclude(notifications__slug=notification_slug)
+    else:
+        filtered = matching_users.filter(notifications__slug=notification_slug)
+    recipients += [notified.email for notified in filtered if notified.email]
 
     return recipients, bcc, reply_to
 
@@ -209,8 +226,11 @@ class NotificationEmailBackend(object):
             recipients, bcc, reply_to = notified_recipients(
                 event_name, context)
 
-        self.send_mail(template, context, recipients,
-            bcc=bcc, reply_to=reply_to, site=site)
+        if not bool(settings.NOTIFICATION_EMAIL_DISABLED):
+            # If we have explicitely disabled e-mail notification,
+            # there is nothing to do.
+            self.send_mail(template, context, recipients,
+                bcc=bcc, reply_to=reply_to, site=site)
 
 
     def send_mail(self, template, context, recipients, bcc=None, reply_to=None,
@@ -234,50 +254,72 @@ class NotificationEmailBackend(object):
         if contact:
             lang_code = contact.lang
 
-        if settings.SEND_EMAIL:
-            try:
-                with translation.override(lang_code):
-                    get_email_backend(
-                        connection=site.get_email_connection()).send(
-                        from_email=site.get_from_email(),
-                        recipients=recipients,
-                        reply_to=reply_to,
-                        bcc=bcc,
-                        template=template,
-                        context=context)
-            except smtplib.SMTPException as err:
-                LOGGER.warning("[signal] problem sending email from %s"\
-                    " on connection for %s. %s",
-                    site.get_from_email(), site, err)
-                context.update({'errors': [_("There was an error sending"\
-        " the following email to %(recipients)s. This is most likely due to"\
-        " a misconfiguration of the e-mail notifications whitelabel settings"\
-        " for your site %(site)s.") % {
-            'recipients': recipients, 'site': site.as_absolute_uri()}]})
-                #pylint:disable=unused-variable
-                notified_on_errors, unused1, unused2 = notified_recipients(
-                    '', {
-                    #pylint:disable=protected-access
-                    # We are emailing the owner of the site here so we want
-                    # to access the information at the hosting provider.
-                    'broker': organization_model.objects.using(
-                        site._state.db).get(pk=site.account_id)})
-                if notified_on_errors:
-                    get_email_backend(
-                        connection=get_connection_base(fail_silently=True)).send(
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipients=notified_on_errors,
-                        template=template,
-                        context=context)
-            except TemplateDoesNotExist:
-                # If there is a problem with the template, notify the user.
-                raise
-            except Exception as err:
-                # Something went horribly wrong, like the email password was not
-                # decrypted correctly. We want to notifiy the operations team
-                # but the end user shouldn't see a 500 error as a result
-                # of notifications sent in the HTTP request pipeline.
-                LOGGER.exception(err)
+        try:
+            with translation.override(lang_code):
+                get_email_backend(
+                    connection=site.get_email_connection()).send(
+                    from_email=site.get_from_email(),
+                    recipients=recipients,
+                    reply_to=reply_to,
+                    bcc=bcc,
+                    template=template,
+                    context=context)
+        except smtplib.SMTPException as err:
+            LOGGER.warning("[signal] problem sending email from %s"\
+                " on connection for %s. %s",
+                site.get_from_email(), site, err)
+            context.update({'errors': [_("There was an error sending"\
+    " the following email to %(recipients)s. This is most likely due to"\
+    " a misconfiguration of the e-mail notifications whitelabel settings"\
+    " for your site %(site)s.") % {
+        'recipients': recipients, 'site': site.as_absolute_uri()}]})
+            #pylint:disable=unused-variable
+            notified_on_errors, unused1, unused2 = notified_recipients(
+                'notification_error', {
+                #pylint:disable=protected-access
+                # We are emailing the owner of the site here so we want
+                # to access the information at the hosting provider.
+                'broker': organization_model.objects.using(
+                    site._state.db).get(pk=site.account_id)})
+            if notified_on_errors:
+                get_email_backend(
+                    connection=get_connection_base(fail_silently=True)).send(
+                    recipients=notified_on_errors,
+                    template=template,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    context=context)
+        except EmlTemplateError as err:
+            LOGGER.warning(str(err))
+        except TemplateSyntaxError as err:
+            # If there is a problem with the template, notify the user.
+            context.update({'errors': [_("There was an error sending"\
+    " an email notification to %(recipients)s. This is due to a template"\
+    " syntax error in %(template_name)s:") % {
+        'recipients': recipients, 'template_name': template},
+                _("%(err_message)s") % {'err_message': str(err)}]})
+            #pylint:disable=unused-variable
+            notified_on_errors, unused1, unused2 = notified_recipients(
+                'notification_error', {
+                #pylint:disable=protected-access
+                # We are emailing the owner of the site here so we want
+                # to access the information at the hosting provider.
+                'broker': organization_model.objects.using(
+                    site._state.db).get(pk=site.account_id)})
+            LOGGER.warning("[%s] notified %s of syntax error"\
+                " in email notification template %s: %s",
+                site, notified_on_errors, template, err)
+            if notified_on_errors:
+                get_email_backend(
+                    connection=get_connection_base(fail_silently=True)).send(
+                    notified_on_errors, 'notification/syntax_error.eml',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    context=context)
+        except Exception as err:
+            # Something went horribly wrong, like the email password was not
+            # decrypted correctly. We want to notifiy the operations team
+            # but the end user shouldn't see a 500 error as a result
+            # of notifications sent in the HTTP request pipeline.
+            LOGGER.exception(err)
 
 
 class EmailVerificationBackend(NotificationEmailBackend):
