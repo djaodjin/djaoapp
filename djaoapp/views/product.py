@@ -220,7 +220,7 @@ class AppPageView(ProxyPageView):
 
     def get_template_names(self):
         candidates = []
-        profile = self.kwargs.get('organization')
+        profile = self.kwargs.get(self.organization_url_kwarg)
         original_candidates = super(AppPageView, self).get_template_names()
         if profile:
             for candidate in original_candidates:
@@ -234,7 +234,7 @@ class AppPageView(ProxyPageView):
 
         if not fail_direct(self.request, profile=get_broker()):
             # XXX testing exception catcher
-            if self.kwargs.get('organization') == '500':
+            if self.kwargs.get(self.organization_url_kwarg) == '500':
                 raise ValueError("Testing 500 exception catcher")
             candidates += ['app_proxy_help.html']
 
@@ -248,7 +248,6 @@ class AppPageView(ProxyPageView):
         broker = get_current_broker()
         context.update({'provider': broker})
         return context
-
 
 
 class AppPageRedirectView(ProxyPageMixin, DjaoAppPageRedirectView):

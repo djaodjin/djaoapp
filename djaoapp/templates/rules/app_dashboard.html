@@ -300,9 +300,66 @@
                 </dd>
               </dl>
             </div>
+
+            <!-- Triggering 500 errors -->
+            {% if FEATURES_DEBUG %}
+            <hr />
+            <div>
+              <form method="post" action="/api">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <input type="hidden" name="username" value="{{request.user.username}}">
+                <button id="error500" class="btn btn-outline-primary">{% trans %}Trigger 500 Error{% endtrans %}</button>
+              </form>
+            </div>
+            {% endif %}
           </div>
-        </div><!-- /testing tokens -->
+        </div><!-- /testing -->
       </div>
     </rule-list><!-- /rule-list-container -->
   </div>
+{% endblock %}
+
+
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+function getCSRFToken() {
+            var vm = this;
+            // Look first for an input node in the HTML page, i.e.
+            // <input type="hidden" name="csrfmiddlewaretoken"
+            //     value="{{csrf_token}}">
+            var crsfNode = $("[name='csrfmiddlewaretoken']");
+            if( crsfNode ) {
+                return crsfNode[0].value;
+            }
+            // Then look for a CSRF token in the meta tags, i.e.
+            // <meta name="csrf-token" content="{{csrf_token}}">
+            var metas = document.getElementsByTagName('meta');
+            for( var i = 0; i < metas.length; i++) {
+                if (metas[i].getAttribute("name") == "csrf-token") {
+                    return metas[i].getAttribute("content");
+                }
+            }
+            return "";
+}
+
+jQuery(document).ready(function($) {
+    $("#error500").click(function (evt) {
+        evt.preventDefault();
+        jQuery.ajax({
+          method: 'POST',
+          url: '/api',
+          beforeSend: function(xhr, settings) {
+              if( !(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) ) {
+                var csrfToken = getCSRFToken();
+                if( csrfToken ) {
+                    xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                }
+              }
+          },
+          contentType: 'application/json',
+          data: JSON.stringify({username: "{{request.user.username}}"}),
+        });
+    });
+});
+</script>
 {% endblock %}

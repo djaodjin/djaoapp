@@ -54,6 +54,10 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+    def post(self, request, *args, **kwargs):
+        raise ValueError("Testing 500 exception catcher")
+
+
 def list_todos(request, provider=None):
     #pylint:disable=unused-argument
     return []
