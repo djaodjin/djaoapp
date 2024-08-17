@@ -27,8 +27,7 @@
       "slug": "xia120",
       "created_at": "2024-01-01T00:00:00+00:00",
       "user": 120,
-      "email": "xia+120@localhost.localdomain",
-      "picture": "/assets/img/alice.jpg"
+      "email": "xia+120@localhost.localdomain"
     },
     "model": "signup.Contact", "pk": 120
 },
