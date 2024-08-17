@@ -248,12 +248,12 @@
 {
     "fields": {
         "app": 3,
-        "rank": 22,
+        "rank": 23,
         "path": "/",
         "rule_op": 0,
         "is_forward": false
     },
-    "model": "rules.Rule", "pk": 22
+    "model": "rules.Rule", "pk": 23
 },
 {
     "fields": {

@@ -741,7 +741,7 @@
     "app": 1,
     "rank": 16,
     "path": "/app/{profile}/improve/",
-    "rule_op": 1,
+    "rule_op": 4,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 16
@@ -750,7 +750,7 @@
     "app": 1,
     "rank": 17,
     "path": "/app/{profile}/assess/",
-    "rule_op": 1,
+    "rule_op": 4,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 17
@@ -759,7 +759,7 @@
     "app": 1,
     "rank": 18,
     "path": "/app/{profile}/reporting/",
-    "rule_op": 1,
+    "rule_op": 16,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 18
@@ -768,7 +768,7 @@
     "app": 1,
     "rank": 19,
     "path": "/app/{profile}/",
-    "rule_op": 3,
+    "rule_op": 6,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 19

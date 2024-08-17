@@ -8,19 +8,20 @@
 <coupon-list inline-template id="coupon-list-container">
   <div class="container" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
 
-    <form @submit.prevent="save">
+    <form id="couponCreate" method="post" @submit.prevent="save">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <div class="row">
         <!-- Create a New Coupon -->
         <div class="col-md-4">
           <div class="me-2 mb-3 w-100">
-            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount Code{% endtrans %}" v-model="newCoupon.code">
+            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount Code{% endtrans %}" name="code" v-model="newCoupon.code">
           </div>
         </div>
         <div class="col-md-4">
           <div class="input-group me-2 mb-3 w-100">
-            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount amount{% endtrans %}" v-model="newCoupon.discount_value">
+            <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount amount{% endtrans %}" name="discount_value" v-model="newCoupon.discount_value">
             <select class="form-control form-select input-group-suffix"
-                    v-model="newCoupon.discount_type">
+                    name="discount_type" v-model="newCoupon.discount_type">
               <option value="percentage">%</option>
               <option value="currency">Currency (ex: usd)</option>
               <option value="period">Period (ex: month)</option>
