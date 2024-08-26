@@ -515,8 +515,7 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1,
-      "picture": "/assets/img/amelie.jpg"
+      "is_active": 1
     },
     "model": "saas.Organization", "pk": 8
 },
@@ -524,8 +523,7 @@
     "fields": {
       "slug": "asmith",
       "created_at": "2024-01-01T00:00:00+00:00",
-      "user": 7,
-      "picture": "/assets/img/amelie.jpg"
+      "user": 7
     },
     "model": "signup.Contact", "pk": 7
 },
