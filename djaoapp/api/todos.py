@@ -47,15 +47,11 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         .. code-block:: json
 
             {
-              "version": "2024-03-15"
+              "version": "2024-03-15.3"
             }
         """
         serializer = VersionSerializer({'version': __version__})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-    def post(self, request, *args, **kwargs):
-        raise ValueError("Testing 500 exception catcher")
 
 
 def list_todos(request, provider=None):

@@ -335,6 +335,8 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                     endpoint[self.METHOD_IDX], endpoint[self.PATH_IDX],
                     endpoint[self.CALLBACK_IDX],
                     api_endpoint[self.CALLBACK_IDX])
+                # XXX Django4.2 leads to a assertion error here.
+                #     Django3.2 works fine.
                 assert endpoint[self.CALLBACK_IDX].__name__.startswith(
                     'DjaoApp')
                 found = True
@@ -597,8 +599,8 @@ class AutoSchema(BaseAutoSchema):
                             continue
                         if example_path_part != path_part:
                             warnings.warn(
-                                '%s does not match pattern %s ("%s"!="%s")' % (
-                                example['path'], path,
+                            '%s %s does not match pattern %s ("%s"!="%s")' % (
+                                method, example['path'], path,
                                 example_path_part, path_part))
                             break
                 if example_key in example:

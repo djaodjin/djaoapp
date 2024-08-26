@@ -98,10 +98,10 @@ class APIDocView(TemplateView):
             'tags': expanded_tags,
 #            'api_base_url': api_base_url,
             'api_base_url': "{{api_base_url}}",
-         'api_jwt_user': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_subscriber': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_provider': "<a href=\"#createJWTLogin\">JWT auth token</a>",
-         'api_jwt_broker': "<a href=\"#createJWTLogin\">JWT auth token</a>",
+         'api_jwt_user': "<a href=\"#auth_create\">JWT auth token</a>",
+         'api_jwt_subscriber': "<a href=\"#auth_create\">JWT auth token</a>",
+         'api_jwt_provider': "<a href=\"#auth_create\">JWT auth token</a>",
+         'api_jwt_broker': "<a href=\"#auth_create\">JWT auth token</a>",
         })
         return context
 

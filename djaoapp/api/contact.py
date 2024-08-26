@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -15,7 +15,7 @@ from rest_framework.settings import api_settings
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from saas.api.serializers import ValidationErrorSerializer
+from saas.api.serializers import ValidationDetailSerializer
 from saas.docs import extend_schema, OpenApiResponse
 from saas.mixins import ProviderMixin
 from saas.models import Organization
@@ -69,7 +69,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
     serializer_class = ContactUsSerializer
 
     @extend_schema(responses={
-        200: OpenApiResponse(ValidationErrorSerializer)})
+        200: OpenApiResponse(ValidationDetailSerializer)})
     def post(self, request, *args, **kwargs):
         #pylint:disable=too-many-locals,unused-argument
         serializer = self.get_serializer(data=request.data)
