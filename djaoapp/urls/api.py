@@ -1,11 +1,12 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 from rules.urldecorators import include
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
-from signup.settings import USERNAME_PAT
+from signup.settings import USERNAME_PAT, EMAIL_VERIFICATION_PAT
 
-from ..api.auth import DjaoAppJWTRegister, CredentialsAPIView
+from ..api.auth import (CredentialsAPIView, DjaoAppJWTActivate,
+    DjaoAppJWTRegister)
 from ..api.contact import (ContactUsAPIView, PlacesSuggestionsAPIView,
     PlacesDetailAPIView)
 from ..api.custom_themes import DjaoAppThemePackageListAPIView
@@ -105,6 +106,9 @@ urlpatterns = [
     # Furthermore we restrict verification and refresh of JWT
     # to the request.user itself.
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
+    url_prefixed(r'^api/auth/activate/(?P<verification_key>%s)$'
+        % EMAIL_VERIFICATION_PAT,
+        DjaoAppJWTActivate.as_view(), name='api_activate'),
     url_prefixed(r'^api/auth/register',
         DjaoAppJWTRegister.as_view(), name='api_register'),
     url_prefixed(r'^api/', include('signup.urls.api.auth')),
