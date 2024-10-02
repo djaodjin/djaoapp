@@ -1,4 +1,4 @@
-# Copyright (c) 2018, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -30,8 +30,11 @@ def save_coverage():
 if os.getenv('DJANGO_COVERAGE'):
     import atexit, sys
     import coverage
-    cov = coverage.coverage(data_file=os.path.join(os.getenv('DJANGO_COVERAGE'),
-        ".coverage.%d" % os.getpid()))
+    data_file=os.path.join(os.getenv('DJANGO_COVERAGE'),
+        ".coverage.%d" % os.getpid())
+    cov = coverage.coverage(data_file=data_file)
+    sys.stderr.write("start recording coverage in %s\n" % str(data_file))
+    cov.set_option("run:relative_files", True)
     cov.start()
     atexit.register(save_coverage)
     try:

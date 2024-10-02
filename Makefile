@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 -include $(buildTop)/share/dws/prefix.mk
@@ -97,15 +97,18 @@ generateschema: schema.yml
 # site and thus need the rules.App table.
 initdb: install-default-themes initdb-djaoapp initdb-cowork
 	cd $(srcDir) && $(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
-        djaoapp/fixtures/default-db.json \
-        djaoapp/fixtures/30-djaoapp-register.json \
-        djaoapp/fixtures/50-visit-card2.json \
+        djaoapp/fixtures/livedemo-db.json \
+        djaoapp/fixtures/20-broker-subscriptions.json \
+        djaoapp/fixtures/40-provider-subscriptions.json \
+        djaoapp/fixtures/50-saas-profiles.json \
+        djaoapp/fixtures/55-saas-roles.json \
+        djaoapp/fixtures/60-djaoapp-register.json \
         djaoapp/fixtures/100-balance-due.json \
-        djaoapp/fixtures/110-balance-checkout.json \
         djaoapp/fixtures/120-subscriptions.json \
         djaoapp/fixtures/130-subscriptions.json \
         djaoapp/fixtures/150-subscriptions.json \
-        djaoapp/fixtures/djaoapp-signup-card1.json
+        djaoapp/fixtures/160-subscriptions.json \
+        djaoapp/fixtures/170-auth.json
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
 
@@ -345,7 +348,7 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 				$(DESTDIR)$(SYSCONFDIR)/logrotate.d/$(APP_NAME) \
 				$(DESTDIR)$(SYSCONFDIR)/monit.d/$(APP_NAME) \
 				$(DESTDIR)$(SYSCONFDIR)/systemd/system/$(APP_NAME).service \
-				$(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf
+				$(DESTDIR)$(libDir)/tmpfiles.d/$(APP_NAME).conf
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/log/gunicorn
 	[ -d $(DESTDIR)$(LOCALSTATEDIR)/run ] || $(installDirs) $(DESTDIR)$(LOCALSTATEDIR)/run
 
@@ -407,7 +410,7 @@ $(DESTDIR)$(SYSCONFDIR)/sysconfig/%: $(srcDir)/etc/sysconfig.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || install -p -m 644 $< $@
 
-$(DESTDIR)$(SYSCONFDIR)/usr/lib/tmpfiles.d/$(APP_NAME).conf: $(srcDir)/etc/tmpfiles.conf
+$(DESTDIR)$(libDir)/tmpfiles.d/$(APP_NAME).conf: $(srcDir)/etc/tmpfiles.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' $< > $@

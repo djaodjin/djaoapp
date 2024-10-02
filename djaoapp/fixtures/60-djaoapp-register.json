@@ -11,7 +11,7 @@
       "password": "!cpgaCPDc5qgLhcN7Duge9Nn1Vo6v6VTi67ujPgIc",
       "username": "xia18"
     },
-    "model": "auth.User", "pk": 30
+    "model": "auth.User", "pk": 60
 },
 { "fields": {
       "slug": "djaoapp-roles-card1",
@@ -22,7 +22,7 @@
       "is_provider": 1,
       "is_active": 1
     },
-    "model": "saas.Organization", "pk": 30
+    "model": "saas.Organization", "pk": 60
 },
 { "fields": {
       "date_joined": "2024-01-01T00:00:00-00:00",
@@ -35,12 +35,39 @@
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
       "username": "xia-roles-card1"
     },
-    "model": "auth.User", "pk": 31
+    "model": "auth.User", "pk": 61
 },
 { "fields": {
       "last_signed": "2024-01-01T00:00:00-00:00",
       "agreement": 1,
-      "user": 31
+      "user": 61
     },
-    "model": "saas.signature", "pk": 30
+    "model": "saas.signature", "pk": 60
+},
+{
+    "fields": {
+      "slug": "cowork",
+      "is_active": true,
+      "account": 4,
+      "domain": null,
+      "is_path_prefix": true,
+      "db_name": "cowork",
+      "extra": "{\"tags\":\"streetside\"}"
+    },
+    "model": "multitier.Site", "pk": 60
+},
+{
+    "fields": {
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "slug": "registration-card3",
+      "email": "registration+card3@localhost.localdomain",
+      "full_name": "Registration Card 3",
+      "street_address": "1 ABC Loop Dr.",
+      "locality": "San Francisco",
+      "postal_code": "94333",
+      "processor": 1,
+      "is_active": 1,
+      "extra": "Register and personal/organization profile already exists (Failures)"
+    },
+    "model": "saas.Organization", "pk": 60
 }]

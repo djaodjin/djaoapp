@@ -1,0 +1,180 @@
+[{
+    "fields": {
+      "slug": "cowork",
+      "email": "cowork@localhost.localdomain",
+      "full_name": "Cowork",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 40
+},
+{
+    "fields":{
+        "slug":"basic-cowork",
+        "title":"Basic",
+        "created_at":"2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":18900,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"",
+        "organization" : 40,
+        "is_active" : 1
+    },
+    "model" : "saas.Plan", "pk": 40
+},
+{
+    "fields":{
+        "slug":"medium",
+        "title":"Medium",
+        "created_at":"2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":28900,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"",
+        "organization" : 40,
+        "is_active" : 1
+    },
+    "model" : "saas.Plan", "pk": 41
+},
+{
+    "fields":{
+        "slug":"premium-cowork",
+        "title":"Premium",
+        "created_at":"2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":38900,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"",
+        "organization" : 40,
+        "is_active" : 1
+    },
+    "model" : "saas.Plan", "pk": 42
+},
+{
+    "fields": {
+      "slug": "dibaggio-parents",
+      "email": "dibaggio-parents@localhost.localdomain",
+      "full_name": "Di Baggio Middle School Parents Association",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 41
+},
+{
+    "fields":{
+        "slug":"standard",
+        "title":"Di Baggio Middle School Parents Association",
+        "created_at":"2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":10000,
+        "broker_fee_percent": 1000,
+        "period_type": 5,
+        "description":"Plan with a 10% broker fee",
+        "organization" : 41,
+        "is_active" : 1
+    },
+    "model" : "saas.Plan", "pk": 43
+},
+{
+    "fields": {
+      "slug": "tennis-club",
+      "email": "tennis-club@localhost.localdomain",
+      "full_name": "Tennis Club of North Beach",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1,
+      "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
+    },
+    "model": "saas.Organization", "pk": 42
+},
+{
+    "fields":{
+        "slug": "tennis-club",
+        "title":"Tennis Club of North Beach",
+        "created_at": "2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":0,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"",
+        "organization" : 42,
+        "is_active" : 1,
+        "optin_on_request": 1
+    },
+    "model" : "saas.Plan", "pk": 44
+},
+{
+    "fields":{
+        "code": "HALLOWEEN",
+        "created_at":"2024-01-01T00:00:00+00:00",
+        "discount_type": 1,
+        "discount_value": 5000,
+        "organization": 42
+    },
+    "model" : "saas.Coupon", "pk": 40
+},
+{
+    "fields": {
+      "slug": "yoga-club",
+      "email": "yoga-club@localhost.localdomain",
+      "full_name": "Yoga Club",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1,
+      "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
+      "extra": "This profile is used for taking screenshots when organization has an associated processor account."
+    },
+    "model": "saas.Organization", "pk": 43
+},
+{
+    "fields":{
+        "slug": "yoga-club",
+        "title":"Yoga Club of North Beach",
+        "created_at": "2024-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":0,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"",
+        "organization" : 43,
+        "is_active" : 1,
+        "optin_on_request": 1
+    },
+    "model" : "saas.Plan", "pk": 45
+},
+
+{
+    "fields": {
+      "date_joined": "2024-01-01T00:00:00-09:00",
+      "last_login": "2024-01-01T00:00:00-09:00",
+      "email": "xia+40@localhost.localdomain",
+      "first_name": "Xia40",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_name": "",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia40"
+    },
+    "model": "auth.User", "pk": 40
+},
+{
+    "fields": {
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "role_description": null,
+      "organization": 40,
+      "user": 40,
+      "request_key": "a00000d0a0000001234567890123456789012345"
+    },
+    "model": "saas.Role", "pk": 40
+}
+]

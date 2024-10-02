@@ -12,7 +12,7 @@ django-recaptcha==3.0.0           # 2.0.6 requires Django<4.0
                                   # 4.0.0 renamed namespace 'django_recaptcha'
 djangorestframework==3.14.0       # 3.13.1 is last version supporting Django 2.2
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.10.9
+djaodjin-deployutils==0.11.0
 djaodjin-extended-templates==0.4.6
 djaodjin-multitier==0.2.1
 djaodjin-rules==0.4.7

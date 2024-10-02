@@ -1,23 +1,4 @@
-[
-
-{ "fields": {
-    "slug": "djaopsp",
-    "full_name": "DjaoPsp",
-    "country": "US",
-    "created_at": "2024-01-01T00:00:00+00:00",
-    "email": "djaopsp@localhost.localdomain",
-    "is_active": 1,
-    "is_provider": 1,
-    "locality": "San Francisco",
-    "phone": "+1 555 555 5555",
-    "postal_code": 94133,
-    "region": "CA",
-    "street_address": "",
-    "processor": 1
-  },
-  "model": "saas.organization", "pk": 2
-},
-{ "fields": {
+[{ "fields": {
     "slug": "alliance",
     "full_name": "Alliance",
     "country": "US",
@@ -127,16 +108,61 @@
     "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
     "username": "donny"
   },
-  "model": "auth.User", "pk": 1
+  "model": "auth.User", "pk": 2
 },
 {
     "fields": {
       "slug": "donny",
       "created_at": "2024-01-01T00:00:00+00:00",
-      "user": 1,
+      "user": 2,
       "picture": "/assets/img/profiles/donny.jpg"
     },
+    "model": "signup.Contact", "pk": 2
+},
+{ "fields": {
+    "last_signed": "2024-01-01T00:00:00+00:00",
+    "agreement": 1,
+    "user": 2
+  },
+  "model": "saas.signature", "pk": 1
+},
+{ "fields": {
+    "created_at": "2024-01-01T00:00:00+00:00",
+    "role_description": 1,
+    "organization": 2, "user": 2}, "model": "saas.Role", "pk": 1
+},
+
+
+{ "fields": {
+    "date_joined": "2024-01-01T00:00:00+00:00",
+    "email": "alice@localhost.localdomain",
+    "first_name": "Alice",
+    "is_active": true,
+    "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+    "username": "alice"
+  },
+  "model": "auth.User", "pk": 1
+},
+{
+    "fields": {
+      "slug": "alice",
+      "created_at": "2024-01-01T00:00:00+00:00",
+      "user": 1,
+      "picture": "/assets/img/profiles/alice.jpg"
+    },
     "model": "signup.Contact", "pk": 1
+},
+{ "fields": {
+    "last_signed": "2024-01-01T00:00:00+00:00",
+    "agreement": 1,
+    "user": 1
+  },
+  "model": "saas.signature", "pk": 10
+},
+{ "fields": {
+    "created_at": "2024-01-01T00:00:00+00:00",
+    "role_description": 1,
+    "organization": 4, "user": 1}, "model": "saas.Role", "pk": 10
 },
 
 { "fields": {
@@ -167,25 +193,6 @@
     "username": "andy"
   },
   "model": "auth.User", "pk": 8
-},
-{ "fields": {
-    "date_joined": "2024-01-01T00:00:00+00:00",
-    "email": "alice@localhost.localdomain",
-    "first_name": "Alice",
-    "is_active": true,
-    "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-    "username": "alice"
-  },
-  "model": "auth.User", "pk": 10
-},
-{
-    "fields": {
-      "slug": "alice",
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "user": 10,
-      "picture": "/assets/img/profiles/alice.jpg"
-    },
-    "model": "signup.Contact", "pk": 10
 },
 { "fields": {
     "date_joined": "2024-01-01T00:00:00+00:00",
@@ -336,21 +343,6 @@
 { "fields": {
     "last_signed": "2024-01-01T00:00:00+00:00",
     "agreement": 1,
-    "user": 1
-  },
-  "model": "saas.signature", "pk": 1
-},
-{ "fields": {
-    "created_at": "2024-01-01T00:00:00+00:00",
-    "role_description": 1,
-    "organization": 2,
-    "user": 1
-  },
-  "model": "saas.Role", "pk": 1
-},
-{ "fields": {
-    "last_signed": "2024-01-01T00:00:00+00:00",
-    "agreement": 1,
     "user": 7
   },
   "model": "saas.signature", "pk": 2
@@ -358,10 +350,7 @@
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 1,
-    "organization": 6,
-    "user": 7
-  },
-  "model": "saas.Role", "pk": 3
+    "organization": 6, "user": 7}, "model": "saas.Role", "pk": 3
 },
 { "fields": {
     "last_signed": "2024-01-01T00:00:00+00:00",
@@ -373,18 +362,12 @@
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 1,
-    "organization": 8,
-    "user": 8
-  },
-  "model": "saas.Role", "pk": 4
+    "organization": 8, "user": 8}, "model": "saas.Role", "pk": 4
 },
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 2,
-    "organization": 6,
-    "user": 8
-  },
-  "model": "saas.Role", "pk": 5
+    "organization": 6, "user": 8}, "model": "saas.Role", "pk": 5
 },
 { "fields": {
     "last_signed": "2024-01-01T00:00:00+00:00",
@@ -396,25 +379,7 @@
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 3,
-    "organization": 6,
-    "user": 9
-  },
-  "model": "saas.Role", "pk": 6
-},
-{ "fields": {
-    "last_signed": "2024-01-01T00:00:00+00:00",
-    "agreement": 1,
-    "user": 10
-  },
-  "model": "saas.signature", "pk": 10
-},
-{ "fields": {
-    "created_at": "2024-01-01T00:00:00+00:00",
-    "role_description": 1,
-    "organization": 4,
-    "user": 10
-  },
-  "model": "saas.Role", "pk": 10
+    "organization": 6, "user": 9}, "model": "saas.Role", "pk": 6
 },
 { "fields": {
     "last_signed": "2024-01-01T00:00:00+00:00",
@@ -426,10 +391,7 @@
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 1,
-    "organization": 3,
-    "user": 12
-  },
-  "model": "saas.Role", "pk": 12
+    "organization": 3, "user": 12}, "model": "saas.Role", "pk": 12
 },
 { "fields" : {
     "slug": "supplier-2",
@@ -534,75 +496,14 @@
 { "fields": {
     "created_at": "2024-01-01T00:00:00+00:00",
     "role_description": 1,
-    "organization": 19,
-    "user": 19
-  },
-  "model": "saas.Role", "pk": 19
+    "organization": 19, "user": 19}, "model": "saas.Role", "pk": 19
 },
-
-
-{
-    "fields":{
-        "code": "HALLOWEEN",
-        "created_at":"2024-01-01T00:00:00-00:00",
-        "discount_type": 1,
-        "discount_value": 5000,
-        "organization": 2
-    },
-    "model" : "saas.Coupon", "pk": 2
-},
-{
-    "fields":{
-        "slug":"basic",
-        "title":"Basic",
-        "created_at":"2024-01-01T00:00:00-00:00",
-        "setup_amount": 0,
-        "period_amount": 9900,
-        "broker_fee_percent": 0,
-        "period_type": 4,
-        "description":"Get started",
-        "organization": 2,
-        "is_active": 1
-    },
-    "model" : "saas.Plan", "pk": 4
-},
-{
-    "fields":{
-        "slug":"standard",
-        "title":"Standard",
-        "created_at":"2024-01-01T00:00:00-00:00",
-        "setup_amount": 0,
-        "period_amount": 19900,
-        "broker_fee_percent": 0,
-        "period_type": 4,
-        "description":"Get going",
-        "organization": 2,
-        "is_active": 1
-    },
-    "model" : "saas.Plan", "pk": 5
-},
-{
-    "fields":{
-        "slug":"premium",
-        "title":"Premium",
-        "created_at":"2024-01-01T00:00:00-00:00",
-        "setup_amount": 0,
-        "period_amount": 39900,
-        "broker_fee_percent": 0,
-        "period_type": 4,
-        "description":"Get big",
-        "organization": 2,
-        "is_active": 1
-    },
-    "model" : "saas.Plan", "pk": 6
-},
-
 
 {
     "fields": {
       "slug": "djaopsp",
       "account": 2,
-      "authentication": 1,
+      "authentication": 0,
       "registration": 3,
       "session_backend": 2,
       "entry_point": "http://localhost:8040",
@@ -768,6 +669,7 @@
     "app": 1,
     "rank": 19,
     "path": "/app/{profile}/",
+    "is_forward": false,
     "rule_op": 6,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
@@ -777,6 +679,7 @@
     "app": 1,
     "rank": 20,
     "path": "/app/",
+    "is_forward": false,
     "rule_op": 1
   },
   "model": "rules.Rule", "pk": 20
