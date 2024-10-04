@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from saas.mixins import ProviderMixin
 from signup.serializers import ActivitySerializer
@@ -52,6 +52,12 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         """
         serializer = VersionSerializer({'version': __version__})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GenerateErrorAPIView(ProviderMixin, CreateAPIView):
+
+    def create(self, request, *args, **kwargs):
+        raise RuntimeError("Testing: Generated Error")
 
 
 def list_todos(request, provider=None):

@@ -14,7 +14,7 @@ from ..api.notifications import NotificationAPIView, NotificationDetailAPIView
 from ..api.organizations import (DjaoAppProfileDetailAPIView,
     DjaoAppProfileListAPIView, DjaoAppProfilePictureAPIView)
 from ..api.roles import DjaoAppRoleByDescrListAPIView
-from ..api.todos import DjaoAppAPIVersion, TodosAPIView
+from ..api.todos import DjaoAppAPIVersion, TodosAPIView, GenerateErrorAPIView
 from ..api.users import (RecentActivityAPIView, DjaoAppUserDetailAPIView,
     DjaoAppUserNotificationsAPIView, DjaoAppUserOTPAPIView)
 from ..urlbuilders import (url_authenticated, url_direct,
@@ -35,6 +35,8 @@ urlpatterns = [
         NotificationAPIView.as_view(), name='api_notification_base'),
     url_direct(r'^api/proxy/recent',
         RecentActivityAPIView.as_view(), name='api_recent_activity'),
+    url_direct(r'^api/proxy/generate-error',
+        GenerateErrorAPIView.as_view(), name='api_generate_error'),
     url_direct(r'^api/', include('rules.urls.api.proxy')),
     url_direct(r'^api/themes$',
         DjaoAppThemePackageListAPIView.as_view(),

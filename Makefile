@@ -5,16 +5,17 @@
 
 APP_NAME      ?= $(notdir $(abspath $(srcDir)))
 APP_PORT      ?= 8000
+LIVEDEMO_ENTRY_POINT ?= http://djaopsp-demo
 
 srcDir        ?= .
 installTop    ?= $(VIRTUAL_ENV)
 binDir        ?= $(installTop)/bin
 libDir        ?= $(installTop)/lib
-SYSCONFDIR    := $(installTop)/etc
-LOCALSTATEDIR := $(installTop)/var
-CONFIG_DIR    := $(SYSCONFDIR)/$(APP_NAME)
-ASSETS_DIR    := $(srcDir)/htdocs/assets
-LIVEDEMO_ENTRY_POINT ?= http://djaopsp-demo
+SYSCONFDIR    ?= $(installTop)/etc
+LOCALSTATEDIR ?= $(installTop)/var
+CONFIG_DIR    ?= $(SYSCONFDIR)/$(APP_NAME)
+ASSETS_DIR    ?= $(srcDir)/htdocs/assets
+RUN_DIR       ?= $(abspath $(srcDir))
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
@@ -23,7 +24,7 @@ ESCHECK       ?= eslint
 NPM           ?= npm
 PIP           ?= pip
 PYTHON        ?= python
-SASSC         ?= sassc --style=compressed
+SASSC         ?= sassc --style=compressed --source-map-urls absolute
 # As of sqlite3 version  3.42.0 (2023-05-16) we need to pass `-unsafe-testing`
 # to make adjustments in the demo database.
 SQLITE_NO_UNSAFE_TESTING := $(shell echo '.schema' | sqlite3 -unsafe-testing > /dev/null 2>&1; echo $$?)
@@ -45,13 +46,14 @@ WEBPACK       ?= NODE_PATH=$(libDir)/node_modules:$(NODE_PATH) webpack --stats-e
 MANAGE        := DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && $(MANAGE) migrate --help 2>/dev/null)),--run-syncdb,)
 
+
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # `make initdb` will install site.conf but only after `grep` is run
-# and DB_FILNAME set to "". We use the default value in the template site.conf
+# and DB_FILENAME set to "". We use the default value in the template site.conf
 # here to prevent that issue.
-DB_FILENAME   := $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
+DB_FILENAME   ?= $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
 else
-DB_FILENAME   ?= $(if $(wildcard $(LOCALSTATEDIR)/db/),$(LOCALSTATEDIR)/db/db.sqlite,$(srcDir)/db.sqlite)
+DB_FILENAME   ?= $(RUN_DIR)/db.sqlite
 endif
 LIVEDEMO_DB_FILENAME := $(srcDir)/db.sqlite
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
@@ -63,7 +65,7 @@ MY_EMAIL          ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 
 
-.PHONY: build-assets doc generateschema initdb makemessages package-docker setup-livedemo vendor-assets-prerequisites
+.PHONY: build-assets doc generateschema initdb makemessages setup-livedemo vendor-assets-prerequisites
 
 all:
 	@echo "Nothing to be done for 'make'."
@@ -120,13 +122,17 @@ makemessages:
 	cd $(srcDir) && $(MANAGE) makemessages -l fr -l es -l pt --symlinks --no-wrap
 	cd $(srcDir) && $(MANAGE) makemessages -d djangojs -l fr -l es -l pt --symlinks --no-wrap
 
-# !!! Attention !!!
-# You will need to run `make initdb` or `make setup-livedemo` before
-# running `package-docker` in order to create the dummy db.sqilte file
-# to package.
-package-docker: build-assets
+ifeq ($(MY_EMAIL),)
+
+.PHONY: package-docker
+
+# We build a local sqlite3 database to be packaged with the Docker image
+# such that the container can be started without prior configuration.
+package-docker: build-assets initdb
+	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
 	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
+endif
 
 # download and install prerequisites then create the db.
 require: require-pip require-resources initdb
@@ -364,7 +370,8 @@ $(DESTDIR)$(CONFIG_DIR)/site.conf: $(srcDir)/etc/site.conf
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
 			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
 			-e 's,%(installTop)s,$(installTop),' \
-			-e "s,%(DB_FILENAME)s,$(abspath $(DB_FILENAME))," \
+			-e "s,%(DB_NAME)s,$(APP_NAME)," \
+			-e "s,%(DB_FILENAME)s,$(DB_FILENAME)," \
 			-e "s,%(binDir)s,$(binDir)," $< > $@
 
 $(DESTDIR)$(CONFIG_DIR)/credentials: $(srcDir)/etc/credentials
@@ -404,6 +411,7 @@ $(DESTDIR)$(SYSCONFDIR)/monit.d/%: $(srcDir)/etc/monit.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
+		-e 's,%(APP_PORT)s,$(APP_NAME),g' \
 		-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' $< > $@
 
 $(DESTDIR)$(SYSCONFDIR)/sysconfig/%: $(srcDir)/etc/sysconfig.conf

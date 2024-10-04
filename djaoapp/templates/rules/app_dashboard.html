@@ -302,16 +302,14 @@
             </div>
 
             <!-- Triggering 500 errors -->
-            {% if FEATURES_DEBUG %}
             <hr />
             <div>
-              <form method="post" action="/api">
+              <form method="post" action="{{'/api/proxy/generate-error'|site_url}}">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
                 <input type="hidden" name="username" value="{{request.user.username}}">
                 <button id="error500" class="btn btn-outline-primary">{% trans %}Trigger 500 Error{% endtrans %}</button>
               </form>
             </div>
-            {% endif %}
           </div>
         </div><!-- /testing -->
       </div>
@@ -344,10 +342,12 @@ function getCSRFToken() {
 
 jQuery(document).ready(function($) {
     $("#error500").click(function (evt) {
+        var self = this;
+        //const url = self.parents('form').attr('action');
         evt.preventDefault();
         jQuery.ajax({
           method: 'POST',
-          url: '/api',
+          url: "{{'/api/proxy/generate-error'|site_url}}",
           beforeSend: function(xhr, settings) {
               if( !(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) ) {
                 var csrfToken = getCSRFToken();
