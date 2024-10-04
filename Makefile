@@ -8,14 +8,14 @@ APP_PORT      ?= 8000
 LIVEDEMO_ENTRY_POINT ?= http://djaopsp-demo
 
 srcDir        ?= .
-installTop    ?= $(VIRTUAL_ENV)
+installTop    ?= $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),$(abspath $(srcDir))/.venv)
 binDir        ?= $(installTop)/bin
 libDir        ?= $(installTop)/lib
 SYSCONFDIR    ?= $(installTop)/etc
 LOCALSTATEDIR ?= $(installTop)/var
 CONFIG_DIR    ?= $(SYSCONFDIR)/$(APP_NAME)
 ASSETS_DIR    ?= $(srcDir)/htdocs/assets
-RUN_DIR       ?= $(abspath $(srcDir))
+RUN_DIR       ?= $(installTop)/var/run
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
