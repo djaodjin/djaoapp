@@ -288,8 +288,7 @@ schema.yml:
 
 $(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \
                                $(wildcard $(srcDir)/djaoapp/static/js/*.js) \
-                               webpack-conf-paths.json \
-                               $(installTop)/.npm/$(APP_NAME)-packages
+                               webpack-conf-paths.json
 	cd $(srcDir) && $(WEBPACK) -c $<
 
 
@@ -303,15 +302,13 @@ $(ASSETS_DIR)/cache/base.css: $(srcDir)/djaoapp/static/scss/base/base.scss \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/mixins/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/utilities/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin/*.scss) \
-  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/toastr/*.scss) \
-  $(installTop)/.npm/$(APP_NAME)-packages
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/toastr/*.scss)
 	cd $(srcDir) && $(SASSC) $< $@
 
 
 $(ASSETS_DIR)/cache/email.css: $(srcDir)/djaoapp/static/scss/email/email.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/email/*.scss) \
-              $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
-              $(installTop)/.npm/$(APP_NAME)-packages
+              $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss)
 	cd $(srcDir) && $(SASSC) $< $@
 
 
@@ -319,8 +316,7 @@ $(ASSETS_DIR)/cache/dashboard.css: \
               $(srcDir)/djaoapp/static/scss/dashboard/dashboard.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
               $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
-              $(srcDir)/djaoapp/static/scss/vendor/trip.scss \
-              $(installTop)/.npm/$(APP_NAME)-packages
+              $(srcDir)/djaoapp/static/scss/vendor/trip.scss
 	cd $(srcDir) && $(SASSC) $< $@
 
 
@@ -328,8 +324,7 @@ $(ASSETS_DIR)/cache/pages.css: \
        $(srcDir)/djaoapp/static/scss/pages/pages.scss \
        $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin-extended-templates/*.scss) \
        $(srcDir)/djaoapp/static/scss/vendor/jquery-ui.scss \
-       $(srcDir)/djaoapp/static/scss/vendor/bootstrap-colorpicker.scss \
-       $(installTop)/.npm/$(APP_NAME)-packages
+       $(srcDir)/djaoapp/static/scss/vendor/bootstrap-colorpicker.scss
 	cd $(srcDir) && $(SASSC) $< $@
 
 
