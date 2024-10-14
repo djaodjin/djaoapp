@@ -15,7 +15,8 @@ SYSCONFDIR    ?= $(installTop)/etc
 LOCALSTATEDIR ?= $(installTop)/var
 CONFIG_DIR    ?= $(SYSCONFDIR)/$(APP_NAME)
 ASSETS_DIR    ?= $(srcDir)/htdocs/assets
-RUN_DIR       ?= $(installTop)/var/run
+# because we are not loading DB_NAME from site.conf
+RUN_DIR       ?= $(abspath $(srcDir))
 
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
@@ -130,6 +131,7 @@ ifeq ($(MY_EMAIL),)
 # such that the container can be started without prior configuration.
 package-docker: build-assets initdb
 	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
+	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/cowork.sqlite
 	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
 endif
