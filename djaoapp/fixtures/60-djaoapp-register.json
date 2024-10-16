@@ -48,7 +48,7 @@
     "fields": {
       "slug": "cowork",
       "is_active": true,
-      "account": 4,
+      "account": 40,
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
