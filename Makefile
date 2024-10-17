@@ -131,7 +131,7 @@ ifeq ($(MY_EMAIL),)
 # such that the container can be started without prior configuration.
 package-docker: build-assets initdb
 	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
-	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/cowork.sqlite
+	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(MULTITIER_DB_FILENAME) $(srcDir)/cowork.sqlite
 	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
 endif
@@ -238,7 +238,8 @@ clean-assets:
 clean-dbs:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
 	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
-	[ ! -f $(dir $(DB_FILENAME))my-streetside.sqlite ] || rm $(dir $(DB_FILENAME))my-streetside.sqlite
+	[ ! -f $(srcDir)/db.sqlite ] || rm $(srcDir)/db.sqlite
+	[ ! -f $(srcDir)/cowork.sqlite ] || rm $(srcDir)/cowork.sqlite
 
 clean-themes:
 	rm -rf $(srcDir)/themes/*
