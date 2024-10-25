@@ -86,6 +86,14 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
             return SessionSerializer
         return super(DjaoAppJWTRefresh, self).get_serializer_class()
 
+    def perform_content_negotiation(self, request, force=False):
+        header = request.META.get('HTTP_ACCEPT', '*/*')
+        if 'text/html' in [token.strip() for token in header.split(',')]:
+            return DynamicMenubarItemRenderer(), 'text/html'
+        return super(DjaoAppJWTRefresh, self).perform_content_negotiation(
+            request, force=force)
+
+
     def get(self, request, *args, **kwargs):
         """
         Retrieves authenticated user
@@ -115,11 +123,6 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
               "email": "donny.smith@locahost.localdomain"
             }
         """
-        header = request.META.get('HTTP_ACCEPT', '*/*')
-        if 'text/html' in [token.strip() for token in header.split(',')]:
-            request.accepted_renderer = DynamicMenubarItemRenderer()
-            request.accepted_media_type = 'text/html'
-
         if not is_authenticated(request):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
