@@ -81,8 +81,6 @@ def environment(**options):
     # Standard site pages
     env.filters['url_app'] = djaoapp_tags.url_app
     env.filters['url_contact'] = djaoapp_tags.url_contact
-    env.filters['url_login'] = djaoapp_tags.url_login
-    env.filters['url_logout'] = djaoapp_tags.url_logout
     env.filters['url_pricing'] = djaoapp_tags.url_pricing
     env.filters['url_profile'] = djaoapp_tags.url_profile
     env.filters['url_register'] = djaoapp_tags.url_register

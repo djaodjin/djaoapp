@@ -56,7 +56,7 @@ if settings.DEBUG:
 
         url(r'(?P<path>favicon.ico)', django_static_serve),
         # You need to run `python manage.py --nostatic` to enable hotreload.
-        url(r'(?P<path>%s/.*)' % settings.STATIC_URL.strip('/'),
+        url(r'%s/(?P<path>.*)' % settings.STATIC_URL.strip('/'),
             AssetView.as_view()),
         url(r'^media/(?P<path>.*)$',
             django_static_serve, {'document_root': settings.MEDIA_ROOT}),

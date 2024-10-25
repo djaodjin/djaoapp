@@ -1,49 +1,68 @@
-// CSS for the authenticated user dynamic menbuar
+// CSS for the authenticated user dynamic menbuar item
 
-$menubar-link-active-color:             $nav-tabs-link-active-color;
-$menubar-link-active-bg:                $nav-tabs-link-active-bg;
+// Color theme for the item in the top menubar that represents
+// the authenticated user.
+// Boostrap5: $nav-tabs-link-active-color
+$menubar-link-active-color:             #fff;
+// Boostrap5: $nav-tabs-link-active-bg
+$menubar-link-active-bg:                #3e7ebf;
+// Boostrap5: $nav-link-padding-x
+$menubar-nav-link-padding-x:            8px;
+// Boostrap5: $nav-link-padding-y
+$menubar-nav-link-padding-y:            8px;
+$menubar-link-dropdown-toggle-y:        3px;
+$menubar-caret-width:                   .3em !default;
 
-$menubar-dropdown-bg:                   white;
-$menubar-dropdown-color:                map-get($theme-colors, "primary");
-$menubar-dropdown-border-width:         var(--bs-dropdown-border-width);
-$menubar-dropdown-border-color:         var(--bs-dropdown-border-color);
-$menubar-dropdown-link-color:           $dropdown-link-color;
-$menubar-dropdown-link-hover-color:     $dropdown-link-hover-color;
-$menubar-dropdown-link-hover-bg:        $dropdown-link-hover-bg;
-$menubar-dropdown-link-active-color:    $dropdown-link-active-color;
-$menubar-dropdown-link-active-bg:       $dropdown-link-active-bg;
-$menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
+
+// Color theme for the dropdown menu with links to 'Home' and 'Settings'
+// for all profiles the authenticated user has a role on.
+$menubar-dropdown-color:                #000;
+$menubar-dropdown-bg:                   #fff;
+$menubar-dropdown-color-dark:           #fff;
+$menubar-dropdown-bg-dark:              #000;
+
+$menubar-dropdown-role-color:           #fff;
+$menubar-dropdown-role-bg:              #3e7ebf !default;
+
+// Boostrap5: var(--bs-dropdown-border-width)
+$menubar-dropdown-border-width:         1px;
+// Boostrap5: var(--bs-dropdown-border-color)
+$menubar-dropdown-border-color:         rgba(0,0,0,0.175);
+// Bootstrap5: $dropdown-link-hover-bg
+$menubar-dropdown-link-hover-bg:        #f8f9fa !default;
+// Bootstrap5: $dropdown-link-active-bg
+$menubar-dropdown-link-active-bg:       #3e7ebf !default;
+
+:root,
+[data-bs-theme="light"] {
+    --menubar-dropdown-bg: #{$menubar-dropdown-bg};
+    --menubar-dropdown-color: #{$menubar-dropdown-color};
+}
+
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+    --menubar-dropdown-bg: #{$menubar-dropdown-bg-dark};
+    --menubar-dropdown-color: #{$menubar-dropdown-color-dark};
+}
 
 .menubar {
     position: relative;
     align-self: center !important;
     color: $menubar-link-active-color;
+}
+
+.menubar-label {
+    color: $menubar-link-active-color;
+    padding: $menubar-nav-link-padding-y $menubar-nav-link-padding-x;
+    text-decoration: none;
+    display:block;
 
     &:hover,
     &:focus {
         text-decoration: none;
+        color: $menubar-link-active-bg;
+        background-color: $menubar-link-active-color;
     }
-}
-
-.bg-primary .menubar,
-.bg-primary a.menubar-label {
-    color: $white;
-}
-
-.bg-primary a.menubar-label:hover,
-.bg-primary a.menubar-label:focus {
-    color: $primary;
-    background-color: $white;
-}
-
-.bg-primary .menubar {
-    padding: 0 10px;
-}
-
-.menubar-label {
-    text-decoration: none;
-    display:block;
-    padding: 0 var(--#{$prefix}nav-link-padding-x);
 }
 
 .menubar-label > div {
@@ -60,20 +79,26 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
 .menubar-label-subtitle {
 }
 
-[data-trnc]
-{
-    width: 0 !important;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    visibility: hidden;
+.menubar-label-expanded {
 }
 
 .menubar-label.menubar-label-dropdown-toggle {
   white-space: nowrap;
   text-decoration: none;
+  padding-top: $menubar-link-dropdown-toggle-y;
+  padding-bottom: $menubar-link-dropdown-toggle-y;
+
   // Generate the caret automatically
-  @include caret(down);
+  // Bootstrap5  @include caret(down);
+  &::after {
+      display: inline-block;
+      vertical-align: middle;
+      content: "";
+      border-top: $menubar-caret-width solid;
+      border-right: $menubar-caret-width solid transparent;
+      border-bottom: 0;
+      border-left: $menubar-caret-width solid transparent;
+    }
 }
 
 .menubar-label.menubar-label-dropdown-toggle:after {
@@ -94,9 +119,12 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     font-size: 1rem;
     text-align: left;
     list-style: none;
-    background-clip: padding-box;
-    border-radius: 0.25rem;
     white-space: nowrap;
+    background-clip: padding-box;
+    border: $menubar-dropdown-border-width solid $menubar-dropdown-border-color;
+    border-radius: 0.25rem;
+    color: var(--menubar-dropdown-color);
+    background-color: var(--menubar-dropdown-bg);
 }
 
 .menubar-dropdown-menu.show
@@ -112,6 +140,11 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     font-size: 13px;
 }
 
+.menubar-dropdown-menu .menubar-dropdown-label > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .menubar-dropdown-menu .menubar-dropdown-label .menubar-dropdown-label-role
 {
     margin-left: 10px;
@@ -119,13 +152,12 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     padding: 0 5px;
     font-size: 12px;
     display: inline-block;
-    color: $menubar-dropdown-bg;
-    background: $menubar-dropdown-color;
+    color: $menubar-dropdown-role-color;
+    background: $menubar-dropdown-role-bg;
 }
 
 .menubar-dropdown-menu .menubar-dropdown-item {
     display: block;
-    width: 100%;
     padding: 0.25rem 1.5rem;
     padding-left: 2.75rem;
     position: relative;
@@ -138,27 +170,20 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
 
   &:hover,
   &:focus {
-    color: $menubar-dropdown-link-hover-color;
+    background-color: $menubar-dropdown-link-hover-bg;
     text-decoration: none;
-    @include gradient-bg($menubar-dropdown-link-hover-bg);
   }
 
   &.active,
   &:active {
-    color: $menubar-dropdown-link-active-color;
+    background-color: $menubar-dropdown-link-active-bg;
     text-decoration: none;
-    @include gradient-bg($menubar-dropdown-link-active-bg);
   }
 
   &.disabled,
   &:disabled {
-    color: $menubar-dropdown-link-disabled-color;
     pointer-events: none;
     background-color: transparent;
-    // Remove CSS gradients if they're enabled
-    @if $enable-gradients {
-      background-image: none;
-    }
   }
 }
 
@@ -178,7 +203,6 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     width: 6px;
     height: 16px;
     border: 2px solid;
-    transform: scale(var(--ggs,1));
     border-right: 0;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
@@ -225,10 +249,20 @@ $menubar-dropdown-link-disabled-color:  $dropdown-link-disabled-color;
     border-radius: 50%;
 }
 
-@include media-breakpoint-down(md) {
-
+// Boostrap5: media-breakpoint-down(md)
+@media (max-width: 768px) {
     .menubar-label .menubar-label-expanded {
         display: none;
         margin-right: 0.5rem !important;
     }
+}
+
+
+[data-trnc]
+{
+    width: 0 !important;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    visibility: hidden;
 }

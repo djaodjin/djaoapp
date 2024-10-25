@@ -47,6 +47,7 @@ FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
 OPENAPI_SPEC_COMPLIANT = False
 
 CONTACT_DYNAMIC_VALIDATOR = None
+DYNAMIC_MENUBAR_ITEM_CUT_OFF = 3
 
 # Defaults for social auth configuration
 SOCIAL_AUTH_SAML_ENABLED_IDPS = {}

@@ -1,7 +1,6 @@
-/* Copyright (c) 2018, Djaodjin Inc.
+/* Copyright (c) 2024, Djaodjin Inc.
    see LICENSE
 */
-
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -19,52 +18,95 @@
 }(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
 
 
-(function ($) {
-    "use strict";
+const API_URL = typeof DJAOAPP_API_BASE_URL !== 'undefined' ?
+  DJAOAPP_API_BASE_URL : "/api";
 
-$(document).ready(function(){
-    (function(){
-        // menubar
-        var menubar = $('.menubar');
-        var overlay = menubar.find('.header-menubar-overlay');
-        var dpdwnMenu = menubar.find('.menubar-dropdown-menu');
-        var dpdwnToggle = menubar.find('.menubar-dropdown-toggle')
-        var open = false;
-        overlay.add(dpdwnToggle).click(function(e) {
-            if($(this).closest('.menubar-dropdown-menu').length === 0 ) {
-                if(open){
-                    open = false;
-                    dpdwnMenu.hide();
-                    overlay.hide();
+
+async function injectUserMenubarItem() {
+  try {
+    const userMenubarItem = document.querySelector(
+        '[data-dj-menubar-user-item]')
+    if( !userMenubarItem ) return;
+
+    var params = {
+        redirect: 'manual',
+        headers: {Accept: 'text/html'}
+    };
+    const authToken = sessionStorage.getItem('authToken');
+    if( authToken ) {
+        params['headers']['Authorization'] = "Bearer " + authToken;
+    } else {
+        params['credentials'] = 'include';
+    }
+
+    const resp = await fetch(API_URL + '/auth/tokens', params)
+    if( !resp.ok ) return;
+
+    // The assignment will replace the inner content
+    // of 'userMenubarItem' by HTMLElement, despite the response
+    // received (`resp.text()`) looking like it is being decorated,
+    // i.e. "<html><head></head><body>{{HTMLElement}}</body></html>".
+    const data = await resp.text();
+    userMenubarItem.innerHTML = data;
+    userMenubarItem.removeAttribute('data-dj-menubar-user-item');
+    addMenubarDropdownToggle();
+
+  } catch(error) {
+    console.error(error.message);
+  }
+}
+
+
+function addMenubarDropdownToggle() {
+
+    var closeEvent = false;
+    for( elem of document.getElementsByClassName(
+        'menubar-label-dropdown-toggle') ) {
+        elem.addEventListener('click', function(evt) {
+            evt.preventDefault();
+            var self = this;
+            var dpdwnMenu = self.parentNode.querySelector(
+                '.menubar-dropdown-menu')
+            if( window.getComputedStyle(dpdwnMenu).display === 'none' ) {
+                dpdwnMenu.style.display = "block";
+                if( !closeEvent ) {
+                    window.addEventListener('mouseup', function(evt) {
+                        if( !self.contains(evt.target) ) {
+                            dpdwnMenu.style.display = "none";
+                        }
+                    });
+                    closeEvent = true;
                 }
+            } else {
+                dpdwnMenu.style.display = "none";
             }
         });
-        dpdwnToggle.click(function(e){
-            e.preventDefault();
-            var $t = $(this);
-            if(!open){
-                e.stopPropagation();
-                $t.siblings('.menubar-dropdown-container')
-                  .find('.menubar-dropdown-menu')
-                  .show();
-                overlay.show();
-                open = true;
-            }
-        });
-        $('[data-trnc]').each(function(){
-            var $el = $(this);
-            var len = parseInt($el.attr('data-trnc-len'));
-            var old = $el.text();
-            if(old.length > len){
-                var upd = old.substr(0, len) + '&hellip;';
-                $el.html(upd);
-            }
-            $el.removeAttr('data-trnc');
-        });
-    })();
-});
+    }
 
-})(jQuery);
+    for( elem of document.querySelectorAll('[data-trnc]') ) {
+        var len = parseInt(elem.getAttribute('data-trnc-len'));
+        var old = elem.innerHTML;
+        if( old.length > len ) {
+            var upd = old.substr(0, len) + '&hellip;';
+            elem.innerHTML = upd;
+        }
+        // removing the attribute will make the element visible.
+        elem.removeAttribute('data-trnc');
+    }
+}
 
-    // no exports
+
+if( document.readyState === "interactive" ||
+    document.readyState === "complete" ) {
+    injectUserMenubarItem();
+    addMenubarDropdownToggle();
+} else {
+    document.addEventListener('DOMContentLoaded', injectUserMenubarItem);
+    document.addEventListener('DOMContentLoaded', addMenubarDropdownToggle);
+}
+
+    // attach properties to the exports object to define
+    // the exported module properties.
+    exports.injectUserMenubarItem = injectUserMenubarItem;
+    exports.addMenubarDropdownToggle = addMenubarDropdownToggle;
 }));

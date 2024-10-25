@@ -215,10 +215,6 @@ def url_app(request): #pylint:disable=unused-argument
     return reverse('product_default_start')
 
 @register.filter()
-def url_logout(request): #pylint:disable=unused-argument
-    return reverse('logout')
-
-@register.filter()
 def url_contact(request): #pylint:disable=unused-argument
     return reverse('contact')
 
@@ -234,11 +230,6 @@ def url_profile(request): #pylint:disable=unused-argument
             return reverse('saas_organization_profile', args=(organization,))
         return reverse('users_profile', args=(request.user,))
     return None
-
-
-@register.filter()
-def url_login(request): #pylint:disable=unused-argument
-    return reverse('login')
 
 @register.filter()
 def url_register(request): #pylint:disable=unused-argument

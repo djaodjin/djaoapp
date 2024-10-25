@@ -6,7 +6,7 @@ from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.settings import USERNAME_PAT, EMAIL_VERIFICATION_PAT
 
 from ..api.auth import (CredentialsAPIView, DjaoAppJWTActivate,
-    DjaoAppJWTRegister)
+    DjaoAppJWTRefresh, DjaoAppJWTRegister)
 from ..api.contact import (ContactUsAPIView, PlacesSuggestionsAPIView,
     PlacesDetailAPIView)
 from ..api.custom_themes import DjaoAppThemePackageListAPIView
@@ -107,6 +107,8 @@ urlpatterns = [
     # `{user}` is not a url parameter, hence we cannot use `url_self_provider`.
     # Furthermore we restrict verification and refresh of JWT
     # to the request.user itself.
+    url_authenticated(r'^api/auth/tokens',
+        DjaoAppJWTRefresh.as_view(), name='api_refresh_token'),
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
     url_prefixed(r'^api/auth/activate/(?P<verification_key>%s)$'
         % EMAIL_VERIFICATION_PAT,

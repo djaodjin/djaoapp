@@ -14,8 +14,10 @@ module.exports = {
       ],
       base: [
           'js/djaodjin-dashboard.js',
-          'js/djaodjin-menubar.js',
           'js/djaoapp-theme-color-mode.js',
+      ],
+      'djaodjin-menubar': [
+          'js/djaodjin-menubar.js',
       ],
       'djaodjin-vue': [
           'js/djaodjin-upload.js',

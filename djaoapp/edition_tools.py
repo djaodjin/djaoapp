@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -11,18 +11,18 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.template import loader
-from django.utils.module_loading import import_string
 from extended_templates.compat import render_template
 from extended_templates.models import get_show_edit_tools
 from extended_templates.views.pages import (
     inject_edition_tools as inject_edition_tools_base)
-from rules import settings as rules_settings
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
-from saas.models import get_broker, is_broker
-from saas.utils import get_organization_model
+from saas.models import RoleDescription, get_broker, is_broker
+from saas.templatetags.saas_tags import attached_organization
+from signup.serializers_overrides import UserDetailSerializer
 
-from .compat import csrf, is_authenticated, reverse, six
+from .compat import csrf, is_authenticated, reverse
+from .api.serializers import SessionSerializer
 
 
 LOGGER = logging.getLogger(__name__)
@@ -47,18 +47,63 @@ def fail_edit_perm(request, account=None):
         result = not bool(_valid_manager(request, [account]))
     return result
 
-def get_user_picture(user, default=None):
-    contacts_with_pictures = user.contacts.filter(
-        picture__isnull=False).order_by('created_at')
-    picture_contact = contacts_with_pictures.first() if (contacts_with_pictures.
-                                                         exists()) else None
-    if picture_contact:
-        return picture_contact.picture
-    return default
 
 def get_organization_picture(organization, default=None):
     picture = organization.get('picture')
     return picture if picture else default
+
+
+def get_user_menu_context(user, context, request=None):
+    #pylint:disable=too-many-locals
+    path_parts = reversed(request.path.split('/')) if request else []
+    has_broker_role = False
+    active_organization = None
+
+    user_profile_url = request.build_absolute_uri(
+        reverse('users_profile', args=(user,)))
+    organization = attached_organization(user)
+    if organization:
+        user_profile_url = request.build_absolute_uri(
+            reverse('saas_organization_profile', args=(organization,)))
+
+    nb_accessibles = 0
+    top_accessibles = []
+    for role_key, accessibles in context.get('roles', {}).items():
+        nb_accessibles += len(accessibles)
+        for profile in accessibles:
+            profile_slug = profile['slug']
+            settings_location = request.build_absolute_uri(
+                reverse('saas_dashboard', args=(profile_slug,)))
+            app_location = reverse('organization_app', args=(profile_slug,))
+            role_title = RoleDescription.objects.get(slug=role_key).title
+            profile.update({
+                'settings_location': settings_location,
+                'app_location': app_location,
+                'role_title': role_title
+            })
+            top_accessibles += [profile]
+            if profile_slug in path_parts:
+                active_organization = profile
+            if is_broker(profile_slug):
+                has_broker_role = True
+
+    top_accessibles = top_accessibles[:settings.DYNAMIC_MENUBAR_ITEM_CUT_OFF]
+    more_accessibles_url = (request.build_absolute_uri(
+        reverse('saas_user_product_list', args=(user,))) if
+        nb_accessibles > settings.DYNAMIC_MENUBAR_ITEM_CUT_OFF else None)
+
+    if not active_organization and has_broker_role:
+        active_organization = get_broker()
+
+    context.update({
+        'active_organization': active_organization,
+        'top_accessibles': top_accessibles,
+        'urls': {
+            'user_profile': user_profile_url,
+            'user_accessibles': more_accessibles_url
+        }})
+    return context
+
 
 def inject_edition_tools(response, request, context=None,
                          body_top_template_name=None,
@@ -136,70 +181,28 @@ def inject_edition_tools(response, request, context=None,
         # instead, later on ``soup.find_all(class_=...)`` returns
         # an empty set though ``soup.prettify()`` outputs the full
         # expected HTML text.
-        auth_user = soup.body.find(class_='header-menubar')
+        auth_user = soup.body.find(attrs={'data-dj-menubar-user-item': True})
         user_menu_template = '_menubar.html'
         if auth_user and user_menu_template:
-            serializer_class = import_string(rules_settings.SESSION_SERIALIZER)
-            serializer = serializer_class(request)
-            path_parts = reversed(request.path.split('/'))
-            top_accessibles = []
-            has_broker_role = False
-            active_organization = None
-            user_picture = get_user_picture(request.user)
-
-            # Loads Organization models from database because we need
-            # the `is_provider` flag.
-            slugs = set([])
-            for organization_list in six.itervalues(
-                    serializer.data.get('roles', {})):
-                for organization_dict in organization_list:
-                    slugs.add(organization_dict.get('slug'))
-                    if (organization_dict['slug'] == request.user.username
-                            and organization_dict['picture']):
-                        user_picture = organization_dict['picture']
-
-            organizations = {}
-            for organization in get_organization_model().objects.filter(
-                    slug__in=slugs): # XXX Remove query.
-                organizations[organization.slug] = organization
-            for role, organization_list in six.iteritems(
-                    serializer.data['roles']):
-                for organization in organization_list:
-                    if organization['slug'] == request.user.username:
-                        # Personal Organization
-                        continue
-                    db_obj = organizations[organization['slug']]
-                    org_picture = get_organization_picture(organization)
-                    if db_obj.is_provider:
-                        settings_location = reverse('saas_dashboard',
-                            args=(organization['slug'],))
-                    else:
-                        settings_location = reverse(
-                            'saas_organization_profile',
-                            args=(organization['slug'],))
-                    app_location = reverse('organization_app',
-                        args=(organization['slug'],))
-
-                    if organization['slug'] in path_parts:
-                        active_organization = TopAccessibleOrganization(
-                            organization['slug'],
-                            organization['printable_name'],
-                            settings_location, role, app_location, org_picture)
-                    if is_broker(organization['slug']):
-                        has_broker_role = True
-                    top_accessibles += [TopAccessibleOrganization(
-                        organization['slug'],
-                        organization['printable_name'],
-                        settings_location, role, app_location, org_picture)]
-            if not active_organization and has_broker_role:
-                active_organization = get_broker()
-            context.update({'active_organization':active_organization})
-            context.update({'top_accessibles': top_accessibles})
-            context.update({'user_picture': user_picture})
+            cleaned_data = {}
+            cleaned_data.update(
+                SessionSerializer().to_representation(request))
+            cleaned_data.pop('session_key', None)
+            cleaned_data.pop('security_token', None)
+            cleaned_data.pop('secret_key', None)
+            cleaned_data.pop('access_key', None)
+            cleaned_data.update(
+                UserDetailSerializer().to_representation(request.user))
+            cleaned_data = get_user_menu_context(
+                request.user, cleaned_data, request=request)
             template = loader.get_template(user_menu_template)
-            user_menu = render_template(template, context, request).strip()
+            user_menu = render_template(template, cleaned_data, request).strip()
+            # Removes 'data-dj-menubar-user-item' attribute
+            # such that `djaodjin-menubar.js` does not attempt to reload
+            # the dynamic menu item again when the browser parses the page.
+            del auth_user.attrs['data-dj-menubar-user-item']
             auth_user.clear()
-            els = BeautifulSoup(user_menu, 'html5lib').body.ul.children
+            els = BeautifulSoup(user_menu, 'html5lib').body.children
             for elem in els:
                 auth_user.append(BeautifulSoup(str(elem), 'html5lib'))
     return soup

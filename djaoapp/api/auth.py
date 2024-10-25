@@ -1,26 +1,30 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2024, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 
 import logging
 
+from django.http import Http404
 from extended_templates.utils import get_default_storage
-from rest_framework import serializers
-from rest_framework import generics
+from rest_framework import generics, serializers, status
+from rest_framework.exceptions import NotFound
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rules.mixins import AppMixin
 from rules.utils import get_current_app
 from saas.models import Agreement
 from saas.mixins import OrganizationMixin
-from signup.api.auth import (
-    JWTActivate as JWTActivateBase,
+from signup.api.auth import (JWTActivate as JWTActivateBase,
     JWTRegister as JWTRegisterBase)
+from signup.api.tokens import JWTRefresh as JWTRefreshBase
 from signup.backends.sts_credentials import aws_bucket_context
+from signup.serializers_overrides import UserDetailSerializer
 
 from ..mixins import RegisterMixin, VerifyCompleteMixin
-from .serializers import RegisterSerializer
-from ..compat import gettext_lazy as _
+from .serializers import RegisterSerializer, SessionSerializer
+from ..edition_tools import get_user_menu_context
+from ..compat import is_authenticated, gettext_lazy as _
 
 
 LOGGER = logging.getLogger(__name__)
@@ -59,6 +63,76 @@ class DjaoAppJWTActivate(AppMixin, VerifyCompleteMixin, JWTActivateBase):
           "created_at": "2020-05-30T00:00:00Z"
         }
     """
+
+
+class DynamicMenubarItemRenderer(TemplateHTMLRenderer):
+
+    def get_template_context(self, data, renderer_context):
+        data = super(DynamicMenubarItemRenderer, self).get_template_context(
+            data, renderer_context)
+        view = renderer_context['view']
+        if is_authenticated(view.request):
+            data = get_user_menu_context(view.request.user, data,
+                request=view.request)
+        return data
+
+
+class DjaoAppJWTRefresh(JWTRefreshBase):
+
+    template_name = '_menubar.html'
+
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return SessionSerializer
+        return super(DjaoAppJWTRefresh, self).get_serializer_class()
+
+    def get(self, request, *args, **kwargs):
+        """
+        Retrieves authenticated user
+
+        Retrieves details on authenticated user
+
+        The API is typically used to build the user menubar item.
+
+        **Tags: user, usermodel
+
+        **Example
+
+        .. code-block:: http
+
+            GET /api/auth/tokens HTTP/1.1
+
+        responds
+
+        .. code-block:: json
+
+            {
+              "slug": "donny",
+              "username": "donny",
+              "created_at": "2018-01-01T00:00:00Z",
+              "printable_name": "Donny",
+              "full_name": "Donny Smith",
+              "email": "donny.smith@locahost.localdomain"
+            }
+        """
+        header = request.META.get('HTTP_ACCEPT', '*/*')
+        if 'text/html' in [token.strip() for token in header.split(',')]:
+            request.accepted_renderer = DynamicMenubarItemRenderer()
+            request.accepted_media_type = 'text/html'
+
+        if not is_authenticated(request):
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(request)
+        cleaned_data = {}
+        cleaned_data.update(serializer.data)
+        cleaned_data.pop('session_key', None)
+        cleaned_data.pop('security_token', None)
+        cleaned_data.pop('secret_key', None)
+        cleaned_data.pop('access_key', None)
+        cleaned_data.update(
+            UserDetailSerializer().to_representation(request.user))
+        return Response(cleaned_data)
 
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):

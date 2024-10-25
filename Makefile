@@ -73,6 +73,7 @@ all:
 
 
 build-assets: $(ASSETS_DIR)/cache/base.css \
+              $(ASSETS_DIR)/cache/djaodjin-menubar.css \
               $(ASSETS_DIR)/cache/email.css \
               $(ASSETS_DIR)/cache/dashboard.css \
               $(ASSETS_DIR)/cache/pages.css \
@@ -320,6 +321,11 @@ $(ASSETS_DIR)/cache/dashboard.css: \
               $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
               $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
               $(srcDir)/djaoapp/static/scss/vendor/trip.scss
+	cd $(srcDir) && $(SASSC) $< $@
+
+
+$(ASSETS_DIR)/cache/djaodjin-menubar.css: \
+              $(srcDir)/djaoapp/static/scss/base/djaodjin-menubar.scss
 	cd $(srcDir) && $(SASSC) $< $@
 
 

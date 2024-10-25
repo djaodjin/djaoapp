@@ -14,6 +14,7 @@
     <meta property="og:image" content="https://www.djaodjin.com/static/img/og-image.png" />
     {% endblock %}
     <link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/base.css" />
+    <link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/djaodjin-menubar.css" />
     <style media="screen">
       [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
         display: none !important;
@@ -139,17 +140,19 @@
                       {% endblock %}
                     </ul>
                   </div>
-                  <ul class="navbar-nav header-menubar ms-auto mt-lg-0 ml-auto">
+                  <div id="userMenubarItem" data-dj-menubar-user-item>
                     {# The content here will be replaced by _menubar.html #}
-                    <li class="nav-item">
+                    <ul class="navbar-nav header-menubar ms-auto mt-lg-0 ml-auto">
+                      <li class="nav-item">
                       {% if request and request|is_authenticated %}
-                      <a class="nav-link">{{request.user.username}}</a>
+                        <a class="nav-link">{{request.user.username}}</a>
                       {% else %}
-                      <a id="login" class="nav-link" href="{{'/login/'|site_url}}">{% trans %}Sign In{% endtrans %}</a>
+                        <a id="login" class="nav-link" href="{{'/login/'|site_url}}">{% trans %}Sign In{% endtrans %}</a>
                       {% endif %}
-                    </li>
+                      </li>
+                    </ul>
                     {# end of replaced by _menubar.html #}
-                  </ul>
+                  </div>
                   {% endblock %}
                 </div>
               </nav>
@@ -259,6 +262,7 @@
 <script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|djasset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|djasset}}" defer></script>
 {% else %}
+<script type="text/javascript" src="{{'/assets/cache/djaodjin-menubar.js'|djasset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/cache/base.js'|djasset}}" defer></script>
 {% endif %}
 {% block bodyscripts %}

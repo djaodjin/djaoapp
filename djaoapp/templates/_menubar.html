@@ -1,48 +1,48 @@
-<ul>{# This tag with be replaced by header-menubar #}
+<ul class="navbar-nav ms-auto mt-lg-0">
   <li class="menubar">
     {% if active_organization %}
       <a class="menubar-label menubar-label-dropdown-toggle"
-         data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
+         role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
         </div>
         <div class="menubar-label-expanded">
-          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{request.user.username}}</span>
+          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
           <span class="menubar-label-subtitle" data-trnc data-trnc-len="8">{{active_organization.printable_name}}</span>
         </div>
       </a>
     {% else %}
       <a class="menubar-label menubar-label-dropdown-toggle"
-         data-bs-toggle="dropdown" data-toggle="dropdown" role="button" href="#"
+         role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
         </div>
         <div class="menubar-label-expanded">
-          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{request.user.username}}</span>
+          <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
         </div>
       </a>
     {% endif %}
 
-    <ul class="menubar-dropdown-menu dropdown-menu dropdown-menu-end" role="menu">
+    <ul class="menubar-dropdown-menu" role="menu">
       {% if top_accessibles|length > 0 %}
         <li class="menubar-dropdown-label" role="presentation">
-          <div class="d-inline-block" style="vertical-align:middle;">
-            <img src="{% if user_picture %}{{user_picture}}{% else %}{{'/assets/img/default-user.png'|djasset}}{% endif %}" class="avatar-top">
+          <div>
+            <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
           </div>
-          <div class="d-inline-block">
-            {{request.user.username}}
+          <div>
+            {{username}}
           </div>
         </li>
       {% endif %}
       <li role="presentation">
-        <a id="authenticated-user" class="menubar-dropdown-item" href="{{request|url_profile}}" role="menuitem" tabindex="-1">
+        <a id="authenticated-user" class="menubar-dropdown-item" href="{% if urls %}{{urls.user_profile}}{% endif %}" role="menuitem" tabindex="-1">
             {% trans %}Profile{% endtrans %}
         </a>
       </li>
       <li role="presentation">
-        <a class="menubar-dropdown-item" href="{{request|url_logout}}"
+        <a class="menubar-dropdown-item" href="{{'/logout/'|site_url}}"
            role="menuitem" tabindex="-1">
           {% trans %}Sign out{% endtrans %}
         </a>
@@ -51,34 +51,44 @@
         {% for accessible in top_accessibles %}
           <li class="menubar-dropdown-divider" role="separator"></li>
           <li class="menubar-dropdown-label" role="presentation">
-            <div class="d-inline-block">
-              <img class="avatar-top" src="{% if accessible.org_picture %}{{accessible.org_picture}}{% else %}{{'/assets/img/default-organization.png'|djasset}}{% endif %}">
+            <div>
+              <img class="avatar-top" src="{% if accessible.picture %}{{accessible.picture}}{% else %}{{request|djasset}}{% if accessible.type == 'personal' %}/assets/img/default-user.png{% else %}/assets/img/default-organization.png{% endif %}{% endif %}">
             </div>
-            <div class="d-inline-block">
+            <div>
               <div>{{accessible.printable_name}}</div>
               <span class="menubar-dropdown-label-role">{{accessible.role_title}}</span>
             </div>
           </li>
-            <li role="presentation">
-                <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
-                    {% trans %}Home{% endtrans %}
-                </a>
-            </li>
+          <li role="presentation">
+            <a class="menubar-dropdown-item" href="{{accessible.app_location}}" role="menuitem" tabindex="-1">
+              {% trans %}Home{% endtrans %}
+            </a>
+          </li>
           <li role="presentation">
             <a class="menubar-dropdown-item" href="{{accessible.settings_location}}" role="menuitem" tabindex="-1">
               {% trans %}Settings{% endtrans %}
             </a>
           </li>
         {% endfor %}
+        {% if urls and urls.user_accessibles %}
+        <li class="menubar-dropdown-divider" role="separator"></li>
+        <li role="presentation">
+          <a class="menubar-dropdown-item" href="{{urls.user_accessibles}}" role="menuitem" tabindex="-1">
+            {% trans %}More{% endtrans %} ...
+          </a>
+        </li>
+        {% endif %}
       {% endif %}
     </ul>
   </li>
   <li class="menubar">
-      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{request|url_logout}}">
-        <span class="menubar-label-expanded pe-1">
+      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_url}}">
+        <div>
+        <span class="menubar-label-expanded">
           {% trans %}Sign out{% endtrans %}
         </span>
         <span class="menubar-sign-out"></span>
+        </div>
       </a>
   </li>
 </ul>
