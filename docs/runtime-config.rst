@@ -2,7 +2,7 @@ Container runtime configuration
 ===============================
 
 If you are in a hurry, or just browsing to understand what this project
-is about, visit the `livedemo<https://livedemo.djaoapp.com/>`_ website.
+is about, visit the `livedemo`_ website.
 
 The basic command to run the Docker container on port 8000 looks like this:
 
@@ -125,7 +125,7 @@ key pairs.
 Overriding the backend to send notifications
 --------------------------------------------
 
-.. autodata:: djaoapp.settings.NOTIFICATION_BACKEND
+.. autodata:: djaoapp.settings.NOTIFICATION_BACKENDS
 
 
 Reference for configuration variables
@@ -243,3 +243,5 @@ Variable for recaptcha
 +----------------------+------------+------------------------------------------+
 |RECAPTCHA_PRIVATE_KEY |""          | Google recaptcha private key             |
 +----------------------+------------+------------------------------------------+
+
+.. _livedemo: https://livedemo.djaoapp.com/

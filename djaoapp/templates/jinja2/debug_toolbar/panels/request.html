@@ -33,7 +33,7 @@
 		</thead>
 		<tbody>
 			{% for key, value in cookies %}
-				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+				<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 					<td><code>{{ key|pprint }}</code></td>
 					<td><code>{{ value|pprint }}</code></td>
 				</tr>
@@ -59,7 +59,7 @@
 		</thead>
 		<tbody>
 			{% for key, value in session %}
-				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+				<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 					<td><code>{{ key|pprint }}</code></td>
 					<td><code>{{ value|pprint }}</code></td>
 				</tr>
@@ -85,7 +85,7 @@
 		</thead>
 		<tbody>
 			{% for key, value in get %}
-				<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+				<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 					<td><code>{{ key|pprint }}</code></td>
 					<td><code>{{ value|pprint }}</code></td>
 				</tr>
@@ -110,7 +110,7 @@
 		</thead>
 		<tbody>
 			{% for key, value in post %}
-				<tr class="{% cycle('row1', 'row2') %}">
+				<tr class="{{ cycle('row1', 'row2') }}">
 					<td><code>{{ key|pprint }}</code></td>
 					<td><code>{{ value|pprint }}</code></td>
 				</tr>

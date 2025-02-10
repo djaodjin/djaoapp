@@ -1,0 +1,289 @@
+{% extends "saas/base.html" %}
+
+{% block body_top_template %}
+  {% include "saas/_body_top_template.html" %}
+{% endblock %}
+
+{% block saas_content %}
+<checkout inline-template id="checkout-container">
+  <div>
+    <div class="page-header text-lg-center pt-4">
+      {% block order_title %}
+      <h4 v-if="!optionsConfirmed">{% trans %}Select Payment Options{% endtrans %}</h4>
+      <h4 v-if="optionsConfirmed && !seatsConfirmed">{% trans %}Place order on behalf of ...{% endtrans %}</h4>
+      <h4 v-if="allConfirmed">{% trans %}Complete Order{% endtrans %}</h4>
+      {% endblock %}
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <form @submit.prevent="nextStep">
+          <fieldset id="invoicables">
+            <div class="container bg-light px-0 py-2">
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table" style="margin-bottom:0;">
+                    <tbody :data-plan="entry.subscription.plan.slug" v-for="(entry, itemIndex) in items.results" v-if="itemsLoaded">
+                      <tr>
+                        <th colspan="3">
+                          {% trans %}Selected Plan{% endtrans %}:
+                          <em>[[entry.subscription.plan.title]] from
+                            [[entry.subscription.plan.profile.printable_name]]</em>
+                          <button class="btn btn-lnk" type="button"
+                                  @click="remove(entry.subscription.plan.slug)"
+                                  v-if="!items.claim_code">
+                            <i class="fa fa-trash-o"></i>
+                          </button>
+                        </th>
+                      </tr>
+
+                      {# show lines #}
+                      <tr class="invoice-item" v-for="line in entry.lines">
+                        <td></td>
+                        <td class="line-descr" v-html="line.description"></td>
+                        <td class="line-amount text-end">[[line.amount]]</td>
+                      </tr>
+
+                      {# show options #}
+                      <tr class="py-0" v-if="entry.options && entry.options.length > 0">
+                        <th colspan="2" class="font-weight-normal">Payment Options</th>
+                        <th class="font-weight-normal text-end">Totals</th>
+                      </tr>
+                      <tr v-for="(line, index) in entry.options">
+                        <td>
+                          <input type="radio" @change="optionSelected(entry.subscription.plan.slug, index + 1)" :checked="isOptionSelected(entry.subscription.plan.slug, index + 1)"></input>
+                        </td>
+                        <td class="line-descr" v-html="line.description"></td>
+                        <td class="line-amount text-end">[[line.amount]]</td>
+                      </tr>
+
+                      {# is_bulk_buyer #}
+                      <tr class="seat" v-show="optionsConfirmed && !seatsConfirmed && isLastUserPlan(itemIndex)">
+                        <td></td>
+                        <td class="row">
+                          <div class="col-md-6">
+                            <input class="form-control seat-fullname" type="text" placeholder="{% trans %}Full name (i.e. first and last names){% endtrans %}" v-model="planUser(entry.subscription.plan.slug).fullName" />
+                          </div>
+                          <div class="col-md-6">
+                            <input class="form-control seat-email" type="text" placeholder="{% trans %}E-mail address{% endtrans %}" v-model="planUser(entry.subscription.plan.slug).email" />
+                          </div>
+                        </td>
+                        <td class="text-end">
+                          <button class="btn btn-primary add-seat" type="button" @click.prevent="addPlanUser(entry.subscription.plan.slug)">{% trans %}Add{% endtrans %}</button>
+                        </td>
+                      </tr>
+                      <tr v-show="optionsConfirmed && !seatsConfirmed && isLastUserPlan(itemIndex)">
+                        <td colspan="2">
+                          <label>Upload CSV:</label>
+                          <input class="btn btn-lnk" @change="fileChanged(entry.subscription.plan.slug, $event)" type="file" />
+                        </td>
+                        <td class="text-end">
+                          <button class="btn btn-primary" type="button" @click="bulkImport(entry.subscription.plan.slug)">{% trans %}Upload{% endtrans %}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="container bg-light py-3 my-3">
+              <div class="row">
+                <div class="col-md-6">
+                  {% trans %}Charged Today{% endtrans %}
+                </div>
+                <div class="col-md-6 total-amount text-end">
+                  [[$globals.humanizeNumber(linesPrice[0], linesPrice[1])]]
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          {% block order_footer %}
+          <div id="redeem-code" class="text-end mt-3 mb-5" v-if="!items.claim_code">
+            <a href="#redeem-code-input" class="text-decoration-none"
+               data-toggle="collapse" role="button"
+               aria-expanded="false" aria-controls="redeemCode">{% trans %}Have a registration code?{% endtrans %}</a>
+            <div id="redeem-code-input" class="collapse mt-3">
+              <div class="row justify-content-end">
+                <div class="col-12 col-md-4">
+                  <div class="input-group input-group mb-1">
+                    <input class="form-control" name="code" type="text" placeholder="{% trans %}Enter Code{% endtrans %}" v-model="coupon">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary submit-code" type="submit" @click.prevent="redeem">{% trans %}Apply{% endtrans %}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endblock %}
+
+          <section id="info" v-if="items.state && items.state != 'created'">
+            <dl>
+              <dt>Status</dt>
+              <dd class="charge-status">[[ items.state == 'done' ? "The charge succeeded." : items.state ]]</dd>
+            </dl>
+            <dl>
+              <dt>Date</dt>
+              <dd>[[ items.created_at ]]</dd>
+            </dl>
+            <dl>
+              <dt>REFERENCE</dt>
+              <dd>#[[ items.processor_key ]]</dd>
+            </dl>
+            <dl>
+              <dt>amount</dt>
+              <dd id="amount-info">[[items.amount]] [[items.unit]]</dd>
+            </dl>
+            <dl>
+              <dt>card</dt>
+              <dd>**** - [[items.last4]]</dd>
+            </dl>
+            <dl>
+              <dt>expires</dt>
+              <dd>[[items.exp_date]]</dd>
+            </dl>
+          </section>
+
+          <div v-show="allConfirmed"
+            v-if="items.state && items.state == 'created'">
+            {% block order_card %}
+            {% if RAZORPAY_PUB_KEY %}
+            {% include "saas/_razorpay_checkout.html" %}
+            <div>
+              <button type="submit" class="payment-submit">{% if submit_title %}{{submit_title}}{% else %}Submit{% endif %}</button>
+            </div>
+            {% elif FLUTTERWAVE_PUB_KEY %}
+            {% include "saas/_flutterwave_checkout.html" %}
+            {% else %}
+            <div>
+              {% include "saas/_card_use.html" %}
+            </div>
+            {% endif %}
+            {% endblock %}
+
+            <div class="form-group text-center py-5">
+              <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
+                {% if submit_title %}
+                {{submit_title}}
+                {% else %}
+                {% trans %}Pay Now{% endtrans %}
+                {% endif %}
+              </button>
+            </div>
+          </div>
+
+          {# When there are options to select #}
+          <div class="form-group text-center py-5" v-if="!allConfirmed">
+            <button type="submit" class="btn btn-primary btn-md payment-submit px-5">
+              {% if submit_title %}
+              {{submit_title}}
+              {% else %}
+              {% trans %}Next &raquo;{% endtrans %}
+              {% endif %}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</checkout>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+{% if FEATURES_REVERT_STRIPE_V2 %}
+{# We cannot use `if STRIPE_INTENT_SECRET` since it is loaded through the API.#}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+{% else %}
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+{% endif %}
+<script type="text/javascript" src="{{'/assets/vendor/moment.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="/assets/vendor/vue.js"></script>
+
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %};
+</script>
+<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/trip.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="/assets/js/djaodjin-resources-vue.js"></script>
+<script type="text/javascript" charset="utf-8" src="/assets/js/djaodjin-saas-vue.js"></script>
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$labels = {
+    notAvailableLabel: "{% trans %}N/A{% endtrans %}",
+    cardNumberLabel: "{% trans %}Card Number{% endtrans %}",
+    securityCodeLabel: "{% trans %}Security Code{% endtrans %}",
+    expirationLabel: "{% trans %}Expiration{% endtrans %}",
+    cardHolderLabel: "{% trans %}Card Holder{% endtrans %}",
+    streetAddressLabel: "{% trans %}Street address{% endtrans %}",
+    localityLabel: "{% trans %}City/Town{% endtrans %}",
+    regionLabel: "{% trans %}State/Province/County{% endtrans %}",
+    postalCodeLabel: "{% trans %}Zip/Postal code{% endtrans %}",
+    countryLabel: "{% trans %}Country{% endtrans %}",
+    fieldShoundNotBeEmptyError: "{% trans %}This field shouldn't be empty{% endtrans %}",
+    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
+}
+Vue.prototype.$globals = {
+    'humanizeDate': humanizeDate,
+    'humanizeNumber': humanizeNumber,
+    'humanizePeriodHeading': humanizePeriodHeading,
+    'humanizeTimeDelta': humanizeTimeDelta
+};
+
+humanizeTimeDelta.$labels = {
+    timeAgoTemplate: "{% trans %}%(timedelta)s ago{% endtrans %}",
+    timeLeftTemplate: "{% trans %}%(timedelta)s left{% endtrans %}",
+};
+</script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|djasset}}"></script>
+{% else %}
+<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|djasset}}"></script>
+{% endif %}
+<script type="text/javascript">
+Vue.use(Croppa);
+{% if FEATURES_REVERT_TO_VUE2 %}
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+{% else %}
+var app = createApp({
+  delimiters: ["[[","]]"],
+}).mount('#app');
+{% endif %}
+</script>
+{% endblock %}
+

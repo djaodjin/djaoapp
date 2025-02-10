@@ -106,6 +106,7 @@ urlpatterns = [
     url_prefixed(r'^pricing/$',
         PricingView.as_view(), name='saas_cart_plan_list'),
     url_prefixed(r'^', include('saas.urls.views.noauth')),
+    url_prefixed(r'^', include('saas.urls.views.payments')),
     url_direct(r'^', include('saas.urls.views.broker')),
     url_direct(r'^metrics/(?P<%s>%s)/dashboard/$' % (
         PROFILE_URL_KWARG, SLUG_RE),

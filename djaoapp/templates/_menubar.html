@@ -5,7 +5,7 @@
          role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
         </div>
         <div class="menubar-label-expanded">
           <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
@@ -17,7 +17,7 @@
          role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
         </div>
         <div class="menubar-label-expanded">
           <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
@@ -29,7 +29,7 @@
       {% if top_accessibles|length > 0 %}
         <li class="menubar-dropdown-label" role="presentation">
           <div>
-            <img src="{% if picture %}{{picture}}{% else %}{{request|djasset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+            <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
           </div>
           <div>
             {{username}}
@@ -52,7 +52,7 @@
           <li class="menubar-dropdown-divider" role="separator"></li>
           <li class="menubar-dropdown-label" role="presentation">
             <div>
-              <img class="avatar-top" src="{% if accessible.picture %}{{accessible.picture}}{% else %}{{request|djasset}}{% if accessible.type == 'personal' %}/assets/img/default-user.png{% else %}/assets/img/default-organization.png{% endif %}{% endif %}">
+              <img class="avatar-top" src="{% if accessible.picture %}{{accessible.picture}}{% else %}{{request|asset}}{% if accessible.type == 'personal' %}/assets/img/default-user.png{% else %}/assets/img/default-organization.png{% endif %}{% endif %}">
             </div>
             <div>
               <div>{{accessible.printable_name}}</div>

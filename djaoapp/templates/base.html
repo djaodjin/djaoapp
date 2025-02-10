@@ -13,8 +13,11 @@
     <title>{% block localheader_title %}{% if request %}{{request|site_printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
     <meta property="og:image" content="https://www.djaodjin.com/static/img/og-image.png" />
     {% endblock %}
-    <link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/base.css" />
-    <link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/djaodjin-menubar.css" />
+    {# Use `{{request|asset}}*path*` instead of `{{path|asset}}` here  #}
+    {# because Jinja2 optimization/caching that prevents recomputation #}
+    {# of correct URL when dealing with multitier sites.               #}
+    <link rel="stylesheet" media="screen" href="{{request|asset}}/assets/cache/base.css" />
+    <link rel="stylesheet" media="screen" href="{{request|asset}}/assets/cache/djaodjin-menubar.css" />
     <style media="screen">
       [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
         display: none !important;
@@ -27,11 +30,6 @@
         display: none !important;
       }
     </style>
-
-    {% if csrf_token %}
-      <meta name="csrf-token" content="{{csrf_token}}">
-    {% endif %}
-
     {% block localheader %}{% endblock %}
 </head>
 <body{% block body_classes %}{% endblock %}>
@@ -47,7 +45,12 @@
                     <header>
                       <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
                         <div class="navbar-header">
-                          {% include "_navbarbrand.html" %}
+                          <div>
+                            <a class="navbar-brand" href="{{request|site_url}}">
+                              <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                              <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
+                            </a>
+                          </div>
                           <div class="text-end">
                             <button href="" class="sidebar-toggle btn btn-secondary d-inline-block d-md-none">
                               <div class="bar1 opened"></div>
@@ -128,7 +131,12 @@
 
                   {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
-                      {% include "_navbarbrand.html" %}
+                    <div>
+                      <a class="navbar-brand" href="{{request|site_url}}">
+                        <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                        <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
+                      </a>
+                    </div>
                   </div>
                   {% endblock %}
 
@@ -166,22 +174,22 @@
                 <div id="messages-content">
                   {% if request %}
                     {% for message in request|messages %}
-                      <div class="alert alert-dismissible fade show{% if message.tags %} alert-{{message.tags}}{% endif %}">
-                        {% if 'safe' in message.tags %}
-                          <div>{{message|safe}}</div>
-                        {% else %}
-                          <div>{{message}}</div>
-                        {% endif %}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                    <div class="alert alert-dismissible fade show{% if message.tags %} alert-{{message.tags}}{% endif %}">
+                      {% if 'safe' in message.tags %}
+                      <div>{{message|safe}}</div>
+                      {% else %}
+                      <div>{{message}}</div>
+                      {% endif %}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     {% endfor %}
                   {% endif %}
                   {% if form %}
                     {% for message in form|messages %}
-                      <div class="alert alert-dismissible fade show alert-danger">
-                        <div>{{message}}</div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                    <div class="alert alert-dismissible fade show alert-danger">
+                      <div>{{message}}</div>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     {% endfor %}
                   {% endif %}
                   <div class="alert alert-dismissible fade" style="display:none;">
@@ -253,17 +261,17 @@
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
-<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|djasset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|djasset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|djasset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|asset}}" defer></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/djaodjin-menubar.js'|djasset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/cache/base.js'|djasset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/cache/djaodjin-menubar.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}" defer></script>
 {% endif %}
 {% block bodyscripts %}
 {% endblock %}

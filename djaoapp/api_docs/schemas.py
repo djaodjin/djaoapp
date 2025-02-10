@@ -335,10 +335,11 @@ class APIDocEndpointEnumerator(EndpointEnumerator):
                     endpoint[self.METHOD_IDX], endpoint[self.PATH_IDX],
                     endpoint[self.CALLBACK_IDX],
                     api_endpoint[self.CALLBACK_IDX])
-                # XXX Django4.2 leads to a assertion error here.
-                #     Django3.2 works fine.
-                assert endpoint[self.CALLBACK_IDX].__name__.startswith(
-                    'DjaoApp')
+                # Django4.2 leads to a assertion error here unless
+                # we use `view_class.__name__`. Django3.2 works fine with both,
+                # `view_class.__name__` and `endpoint[CALLBACK_IDX]__name__`.
+                view_cls_name = endpoint[self.CALLBACK_IDX].view_class.__name__
+                assert view_cls_name.startswith('DjaoApp')
                 found = True
                 break
         if not found:

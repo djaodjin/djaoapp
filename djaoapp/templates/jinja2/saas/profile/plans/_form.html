@@ -35,6 +35,8 @@
     <div class="row">
       <div class="col-md-6">
         {{input_field(form['renewal_type'], form.hide_labels)}}
+        {{input_field(form['skip_optin_on_grant'], form.hide_labels)}}
+        {{input_field(form['optin_on_request'], form.hide_labels)}}
       </div>
       <div class="col-md-6">
         <p>
@@ -42,14 +44,27 @@
       </div>
     </div>
   </fieldset>
+  {% if urls.plan_subscribers %}
   <hr />
   <fieldset>
     <legend>{% trans %}Advance discounts{% endtrans %}</legend>
     <div class="row">
       <div class="col-md-6">
-        {{input_field(form['advance_discount_type'], form.hide_labels)}}
-        {{input_field(form['advance_discount_value'], form.hide_labels)}}
-        {{input_field(form['advance_discount_length'], form.hide_labels)}}
+        <div class="border-start border-4" v-for="(discount, discountIdx) in formFields.advance_discounts">
+          <div class="text-end">
+            <button class="btn btn-lnk" type="button"
+                  @click.prevent="removeAdvanceDiscount(discountIdx)">
+              <i class="fa fa-trash-o text-danger"></i>
+            </button>
+          </div>
+          {{input_field(form['discount_type'], model_var='discount.discount_type')}}
+          {{input_field(form['discount_value'], model_var='discount.discount_value')}}
+          {{input_field(form['discount_length'], model_var='discount.length')}}
+        </div>
+        <button class="btn btn-link"
+                @click.prevent="addAdvanceDiscount()">
+          <i class="fa fa-add"></i>{% trans %}Add discount option{% endtrans %}...
+        </button>
       </div>
       <div class="col-md-6 text-muted">
         <p>
@@ -78,6 +93,47 @@
       </div>
     </div>
   </fieldset>
+
+  <fieldset>
+    <legend>{% trans %}Use charges{% endtrans %}</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="border-start border-4" v-for="(use, useIdx) in formFields.use_charges">
+          <div class="text-end">
+            <button class="btn btn-lnk" type="button"
+                  @click.prevent="removeUseCharge(useIdx)">
+              <i class="fa fa-trash-o text-danger"></i>
+            </button>
+          </div>
+          {{input_field(form['use_charge_slug'], model_var='use.slug')}}
+          {{input_field(form['use_charge_title'], model_var='use.title')}}
+          {{input_field(form['use_charge_description'], model_var='use.description')}}
+          {{input_field(form['use_charge_use_amount'], model_var='use.use_amount')}}
+          {{input_field(form['use_charge_quota'], model_var='use.quota')}}
+          {{input_field(form['use_charge_maximum_limit'], model_var='use.maximum_limit')}}
+        </div>
+        <button class="btn btn-link"
+                @click.prevent="addUseCharge()">
+          <i class="fa fa-add"></i>{% trans %}Add use option{% endtrans %}...
+        </button>
+      </div>
+      <div class="col-md-6 text-muted">
+        <p>
+{% trans %}A service charging $0.01/request, the first 10,000 monthly requests being included, would be entered as{% endtrans %}:
+        </p>
+        <small>
+          <div>
+            <strong>Use amount</strong>: <span>1</span>
+          </div>
+          <div>
+            <strong>Quota</strong>: <span>10000</span>
+          </div>
+        </small>
+      </div>
+    </div>
+  </fieldset>
+
+  {% endif %}
   <div class="form-action text-center">
     <div class="row">
       <div class="col-md-6">

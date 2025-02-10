@@ -1,7 +1,7 @@
 [
 {
     "fields": {
-      "date_joined": "2022-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "xia+18@localhost.localdomain",
       "first_name": "Xia18",
       "last_name": "User",
@@ -17,7 +17,7 @@
       "slug": "djaoapp-roles-card1",
       "full_name": "RolesCard1",
       "email": "djaoapp-roles-card1@djaoapp-roles-card1.com",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -25,7 +25,7 @@
     "model": "saas.Organization", "pk": 60
 },
 { "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "xia+roles-card1@djaoapp-roles-card1.com",
       "first_name": "Xia",
       "last_name": "Roles Card1",
@@ -38,7 +38,7 @@
     "model": "auth.User", "pk": 61
 },
 { "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 61
     },
@@ -58,7 +58,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "slug": "registration-card3",
       "email": "registration+card3@localhost.localdomain",
       "full_name": "Registration Card 3",

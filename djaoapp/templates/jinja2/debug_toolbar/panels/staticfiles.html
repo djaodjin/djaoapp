@@ -1,4 +1,4 @@
-<h4>{{count staticfiles_dirs|length}} Static file path(s)</h4>
+<h4>{{staticfiles_dirs|length}} Static file path(s)</h4>
 {% if staticfiles_dirs %}
     <ol>
     {% for prefix, staticfiles_dir in staticfiles_dirs %}
@@ -44,7 +44,7 @@
     </thead>
     <tbody>
     {% for path, real_path in payload %}
-    <tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+    <tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
         <td>{{ path }}</td>
         <td>{{ real_path }}</td>
     </tr>

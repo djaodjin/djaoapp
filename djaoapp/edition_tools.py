@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -17,12 +17,12 @@ from extended_templates.views.pages import (
     inject_edition_tools as inject_edition_tools_base)
 from rules.utils import get_current_app
 from saas.decorators import _valid_manager
-from saas.models import RoleDescription, get_broker, is_broker
+from saas.models import get_broker, is_broker
 from saas.templatetags.saas_tags import attached_organization
-from signup.serializers_overrides import UserDetailSerializer
+from saas.utils import get_role_model
 
 from .compat import csrf, is_authenticated, reverse
-from .api.serializers import SessionSerializer
+from .api.serializers import PublicSessionSerializer
 
 
 LOGGER = logging.getLogger(__name__)
@@ -68,24 +68,25 @@ def get_user_menu_context(user, context, request=None):
 
     nb_accessibles = 0
     top_accessibles = []
-    for role_key, accessibles in context.get('roles', {}).items():
-        nb_accessibles += len(accessibles)
-        for profile in accessibles:
-            profile_slug = profile['slug']
-            settings_location = request.build_absolute_uri(
-                reverse('saas_dashboard', args=(profile_slug,)))
-            app_location = reverse('organization_app', args=(profile_slug,))
-            role_title = RoleDescription.objects.get(slug=role_key).title
-            profile.update({
-                'settings_location': settings_location,
-                'app_location': app_location,
-                'role_title': role_title
-            })
-            top_accessibles += [profile]
-            if profile_slug in path_parts:
-                active_organization = profile
-            if is_broker(profile_slug):
-                has_broker_role = True
+    accessibles = context.get('roles', [])
+    nb_accessibles += len(accessibles)
+    for role in accessibles:
+        accessible = {}
+        accessible.update(role['profile'])
+        role_title = role['role_description']['title']
+        profile_slug = role['profile']['slug']
+        app_location = reverse('organization_app', args=(profile_slug,))
+        settings_location = role['settings_url']
+        accessible.update({
+            'settings_location': settings_location,
+            'app_location': app_location,
+            'role_title': role_title
+        })
+        top_accessibles += [accessible]
+        if profile_slug in path_parts:
+            active_organization = accessible
+        if is_broker(profile_slug):
+            has_broker_role = True
 
     top_accessibles = top_accessibles[:settings.DYNAMIC_MENUBAR_ITEM_CUT_OFF]
     more_accessibles_url = (request.build_absolute_uri(
@@ -184,15 +185,14 @@ def inject_edition_tools(response, request, context=None,
         auth_user = soup.body.find(attrs={'data-dj-menubar-user-item': True})
         user_menu_template = '_menubar.html'
         if auth_user and user_menu_template:
+            request.user.roles = get_role_model().objects.valid_for(
+                user=request.user).exclude(
+                organization__slug=request.user.username).order_by(
+                'role_description').select_related('role_description')
+            serializer = PublicSessionSerializer(request.user, context={
+                'request':request})
             cleaned_data = {}
-            cleaned_data.update(
-                SessionSerializer().to_representation(request))
-            cleaned_data.pop('session_key', None)
-            cleaned_data.pop('security_token', None)
-            cleaned_data.pop('secret_key', None)
-            cleaned_data.pop('access_key', None)
-            cleaned_data.update(
-                UserDetailSerializer().to_representation(request.user))
+            cleaned_data.update(serializer.data)
             cleaned_data = get_user_menu_context(
                 request.user, cleaned_data, request=request)
             template = loader.get_template(user_menu_template)

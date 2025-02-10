@@ -180,16 +180,20 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'djaoapp'
 )
 
-if DEBUG and 'debug_toolbar' in INSTALLED_APPS:
-    MIDDLEWARE = (
-        'debug_panel.middleware.DebugPanelMiddleware',
-    )
+MIDDLEWARE = tuple([])
+if DEBUG:
+    if 'debug_toolbar' in INSTALLED_APPS:
+        MIDDLEWARE += (
+            'debug_toolbar.middleware.DebugToolbarMiddleware',
+        )
+    if 'debug_panel' in INSTALLED_APPS:
+        MIDDLEWARE += (
+            'debug_panel.middleware.DebugPanelMiddleware',
+        )
 elif not DEBUG:
-    MIDDLEWARE = (
+    MIDDLEWARE += (
         'whitenoise.middleware.WhiteNoiseMiddleware',
     )
-else:
-    MIDDLEWARE = tuple([])
 
 MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
@@ -406,7 +410,8 @@ if FEATURES_REVERT_TO_DJANGO:
         'DIRS': TEMPLATES_DIRS,
         'OPTIONS': {
             'context_processors': [
-    'django.contrib.auth.context_processors.auth', # because of admin/
+    'django.contrib.auth.context_processors.auth',         # because of admin/
+    'django.contrib.messages.context_processors.messages', # because of admin/
     'django.template.context_processors.request',
     'django.template.context_processors.media',
     'multitier.context_processors.features_debug',
@@ -724,8 +729,8 @@ SAAS = {
             'djaoapp.thread_locals.get_authorize_processor_state',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', []),
-        'USE_STRIPE_V3': not(getattr(sys.modules[__name__],
-            'FEATURES_REVERT_STRIPE_V2', False)),
+        'USE_STRIPE_V2': getattr(sys.modules[__name__],
+            'FEATURES_REVERT_STRIPE_V2', False),
     },
     'USER_SERIALIZER': 'signup.serializers_overrides.UserSerializer',
     'USER_DETAIL_SERIALIZER':

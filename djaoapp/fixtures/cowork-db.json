@@ -1,7 +1,7 @@
 [
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "slug": "manager",
       "title": "Profile Manager"
     },
@@ -259,7 +259,7 @@
     "fields": {
       "slug": "stripe",
       "full_name": "Stripe",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "stripe@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "185 Berry St #550",
@@ -277,7 +277,7 @@
     "fields": {
       "slug": "terms-of-use",
       "title": "Terms Of Use",
-      "updated_at": "2024-01-01T00:00:00-00:00"
+      "updated_at": "2025-01-01T00:00:00-00:00"
     },
     "model": "saas.agreement", "pk": 1
 },
@@ -285,7 +285,7 @@
     "fields": {
       "slug": "security",
       "title": "Security Policy",
-      "updated_at": "2024-01-01T00:00:00-00:00"
+      "updated_at": "2025-01-01T00:00:00-00:00"
     },
     "model": "saas.agreement", "pk": 2
 },
@@ -293,7 +293,7 @@
     "fields": {
       "slug": "cowork",
       "full_name": "Cowork",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "cowork@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -309,7 +309,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "organization": 3,
       "slug": "contributor",
       "title": "Contributor"
@@ -318,7 +318,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "organization": 3,
       "slug": "support",
       "title": "Support"
@@ -327,39 +327,32 @@
 },
 {
     "fields":{
-        "slug":"basic",
         "title": "Open Space",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "unit": "cad",
         "period_amount":17999,
         "period_type": 4,
         "description":"open space desk, High speed internet – Ethernet or WiFi, Unlimited printing, Unlimited scanning, Unlimited fax service (send and receive)",
         "is_active": true,
-        "organization" : 3
-    },
-    "model" : "saas.Plan", "pk": 1
+        "organization" : 3, "slug":"basic" }, "model" : "saas.Plan", "pk": 1
 },
 {
     "fields":{
-        "slug":"premium",
         "title": "Open Plus",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "unit": "cad",
         "period_amount": 24999,
         "period_type": 4,
         "broker_fee_percent": 1000,
         "description":"OPEN SPACE + Your own permanent desk, 24/7 access, 23″ or 24″ monitor",
         "is_active": true,
-        "organization" : 3,
-        "optin_on_request": 1
-    },
-    "model" : "saas.Plan", "pk": 2
+        "optin_on_request": 1,
+        "organization" : 3, "slug":"premium" }, "model" : "saas.Plan", "pk": 2
 },
 {
     "fields":{
-        "slug":"private",
         "title": "Private",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "unit": "cad",
         "setup_amount":0,
         "period_amount":139500,
@@ -367,14 +360,12 @@
         "description":"OPEN PLUS + Fully furnished private office fits up to 3",
         "is_active": true,
         "is_not_priced": true,
-        "organization" : 3
-    },
-    "model" : "saas.Plan", "pk": 3
+        "organization" : 3, "slug":"private" }, "model" : "saas.Plan", "pk": 3
 },
 {
     "fields":{
         "code": "DIS100",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "discount_type": 1,
         "discount_value": 10000,
         "organization": 3
@@ -384,7 +375,7 @@
 {
     "fields":{
         "code": "DIS50",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "discount_type": 1,
         "discount_value": 5000,
         "organization": 3
@@ -394,7 +385,7 @@
 {
     "fields":{
         "code": "HALLOWEEN",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "discount_type": 1,
         "discount_value": 7500,
         "organization": 3
@@ -403,7 +394,7 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "alice@localhost.localdomain",
       "first_name": "Alice",
       "last_name": "Cooper",
@@ -418,7 +409,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 1
     },
@@ -427,14 +418,14 @@
 {
     "fields": {
       "slug": "alice",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "user": 1
     },
     "model": "signup.Contact", "pk": 1
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "xia@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
@@ -449,7 +440,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 2
     },
@@ -457,7 +448,7 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "kenneth@localhost.localdomain",
       "first_name": "Kenneth",
       "last_name": "Contributor",
@@ -472,7 +463,7 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "tom@localhost.localdomain",
       "first_name": "Tom",
       "last_name": "Support",
@@ -487,7 +478,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 3
     },
@@ -495,7 +486,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 4
     },
@@ -503,7 +494,7 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "amelie@localhost.localdomain",
       "first_name": "Amelie",
       "last_name": "Beetle",
@@ -518,7 +509,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 5
     },
@@ -527,14 +518,14 @@
 {
     "fields": {
       "slug": "amelie",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "user": 5
     },
     "model": "signup.Contact", "pk": 5
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "john@localhost.localdomain",
       "first_name": "John",
       "last_name": "Kramer",
@@ -549,7 +540,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 1,
       "organization": 3,
       "user": 1
@@ -558,7 +549,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 1,
       "organization": 2,
       "user": 2
@@ -567,7 +558,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 2,
       "organization": 3,
       "user": 3
@@ -576,7 +567,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 3,
       "organization": 3,
       "user": 4
@@ -585,7 +576,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "organization": 3,
       "user": 5,
       "request_key": "b0e0000000ed0123456789012345678901234578"
@@ -594,7 +585,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 1,
       "organization": 3,
       "user": 6,
@@ -606,7 +597,7 @@
     "fields": {
       "slug": "cowork-sublease",
       "full_name": "Cowork Sublease",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "cowork+sublease@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -622,21 +613,18 @@
 },
 {
     "fields":{
-        "slug":"basic-sublease",
         "title": "Open Space Sublease",
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "unit": "cad",
         "period_amount":17999,
         "period_type": 4,
         "description":"(sublease) open space desk, High speed internet – Ethernet or WiFi, Unlimited printing, Unlimited scanning, Unlimited fax service (send and receive)",
         "is_active": true,
-        "organization" : 4
-    },
-    "model" : "saas.Plan", "pk": 4
+        "organization" : 4, "slug":"basic-sublease" }, "model" : "saas.Plan", "pk": 4
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "donny@localhost.localdomain",
       "first_name": "Donny",
       "last_name": "ProviderManager",
@@ -651,7 +639,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 7
     },
@@ -659,7 +647,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 1,
       "organization": 4,
       "user": 7
@@ -671,7 +659,7 @@
     "fields": {
       "slug": "xia",
       "full_name": "Xia Lee",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "xia@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -686,8 +674,8 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
-      "ends_at": "2024-12-31T23:59:59-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "ends_at": "2025-12-31T23:59:59-00:00",
       "organization": 2,
       "plan": 1
     },
@@ -697,7 +685,7 @@
     "fields": {
       "slug": "to-be-deleted-1",
       "full_name": "Subscriber ToBeDeleted",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "to-be-deleted-1@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -713,7 +701,7 @@
 {
     "fields": {
       "username": "to-be-deleted-2",
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "ToBeDeleted2",
@@ -729,7 +717,7 @@
     "fields": {
       "slug": "to-be-deleted-2",
       "full_name": "Subscriber ToBeDeleted",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -744,7 +732,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "role_description": 1,
       "organization": 9,
       "user": 9
@@ -753,7 +741,7 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-00:00",
+      "date_joined": "2025-01-01T00:00:00-00:00",
       "email": "melissa@localhost.localdomain",
       "first_name": "Melissa",
       "is_active": true,
@@ -767,7 +755,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00-00:00",
+      "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 10
     },
@@ -775,7 +763,7 @@
 },
 {
     "fields":{
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "user": 2,
         "plan": 1,
         "coupon": 3,
@@ -785,7 +773,7 @@
 },
 {
     "fields":{
-        "created_at":"2024-01-01T00:00:00-00:00",
+        "created_at":"2025-01-01T00:00:00-00:00",
         "amount": 17999,
         "unit": "cad",
         "description": "Charge ch_19fDO72fIune2L0qZ1zuIil8 on credit card of Xia Lee (xia)",

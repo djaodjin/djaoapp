@@ -104,10 +104,12 @@
                         <div class="col-6 text-center">
                           <notification-test inline-template :notification-id="'{{key}}'">
                             <div>
-                              <button class="btn btn-outline-primary send-test-email"
-                                      @click.prevent="submit">
-                                {% trans %}Send Test Email{% endtrans %}
-                              </button>
+                              <form method="post" @submit.prevent="submit">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                                <button class="btn btn-outline-primary send-test-email">
+                                  {% trans %}Send Test Email{% endtrans %}
+                                </button>
+                              </form>
                             </div>
                           </notification-test>
                         </div>
@@ -131,10 +133,12 @@
                       </a>
                       <notification-test inline-template :notification-id="'{{key}}'">
                         <div>
-                          <button class="btn btn-outline-secondary"
-                                  @click="submit">
-                            {% trans %}Send Test Email{% endtrans %}
-                          </button>
+                          <form method="post" @submit.prevent="submit">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                            <button class="btn btn-outline-secondary">
+                              {% trans %}Send Test Email{% endtrans %}
+                            </button>
+                          </form>
                         </div>
                       </notification-test>
                     </div>
@@ -159,8 +163,8 @@ jQuery(document).ready(function($) {
 
     {% if urls.api_themes %}
     $("#theme-upload").djupload({
-        csrfToken: "{{csrf_token}}",
         uploadUrl: "{{urls.api_themes}}",
+        csrfToken: "{{csrf_token}}",
         uploadSuccessMessage: function(filename, location) {
             return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);
         }

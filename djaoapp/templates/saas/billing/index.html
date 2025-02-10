@@ -91,6 +91,7 @@
             aria-labelledby="{% trans %}Cancel balance due{% endtrans %}"
             method="post" action="."
             @submit.prevent="cancelBalance">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">

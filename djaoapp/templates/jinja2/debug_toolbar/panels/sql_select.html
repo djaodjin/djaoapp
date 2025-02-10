@@ -23,7 +23,7 @@
 			</thead>
 			<tbody>
 				{% for row in result %}
-					<tr class="{% cycle 'djDebugOdd' 'djDebugEven' %}">
+					<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 						{% for column in row %}
 							<td>{{ column|escape }}</td>
 						{% endfor %}
@@ -37,4 +37,4 @@
 	</div>
 </div>
 
-<script src="{% static 'debug_toolbar/js/toolbar.sql.js' %}"></script>
+<script src="{{'debug_toolbar/js/toolbar.sql.js'|asset}}"></script>

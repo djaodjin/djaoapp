@@ -7,7 +7,7 @@
 	</thead>
 	<tbody>
 		{% for name, value in settings.items %}
-			<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+			<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 				<td>{{ name }}</td>
 				<td><code>{{ value|pprint }}</code></td>
 			</tr>

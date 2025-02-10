@@ -1,5 +1,5 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
-__version__ = '2024-03-15.3'
+__version__ = '2025-02-17'

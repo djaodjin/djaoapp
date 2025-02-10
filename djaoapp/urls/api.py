@@ -46,6 +46,7 @@ urlpatterns = [
     # Billing, Metrics, Profiles, Roles and Subscriptions
     url_prefixed(r'^api/', include('saas.urls.api.cart')),
         # `saas.urls.api.cart`: DELETE implements its own policy
+    url_prefixed(r'api/', include('saas.urls.api.payments')),
     url_authenticated(r'^api/', include('saas.urls.api.legal')),
     url_self_provider(r'^api/', include('saas.urls.api.users')),
     url_direct(r'^api/profile$',

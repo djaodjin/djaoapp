@@ -153,6 +153,7 @@ def responses_parameters(api_endpoint, defs):
     if 'responses' not in api_endpoint:
         return []
     results = {}
+    func = api_endpoint['func']
     for resp_code, param in api_endpoint['responses'].items():
         params = []
         if 'content' in param:
@@ -162,6 +163,10 @@ def responses_parameters(api_endpoint, defs):
                 schema = defs[(key, 'schemas')].schema
             if 'properties' in schema:
                 for prop_name, prop in schema['properties'].items():
+                    if prop.get('writeOnly') and func == 'get':
+                        # We are dealing with a `write_only` parameter
+                        # in a `GET` HTTP request.
+                        continue
                     if 'type' not in prop:
                         first_enum = prop.get('allOf',[{}])[0]
                         if '$ref' in first_enum:

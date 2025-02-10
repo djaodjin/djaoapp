@@ -35,76 +35,77 @@
              {# `style="display: block;"` `!important` gets in the way. #}
              {% if not (not last4 or force_update) %} style="display:none;"{% endif %}
              v-show="!haveCardData || updateCard">
-          <div id="card-element" style="display:inline-block;">
-            <div class="form-group">
-              <div class="card-icons text-center">
-                <img id="amex" src="{{'assets/img/american-express-curved-32px.png'|djasset}}">
-                <img id="mastercard" src="{{'assets/img/mastercard-curved-32px.png'|djasset}}">
-                <img id="discover" src="{{'assets/img/discover-curved-32px.png'|djasset}}">
-                <img id="visa" src="{{'assets/img/visa-curved-32px.png'|djasset}}">
+          <div id="card-element">
+            <div class="d-inline-block">
+              <div class="form-group">
+                <div class="card-icons text-center">
+                  <img id="amex" src="{{'assets/img/american-express-curved-32px.png'|djasset}}">
+                  <img id="mastercard" src="{{'assets/img/mastercard-curved-32px.png'|djasset}}">
+                  <img id="discover" src="{{'assets/img/discover-curved-32px.png'|djasset}}">
+                  <img id="visa" src="{{'assets/img/visa-curved-32px.png'|djasset}}">
+                </div>
               </div>
-            </div>
-            <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
-                 values will hit the server and break PCI compliance. -->
-            <div id="row-number" class="form-group">
-              <label class="col-form-label"
-                     for="card-number">{% trans %}Card Number{% endtrans %}</label>
-              <div class="controls">
-                <input id="card-number"
+              <!-- BE CAREFULL: Do not add name="" to these <input> nodes, else
+                   values will hit the server and break PCI compliance. -->
+              <div id="row-number" class="form-group">
+                <label class="col-form-label"
+                  for="card-number">{% trans %}Card Number{% endtrans %}</label>
+                <div class="controls">
+                  <input id="card-number"
                     class="form-control" type="text"
                     size="16" placeholder="{% trans %}Card Number{% endtrans %}"
                     autocomplete="off"
                     v-model="cardNumber" />
+                </div>
               </div>
+              <div class="row">
+                <div id="row-exp" class="col-sm-6 col-md-6 col-lg-6 form-group">
+                  <label class="col-form-label">{% trans %}Expiration{% endtrans %}</label>
+                  <div class="controls">
+                    <input id="card-exp-month"
+                        class="form-control"
+                        style="display:inline-block;width:40%;"
+                        type="text" maxlength="2" size="2"
+                        placeholder="{% trans %}MM{% endtrans %}"
+                        v-model="cardExpMonth" />
+                    <input id="card-exp-year"
+                        class="form-control"
+                        style="display:inline-block;width:50%;"
+                        type="text" maxlength="4" size="4"
+                        placeholder="{% trans %}YYYY{% endtrans %}"
+                        v-model="cardExpYear" />
+                  </div>
+                </div>
+                <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
+                  <label class="col-form-label">{% trans %}Security Code{% endtrans %}</label>
+                  <div id="cvc-detail" style="display: none;">
+                    <h3>{% trans %}What is CVV/CVC ?{% endtrans %}</h3>
+                    <p>
+{% trans %}Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure established by credit card companies to reduce fraud for internet transactions. On a Visa, MasterCard and Discover, this 3 digit code is located on the back of the card. American Express, however, displays a 4 digit code on the front of the card. Both 3 or 4 digit codes are verification numbers used in the authentication process.{% endtrans %}
+                    </p>
+                    <h4>MasterCard, Visa &amp; Discover</h4>
+                    <p>
+{% trans %}The CVV/CVC code is the last 3 digits printed in the signature area on the back of the card.{% endtrans %}
+                    </p>
+                    <h4>American Express</h4>
+                    <p>
+{% trans %}The CVV/CVC code is the last 4 digits on the front of your card right above your credit card number.{% endtrans %}
+                    </p>
+                  </div>
+                  <div class="controls">
+                    <input id="card-cvc"
+                           class="form-control"
+                           type="text" maxlength="4" size="3"
+                           placeholder="CVC" autocomplete="off"
+                           v-model="cardCvc" />
+                  </div>
+                </div>
+              </div>
+              <small>
+{% trans %}We keep on top of all best practices to secure the information you provide us. See the <a href="/legal/security/" target="_blank">security policy</a> for details.{% endtrans %}
+              </small>
             </div>
-            <div class="row">
-              <div id="row-exp" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                <label class="col-form-label">{% trans %}Expiration{% endtrans %}</label>
-                <div class="controls">
-                  <input id="card-exp-month"
-                      class="form-control"
-                      style="display:inline-block;width:40%;"
-                      type="text" maxlength="2" size="2"
-                      placeholder="{% trans %}MM{% endtrans %}"
-                      v-model="cardExpMonth" />
-                  <input id="card-exp-year"
-                      class="form-control"
-                      style="display:inline-block;width:50%;"
-                      type="text" maxlength="4" size="4"
-                      placeholder="{% trans %}YYYY{% endtrans %}"
-                      v-model="cardExpYear" />
-                </div>
-              </div>
-              <div id="row-cvc" class="col-sm-6 col-md-6 col-lg-6 form-group">
-                <label class="col-form-label">{% trans %}Security Code{% endtrans %}</label>
-                <div id="cvc-detail" style="display: none;">
-                  <h3>{% trans %}What is CVV/CVC ?{% endtrans %}</h3>
-                  <p>
-                  {% trans %}Card Value Verification (CVV) or Card Verification Code (CVC) is a procedure established by credit card companies to reduce fraud for internet transactions. On a Visa, MasterCard and Discover, this 3 digit code is located on the back of the card. American Express, however, displays a 4 digit code on the front of the card. Both 3 or 4 digit codes are verification numbers used in the authentication process.{% endtrans %}
-                  </p>
-                  <h4>MasterCard, Visa &amp; Discover</h4>
-                  <p>
-                  {% trans %}The CVV/CVC code is the last 3 digits printed in the signature area on the back of the card.{% endtrans %}
-                  </p>
-                  <h4>American Express</h4>
-                  <p>
-                  {% trans %}The CVV/CVC code is the last 4 digits on the front of your card right above your credit card number.{% endtrans %}
-                  </p>
-                </div>
-                <div class="controls">
-                  <input id="card-cvc"
-                      class="form-control"
-                      type="text" maxlength="4" size="3"
-                      placeholder="CVC" autocomplete="off"
-                      v-model="cardCvc" />
-                </div>
-              </div>
-            </div>
-            <small>
-            {% trans %}We keep on top of all best practices to secure the information you provide us. See the <a href="/legal/security/" target="_blank">security policy</a> for details.{% endtrans %}
-            </small>
-            </p>
-          </div>
+          </div>{# /#card-element #}
         </div>{# /!haveCardData #}
       </fieldset>
       <fieldset id="card-billing-address"

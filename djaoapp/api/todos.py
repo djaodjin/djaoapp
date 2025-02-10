@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -47,7 +47,7 @@ class DjaoAppAPIVersion(RetrieveAPIView):
         .. code-block:: json
 
             {
-              "version": "2024-03-15.3"
+              "version": "2025-01-31"
             }
         """
         serializer = VersionSerializer({'version': __version__})
@@ -55,6 +55,19 @@ class DjaoAppAPIVersion(RetrieveAPIView):
 
 
 class GenerateErrorAPIView(ProviderMixin, CreateAPIView):
+    """
+    Generates a 500 error
+
+    This API is used to test monitoring systems
+
+    **Example
+
+    .. code-block:: http
+
+        POST /api/proxy/generate-error HTTP/1.1
+    """
+    serializer_class = VersionSerializer
+    schema = None
 
     def create(self, request, *args, **kwargs):
         raise RuntimeError("Testing: Generated Error")

@@ -81,9 +81,9 @@ paths:
         schema:
           type: string
       tags:
-      - profile
-      - list
       - user
+      - list
+      - profile
       security:
       - {}
       responses:
@@ -152,9 +152,9 @@ paths:
         schema:
           type: string
       tags:
-      - profile
-      - list
       - user
+      - list
+      - profile
       security:
       - {}
       responses:
@@ -172,8 +172,8 @@ paths:
         Creates a profile that is not associated to any user.
 
       tags:
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -213,9 +213,9 @@ paths:
           type: string
         required: true
       tags:
+      - profilemodel
       - profile
       - subscriber
-      - profilemodel
       security:
       - {}
       responses:
@@ -283,9 +283,9 @@ paths:
         schema:
           type: string
       tags:
-      - profile
-      - list
       - user
+      - list
+      - profile
       security:
       - {}
       responses:
@@ -536,9 +536,9 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       requestBody:
         content:
           application/json:
@@ -572,9 +572,6 @@ paths:
       operationId: auth_activate_retrieve
       description: |2+
 
-        Retrieves information about a contact or user associated
-        to the activation key.
-
         This API is typically used to pre-populate a registration form
         when a user was invited to the site by another user.
 
@@ -590,9 +587,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       security:
       - {}
       responses:
@@ -624,9 +621,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       requestBody:
         content:
           application/json:
@@ -666,8 +663,8 @@ paths:
         authentication. Tokens expire; they cannot be revoked.
 
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       security:
       - {}
@@ -689,9 +686,9 @@ paths:
         as present in the default theme.
 
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       requestBody:
         content:
           application/json:
@@ -734,9 +731,9 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       requestBody:
         content:
           application/json:
@@ -779,9 +776,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - auth
-      - usermodel
       - visitor
+      - usermodel
+      - auth
       security:
       - {}
       responses:
@@ -795,6 +792,27 @@ paths:
           description: ''
       summary: Resets a user password
   /api/auth/tokens:
+    get:
+      operationId: auth_tokens_retrieve
+      description: |2+
+
+        Retrieves details on authenticated user
+
+        The API is typically used to build the user menubar item.
+
+      tags:
+      - usermodel
+      - user
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSession'
+          description: ''
+      summary: Retrieves authenticated user
     post:
       operationId: auth_tokens_create
       description: |2+
@@ -806,8 +824,8 @@ paths:
         identical.
 
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -864,8 +882,8 @@ paths:
         identical.
 
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -1019,6 +1037,18 @@ paths:
         act).
 
       parameters:
+      - in: query
+        name: amount
+        schema:
+          type: integer
+          minimum: 1
+        description: Amount to mark as paid or write-off. Min value is 1.
+      - in: query
+        name: paid
+        schema:
+          type: boolean
+        description: When true, the cancelation was recovered offline, else it is
+          a write-off
       - in: path
         name: profile
         schema:
@@ -1098,9 +1128,9 @@ paths:
           type: boolean
         description: Adds context to update a payment method on file.
       tags:
+      - profilemodel
       - billing
       - subscriber
-      - profilemodel
       security:
       - {}
       responses:
@@ -1129,9 +1159,9 @@ paths:
           type: string
         required: true
       tags:
+      - profilemodel
       - billing
       - subscriber
-      - profilemodel
       requestBody:
         content:
           application/json:
@@ -1178,9 +1208,9 @@ paths:
           type: string
         required: true
       tags:
+      - profilemodel
       - billing
       - subscriber
-      - profilemodel
       requestBody:
         content:
           application/json:
@@ -1220,9 +1250,9 @@ paths:
           type: string
         required: true
       tags:
+      - profilemodel
       - billing
       - subscriber
-      - profilemodel
       security:
       - {}
       responses:
@@ -1248,9 +1278,9 @@ paths:
           type: string
         required: true
       tags:
+      - chargemodel
       - billing
       - subscriber
-      - chargemodel
       security:
       - {}
       responses:
@@ -1283,9 +1313,9 @@ paths:
           type: string
         required: true
       tags:
+      - chargemodel
       - billing
       - subscriber
-      - chargemodel
       security:
       - {}
       responses:
@@ -1316,8 +1346,8 @@ paths:
         required: true
       tags:
       - provider
-      - billing
       - chargemodel
+      - billing
       requestBody:
         content:
           application/json:
@@ -1430,6 +1460,53 @@ paths:
                 $ref: '#/components/schemas/Charge'
           description: ''
       summary: Checkouts a cart
+  /api/billing/{profile}/checkout/paylater:
+    post:
+      operationId: billing_checkout_paylater_create
+      description: |2+
+
+        Places an order for the subscription items in the cart.
+
+        The cart is manipulated through various API endpoints:
+
+        - `Redeems a discount code </docs/api/#createCouponRedeem>`_ applies a coupon code for a potential discount, and
+        - `Adds an item to the request user cart </docs/api/#createCartItem>`_, `Removes an item from the request user cart </docs/api/#destroyCartItem>`_ to update a cart.
+
+        The API is typically used within an HTML
+        `checkout page </docs/guides/themes/#workflow_billing_cart>`_
+        as present in the default theme.
+
+      parameters:
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      tags:
+      - cartmodel
+      - billing
+      - subscriber
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paylater'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Paylater'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Paylater'
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+      summary: Places an order to be paid later
   /api/billing/{profile}/coupons:
     get:
       operationId: billing_coupons_list
@@ -1500,8 +1577,8 @@ paths:
           type: string
       tags:
       - provider
-      - billing
       - list
+      - billing
       - couponmodel
       security:
       - {}
@@ -1785,8 +1862,8 @@ paths:
           type: string
       tags:
       - transactionmodel
-      - billing
       - list
+      - billing
       - subscriber
       security:
       - {}
@@ -1798,6 +1875,55 @@ paths:
                 $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
       summary: Lists subscriber transactions
+  /api/billing/{profile}/payments/{claim_code}/collected:
+    post:
+      operationId: billing_payments_collected_create
+      description: |2+
+
+        Partially or totally marks an invoice as paid or canceled.
+
+      parameters:
+      - in: path
+        name: claim_code
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      tags:
+      - provider
+      - chargemodel
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryParamCancelBalance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QueryParamCancelBalance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QueryParamCancelBalance'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDetail'
+          description: ''
+      summary: Marks an invoice paid
   /api/billing/{profile}/receivables:
     get:
       operationId: billing_receivables_list
@@ -1868,10 +1994,10 @@ paths:
         schema:
           type: string
       tags:
-      - transactionmodel
       - provider
-      - billing
       - list
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1946,10 +2072,10 @@ paths:
         schema:
           type: string
       tags:
-      - transactionmodel
       - provider
-      - billing
       - list
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1960,47 +2086,6 @@ paths:
                 $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
       summary: Lists provider payouts
-  /api/billing/{profile}/transfers/import:
-    post:
-      operationId: billing_transfers_import_create
-      description: |2+
-
-        The primary purpose of this API call is for a provider to keep
-        accurate metrics for the performance of the product sold, regardless
-        of payment options (online or offline).
-
-      parameters:
-      - in: path
-        name: profile
-        schema:
-          type: string
-        required: true
-      tags:
-      - provider
-      - billing
-      - transactionmodel
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOfflineTransaction'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/CreateOfflineTransaction'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateOfflineTransaction'
-        required: true
-      security:
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OfflineTransaction'
-          description: ''
-      summary: Creates an offline transaction
   /api/billing/cartitems:
     get:
       operationId: billing_cartitems_list
@@ -2063,8 +2148,8 @@ paths:
           type: string
       tags:
       - broker
-      - billing
       - cart
+      - billing
       security:
       - {}
       responses:
@@ -2083,8 +2168,8 @@ paths:
 
       tags:
       - broker
-      - billing
       - cart
+      - billing
       requestBody:
         content:
           application/json:
@@ -2125,8 +2210,8 @@ paths:
         required: true
       tags:
       - broker
-      - billing
       - cart
+      - billing
       security:
       - {}
       responses:
@@ -2154,8 +2239,8 @@ paths:
         required: true
       tags:
       - broker
-      - billing
       - cart
+      - billing
       requestBody:
         content:
           application/json:
@@ -2194,8 +2279,8 @@ paths:
         required: true
       tags:
       - broker
-      - billing
       - cart
+      - billing
       requestBody:
         content:
           application/json:
@@ -2234,8 +2319,8 @@ paths:
         required: true
       tags:
       - broker
-      - billing
       - cart
+      - billing
       security:
       - {}
       responses:
@@ -2309,8 +2394,8 @@ paths:
         required: true
       tags:
       - broker
-      - billing
       - cart
+      - billing
       security:
       - {}
       responses:
@@ -2382,9 +2467,9 @@ paths:
           type: string
       tags:
       - broker
-      - billing
-      - list
       - chargemodel
+      - list
+      - billing
       security:
       - {}
       responses:
@@ -2395,6 +2480,70 @@ paths:
                 $ref: '#/components/schemas/PaginatedChargeList'
           description: ''
       summary: Lists processor charges
+  /api/billing/payments/{claim_code}:
+    get:
+      operationId: billing_payments_retrieve
+      description: |2+
+
+        Retrieves an invoice that was created by a 'paylater' API call.
+
+      parameters:
+      - in: path
+        name: claim_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - chargemodel
+      - billing
+      - subscriber
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+      summary: Retrieves an invoice
+    post:
+      operationId: billing_payments_create
+      description: |2+
+
+        Pays an invoice online with a payment method such as a credit card.
+
+      parameters:
+      - in: path
+        name: claim_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - provider
+      - chargemodel
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+      summary: Pays an invoice
   /api/billing/transactions:
     get:
       operationId: billing_transactions_list
@@ -2457,9 +2606,9 @@ paths:
           type: string
       tags:
       - broker
-      - transactionmodel
-      - billing
       - list
+      - billing
+      - transactionmodel
       security:
       - {}
       responses:
@@ -2497,9 +2646,9 @@ paths:
         to be subscribed (see `GroupBuy orders  <group_buy>`_).
 
       tags:
+      - visitor
       - cartmodel
       - billing
-      - visitor
       requestBody:
         content:
           application/json:
@@ -2550,9 +2699,9 @@ paths:
           nullable: true
         description: Plan
       tags:
+      - visitor
       - cartmodel
       - billing
-      - visitor
       security:
       - {}
       responses:
@@ -2579,8 +2728,8 @@ paths:
           type: string
         required: true
       tags:
-      - billing
       - cartmodel
+      - billing
       requestBody:
         content:
           application/json:
@@ -2612,9 +2761,9 @@ paths:
         in the cart.
 
       tags:
+      - visitor
       - cartmodel
       - billing
-      - visitor
       requestBody:
         content:
           application/json:
@@ -2720,8 +2869,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - usermodel
+      - broker
       - profile
       security:
       - {}
@@ -2744,8 +2893,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - usermodel
+      - broker
       - profile
       requestBody:
         content:
@@ -2873,8 +3022,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - visitor
+      - broker
       security:
       - {}
       responses:
@@ -2904,8 +3053,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -2983,10 +3132,10 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
-      - provider
-      - transactionmodel
       - chart
+      - provider
+      - metrics
+      - transactionmodel
       security:
       - {}
       responses:
@@ -3058,10 +3207,10 @@ paths:
         schema:
           type: string
       tags:
-      - balance
-      - provider
       - subscribers
       - organization
+      - provider
+      - balance
       security:
       - {}
       responses:
@@ -3144,9 +3293,9 @@ paths:
         schema:
           type: string
       tags:
-      - metrics
-      - provider
       - list
+      - provider
+      - metrics
       - couponmodel
       security:
       - {}
@@ -3220,9 +3369,9 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
-      - provider
       - chart
+      - provider
+      - metrics
       - profilemodel
       security:
       - {}
@@ -3249,8 +3398,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - provider
+      - metrics
       security:
       - {}
       responses:
@@ -3275,8 +3424,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - provider
+      - metrics
       security:
       - {}
       responses:
@@ -3331,10 +3480,10 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
-      - provider
-      - transactionmodel
       - chart
+      - provider
+      - metrics
+      - transactionmodel
       security:
       - {}
       responses:
@@ -3408,9 +3557,9 @@ paths:
         schema:
           type: string
       tags:
-      - metrics
-      - provider
       - list
+      - provider
+      - metrics
       - profilemodel
       security:
       - {}
@@ -3477,10 +3626,10 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
-      - provider
       - planmodel
       - chart
+      - provider
+      - metrics
       security:
       - {}
       responses:
@@ -3533,8 +3682,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -3573,8 +3722,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -3599,8 +3748,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -3639,8 +3788,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -3682,8 +3831,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -3713,8 +3862,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -3756,8 +3905,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -3798,8 +3947,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -3871,9 +4020,9 @@ paths:
         schema:
           type: string
       tags:
-      - metrics
       - usermodel
       - broker
+      - metrics
       security:
       - {}
       responses:
@@ -3897,8 +4046,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - themes
       - broker
+      - themes
       - notificationmodel
       security:
       - {}
@@ -3974,8 +4123,8 @@ paths:
         schema:
           type: string
       tags:
-      - planmodel
       - subscriptions
+      - planmodel
       - visitor
       security:
       - {}
@@ -4075,9 +4224,9 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
+      - profilemodel
       - profile
       - subscriber
-      - profilemodel
       security:
       - {}
       responses:
@@ -4100,9 +4249,9 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
+      - profilemodel
       - profile
       - subscriber
-      - profilemodel
       requestBody:
         content:
           application/json:
@@ -4141,9 +4290,9 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
+      - profilemodel
       - profile
       - subscriber
-      - profilemodel
       requestBody:
         content:
           application/json:
@@ -4181,9 +4330,9 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
+      - profilemodel
       - profile
       - subscriber
-      - profilemodel
       security:
       - {}
       responses:
@@ -4291,10 +4440,10 @@ paths:
         schema:
           type: string
       tags:
-      - planmodel
       - subscriptions
-      - list
+      - planmodel
       - provider
+      - list
       security:
       - {}
       responses:
@@ -4604,8 +4753,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -4912,8 +5061,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -5012,8 +5161,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -5072,8 +5221,8 @@ paths:
         schema:
           type: string
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - list
       - subscriber
       security:
@@ -5181,8 +5330,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       requestBody:
         content:
@@ -5232,8 +5381,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -5272,8 +5421,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -5311,8 +5460,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       requestBody:
         content:
@@ -5363,8 +5512,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -5422,8 +5571,8 @@ paths:
         schema:
           type: string
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - list
       - subscriber
       security:
@@ -5451,8 +5600,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       requestBody:
         content:
@@ -5495,8 +5644,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -5526,8 +5675,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       requestBody:
         content:
@@ -5569,8 +5718,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       requestBody:
         content:
@@ -5611,8 +5760,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -5691,10 +5840,10 @@ paths:
         schema:
           type: string
       tags:
+      - subscriptions
       - provider
       - list
       - profilemodel
-      - subscriptions
       security:
       - {}
       responses:
@@ -5728,8 +5877,8 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - provider
       - rbac
+      - provider
       - subscriptionmodel
       security:
       - {}
@@ -5812,10 +5961,10 @@ paths:
         schema:
           type: string
       tags:
+      - subscriptions
       - provider
       - list
       - profilemodel
-      - subscriptions
       security:
       - {}
       responses:
@@ -5879,10 +6028,10 @@ paths:
         schema:
           type: string
       tags:
-      - rolemodel
+      - subscriptions
       - provider
       - list
-      - subscriptions
+      - rolemodel
       security:
       - {}
       responses:
@@ -5973,8 +6122,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -6059,8 +6208,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -6154,8 +6303,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - list
       - provider
+      - list
       - subscriptionmodel
       security:
       - {}
@@ -6221,10 +6370,10 @@ paths:
         schema:
           type: string
       tags:
+      - subscriptions
       - provider
       - list
       - profilemodel
-      - subscriptions
       security:
       - {}
       responses:
@@ -6309,8 +6458,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       security:
       - {}
       responses:
@@ -6342,8 +6491,8 @@ paths:
         required: true
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       security:
       - {}
       responses:
@@ -6378,8 +6527,8 @@ paths:
         required: true
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       requestBody:
         content:
           application/json:
@@ -6422,8 +6571,8 @@ paths:
         required: true
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       requestBody:
         content:
           application/json:
@@ -6468,8 +6617,8 @@ paths:
         required: true
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       security:
       - {}
       responses:
@@ -6557,8 +6706,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - subscriber
       - subscriptionmodel
+      - subscriber
       security:
       - {}
       responses:
@@ -6583,9 +6732,9 @@ paths:
         `session API endpoint  <#retrieveGetSessionDetail>`_.
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6605,9 +6754,9 @@ paths:
         is encoded.
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6642,9 +6791,9 @@ paths:
         `session API endpoint  <#retrieveGetSessionDetail>`_.
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6672,9 +6821,9 @@ paths:
       description: |2+
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6705,9 +6854,9 @@ paths:
         schema:
           type: integer
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6727,9 +6876,9 @@ paths:
         to the application entry point.
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6764,9 +6913,9 @@ paths:
         schema:
           type: integer
       tags:
-      - metrics
       - appmodel
       - broker
+      - metrics
       security:
       - {}
       responses:
@@ -6800,9 +6949,9 @@ paths:
         schema:
           type: integer
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6818,9 +6967,9 @@ paths:
       description: |2+
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6844,7 +6993,7 @@ paths:
           description: ''
       summary: Creates an access rule
     patch:
-      operationId: proxy_rules_partial_update
+      operationId: proxy_rules_order_update
       description: |2+
 
         When receiving a request like [{"newpos": 1, "oldpos": 3}],
@@ -6852,9 +7001,9 @@ paths:
         rules ranks in-between.
 
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6889,9 +7038,9 @@ paths:
           pattern: ^([a-zA-Z0-9:\-\{\}]+/)*[a-zA-Z0-9:\-\{\}]*$
         required: true
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -6914,9 +7063,9 @@ paths:
           pattern: ^([a-zA-Z0-9:\-\{\}]+/)*[a-zA-Z0-9:\-\{\}]*$
         required: true
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6940,7 +7089,7 @@ paths:
           description: ''
       summary: Updates an access rule
     patch:
-      operationId: proxy_rules_partial_update_2
+      operationId: proxy_rules_partial_update
       description: |2+
 
       parameters:
@@ -6951,9 +7100,9 @@ paths:
           pattern: ^([a-zA-Z0-9:\-\{\}]+/)*[a-zA-Z0-9:\-\{\}]*$
         required: true
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       requestBody:
         content:
           application/json:
@@ -6987,9 +7136,9 @@ paths:
           pattern: ^([a-zA-Z0-9:\-\{\}]+/)*[a-zA-Z0-9:\-\{\}]*$
         required: true
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -7011,9 +7160,9 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - appmodel
       - rbac
+      - broker
       security:
       - {}
       responses:
@@ -7035,9 +7184,9 @@ paths:
         on the theme package structure and customizing the default templates.
 
       tags:
-      - themes
       - appmodel
       - broker
+      - themes
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -7069,9 +7218,9 @@ paths:
         Pages will be using the default theme after a reset.
 
       tags:
-      - themes
       - appmodel
       - broker
+      - themes
       security:
       - {}
       responses:
@@ -7485,9 +7634,9 @@ paths:
       description: |2+
 
       tags:
-      - themes
       - appmodel
       - broker
+      - themes
       security:
       - {}
       responses:
@@ -7503,9 +7652,9 @@ paths:
       description: |2+
 
       tags:
-      - themes
       - appmodel
       - broker
+      - themes
       requestBody:
         content:
           application/json:
@@ -7532,9 +7681,9 @@ paths:
       description: |2+
 
       tags:
-      - themes
       - appmodel
       - broker
+      - themes
       requestBody:
         content:
           application/json:
@@ -7608,8 +7757,8 @@ paths:
         schema:
           type: string
       tags:
-      - broker
       - usermodel
+      - broker
       - profile
       security:
       - {}
@@ -7626,8 +7775,8 @@ paths:
       description: |2+
 
       tags:
-      - broker
       - usermodel
+      - broker
       - profile
       requestBody:
         content:
@@ -7677,8 +7826,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       security:
       - {}
       responses:
@@ -7706,8 +7855,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -7747,8 +7896,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -7787,8 +7936,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       security:
       - {}
       responses:
@@ -7855,9 +8004,9 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       security:
       - {}
       responses:
@@ -7892,9 +8041,9 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       requestBody:
         content:
           application/json:
@@ -7981,9 +8130,9 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       security:
       - {}
       responses:
@@ -8024,9 +8173,9 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       requestBody:
         content:
           application/json:
@@ -8072,8 +8221,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -8109,9 +8258,9 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       security:
       - {}
       responses:
@@ -8183,9 +8332,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - rolemodel
       - rbac
       - user
+      - rolemodel
       security:
       - {}
       responses:
@@ -8213,8 +8362,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       security:
       - {}
@@ -8281,8 +8430,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       security:
       - {}
@@ -8308,8 +8457,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -8352,8 +8501,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -8390,8 +8539,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       security:
       - {}
       responses:
@@ -8415,8 +8564,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -8452,8 +8601,8 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -8499,8 +8648,8 @@ paths:
           pattern: ^[\w.@+-]+$
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -8549,8 +8698,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -8588,8 +8737,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       security:
       - {}
@@ -8697,9 +8846,9 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - rbac
       - user
+      - profile
       security:
       - {}
       responses:
@@ -8729,9 +8878,9 @@ paths:
         required: true
       tags:
       - usermodel
-      - profile
       - rbac
       - user
+      - profile
       requestBody:
         content:
           application/json:
@@ -8769,8 +8918,8 @@ paths:
           type: string
         required: true
       tags:
-      - auth
       - usermodel
+      - auth
       - user
       requestBody:
         content:
@@ -9261,7 +9410,7 @@ components:
       type: object
       description: Information to verify a credit card
       properties:
-        processor:
+        processor_info:
           allOf:
           - $ref: '#/components/schemas/ProcessorAuth'
           description: Keys to authenticate the client with the payment processor
@@ -9326,26 +9475,27 @@ components:
           allOf:
           - $ref: '#/components/schemas/User'
           description: User the cart belongs to
+        plan:
+          allOf:
+          - $ref: '#/components/schemas/Plan'
+          description: Plan in the cart
+        use:
+          allOf:
+          - $ref: '#/components/schemas/UseCharge'
+          nullable: true
+          description: Use charge in the cart
+        option:
+          type: integer
+          description: Index in the list of discounts for advance payments
+        quantity:
+          type: integer
+          description: Number of periods to be paid in advance
         claim_code:
           type: string
           readOnly: true
           nullable: true
           description: Code used to assign the cart item to a user in group buy
           pattern: ^[-a-zA-Z0-9_]+$
-        plan:
-          allOf:
-          - $ref: '#/components/schemas/Plan'
-          description: Item in the cart (if plan)
-        option:
-          type: integer
-          description: Index in the list of discounts for advance payments
-        use:
-          type: integer
-          nullable: true
-          description: Item added to the cart (if use charge)
-        quantity:
-          type: integer
-          description: Number of periods to be paid in advance
         sync_on:
           type: string
           nullable: true
@@ -9381,8 +9531,7 @@ components:
         created_at:
           type: string
           format: date-time
-          readOnly: true
-          description: Date/time of creation (in ISO format)
+          description: Date/time at which item is recorded (in ISO 8601 format)
         plan:
           type: string
           description: The plan to add into the request.user cart.
@@ -9413,7 +9562,6 @@ components:
             (GroupBuy)
           maxLength: 255
       required:
-      - created_at
       - plan
     CartItemUpdate:
       type: object
@@ -9431,27 +9579,28 @@ components:
           - $ref: '#/components/schemas/User'
           readOnly: true
           description: User the cart belongs to
+        plan:
+          allOf:
+          - $ref: '#/components/schemas/Plan'
+          readOnly: true
+          description: Plan in the cart (if any)
+        use:
+          allOf:
+          - $ref: '#/components/schemas/UseCharge'
+          nullable: true
+          description: Use charge in the cart
+        option:
+          type: integer
+          description: Index in the list of discounts for advance payments
+        quantity:
+          type: integer
+          description: Number of periods to be paid in advance
         claim_code:
           type: string
           readOnly: true
           nullable: true
           description: Code used to assign the cart item to a user in group buy
           pattern: ^[-a-zA-Z0-9_]+$
-        plan:
-          allOf:
-          - $ref: '#/components/schemas/Plan'
-          readOnly: true
-          description: Plan in the cart (if any)
-        option:
-          type: integer
-          description: Index in the list of discounts for advance payments
-        use:
-          type: integer
-          nullable: true
-          description: Item added to the cart (if use charge)
-        quantity:
-          type: integer
-          description: Number of periods to be paid in advance
         sync_on:
           type: string
           nullable: true
@@ -9517,6 +9666,9 @@ components:
           type: string
           readOnly: true
           description: 'Three-letter ISO 4217 code for currency unit (ex: usd)'
+        state:
+          type: string
+          description: Current state (i.e. created, done, failed, disputed)
         readable_amount:
           type: string
           readOnly: true
@@ -9526,6 +9678,12 @@ components:
           readOnly: true
           nullable: true
           description: Description for the charge as appears on billing statements
+        claim_code:
+          type: string
+          readOnly: true
+          nullable: true
+          description: Unique code used to retrieve the invoice / charge
+          pattern: ^[-a-zA-Z0-9_]+$
         last4:
           type: string
           readOnly: true
@@ -9539,17 +9697,16 @@ components:
         processor_key:
           type: string
           readOnly: true
+          nullable: true
           description: Unique identifier returned by the payment processor
           pattern: ^[-a-zA-Z0-9_]+$
-        state:
-          type: string
-          description: Current state (i.e. created, done, failed, disputed)
         detail:
           type: string
           readOnly: true
           description: Feedback for the user in plain text
       required:
       - amount
+      - claim_code
       - created_at
       - description
       - detail
@@ -9569,13 +9726,6 @@ components:
             $ref: '#/components/schemas/CheckoutItem'
           description: List of indices, one per subscription that has multiple advance
             discount options
-        remember_card:
-          type: boolean
-          description: attaches the payment method to the profile when true
-        processor_token:
-          type: string
-          description: one-time token generated by the processorfrom the payment card.
-          maxLength: 255
         street_address:
           type: string
           description: Street address
@@ -9593,6 +9743,13 @@ components:
           oneOf:
           - $ref: '#/components/schemas/CountryEnum'
           - $ref: '#/components/schemas/BlankEnum'
+        remember_card:
+          type: boolean
+          description: attaches the payment method to the profile when true
+        processor_token:
+          type: string
+          description: one-time token generated by the processorfrom the payment card.
+          maxLength: 255
     CheckoutItem:
       type: object
       properties:
@@ -9990,28 +10147,6 @@ components:
       required:
       - created_at
       - discount_type
-    CreateOfflineTransaction:
-      type: object
-      description: Serializer to validate the input that creates an off-line transaction.
-      properties:
-        subscription:
-          type: string
-          description: The subscription the offline transaction refers to.
-        created_at:
-          type: string
-          format: date-time
-          description: Date/time of creation (in ISO 8601 format)
-        amount:
-          type: string
-          format: decimal
-          description: Total amount in currency unit
-        descr:
-          type: string
-          description: Free-form text description for the transaction
-      required:
-      - amount
-      - created_at
-      - subscription
     Credentials:
       type: object
       description: username and password for authentication through API.
@@ -10181,7 +10316,7 @@ components:
       properties:
         subscription:
           allOf:
-          - $ref: '#/components/schemas/Subscription'
+          - $ref: '#/components/schemas/InvoicableSubscription'
           readOnly: true
           description: Subscription lines and options refer to.
         lines:
@@ -10199,6 +10334,66 @@ components:
       - lines
       - options
       - subscription
+    InvoicableSubscription:
+      type: object
+      description: Serializer for `Subscription` which are presented as part of an
+        invoicable
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date/time of creation (in ISO format)
+        ends_at:
+          type: string
+          format: date-time
+          description: Date/time when the subscription period currently ends (in ISO
+            format)
+        description:
+          type: string
+          nullable: true
+          description: Free-form text description for the subscription
+        profile:
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+          readOnly: true
+          description: Profile subscribed to the plan
+        plan:
+          allOf:
+          - $ref: '#/components/schemas/PlanDetail'
+          readOnly: true
+          description: Plan the profile is subscribed to
+        auto_renew:
+          type: boolean
+          description: The subscription is set to auto-renew at the end of the period
+        extra:
+          type: string
+          nullable: true
+          description: Extra meta data (can be stringify JSON)
+        grant_key:
+          type: string
+          readOnly: true
+          nullable: true
+          description: Unique key generated when a grant is initiated
+          pattern: ^[-a-zA-Z0-9_]+$
+        request_key:
+          type: string
+          readOnly: true
+          nullable: true
+          description: Unique key generated when a request is initiated
+          pattern: ^[-a-zA-Z0-9_]+$
+        app_url:
+          type: string
+          readOnly: true
+          description: URL to access the subscribed service
+      required:
+      - app_url
+      - created_at
+      - ends_at
+      - grant_key
+      - plan
+      - profile
+      - request_key
     LangEnum:
       enum:
       - af
@@ -10501,20 +10696,6 @@ components:
       - email_verification_enabled
       - otp_enabled
       - phone_verification_enabled
-    OfflineTransaction:
-      type: object
-      description: Serializer to format the output of importing an off-line transaction.
-      properties:
-        detail:
-          type: string
-          description: Describes the result of the action in human-readable form
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-          description: transactions being created by the import
-      required:
-      - results
     Organization:
       type: object
       properties:
@@ -10557,7 +10738,7 @@ components:
       type: object
       description: Items which will be charged on an order checkout action.
       properties:
-        processor:
+        processor_info:
           allOf:
           - $ref: '#/components/schemas/ProcessorAuth'
           description: Keys to authenticate the client with the payment processor
@@ -10565,7 +10746,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Invoicable'
-          description: Items that will be charged
+          description: Line items included in the invoice
       required:
       - results
     OrganizationCreate:
@@ -11388,6 +11569,10 @@ components:
           type: string
           format: date
           description: End of the date range for which the balance was computed
+        next_billing_at:
+          type: string
+          format: date
+          description: Date at which the next automated charge will be created
         balance_amount:
           type: integer
           description: balance of all transactions in cents (i.e. 100ths) of unit
@@ -11576,7 +11761,7 @@ components:
       type: object
       description: Information to verify a credit card
       properties:
-        processor:
+        processor_info:
           allOf:
           - $ref: '#/components/schemas/ProcessorAuth'
           description: Keys to authenticate the client with the payment processor
@@ -11602,27 +11787,28 @@ components:
           - $ref: '#/components/schemas/User'
           readOnly: true
           description: User the cart belongs to
+        plan:
+          allOf:
+          - $ref: '#/components/schemas/Plan'
+          readOnly: true
+          description: Plan in the cart (if any)
+        use:
+          allOf:
+          - $ref: '#/components/schemas/UseCharge'
+          nullable: true
+          description: Use charge in the cart
+        option:
+          type: integer
+          description: Index in the list of discounts for advance payments
+        quantity:
+          type: integer
+          description: Number of periods to be paid in advance
         claim_code:
           type: string
           readOnly: true
           nullable: true
           description: Code used to assign the cart item to a user in group buy
           pattern: ^[-a-zA-Z0-9_]+$
-        plan:
-          allOf:
-          - $ref: '#/components/schemas/Plan'
-          readOnly: true
-          description: Plan in the cart (if any)
-        option:
-          type: integer
-          description: Index in the list of discounts for advance payments
-        use:
-          type: integer
-          nullable: true
-          description: Item added to the cart (if use charge)
-        quantity:
-          type: integer
-          description: Number of periods to be paid in advance
         sync_on:
           type: string
           nullable: true
@@ -12181,6 +12367,88 @@ components:
           type: integer
           writeOnly: true
           description: Phone verification code
+    Paylater:
+      type: object
+      description: Record an order of the cart items.
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutItem'
+          description: List of indices, one per subscription that has multiple advance
+            discount options
+        street_address:
+          type: string
+          description: Street address
+        locality:
+          type: string
+          description: City/Town
+        region:
+          type: string
+          description: State/Province/County
+        postal_code:
+          type: string
+          description: Zip/Postal code
+        country:
+          description: Country as 2-letter code (ISO 3166-1)
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+    Payment:
+      type: object
+      description: Serializer for payment API
+      properties:
+        processor_info:
+          allOf:
+          - $ref: '#/components/schemas/ProcessorAuth'
+          description: Keys to authenticate the client with the payment processor
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoicable'
+          description: Line items included in the invoice
+        claim_code:
+          type: string
+          description: Unique identifier
+        created_at:
+          type: string
+          format: date-time
+          description: Date/time of creation (in ISO 8601 format)
+        amount:
+          type: integer
+          description: amount in unit
+        unit:
+          type: string
+          description: 'Three-letter ISO 4217 code for currency unit (ex: usd)'
+        state:
+          type: string
+          description: Current state (i.e. created, done, failed, disputed)
+        processor_key:
+          type: string
+          nullable: true
+          description: Unique identifier returned by the payment processor
+        last4:
+          type: string
+          readOnly: true
+          description: Last 4 digits of the credit card used
+        exp_date:
+          type: string
+          description: Expiration date of the credit card on file
+        readable_amount:
+          type: string
+          readOnly: true
+          description: Amount and unit in a commonly accepted readable format
+      required:
+      - amount
+      - claim_code
+      - created_at
+      - exp_date
+      - last4
+      - processor_key
+      - readable_amount
+      - results
+      - state
+      - unit
     PeriodTypeEnum:
       enum:
       - hourly
@@ -12787,6 +13055,100 @@ components:
           maxLength: 500
       required:
       - pubkey
+    PublicSession:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Unique identifier that can safely be used in place of username
+          pattern: ^[\w.@+-]+$
+        username:
+          type: string
+          readOnly: true
+          description: Unique identifier for the user, typically used in URLs
+          pattern: ^[\w.@+-]+$
+        printable_name:
+          type: string
+          readOnly: true
+          description: Name that can be safely used for display in HTML pages
+        picture:
+          type: string
+          readOnly: true
+          description: URL location of the profile picture
+        email:
+          type: string
+          format: email
+          description: Primary e-mail address to contact user
+        phone:
+          type: string
+          description: Primary phone number to contact user
+        full_name:
+          type: string
+          description: Full name (effectively first name followed by last name)
+        nick_name:
+          type: string
+          description: Short casual name used to address the user
+        lang:
+          allOf:
+          - $ref: '#/components/schemas/LangEnum'
+          description: Preferred communication language
+        credentials:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        otp_enabled:
+          type: string
+          readOnly: true
+          description: True if the user has valid login credentials
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date at which the user account was created
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date at which the user last logged in
+        email_code:
+          type: integer
+          writeOnly: true
+          description: Email verification code
+        phone_code:
+          type: integer
+          writeOnly: true
+          description: Phone verification code
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Accessible'
+          readOnly: true
+          description: roles for the authenticated user
+        last_visited:
+          type: string
+          format: date-time
+          description: Date/time when user visited the page last (in ISO format)
+      required:
+      - created_at
+      - credentials
+      - full_name
+      - last_login
+      - otp_enabled
+      - picture
+      - printable_name
+      - roles
+      - username
+    QueryParamCancelBalance:
+      type: object
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+          description: Amount to mark as paid or write-off. Min value is 1.
+        paid:
+          type: boolean
+          description: When true, the cancelation was recovered offline, else it is
+            a write-off
     RecentActivity:
       type: object
       description: Serializer for recent activity on the site.
@@ -13249,64 +13611,6 @@ components:
       - profile
       - remove_api_url
       - request_key
-    Subscription:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date/time of creation (in ISO format)
-        ends_at:
-          type: string
-          format: date-time
-          description: Date/time when the subscription period currently ends (in ISO
-            format)
-        description:
-          type: string
-          nullable: true
-          description: Free-form text description for the subscription
-        profile:
-          allOf:
-          - $ref: '#/components/schemas/Organization'
-          readOnly: true
-          description: Profile subscribed to the plan
-        plan:
-          allOf:
-          - $ref: '#/components/schemas/Plan'
-          readOnly: true
-          description: Plan the profile is subscribed to
-        auto_renew:
-          type: boolean
-          description: The subscription is set to auto-renew at the end of the period
-        extra:
-          type: string
-          nullable: true
-          description: Extra meta data (can be stringify JSON)
-        grant_key:
-          type: string
-          readOnly: true
-          nullable: true
-          description: Unique key generated when a grant is initiated
-          pattern: ^[-a-zA-Z0-9_]+$
-        request_key:
-          type: string
-          readOnly: true
-          nullable: true
-          description: Unique key generated when a request is initiated
-          pattern: ^[-a-zA-Z0-9_]+$
-        app_url:
-          type: string
-          readOnly: true
-          description: URL to access the subscribed service
-      required:
-      - app_url
-      - created_at
-      - ends_at
-      - grant_key
-      - plan
-      - profile
-      - request_key
     Table:
       type: object
       properties:
@@ -13504,8 +13808,7 @@ components:
         slug:
           type: string
           description: Unique identifier shown in the URL bar
-          maxLength: 50
-          pattern: ^[-a-zA-Z0-9_]+$
+          pattern: '[-a-zA-Z0-9_]+'
         title:
           type: string
           nullable: true
@@ -13521,15 +13824,16 @@ components:
           description: Date/time of creation (in ISO format)
         use_amount:
           type: integer
-          description: Amount of the use charge in plan currency unit
+          description: 'Amount per unit defined by the provider of the use charge
+            in plan currency unit (ex: $0.01/request)'
         quota:
           type: integer
-          description: Number of use charge included in the plan
+          description: Usage included in the plan (in units defined by the provider)
         maximum_limit:
           type: integer
           nullable: true
-          description: Maximum number of use charge added per period before notififying
-            subscriber
+          description: Maximum spend limit per period above which the subscriber is
+            notified (in currency unit)
         extra:
           type: string
           nullable: true
@@ -13648,8 +13952,7 @@ components:
         created_at:
           type: string
           format: date-time
-          readOnly: true
-          description: Date/time of creation (in ISO format)
+          description: Date/time at which item is recorded (in ISO 8601 format)
         plan:
           type: string
           description: The plan to add into the request.user cart.
@@ -13680,7 +13983,6 @@ components:
             (GroupBuy)
           maxLength: 255
       required:
-      - created_at
       - plan
       - user
     UserCreate:

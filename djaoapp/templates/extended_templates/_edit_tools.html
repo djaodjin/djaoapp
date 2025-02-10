@@ -221,6 +221,7 @@ jQuery(document).ready(function($) {
     // uploads
     $(".dj-upload").djupload({
         uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
+        csrfToken: "{{csrf_token}}",
         uploadSuccessMessage: function(filename, location) {
             return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);
         },
@@ -231,6 +232,8 @@ jQuery(document).ready(function($) {
         mediaUrl: "{{urls.edit.api_medias}}",
         S3DirectUploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}?public=1{% endif %}",
         saveDroppedMediaUrl: "{{urls.edit.api_page_element_base}}",
+        csrfToken: "{{csrf_token}}",
+
         {% if templates %}hints: {{templates|safe}},{% endif %}
 
         // internationalization messages
@@ -248,13 +251,15 @@ jQuery(document).ready(function($) {
 
     // templates editors
     $("#code-editor").templateCodeEditors({
-        api_sources: "{{urls.edit.api_sources}}"
+        api_sources: "{{urls.edit.api_sources}}",
+        csrfToken: "{{csrf_token}}"
     });
 
     // style editors
     $("#style-editor").djstyles({
         api_less_overrides: "{{urls.edit.api_less_overrides}}",
         api_sitecss: "{{urls.edit.api_sitecss}}",
+        csrfToken: "{{csrf_token}}",
         iframe_view: $("iframe.edited-page").get(0)
     });
 

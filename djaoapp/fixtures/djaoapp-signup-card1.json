@@ -3,7 +3,7 @@
     "fields": {
       "slug": "stripe",
       "full_name": "Stripe",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "email": "stripe@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "185 Berry St #550",
@@ -22,7 +22,7 @@
       "slug": "djaoapp-signup-card1",
       "full_name": "SignupCard1",
       "email": "djaoapp-signup-card1@localhost.localdomain",
-      "created_at": "2024-01-01T00:00:00-00:00",
+      "created_at": "2025-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -76,7 +76,7 @@
       "slug": "xia-djaoapp-signup-card1",
       "user": 42,
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c7",
-      "created_at": "2024-01-01T00:00:00+00:00"
+      "created_at": "2025-01-01T00:00:00+00:00"
     },
     "model": "signup.Contact", "pk": 42
 },
@@ -85,7 +85,7 @@
       "slug": "djaoapp-signup-card2",
       "full_name": "SignupCard2",
       "email": "djaoapp-signup-card2@localhost.localdomain",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -139,7 +139,7 @@
       "slug": "xia-djaoapp-signup-card2",
       "user": 43,
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2d9",
-      "created_at": "2024-01-01T00:00:00+00:00"
+      "created_at": "2025-01-01T00:00:00+00:00"
     },
     "model": "signup.Contact", "pk": 43
 }]

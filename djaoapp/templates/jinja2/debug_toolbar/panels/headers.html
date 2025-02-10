@@ -9,7 +9,7 @@
 	</thead>
 	<tbody>
 		{% for key, value in request_headers.items() %}
-			<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+			<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 				<td>{{ key|escape }}</td>
 				<td>{{ value|escape }}</td>
 			</tr>
@@ -28,7 +28,7 @@
 	</thead>
 	<tbody>
 		{% for key, value in response_headers.items() %}
-			<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+			<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 				<td>{{ key|escape }}</td>
 				<td>{{ value|escape }}</td>
 			</tr>
@@ -49,7 +49,7 @@
 	</thead>
 	<tbody>
 		{% for key, value in environ.items() %}
-			<tr class="{% cycle('djDebugOdd', 'djDebugEven') %}">
+			<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
 				<td>{{ key|escape }}</td>
 				<td>{{ value|escape }}</td>
 			</tr>

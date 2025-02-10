@@ -1,28 +1,26 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 
 import logging
 
-from django.http import Http404
 from extended_templates.utils import get_default_storage
 from rest_framework import generics, serializers, status
-from rest_framework.exceptions import NotFound
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rules.mixins import AppMixin
 from rules.utils import get_current_app
 from saas.models import Agreement
 from saas.mixins import OrganizationMixin
+from saas.utils import get_role_model
 from signup.api.auth import (JWTActivate as JWTActivateBase,
     JWTRegister as JWTRegisterBase)
 from signup.api.tokens import JWTRefresh as JWTRefreshBase
 from signup.backends.sts_credentials import aws_bucket_context
-from signup.serializers_overrides import UserDetailSerializer
 
 from ..mixins import RegisterMixin, VerifyCompleteMixin
-from .serializers import RegisterSerializer, SessionSerializer
+from .serializers import RegisterSerializer, PublicSessionSerializer
 from ..edition_tools import get_user_menu_context
 from ..compat import is_authenticated, gettext_lazy as _
 
@@ -83,7 +81,7 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
-            return SessionSerializer
+            return PublicSessionSerializer
         return super(DjaoAppJWTRefresh, self).get_serializer_class()
 
     def perform_content_negotiation(self, request, force=False):
@@ -92,7 +90,6 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
             return DynamicMenubarItemRenderer(), 'text/html'
         return super(DjaoAppJWTRefresh, self).perform_content_negotiation(
             request, force=force)
-
 
     def get(self, request, *args, **kwargs):
         """
@@ -117,25 +114,44 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
             {
               "slug": "donny",
               "username": "donny",
-              "created_at": "2018-01-01T00:00:00Z",
               "printable_name": "Donny",
-              "full_name": "Donny Smith",
-              "email": "donny.smith@locahost.localdomain"
+              "full_name": "Donny Lee",
+              "nick_name": "Donny",
+              "email": "donny@locahost.localdomain",
+              "created_at": "2018-01-01T00:00:00Z",
+              "last_visited": "2018-01-01T00:00:00Z",
+              "roles": [{
+                    "profile": {
+                        "slug": "cowork",
+                        "printable_name": "ABC Corp.",
+                        "type": "organization",
+                        "credentials": false
+                    },
+                    "role_description": {
+                        "slug": "manager",
+                        "created_at": "2023-01-01T00:00:00Z",
+                        "title": "Profile Manager",
+                        "is_global": true,
+                        "profile": null
+                    },
+                    "home_url": "https://cowork.net/app/",
+                    "settings_url": "https://cowork.net/profile/cowork/contact/"
+                }
+              ]
             }
         """
         if not is_authenticated(request):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = self.get_serializer(request)
-        cleaned_data = {}
-        cleaned_data.update(serializer.data)
-        cleaned_data.pop('session_key', None)
-        cleaned_data.pop('security_token', None)
-        cleaned_data.pop('secret_key', None)
-        cleaned_data.pop('access_key', None)
-        cleaned_data.update(
-            UserDetailSerializer().to_representation(request.user))
-        return Response(cleaned_data)
+        request.user.roles = get_role_model().objects.valid_for(
+            user=request.user).exclude(
+            organization__slug=request.user.username).order_by(
+            'role_description').select_related('role_description')
+        # XXX djaodjin-rules `check_matched` will have to accept an arbitrary
+        # path (unrelated to request) to compute `last_visited`.
+
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 
 class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):

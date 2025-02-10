@@ -22,6 +22,7 @@
       <rules-table inline-template id="rules-table" class="col-md-12 mt-3">
         <div>
           <h3>{% trans %}Access Rules{% endtrans %}</h3>
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
           <div class="table-responsive">
             <table class="table table-md table-striped" data-trip data-trip-index="3" data-trip-content="{% trans %}Define an <em>access rule</em> per <em>path</em> then if authorized requests<br />should be forwarded to the web application or served by the firewall itself.{% endtrans %}" data-trip-position="s" infinite-wrapper>
               <thead>

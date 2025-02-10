@@ -2,7 +2,7 @@
     "fields": {
       "slug": "djaodjin",
       "full_name": "DjaoDjin",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "djaodjin@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -20,24 +20,21 @@
     "fields": {
       "slug": "security",
       "title": "Security Policy",
-      "updated_at": "2024-01-01T00:00:00+00:00"
+      "updated_at": "2025-01-01T00:00:00+00:00"
     },
     "model": "saas.agreement", "pk": 20
 },
 {
     "fields":{
-        "slug":"basic",
         "title":"Basic",
-        "created_at":"2024-01-01T00:00:00+00:00",
+        "created_at":"2025-01-01T00:00:00+00:00",
         "setup_amount": 0,
         "period_amount": 24900,
         "broker_fee_percent": 0,
         "period_type": 4,
         "description":"Ideal to focus on Dev and fully leverage DjaoDjin Ops infrastructure.\n\n* Streetside Subscription Firewall\n* Docker Hosting\n* Micro-service load balancer\n",
-        "organization": 2,
-        "is_active": 1
-    },
-    "model" : "saas.Plan", "pk": 20
+        "is_active": 1,
+        "organization": 2, "slug":"basic" }, "model" : "saas.Plan", "pk": 20
 },
 {
   "fields": {
@@ -50,18 +47,15 @@
 },
 {
     "fields":{
-        "slug":"premium",
         "title":"Premium",
-        "created_at":"2024-01-01T00:00:00+00:00",
+        "created_at":"2025-01-01T00:00:00+00:00",
         "setup_amount": 0,
         "period_amount": 18900,
         "broker_fee_percent": 0,
         "period_type": 4,
         "description":"Ideal to transform your website into a fully featured Software-as-a-Service.\n\n* Setup in minutes\n* Custom Themes\n* Secure Custom Domain\n",
-        "organization": 2,
-        "is_active" : 1
-    },
-    "model" : "saas.Plan", "pk": 22
+        "is_active" : 1,
+        "organization": 2, "slug":"premium" }, "model" : "saas.Plan", "pk": 22
 },
 {
   "fields": {
@@ -76,15 +70,16 @@
   "fields": {
     "plan": 22,
     "slug": "requests",
-    "created_at": "2024-01-01T00:00:00+00:00",
-    "use_amount": 1
+    "title": "Requests",
+    "created_at": "2025-01-01T00:00:00+00:00",
+    "use_amount": 100
   },
   "model": "saas.UseCharge", "pk": 22
 },
 {
     "fields":{
         "code": "DIS100",
-        "created_at":"2024-01-01T00:00:00+00:00",
+        "created_at":"2025-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 10000,
         "organization": 2
@@ -94,7 +89,7 @@
 {
     "fields":{
         "code": "HALLOWEEN",
-        "created_at":"2024-01-01T00:00:00+00:00",
+        "created_at":"2025-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 5000,
         "organization": 2
@@ -104,7 +99,7 @@
 {
     "fields":{
         "code": "BASIC50",
-        "created_at":"2024-01-01T00:00:00+00:00",
+        "created_at":"2025-01-01T00:00:00+00:00",
         "plan": 1,
         "discount_type": 1,
         "discount_value": 5000,
@@ -118,7 +113,7 @@
     "fields": {
       "slug": "xia-card7",
       "full_name": "Xia Card7",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "xia+card7@localhost.localdomain",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -131,8 +126,8 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "ends_at": "2024-12-31T23:59:59+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "ends_at": "2025-12-31T23:59:59+00:00",
       "organization": 21,
       "plan": 22
     },
@@ -140,7 +135,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "dest_amount": 13800,
       "dest_unit": "usd",
       "dest_account": "Payable",
@@ -155,7 +150,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:01+00:00",
+      "created_at": "2025-01-01T00:00:01+00:00",
       "dest_amount": 6900,
       "dest_unit": "usd",
       "dest_account": "Liability",
@@ -172,7 +167,7 @@
 
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "full_name": "Marie",
       "email": "marie@localhost.localdomain",
       "slug": "marie"
@@ -181,14 +176,14 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia"
     },
@@ -196,7 +191,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 20
     },
@@ -204,7 +199,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "slug": "xia",
       "nick_name": "Xia",
@@ -217,7 +212,7 @@
     "fields": {
       "slug": "xia",
       "full_name": "Xia Lee",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -232,20 +227,20 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 22, "user": 20}, "model": "saas.Role", "pk": 20
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "joe@localhost.localdomain",
       "first_name": "Joe",
       "last_name": "Smith",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "joe"
     },
@@ -253,7 +248,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 21
     },
@@ -263,7 +258,7 @@
     "fields": {
       "slug": "joe-bulk",
       "full_name": "Joe Bulk Buying",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "joe+bulk@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -279,7 +274,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 23, "user": 21}, "model": "saas.Role", "pk": 21
 },
@@ -287,7 +282,7 @@
     "fields": {
       "slug": "billing-card2",
       "full_name": "Amelie Smith",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "asmith@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -302,14 +297,14 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "asmith@localhost.localdomain",
       "first_name": "Amelie",
       "groups": [],
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
       "last_name": "Smith",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "asmith"
@@ -318,7 +313,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 22
     },
@@ -327,21 +322,21 @@
 {
     "fields": {
       "slug": "asmith",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "user": 22
     },
     "model": "signup.Contact", "pk": 22
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 24, "user": 22}, "model": "saas.Role", "pk": 22
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "ends_at": "2024-12-31T23:59:59+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "ends_at": "2025-12-31T23:59:59+00:00",
       "organization": 24,
       "plan": 1
     },
@@ -349,8 +344,8 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "ends_at": "2024-12-31T23:59:59+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "ends_at": "2025-12-31T23:59:59+00:00",
       "organization": 24,
       "plan": 20
     },
@@ -358,7 +353,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "dest_amount": 13800,
       "dest_unit": "usd",
       "dest_account": "Payable",
@@ -377,7 +372,7 @@
     "fields": {
       "slug": "stephanie",
       "full_name": "Stephanie DuJardin",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "stephanie@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -392,14 +387,14 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "stephanie@localhost.localdomain",
       "first_name": "Stephanie",
       "groups": [],
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
       "last_name": "DuJardin",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "stephanie"
@@ -408,7 +403,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 23
     },
@@ -416,7 +411,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 25, "user": 23}, "model": "saas.Role", "pk": 24
 },
@@ -425,7 +420,7 @@
     "fields": {
       "slug": "to-be-deleted-1",
       "full_name": "Subscriber ToBeDeleted",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "to-be-deleted-1@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -442,7 +437,7 @@
     "fields": {
       "slug": "to-be-deleted-2",
       "full_name": "2nd Subscriber ToBeDeleted",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
@@ -458,28 +453,28 @@
 {
     "fields": {
       "username": "to-be-deleted-2",
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc="
     },
     "model": "auth.User", "pk": 27
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 27, "user": 27}, "model": "saas.Role", "pk": 26
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "ends_at": "2024-12-31T23:59:59+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "ends_at": "2025-12-31T23:59:59+00:00",
       "organization": 27,
       "plan": 22
     },
@@ -490,7 +485,7 @@
     "fields": {
       "slug": "xia22",
       "full_name": "Xia22",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "xia+22@localhost.localdomain",
       "phone": "555-555-5555",
       "locality":  "San Francisco",
@@ -503,8 +498,8 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-09:00",
-      "last_login": "2024-01-01T00:00:00-09:00",
+      "date_joined": "2025-01-01T00:00:00-09:00",
+      "last_login": "2025-01-01T00:00:00-09:00",
       "email": "xia+22@localhost.localdomain",
       "first_name": "Xia22",
       "is_active": true,
@@ -518,7 +513,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 28,
       "user": 28
@@ -527,8 +522,8 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "ends_at": "2024-12-31T23:59:59+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "ends_at": "2025-12-31T23:59:59+00:00",
       "organization": 28,
       "plan": 22
     },
@@ -537,7 +532,7 @@
 
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00+00:00",
+      "date_joined": "2025-01-01T00:00:00+00:00",
       "email": "melissa@localhost.localdomain",
       "first_name": "Melissa",
       "last_name": "BillingCard15",
@@ -551,7 +546,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 29
     },
@@ -559,14 +554,14 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-09:00",
+      "date_joined": "2025-01-01T00:00:00-09:00",
       "email": "xia+10@localhost.localdomain",
       "first_name": "Xia10",
       "last_name": "BillingCard16",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00-09:00",
+      "last_login": "2025-01-01T00:00:00-09:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia10"
     },
@@ -574,7 +569,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 30
     },
@@ -585,7 +580,7 @@
     "fields": {
       "slug": "xia21",
       "full_name": "Xia21",
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "email": "xia+21@localhost.localdomain",
       "phone": "555-555-5555",
       "locality":  "San Francisco",
@@ -598,14 +593,14 @@
 },
 {
     "fields": {
-      "date_joined": "2024-01-01T00:00:00-09:00",
+      "date_joined": "2025-01-01T00:00:00-09:00",
       "email": "xia+21@localhost.localdomain",
       "first_name": "Xia21",
       "last_name": "BillingAPI13SubscriptionsAPI1",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2024-01-01T00:00:00-09:00",
+      "last_login": "2025-01-01T00:00:00-09:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia21"
     },
@@ -613,7 +608,7 @@
 },
 {
     "fields": {
-      "last_signed": "2024-01-01T00:00:00+00:00",
+      "last_signed": "2025-01-01T00:00:00+00:00",
       "agreement": 1,
       "user": 31
     },
@@ -621,7 +616,7 @@
 },
 {
     "fields": {
-      "created_at": "2024-01-01T00:00:00+00:00",
+      "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 31,
       "user": 31

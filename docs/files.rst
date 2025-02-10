@@ -256,8 +256,6 @@ Partial templates
 ^^^^^^^^^^^^^^^^^
 
 The following partial templates are used to produce the top navbar:
-* ``_navbarbrand.html`` contains the logo and link to homepage that goes on the
-top left corner.
 * ``_generic_navbar.html`` contains the static menus / links shown in the top
 navbar (ex: Blog, Pricing, Help).
 * ``_menubar.html`` contains the dynamic menu dropdown for authenticated user.

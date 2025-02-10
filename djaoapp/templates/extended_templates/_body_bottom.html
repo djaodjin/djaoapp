@@ -24,6 +24,7 @@ jQuery(document).ready(function($) {
        event.preventDefault();
        $(this).plan({
            saas_api_plan: "{{urls.edit.api_plans}}",
+           csrfToken: "{{csrf_token}}",
            message_created: "{% trans %}Plan was created successfully.{% endtrans %}",
            message_deleted: "{% trans %}Plan was successfully deleted.{% endtrans %}",
            template_new: {
@@ -39,11 +40,13 @@ jQuery(document).ready(function($) {
 
   $(".plan").editPlan({
       baseUrl: "{{urls.edit.api_plans}}",
-      baseEditPlanUrl: "{{urls.edit.plan_update_base}}"
+      baseEditPlanUrl: "{{urls.edit.plan_update_base}}",
+      csrfToken: "{{csrf_token}}",
   });
 
   $(".editable-plan").editor({
     baseUrl: "{{urls.edit.api_plans}}",
+    csrfToken: "{{csrf_token}}",
     uniqueIdentifier: "data-plan",
     rangeUpdate: function(editable, newVal){
             var text = "{% trans %}per month{% endtrans %}";
@@ -74,6 +77,7 @@ jQuery(document).ready(function($) {
 
   $('.editable').editor({
     baseUrl: '{{urls.edit.api_page_element_base}}', // XXX need special URL for .edit-date on legal index page?
+    csrfToken: "{{csrf_token}}",
     emptyInputText: "{% trans %}placeholder, type to overwrite...{% endtrans %}",
     hints: {{templates|safe}}
   });

@@ -32,6 +32,9 @@
 
         _getCSRFToken: function() {
             var self = this;
+            if( self.options.csrfToken ) {
+                return self.options.csrfToken;
+            }
             var crsfNode = self.element.find("[name='csrfmiddlewaretoken']");
             if( crsfNode.length > 0 ) {
                 return crsfNode.val();
@@ -82,6 +85,7 @@
 
     $.fn.editPlan.defaults = {
         baseUrl: null,
-        baseEditPlanUrl: null
+        baseEditPlanUrl: null,
+        csrfToken: null
     };
 })(jQuery);

@@ -23,21 +23,32 @@
 <plan-update inline-template id="plan-container">
   <div data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Plan{% endtrans %}</h2><p>{% trans %}Set the title, description and price of a plan.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
     {% include "saas/profile/plans/_form.html" %}
+
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 mt-4">
+
         {% if urls.plan_subscribers %}
-        <div class="btn-actions text-end">
-          <button id="activate-plan"
-                  class="btn btn-primary"
+        <div class="card border-secondary mt-3">
+          <div class="card-body text-secondary">
+            <div class="row align-items-center mb-3">
+              <div class="col-md-12">
+                <button id="activate-plan"
+                  class="btn btn-primary w-100"
                   value="{% if form.instance.is_active %}1{% else %}0{% endif %}"
                   data-trip-index="2"
                   data-trip-position="s"
                   data-trip-content="<p>{% trans %}Toggle this plan between available for subscription or not.{% endtrans %}</p>"
                   @click="togglePlanStatus"
                   v-text="isActive ? '{% trans %}Deactivate{% endtrans %}' : '{% trans %}Activate{% endtrans %}'"></button>
-          {% trans %}Users can only subscribe to active plans.{% endtrans %}
+                <div class="mt-2">
+                {% trans %}Users can only subscribe to active plans.{% endtrans %}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {% endif %}
+
         {% if show_delete %}
         <div class="card border-danger mt-3">
           <div class="card-header">
@@ -49,7 +60,8 @@
           <div id="delete-plan-modal"
                class="modal fade" tabindex="-1" role="dialog"
                aria-labelledby="{% trans %}Delete Plan{% endtrans %} ..." aria-hidden="true">
-            <div class="modal-dialog">
+            <form class="modal-dialog" method="post" @submit.prevent="deletePlan">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
               <div class="modal-content">
                 <div class="modal-header">
                   {% trans %}Delete Plan{% endtrans %} ...
@@ -60,16 +72,19 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary"
                           data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                  <a id="delete-plan"
+                  <button id="delete-plan"
                      class="btn btn-danger btn-ok delete"
                      data-bs-dismiss="modal"
-                     @click="deletePlan">{% trans %}Delete{% endtrans %}</a>
+                     type="submit">
+                    {% trans %}Delete{% endtrans %}
+                  </button>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         {% endif %}
+
       </div>
     </div>
   </div>

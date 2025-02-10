@@ -1,4 +1,4 @@
-# Copyright (c) 2023 DjaoDjin inc.
+# Copyright (c) 2025 DjaoDjin inc.
 # see LICENSE
 
 import logging, sys
@@ -12,13 +12,15 @@ from django.utils.deconstruct import deconstructible
 from rest_framework import serializers
 from rules.api.serializers import AppSerializer as RulesAppSerializer
 from saas.api.serializers import (
+    EnumField, AccessibleSerializer,
     OrganizationDetailSerializer as OrganizationBaseSerializer,
     OrganizationWithSubscriptionsSerializer,
     OrganizationWithEndsAtByPlanSerializer)
-from saas.models import get_broker, Role, ChargeItem
-from saas.api.serializers import EnumField
+from saas.models import get_broker, ChargeItem
+from saas.utils import get_role_model
 from signup.serializers import ActivitySerializer as UserActivitySerializer
 from signup.serializers import UserCreateSerializer
+from signup.serializers_overrides import UserDetailSerializer
 
 from .. import __version__
 from ..compat import gettext_lazy as _, six
@@ -113,12 +115,54 @@ RegisterSerializer._declared_fields["type"] = \
         help_text=_("One of 'organization', 'personal' or 'user'"))
 
 
-class SessionSerializer(serializers.ModelSerializer):
+class SessionSiteSerializer(NoModelSerializer):
 
-    last_visited = serializers.DateTimeField(required=False)
-    username = serializers.SerializerMethodField()
-    roles = serializers.SerializerMethodField()
-    site = serializers.SerializerMethodField()
+    slug = serializers.SlugField(
+        help_text=_("Unique identifier for the user or profile"))
+    printable_name = serializers.SerializerMethodField(
+        help_text=_("Name that can be safely used for display in HTML pages"))
+    email = serializers.SerializerMethodField(
+        help_text=_("Email address to reply to the sender"))
+
+    @staticmethod
+    def get_printable_name(obj): #pylint:disable=unused-argument
+        broker = get_broker()
+        return broker.printable_name
+
+    @staticmethod
+    def get_email(obj): #pylint:disable=unused-argument
+        broker = get_broker()
+        return broker.email
+
+
+
+class PublicSessionSerializer(UserDetailSerializer):
+
+    last_visited = serializers.DateTimeField(required=False,
+      help_text=_("Date/time when user visited the page last (in ISO format)"))
+    roles = AccessibleSerializer(many=True, required=False, read_only=True,
+        help_text=_("roles for the authenticated user"))
+
+    class Meta(UserDetailSerializer.Meta):
+        #model = get_user_model()
+        fields = UserDetailSerializer.Meta.fields + (
+            'roles', 'last_visited')
+        read_only_fields = UserDetailSerializer.Meta.fields + (
+            'roles', 'last_visited')
+
+
+class SessionSerializer(serializers.ModelSerializer):
+    # XXX use PublicSessionSerializer
+
+    last_visited = serializers.DateTimeField(required=False,
+      help_text=_("Date/time when user visited the page last (in ISO format)"))
+    username = serializers.SerializerMethodField(
+        help_text=_("username of the authenticated user"))
+    roles = serializers.SerializerMethodField(
+        help_text=_("roles for the authenticated user"))
+    site = SessionSiteSerializer(read_only=True,
+        help_text=_("site the session belongs to"))
+
     invoice_keys = serializers.SerializerMethodField()
     session_key = serializers.SerializerMethodField()
     access_key = serializers.SerializerMethodField()
@@ -144,7 +188,8 @@ class SessionSerializer(serializers.ModelSerializer):
         organizations = []
         prev_role_key = None
         serializer = OrganizationWithEndsAtByPlanSerializer(many=True)
-        for role in Role.objects.valid_for(user=request.user).order_by(
+        for role in get_role_model().objects.valid_for(
+                user=request.user).order_by(
                 'role_description').select_related('role_description'):
             role_key = role.role_description.slug
             if not prev_role_key:
@@ -158,12 +203,6 @@ class SessionSerializer(serializers.ModelSerializer):
         if organizations:
             results[prev_role_key] = serializer.to_representation(organizations)
         return results
-
-    @staticmethod
-    def get_site(obj): #pylint:disable=unused-argument
-        broker = get_broker()
-        return {'slug': broker.slug, 'printable_name': broker.printable_name,
-            'email': broker.email}
 
     def get_invoice_keys(self, request):
         rule = self.context.get('rule', None)
