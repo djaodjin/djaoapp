@@ -52,7 +52,7 @@
               </td>
             </tr>
           </tbody>
-          <tbody v-show="itemsLoaded && items.results.length === 0" v-cloak>
+          <tbody id="no-data" v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <tr>
               <td colspan="4">
                 <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
