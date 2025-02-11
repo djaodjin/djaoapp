@@ -107,7 +107,6 @@ def environment(**options):
         'FEATURES_REVERT_STRIPE_V2': settings.FEATURES_REVERT_STRIPE_V2
     })
     if settings.DEBUG:
-        env.filters['addslashes'] = django.template.defaultfilters.addslashes
         env.globals.update({
             'ASSETS_DEBUG': settings.ASSETS_DEBUG,
             'FEATURES_DEBUG': settings.FEATURES_DEBUG,

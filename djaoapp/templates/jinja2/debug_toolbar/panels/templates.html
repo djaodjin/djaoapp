@@ -13,8 +13,8 @@
 {% if templates %}
 <dl>
 {% for template in templates %}
-	<dt><strong><a class="remoteCall toggleTemplate" href="{{ url('djdt:template_source') }}?template={{ template.template.name }}">{{ template.template.name|addslashes }}</a></strong></dt>
-	<dd><samp>{{ template.template.origin_name|addslashes }}</samp></dd>
+	<dt><strong><a class="remoteCall toggleTemplate" href="{{ url('djdt:template_source') }}?template={{ template.template.name }}">{{ template.template.name }}</a></strong></dt>
+	<dd><samp>{{ template.template.origin_name }}</samp></dd>
 	{% if template.context %}
 	<dd>
 		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span> Toggle context</a></div>
