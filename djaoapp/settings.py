@@ -120,7 +120,7 @@ for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
         setattr(sys.modules[__name__], recaptcha_key,
             recaptcha_key_value.encode('utf-8'))
 
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
 if getattr(sys.modules[__name__], 'MULTITIER_SITE_MODEL', None):
     MULTITIER_APPS = (MULTITIER_SITE_MODEL.split('.', maxsplit=1)[0],)
@@ -168,7 +168,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'captcha',
+    'django_recaptcha',
     'deployutils.apps.django',
 #    'haystack', disabled until we actively use text searches on the site.
     'saas',  # Because we want `djaodjin-resources.js` picked up from here.

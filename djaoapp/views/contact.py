@@ -1,12 +1,12 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging, re, socket
 from smtplib import SMTPException
 
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django.compat import is_authenticated
 from django import forms, http
 from django.core.exceptions import ValidationError, PermissionDenied

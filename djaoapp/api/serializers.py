@@ -3,8 +3,8 @@
 
 import logging, sys
 
-from captcha import client
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django_recaptcha import client
+from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
