@@ -32,6 +32,7 @@ RUN set -eux; \
       apt-get update; \
       apt-get -y install --no-install-recommends \
         build-essential \
+        git-core \
         libcairo2-dev \
         libldap2-dev \
         libsasl2-dev \
