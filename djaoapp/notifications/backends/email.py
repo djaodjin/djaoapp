@@ -296,7 +296,7 @@ class NotificationEmailBackend(object):
     " an email notification to %(recipients)s. This is due to a template"\
     " syntax error in %(template_name)s:") % {
         'recipients': recipients, 'template_name': template},
-                _("%(err_message)s") % {'err_message': str(err)}]})
+                "%(err_message)s" % {'err_message': str(err)}]})
             #pylint:disable=unused-variable
             notified_on_errors, unused1, unused2 = notified_recipients(
                 'notification_error', {
