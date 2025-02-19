@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 import datetime, logging, os, random
@@ -122,28 +122,31 @@ class Command(BaseCommand):
         self.generate_coupons(provider)
         self.generate_transactions(provider, processor, from_date, now,
             profile_pictures_dir=options['profile_pictures'])
-        subscriber = Organization.objects.filter(slug='stephanie').first()
+        subscriber = Organization.objects.filter(
+            slug__startswith='demo').first()
         if subscriber:
-            self.generate_subscriptions(subscriber)
+            self.generate_subscriptions(subscriber, provider)
         coupon_code = options['coupon']
         if coupon_code:
             self.generate_coupon_uses(coupon_code, provider=provider)
 
+    def demo_plans(self, provider):
+        return Plan.objects.filter(
+            organization=provider, period_amount__gt=0).filter(
+            slug__startswith='demo-')
 
     def generate_optional_plans(self, provider):
-        queryset = Plan.objects.filter(
-            organization=provider, period_amount__gt=0)
-        if not queryset.exists():
-            # We don't have any plans, so we create a few standard ones.
-            Plan.objects.create(
-                slug='demo-basic', title="Basic", period_amount=2000,
-                organization=provider)
-            Plan.objects.create(
-                slug='demo-premium', title="Premium", period_amount=5000,
-                organization=provider)
-            Plan.objects.create(
-                slug='demo-deluxe', title="Deluxe", period_amount=12000,
-                organization=provider)
+        # Create a few standard ones that don't interfer
+        # with the livedemo-db.json fixtures
+        Plan.objects.create(
+            slug='demo-basic', title="Basic", period_amount=2000,
+            organization=provider)
+        Plan.objects.create(
+            slug='demo-premium', title="Premium", period_amount=5000,
+            organization=provider)
+        Plan.objects.create(
+            slug='demo-deluxe', title="Deluxe", period_amount=12000,
+            organization=provider)
 
 
     def generate_coupons(self, provider, nb_coupons=None):
@@ -168,7 +171,7 @@ class Command(BaseCommand):
             kwargs = {'organization': provider}
         coupon = Coupon.objects.filter(code=coupon_code, **kwargs).first()
         if coupon:
-            plans = list(Plan.objects.filter(organization=coupon.organization))
+            plans = list(self.demo_plans(coupon.organization))
             for _ in range(0, nb_uses):
                 try:
                     user = user_model.objects.get(
@@ -183,26 +186,28 @@ class Command(BaseCommand):
                     pass
 
 
-    def generate_subscriptions(self, subscriber, nb_subscriptions=None,
-                               fake=None):
+    def generate_subscriptions(self, subscriber, provider,
+                               nb_subscriptions=None, fake=None):
         at_time = datetime_or_now()
         if nb_subscriptions is None:
             nb_subscriptions = settings.REST_FRAMEWORK['PAGE_SIZE'] * 4
-        self.stdout.write("%d subscriptions\n" % nb_subscriptions)
-        nb_plans = Plan.objects.count()
+        self.stdout.write("%d subscriptions for %s (to check paginator)\n" % (
+            nb_subscriptions, subscriber))
+        nb_plans = self.demo_plans(provider).count()
         if not fake:
             fake = Faker()
         for _ in range(0, nb_subscriptions):
             rank = random.randint(1, nb_plans - 1)
-            plan = Plan.objects.all().order_by('pk')[rank]
+            plan = self.demo_plans(provider).order_by('pk')[rank]
             created_at = datetime_or_now(fake.date_time_between_dates(
                 datetime_start=at_time - datetime.timedelta(365),
                 datetime_end=at_time + datetime.timedelta(365)))
-            Subscription.objects.create(
-                organization=subscriber,
-                plan=plan,
-                created_at=created_at,
-                ends_at=created_at + datetime.timedelta(30))
+            Subscription.objects.get_or_create(
+                organization=subscriber, plan=plan,
+                defaults={
+                    'created_at': created_at,
+                    'ends_at': created_at + datetime.timedelta(30)
+                })
 
     def generate_transactions(self, provider, processor, from_date, ends_at,
                               fake=None, profile_pictures_dir=None):
@@ -226,13 +231,12 @@ class Command(BaseCommand):
                 else:
                     profile_pictures_females += [
                         "/assets/img/profiles/%s" % picture_name]
-        queryset = Plan.objects.filter(
-            organization=provider, period_amount__gt=0)
-        nb_plans = queryset.count()
+        nb_plans = self.demo_plans(provider).count()
+        plans = list(self.demo_plans(provider))
         for end_period in month_periods(from_date=from_date):
             nb_new_customers = random.randint(0, 9)
             for _ in range(nb_new_customers):
-                plan = queryset[random.randint(0, nb_plans - 1)]
+                plan = plans[random.randint(0, nb_plans - 1)]
                 created = False
                 trials = 0
                 while not created:
@@ -291,12 +295,13 @@ class Command(BaseCommand):
                     pk=subscription.id).update(created_at=end_period)
             # Insert some churn in %
             churn_rate = 2
-            all_subscriptions = Subscription.objects.filter(
+            demo_subscriptions = Subscription.objects.filter(
+                organization__slug__startswith='demo',
                 plan__organization=provider)
-            nb_churn_customers = (all_subscriptions.count()
+            nb_churn_customers = (demo_subscriptions.count()
                 * churn_rate // 100)
-            subscriptions = random.sample(list(all_subscriptions),
-                all_subscriptions.count() - nb_churn_customers)
+            subscriptions = random.sample(list(demo_subscriptions),
+                demo_subscriptions.count() - nb_churn_customers)
             for subscription in subscriptions:
                 nb_periods = random.randint(1, 6)
                 subscription.ends_at = subscription.plan.end_of_period(
@@ -332,7 +337,7 @@ class Command(BaseCommand):
                 ChargeItem.objects.create(
                     invoiced=transaction_item, charge=charge)
                 charge.payment_successful()
-            churned = all_subscriptions.exclude(
+            churned = demo_subscriptions.exclude(
                 pk__in=[subscription.pk for subscription in subscriptions])
             for subscription in churned:
                 subscription.ends_at = end_period

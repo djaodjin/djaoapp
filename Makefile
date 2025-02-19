@@ -132,9 +132,12 @@ ifeq ($(MY_EMAIL),)
 
 # We build a local sqlite3 database to be packaged with the Docker image
 # such that the container can be started without prior configuration.
-package-docker: build-assets initdb
+package-docker: build-assets setup-livedemo
 	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
 	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(MULTITIER_DB_FILENAME) $(srcDir)/cowork.sqlite
+	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
+	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
+	find $(srcDir) -name '*~' -exec rm -rf {} +
 	cd $(srcDir) && $(DOCKER) build $(DOCKER_OPTS) .
 
 endif
@@ -155,21 +158,13 @@ run-coverage: initdb
 # so no matter the installed config files, we reliably create db.sqlite in
 # the source directory and thus are able to transfer it onto the Docker
 # container.
-setup-livedemo:
+setup-livedemo: initdb
 	$(installDirs) $(srcDir)/themes/djaoapp/templates $(srcDir)/htdocs/media
 	$(installFiles) $(srcDir)/livedemo/templates/index.html $(srcDir)/themes/djaoapp/templates
 	mkdir -p $(srcDir)/htdocs/media/livedemo/profiles
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
-	cd $(srcDir) && rm -f $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py migrate --run-syncdb
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && APP_NAME=djaopsp $(PYTHON) manage.py loadfixtures djaoapp/fixtures/livedemo-db.json
-	$(SQLITE) $(DB_FILENAME) "UPDATE rules_app set authentication=1, entry_point='$(LIVEDEMO_ENTRY_POINT)', enc_key='$(DJAODJIN_SECRET_KEY)';"
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(LIVEDEMO_DB_FILENAME)
-	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --provider=djaopsp --profile-pictures htdocs/media/livedemo/profiles
-	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
-	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
-	find $(srcDir) -name '*~' -exec rm -rf {} +
+	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
+	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set slug='djaopsp' WHERE slug='djaoapp';"
 
 
 # Download prerequisites specified in package.json and install relevant files
@@ -247,7 +242,7 @@ clean-dbs:
 clean-themes:
 	rm -rf $(srcDir)/themes/*
 	rm -rf $(srcDir)/htdocs/themes/*
-	rm -rf $(srcDir)/htdocs/djaoapp
+	rm -rf $(srcDir)/htdocs/djaoapp $(srcDir)/htdocs/djaopsp
 
 
 initdb-djaoapp: clean-dbs

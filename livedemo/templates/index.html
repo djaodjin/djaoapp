@@ -1,31 +1,46 @@
 {% extends "base.html" %}
 
+
+
+
+
+
+
+
+
+
 {% block content %}
+<div>
 <section id="intro" class="container">
-  <h1 class="text-center mt-4">Practices Survey Platform Interactive Demo</h1>
-  <h5 class="text-center"><em>built in California by <a href="https://www.djaodjin.com/">DjaoDjin inc.</a></em></h5>
+  <div class="text-center mt-4">
+    <h1 class="editable" id="leaderboard-title">Practices Survey Platform Interactive Demo</h1>
+    <!-- next line must be line 18 for edit testing -->
+    <h5 class="editable" id="leaderboard-subtitle"><em>built in California by <a href="https://www.djaodjin.com/">DjaoDjin inc.</a></em></h5>
+  </div>
 
   <div class="pt-4">
     <div class="row">
       <div class="col-md-8">
-        <p>
+        <div class="editable edit-markdown" id="leaderboard-message">
+          <p>
 This website combines <a href="https://github.com/djaodjin/djaoapp/" target="_blank">djaoapp</a>
 and <a href="https://github.com/djaodjin/djaopsp/" target="_blank">djaopsp</a>
 Open Source projects into a fully-functional interactive demo of an
 Environmental &amp; Social Governance product.
-        </p>
-        <p>
+          </p>
+          <p>
 The purpose of this interactive demo is to showcase features and functionality
 you will have access to on <a href="https://www.tspproject.org" target="_blank">tspproject.org</a> at different pricing
 tier.
-        </p>
-        <p>
+          </p>
+          <p>
 For technical folks building on DjaoDjin hosting platform and/or Open Source
 projects, you will find here a working integration of the subscription-based
 access control Web gateway (blue theme) and one business logic application
 here DjaoDjin's practices survey platform (green theme), to run a
 fully-featured Software-as-Service product.
-        </p>
+          </p>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <img class="img-fluid img-thumbnail"
@@ -77,7 +92,9 @@ and mountains in Africa. DjaoDjin is <em>The Welcome Spirit</em>.
     </div>
     <div class="row">
       <div class="col-md-4 text-md-end">
-        <img class="img-fluid rounded-circle my-2" src="{{'assets/img/profiles/steve.jpg'|asset}}" role="presentation" loading="lazy">
+        <img class="img-fluid rounded-circle my-2 editable droppable-image"
+             id="site-feedback-portrait"
+             src="{{'assets/img/profiles/steve.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
         <p>
@@ -195,6 +212,6 @@ assistance when needed.
       </div>
     </div>
   </div>
-
 </section>
+</div>
 {% endblock %}
