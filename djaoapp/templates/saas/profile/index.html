@@ -142,7 +142,7 @@
         </div>
         <div class="modal-body">
           <div class="text-center border">
-            <croppa v-model="picture" v-init-croppa v-zoom-slider
+            <croppa v-model="picture"{% if urls.user %} v-init-croppa{% endif %} v-zoom-slider
                     :width="300"
                     :height="300"
                     :prevent-white-space="true"

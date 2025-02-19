@@ -200,8 +200,8 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
 
 class NotificationEmailBackend(object):
 
-    def send_notification(self, event_name, context=None, site=None,
-                          recipients=None):
+    def send_notification(self, event_name, context=None,
+                          site=None, request=None, **kwargs):
         """
         Sends a notification e-mail using the current site connection,
         defaulting to sending an e-mail to broker profile managers
@@ -217,9 +217,7 @@ class NotificationEmailBackend(object):
                 template = [
                     "notification/%s_role_grant_created.eml" %
                     role_description_slug] + [template]
-        if not site:
-            site = get_current_site()
-
+        recipients = kwargs.get('recipients', [])
         bcc = []
         reply_to = recipients
         if not recipients:
@@ -230,13 +228,16 @@ class NotificationEmailBackend(object):
             # If we have explicitely disabled e-mail notification,
             # there is nothing to do.
             self.send_mail(template, context, recipients,
-                bcc=bcc, reply_to=reply_to, site=site)
+                bcc=bcc, reply_to=reply_to, request=request, site=site)
 
 
     def send_mail(self, template, context, recipients, bcc=None, reply_to=None,
-                  site=None):
+                  request=None, site=None):
         #pylint:disable=too-many-arguments
         organization_model = get_organization_model()
+        if not site:
+            if request and hasattr(request, 'site'):
+                site = request.site
         if not site:
             site = get_current_site()
         if not bcc:
@@ -249,13 +250,30 @@ class NotificationEmailBackend(object):
             "event=%s)", recipients, reply_to, bcc,
             json.dumps(context, indent=2, cls=JSONEncoder))
         lang_code = None
-        contact = Contact.objects.filter(
-            email__in=recipients).order_by('email').first()
-        if contact:
-            lang_code = contact.lang
+        if request:
+            lang_code = translation.get_language_from_request(request)
+        if not lang_code:
+            contact = Contact.objects.filter(
+                email__in=recipients).order_by('email').first()
+            if contact:
+                lang_code = contact.lang
 
         try:
-            with translation.override(lang_code):
+            # When this method is called through an HTTP request initiated
+            # in a browser client, the lang_code will be set by the browser
+            # language. We don't want to override it here.
+            if lang_code:
+                with translation.override(lang_code):
+                    get_email_backend(
+                        connection=site.get_email_connection()).send(
+                        from_email=site.get_from_email(),
+                        recipients=recipients,
+                        reply_to=reply_to,
+                        bcc=bcc,
+                        template=template,
+                        context=context)
+            else:
+                # use implicit lang_code set in the context of execution
                 get_email_backend(
                     connection=site.get_email_connection()).send(
                     from_email=site.get_from_email(),

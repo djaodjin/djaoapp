@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 #pylint:disable=invalid-name,too-many-lines
 import logging
@@ -157,7 +157,7 @@ def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
     }
     send_notification('quota_reached',
         context=UseChargeLimitReachedSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -260,7 +260,7 @@ def use_charge_limit_crossed_notice(sender, usage, use_charge, subscription,
     }
     send_notification('use_charge_limit_crossed',
         context=UseChargeLimitReachedSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -339,7 +339,7 @@ def user_contact_notice(sender, provider, user, reason, **kwargs):
     }
     send_notification('user_contact',
         context=ContactUsNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -413,7 +413,7 @@ def user_logged_in_notice(sender, request, user, **kwargs):
     }
     #send_notification('user_logged_in',
     #    context=UserNotificationSerializer().to_representation(context),
-    #    site=site)
+    #    site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -491,7 +491,7 @@ def user_login_failed_notice(sender, credentials, request, **kwargs):
         }
         #send_notification('user_login_failed',
         #    context=UserNotificationSerializer().to_representation(context),
-        #    site=site)
+        #    site=site, **kwargs)
     except model.DoesNotExist:
         pass
 
@@ -565,11 +565,11 @@ def user_registered_notice(sender, user, **kwargs):
     }
     send_notification('user_registered',
         context=UserNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
     if hasattr(app, 'welcome_email') and app.welcome_email:
         send_notification('user_welcome',
             context=UserNotificationSerializer().to_representation(context),
-            site=site)
+            site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -641,7 +641,7 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     }
     send_notification('user_activated',
         context=UserNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 def get_charge_updated_context(charge, site=None):
@@ -755,7 +755,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
           "charge_items": [{
             "invoiced": {
               "created_at": "2024-01-01T00:00:00Z",
-              "description": "subscription to premium",
+              "description": "Subscription to premium until 2025/12/31 (12 months)",
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
@@ -786,7 +786,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             "amount": 11900,
             "unit": "usd",
             "readable_amount": "$119.00",
-            "description": "subscription to premium",
+            "description": "Subscription to premium until 2025/12/31 (12 months)",
             "last4": "4242",
             "exp_date": "07/2023",
             "processor_key": "ch_abc123",
@@ -827,7 +827,7 @@ def charge_updated_notice(sender, charge, user, **kwargs):
             context.update({'originated_by': None})
         send_notification('charge_updated',
             context=ChargeNotificationSerializer().to_representation(context),
-            site=site)
+            site=site, **kwargs)
 
 
 @receiver(card_updated, dispatch_uid="card_updated_notice")
@@ -941,7 +941,7 @@ def card_updated_notice(sender, organization, user, old_card, new_card,
     }
     send_notification('card_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
-      site=site)
+      site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1026,7 +1026,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
           },
           "invoiced_items": [{
               "created_at": "2024-01-01T00:00:00Z",
-              "description": "subscription to premium",
+              "description": "Subscription to premium until 2025/12/31 (12 months)",
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
@@ -1092,7 +1092,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     }
     send_notification('order_executed',
         context=InvoiceNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1166,7 +1166,7 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
           },
           "invoiced_items": [{
               "created_at": "2024-01-01T00:00:00Z",
-              "description": "subscription to premium",
+              "description": "Subscription to premium until 2025/12/31 (12 months)",
               "amount": 11900,
               "is_debit": false,
               "orig_account": "Receivable",
@@ -1243,7 +1243,7 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
     }
     send_notification('renewal_charge_failed',
       context=RenewalFailedNotificationSerializer().to_representation(context),
-      site=site)
+      site=site, **kwargs)
 
 
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated_notice")
@@ -1393,7 +1393,7 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
     }
     send_notification('claim_code_generated',
         context=ClaimNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 @receiver(profile_updated, dispatch_uid="profile_updated_notice")
@@ -1505,7 +1505,7 @@ def profile_updated_notice(sender, organization, changes, user, **kwargs):
     }
     send_notification('profile_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
-      site=site)
+      site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1626,7 +1626,7 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
     context.update({'originated_by': request_user if request_user else None})
     send_notification('processor_setup_error',
       context=ProcessorSetupNotificationSerializer().to_representation(context),
-      site=site)
+      site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1760,7 +1760,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
         " reason=%s)", role, reason)
     send_notification('role_grant_created',
         context=RoleGrantNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1878,7 +1878,7 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
     context.update({'originated_by': request_user if request_user else None})
     send_notification('role_request_created',
         context=RoleRequestNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2003,7 +2003,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     context.update({'originated_by': request_user if request_user else None})
     send_notification('role_grant_accepted',
         context=RoleGrantNotificationSerializer().to_representation(context),
-        site=site)
+        site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2110,8 +2110,7 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
     }
     send_notification('subscription_grant_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
-        context),
-        site=site)
+        context), site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2229,7 +2228,7 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
         send_notification('subscription_grant_created',
             context=SubscriptionCreatedNotificationSerializer(
             ).to_representation(context),
-            site=site)
+            site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2336,8 +2335,7 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
     }
     send_notification('subscription_request_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
-        context),
-        site=site)
+        context), site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2449,7 +2447,7 @@ def subscription_request_created_notice(sender, subscription, reason=None,
         send_notification('subscription_request_created',
             context=SubscriptionCreatedNotificationSerializer(
             ).to_representation(context),
-            site=site)
+            site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2536,7 +2534,7 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
     }
     send_notification('card_expires_soon',
       context=ExpireProfileNotificationSerializer().to_representation(context),
-      site=site)
+      site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2647,8 +2645,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
     }
     send_notification('expires_soon',
         context=SubscriptionExpireNotificationSerializer().to_representation(
-            context),
-        site=site)
+            context), site=site, **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2739,8 +2736,7 @@ def period_sales_report_created_notice(sender, provider, dates, data,
     }
     send_notification('period_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(
-            context),
-        site=site)
+            context), site=site, **kwargs)
 
 
 @receiver(post_save, sender=get_user_model())

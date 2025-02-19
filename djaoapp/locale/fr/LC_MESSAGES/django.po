@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-18 21:17+0000\n"
+"POT-Creation-Date: 2025-02-19 17:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sebastien Mirolo <smirolo@djaodjin.com>\n"
 "Language-Team: DjaoDjin <info@djaodjin.com>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: deployutils/apps/django/mixins/base.py:219
 #, python-format
 msgid "No %(verbose_name)s found matching '%(account)s'"
-msgstr "Aucun %(verbose_name)s trouvé correspondant à '%(provider)s'"
+msgstr "Aucun %(verbose_name)s trouvé correspondant à '%(account)s'"
 
 #: deployutils/apps/django/mixins/base.py:224
 #, python-format
@@ -532,7 +532,7 @@ msgstr "Nom complet"
 msgid "You must read and agree to the %(agreement)s."
 msgstr "Vous devez lire et accepter le %(agreement)s."
 
-#: djaoapp/notifications/backends/email.py:271
+#: djaoapp/notifications/backends/email.py:293
 #, python-format
 msgid ""
 "There was an error sending the following email to %(recipients)s. This is "
@@ -542,7 +542,7 @@ msgstr ""
 "Une erreur est survenue pendant l'envoi d'e-mail aux %(recipients)s. Ceci "
 "est sûrement dû à une mauvaise configuration de votre site %(site)s."
 
-#: djaoapp/notifications/backends/email.py:295
+#: djaoapp/notifications/backends/email.py:317
 #, python-format
 msgid ""
 "There was an error sending an email notification to %(recipients)s. This is "
@@ -1632,8 +1632,8 @@ msgid ""
 "break the dashboard and become unable to access this page to upload a fix."
 msgstr ""
 "Lorsque vous modifiez des modèles racine (ex : base.html), vous risquez par "
-"inadvertance de casser le tableau de bord et de ne plus pouvoir accéder "
-"à cette page pour télécharger un correctif."
+"inadvertance de casser le tableau de bord et de ne plus pouvoir accéder à "
+"cette page pour télécharger un correctif."
 
 #: djaoapp/templates/extended_templates/theme.html:61
 #, python-format
@@ -1646,8 +1646,8 @@ msgid ""
 msgstr ""
 "Vous pouvez restaurer le thème par défaut, mais pour cela vous aurez besoin "
 "d'une <a href=\"%(profile_url)s\">clé API</a> pour pouvoir <a href=\"https://"
-"www.djaodjin.com/docs/reference/djaoapp/2025-02-17/api/#"
-"destroyDjaoAppThemePackageList\">appeler l'API</a> depuis la ligne de "
+"www.djaodjin.com/docs/reference/djaoapp/2025-02-17/api/"
+"#destroyDjaoAppThemePackageList\">appeler l'API</a> depuis la ligne de "
 "commande."
 
 #: djaoapp/templates/extended_templates/theme.html:72
@@ -1676,7 +1676,7 @@ msgstr "Envoyez un e-mail de test"
 msgid "%(role_descr)s added"
 msgstr "%(role_descr)s ajouté"
 
-#: djaoapp/templates/index.html:23 themes/djaoapp/templates/index.html:21
+#: djaoapp/templates/index.html:23
 msgid "Register"
 msgstr "S'inscrire"
 
@@ -1798,7 +1798,8 @@ msgstr "EXPIRE"
 
 #: djaoapp/templates/notification/card_expires_soon.eml:27
 msgid "Please update your card on file for continued service."
-msgstr "Veuillez mettre à jour votre carte enregistrée pour un service continu."
+msgstr ""
+"Veuillez mettre à jour votre carte enregistrée pour un service continu."
 
 #: djaoapp/templates/notification/card_updated.eml:4
 #: djaoapp/templates/notification/card_updated.eml:8
@@ -2209,8 +2210,8 @@ msgid ""
 "browser:"
 msgstr ""
 "Vous pouvez accéder au <a href=\"%(back_url)s\">profil de %(organization)s "
-"en cliquant sur le lien précédent ou en copiant le lien suivant dans votre "
-"navigateur web:"
+"</a> en cliquant sur le lien précédent ou en copiant le lien suivant dans "
+"votre navigateur web:"
 
 #: djaoapp/templates/notification/subscription_grant_created.eml:4
 #: djaoapp/templates/notification/subscription_grant_created.eml:8
@@ -2388,7 +2389,7 @@ msgstr "Ré-initializez votre mot de passe pour %(broker)s en suivant ce lien:"
 #: djaoapp/templates/notification/user_reset_password.eml:23
 #, python-format
 msgid "Link is valid for %(nb_expiration_days)s days."
-msgstr "Le lien expire dans %(expiration_days)s jours."
+msgstr "Le lien expire dans %(nb_expiration_days)s jours."
 
 #: djaoapp/templates/notification/user_verification.eml:4
 msgid "Email address verification"
@@ -3980,15 +3981,14 @@ msgstr ""
 #: djaoapp/templates/saas/users/roles.html:34
 msgid "Request access to an existing profile or create a new profile"
 msgstr ""
-"Veuillez demander l'accès à un profil existant ou "
-"créez un nouveau profil."
+"Veuillez demander l'accès à un profil existant ou créez un nouveau profil."
 
 #: djaoapp/templates/saas/profile/new.html:50
 #: djaoapp/templates/saas/users/roles.html:57
 msgid "Start typing an organization name or a contact e-mail ..."
 msgstr ""
-"Commencez a entrer le nom d'une organization ou l'addresse e-mail "
-"d'un contact..."
+"Commencez a entrer le nom d'une organization ou l'addresse e-mail d'un "
+"contact..."
 
 #: djaoapp/templates/saas/profile/new.html:67
 #: djaoapp/templates/saas/users/roles.html:65
@@ -4161,7 +4161,7 @@ msgid ""
 "Thank you,\n"
 "- %(user)s"
 msgstr ""
-"Boujour %(invitee)s,\n"
+"Boujour,\n"
 "\n"
 "Je vous abonne au plan %(plan)s sur le site %(site)s.\n"
 "\n"
@@ -4878,8 +4878,7 @@ msgstr "Décrit la raison de l'erreur en texte lisible"
 #: rules/models.py:61
 msgid "Enter a valid path consisting of letters, digits, -, {, }, or /."
 msgstr ""
-"Entrez un chemin valid, constitué de lettres, chiffres ou le "
-"caractère '-'."
+"Entrez un chemin valid, constitué de lettres, chiffres ou le caractère '-'."
 
 #: rules/models.py:160
 msgid "Path prefix for all rules in the app"
@@ -5442,7 +5441,6 @@ msgid "True when the role type is available for all profiles"
 msgstr "Vrai lorsque le type de rôle est disponible pour tous les profils"
 
 #: saas/api/serializers.py:1115
-#, python-format
 msgid ""
 "True if the request user is able to update the role description. Typically a "
 "profile manager for the organization (local role description) or the broker "
@@ -5451,7 +5449,7 @@ msgstr ""
 "Vrai si l'utilisateur de la demande est en mesure de mettre à jour la "
 "description du rôle. Il s'agit généralement d'un gestionnaire de profils "
 "pour l'organisation (description du rôle local) ou du courtier (descriptions "
-"des rôles globaux).
+"des rôles globaux)."
 
 #: saas/api/serializers.py:1150 saas/api/serializers.py:1301
 msgid "Profile the user has a role on"
@@ -5626,8 +5624,8 @@ msgid ""
 "Natural period length (hourly, daily, weekly, monthly, yearly). Defaults to "
 "monthly."
 msgstr ""
-"Durée naturelle des périodes (horaire, quotidienne, hebdomadaire, "
-"mensuelle, annuelle). La valeur par défaut est mensuelle."
+"Durée naturelle des périodes (horaire, quotidienne, hebdomadaire, mensuelle, "
+"annuelle). La valeur par défaut est mensuelle."
 
 #: saas/api/serializers.py:1562
 msgid "Specify the number of periods to include. Min value is 1."
@@ -5682,6 +5680,7 @@ msgid "No UseCharge specified."
 msgstr "Pas de frais d'utilisation spécifié"
 
 #: saas/api/transactions.py:622
+#, python-format
 msgid "Couldn't find a subscription to %(plan)s that covers %(at_time)s."
 msgstr "Impossible de trouver un abonnement à %(plan)s qui couvre %(at_time)s."
 
@@ -5976,14 +5975,39 @@ msgstr "mois"
 msgid "year"
 msgstr "année"
 
-#: saas/humanize.py:281 saas/humanize.py:289 saas/humanize.py:294
+#: saas/humanize.py:282
+#, python-format
+msgid "a %(percent)s discount"
+msgstr "une réduction de %(percent)s"
+
+#: saas/humanize.py:284 saas/humanize.py:295 saas/humanize.py:303
 msgid " and "
 msgstr " et "
 
-#: saas/humanize.py:300
+#: saas/humanize.py:292
+#, python-format
+msgid "%(nb_periods)s %(period_name)s free"
+msgstr "%(nb_periods)s %(period_name)s gratuit"
+
+#: saas/humanize.py:301
+#, python-format
+msgid "a %(amount)s off"
+msgstr "%(amount)s de rabais"
+
+#: saas/humanize.py:309
+#, python-format
+msgid "(code: %(code)s)"
+msgstr "(code: %(code)s)"
+
+#: saas/humanize.py:315
 #, python-format
 msgid ", complimentary of %(payer)s"
 msgstr ", de la part de %(payer)s"
+
+#: saas/humanize.py:323
+#, python-format
+msgid "for %(subscriber_full_name)s (%(sync_on)s)"
+msgstr "pour %(subscriber_full_name)s (%(sync_on)s)"
 
 #: saas/mixins.py:457
 msgid "More ..."
@@ -6011,8 +6035,8 @@ msgstr "URL ou ce trouve la photo du profil"
 msgid ""
 "Date at which the next automatic charge will be generated (in ISO format)"
 msgstr ""
-"Date à laquelle le prochain prélèvement automatique sera généré "
-"(au format ISO)"
+"Date à laquelle le prochain prélèvement automatique sera généré (au format "
+"ISO)"
 
 #: saas/models.py:310
 msgid "Funds escrowed in currency unit"
@@ -6134,11 +6158,12 @@ msgstr ""
 "Transaction enregistrée pour la distribution du processeur au fournisseur."
 
 #: saas/models.py:2609
+#, python-format
 msgid ""
 "charge item and refunds have different units (%(unit)s vs. %(refund_unit)s)"
 msgstr ""
-"Les éléments facturés et les remboursements ont différentes unités "
-"(%(unit)s vs. %(refund_unit)s)"
+"Les éléments facturés et les remboursements ont différentes unités (%(unit)s "
+"vs. %(refund_unit)s)"
 
 #: saas/models.py:2754
 #, python-format
@@ -6321,6 +6346,7 @@ msgid "Unique key generated when a grant is initiated"
 msgstr "Clé unique générée lorsqu'un accord est crée"
 
 #: saas/models.py:3722
+#, python-format
 msgid "period type %(period_type)d is not defined."
 msgstr "Le type de période %(period_type)d n'est pas défini."
 
@@ -6335,7 +6361,8 @@ msgstr "Frais d'utilisation reférencé"
 #: saas/models.py:3896
 msgid "Number of use events that expire at the end of the current period"
 msgstr ""
-"Nombre d'événements d'utilisation qui expirent à la fin de la période en cours"
+"Nombre d'événements d'utilisation qui expirent à la fin de la période en "
+"cours"
 
 #: saas/models.py:3898
 msgid "Number of use events that rollover to the next period"
@@ -6650,6 +6677,7 @@ msgid "E-mail verification code"
 msgstr "Code de vérification pour e-mail"
 
 #: signup/backends/email_verification/base.py:46
+#, python-format
 msgid ""
 "%(back_url)s\n"
 "E-mail verification code: %(code)s\n"
@@ -6661,7 +6689,6 @@ msgstr ""
 
 #: signup/backends/phone_verification/aws_sns.py:50
 #, python-format
-#| msgid "One-time authentication code"
 msgid "one-time verification code: %(code)s"
 msgstr "Code d'authentification unique: %(code)s"
 
@@ -7038,8 +7065,8 @@ msgstr "Vrai lorsqu'une session de cookie doit également être créée"
 #: signup/serializers_overrides.py:94 signup/serializers_overrides.py:157
 msgid "Unique identifier that can safely be used in place of username"
 msgstr ""
-"Identifiant unique qui peut être utilisé en toute sécurité à la place "
-"du nom d'utilisateur"
+"Identifiant unique qui peut être utilisé en toute sécurité à la place du nom "
+"d'utilisateur"
 
 #: signup/serializers_overrides.py:174
 msgid "Primary e-mail address to contact user"

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rules.mixins import AppMixin
 from saas.docs import extend_schema, OpenApiResponse
+from saas.mixins import _as_html_description
 from saas.models import get_broker
 from signup.serializers_overrides import UserDetailSerializer
 
@@ -20,8 +21,10 @@ from ..api_docs.schemas import get_notification_schema
 from .serializers import DetailSerializer
 
 
-def get_test_notification_context(notification_slug, originated_by=None):
-    schema = get_notification_schema(notification_slug)
+def get_test_notification_context(notification_slug,
+                                  originated_by=None, request=None):
+    schema = get_notification_schema(notification_slug,
+        api_base_url=request.build_absolute_uri('/'))
     examples = schema.get('examples', [])
     if examples:
         # XXX We do some strange things to display the notification docs
@@ -36,6 +39,21 @@ def get_test_notification_context(notification_slug, originated_by=None):
         example.update({
             'originated_by': UserDetailSerializer().to_representation(
                 originated_by)})
+    # The `TransactionSerializer` does this, but we are having a dict
+    # created out of a docstring example here.
+    if 'charge_items' in example:
+        for charge_item in example.get('charge_items'):
+            invoiced = charge_item.get('invoiced')
+            descr = invoiced.get('description')
+            invoiced.update({
+                'description': _as_html_description(descr, request=request)
+            })
+    if 'invoiced_items' in example:
+        for invoiced in example.get('invoiced_items'):
+            descr = invoiced.get('description')
+            invoiced.update({
+                'description': _as_html_description(descr, request=request)
+            })
     return example
 
 
@@ -77,12 +95,12 @@ class NotificationDetailAPIView(AppMixin, GenericAPIView):
             notification_slug = self.kwargs.get('template')
             context = json.loads(self.request.data) if self.request.data else {}
             context.update(get_test_notification_context(notification_slug,
-                    originated_by=self.request.user))
+                    originated_by=self.request.user, request=request))
             recipients = []
             if self.request.user.email:
                 recipients = [self.request.user.email]
             send_notification(notification_slug, context=context,
-                recipients=recipients)
+                request=self.request, recipients=recipients)
         except TemplateDoesNotExist:
             return Response({'detail':
                 _("Problem with template. Could not send test email.")},
