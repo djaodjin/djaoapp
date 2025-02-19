@@ -19,8 +19,12 @@ from saas.utils import get_organization_model
 
 from .compat import reverse
 
-
 LOGGER = logging.getLogger(__name__)
+
+AUTH_ENABLED = 0
+AUTH_LOGIN_ONLY = 1
+AUTH_DISABLED = 2
+
 
 def is_platformed_site():
     #pylint:disable=protected-access
@@ -166,12 +170,17 @@ def get_active_theme():
 
 
 def get_disabled_authentication(request, user):
+    if settings.AUTHENTICATION_OVERRIDE is not None:
+        return (settings.AUTHENTICATION_OVERRIDE == AUTH_DISABLED
+            and not _valid_manager(request, [get_current_broker()]))
     app = get_current_app(request)
     return (app.authentication == app.AUTH_DISABLED
         and not _valid_manager(request, [get_current_broker()]))
 
 
 def get_disabled_registration(request):#pylint:disable=unused-argument
+    if settings.AUTHENTICATION_OVERRIDE is not None:
+        return settings.AUTHENTICATION_OVERRIDE != AUTH_ENABLED
     app = get_current_app(request)
     return app.authentication != app.AUTH_ENABLED
 
