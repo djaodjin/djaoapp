@@ -132,21 +132,21 @@ class Command(BaseCommand):
 
     def demo_plans(self, provider):
         return Plan.objects.filter(
-            organization=provider, period_amount__gt=0).filter(
-            slug__startswith='demo-')
+            organization=provider, period_amount__gt=0)
 
     def generate_optional_plans(self, provider):
         # Create a few standard ones that don't interfer
         # with the livedemo-db.json fixtures
-        Plan.objects.create(
-            slug='demo-basic', title="Basic", period_amount=2000,
-            organization=provider)
-        Plan.objects.create(
-            slug='demo-premium', title="Premium", period_amount=5000,
-            organization=provider)
-        Plan.objects.create(
-            slug='demo-deluxe', title="Deluxe", period_amount=12000,
-            organization=provider)
+        if not self.demo_plans(provider).exists():
+            Plan.objects.create(
+                slug='demo-basic', title="Basic", period_amount=2000,
+                organization=provider)
+            Plan.objects.create(
+                slug='demo-premium', title="Premium", period_amount=5000,
+                organization=provider)
+            Plan.objects.create(
+                slug='demo-deluxe', title="Deluxe", period_amount=12000,
+                organization=provider)
 
 
     def generate_coupons(self, provider, nb_coupons=None):
