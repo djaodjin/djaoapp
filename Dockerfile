@@ -14,7 +14,8 @@ RUN set -eux; \
         libldap-2.4-2 libldap-common \
         libpangoft2-1.0-0 \
         libxmlsec1 \
-        libxslt1.1; \
+        libxslt1.1 \
+        sqlite3; \
       rm -rf /var/lib/apt/lists/*;
 
 # ==== Installs pip packages
