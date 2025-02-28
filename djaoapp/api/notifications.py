@@ -24,7 +24,7 @@ from .serializers import DetailSerializer
 def get_test_notification_context(notification_slug,
                                   originated_by=None, request=None):
     schema = get_notification_schema(notification_slug,
-        api_base_url=request.build_absolute_uri('/'))
+        api_base_url=(request.build_absolute_uri('/') if request else ""))
     examples = schema.get('examples', [])
     if examples:
         # XXX We do some strange things to display the notification docs

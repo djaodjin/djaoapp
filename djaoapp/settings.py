@@ -47,7 +47,10 @@ FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
 OPENAPI_SPEC_COMPLIANT = False
 
+# Bots prevention
 CONTACT_DYNAMIC_VALIDATOR = None
+SIGNUP_EMAIL_DYNAMIC_VALIDATOR = None
+
 DYNAMIC_MENUBAR_ITEM_CUT_OFF = 3
 
 # Defaults for social auth configuration

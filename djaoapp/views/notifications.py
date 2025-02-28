@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 import logging
 
@@ -34,7 +34,7 @@ class NotificationInnerFrameView(AppMixin, TemplateView):
             **kwargs)
         context.update(
             get_test_notification_context(self.kwargs.get('template'),
-            originated_by=self.request.user))
+            originated_by=self.request.user, request=self.request))
         return context
 
     @xframe_options_sameorigin
