@@ -54,6 +54,7 @@
         "broker_fee_percent": 0,
         "period_type": 4,
         "description":"Ideal to transform your website into a fully featured Software-as-a-Service.\n\n* Setup in minutes\n* Custom Themes\n* Secure Custom Domain\n",
+        "is_personal": 1,
         "is_active" : 1,
         "organization": 2, "slug":"premium" }, "model" : "saas.Plan", "pk": 22
 },
@@ -533,14 +534,14 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00+00:00",
-      "email": "melissa@localhost.localdomain",
+      "email": "melissa+11@localhost.localdomain",
       "first_name": "Melissa",
       "last_name": "BillingCard15",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "melissa"
+      "username": "melissa11"
     },
     "model": "auth.User", "pk": 29
 },

@@ -85,8 +85,6 @@
 {
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
-      "slug": "manager",
-      "title": "Profile Manager"
-    },
-    "model": "saas.RoleDescription", "pk": 1
+      "title": "Profile Manager",
+      "slug": "manager" }, "model": "saas.RoleDescription", "pk": 1
 }]

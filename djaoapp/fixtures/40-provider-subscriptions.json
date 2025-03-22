@@ -19,7 +19,7 @@
         "broker_fee_percent": 0,
         "period_type": 5,
         "description":"",
-        "is_active" : 1,
+        "is_active" : true,
         "organization" : 40, "slug":"basic-cowork" }, "model" : "saas.Plan", "pk": 40
 },
 {
@@ -31,7 +31,7 @@
         "broker_fee_percent": 0,
         "period_type": 5,
         "description":"",
-        "is_active" : 1,
+        "is_active" : true,
         "organization" : 40, "slug":"medium" }, "model" : "saas.Plan", "pk": 41
 },
 {
@@ -43,7 +43,7 @@
         "broker_fee_percent": 0,
         "period_type": 5,
         "description":"",
-        "is_active" : 1,
+        "is_active" : true,
         "organization" : 40, "slug":"premium-cowork" }, "model" : "saas.Plan", "pk": 42
 },
 {
@@ -55,7 +55,7 @@
         "broker_fee_percent": 0,
         "period_type": 5,
         "description":"",
-        "is_active" : 1,
+        "is_active" : true,
         "organization" : 40, "slug":"extra-cowork" }, "model" : "saas.Plan", "pk": 46
 },
 {
@@ -131,5 +131,39 @@
       "extra": "This profile is used for taking screenshots when organization has an associated processor account."
     },
     "model": "saas.Organization", "pk": 43
+},
+{
+    "fields":{
+        "title":"Yoga Club",
+        "created_at": "2025-01-01T00:00:00+00:00",
+        "setup_amount":0,
+        "period_amount":0,
+        "broker_fee_percent": 0,
+        "period_type": 5,
+        "description":"Test optin_on_request enabled",
+        "is_active" : false,
+        "optin_on_request": true,
+        "organization" : 43, "slug": "yoga-club" }, "model" : "saas.Plan", "pk": 45
+},
+{
+    "fields": {
+      "slug": "xia44",
+      "email": "xia44@localhost.localdomain",
+      "full_name": "Xia44 SubscriptionsCard10",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "processor": 1,
+      "is_provider": false,
+      "is_active": true
+    },
+    "model": "saas.Organization", "pk": 44
+},
+{ "fields": {
+    "created_at": "2025-01-01T00:00:00+00:00",
+    "ends_at": "2025-12-31T00:00:00+00:00",
+    "organization": 44,
+    "plan": 45,
+    "request_key": "44000000000ed012345678901234567890123457"
+  },
+  "model": "saas.subscription", "pk": 44
 }
 ]

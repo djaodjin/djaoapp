@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -16,8 +16,6 @@ from saas.views.extra import (
     PrintableChargeReceiptView as PrintableChargeReceiptBaseView)
 from saas.views.profile import (DashboardView as BaseDashboardView,
     OrganizationProfileView as OrganizationProfileViewBase)
-from saas.views.roles import (
-    RoleImplicitGrantAcceptView as RoleImplicitGrantAcceptViewBase)
 from saas.utils import update_context_urls, update_db_row
 from signup.decorators import check_email_verified as check_email_verified_base
 from signup.helpers import full_name_natural_split
@@ -133,25 +131,6 @@ class OrganizationProfileView(OrganizationProfileViewBase):
             if self.contact:
                 kwargs.update({'lang': self.contact.lang})
         return kwargs
-
-
-class RoleImplicitGrantAcceptView(AppMixin, RoleImplicitGrantAcceptViewBase):
-
-    implicit_create_on_none = False
-    template_name = 'saas/users/roles/accept.html'
-
-    def check_email_verified(self, request, user,
-                             redirect_field_name=REDIRECT_FIELD_NAME,
-                             next_url=None):
-        return check_email_verified_base(request, user,
-            redirect_field_name=redirect_field_name, next_url=next_url) is None
-
-
-    def get_implicit_create_on_none(self):
-        if self.app and self.app.get_implicit_create_on_none():
-            return True
-        return super(RoleImplicitGrantAcceptView,
-            self).get_implicit_create_on_none()
 
 
 class StripeProcessorRedirectView(BaseStripeProcessorRedirectView):

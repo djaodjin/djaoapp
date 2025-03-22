@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import is_authenticated
@@ -17,7 +17,7 @@ from ..urlbuilders import (url_active, url_agreement, url_authenticated,
     url_frictionless_self_provider, url_provider, url_self_provider,
     url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
-from ..views.custom_saas import (DashboardView, RoleImplicitGrantAcceptView,
+from ..views.custom_saas import (DashboardView,
     ProcessorAuthorizeView, OrganizationProfileView, PrintableChargeReceiptView)
 from ..views.custom_signup import (ActivationView, PasswordResetConfirmView,
     RecoverView, SigninView, SignoutView, SignupView)
@@ -29,7 +29,8 @@ from ..views.users import (UserProfileView, UserNotificationsView,
 from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView,
     TrustComplianceView, TrustComplianceDownloadView)
-from ..views.redirects import OrganizationCreateView, OrganizationRedirectView
+from ..views.redirects import (OrganizationCreateView, OrganizationRedirectView,
+    RoleImplicitGrantAcceptView)
 
 
 def is_anonymous(func, next_url):

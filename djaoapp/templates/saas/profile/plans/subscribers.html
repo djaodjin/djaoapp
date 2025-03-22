@@ -134,7 +134,7 @@ Thank you,
           </tr>
         </tbody>
         <tbody class="has-results" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-          <tr :class="endsSoon(entry)">
+          <tr :id="entry.profile.slug" :class="endsSoon(entry)">
             <td>
               <a :href="'{{urls.profile_base}}' + entry.profile.slug + '/subscriptions/'">[[entry.profile.printable_name]]</a>
             </td>
@@ -156,9 +156,22 @@ Thank you,
                      tooltip-placement="top">
             </td>
             <td>
-              <button class="btn btn-outline-primary" v-if="entry.grant_key">{% trans %}Revoke grant{% endtrans %}</button>
-              <button class="btn btn-primary" v-if="entry.request_key">{% trans %}Accept request{% endtrans %}</button>
-              <button class="btn btn-danger" v-if="!(entry.grant_key || entry.request_key)">{% trans %}Unsubscribe{% endtrans %}</button>
+              <button class="btn btn-outline-primary accept-grant"
+                @click="unsubscribe(entry.profile.slug, entry.plan.slug)"
+                v-if="entry.grant_key">
+                {% trans %}Revoke grant{% endtrans %}
+              </button>
+              <button class="btn btn-primary accept-request"
+                @click="acceptRequest('{{profile}}', entry.request_key)"
+                v-if="entry.request_key">
+                {% trans %}Accept request{% endtrans %}
+              </button>
+              <button class="btn btn-danger"
+                data-bs-toggle="modal" data-bs-target="#unsubscribe-action"
+                @click="unsubscribeConfirm(entry.profile.slug, entry.plan.slug)"
+                v-if="!(entry.grant_key || entry.request_key)">
+                {% trans %}Unsubscribe{% endtrans %}
+              </button>
             </td>
           </tr>
         </tbody>

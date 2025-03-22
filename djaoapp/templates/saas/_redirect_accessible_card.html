@@ -1,0 +1,31 @@
+<div :id="'redirect-' + (item.profile.slug ? item.profile.slug : item)" class="card mt-1">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-2">
+        <img class="img-fluid" style="max-height:64px;" :src="item.profile.picture || (item.profile.type == 'personal' ? '{{'/assets/img/default-user.png'|djasset}}' : '{{'/assets/img/default-organization.png'|djasset}}')" >
+      </div>
+      <div class="col-5">
+<span>[[item.profile.printable_name ? item.profile.printable_name : '@' + item]]</span>
+        <p class="card-text">
+          <span class="badge bg-primary">[[ item.role_description ? item.role_description.title : "" ]]</span>
+        </p>
+        <div v-if="item.extra && item.extra.implicit">
+          XXX
+        </div>
+      </div>
+      <div class="col-5 text-end">
+      {% block actions %}
+      <div class="d-grid gap-2">
+        <span v-if="item.request_key">{% trans %}Access requested...{% endtrans %}</span>
+        <a class="btn btn-primary btn-md"
+           :href="item.home_url"
+           v-if="!item.request_key && !item.accept_grant_api_url">{% trans %}Use this profile{% endtrans %}</a>
+        <a class="btn btn-primary btn-md"
+           :href="item.home_url"
+           v-if="item.accept_grant_api_url">{% trans %}Accept role &amp; Use this profile{% endtrans %}</a>
+      </div>
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>{# /.card #}

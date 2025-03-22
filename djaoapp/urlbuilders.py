@@ -1,14 +1,13 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 from rules.urldecorators import re_path
-from saas.decorators import (fail_agreement, fail_direct, fail_provider,
-    fail_provider_only, fail_self_provider)
+from saas.decorators import (fail_active_roles, fail_agreement, fail_direct,
+    fail_provider, fail_provider_only, fail_self_provider)
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from signup.decorators import fail_active
 
-from .decorators import (fail_active_roles, fail_authenticated,
-    inject_edition_tools)
+from .decorators import fail_authenticated, inject_edition_tools
 
 
 def url_prefixed(regex, view, name=None):

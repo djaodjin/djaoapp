@@ -61,7 +61,7 @@
     "period_amount": 229000,
     "broker_fee_percent": 0,
     "period_type": 4,
-    "is_active": 1,
+    "is_active": false,
     "organization": 170, "slug": "club170-premium" }, "model": "saas.Plan", "pk": 171
 },
 {
@@ -73,7 +73,7 @@
     "period_amount": 1900,
     "broker_fee_percent": 0,
     "period_type": 4,
-    "is_active": 0,
+    "is_active": false,
     "organization": 170, "slug": "club170-inactive" }, "model": "saas.Plan", "pk": 172
 },
 {

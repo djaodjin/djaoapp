@@ -3,22 +3,110 @@
 {% block content %}
 <div id="app">{# so tests have something to hang on. #}
   <section id="redirects">
-    <div class="offset-md-4 col-md-4">
-      <div class="page-header">
-        <h1 class="text-center"><i class="fa fa-users fa-lg"></i> {% trans %}Please choose a profile ...{% endtrans %}</h1>
-
-      </div>
-
-      {% for redirect in redirects %}
-        <div class="center mt-2">
-          <a id="{{redirect.2}}" class="btn btn-primary btn-redirect w-100" href="{{redirect.0}}">{{redirect.1}}</a>
+    <h1 class="text-center my-4">{% trans %}To continue, please select a profile ...{% endtrans %}</h1>
+    <div class="container">
+    <role-profile-list inline-template id="accessible-list-container"
+        :request-user="'{{request.user.email}}'"
+        data-items='{{redirects|to_json}}'>
+      <div>
+        <div class="row" v-show="!itemsLoaded">
+          <div class="col-md-12 py-5 my-5">
+            <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+          </div>
         </div>
-      {% endfor %}
-
-      <div class="mt-1">
-        <a id="saas_organization_create" class="btn btn-outline-primary w-100" href="{{urls.organization_create}}">{% trans %}New ...{% endtrans %}</a>
+        <div v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <div class="mb-3" v-for="item in items.results">
+            {% include "saas/_redirect_accessible_card.html" %}
+          </div>
+          <hr />
+          <p>
+{% trans accessibles_url=urls.user.accessibles %}If you need to create a new profile, please do so through the <a href="{{accessibles_url}}">connected profiles</a> page.{% endtrans %}
+          </p>
+        </div>
+        <div class="mt-1"
+             v-show="itemsLoaded && items.results.length == 0" v-cloak>
+          {% include "saas/_profile_new.html" %}
+        </div>
       </div>
+    </role-profile-list>
     </div>
   </section>
 </div>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+<script type="text/javascript" src="{{'/assets/vendor/moment.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/trip.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|djasset}}"></script>
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$labels = {
+    notAvailableLabel: "{% trans %}N/A{% endtrans %}",
+    cardNumberLabel: "{% trans %}Card Number{% endtrans %}",
+    securityCodeLabel: "{% trans %}Security Code{% endtrans %}",
+    expirationLabel: "{% trans %}Expiration{% endtrans %}",
+    cardHolderLabel: "{% trans %}Card Holder{% endtrans %}",
+    streetAddressLabel: "{% trans %}Street address{% endtrans %}",
+    localityLabel: "{% trans %}City/Town{% endtrans %}",
+    regionLabel: "{% trans %}State/Province/County{% endtrans %}",
+    postalCodeLabel: "{% trans %}Zip/Postal code{% endtrans %}",
+    countryLabel: "{% trans %}Country{% endtrans %}",
+    fieldShoundNotBeEmptyError: "{% trans %}This field shouldn't be empty{% endtrans %}",
+    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
+}
+Vue.prototype.$globals = {
+    'humanizeDate': humanizeDate,
+    'humanizeNumber': humanizeNumber,
+    'humanizePeriodHeading': humanizePeriodHeading,
+    'humanizeTimeDelta': humanizeTimeDelta
+};
+
+humanizeTimeDelta.$labels = {
+    timeAgoTemplate: "{% trans %}%(timedelta)s ago{% endtrans %}",
+    timeLeftTemplate: "{% trans %}%(timedelta)s left{% endtrans %}",
+};
+</script>
+{% block dashboard_bodyscripts %}{% endblock %}
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|djasset}}"></script>
+{% else %}
+<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|djasset}}"></script>
+{% endif %}
+
+<script type="text/javascript">
+Vue.use(Croppa);
+{% if FEATURES_REVERT_TO_VUE2 %}
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+{% else %}
+var app = createApp({
+  delimiters: ["[[","]]"],
+}).mount('#app');
+{% endif %}
+</script>
 {% endblock %}

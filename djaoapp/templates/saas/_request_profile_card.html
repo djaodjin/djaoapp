@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row align-items-center">
       <div class="col-2">
-        <img class="img-fluid" style="max-height:64px;" :src="item.picture || '{{'/assets/img/default-organization.png'|djasset}}'" >
+        <img class="img-fluid" style="max-height:64px;" :src="item.picture || (item.type == 'personal' ? '{{'/assets/img/default-user.png'|djasset}}' : '{{'/assets/img/default-organization.png'|djasset}}')">
       </div>
       <div class="col-5">
 [[item.printable_name ? item.printable_name : '@' + item]]
