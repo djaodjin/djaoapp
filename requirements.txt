@@ -28,7 +28,7 @@ googlemaps==4.10.0
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
 #   but it still seems to work ...
 gunicorn==23.0.0                  # requires Py3.7
-jinja2==3.1.5
+jinja2==3.1.6
 phonenumbers==8.13.17
 PyJWT==2.10.1                     # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
