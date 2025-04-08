@@ -11,9 +11,7 @@
     "fields": {
       "slug": "cowork",
       "account": 3,
-      "entry_point": "http://localhost:8024",
-      "authentication": 0,
-      "registration": 1
+      "entry_point": "http://localhost:8024"
     },
     "model": "rules.App", "pk": 3
 },
@@ -392,18 +390,19 @@
     },
     "model" : "saas.Coupon", "pk": 3
 },
+
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "alice@localhost.localdomain",
-      "first_name": "Alice",
-      "last_name": "Cooper",
+      "email": "donny+cowork@localhost.localdomain",
+      "first_name": "Donny",
+      "last_name": "ProviderManager",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2014-01-01T00:00:00-00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "alice"
+      "password": "pbkdf2_sha256$600000$RbRWfhoqwcQxMMlPXtC999$sqc/L+VuCXbya5v9VCNbalsGMJEVjv39X+0aVcBZ3sI=",
+      "username": "donny"
     },
     "model": "auth.User", "pk": 1
 },
@@ -417,16 +416,59 @@
 },
 {
     "fields": {
-      "slug": "alice",
       "created_at": "2025-01-01T00:00:00-00:00",
+      "role_description": 1,
+      "organization": 3,
       "user": 1
     },
-    "model": "signup.Contact", "pk": 1
+    "model": "saas.Role", "pk": 1
 },
+
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "xia@localhost.localdomain",
+      "email": "alice+cowork@localhost.localdomain",
+      "first_name": "Alice",
+      "last_name": "Cooper",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2014-01-01T00:00:00-00:00",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "alice"
+    },
+    "model": "auth.User", "pk": 7
+},
+{
+    "fields": {
+      "last_signed": "2025-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 7
+    },
+    "model": "saas.signature", "pk": 7
+},
+{
+    "fields": {
+      "slug": "alice",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "user": 7
+    },
+    "model": "signup.Contact", "pk": 7
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "role_description": 1,
+      "organization": 4,
+      "user": 7
+    },
+    "model": "saas.Role", "pk": 7
+},
+
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00-00:00",
+      "email": "xia+cowork@localhost.localdomain",
       "first_name": "Xia",
       "last_name": "Lee",
       "is_active": true,
@@ -449,7 +491,7 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "kenneth@localhost.localdomain",
+      "email": "kenneth+cowork@localhost.localdomain",
       "first_name": "Kenneth",
       "last_name": "Contributor",
       "is_active": true,
@@ -464,7 +506,7 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "tom@localhost.localdomain",
+      "email": "tom+cowork@localhost.localdomain",
       "first_name": "Tom",
       "last_name": "Support",
       "is_active": true,
@@ -495,7 +537,7 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "amelie@localhost.localdomain",
+      "email": "amelie+cowork@localhost.localdomain",
       "first_name": "Amelie",
       "last_name": "Beetle",
       "is_active": true,
@@ -526,7 +568,7 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "john@localhost.localdomain",
+      "email": "john+cowork@localhost.localdomain",
       "first_name": "John",
       "last_name": "Kramer",
       "is_active": true,
@@ -537,15 +579,6 @@
       "username": "john"
     },
     "model": "auth.User", "pk": 6
-},
-{
-    "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
-      "role_description": 1,
-      "organization": 3,
-      "user": 1
-    },
-    "model": "saas.Role", "pk": 1
 },
 {
     "fields": {
@@ -622,45 +655,13 @@
         "is_active": true,
         "organization" : 4, "slug":"basic-sublease" }, "model" : "saas.Plan", "pk": 4
 },
-{
-    "fields": {
-      "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "donny@localhost.localdomain",
-      "first_name": "Donny",
-      "last_name": "ProviderManager",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
-      "last_login": "2014-01-01T00:00:00-00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "donny"
-    },
-    "model": "auth.User", "pk": 7
-},
-{
-    "fields": {
-      "last_signed": "2025-01-01T00:00:00-00:00",
-      "agreement": 1,
-      "user": 7
-    },
-    "model": "saas.signature", "pk": 7
-},
-{
-    "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
-      "role_description": 1,
-      "organization": 4,
-      "user": 7
-    },
-    "model": "saas.Role", "pk": 7
-},
 
 {
     "fields": {
       "slug": "xia",
       "full_name": "Xia Lee",
       "created_at": "2025-01-01T00:00:00-00:00",
-      "email": "xia@localhost.localdomain",
+      "email": "xia+cowork@localhost.localdomain",
       "phone": "+14155555555",
       "street_address": "350 Bay St.",
       "locality":  "San Francisco",
@@ -742,7 +743,7 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "melissa@localhost.localdomain",
+      "email": "melissa+cowork@localhost.localdomain",
       "first_name": "Melissa",
       "is_active": true,
       "is_staff": false,

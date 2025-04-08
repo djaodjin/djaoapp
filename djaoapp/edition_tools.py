@@ -44,7 +44,9 @@ def fail_edit_perm(request, account=None):
             # The call to `get_current_app` here seems valid to check
             # if the user has permissions to edit pages under a path prefix.
             account = get_current_app(request).account
-        result = not bool(_valid_manager(request, [account]))
+        result = not bool(_valid_manager(
+            request.user if is_authenticated(request) else None,
+            [account]))
     return result
 
 
@@ -53,7 +55,7 @@ def get_organization_picture(organization, default=None):
     return picture if picture else default
 
 
-def get_user_menu_context(user, context, request=None):
+def get_user_menu_context(user, context, request):
     #pylint:disable=too-many-locals
     path_parts = reversed(request.path.split('/')) if request else []
     has_broker_role = False
@@ -194,7 +196,7 @@ def inject_edition_tools(response, request, context=None,
             cleaned_data = {}
             cleaned_data.update(serializer.data)
             cleaned_data = get_user_menu_context(
-                request.user, cleaned_data, request=request)
+                request.user, cleaned_data, request)
             template = loader.get_template(user_menu_template)
             user_menu = render_template(template, cleaned_data, request).strip()
             # Removes 'data-dj-menubar-user-item' attribute

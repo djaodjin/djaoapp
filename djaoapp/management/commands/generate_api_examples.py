@@ -28,6 +28,7 @@ class Command(BaseCommand):
             help='toggle errors')
 
     def handle(self, *args, **options):
+        #pylint:disable=too-many-locals
         formatted_examples = []
         api_base_url = getattr(settings,
             'API_BASE_URL', 'https://djaodjin.com/api')

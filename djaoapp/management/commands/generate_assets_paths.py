@@ -1,4 +1,4 @@
-# Copyright (c) 2019, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 import logging, json, os
@@ -20,6 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('PATH', nargs=1, type=str)
 
     def handle(self, *args, **options):
+        #pylint:disable=too-many-locals
         venv = options.get('venv')
         base = settings.BASE_DIR
         webpack_loader_stats_path = os.path.dirname(

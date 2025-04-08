@@ -499,8 +499,6 @@
     "fields": {
       "slug": "djaopsp",
       "account": 2,
-      "authentication": 0,
-      "registration": 3,
       "session_backend": 2,
       "entry_point": "http://localhost:8040",
       "enc_key": "m55*tp*jxti7uylwa-"

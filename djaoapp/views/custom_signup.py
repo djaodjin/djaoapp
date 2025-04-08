@@ -1,12 +1,13 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
 import logging
 
+from django.conf import settings
 from deployutils.apps.django.compat import is_authenticated
 from rules.mixins import AppMixin
-from saas.models import Agreement
+from saas.models import Agreement, get_broker
 from signup.helpers import update_context_urls
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
@@ -19,9 +20,9 @@ from signup.views.auth import (
 from ..compat import reverse
 from ..forms.custom_signup import (ActivationForm, PasswordResetConfirmForm,
     SigninForm, SignupForm)
-from ..thread_locals import get_current_broker
 from ..mixins import (PasswordResetConfirmMixin, RegisterMixin,
     VerifyCompleteMixin, social_login_urls)
+from ..utils import PERSONAL_REGISTRATION, TOGETHER_REGISTRATION
 
 
 LOGGER = logging.getLogger(__name__)
@@ -89,7 +90,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     def get_initial(self):
         kwargs = super(SignupView, self).get_initial()
-        broker = get_current_broker()
+        broker = get_broker()
         kwargs.update({
             'country': broker.country,
             'region': broker.region
@@ -102,7 +103,7 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
 
     def get_form_kwargs(self):
         kwargs = super(SignupView, self).get_form_kwargs()
-        if self.app and self.app.registration == self.app.PERSONAL_REGISTRATION:
+        if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
             kwargs.update({'force_required': True})
         return kwargs
 
@@ -110,9 +111,9 @@ class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
         candidates = []
         register_path = self.kwargs.get('path', None)
         if not register_path and self.app:
-            if self.app.registration == self.app.PERSONAL_REGISTRATION:
+            if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
                 register_path = 'personal'
-            elif self.app.registration == self.app.TOGETHER_REGISTRATION:
+            elif settings.REGISTRATION_STYLE == TOGETHER_REGISTRATION:
                 register_path = 'organization'
         if register_path:
             candidates = ['accounts/register/%s.html' % register_path]

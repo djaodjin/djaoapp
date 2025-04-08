@@ -49,6 +49,7 @@
       "account": 2,
       "is_active": true,
       "domain": null,
+      "registration": 0,
       "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 1
@@ -56,8 +57,7 @@
 {
     "fields": {
       "slug": "djaoapp",
-      "account": 2,
-      "registration": 3
+      "account": 2
     },
     "model": "rules.App", "pk": 1
 },

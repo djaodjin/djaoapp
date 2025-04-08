@@ -261,6 +261,9 @@
   <!-- End Main Footer -->
 
 {% block _bodyscripts %}
+<script type="text/javascript">
+const DJAOAPP_API_BASE_URL = "{{'/api'|site_url}}";
+</script>
 <script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 import logging, os
@@ -9,97 +9,84 @@ from django.db.models import Q
 from django.http import Http404
 from extended_templates.utils import get_default_storage_base
 from multitier.thread_locals import get_current_site
-from multitier.mixins import build_absolute_uri
+from multitier.mixins import build_absolute_uri as build_absolute_uri_base
 from multitier.utils import get_site_model
-from rules.models import Rule
 from rules.utils import get_app_model, get_current_app
 from saas import settings as saas_settings
-from saas.decorators import _valid_manager
 from saas.utils import get_organization_model
 
-from .compat import reverse
+from .compat import import_string, reverse, urljoin
+
 
 LOGGER = logging.getLogger(__name__)
-
-AUTH_ENABLED = 0
-AUTH_LOGIN_ONLY = 1
-AUTH_DISABLED = 2
 
 
 def is_platformed_site():
     #pylint:disable=protected-access
-    return not (get_current_broker()._state.db == DEFAULT_DB_ALIAS)
-
-def is_testing(site):
-    return site.extra and 'testing' in site.extra
+    return not get_current_broker()._state.db == DEFAULT_DB_ALIAS
 
 
-def dynamic_processor_keys(provider, livemode=None):
+def dynamic_processor_keys(provider, testmode=None):
     """
     Update the Stripe keys to use based on the database we are referring to.
     """
     #pylint:disable=unused-argument
     from saas.backends import load_backend
-    processor_backend = load_backend(
-        settings.SAAS.get('PROCESSOR', {
-            'BACKEND': 'saas.backends.stripe_processor.StripeBackend'
-        }).get('BACKEND', 'saas.backends.stripe_processor.StripeBackend'))
-    site = get_current_site()
-    if livemode is None:
-        if provider.processor_pub_key:
-            livemode = provider.processor_pub_key.startswith('pk_live_')
-        else:
-            livemode = bool(not is_testing(site))
+    processor_backend = load_backend(saas_settings.PROCESSOR['BACKEND'])
 
-    if livemode:
-        try:
-            if site.processor_client_key:
-                processor_backend.pub_key = site.processor_pub_key
-                processor_backend.priv_key = site.processor_priv_key
-                processor_backend.client_id = site.processor_client_key
-                if site.connect_callback_url:
-                    processor_backend.connect_callback_url = \
-                        site.connect_callback_url
-            elif is_current_broker(provider) and is_platformed_site():
-                # if we are using platform keys but the site is not
-                # the platform, we override the Stripe Connect mode
-                # to be REMOTE.
-                processor_backend.mode = processor_backend.REMOTE
-        except AttributeError:
-            pass
-    else:
+    if testmode is None:
+        if provider.processor_pub_key:
+            testmode = provider.processor_pub_key.startswith('pk_test_')
+
+    if testmode:
         processor_backend.pub_key = settings.STRIPE_TEST_PUB_KEY
         processor_backend.priv_key = settings.STRIPE_TEST_PRIV_KEY
         processor_backend.client_id = settings.STRIPE_TEST_CLIENT_ID
         processor_backend.connect_callback_url = \
             settings.STRIPE_TEST_CONNECT_CALLBACK_URL
-        try:
-            if site.processor_test_client_key:
-                processor_backend.pub_key = site.processor_test_pub_key
-                processor_backend.priv_key = site.processor_test_priv_key
-                processor_backend.client_id = site.processor_test_client_key
-                if site.connect_test_callback_url:
-                    processor_backend.connect_callback_url = \
-                        site.connect_test_callback_url
-            elif is_current_broker(provider) and is_platformed_site():
-                # if we are using platform keys but the site is not
-                # the platform, we override the Stripe Connect mode
-                # to be REMOTE.
-                processor_backend.mode = processor_backend.REMOTE
-        except AttributeError:
-            pass
 
     return processor_backend
 
 
-def enables_processor_test_keys(request=None):
-    site = get_current_site()
-    if hasattr(site, 'enables_processor_test_keys'):
-        return site.enables_processor_test_keys
-    return bool(settings.ENABLES_PROCESSOR_TEST_KEYS)
+# same prototype as djaodjin-multitier.mixins.build_absolute_uri
+def build_absolute_uri(location='/', request=None, site=None,
+                       with_scheme=True, force_subdomain=False):
+    """
+    Returns an absolute URL for `location` on the site.
+
+    Used to override SAAS['BROKER']['BUILD_ABSOLUTE_URI_CALLABLE']
+    """
+    # djaodjin-saas will pass the provider (of type Organization)
+    # as the site argument, because that's the only clue it has.
+    if site and isinstance(site, get_organization_model()):
+        provider = site
+        site_model = get_site_model()
+        candidates = list(site_model.objects.filter(
+            account=provider, domain__isnull=False))
+        if candidates:
+            site = candidates[0] # XXX works as long as domain
+                                 #     is explicitely set.
+        else:
+            candidates = list(site_model.objects.filter(account=provider))
+            if candidates:
+                site = candidates[0] # XXX Testing on local systems
+        LOGGER.debug("_provider_as_site(%s): %s", provider, site)
+
+    if settings.BUILD_ABSOLUTE_URI_CALLABLE:
+        return import_string(settings.BUILD_ABSOLUTE_URI_CALLABLE)(
+            location=location, request=request, site=site,
+            with_scheme=with_scheme, force_subdomain=force_subdomain)
+
+    if request:
+        return request.build_absolute_uri(location)
+
+    return urljoin(settings.BASE_URL, location)
 
 
 def djaoapp_get_current_app(request=None):
+    """
+    Used to override RULES['DEFAULT_APP_CALLABLE']
+    """
     site = get_current_site()
     app = get_app_model().objects.filter(slug=site.slug).order_by(
         'path_prefix', '-pk').first()
@@ -119,6 +106,9 @@ def get_current_broker():
     """
     Returns the provider ``Organization`` as read in the active database
     for the ``djaodjin-saas`` application.
+
+    Used to override SAAS['BROKER']['GET_INSTANCE'] and
+    EXTENDED_TEMPLATES['DEFAULT_ACCOUNT_CALLABLE']
     """
     # If we don't write the code as such, we might end-up generating
     # an extra SQL query every time ``get_current_broker`` is called.
@@ -142,14 +132,20 @@ def get_current_assets_dirs():
     Returns path to the root of static assets for an App.
 
     This function is used by premailer to inline applicable CSS.
+
+    Used to override EXTENDED_TEMPLATES['ASSETS_DIRS_CALLABLE']
     """
-    assets_dirs = [os.path.join(settings.PUBLIC_ROOT, get_active_theme()),
+    assets_dirs = [os.path.join(settings.PUBLIC_ROOT, get_current_theme()),
         settings.HTDOCS]
 
     return assets_dirs
 
 
 def get_picture_storage(request, account=None):
+    """
+    Used to override SAAS['PICTURE_STORAGE_CALLABLE'] and
+    SIGNUP['PICTURE_STORAGE_CALLABLE']
+    """
     if not account:
         # We use `account` to generate a `key_prefix`.
         account = get_current_app(request)
@@ -159,58 +155,27 @@ def get_picture_storage(request, account=None):
 
 
 def get_default_storage(request, account=None):
+    """
+    Used to override EXTENDED_TEMPLATES['DEFAULT_STORAGE_CALLABLE']
+    """
     if not account:
         # We use `account` to generate a `key_prefix`.
         account = get_current_app(request)
     return get_default_storage_base(request, account=account)
 
 
-def get_active_theme():
+def get_current_theme():
+    """
+    Used to override EXTENDED_TEMPLATES['ACTIVE_THEME_CALLABLE']
+    """
     return get_current_site().slug
 
 
-def get_disabled_authentication(request, user):
-    if settings.AUTHENTICATION_OVERRIDE is not None:
-        return (settings.AUTHENTICATION_OVERRIDE == AUTH_DISABLED
-            and not _valid_manager(request, [get_current_broker()]))
-    app = get_current_app(request)
-    return (app.authentication == app.AUTH_DISABLED
-        and not _valid_manager(request, [get_current_broker()]))
-
-
-def get_disabled_registration(request):#pylint:disable=unused-argument
-    if settings.AUTHENTICATION_OVERRIDE is not None:
-        return settings.AUTHENTICATION_OVERRIDE != AUTH_ENABLED
-    app = get_current_app(request)
-    return app.authentication != app.AUTH_ENABLED
-
-
-def get_user_otp_required(request, user):
-    return user.role.filter(
-        role_description__otp_required=True).exists()
-
-
 def is_current_broker(organization):
+    """
+    Used to override SAAS['BROKER']['IS_INSTANCE_CALLABLE']
+    """
     return get_current_broker().slug == str(organization)
-
-
-def _provider_as_site(provider):
-    site = None
-    if not provider or is_current_broker(provider):
-        site = get_current_site()
-    else:
-        site_model = get_site_model()
-        candidates = list(site_model.objects.filter(
-            account=provider, domain__isnull=False))
-        if candidates:
-            site = candidates[0] # XXX works as long as domain
-                                 #     is explicitely set.
-        else:
-            candidates = list(site_model.objects.filter(account=provider))
-            if candidates:
-                site = candidates[0] # XXX Testing on local systems
-    LOGGER.debug("_provider_as_site(%s): %s", provider, site)
-    return site
 
 
 def get_authorize_processor_state(processor, provider):
@@ -218,6 +183,8 @@ def get_authorize_processor_state(processor, provider):
     Returns site or site.provider as `state` query parameter for redirects.
 
     This function is executed in the context of the whitelabel's site.
+
+    Used to override SAAS['PROCESSOR']['CONNECT_STATE_CALLABLE']
     """
     site = get_current_site()
     if not is_current_broker(provider):
@@ -253,47 +220,6 @@ def processor_redirect(request, site=None):
                     % (site_model._meta.object_name, site))
     else:
         provider = get_current_broker()
-    return build_absolute_uri(request, location=reverse('saas_update_bank',
-        kwargs={saas_settings.PROFILE_URL_KWARG: provider}), site=site)
-
-
-def product_url(subscriber=None, plan=None, request=None):
-    location = None
-    if plan:
-        candidate_rule = Rule.objects.filter(
-            app=get_current_app(request),
-            kwargs__contains=str(plan)).order_by('-rank').first()
-        if candidate_rule:
-            location = candidate_rule.path.replace(
-                '{profile}', str(subscriber)).replace(
-                '{plan}',  str(plan))
-    if not location:
-        location = reverse('product_default_start')
-        if subscriber:
-            location += '%s/' % subscriber
-        if plan:
-            location += '%s/' % plan
-    site = get_current_site()
-    if request:
-        return build_absolute_uri(request, location=location, site=site)
-    # We don't have a request, so we return a URL path such that the host
-    # is correctly inferred by the browser.
-    if site.is_path_prefix:
-        location = "/%s%s" % (site.slug, location)
-    return location
-
-
-def provider_absolute_url(request,
-                          location='/', provider=None, with_scheme=True):
-    site = _provider_as_site(provider)
-    if site:
-        try:
-            # If `site == get_current_site()`, we have a full-proof way
-            # to generate the absolute URL with either a domain name or
-            # a path prefix depending on the request.
-            return site.as_absolute_uri(location=location)
-        except AttributeError:
-            # OK, we'll use the default build_absolute_uri from multitier.
-            pass
-    return build_absolute_uri(request, location=location,
-        site=site, with_scheme=with_scheme)
+    return build_absolute_uri_base(location=reverse('saas_update_bank',
+        kwargs={saas_settings.PROFILE_URL_KWARG: provider}),
+        request=request, site=site)

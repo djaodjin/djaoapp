@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -12,7 +12,6 @@ from django.template import TemplateSyntaxError
 from django.utils import translation
 from extended_templates.backends import get_email_backend
 from extended_templates.backends.eml import EmlTemplateError
-from multitier.thread_locals import get_current_site
 from saas import settings as saas_settings
 from saas.models import get_broker
 from saas.utils import get_organization_model
@@ -20,6 +19,8 @@ from signup import settings as signup_settings
 from signup.models import Contact
 
 from ...compat import gettext_lazy as _
+from ...thread_locals import build_absolute_uri
+from ...utils import get_email_connection, get_notified_on_errors
 from ..serializers import ExpireUserNotificationSerializer
 
 
@@ -38,7 +39,7 @@ def _notified_managers(organization, notification_slug, originated_by=None):
     return [notified.email for notified in filtered if notified.email]
 
 
-def notified_recipients(notification_slug, context, broker=None, site=None):
+def notified_recipients(notification_slug, context, broker=None):
     """
     Returns the organization email or the managers email if the organization
     does not have an e-mail set.
@@ -49,13 +50,12 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
     bcc = []
     if not broker:
         broker = get_broker()
-    if not site:
-        site = get_current_site()
     originated_by = context.get('originated_by')
     if not originated_by:
         originated_by = {}
     reply_to = originated_by.get('email')
-    if not reply_to and broker.email and broker.email != site.get_from_email():
+    if (not reply_to and broker.email and
+        broker.email != settings.DEFAULT_FROM_EMAIL):
         reply_to = broker.email
 
     # Notify a single user because there is a verification_key
@@ -200,8 +200,8 @@ def notified_recipients(notification_slug, context, broker=None, site=None):
 
 class NotificationEmailBackend(object):
 
-    def send_notification(self, event_name, context=None,
-                          site=None, request=None, **kwargs):
+    def send_notification(self, event_name, context=None, request=None,
+                          **kwargs):
         """
         Sends a notification e-mail using the current site connection,
         defaulting to sending an e-mail to broker profile managers
@@ -228,22 +228,14 @@ class NotificationEmailBackend(object):
             # If we have explicitely disabled e-mail notification,
             # there is nothing to do.
             self.send_mail(template, context, recipients,
-                bcc=bcc, reply_to=reply_to, request=request, site=site)
+                bcc=bcc, reply_to=reply_to, request=request)
 
 
     def send_mail(self, template, context, recipients, bcc=None, reply_to=None,
-                  request=None, site=None):
+                  request=None):
         #pylint:disable=too-many-arguments
-        organization_model = get_organization_model()
-        if not site:
-            if request and hasattr(request, 'site'):
-                site = request.site
-        if not site:
-            site = get_current_site()
         if not bcc:
             bcc = []
-        if not reply_to:
-            site.get_from_email()
 
         LOGGER.debug("djaoapp_extras.recipients.send_notification("\
             "recipients=%s, reply_to='%s', bcc=%s,"\
@@ -265,8 +257,8 @@ class NotificationEmailBackend(object):
             if lang_code:
                 with translation.override(lang_code):
                     get_email_backend(
-                        connection=site.get_email_connection()).send(
-                        from_email=site.get_from_email(),
+                        connection=get_email_connection()).send(
+                        from_email=settings.DEFAULT_FROM_EMAIL,
                         recipients=recipients,
                         reply_to=reply_to,
                         bcc=bcc,
@@ -275,30 +267,23 @@ class NotificationEmailBackend(object):
             else:
                 # use implicit lang_code set in the context of execution
                 get_email_backend(
-                    connection=site.get_email_connection()).send(
-                    from_email=site.get_from_email(),
+                    connection=get_email_connection()).send(
+                    from_email=settings.DEFAULT_FROM_EMAIL,
                     recipients=recipients,
                     reply_to=reply_to,
                     bcc=bcc,
                     template=template,
                     context=context)
         except smtplib.SMTPException as err:
-            LOGGER.warning("[signal] problem sending email from %s"\
-                " on connection for %s. %s",
-                site.get_from_email(), site, err)
             context.update({'errors': [_("There was an error sending"\
     " the following email to %(recipients)s. This is most likely due to"\
     " a misconfiguration of the e-mail notifications whitelabel settings"\
     " for your site %(site)s.") % {
-        'recipients': recipients, 'site': site.as_absolute_uri()}]})
-            #pylint:disable=unused-variable
-            notified_on_errors, unused1, unused2 = notified_recipients(
-                'notification_error', {
-                #pylint:disable=protected-access
-                # We are emailing the owner of the site here so we want
-                # to access the information at the hosting provider.
-                'broker': organization_model.objects.using(
-                    site._state.db).get(pk=site.account_id)})
+        'recipients': recipients, 'site': build_absolute_uri()}]})
+            notified_on_errors = get_notified_on_errors()
+            LOGGER.warning("[signal] problem sending email from %s"\
+                " on connection for %s: %s", settings.DEFAULT_FROM_EMAIL,
+                build_absolute_uri(), err)
             if notified_on_errors:
                 get_email_backend(
                     connection=get_connection_base(fail_silently=True)).send(
@@ -315,17 +300,10 @@ class NotificationEmailBackend(object):
     " syntax error in %(template_name)s:") % {
         'recipients': recipients, 'template_name': template},
                 "%(err_message)s" % {'err_message': str(err)}]})
-            #pylint:disable=unused-variable
-            notified_on_errors, unused1, unused2 = notified_recipients(
-                'notification_error', {
-                #pylint:disable=protected-access
-                # We are emailing the owner of the site here so we want
-                # to access the information at the hosting provider.
-                'broker': organization_model.objects.using(
-                    site._state.db).get(pk=site.account_id)})
-            LOGGER.warning("[%s] notified %s of syntax error"\
-                " in email notification template %s: %s",
-                site, notified_on_errors, template, err)
+            notified_on_errors = get_notified_on_errors()
+            LOGGER.warning("[signal] notified %s of syntax error"\
+                " in email notification template %s on site %(site)s: %s",
+                notified_on_errors, template, build_absolute_uri(), err)
             if notified_on_errors:
                 get_email_backend(
                     connection=get_connection_base(fail_silently=True)).send(

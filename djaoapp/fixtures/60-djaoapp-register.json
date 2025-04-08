@@ -52,6 +52,7 @@
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
+      "registration": 1,
       "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 60
@@ -70,4 +71,30 @@
       "extra": "Register and personal/organization profile already exists (Failures)"
     },
     "model": "saas.Organization", "pk": 60
+},
+{
+    "fields": {
+      "slug": "noregistration",
+      "is_active": true,
+      "account": 40,
+      "domain": null,
+      "is_path_prefix": true,
+      "db_name": "noregistration",
+      "authentication": 1,
+      "extra": "{\"tags\":\"streetside\"}"
+    },
+    "model": "multitier.Site", "pk": 61
+},
+{
+    "fields": {
+      "slug": "authdisabled",
+      "is_active": true,
+      "account": 40,
+      "domain": null,
+      "is_path_prefix": true,
+      "db_name": "authdisabled",
+      "authentication": 2,
+      "extra": "{\"tags\":\"streetside\"}"
+    },
+    "model": "multitier.Site", "pk": 62
 }]

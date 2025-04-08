@@ -8,6 +8,7 @@ from django.views.generic import RedirectView
 from rules.urldecorators import include
 from saas.settings import PROFILE_URL_KWARG, SLUG_RE
 from saas.views import UserRedirectView
+from saas.views.redirects import OrganizationRedirectView
 from signup.forms import StartAuthenticationForm
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.views.saml import saml_metadata_view
@@ -29,8 +30,6 @@ from ..views.users import (UserProfileView, UserNotificationsView,
 from ..views.product import (AppPageView, AppPageRedirectView,
     ProxyPageView, PricingView, AppDashboardView,
     TrustComplianceView, TrustComplianceDownloadView)
-from ..views.redirects import (OrganizationCreateView, OrganizationRedirectView,
-    RoleImplicitGrantAcceptView)
 
 
 def is_anonymous(func, next_url):
@@ -71,21 +70,10 @@ urlpatterns = [
                 pattern_name='saas_organization_cart'),
                        login_url='registration_register'),
         name='saas_cart'),
-    url_authenticated(r'^profile/new/',
-        # We want to use `get_implicit_create_on_none` override.
-        OrganizationCreateView.as_view(),
-        name='saas_organization_create'),
-    url_authenticated(r'^profile/$',
-        # We want to use `get_implicit_create_on_none` override.
-        OrganizationRedirectView.as_view(
-        pattern_name='saas_organization_profile'),
-        name='saas_profile'),
+
     url_authenticated(r'^', include('saas.urls.views.headredirects')),
 
     # Profiles
-    url_agreement(r'users/roles/accept/$',
-        RoleImplicitGrantAcceptView.as_view(),
-        name='saas_role_implicit_grant_accept'),
     url_authenticated(r'^', include('saas.urls.views.request')),
     url_active(r'^users/$',
         UserRedirectView.as_view(), name='accounts_profile'),

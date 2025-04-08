@@ -9,17 +9,18 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import slugify
-from django.utils.timezone import utc
 from faker import Faker
 from multitier.thread_locals import set_current_site
 from multitier.utils import get_site_model
 from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
     Plan, Subscription, Transaction)
-
 from saas import humanize, settings as saas_settings
 from saas.utils import datetime_or_now, generate_random_slug
 from saas import signals as saas_signals
 from signup import signals as signup_signals
+
+from ...compat import timezone_or_utc
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -109,7 +110,7 @@ class Command(BaseCommand):
             set_current_site(get_site_model().objects.get(
                 slug=settings.APP_NAME),
                 path_prefix='')
-        now = datetime.datetime.utcnow().replace(tzinfo=utc)
+        now = datetime.datetime.utcnow().replace(tzinfo=timezone_or_utc())
         from_date = now
         from_date = datetime.datetime(
             year=from_date.year, month=from_date.month, day=1)
@@ -234,6 +235,7 @@ class Command(BaseCommand):
         nb_plans = self.demo_plans(provider).count()
         plans = list(self.demo_plans(provider))
         for end_period in month_periods(from_date=from_date):
+            #pylint:disable=too-many-nested-blocks
             nb_new_customers = random.randint(0, 9)
             for _ in range(nb_new_customers):
                 plan = plans[random.randint(0, nb_plans - 1)]

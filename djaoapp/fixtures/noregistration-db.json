@@ -1,0 +1,211 @@
+[
+{
+    "fields": {
+      "slug": "stripe",
+      "full_name": "Stripe",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "email": "stripe@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "185 Berry St #550",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94107",
+      "country": "US",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 1
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "manager",
+      "title": "Profile Manager"
+    },
+    "model": "saas.RoleDescription", "pk": 1
+},
+{
+    "fields": {
+      "slug": "noregistration",
+      "full_name": "SignupCard1",
+      "email": "djaoapp-signup-card1@localhost.localdomain",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 42
+},
+
+{
+    "fields": {
+      "slug": "noregistration",
+      "path_prefix": "/noregistration",
+      "account": 42
+    },
+    "model": "rules.App", "pk": 40
+},
+{
+    "fields": {
+        "app": 40,
+        "rank": 1,
+        "path": "/app",
+        "rule_op": 1,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 40
+},
+{
+    "fields": {
+        "app": 40,
+        "rank": 4,
+        "path": "/",
+        "rule_op": 0,
+        "is_forward": false
+    },
+    "model": "rules.Rule", "pk": 41
+},
+{
+    "fields": {
+      "email": "alice+authdisabled@localhost.localdomain",
+      "first_name": "Alice",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "alice"
+    },
+    "model": "auth.User", "pk": 43
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 42,
+      "user": 43
+    },
+    "model": "saas.Role", "pk": 43
+},
+{
+    "fields": {
+      "email": "alice+noregistration-0@localhost.localdomain",
+      "first_name": "Alice",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false,
+      "password": "!",
+      "username": "alice1"
+    },
+    "model": "auth.User", "pk": 44
+},
+{
+    "fields": {
+      "slug": "alice1",
+      "user": 44,
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c0",
+      "created_at": "2025-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 44
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 42,
+      "user": 44
+    },
+    "model": "saas.Role", "pk": 44
+},
+{
+    "fields": {
+      "email": "alice+noregistration-2@localhost.localdomain",
+      "first_name": "Alice",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false,
+      "password": "!",
+      "username": "alice2"
+    },
+    "model": "auth.User", "pk": 45
+},
+{
+    "fields": {
+      "slug": "alice2",
+      "user": 45,
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c2",
+      "created_at": "2025-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 45
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 42,
+      "user": 45
+    },
+    "model": "saas.Role", "pk": 45
+},
+
+{
+    "fields": {
+      "email": "xia+noregistration@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia"
+    },
+    "model": "auth.User", "pk": 45
+},
+{
+    "fields": {
+      "email": "xia+noregistration-1@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia1"
+    },
+    "model": "auth.User", "pk": 46
+},
+{
+    "fields": {
+      "slug": "xia1",
+      "user": 46,
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c1",
+      "created_at": "2025-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 46
+},
+{
+    "fields": {
+      "email": "xia+noregistration-3@localhost.localdomain",
+      "first_name": "Xia",
+      "last_name": "DjaoApp Signup Card 2",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia2"
+    },
+    "model": "auth.User", "pk": 47
+},
+{
+    "fields": {
+      "slug": "xia2",
+      "user": 47,
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c3",
+      "created_at": "2025-01-01T00:00:00+00:00"
+    },
+    "model": "signup.Contact", "pk": 47
+}
+]

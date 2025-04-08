@@ -4,10 +4,8 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.conf import settings
 from django.core.exceptions import ValidationError
-from multitier.thread_locals import get_current_site
-from rules.mixins import AppMixin
 from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
@@ -17,7 +15,6 @@ from saas.views.extra import (
 from saas.views.profile import (DashboardView as BaseDashboardView,
     OrganizationProfileView as OrganizationProfileViewBase)
 from saas.utils import update_context_urls, update_db_row
-from signup.decorators import check_email_verified as check_email_verified_base
 from signup.helpers import full_name_natural_split
 from signup.models import get_user_contact
 
@@ -26,7 +23,6 @@ from ..forms.profile import PersonalProfileForm
 from ..notifications.signals import get_charge_updated_context
 from ..notifications.serializers import ChargeNotificationSerializer
 from ..thread_locals import dynamic_processor_keys
-from ..utils import enables_processor_test_keys
 
 
 LOGGER = logging.getLogger(__name__)
@@ -46,24 +42,11 @@ class DashboardView(BaseDashboardView):
 
 class ProcessorAuthorizeView(BaseProcessorAuthorizeView):
 
-    def connect_auth(self, auth_code):
-        try:
-            livemode = int(self.request.GET.get('livemode', 1))
-        except ValueError:
-            livemode = 1
-        site = get_current_site()
-        if livemode:
-            site.remove_tags(['testing'])
-        else:
-            site.add_tags(['testing'])
-        site.save()
-        return super(ProcessorAuthorizeView, self).connect_auth(auth_code)
-
     def get_context_data(self, **kwargs):
         context = super(ProcessorAuthorizeView, self).get_context_data(**kwargs)
-        if enables_processor_test_keys(self.request):
+        if settings.ENABLES_PROCESSOR_TEST_KEYS:
             provider = self.organization
-            processor_backend = dynamic_processor_keys(provider, livemode=False)
+            processor_backend = dynamic_processor_keys(provider, testmode=True)
             authorize_url = processor_backend.get_authorize_url(provider)
             if authorize_url:
                 update_context_urls(context, {

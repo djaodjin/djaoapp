@@ -1,4 +1,4 @@
-# Copyright (c) 2021, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 import os
@@ -9,11 +9,8 @@ from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.staticfiles.views import serve as django_static_serve
-
-from rules.urldecorators import include, url
-
-from multitier.settings import SLUG_RE
 from multitier.urlresolvers import url_sites
+from rules.urldecorators import include, url
 
 from .. import __version__
 from ..compat import reverse_lazy
@@ -58,8 +55,7 @@ if settings.DEBUG:
         # You need to run `python manage.py --nostatic` to enable hotreload.
         url(r'^%s/(?P<path>.*)' % settings.STATIC_URL.strip('/'),
             AssetView.as_view()),
-        url(r'^media/(?P<path>.*)$',
-            django_static_serve, {'document_root': settings.MEDIA_ROOT}),
+        url(r'^(?P<path>media/.*)$', django_static_serve),
         url(r'^csrf-error/',
             TemplateView.as_view(template_name='csrf-error.html'),
             name='csrf_error'),

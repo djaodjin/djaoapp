@@ -70,8 +70,7 @@ class DynamicMenubarItemRenderer(TemplateHTMLRenderer):
             data, renderer_context)
         view = renderer_context['view']
         if is_authenticated(view.request):
-            data = get_user_menu_context(view.request.user, data,
-                request=view.request)
+            data = get_user_menu_context(view.request.user, data, view.request)
         return data
 
 

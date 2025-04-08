@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -9,22 +9,26 @@ from django.contrib.messages import constants as messages
 
 from deployutils.configs import load_config, update_settings
 
-from .compat import reverse_lazy
+from .compat import reverse_lazy, settings_lazy
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Default values that can be overriden by `update_settings` later on.
 APP_NAME = os.path.basename(BASE_DIR)
 
+# Feature flags
+# -------------
 DEBUG = True
 USE_FIXTURES = True
 
-# XXX djaodjin-saas==0.12.0 requires this
-SAAS_ORGANIZATION_MODEL = 'saas.Organization'
+FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
+FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
+FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
+OPENAPI_SPEC_COMPLIANT = False
 
-ALLOWED_HOSTS = ('*',)
-SKIP_EXPIRATION_CHECK = False
 
+# Defaults for database settings
+# ------------------------------
 DB_ENGINE = 'sqlite3'
 DB_NAME = os.path.join(BASE_DIR, 'db.sqlite')
 DB_HOST = ''
@@ -32,20 +36,40 @@ DB_PORT = 5432
 DB_USER = None
 DB_PASSWORD = None
 
-DISABLED_USER_UPDATE = False
-
+# XXX djaodjin-saas==0.12.0 requires this
+SAAS_ORGANIZATION_MODEL = 'saas.Organization'
 MULTITIER_SITE_MODEL = None
-AUTHENTICATION_OVERRIDE = None
+
+
+# Defaults for responding to HTTP requests
+# ----------------------------------------
+ALLOWED_HOSTS = ('*',)
+
 RULES_ENC_KEY_OVERRIDE = None
 RULES_ENTRY_POINT_OVERRIDE = None
 REQUESTS_TIMEOUT = 120
 
-#pylint: disable=undefined-variable
-STRIPE_MODE = 0     # ``LOCAL``, i.e. defaults to storing customers and charges
-FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
-FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
-FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
-OPENAPI_SPEC_COMPLIANT = False
+#: Root URL root when it cannot be infered from the HTTP request,
+#: or there is no HTTP request in the context of `build_absolute_uri`.
+BASE_URL = ""
+
+#: Email address to use for various automated correspondence from
+#: the site managers (also django-registration settings)
+DEFAULT_FROM_EMAIL = settings_lazy(
+    'multitier.thread_locals.get_default_from_email')
+
+
+# Defaults for user and profile accounts settings
+# -----------------------------------------------
+DISABLED_USER_UPDATE = False
+
+AUTHENTICATION_OVERRIDE = settings_lazy(
+    'multitier.thread_locals.get_authentication_override', int)
+
+REGISTRATION_STYLE = settings_lazy(
+    'multitier.thread_locals.get_registration_type', int)
+
+SKIP_EXPIRATION_CHECK = False
 
 # Bots prevention
 CONTACT_DYNAMIC_VALIDATOR = None
@@ -53,36 +77,97 @@ SIGNUP_EMAIL_DYNAMIC_VALIDATOR = None
 
 DYNAMIC_MENUBAR_ITEM_CUT_OFF = 3
 
+# Defaults for captcha workflows
+REGISTRATION_REQUIRES_RECAPTCHA = settings_lazy(
+    'multitier.thread_locals.get_registration_requires_recaptcha', bool)
+CONTACT_REQUIRES_RECAPTCHA = settings_lazy(
+    'multitier.thread_locals.get_contact_requires_recaptcha', bool)
+RECAPTCHA_PUBLIC_KEY = settings_lazy(
+    'multitier.thread_locals.get_recaptcha_pub_key')
+RECAPTCHA_PRIVATE_KEY = settings_lazy(
+    'multitier.thread_locals.get_recaptcha_priv_key')
+
 # Defaults for social auth configuration
+USE_X_FORWARDED_PORT = True
 SOCIAL_AUTH_SAML_ENABLED_IDPS = {}
 
-# Defaults for captcha keys
-RECAPTCHA_PUBLIC_KEY = ""
-RECAPTCHA_PRIVATE_KEY = ""
-GOOGLE_API_KEY = ""
+SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = settings_lazy(
+    'multitier.thread_locals.get_social_auth_azuread_oauth2_key')
+SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = settings_lazy(
+    'multitier.thread_locals.get_social_auth_azuread_oauth2_secret')
 
-ENABLES_PROCESSOR_TEST_KEYS = True
+SOCIAL_AUTH_GITHUB_KEY = settings_lazy(
+    'multitier.thread_locals.get_social_auth_github_key')
+SOCIAL_AUTH_GITHUB_SECRET = settings_lazy(
+    'multitier.thread_locals.get_social_auth_github_secret')
 
-#: The backend to send notifications to users and/or profile managers.
-#: The two backend bundled with the project are
-#: `djaoapp.notifications.backends.NotificationEmailBackend` to notify users
-#: by e-mail and `djaoapp.notifications.backends.NotificationWebhookBackend` to
-#: `POST` and event to an URL.
-NOTIFICATION_BACKENDS = (
-    'djaoapp.notifications.backends.NotificationWebhookBackend',
-    'djaoapp.notifications.backends.NotificationEmailBackend',
-)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = settings_lazy(
+    'multitier.thread_locals.get_social_auth_google_oauth2_key')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = settings_lazy(
+    'multitier.thread_locals.social_auth_google_priv_key')
+
+# Defaults for street address auto-complete (Google Places)
+GOOGLE_API_KEY = settings_lazy(
+    'multitier.thread_locals.get_google_api_key')
+
+# Defaults for payment processor settings
+# ---------------------------------------
+
+STRIPE_MODE = 1     # ``FORWARD``, i.e. defaults to storing customers and charges
+
+STRIPE_USE_PLATFORM_KEYS = settings_lazy(
+    'multitier.thread_locals.get_processor_use_platform_keys', bool)
+
+#: Stripe public production key for the broker
+STRIPE_PUB_KEY = settings_lazy(
+    'multitier.thread_locals.get_processor_pub_key')
+#: Stripe private production key for the broker
+STRIPE_PRIV_KEY = settings_lazy(
+    'multitier.thread_locals.get_processor_priv_key')
+#: The StripeConnect platform/broker production key
+STRIPE_CLIENT_ID = settings_lazy(
+    'multitier.thread_locals.get_processor_client_id')
+#: The StripeConnect redirect endpoint
+STRIPE_CONNECT_CALLBACK_URL = settings_lazy(
+    'multitier.thread_locals.get_processor_connect_callback_url')
+
+ENABLES_PROCESSOR_TEST_KEYS = settings_lazy(
+    'multitier.thread_locals.get_enables_processor_test_keys', bool)
+
+#: The StripeConnect platform/broker test key
+#: Stripe public test key for the broker
+STRIPE_TEST_PUB_KEY = settings_lazy(
+    'multitier.thread_locals.get_processor_test_pub_key')
+
+#: Stripe private test key for the broker
+STRIPE_TEST_PRIV_KEY = settings_lazy(
+    'multitier.thread_locals.get_processor_test_priv_key')
+
+STRIPE_TEST_CLIENT_ID = settings_lazy(
+    'multitier.thread_locals.get_processor_test_client_id')
+
+#: The StripeConnect test redirect endpoint
+STRIPE_TEST_CONNECT_CALLBACK_URL = settings_lazy(
+    'multitier.thread_locals.get_processor_test_connect_callback_url')
+
+# Defaults for notification settings
+# ----------------------------------
 
 #: A URL, or callable function returning an URL, to which a notification event
 #: will be posted.
-NOTIFICATION_WEBHOOK_URL = ""
+NOTIFICATION_WEBHOOK_URL = settings_lazy(
+    'multitier.thread_locals.get_notification_webhook_url')
 
 #: Sometimes it is simpler to disable e-mail notifications through a settings
 #: boolean, than removing the `NotificationEmailBackend`
 #: from settings.NOTIFICATION_BACKENDS`.
-NOTIFICATION_EMAIL_DISABLED = False
+NOTIFICATION_EMAIL_DISABLED = settings_lazy(
+    'multitier.thread_locals.get_notification_email_disabled', bool)
 
+LOG_FILE = None
 
+# Overrides from config files
+# ---------------------------
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
         verbose=True, debug=DEBUG))
@@ -116,6 +201,10 @@ if not hasattr(sys.modules[__name__], "SECRET_KEY"):
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+BUILD_ABSOLUTE_URI_CALLABLE = 'multitier.mixins.build_absolute_uri'
+EMAIL_CONNECTION_CALLABLE = 'multitier.thread_locals.get_email_connection'
+NOTIFIED_ON_ERRORS_CALLABLE = 'multitier.thread_locals.get_notified_on_errors'
 
 # py27/django-recaptcha workaround
 for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
@@ -178,7 +267,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'saas',  # Because we want `djaodjin-resources.js` picked up from here.
     'signup',
     'social_django',
-    'multitier',
+    'multitier',            # need to be included if we don't change fixtures
     'extended_templates',
     'rules',
     'djaoapp'
@@ -329,6 +418,7 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 STATICFILES_FINDERS = (
     'multitier.finders.MultitierFileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder'
 )
 
 ASSETS_MAP = {
@@ -374,10 +464,12 @@ FILE_CHARSET = 'utf-8'
 
 if FEATURES_REVERT_TO_DJANGO:
     TEMPLATES_DIRS = (
+        os.path.join(BASE_DIR, 'themes', 'djaoapp', 'templates'),
         os.path.join(BASE_DIR, 'djaoapp', 'templates', 'django'),
         os.path.join(BASE_DIR, 'djaoapp', 'templates'),)
 else:
     TEMPLATES_DIRS = (
+        os.path.join(BASE_DIR, 'themes', 'djaoapp', 'templates'),
         os.path.join(BASE_DIR, 'djaoapp', 'templates', 'jinja2'),
         os.path.join(BASE_DIR, 'djaoapp', 'templates'),)
 
@@ -425,7 +517,6 @@ if FEATURES_REVERT_TO_DJANGO:
             'libraries': {},
             'builtins': [
                 'django.templatetags.i18n',# XXX Format incompatible with Jinja2
-                'multitier.templatetags.multitier_tags',
                 'deployutils.apps.django.templatetags.deployutils_extratags',
                     # for |host
                 'saas.templatetags.saas_tags',
@@ -675,11 +766,11 @@ import djaoapp.extras.extended_templates
 EXTENDED_TEMPLATES = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_URL_KWARG' : 'app',
-    'ACTIVE_THEME_CALLABLE': 'djaoapp.thread_locals.get_active_theme',
+    'ACTIVE_THEME_CALLABLE': 'djaoapp.thread_locals.get_current_theme',
     'ASSETS_MAP': ASSETS_MAP,
     'ASSETS_DIRS_CALLABLE': 'djaoapp.thread_locals.get_current_assets_dirs',
-    'BUILD_ABSOLUTE_URI_CALLABLE': 'multitier.mixins.build_absolute_uri',
-    'DEFAULT_ACCOUNT_CALLABLE': 'djaoapp.thread_locals.get_current_broker',
+    'BUILD_ABSOLUTE_URI_CALLABLE': 'djaoapp.thread_locals.build_absolute_uri',
+    'DEFAULT_ACCOUNT_CALLABLE': 'saas.models.get_broker',
     'DEFAULT_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_default_storage',
     'EXTRA_MIXIN': djaoapp.extras.extended_templates.ExtraMixin,
     'PUBLIC_ROOT': PUBLIC_ROOT,
@@ -705,36 +796,35 @@ import djaoapp.extras.saas, djaoapp.extras.rules
 SAAS = {
     'BROKER': {
         'GET_INSTANCE': 'djaoapp.thread_locals.get_current_broker',
-        'IS_INSTANCE_CALLABLE': 'djaoapp.thread_locals.is_current_broker',
         'BUILD_ABSOLUTE_URI_CALLABLE':
-            'djaoapp.thread_locals.provider_absolute_url',
+            'djaoapp.thread_locals.build_absolute_uri',
     },
-    'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
-    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
-    'PRODUCT_URL_CALLABLE': 'djaoapp.thread_locals.product_url',
-    'PROCESSOR_BACKEND_CALLABLE':
-        'djaoapp.thread_locals.dynamic_processor_keys',
-
     'BYPASS_IMPLICIT_GRANT': getattr(
         sys.modules[__name__], 'BYPASS_IMPLICIT_GRANT', {}),
     'BYPASS_PROCESSOR_AUTH': getattr(
         sys.modules[__name__], 'USE_FIXTURES', False),
+    'EXTRA_MIXIN': djaoapp.extras.saas.ExtraMixin,
+    'FORCE_PERSONAL_PROFILE': 'djaoapp.utils.get_force_personal_profile',
     'MAX_TYPEAHEAD_CANDIDATES': 5,
     'PHONE_VERIFICATION_BACKEND': getattr(
         sys.modules[__name__], 'SIGNUP_PHONE_VERIFICATION_BACKEND', None),
+    'PICTURE_STORAGE_CALLABLE': 'djaoapp.thread_locals.get_picture_storage',
+    'PRODUCT_URL_CALLABLE': 'djaoapp.utils.product_url',
+    'PROCESSOR_BACKEND_CALLABLE':
+        'djaoapp.thread_locals.dynamic_processor_keys',
     'PROCESSOR': {
-        'PUB_KEY': getattr(sys.modules[__name__], 'STRIPE_PUB_KEY', None),
-        'PRIV_KEY': getattr(sys.modules[__name__], 'STRIPE_PRIV_KEY', None),
+        'BACKEND': 'saas.backends.stripe_processor.StripeBackend',
+        'PUB_KEY': STRIPE_PUB_KEY,
+        'PRIV_KEY': STRIPE_PRIV_KEY,
         'MODE': STRIPE_MODE,
-        'CLIENT_ID': getattr(sys.modules[__name__], 'STRIPE_CLIENT_ID', None),
-        'CONNECT_CALLBACK_URL': getattr(sys.modules[__name__],
-            'STRIPE_CONNECT_CALLBACK_URL', None),
+        'CLIENT_ID': STRIPE_CLIENT_ID,
+        'CONNECT_CALLBACK_URL': STRIPE_CONNECT_CALLBACK_URL,
         'CONNECT_STATE_CALLABLE':
             'djaoapp.thread_locals.get_authorize_processor_state',
         'REDIRECT_CALLABLE': 'djaoapp.thread_locals.processor_redirect',
         'FALLBACK':  getattr(sys.modules[__name__], 'PROCESSOR_FALLBACK', []),
-        'USE_STRIPE_V2': getattr(sys.modules[__name__],
-            'FEATURES_REVERT_STRIPE_V2', False),
+        'USE_PLATFORM_KEYS': STRIPE_USE_PLATFORM_KEYS,
+        'USE_STRIPE_V2': FEATURES_REVERT_STRIPE_V2,
     },
     'USER_SERIALIZER': 'signup.serializers_overrides.UserSerializer',
     'USER_DETAIL_SERIALIZER':
@@ -744,6 +834,7 @@ SAAS = {
 # Software-as-a-Service (forward requests with session data)
 RULES = {
     'ACCOUNT_MODEL': 'saas.Organization',
+    'AUTHENTICATION_OVERRIDE': AUTHENTICATION_OVERRIDE,
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_PREFIXES': [
         '/api/accounts', '/api/agreements', '/api/billing',
@@ -808,10 +899,8 @@ SIGNUP = {
     'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
     'ACCOUNT_ACTIVATION_DAYS': 30,
     'SKIP_EXPIRATION_CHECK': SKIP_EXPIRATION_CHECK,
-    'DISABLED_AUTHENTICATION':
-        'djaoapp.thread_locals.get_disabled_authentication',
-    'DISABLED_REGISTRATION':
-        'djaoapp.thread_locals.get_disabled_registration',
+    'DISABLED_AUTHENTICATION': 'djaoapp.utils.get_disabled_authentication',
+    'DISABLED_REGISTRATION': 'djaoapp.utils.get_disabled_registration',
     'DISABLED_USER_UPDATE': DISABLED_USER_UPDATE,
     'EMAIL_DYNAMIC_VALIDATOR': getattr(
         sys.modules[__name__], 'SIGNUP_EMAIL_DYNAMIC_VALIDATOR', None),
@@ -850,7 +939,7 @@ SIGNUP = {
         'github': {'name': 'GitHub', 'icon': 'github'},
         'google-oauth2': {'name': 'Google', 'icon': 'google'},
     },
-    'USER_OTP_REQUIRED': 'djaoapp.thread_locals.get_user_otp_required',
+    'USER_OTP_REQUIRED': 'djaoapp.utils.get_user_otp_required',
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
@@ -882,18 +971,6 @@ SOCIAL_AUTH_PIPELINE = (
 # Use of reCAPTCHA workflow
 NOCAPTCHA = True
 
-#: A callable function, which is passed a request instance. The function must
-#: return a dictionnary `{'public_key': _*****_, 'private_key': _*****_ }`
-#: with the pair of keys to call the reCAPTACH API with, or an empty
-#: dictionnary if captcha should be disabled on the registration page.
-REGISTRATION_CAPTCHA_KEYS = None
-
-#: A callable function, which is passed a request instance. The function must
-#: return a dictionnary `{'public_key': _*****_, 'private_key': _*****_ }`
-#: with the pair of keys to call the reCAPTACH API with, or an empty
-#: dictionnary if captcha should be disabled on the contact-us page.
-CONTACT_CAPTCHA_KEYS = None
-
 
 # User settings
 # -------------
@@ -911,6 +988,19 @@ AUTHENTICATION_BACKENDS = (
     'signup.backends.auth.UsernameOrEmailPhoneModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
+
+# Notification settings
+# ---------------------
+#: The backend to send notifications to users and/or profile managers.
+#: The two backend bundled with the project are
+#: `djaoapp.notifications.backends.NotificationEmailBackend` to notify users
+#: by e-mail and `djaoapp.notifications.backends.NotificationWebhookBackend` to
+#: `POST` and event to an URL.
+NOTIFICATION_BACKENDS = (
+    'djaoapp.notifications.backends.NotificationWebhookBackend',
+    'djaoapp.notifications.backends.NotificationEmailBackend',
+)
+
 
 # Demo mode ...
 REUSABLE_PRODUCTS = ('livedemo',)

@@ -93,11 +93,8 @@
   {
     "fields":{
         "created_at":"2025-01-01T00:00:00Z",
-        "user": 110,
-        "plan": 1,
-        "recorded": 0
-    },
-    "model": "saas.CartItem", "pk": 110
+        "recorded": 0,
+        "user": 110, "plan": 1}, "model": "saas.CartItem", "pk": 110
   },
   {
     "fields": {

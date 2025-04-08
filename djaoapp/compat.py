@@ -9,6 +9,51 @@ import six
 from six.moves.urllib.parse import urljoin, urlparse, urlunparse
 from six import StringIO
 
+#pylint:disable=ungrouped-imports
+try:
+    from datetime import timezone
+    import zoneinfo
+
+    def timezone_or_utc(tzone=None):
+        if tzone:
+            if issubclass(type(tzone), zoneinfo.ZoneInfo):
+                return tzone
+            try:
+                return zoneinfo.ZoneInfo(tzone)
+            except zoneinfo.ZoneInfoNotFoundError:
+                pass
+        return timezone.utc
+
+except ImportError:
+    try:
+        from datetime import timezone
+        from backports import zoneinfo
+
+        def timezone_or_utc(tzone=None):
+            if tzone:
+                if issubclass(type(tzone), zoneinfo.ZoneInfo):
+                    return tzone
+                try:
+                    return zoneinfo.ZoneInfo(tzone)
+                except zoneinfo.ZoneInfoNotFoundError:
+                    pass
+            return timezone.utc
+
+    except ImportError:
+        import pytz
+        from pytz.tzinfo import DstTzInfo
+
+        def timezone_or_utc(tzone=None):
+            if tzone:
+                if issubclass(type(tzone), DstTzInfo):
+                    return tzone
+                try:
+                    return pytz.timezone(tzone)
+                except pytz.UnknownTimeZoneError:
+                    pass
+            return pytz.utc
+
+
 try:
     from django.urls import URLPattern, URLResolver
 except ImportError:
@@ -68,10 +113,10 @@ except ImportError: # django < 3.0
     from django.utils.translation import ugettext_lazy as gettext_lazy
 
 
-def settings_lazy(func_name):
+def settings_lazy(func_name, class_type=str):
     def import_and_call_func(func_name):
         return import_string(func_name)()
-    return lazy(import_and_call_func, str)(func_name)
+    return lazy(import_and_call_func, class_type)(func_name)
 
 
 def is_authenticated(request):

@@ -53,8 +53,10 @@ ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
 # and DB_FILENAME set to "". We use the default value in the template site.conf
 # here to prevent that issue.
 DB_FILENAME   ?= $(shell grep ^DB_NAME $(CONFIG_DIR)/site.conf | cut -f 2 -d '"')
+STRIPE_TEST_CONNECTED_KEY ?= $(shell grep ^STRIPE_TEST_CONNECTED_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d '"')
 else
 DB_FILENAME   ?= $(RUN_DIR)/db.sqlite
+STRIPE_TEST_CONNECTED_KEY ?= $(shell grep ^STRIPE_TEST_CONNECTED_KEY $(RUN_DIR)/credentials | cut -f 2 -d '"')
 endif
 LIVEDEMO_DB_FILENAME := $(srcDir)/db.sqlite
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
@@ -99,7 +101,8 @@ generateschema: schema.yml
 
 # We add a `load_test_transactions` because the command will set the current
 # site and thus need the rules.App table.
-initdb: install-default-themes initdb-djaoapp initdb-cowork
+initdb: install-default-themes initdb-djaoapp initdb-cowork \
+                        initdb-noregistration initdb-authdisabled
 	cd $(srcDir) && $(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
         djaoapp/fixtures/livedemo-db.json \
         djaoapp/fixtures/20-broker-subscriptions.json \
@@ -118,7 +121,7 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork
         djaoapp/fixtures/180-auth.json \
         djaoapp/fixtures/200-saas-roles.json
 	@echo "-- Set streetside processor deposit key."
-	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_PRIV_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where slug='djaoapp';"
+	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' WHERE is_provider AND slug != 'djaoapp';"
 
 
 install:: install-conf
@@ -220,8 +223,14 @@ install-default-themes:: clean-themes
 	$(installDirs) $(srcDir)/themes
 	$(installDirs) $(srcDir)/htdocs/themes
 
+initdb-djaoapp: clean-djaoapp
+	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
+	cd $(srcDir) && $(MANAGE) migrate $(RUNSYNCDB) --noinput --fake-initial
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(DB_FILENAME)
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 
-initdb-cowork: clean-dbs
+
+initdb-cowork: clean-cowork
 	$(if $(dir $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)))
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) migrate $(RUNSYNCDB) --database cowork --noinput
@@ -229,14 +238,36 @@ initdb-cowork: clean-dbs
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
+	@echo "-- Set streetside processor deposit key."
+	$(SQLITE) $(MULTITIER_DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"
+
+initdb-noregistration: clean-noregistration
+	@echo "-- initializing $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite"
+	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
+	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) migrate $(RUNSYNCDB) --database $(subst initdb-,,$@) --noinput
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database $(subst initdb-,,$@) djaoapp/fixtures/$(subst initdb-,,$@)-db.json
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+
+initdb-authdisabled: clean-authdisabled
+	@echo "-- initializing $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite"
+	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
+	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) migrate $(RUNSYNCDB) --database $(subst initdb-,,$@) --noinput
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database $(subst initdb-,,$@) djaoapp/fixtures/$(subst initdb-,,$@)-db.json
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+
 
 clean-assets:
 	rm -f $(srcDir)/webpack-conf-paths.json
 	rm -f $(ASSETS_DIR)/js/*
 	rm -f $(ASSETS_DIR)/cache/*
 
-clean-dbs:
-	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
+clean-dbs: clean-djaoapp clean-cowork clean-noregistration clean-authdisabled
 	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
 	[ ! -f $(srcDir)/db.sqlite ] || rm $(srcDir)/db.sqlite
 	[ ! -f $(srcDir)/cowork.sqlite ] || rm $(srcDir)/cowork.sqlite
@@ -246,17 +277,21 @@ clean-themes:
 	rm -rf $(srcDir)/htdocs/themes/*
 	rm -rf $(srcDir)/htdocs/djaoapp $(srcDir)/htdocs/djaopsp
 
+clean-djaoapp:
+	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
+	[ ! -f $(srcDir)/db.sqlite ] || rm $(srcDir)/db.sqlite
 
-initdb-djaoapp: clean-dbs
-	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
-	cd $(srcDir) && $(MANAGE) migrate $(RUNSYNCDB) --noinput --fake-initial
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(DB_FILENAME)
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
+clean-cowork:
+	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
+	[ ! -f $(srcDir)/cowork.sqlite ] || rm $(srcDir)/cowork.sqlite
 
+clean-noregistration:
+	[ ! -f $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite ] || rm $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite
+	[ ! -f $(srcDir)/$(subst clean-,,$@).sqlite ] || rm $(srcDir)/$(subst clean-,,$@).sqlite
 
-migratedb-cowork: initdb-cowork
-	@echo "-- Set streetside processor deposit key."
-	$(SQLITE) $(call MULTITIER_DB_NAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_CONNECTED_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where is_provider=1;"
+clean-authdisabled:
+	[ ! -f $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite ] || rm $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite
+	[ ! -f $(srcDir)/$(subst clean-,,$@).sqlite ] || rm $(srcDir)/$(subst clean-,,$@).sqlite
 
 
 # Add necessary tables in an already existing database, then load information
@@ -268,7 +303,7 @@ migratedb-%:
 	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 	$(MANAGE) loadfixtures --database $(basename $(notdir $(MULTITIER_DB_NAME))) $(EMAIL_FIXTURE_OPT) $(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(basename $(notdir $(MULTITIER_DB_NAME)))-streetside.json
 	@echo "-- Set streetside processor deposit key."
-	$(SQLITE) $(call MULTITIER_DB_NAME) "UPDATE saas_organization set processor_deposit_key='$(shell grep ^STRIPE_TEST_CONNECTED_KEY $(CONFIG_DIR)/credentials | cut -f 2 -d \")' where is_provider=1;"
+	$(SQLITE) $(call MULTITIER_DB_NAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"
 	cd $(srcDir) && $(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
 			$(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/djaodjin.json
 	@echo "-- Set passphrase to forward session."

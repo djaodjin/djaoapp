@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -14,7 +14,7 @@ from django.views.generic import TemplateView
 from rest_framework.request import Request as HttpRequest
 
 from .schemas import (APIDocGenerator, NotificationDocGenerator,
-    format_json, rst_to_html, get_notification_schema)
+    format_json, rst_to_html)
 
 LOGGER = logging.getLogger(__name__)
 

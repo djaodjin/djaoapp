@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -9,6 +9,8 @@ from django.contrib.auth import get_backends, get_user_model
 from django.db import router, transaction, IntegrityError
 from django.template.defaultfilters import slugify
 from rest_framework.exceptions import ValidationError
+from rules import signals as rules_signals
+from rules.utils import get_current_app
 from saas import settings as saas_settings
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
 from saas.utils import get_organization_model, update_context_urls
@@ -18,6 +20,8 @@ from signup.utils import handle_uniq_error
 
 from .compat import gettext_lazy as _, reverse, six
 from .edition_tools import fail_edit_perm
+from .utils import (PERSONAL_REGISTRATION, TOGETHER_REGISTRATION,
+    USER_REGISTRATION)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -155,17 +159,17 @@ class RegisterMixin(object):
         LOGGER.debug("calling djaoapp.RegisterMixin.create_user(**%s)",
             str({field_name: ('*****' if field_name.startswith('password')
             else val) for field_name, val in six.iteritems(cleaned_data)}))
-        registration = self.app.USER_REGISTRATION
+        registration = USER_REGISTRATION
         user_selector = 'full_name'
         organization_selector = 'organization_name'
         full_name = cleaned_data.get('full_name', None)
         if 'organization_name' in cleaned_data:
             # We have a registration of a user and organization together.
-            registration = self.app.TOGETHER_REGISTRATION
+            registration = TOGETHER_REGISTRATION
             organization_name = cleaned_data.get('organization_name', None)
             if full_name and full_name == organization_name:
                 # No we have a personal registration after all
-                registration = self.app.PERSONAL_REGISTRATION
+                registration = PERSONAL_REGISTRATION
                 organization_selector = 'full_name'
         elif (cleaned_data.get('street_address', None) or
             cleaned_data.get('locality', None) or
@@ -175,7 +179,7 @@ class RegisterMixin(object):
             # XXX We have enough information for a billing profile but it might
             # not be a good idea to force it here. Maybe using a registration
             # 'type' field is more appropriate.
-            registration = self.app.PERSONAL_REGISTRATION
+            registration = PERSONAL_REGISTRATION
             organization_selector = 'full_name'
         try:
             with transaction.atomic(
@@ -186,8 +190,8 @@ class RegisterMixin(object):
                     for agreement in self.agreements:
                         Signature.objects.create_signature(agreement.slug, user)
 
-                if registration in (self.app.PERSONAL_REGISTRATION,
-                                    self.app.TOGETHER_REGISTRATION):
+                if registration in (PERSONAL_REGISTRATION,
+                                    TOGETHER_REGISTRATION):
                     # Registers both a User and an Organization at the same time
                     # with the added constraint that username and organization
                     # slug are identical such that it creates a transparent
@@ -268,6 +272,11 @@ class RegisterMixin(object):
                             'country': account.country})
         except IntegrityError as err:
             handle_uniq_error(err, renames={'slug': organization_selector})
+
+        app = get_current_app()
+        if app.welcome_email:
+            rules_signals.user_welcome.send(sender=__name__, user=user,
+                request=self.request)
 
         return user
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 from __future__ import absolute_import
@@ -13,7 +13,6 @@ from deployutils.apps.django.templatetags import deployutils_extratags
 from extended_templates import signals as extended_templates_signals
 from jinja2.ext import i18n
 from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment
-import multitier.templatetags.multitier_tags
 import saas.templatetags.saas_tags
 
 from .compat import import_string, reverse, six
@@ -60,10 +59,9 @@ def environment(**options):
     env.install_gettext_callables(gettext=gettext, ngettext=ngettext,
         newstyle=True)
     # Generic filters to render templates
-    env.filters['asset'] = multitier.templatetags.multitier_tags.asset
-    env.filters['site_url'] = multitier.templatetags.multitier_tags.site_url
-    env.filters['site_printable_name'] = \
-        multitier.templatetags.multitier_tags.site_printable_name
+    env.filters['asset'] = djaoapp_tags.asset
+    env.filters['site_url'] = djaoapp_tags.site_url
+    env.filters['site_printable_name'] = djaoapp_tags.site_printable_name
 
     env.filters['djasset'] = djaoapp_tags.djasset
     env.filters['host'] = deployutils_extratags.host

@@ -1888,6 +1888,7 @@
       "is_active": true,
       "account": 2,
       "domain": null,
+      "registration": 3,
       "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 1
@@ -1900,6 +1901,7 @@
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
+      "registration": 1,
       "extra": "{\"tags\":\"streetside\"}"
     },
     "model": "multitier.Site", "pk": 3
@@ -1909,8 +1911,6 @@
       "slug": "djaoapp",
       "account": 2,
       "cors_restricted": false,
-      "authentication": 0,
-      "registration": 3,
       "session_backend": 2,
       "entry_point": "http://localhost:8040",
       "enc_key": "",

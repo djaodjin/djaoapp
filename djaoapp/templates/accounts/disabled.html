@@ -6,15 +6,21 @@
 <div class="container flex-vertical-middle">
   <div class="row">
     <div class="col-sm-12">
-        {% if disabled_registration %}
+        {% if disabled_authentication %}
+        {# This condition needs to be first, because when                   #}
+        {# disabled_authentication is defined, so is disabled_registration. #}
+        <h1>{% trans %}Authentication disabled{% endtrans %}</h1>
+        <p class="text-start">
+{% trans %}User login and registration has been currently disabled on this site.{% endtrans %}
+        </p>
+        {% elif disabled_registration %}
         <h1>{% trans %}Registration disabled{% endtrans %}</h1>
         <p class="text-start">
 {% trans %}User registration has been currently disabled on this site.{% endtrans %}
         </p>
         {% else %}
-        <h1>{% trans %}Authentication disabled{% endtrans %}</h1>
         <p class="text-start">
-{% trans %}User login and registration has been currently disabled on this site.{% endtrans %}
+{% trans %}You landed on the disabled page even though authentication and registration are enabled.{% endtrans %}
         </p>
         {% endif %}
         <p class="text-start">

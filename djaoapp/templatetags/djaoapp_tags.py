@@ -1,26 +1,48 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 from deployutils.apps.django.compat import (
     is_authenticated as base_is_authenticated)
 from django import template
+from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
-from multitier.mixins import build_absolute_uri
+from multitier.templatetags.multitier_tags import (
+    asset as asset_base,
+    site_printable_name as site_printable_name_base,
+    site_url as site_url_base)
 from saas.templatetags.saas_tags import attached_organization
 
 from ..compat import force_str, reverse, six, urljoin
-
+from ..thread_locals import build_absolute_uri
 
 register = template.Library()
 
 @register.filter()
-def no_cache(asset_url):
-    pos = asset_url.rfind('?')
-    if pos > 0:
-        asset_url = asset_url[:pos]
-    return asset_url
+def asset(path):
+    """
+    Adds the appropriate url or path prefix.
+
+    While ``{% static path [as varname] %}`` would work in the context
+    of Django templates, ``{{ path|asset }}`` works in both Django and Jinja2
+    templates.
+    """
+    if isinstance(path, str) and (path.startswith(settings.STATIC_URL) or
+        path.startswith(settings.STATIC_URL.lstrip('/'))):
+        return path
+    return asset_base(path)
+
+
+@register.filter()
+def site_printable_name(request):
+    return site_printable_name_base(request)
+
+
+@register.filter()
+def site_url(request):
+    return site_url_base(request)
+
 
 @register.filter()
 def capitalize(text):
@@ -55,7 +77,15 @@ def djasset(request):
         #if not url_path.startswith(settings.STATIC_URL):
         #    url_path = urljoin(settings.STATIC_URL, url_path)
         return url_path
-    return build_absolute_uri(request).rstrip('/')
+    return build_absolute_uri(request=request).rstrip('/')
+
+
+@register.filter()
+def no_cache(asset_url):
+    pos = asset_url.rfind('?')
+    if pos > 0:
+        asset_url = asset_url[:pos]
+    return asset_url
 
 
 @register.simple_tag

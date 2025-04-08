@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -19,22 +19,20 @@ from django.utils._os import safe_join
 from django.views.generic import TemplateView
 from django.views.static import serve
 from extended_templates import settings as themes_settings
-from extended_templates.models import get_show_edit_tools
+from extended_templates.models import get_show_edit_tools, get_active_theme
 from extended_templates.views.pages import PageMixin
 from rules.utils import get_current_app
 from rules.views.app import (AppMixin, SessionProxyMixin,
     AppDashboardView as AppDashboardViewBase)
 from saas.decorators import fail_direct
 from saas.mixins import OrganizationMixin, UserMixin
-from saas.models import ChargeItem, Plan, get_broker
+from saas.models import ChargeItem, Plan, get_broker, is_broker
 from saas.utils import get_organization_model
 from saas.views.plans import CartPlanListView
+from saas.views.redirects import OrganizationRedirectView
 
 from ..compat import gettext_lazy as _
-from ..thread_locals import (get_active_theme, get_current_broker,
-    is_current_broker)
 from ..mixins import DjaoAppMixin
-from .redirects import OrganizationRedirectView
 
 LOGGER = logging.getLogger(__name__)
 
@@ -134,7 +132,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
                     pass
             if response is None:
                 app = get_current_app(request)
-                if is_current_broker(app.account) and settings.STATIC_ROOT:
+                if is_broker(app.account) and settings.STATIC_ROOT:
                     asset_dir = os.path.dirname(settings.STATIC_ROOT)
                 else:
                     theme_name = get_active_theme()
@@ -173,7 +171,7 @@ class DjaoAppPageRedirectView(UserMixin, OrganizationRedirectView):
         context = super(
             DjaoAppPageRedirectView, self).get_context_data(**kwargs)
         # Add URLs needed for _appmenu.html and sidebar
-        broker = get_current_broker()
+        broker = get_broker()
         context.update({'provider': broker})
         return context
 
@@ -190,7 +188,7 @@ class PricingView(ProxyPageMixin, CartPlanListView):
             queryset = get_organization_model().objects.filter(slug=slug)
             if queryset.exists():
                 return queryset.get()
-        return get_current_broker()
+        return get_broker()
 
     def get_context_data(self, **kwargs):
         context = super(PricingView, self).get_context_data(**kwargs)
@@ -245,7 +243,7 @@ class AppPageView(ProxyPageView):
     def get_context_data(self, **kwargs):
         # Add URLs needed for _appmenu.html and sidebar
         context = super(AppPageView, self).get_context_data(**kwargs)
-        broker = get_current_broker()
+        broker = get_broker()
         context.update({'provider': broker})
         return context
 

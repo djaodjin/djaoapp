@@ -7,8 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.signals import user_logged_in, user_login_failed
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from multitier.thread_locals import get_current_site
-from rules.utils import get_current_app # XXX for `welcome_email`
+from rules.signals import user_welcome
 from saas import settings as saas_settings
 from saas.models import CartItem, get_broker
 from saas.signals import (card_expires_soon, charge_updated,
@@ -26,6 +25,7 @@ from signup.utils import printable_name as user_printable_name
 from djaoapp.signals import user_contact
 
 from ..compat import gettext_lazy as _, reverse, six
+from ..thread_locals import build_absolute_uri
 from .serializers import (ContactUsNotificationSerializer,
     UserNotificationSerializer,
     ExpireProfileNotificationSerializer,
@@ -63,7 +63,8 @@ def get_user_context_deprecated(user, site=None):
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(quota_reached,
           dispatch_uid="quota_reached_notice")
-def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
+def quota_reached_notice(sender, usage, use_charge, subscription,
+                         **kwargs): # no request in kwargs
     """
     Quota reached
 
@@ -144,11 +145,10 @@ def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
         "use_charge=%s, subscription=%s)", usage, use_charge, subscription)
 
     broker = get_broker()
-    site = get_current_site()
-    app = get_current_app()
+    back_url = build_absolute_uri() # saas/models.py
     context = {
         'broker': broker,
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'profile': subscription.organization,
         'plan': subscription.plan,
         'provider': subscription.plan.organization,
@@ -157,7 +157,7 @@ def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
     }
     send_notification('quota_reached',
         context=UseChargeLimitReachedSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -166,7 +166,7 @@ def quota_reached_notice(sender, usage, use_charge, subscription, **kwargs):
 @receiver(use_charge_limit_crossed,
           dispatch_uid="use_charge_limit_crossed_notice")
 def use_charge_limit_crossed_notice(sender, usage, use_charge, subscription,
-                                    **kwargs):
+                                    **kwargs): # no request in kwargs
     """
     Use charge limit crossed
 
@@ -247,11 +247,10 @@ def use_charge_limit_crossed_notice(sender, usage, use_charge, subscription,
         "use_charge=%s, subscription=%s)", usage, use_charge, subscription)
 
     broker = get_broker()
-    site = get_current_site()
-    app = get_current_app()
+    back_url = build_absolute_uri() # saas/models.py
     context = {
         'broker': broker,
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'profile': subscription.organization,
         'plan': subscription.plan,
         'provider': subscription.plan.organization,
@@ -260,14 +259,15 @@ def use_charge_limit_crossed_notice(sender, usage, use_charge, subscription,
     }
     send_notification('use_charge_limit_crossed',
         context=UseChargeLimitReachedSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(user_contact, dispatch_uid="user_contact_notice")
-def user_contact_notice(sender, provider, user, reason, **kwargs):
+def user_contact_notice(sender, provider, user, reason,
+                        **kwargs): # request in kwargs
     """
     Contact us
 
@@ -328,8 +328,8 @@ def user_contact_notice(sender, provider, user, reason, **kwargs):
         provider = broker
     LOGGER.debug("[signal] user_contact_notice(provider=%s, user=%s)",
         provider, user)
-    site = get_current_site()
-    back_url = site.as_absolute_uri()
+    back_url = build_absolute_uri(       # djaoapp/api/contact.py,
+        request=kwargs.get('request'))   # djaoapp/views/contact.py
     context = {
         'broker': broker,
         'back_url': back_url,
@@ -339,7 +339,7 @@ def user_contact_notice(sender, provider, user, reason, **kwargs):
     }
     send_notification('user_contact',
         context=ContactUsNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -404,16 +404,15 @@ def user_logged_in_notice(sender, request, user, **kwargs):
     LOGGER.debug("[signal] user_logged_in_notice(user=%s)", user)
 
     broker = get_broker()
-    site = get_current_site()
-    app = get_current_app()
+    back_url = build_absolute_uri(request=kwargs.get('request')) # XXX not sent?
     context = {
         'broker': broker,
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'user': user
     }
     #send_notification('user_logged_in',
     #    context=UserNotificationSerializer().to_representation(context),
-    #    site=site, **kwargs)
+    #    **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -482,16 +481,16 @@ def user_login_failed_notice(sender, credentials, request, **kwargs):
         user = model.objects.find_user(credentials.get('username'))
 
         broker = get_broker()
-        site = get_current_site()
-        app = get_current_app()
+        back_url = build_absolute_uri( # XXX not sent?
+            location=reverse('password_reset'))
         context = {
             'broker': broker,
-            'back_url': site.as_absolute_uri(reverse('password_reset')),
+            'back_url': back_url,
             'user': user
         }
         #send_notification('user_login_failed',
         #    context=UserNotificationSerializer().to_representation(context),
-        #    site=site, **kwargs)
+        #    **kwargs)
     except model.DoesNotExist:
         pass
 
@@ -500,7 +499,7 @@ def user_login_failed_notice(sender, credentials, request, **kwargs):
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(user_registered, dispatch_uid="user_registered_notice")
-def user_registered_notice(sender, user, **kwargs):
+def user_registered_notice(sender, user, **kwargs): # request in **kwargs
     """
     User registered
 
@@ -556,27 +555,96 @@ def user_registered_notice(sender, user, **kwargs):
         }
     """
     LOGGER.debug("[signal] user_registered_notice(user=%s)", user)
-    site = get_current_site()
-    app = get_current_app()
+    back_url = build_absolute_uri( # signup/mixins.py
+        request=kwargs.get('request'))
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'user': user
     }
     send_notification('user_registered',
         context=UserNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
-    if hasattr(app, 'welcome_email') and app.welcome_email:
-        send_notification('user_welcome',
-            context=UserNotificationSerializer().to_representation(context),
-            site=site, **kwargs)
+        **kwargs)
+
+
+# We insure the method is only bounded once no matter how many times
+# this module is loaded by using a dispatch_uid as advised here:
+#   https://docs.djangoproject.com/en/dev/topics/signals/
+@receiver(user_welcome, dispatch_uid="user_welcome_notice")
+def user_welcome_notice(sender, user, **kwargs): # request in **kwargs
+    """
+    User welcome
+
+    This notification is sent when a user visits an app URL for the first time.
+
+    **Tags: notification
+
+    **Example
+
+    .. code-block:: json
+
+        {
+          "event": "user_welcome_email",
+          "broker": {
+            "slug": "djaoapp",
+            "printable_name": "DjaoApp",
+            "full_name": "DjaoApp inc.",
+            "nick_name": "DjaoApp",
+            "picture": null,
+            "type": "organization",
+            "credentials": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "email": "djaoapp@localhost.localdomain",
+            "phone": "415-555-5555",
+            "street_address": "1 SaaS Road",
+            "locality": "San Francisco",
+            "region": "California",
+            "postal_code": "94133",
+            "country": "US",
+            "default_timezone": "America/Los_Angeles",
+            "is_provider": true,
+            "is_bulk_buyer": false,
+            "lang": "en",
+            "extra": null
+          },
+          "back_url": "{{api_base_url}}",
+          "user": {
+            "slug": "xia",
+            "username": "xia",
+            "printable_name": "Xia",
+            "full_name": "Xia Lee",
+            "nick_name": "Xia",
+            "picture": null,
+            "type": "personal",
+            "credentials": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "last_login": "2024-01-01T00:00:00Z",
+            "email": "xia@localhost.localdomain",
+            "phone": "415-555-5556",
+            "lang": "en",
+            "extra": null
+          }
+        }
+    """
+    LOGGER.debug("[signal] user_welcome(user=%s)", user)
+    back_url = build_absolute_uri( # XXX not sent
+        request=kwargs.get('request'))
+    context = {
+        'broker': get_broker(),
+        'back_url': back_url,
+        'user': user
+    }
+    send_notification('user_welcome',
+        context=UserNotificationSerializer().to_representation(context),
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(user_activated, dispatch_uid="user_activated_notice")
-def user_activated_notice(sender, user, verification_key, request, **kwargs):
+def user_activated_notice(sender, user, verification_key,
+                          **kwargs): # request in **kwargs
     """
     User activated
 
@@ -633,21 +701,21 @@ def user_activated_notice(sender, user, verification_key, request, **kwargs):
     """
     LOGGER.debug("[signal] user_activated_notice(user=%s, verification_key=%s)",
         user, verification_key)
-    site = get_current_site()
+    back_url = build_absolute_uri(     # signup/mixins.py
+        request=kwargs.get('request'))
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'user': user,
     }
     send_notification('user_activated',
         context=UserNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 def get_charge_updated_context(charge, site=None):
-    if not site:
-        site = get_current_site()
-    back_url = site.as_absolute_uri(reverse('saas_charge_receipt', args=(
+    # used in `PrintableChargeReceiptView.get_context_data`
+    back_url = build_absolute_uri(location=reverse('saas_charge_receipt', args=(
         charge.customer, charge)))
     context = {
         'broker': get_broker(),
@@ -659,7 +727,7 @@ def get_charge_updated_context(charge, site=None):
             'invoiced': item.invoiced,
             'refunded': item.refunded,
             } for item in charge.line_items],
-        'provider': charge.broker,
+        'provider': charge.provider,
         'originated_by': charge.created_by,
     }
     if charge.refunded.exists():
@@ -819,20 +887,20 @@ def charge_updated_notice(sender, charge, user, **kwargs):
     if charge.is_paid:
         LOGGER.debug("[signal] charge_updated_notice(charge=%s, user=%s)",
             charge, user)
-        site = get_current_site()
-        context = get_charge_updated_context(charge, site=site)
+        context = get_charge_updated_context(charge) # saas/models.py
+                                                     # saas/api/charges.py
         if user and charge.created_by != user:
             context.update({'originated_by': user})
         else:
             context.update({'originated_by': None})
         send_notification('charge_updated',
             context=ChargeNotificationSerializer().to_representation(context),
-            site=site, **kwargs)
+            **kwargs)
 
 
 @receiver(card_updated, dispatch_uid="card_updated_notice")
 def card_updated_notice(sender, organization, user, old_card, new_card,
-                        **kwargs):
+                        **kwargs): # no request in kwargs
     """
     Card updated
 
@@ -921,11 +989,11 @@ def card_updated_notice(sender, organization, user, old_card, new_card,
     """
     LOGGER.debug("[signal] card_updated_notice(organization=%s, user=%s,"\
         "old_card=%s, new_card=%s)", organization, user, old_card, new_card)
-    site = get_current_site()
+    back_url = build_absolute_uri( # saas/backends/stripe_processor/base.py
+        location=reverse('saas_update_card', args=(organization,)))
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(
-            reverse('saas_update_card', args=(organization,))),
+        'back_url': back_url,
         'originated_by': user,
         'profile': organization,
         'changes': {
@@ -941,14 +1009,15 @@ def card_updated_notice(sender, organization, user, old_card, new_card,
     }
     send_notification('card_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
-      site=site, **kwargs)
+      **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(order_executed, dispatch_uid="order_executed_notice")
-def order_executed_notice(sender, invoiced_items, user, **kwargs):
+def order_executed_notice(sender, invoiced_items, user,
+                          **kwargs): # no request in kwargs
     """
     Order confirmation
 
@@ -1080,11 +1149,11 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     LOGGER.debug("[signal] order_executed_notice(invoiced_items=%s, user=%s)",
         [invoiced_item.pk for invoiced_item in invoiced_items], user)
     broker = get_broker()
-    site = get_current_site()
+    back_url = build_absolute_uri() # saas/models.py
     provider = broker # XXX
     context = {
         'broker': broker,
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'originated_by': user,
         'profile': organization,
         'provider': provider,
@@ -1092,7 +1161,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
     }
     send_notification('order_executed',
         context=InvoiceNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1100,7 +1169,7 @@ def order_executed_notice(sender, invoiced_items, user, **kwargs):
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(renewal_charge_failed, dispatch_uid="renewal_charge_failed_notice")
 def renewal_charge_failed_notice(sender, invoiced_items, total_price,
-                                 final_notice, **kwargs):
+                                 final_notice, **kwargs): # no request in kwargs
     """
     Renewal failed
 
@@ -1227,9 +1296,8 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
         total_price, final_notice)
     broker = get_broker()
     provider = broker # XXX
-    site = get_current_site()
-    back_url = site.as_absolute_uri(
-        reverse('saas_organization_cart', args=(organization,)))
+    back_url = build_absolute_uri( # saas/renewals.py
+        location=reverse('saas_organization_cart', args=(organization,)))
     context = {
         'broker': broker,
         'provider': provider,
@@ -1243,11 +1311,12 @@ def renewal_charge_failed_notice(sender, invoiced_items, total_price,
     }
     send_notification('renewal_charge_failed',
       context=RenewalFailedNotificationSerializer().to_representation(context),
-      site=site, **kwargs)
+      **kwargs)
 
 
 @receiver(claim_code_generated, dispatch_uid="claim_code_generated_notice")
-def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
+def claim_code_generated_notice(sender, subscriber, claim_code, user,
+                                **kwargs): # not request in kwargs
     """
     Claim code
 
@@ -1379,9 +1448,8 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
         " user=%s)", subscriber, claim_code, user)
     # XXX We don't use `_notified_recipients` here as an attempt
     # only have one person respnsible for using the claim code.
-    site = get_current_site()
-    back_url = (site.as_absolute_uri(reverse('saas_cart')) +
-        '?code=%s' % claim_code)
+    back_url = build_absolute_uri( # saas/models.py
+        location=reverse('saas_cart')) + ("?code=%s" % claim_code)
     context = {
         'broker': get_broker(),
         'back_url': back_url,
@@ -1393,11 +1461,12 @@ def claim_code_generated_notice(sender, subscriber, claim_code, user, **kwargs):
     }
     send_notification('claim_code_generated',
         context=ClaimNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 @receiver(profile_updated, dispatch_uid="profile_updated_notice")
-def profile_updated_notice(sender, organization, changes, user, **kwargs):
+def profile_updated_notice(sender, organization, changes, user,
+                           **kwargs): # request in kwargs
     """
     Profile updated
 
@@ -1487,7 +1556,10 @@ def profile_updated_notice(sender, organization, changes, user, **kwargs):
         extra={'event': 'update-fields', 'organization': str(organization),
                'changes': changes})
     broker = get_broker()
-    site = get_current_site()
+    back_url = build_absolute_uri( # saas/views/profile.py
+        location=reverse(          # saas/api/organizations.py
+            'saas_organization_profile', args=(organization,)),
+        request=kwargs.get('request'))
     # Some changes are still typed by the model field (ex: Country).
     # We want to make sure we have a JSON-serializable `changes` dict here.
     for change in six.itervalues(changes):
@@ -1497,15 +1569,14 @@ def profile_updated_notice(sender, organization, changes, user, **kwargs):
         })
     context={
         'broker': broker,
-        'back_url': site.as_absolute_uri(
-            reverse('saas_organization_profile', args=(organization,))),
+        'back_url': back_url,
         'originated_by': user,
         'profile': organization,
         'changes': changes
     }
     send_notification('profile_updated',
       context=ChangeProfileNotificationSerializer().to_representation(context),
-      site=site, **kwargs)
+      **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -1513,7 +1584,7 @@ def profile_updated_notice(sender, organization, changes, user, **kwargs):
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(processor_setup_error, dispatch_uid="processor_setup_error_notice")
 def processor_setup_error_notice(sender, provider, error_message, customer,
-                                 **kwargs):
+                                 **kwargs): # no request in kwargs
     """
     Error with processor setup
 
@@ -1613,11 +1684,11 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
           }
         }
     """
-    site = get_current_site()
+    back_url = build_absolute_uri(                              # saas/models.py
+        location=reverse('saas_update_bank', args=(provider,)))
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(
-            reverse('saas_update_bank', args=(provider,))),
+        'back_url': back_url,
         'profile': customer,
         'provider': provider,
         'detail': error_message,
@@ -1626,14 +1697,15 @@ def processor_setup_error_notice(sender, provider, error_message, customer,
     context.update({'originated_by': request_user if request_user else None})
     send_notification('processor_setup_error',
       context=ProcessorSetupNotificationSerializer().to_representation(context),
-      site=site, **kwargs)
+      **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(role_grant_created, dispatch_uid="role_grant_created_notice")
-def role_grant_created_notice(sender, role, reason=None, **kwargs):
+def role_grant_created_notice(sender, role, reason=None,
+                              **kwargs): # request in kwargs
     """
     Role granted
 
@@ -1732,8 +1804,9 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
     """
     user = role.user
     organization = role.organization
-    site = get_current_site()
-    back_url = reverse('organization_app', args=(organization,))
+    back_url = build_absolute_uri(                          # saas/api/roles.py
+        location=reverse('organization_app', args=(organization,)),
+        request=kwargs.get('request'))
     if role.grant_key:
         back_url = reverse('saas_role_grant_accept',
             args=(role.grant_key,))
@@ -1745,7 +1818,7 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
             user.email, user=user, reason=reason)
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(back_url),
+        'back_url': back_url,
         'profile': organization,
         'role_description': {
             'slug': role.role_description.slug,
@@ -1760,14 +1833,15 @@ def role_grant_created_notice(sender, role, reason=None, **kwargs):
         " reason=%s)", role, reason)
     send_notification('role_grant_created',
         context=RoleGrantNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(role_request_created, dispatch_uid="role_request_created_notice")
-def role_request_created_notice(sender, role, reason=None, **kwargs):
+def role_request_created_notice(sender, role, reason=None,
+                                **kwargs): # request in kwargs
     """
     Role requested
 
@@ -1862,14 +1936,15 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
     """
     organization = role.organization
     user = role.user
-    site = get_current_site()
+    back_url = build_absolute_uri(                         # saas/api/roles.py
+        location=reverse('saas_role_list', args=(organization,)),
+        request=kwargs.get('request'))
     LOGGER.debug("[signal] role_request_created_notice("\
         "organization=%s, user=%s, reason=%s)",
         organization, user, reason)
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(
-            reverse('saas_role_list', args=(organization,))),
+        'back_url': back_url,
         'profile': organization,
         'detail': reason if reason is not None else "",
         'user': user
@@ -1878,14 +1953,15 @@ def role_request_created_notice(sender, role, reason=None, **kwargs):
     context.update({'originated_by': request_user if request_user else None})
     send_notification('role_request_created',
         context=RoleRequestNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(role_grant_accepted, dispatch_uid="role_grant_accepted_notice")
-def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
+def role_grant_accepted_notice(sender, role, grant_key,
+                               **kwargs): # request in kwargs
     """
     Role grant accepted
 
@@ -1985,12 +2061,15 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
     """
     LOGGER.debug("[signal] role_grant_accepted_notice("\
         " role=%s, grant_key=%s)", role, grant_key)
-    originated_by = request.user if request else None
-    site = get_current_site()
+    request_user = kwargs.get('request_user', None)
+    originated_by = request_user if request_user else None
+    back_url = build_absolute_uri( # saas/api/roles.py saas/views/roles.py
+        location=reverse('saas_role_detail', args=(
+            role.organization, role.role_description)),
+        request=kwargs.get('request'))
     context={
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(reverse('saas_role_detail',
-            args=(role.organization, role.role_description))),
+        'back_url': back_url,
         'profile': role.organization,
         'role_description': {
             'slug': role.role_description.slug,
@@ -1998,12 +2077,11 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
         },
         'user': originated_by,
         'detail': "",
+        'originated_by': originated_by
     }
-    request_user = kwargs.get('request_user', None)
-    context.update({'originated_by': request_user if request_user else None})
     send_notification('role_grant_accepted',
         context=RoleGrantNotificationSerializer().to_representation(context),
-        site=site, **kwargs)
+        **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2012,7 +2090,7 @@ def role_grant_accepted_notice(sender, role, grant_key, request=None, **kwargs):
 @receiver(subscription_grant_accepted,
           dispatch_uid="subscription_grant_accepted_notice")
 def subscription_grant_accepted_notice(sender, subscription, grant_key,
-                                       request=None, **kwargs):
+                                       **kwargs): # request in kwargs
     """
     Subscription grant accepted
 
@@ -2095,14 +2173,16 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
         }
     """
     provider = subscription.plan.organization
+    request = kwargs.get('request')
     originated_by = request.user if request else None
     LOGGER.debug("[signal] subscribe_grant_accepted_notice("\
         " subscription=%s, grant_key=%s)", subscription, grant_key)
-    site = get_current_site()
+    back_url = build_absolute_uri( # saas/views/optins.py
+        location=reverse('organization_app', args=(provider,)),
+        request=request)
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(reverse('organization_app',
-            args=(provider,))),
+        'back_url': back_url,
         'profile': subscription.plan.organization,
         'plan': subscription.plan,
         'subscriber': subscription.organization,
@@ -2110,7 +2190,7 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
     }
     send_notification('subscription_grant_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
-        context), site=site, **kwargs)
+        context), **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2119,7 +2199,8 @@ def subscription_grant_accepted_notice(sender, subscription, grant_key,
 @receiver(subscription_grant_created,
           dispatch_uid="subscription_grant_created_notice")
 def subscription_grant_created_notice(sender, subscription, reason=None,
-                                      invite=False, request=None, **kwargs):
+                                      invite=False,
+                                      **kwargs): # request in kwargs
     """
     Subscription granted
 
@@ -2203,11 +2284,13 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
     """
     #pylint:disable=too-many-locals
     if subscription.grant_key:
-        origiinated_by = request.user if request else None
+        request = kwargs.get('request')
+        originated_by = request.user if request else None
         organization = subscription.organization
-        site = get_current_site()
-        back_url = site.as_absolute_uri(reverse('subscription_grant_accept',
-            args=(organization, subscription.grant_key,)))
+        back_url = build_absolute_uri( # saas/api/subscriptions.py
+            location=reverse('subscription_grant_accept', args=(
+            organization, subscription.grant_key,)),
+            request=request)
         LOGGER.debug("[signal] subscribe_grant_created_notice("\
             " subscription=%s, reason=%s, invite=%s)",
             subscription, reason, invite)
@@ -2223,12 +2306,11 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
             'provider': subscription.plan.organization,
             'detail': reason if reason is not None else "",
             'is_invite': invite,
-            'originated_by': origiinated_by
+            'originated_by': originated_by
         }
         send_notification('subscription_grant_created',
             context=SubscriptionCreatedNotificationSerializer(
-            ).to_representation(context),
-            site=site, **kwargs)
+            ).to_representation(context), **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2237,7 +2319,7 @@ def subscription_grant_created_notice(sender, subscription, reason=None,
 @receiver(subscription_request_accepted,
           dispatch_uid="subscription_request_accepted_notice")
 def subscription_request_accepted_notice(sender, subscription, request_key,
-                                         request=None, **kwargs):
+                                         **kwargs): # request in kwargs
     """
     Subscription request accepted
 
@@ -2322,12 +2404,14 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
     subscriber = subscription.organization
     LOGGER.debug("[signal] subscribe_req_accepted_notice("\
         " subscription=%s, request_key=%s)", subscription, request_key)
-    site = get_current_site()
+    request = kwargs.get('request')
     originated_by = request.user if request else None
+    back_url = build_absolute_uri(location=reverse( # saas/api/subscriptions.py
+        'organization_app', args=(subscriber,)),    # saas/views/optins.py
+        request=request)
     context = {
         'broker': get_broker(),
-        'back_url': site.as_absolute_uri(reverse('organization_app',
-            args=(subscriber,))),
+        'back_url': back_url,
         'profile': subscriber,
         'plan': subscription.plan,
         'provider': subscription.plan.organization,
@@ -2335,7 +2419,7 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
     }
     send_notification('subscription_request_accepted',
         context=SubscriptionAcceptedNotificationSerializer().to_representation(
-        context), site=site, **kwargs)
+        context), **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2344,7 +2428,7 @@ def subscription_request_accepted_notice(sender, subscription, request_key,
 @receiver(subscription_request_created,
           dispatch_uid="subscription_request_created_notice")
 def subscription_request_created_notice(sender, subscription, reason=None,
-                                        request=None, **kwargs):
+                                        **kwargs): # request in kwargs
     """
     Subscription requested
 
@@ -2428,16 +2512,18 @@ def subscription_request_created_notice(sender, subscription, reason=None,
         }
     """
     if subscription.request_key:
+        request = kwargs.get('request')
         originated_by = request.user if request else None
         organization = subscription.organization
-        site = get_current_site()
+        back_url = build_absolute_uri(location=reverse( # XXX no trigger?
+            'subscription_request_accept', args=(
+            organization, subscription.request_key,)),
+            request=request)
         LOGGER.debug("[signal] subscribe_req_created_notice("\
                      " subscription=%s, reason=%s)", subscription, reason)
         context = {
             'broker': get_broker(),
-            'back_url': site.as_absolute_uri(reverse(
-                'subscription_request_accept', args=(
-                    organization, subscription.request_key,))),
+            'back_url': back_url,
             'profile': subscription.plan.organization,
             'plan': subscription.plan,
             'subscriber': organization,
@@ -2447,14 +2533,15 @@ def subscription_request_created_notice(sender, subscription, reason=None,
         send_notification('subscription_request_created',
             context=SubscriptionCreatedNotificationSerializer(
             ).to_representation(context),
-            site=site, **kwargs)
+            **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(card_expires_soon, dispatch_uid="card_expires_soon_notice")
-def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
+def card_expires_soon_notice(sender, organization, nb_days,
+                             **kwargs): # no request in kwargs
     """
     Card expires soon
 
@@ -2520,9 +2607,8 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
     """
     LOGGER.debug("[signal] card_expires_soon_notice("\
                  " organization=%s, nb_days=%s)", organization, nb_days)
-    site = get_current_site()
-    back_url = site.as_absolute_uri(reverse('saas_update_card',
-        args=(organization,)))
+    back_url = build_absolute_uri(location=reverse(          # saas/renewals.py
+        'saas_update_card', args=(organization,)))
     card = organization.retrieve_card()
     context = {
         'broker': get_broker(),
@@ -2534,14 +2620,15 @@ def card_expires_soon_notice(sender, organization, nb_days, **kwargs):
     }
     send_notification('card_expires_soon',
       context=ExpireProfileNotificationSerializer().to_representation(context),
-      site=site, **kwargs)
+      **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(expires_soon, dispatch_uid="expires_soon_notice")
-def expires_soon_notice(sender, subscription, nb_days, **kwargs):
+def expires_soon_notice(sender, subscription, nb_days,
+                        **kwargs): # no request in kwargs
     """
     Subscription expires soon
 
@@ -2631,10 +2718,9 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
     """
     LOGGER.debug("[signal] expires_soon_notice("\
                  " subscription=%s, nb_days=%s)", subscription, nb_days)
-    site = get_current_site()
-    back_url = "%s?plan=%s" % (site.as_absolute_uri(
-        reverse('saas_organization_cart',
-            args=(subscription.organization,))), subscription.plan)
+    back_url = build_absolute_uri(location=reverse(           # saas/renewals.py
+        'saas_organization_cart', args=(
+        subscription.organization,))) + ("?plan=%s" % subscription.plan)
     context = {
         'broker': get_broker(),
         'back_url': back_url,
@@ -2645,7 +2731,7 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
     }
     send_notification('expires_soon',
         context=SubscriptionExpireNotificationSerializer().to_representation(
-            context), site=site, **kwargs)
+            context), **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times
@@ -2653,8 +2739,8 @@ def expires_soon_notice(sender, subscription, nb_days, **kwargs):
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(period_sales_report_created,
           dispatch_uid="period_sales_report_created_notice")
-def period_sales_report_created_notice(sender, provider, dates, data,
-                                       unit, scale=1, **kwargs):
+def period_sales_report_created_notice(sender, provider, dates, data, unit,
+                                       scale=1, **kwargs): #no request in kwargs
     """
     Weekly sales report
 
@@ -2719,14 +2805,15 @@ def period_sales_report_created_notice(sender, provider, dates, data,
           "results": []
         }
     """
-    prev_week, notused = dates #pylint:disable=unused-variable
+    #pylint:disable=too-many-arguments
+    prev_week, _unused = dates
     last_sunday = prev_week[-1]
     date = last_sunday.strftime("%A %b %d, %Y")
     # XXX using the provider in templates is incorrect. "Any questions
     # or comments..." should show DjaoDjin support email address.
-    site = get_current_site()
+    back_url = build_absolute_uri() # saas/.../report_weekly_revenue.py
     context = {
-        'back_url': site.as_absolute_uri(),
+        'back_url': back_url,
         'broker': get_broker(),
         'profile': provider,
         'scale': scale,
@@ -2736,7 +2823,7 @@ def period_sales_report_created_notice(sender, provider, dates, data,
     }
     send_notification('period_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(
-            context), site=site, **kwargs)
+            context), **kwargs)
 
 
 @receiver(post_save, sender=get_user_model())
