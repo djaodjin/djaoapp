@@ -35,10 +35,34 @@ def get_registration_captcha_keys(request=None):
     dictionnary if captcha should be disabled on the registration page.
     """
     if getattr(settings, 'REGISTRATION_REQUIRES_RECAPTCHA', False):
-        recaptcha_public_key = settings.RECAPTCHA_PUBLIC_KEY
-        recaptcha_private_key = settings.RECAPTCHA_PRIVATE_KEY
+        #pylint:disable=protected-access
+        if not hasattr(get_registration_captcha_keys, '_recaptcha_public_key'):
+            try:
+                get_registration_captcha_keys._recaptcha_public_key = \
+                    import_string(settings.RECAPTCHA_PUBLIC_KEY)
+            except ImportError:
+                get_registration_captcha_keys._recaptcha_public_key = None
+        if callable(get_registration_captcha_keys._recaptcha_public_key):
+            recaptcha_public_key = \
+                get_registration_captcha_keys._recaptcha_public_key()
+        else:
+            recaptcha_public_key = settings.RECAPTCHA_PUBLIC_KEY
+
+        if not hasattr(get_registration_captcha_keys, '_recaptcha_private_key'):
+            try:
+                get_registration_captcha_keys._recaptcha_private_key = \
+                    import_string(settings.RECAPTCHA_PRIVATE_KEY)
+            except ImportError:
+                get_registration_captcha_keys._recaptcha_private_key = None
+        if callable(get_registration_captcha_keys._recaptcha_private_key):
+            recaptcha_private_key = \
+                get_registration_captcha_keys._recaptcha_private_key()
+        else:
+            recaptcha_private_key = settings.RECAPTCHA_PRIVATE_KEY
+
         if recaptcha_public_key and recaptcha_private_key:
-            return {'public_key': recaptcha_public_key,
+            return {
+                'public_key': recaptcha_public_key,
                 'private_key': recaptcha_private_key}
     return {}
 
@@ -51,10 +75,34 @@ def get_contact_captcha_keys(request=None):
     dictionnary if captcha should be disabled on the contact-us page.
     """
     if getattr(settings, 'CONTACT_REQUIRES_RECAPTCHA', False):
-        recaptcha_public_key = settings.RECAPTCHA_PUBLIC_KEY
-        recaptcha_private_key = settings.RECAPTCHA_PRIVATE_KEY
+        #pylint:disable=protected-access
+        if not hasattr(get_contact_captcha_keys, '_recaptcha_public_key'):
+            try:
+                get_contact_captcha_keys._recaptcha_public_key = \
+                    import_string(settings.RECAPTCHA_PUBLIC_KEY)
+            except ImportError:
+                get_contact_captcha_keys._recaptcha_public_key = None
+        if callable(get_contact_captcha_keys._recaptcha_public_key):
+            recaptcha_public_key = \
+                get_contact_captcha_keys._recaptcha_public_key()
+        else:
+            recaptcha_public_key = settings.RECAPTCHA_PUBLIC_KEY
+
+        if not hasattr(get_contact_captcha_keys, '_recaptcha_private_key'):
+            try:
+                get_contact_captcha_keys._recaptcha_private_key = \
+                    import_string(settings.RECAPTCHA_PRIVATE_KEY)
+            except ImportError:
+                get_contact_captcha_keys._recaptcha_private_key = None
+        if callable(get_contact_captcha_keys._recaptcha_private_key):
+            recaptcha_private_key = \
+                get_contact_captcha_keys._recaptcha_private_key()
+        else:
+            recaptcha_private_key = settings.RECAPTCHA_PRIVATE_KEY
+
         if recaptcha_public_key and recaptcha_private_key:
-            return {'public_key': recaptcha_public_key,
+            return {
+                'public_key': recaptcha_public_key,
                 'private_key': recaptcha_private_key}
     return {}
 

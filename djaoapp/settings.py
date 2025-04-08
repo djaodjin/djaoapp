@@ -82,10 +82,10 @@ REGISTRATION_REQUIRES_RECAPTCHA = settings_lazy(
     'multitier.thread_locals.get_registration_requires_recaptcha', bool)
 CONTACT_REQUIRES_RECAPTCHA = settings_lazy(
     'multitier.thread_locals.get_contact_requires_recaptcha', bool)
-RECAPTCHA_PUBLIC_KEY = settings_lazy(
-    'multitier.thread_locals.get_recaptcha_pub_key')
-RECAPTCHA_PRIVATE_KEY = settings_lazy(
-    'multitier.thread_locals.get_recaptcha_priv_key')
+# django-recaptcha will raise a `ImproperlyConfigured` exception
+# if those two settings are not of type `str`.
+RECAPTCHA_PUBLIC_KEY = 'multitier.thread_locals.get_recaptcha_pub_key'
+RECAPTCHA_PRIVATE_KEY = 'multitier.thread_locals.get_recaptcha_priv_key'
 
 # Defaults for social auth configuration
 USE_X_FORWARDED_PORT = True
@@ -205,13 +205,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 BUILD_ABSOLUTE_URI_CALLABLE = 'multitier.mixins.build_absolute_uri'
 EMAIL_CONNECTION_CALLABLE = 'multitier.thread_locals.get_email_connection'
 NOTIFIED_ON_ERRORS_CALLABLE = 'multitier.thread_locals.get_notified_on_errors'
-
-# py27/django-recaptcha workaround
-for recaptcha_key in ['RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY']:
-    recaptcha_key_value = getattr(sys.modules[__name__], recaptcha_key, None)
-    if recaptcha_key_value and not isinstance(recaptcha_key_value, str):
-        setattr(sys.modules[__name__], recaptcha_key,
-            recaptcha_key_value.encode('utf-8'))
 
 SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 

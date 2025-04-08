@@ -98,7 +98,7 @@ class Command(BaseCommand):
     def _handle(self, *args, **options):
         # forces to use the fake processor. We don't want to take a lot
         # of time to go to Stripe to create test charges.
-        settings.SAAS['PROCESSOR']['BACKEND'] = \
+        saas_settings.PROCESSOR['BACKEND'] = \
             'saas.backends.fake_processor.FakeProcessorBackend'
 
         db_name = options['database']
