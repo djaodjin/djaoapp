@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans name=provider.printable_name %}Payment Processor setup error for {{name}}{% endtrans %}</h3>
-<p>
+<div>
+  <h3>{% trans name=provider.printable_name %}Payment Processor setup error for {{name}}{% endtrans %}</h3>
+  <p>
 {% trans customer=profile.printable_name, provider=provider.printable_name %}<strong>{{customer}}</strong> attempted to pay on your website. There was an error as it seems the payment processor account for {{provider}} is not connected properly.{% endtrans %}
-</p>
-<p>
+  </p>
+  <p>
 <em>{{detail}}</em>
-</p>
-<p>
+  </p>
+  <p>
 {% trans name=provider.printable_name %}Please review and/or (re-)connect the payment processor associated to {{name}} at the URL below:{% endtrans %}
 <a href="{{back_url}}">{{back_url}}</a>
-</p>
+  </p>
+</div>
 {% endblock %}

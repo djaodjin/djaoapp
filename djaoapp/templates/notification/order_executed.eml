@@ -7,8 +7,9 @@ HTML encoded. #}
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans name=profile.printable_name %}Order Confirmation for {{name}}{% endtrans %}</h3>
-<div id="invoiced_items">
+<div>
+  <h3>{% trans name=profile.printable_name %}Order Confirmation for {{name}}{% endtrans %}</h3>
+  <div id="invoiced_items">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -25,20 +26,21 @@ HTML encoded. #}
         {% endfor %}
       </tbody>
     </table>
-</div>
-<hr class="horizontal-divide">
-<div>
-{% if originated_by %}
-<p>
+  </div>
+  <hr class="horizontal-divide">
+  <div>
+    {% if originated_by %}
+    <p>
 {% trans profile_url=originated_by.location, name=originated_by.printable_name %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
-</p>
-{% endif %}
-</div>
-<div>
-  <p>
+    </p>
+    {% endif %}
+  </div>
+  <div>
+    <p>
 {% trans %}This order confirmation only notifies that you intend to pay for this product(s).{% endtrans %}
 <span class="strong">{% trans %}You have not been charged.{% endtrans %}</span>
 {% trans %}A receipt will follow only after a credit card payment has been successfully made.{% endtrans %}
-  </p>
+    </p>
+  </div>
 </div>
 {% endblock %}

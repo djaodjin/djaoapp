@@ -5,26 +5,28 @@
 {% endblock %}
 
 {% block html_content %}
-<p>
+<div>
+  <p>
 {% trans name=profile.printable_name %}Hello {{name}}{% endtrans %},
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}I generated a one-time code for you to access{% endtrans %}:
-<ul>
- {% for item in cart_items %}
-    <li>{{item.plan.title}}</li>
- {% endfor %}
-</ul>
-</p>
-<p>
+  </p>
+  <ul>
+    {% for item in cart_items %}
+      <li>{{item.plan.title}}</li>
+     {% endfor %}
+  </ul>
+  <p>
 {% trans %}Sail through the payment page by clicking on the following link{% endtrans %}:
-</p>
-<p>
+  </p>
+  <p>
 <a href="{{back_url}}">{{back_url}}</a>
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}Thank you{% endtrans %},<br />
 {{originated_by.printable_name}}<br />
 {{originated_by.email}}<br />
-</p>
+  </p>
+</div>
 {% endblock %}

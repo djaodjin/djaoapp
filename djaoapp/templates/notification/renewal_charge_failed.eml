@@ -7,23 +7,24 @@ HTML encoded. #}
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans provider=provider.printable_name %}{{provider}} Renewal failed{% endtrans %}</h3>
-{% if organization %}
-<div class="info">
-  <table>
-    <thead>
-    </thead>
-    <tbody>
-      <tr>
-        <th class="info-row-header" style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{{profile.printable_name}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<hr class="horizontal-divide">
-{% endif %}
-<div id="invoiced_items">
+<div>
+  <h3>{% trans provider=provider.printable_name %}{{provider}} Renewal failed{% endtrans %}</h3>
+  {% if organization %}
+  <div class="info">
+    <table>
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="info-row-header" style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
+          <td>{{profile.printable_name}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr class="horizontal-divide">
+  {% endif %}
+  <div id="invoiced_items">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -40,10 +41,11 @@ HTML encoded. #}
         {% endfor %}
       </tbody>
     </table>
-</div>
-<hr class="horizontal-divide">
-<div>
+  </div>
+  <hr class="horizontal-divide">
+  <div>
 {% trans total_price=charge_total|price|humanize_money, nb_renewal_attempts=nb_renewal_attempts, max_renewal_attempts=max_renewal_attempts %}The charge of {{total_price}} failed. This is {{nb_renewal_attempts}}/{{max_renewal_attempts}} attempts. After {{max_renewal_attempts}} attempts, your service will be discountinued. Please update your payment method by visiting the following URL in your favorite browser:{% endtrans %}
 <a href="{{back_url}}">{{back_url}}</a>
+  </div>
 </div>
 {% endblock %}

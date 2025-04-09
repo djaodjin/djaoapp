@@ -5,16 +5,18 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans organization=profile.printable_name, role_description=role_description.title|safe %}You were added as a {{role_description}} to {{organization}}{% endtrans %}</h3>
-{% if detail %}
-<p>
+<div>
+  <h3>{% trans organization=profile.printable_name, role_description=role_description.title|safe %}You were added as a {{role_description}} to {{organization}}{% endtrans %}</h3>
+  {% if detail %}
+  <p>
 {{detail|md}}
-</p>
-{% else %}
-<p>{% trans name=user.printable_name %}Hi {{name}}{% endtrans %},</p>
-{% endif %}
-<p>
+  </p>
+  {% else %}
+  <p>{% trans name=user.printable_name %}Hi {{name}}{% endtrans %},</p>
+  {% endif %}
+  <p>
 {% trans back_url=back_url, organization=profile.printable_name, role_description=role_description.title %}You were added as a {{role_description}} to {{organization}} and can access the <a href="{{back_url}}">{{organization}} account</a> now by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
-</p>
+  </p>
+</div>
 {% endblock %}

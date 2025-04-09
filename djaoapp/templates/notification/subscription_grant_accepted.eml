@@ -9,13 +9,15 @@
 {% endblock %}
 
 {% block html_content %}
-{% if detail %}
-<p>
+<div>
+  {% if detail %}
+  <p>
 {{detail|md}}
-</p>
-{% endif %}
-<p>
+  </p>
+  {% endif %}
+  <p>
 {% trans back_url=back_url, organization=profile.printable_name %}You can now access <a href="{{back_url}}">{{organization}} profile</a> by clicking on the previous link or copy/pasting the following link in your browser:{% endtrans %}
 {{back_url}}
-</p>
+  </p>
+</div>
 {% endblock %}

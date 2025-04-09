@@ -12,13 +12,15 @@
 
 {% block html_content %}
 <div>
-<p>
+  <div>
+    <p>
 {% trans %}Thank you for registering at {{back_url}}.{% endtrans %}
-</p>
-</div>
-<div id="support">
-<p>
+    </p>
+  </div>
+  <div id="support">
+    <p>
 {% trans %}If you have any questions or comments, email us at{% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
-</p>
+    </p>
+  </div>
 </div>
 {% endblock %}

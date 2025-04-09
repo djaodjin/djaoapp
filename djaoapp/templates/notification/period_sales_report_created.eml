@@ -5,53 +5,30 @@
 {% endblock %}
 
 {% block html_content %}
-<h4 id="sales-title">{% trans %}Sales report for the week ending {{title}}{% endtrans %}</h4>
-
-<style>
-    #sales-title
-    {
-        text-align: center;
-    }
-
-    #sales-data
-    {
-        border-collapse: collapse;
-        border: 1px solid #ccc;
-        margin: 30px 0;
-    }
-
-    #sales-data th,
-    #sales-data td
-    {
-        border: 1px solid #ccc;
-        padding: 7px 10px;
-        font-size: 14px;
-        font-weight: normal;
-        text-align: right;
-    }
-</style>
-
-<table id="sales-data">
+<div>
+  <h4 id="sales-title" style="text-align: center;">{% trans %}Sales report for the week ending {{title}}{% endtrans %}</h4>
+  <table id="sales-data" style="border-collapse: collapse;border: 1px solid #ccc;margin: 30px 0;">
     <thead>
-        <tr>
-            <th>{% trans %}Description{% endtrans %}</th>
-            <th>{% trans %}Total in USD{% endtrans %}</th>
-            <th>{% trans %}vs. last week{% endtrans %}</th>
-            <th>{% trans %}vs. same week a year ago{% endtrans %}</th>
-        </tr>
+      <tr>
+        <th style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{% trans %}Description{% endtrans %}</th>
+        <th style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{% trans %}Total in USD{% endtrans %}</th>
+        <th style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{% trans %}vs. last week{% endtrans %}</th>
+        <th style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{% trans %}vs. same week a year ago{% endtrans %}</th>
+      </tr>
     </thead>
     <tbody>
-        {% for row in results %}
-            <tr>
-                <td>{{row.title}}</td>
-                {% for val in row['values'] %}
-                <td>{{val.1}}</td>
-                {% endfor %}
-            </tr>
+      {% for row in results %}
+      <tr>
+        <td style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{{row.title}}</td>
+        {% for val in row['values'] %}
+        <td style="border: 1px solid #ccc;padding: 7px 10px;font-size: 14px;font-weight: normal;text-align: right;">{{val.1}}</td>
         {% endfor %}
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
-<p>
-<a href="https://www.djaodjin.com/docs/#revenue-reports">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
-</p>
+  </table>
+  <p>
+<a href="https://www.djaodjin.com/docs/guides/saas-business-metrics/">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
+  </p>
+</div>
 {% endblock %}

@@ -5,18 +5,19 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Verify your email address{% endtrans %}</h3>
+<div>
+  <h3>{% trans %}Verify your email address{% endtrans %}</h3>
 
-<p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
-<p>
+  <p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
+  <p>
 {% trans provider=broker.printable_name %}You have registered an account with {{provider}}.{% endtrans %}
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}Please verify your email address and activate your account by visiting the following URL in your favorite browser{% endtrans %}:<br />
 <a href="{{back_url}}{% if next %}?next={{next}}{% endif %}">{{back_url}}{% if next %}?next={{next}}{% endif %}</a>
-</p>
-<p>
+  </p>
+  <p>
 {% trans expiration_days=nb_expiration_days %}The link is valid for {{expiration_days}} days.{% endtrans %}
-</p>
+  </p>
 </div>
 {% endblock %}

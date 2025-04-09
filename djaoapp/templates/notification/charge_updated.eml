@@ -12,45 +12,46 @@ Implementation Note:
 {% endblock %}
 
 {% block html_content %}
-<h3>{% if charge_total %}{% trans name=profile.printable_name %}Refund Receipt for {{name}}{% endtrans %}{% else %}{% trans name=profile.printable_name %}Charge Receipt for {{name}}{% endtrans %}{% endif %}</h3>
-<div id="status">
+<div>
+  <h3>{% if charge_total %}{% trans name=profile.printable_name %}Refund Receipt for {{name}}{% endtrans %}{% else %}{% trans name=profile.printable_name %}Charge Receipt for {{name}}{% endtrans %}{% endif %}</h3>
+  <div id="status">
     <p>
       {% trans created_at=charge.created_at|humanize_short_date, price=charge|price|humanize_money %}On {{created_at}}, the credit card has been charged for an amount of {{price}}.{% endtrans %}
       {% trans %}Payment Information{% endtrans %}:
     </p>
-</div>
-<div class="info">
-  <table>
-    <thead>
-    </thead>
-    <tbody>
-      <tr>
-        <th class="info-row-header" style="text-transform:upper;">{% trans %}reference{% endtrans %}&nbsp;&nbsp;</th>
-        <td>#{{charge.processor_key}}</td>
-      </tr>
-      <tr>
-        <th class="info-row-header" style="text-transform:upper;">{% trans %}amount{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{% if charge_total %}{% trans amount=charge_total|price|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge|price|humanize_money}}{% endif %}</td>
-      </tr>
-      {% if charge.card_name %}
-      <tr>
-        <th class="info-row-header "style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{{charge.card_name}}</td>
-      </tr>
-      {% endif %}
-      <tr>
-        <th class="info-row-header" style="text-transform:upper;">{% trans %}card{% endtrans %}&nbsp;&nbsp;</th>
-        <td>**** - {{charge.last4}}</td>
-      </tr>
-      <tr>
-        <th class="info-row-header" style="text-transform:upper;">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
-        <td>{{charge.exp_date}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<hr class="horizontal-divide">
-<div id="invoiced_items">
+  </div>
+  <div class="info">
+    <table>
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="info-row-header" style="text-transform:upper;">{% trans %}reference{% endtrans %}&nbsp;&nbsp;</th>
+          <td>#{{charge.processor_key}}</td>
+        </tr>
+        <tr>
+          <th class="info-row-header" style="text-transform:upper;">{% trans %}amount{% endtrans %}&nbsp;&nbsp;</th>
+          <td>{% if charge_total %}{% trans amount=charge_total|price|humanize_money %}{{amount}} (after refund){% endtrans %}{% else %}{{charge|price|humanize_money}}{% endif %}</td>
+        </tr>
+        {% if charge.card_name %}
+        <tr>
+          <th class="info-row-header "style="text-transform:upper;">{% trans %}name{% endtrans %}&nbsp;&nbsp;</th>
+          <td>{{charge.card_name}}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <th class="info-row-header" style="text-transform:upper;">{% trans %}card{% endtrans %}&nbsp;&nbsp;</th>
+          <td>**** - {{charge.last4}}</td>
+        </tr>
+        <tr>
+          <th class="info-row-header" style="text-transform:upper;">{% trans %}EXPIRES{% endtrans %}&nbsp;&nbsp;</th>
+          <td>{{charge.exp_date}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr class="horizontal-divide">
+  <div id="invoiced_items">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -76,18 +77,19 @@ Implementation Note:
         {% endfor %}
       </tbody>
     </table>
-</div>
-<hr />
-<div>
-{% if created_by %}
-<p>
+  </div>
+  <hr />
+  <div>
+    {% if created_by %}
+    <p>
 {% trans profile_url=created_by.location, name=created_by.printable_name %}This order was initiated by <a href="{{profile_url}}">{{name}}</a>.{% endtrans %}
-</p>
-{% endif %}
-{% if originated_by %}
-<p>
+    </p>
+    {% endif %}
+    {% if originated_by %}
+    <p>
 {% trans name=originated_by.printable_name %}This email was triggered by {{name}}.{% endtrans %}
-</p>
-{% endif %}
+    </p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

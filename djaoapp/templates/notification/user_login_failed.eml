@@ -5,17 +5,17 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Login failed{% endtrans %}</h3>
-
-<p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
-<p>
+<div>
+  <h3>{% trans %}Login failed{% endtrans %}</h3>
+  <p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
+  <p>
 {% trans broker=broker.printable_name %}We have blocked an attempt to use your username to login into {{broker}}.{% endtrans %}
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}If you forgot your password, you can recover it by clicking the "Forgot password?" link on the login page{% endtrans %} (direct: {{back_url}}).
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}If it wasn't you and you suspect something is going on, please contact us.{% endtrans %} - {{broker.email}}
-</p>
+  </p>
 </div>
 {% endblock %}

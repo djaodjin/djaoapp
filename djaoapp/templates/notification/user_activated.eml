@@ -9,12 +9,14 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}An account was activated!{% endtrans %}</h3>
-<p>
+<div>
+  <h3>{% trans %}An account was activated!{% endtrans %}</h3>
+  <p>
 {% trans %}Full name{% endtrans %}: <b>{{user.full_name}}</b>
-<br>
+  <br>
 {% trans %}Username{% endtrans %}: {% if user.location %}<a href="{{user.location}}">{{user.username}}</a>{% else %}<b>{{user.username}}</b>{% endif %}
-<br>
+  <br>
 {% trans %}Email{% endtrans %}: {{user.email}}
-</p>
+  </p>
+</div>
 {% endblock %}

@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Use Charge Limit Crossed{% endtrans %}</h3>
-
-<p>
+<div>
+  <h3>{% trans %}Use Charge Limit Crossed{% endtrans %}</h3>
+  <p>
 {% trans broker=broker.printable_name %}This notification is to let you know that your profile has crossed the use charge limit you set for the billing period.{% endtrans %} - {{back_url}}.
-</p>
+  </p>
 </div>
 {% endblock %}

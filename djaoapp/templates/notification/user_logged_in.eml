@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Successful login{% endtrans %}</h3>
-
-<p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
-<p>
+<div>
+  <h3>{% trans %}Successful login{% endtrans %}</h3>
+  <p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
+  <p>
 {% trans broker=broker.printable_name %}This notification is just to let you know that your credentials were used to successfully logged into {{broker}}{% endtrans %} - {{back_url}}.
-</p>
-<p>
+  </p>
+  <p>
 {% trans %}If this wasn't you, please contact us immediately at {% endtrans %} <a href="mailto:{{broker.email}}">{{broker.email}}</a>.
-</p>
+  </p>
 </div>
 {% endblock %}

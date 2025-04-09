@@ -11,6 +11,10 @@
 {% endblock %}
 
 {% block html_content %}
-<p>{% trans broker=broker.printable_name|safe %}Your multi factor authentication token on {{broker}}{% endtrans %}</p>
-<h3>{{code}}</h3>
+<div>
+  <p>
+{% trans broker=broker.printable_name|safe %}Your multi factor authentication token on {{broker}}{% endtrans %}
+  </p>
+  <h3>{{code}}</h3>
+</div>
 {% endblock %}

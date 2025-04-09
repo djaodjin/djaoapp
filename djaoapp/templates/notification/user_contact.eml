@@ -7,20 +7,21 @@
 {% block title %}{% if provider %}{{provider.printable_name}}{% else %}{{broker.printable_name}}{% endif %}{% endblock %}
 
 {% block html_content %}
-<h3>{% trans %}Contact inquiry from{% endtrans %} {% if originated_by.location %}<a href="{{originated_by.location}}">{{originated_by.printable_name}}</a>{% else %}<b>{{originated_by.printable_name}}</b>{% endif %}</h3>
-
 <div>
-{% for row in detail %}
-{% if row.0 %}
-<p><strong>{{row.0}}</strong></p>
-{% endif %}
-<p class="spaced">{{row.1}}</p>
-{% endfor %}
-</div>
+  <h3>{% trans %}Contact inquiry from{% endtrans %} {% if originated_by.location %}<a href="{{originated_by.location}}">{{originated_by.printable_name}}</a>{% else %}<b>{{originated_by.printable_name}}</b>{% endif %}</h3>
+  <div>
+  {% for row in detail %}
+    {% if row.0 %}
+    <p><strong>{{row.0}}</strong></p>
+    {% endif %}
+    <p class="spaced">{{row.1}}</p>
+  {% endfor %}
+  </div>
 
-<p>{% trans %}Regards{% endtrans %},</p>
-<p><b>{{originated_by.printable_name}}</b><br />
-{{originated_by.email}}</p>
+  <p>{% trans %}Regards{% endtrans %},</p>
+  <p><b>{{originated_by.printable_name}}</b><br />
+  {{originated_by.email}}</p>
+</div>
 {% endblock %}
 
 {% block support %}
