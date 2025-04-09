@@ -122,6 +122,7 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork \
         djaoapp/fixtures/200-saas-roles.json
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' WHERE is_provider AND slug != 'djaoapp';"
+	$(SQLITE) $(MULTITIER_DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"
 
 
 install:: install-conf
@@ -140,6 +141,8 @@ ifeq ($(MY_EMAIL),)
 package-docker: build-assets setup-livedemo
 	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
 	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(MULTITIER_DB_FILENAME) $(srcDir)/cowork.sqlite
+	[[ -f $(srcDir)/noregistration.sqlite ]] || cp $(dir $(DB_FILENAME))noregistration.sqlite $(srcDir)
+	[[ -f $(srcDir)/authdisabled.sqlite ]] || cp $(dir $(DB_FILENAME))authdisabled.sqlite $(srcDir)
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
 	find $(srcDir) -name '__pycache__' -exec rm -rf {} +
 	find $(srcDir) -name '*~' -exec rm -rf {} +
@@ -170,6 +173,9 @@ setup-livedemo: initdb
 	cd $(srcDir) $(if $(LIVEDEMO_ASSETS),&& cp -rf $(LIVEDEMO_ASSETS) htdocs/media,)
 	cd $(srcDir) && $(PYTHON) manage.py load_test_transactions --profile-pictures htdocs/media/livedemo/profiles
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set slug='djaopsp' WHERE slug='djaoapp';"
+	@echo "-- Reset processor deposit key (never too cautious)"
+	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='';"
+	$(SQLITE) $(MULTITIER_DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='';"
 
 
 # Download prerequisites specified in package.json and install relevant files
@@ -238,8 +244,6 @@ initdb-cowork: clean-cowork
 	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
 		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
-	@echo "-- Set streetside processor deposit key."
-	$(SQLITE) $(MULTITIER_DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"
 
 initdb-noregistration: clean-noregistration
 	@echo "-- initializing $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite"
@@ -302,8 +306,6 @@ migratedb-%:
 	&& DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) \
 	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
 	$(MANAGE) loadfixtures --database $(basename $(notdir $(MULTITIER_DB_NAME))) $(EMAIL_FIXTURE_OPT) $(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(basename $(notdir $(MULTITIER_DB_NAME)))-streetside.json
-	@echo "-- Set streetside processor deposit key."
-	$(SQLITE) $(call MULTITIER_DB_NAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"
 	cd $(srcDir) && $(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
 			$(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/djaodjin.json
 	@echo "-- Set passphrase to forward session."
