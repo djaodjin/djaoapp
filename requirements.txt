@@ -19,7 +19,7 @@ djaodjin-deployutils==0.12.1
 djaodjin-extended-templates==0.4.9
 djaodjin-multitier==0.3.0
 djaodjin-rules==0.4.9
-djaodjin-saas==1.1.0
+djaodjin-saas==1.1.1
 djaodjin-signup==0.9.10
 docutils==0.15.2                  # botocore has a constraint: docutils<0.16
 drf-spectacular==0.27.0           # to display 'themes' notifications pages
