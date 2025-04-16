@@ -541,8 +541,7 @@ MAX_UPLOAD_SIZE = 10240
 # more details on how to customize your logging configuration.
 LOG_HANDLER = {
     'level': 'DEBUG',
-    'formatter': ('request_format' if (DEBUG or
-        getattr(sys.modules[__name__], 'USE_FIXTURES', False)) else 'json'),
+    'formatter': 'request_format',
     'filters': ['request'],
     'class':'logging.StreamHandler',
 }
@@ -569,15 +568,14 @@ LOGGING = {
     },
     'formatters': {
         'simple': {
-            'format': 'X X %(levelname)s [%(asctime)s] %(message)s',
+            'format': '- - - [%(asctime)s] %(levelname)s %(message)s',
             'datefmt': '%d/%b/%Y:%H:%M:%S %z'
         },
         'json': {
             '()': 'deployutils.apps.django.logging.JSONFormatter',
             'format':
-            'gunicorn.' + APP_NAME + '.app: [%(process)d] '\
-                '%(log_level)s %(remote_addr)s %(http_host)s %(username)s'\
-                ' [%(asctime)s] %(message)s',
+                '%(remote_addr)s %(http_host)s %(username)s [%(asctime)s]'\
+                ' %(levelname)s %(message)s',
             'datefmt': '%d/%b/%Y:%H:%M:%S %z',
             'replace': False,
             'whitelists': {
@@ -589,16 +587,16 @@ LOGGING = {
         },
         'request_format': {
             'format':
-            '%(levelname)s %(remote_addr)s %(username)s [%(asctime)s]'\
-                ' %(message)s "%(http_user_agent)s"',
+                '%(remote_addr)s %(http_host)s %(username)s [%(asctime)s]'\
+                ' %(levelname)s %(message)s',
             'datefmt': '%d/%b/%Y:%H:%M:%S %z'
         }
     },
     'handlers': {
         'db_log': {
             'level': 'DEBUG',
-            'formatter': 'simple',
-            'filters': ['require_debug_true'],
+            'formatter': 'request_format',
+            'filters': ['require_debug_true', 'request'],
             'class':'logging.StreamHandler',
         },
         'log': LOG_HANDLER,
