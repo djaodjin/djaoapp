@@ -1,5 +1,6 @@
 FROM python:3.10-slim-bookworm
-# 2023-04-21: python:3.10-slim-bullseye - Python 3.10.11, Debian 11.0 (Bullseye)
+#2025-04-15: python:3.10-slim-bookworm - Python 3.10.17, Debian 12.10 (Bookworm)
+#2023-04-21: python:3.10-slim-bullseye - Python 3.10.11, Debian 11.0 (Bullseye)
 
 LABEL org.opencontainers.image.source https://github.com/djaodjin/djaoapp
 
@@ -11,7 +12,7 @@ RUN set -eux; \
       apt-get update -y; \
       DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends\
         libcairo2 \
-        libldap-2.4-2 libldap-common \
+        libldap-2.5-0 libldap-common \
         libpangoft2-1.0-0 \
         libxmlsec1 \
         libxslt1.1 \
