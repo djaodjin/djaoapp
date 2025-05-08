@@ -7,7 +7,7 @@
     <meta name="author" content="DjaoDjin inc.">
     <meta name="copyright" content="Copyright (c) 2025 DjaoDjin inc.">
     <link rel="icon" href="{{'/favicon.ico'|site_url}}" type="image/x-icon">
-    <meta property="og:site_name" content="DjaoDjin" />
+    <meta property="og:site_name" content="{% if request and request.site %}{{request.site.printable_name}}{% else %}DjaoApp{% endif %}" />
     <meta property="og:type" content="website" />
     {% block localheadermeta %}
     <title>{% block localheader_title %}{% if request %}{{request|site_printable_name}}{% else %}{% trans %}Accounts & Billing Workflows{% endtrans %}{% endif %}{% endblock %} | DjaoDjin</title>
@@ -38,30 +38,43 @@
       <div class="dashboard-container">
         <div class="{% block dashboard_inner_container_classes %}{% endblock %}">
           {% block dashboard_nav %}
-            <div class="d-print-none dashboard-nav nav-main-frnt">
-              <div class="dashboard-nav-inner-container">
-                <div class="dashboard-nav-main dashboard-nav-color-theme">
+          <div id="dashboard-navbar"
+               class="d-print-none dashboard-nav nav-main-frnt">
+            <div class="dashboard-nav-inner-container">
+              <div class="dashboard-nav-main">
+                <header>
+                  <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
+                    <div class="navbar-header">
+                      <div class="d-inline">
+                        <button class="me-2 sidebar-toggle btn btn-secondary"
+                                data-target="#dashboard-navbar">
+                          <div class="bar1 opened"></div>
+                          <div class="bar2 opened"></div>
+                          <div class="bar3 opened"></div>
+                        </button>
+                        {% block app_left_sidebar_toggle %}
+                        {% endblock %}
+                      </div>
+                      <div class="d-inline">
+                        <a class="navbar-brand" href="{{request|site_url}}">
+                          <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                          <span class="d-none d-sm-inline-block"
+                                data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </nav>
+                </header>
+                <div class="sidebar-animate dashboard-nav-color-theme">
                   <div>
-                    <header>
-                      <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
-                        <div class="navbar-header">
-                          <div>
-                            <a class="navbar-brand" href="{{request|site_url}}">
-                              <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
-                              <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
-                            </a>
-                          </div>
-                          <div class="text-end">
-                            <button href="" class="sidebar-toggle btn btn-secondary d-inline-block d-md-none">
-                              <div class="bar1 opened"></div>
-                              <div class="bar2 opened"></div>
-                              <div class="bar3 opened"></div>
-                            </button>
-                          </div>
-                        </div>
-                      </nav>
-                    </header>
                     <div class="dashboard-nav-menu">
+                      <div class="text-end">
+                        <button class="sidebar-pin-toggle btn btn-link text-white"
+                                data-target="#dashboard-navbar">
+                          <i class="fa"></i>
+                        </button>
+                      </div>
+
                       {% block sidebar %}
                       <hr />
                       <ul class="nav flex-column d-md-none">
@@ -69,53 +82,53 @@
                       </ul>
                       {% endblock %}
                     </div>
-                  </div>
 
-                  <!-- Start Dashboard Footer -->
-                  {% block dashboard_footer %}
-                  <div class="text-center dashboard-nav-footer dashboard-nav-color-theme">
-                    <div class="footer-links">
-                      <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pe-2"></i></a>
-                      <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+                    <!-- Start Dashboard Footer -->
+                    {% block dashboard_footer %}
+                    <div class="text-center dashboard-nav-footer dashboard-nav-color-theme">
+                      <div class="footer-links">
+                        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa fa-github fa-sm pe-2"></i></a>
+                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
+                      </div>
+                      <div>
+{% trans %}Powered by &copy; 2025 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
+                      </div>
+                      {# Theme color mode selection #}
+                      <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
+                        <li class="nav-item dropup">
+                          <a id="color-mode" class="nav-link dropdown-toggle" href="#" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (dark)">
+                            <span class="fa fa-paint-brush align-middle"></span>
+                            {% trans %}Color mode{% endtrans %}
+                            <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                {% trans %}Light{% endtrans %}
+                              </button>
+                            </li>
+                            <li role="presentation">
+                              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                {% trans %}Dark{% endtrans %}
+                              </button>
+                            </li>
+                            <li role="presentation">
+                              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+                                {% trans %}Auto{% endtrans %}
+                              </button>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>{# /theme color mode #}
                     </div>
-
-                    <div>
-                      {% trans %}Powered by &copy; 2025 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
-                    </div>
-                    {# Theme color mode selection #}
-                    <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
-                      <li class="nav-item dropup">
-                        <a id="color-mode" class="nav-link dropdown-toggle" href="#" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (dark)">
-                          <span class="fa fa-paint-brush align-middle"></span>
-                          {% trans %}Color mode{% endtrans %}
-                          <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li role="presentation">
-                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-                              {% trans %}Light{% endtrans %}
-                            </button>
-                          </li>
-                          <li role="presentation">
-                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-                              {% trans %}Dark{% endtrans %}
-                            </button>
-                          </li>
-                          <li role="presentation">
-                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
-                              {% trans %}Auto{% endtrans %}
-                            </button>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>{# /theme color mode #}
+                    {% endblock %}
+                    <!-- End Dashboard Footer -->
                   </div>
-                  {% endblock %}
-                  <!-- End Dashboard Footer -->
+                </div>{# /.sidebar-animate #}
+              </div>{# /.dashboard-nav-main #}
 
-                </div>
-              </div><!-- /.dashboard-nav-inner-container -->
-            </div>
+            </div>{# /.dashboard-nav-inner-container #}
+          </div>{# /.dashboard-nav #}
           {% endblock %}
 
           <div class="dashboard-content">
@@ -123,20 +136,22 @@
               {% block body_top_template %}{% endblock %}
               <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
                 <div class="container-fluid">
-                  <button class="sidebar-toggle btn btn-secondary d-inline-block d-md-none position-relative">
-                    <div class="bar1 closed"></div>
-                    <div class="bar2 closed"></div>
-                    <div class="bar3 closed"></div>
-                  </button>
-
+                  <div class="d-flex">
+                    <button class="me-2 sidebar-toggle sidebar-toggle-default btn btn-secondary"
+                          data-target="#dashboard-navbar">
+                      <div class="bar1 default"></div>
+                      <div class="bar2 default"></div>
+                      <div class="bar3 default"></div>
+                    </button>
+                    {% block navbar_app_left_sidebar_toggle %}
+                    {% endblock %}
+                  </div>
                   {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
-                    <div>
-                      <a class="navbar-brand" href="{{request|site_url}}">
-                        <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
-                        <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
-                      </a>
-                    </div>
+                    <a class="navbar-brand" href="{{request|site_url}}">
+                      <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                      <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
+                    </a>
                   </div>
                   {% endblock %}
 

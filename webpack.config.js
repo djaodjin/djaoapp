@@ -21,7 +21,6 @@ module.exports = {
       ],
       'djaodjin-vue': [
           'js/djaodjin-upload.js',
-          'js/djaodjin-dashboard.js',
           'js/djaodjin-signup-vue.js',
           'js/djaodjin-saas-vue.js',
           'js/djaodjin-rules-vue.js',

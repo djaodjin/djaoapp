@@ -4,7 +4,7 @@
 <link rel="stylesheet" media="screen" href="{{'/assets/cache/dashboard.css'|djasset}}" />
 {% endblock %}
 
-{% block dashboard_inner_container_classes %}dashboard-inner-container{% endblock %}
+{% block dashboard_inner_container_classes %}dashboard-pane-default{% endblock %}
 
 {% block footer %}{% endblock %}
 
@@ -66,7 +66,6 @@ humanizeTimeDelta.$labels = {
 {% block dashboard_bodyscripts %}{% endblock %}
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|djasset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|djasset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|djasset}}"></script>

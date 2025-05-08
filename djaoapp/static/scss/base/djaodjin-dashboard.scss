@@ -140,16 +140,33 @@ pre.code{
 //    overflow: hidden;
 }
 
-.dashboard-inner-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+.dashboard-pane {
+  left: -1;
+}
+
+.sidebar-pin-toggle > .fa:before {
+  content: "\f08d"; // fa-pin
+  font-family: FontAwesome;
+}
+
+.dashboard-pane-pinned {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: inherit;
+  width: inherit;
+  left: 0;
+}
+
+.dashboard-pane-pinned .sidebar-pin-toggle > .fa:before {
+  content: "\f127"; // fa-unlink
+  font-family: FontAwesome;
 }
 
 .dashboard-nav {
   display: none;
   width: $dashboard-sidebar-width; // col-md-2 width: 16.66666667%;
-  overflow: hidden;
+  overflow: visible; // so we can see the shadow
   -webkit-transition: right 0.25s ease-in-out;
   -moz-transition: right 0.25s ease-in-out;
   -ms-transition: right 0.25s ease-in-out;
@@ -159,12 +176,19 @@ pre.code{
   user-select: none;
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
-  overflow: visible;
   position: fixed;
   top: 0;
   bottom: 0;
-  z-index: 5;
+  z-index: 3000; // #app-toolbar-left is 2000
   height: 100%;
+}
+
+.dashboard-nav .sidebar-animate {
+    overflow: hidden;
+    position: relative;
+    height: calc(100vh - #{$dashboard-sidebar-logo-height});
+    border-right: 1px solid #ccc;
+    box-shadow: 0.3em 0.5em 1em rgb(0 0 0 / 60%);
 }
 
 .dashboard-nav-main {
@@ -175,9 +199,17 @@ pre.code{
 
 .dashboard-nav-main .navbar {
     width: $dashboard-sidebar-width;
+    height: $dashboard-sidebar-logo-height;
 }
 
+// height 38px instead of 42px now
 .dashboard-nav-main .navbar-header {
+    // no padding top/bottom so menubar align with sidebar top corner.
+    height: 42px;
+    margin-left: 12px;
+}
+.dashboard-nav-main .navbar-header>*{
+   margin-top: 2px;
     padding-top: 5px;
     padding-bottom: 5px;
     overflow: visible;
@@ -224,15 +256,21 @@ pre.code{
     margin-right: 0;
 }
 
-.dashboard-inner-container .navbar-brand-container {
-   margin-left: 0;
-}
-
 .dashboard-content {
     width: 100%;
+    left: 0;
 }
 
-.dashboard-inner-container .dashboard-content-body {
+.dashboard-content > header,
+.dashboard-content > .fullviewport > header {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    width: 100%;
+    left: 0;
+}
+
+.dashboard-pane-pinned .dashboard-content-body {
   padding-left: $dashboard-sidebar-toggle;
 }
 
@@ -265,13 +303,26 @@ pre.code{
    text-align:center;
 }
 
-.dashboard-inner-container .dashboard-nav {
+.dashboard-pane-default .dashboard-nav {
+    display: none;
+}
+
+.dashboard-pane-pinned .dashboard-nav {
     // sidebar is visible on dashboard on desktops
     display: block;
 }
 
-.dashboard-inner-container .content-area-container {
-    padding: 20px;
+.dashboard-pane-pinned .dashboard-nav .sidebar-animate {
+    box-shadow: none;
+}
+
+.dashboard-pane-pinned .dashboard-content {
+  margin-left: $dashboard-sidebar-width;
+  width: calc(100vw - #{$dashboard-sidebar-width});
+}
+
+.content-area-container {
+  min-height: 300px;
 }
 
 .no-results {
@@ -287,6 +338,7 @@ pre.code{
 }
 
 .sidebar-toggle {
+//    display: inline; cannot use this if we want to set block in js.
     vertical-align: middle;
     line-height: 1;
     padding: 9px 10px;
@@ -326,7 +378,6 @@ pre.code{
   transform: translate(10px, 0);
 }
 
-
 .typeahead-dropdown.open>.dropdown-menu {
     display: block;
 }
@@ -350,7 +401,7 @@ pre.code{
     text-decoration: none;
 }
 
-.dashboard-inner-container .dashboard-nav-main .sidebar-toggle {
+.dashboard-pane-pinned .dashboard-nav-main .sidebar-toggle {
     border-width: 1px;
     border-style: solid;
 }
@@ -548,20 +599,6 @@ input::-webkit-datetime-edit {
 
 @include media-breakpoint-down(md) {
 
-    .dashboard-content > header,
-    .dashboard-content > .fullviewport > header {
-      position: sticky;
-      top: 0;
-      z-index: 4;
-      width: 100%;
-      left: 0;
-    }
-
-    .dashboard-nav,
-    .dashboard-inner-container .dashboard-nav {
-        display: none;
-    }
-
     .navbar-brand-container {
         position: absolute;
         left: 50%;
@@ -602,21 +639,57 @@ input::-webkit-datetime-edit {
 }
 
 @include media-breakpoint-up(md) {
-  .dashboard-inner-container {
-    position: inherit;
-    left: 0;
-    width: inherit;
-  }
 
-  .dashboard-inner-container .dashboard-content {
-    margin-left: $dashboard-sidebar-width;
-    width: calc(100vw - #{$dashboard-sidebar-width});
-  }
+    .dashboard-content .sidebar-toggle {
+        display: none;
+    }
 
-  .dashboard-inner-container .navbar-brand-container {
-    display: none;
-    margin-left: 0;
-  }
+    .dashboard-pane-default {
+        position: inherit;
+        width: inherit;
+        left: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+    .dashboard-pane-default .sidebar-toggle > .bar1.default  {
+    }
+
+    .dashboard-pane-default .sidebar-toggle > .bar2.default  {
+        -webkit-transform: translate(5px, 0);
+        transform: translate(5px, 0);
+    }
+
+    .dashboard-pane-default .sidebar-toggle > .bar3.default  {
+        -webkit-transform: translate(10px, 0);
+        transform: translate(10px, 0);
+    }
+
+    .dashboard-pane-default .dashboard-nav {
+        // sidebar is visible on dashboard on desktops
+        display: block;
+    }
+
+    .dashboard-pane-default .dashboard-nav .sidebar-animate {
+        box-shadow: none;
+    }
+
+    .dashboard-pane-default .sidebar-pin-toggle > .fa:before {
+        content: "\f127"; // fa-unlink
+        font-family: FontAwesome;
+    }
+
+    .dashboard-pane-default .dashboard-content {
+        margin-left: $dashboard-sidebar-width;
+        width: calc(100vw - #{$dashboard-sidebar-width});
+    }
+
+    .dashboard-pane-default .sidebar-toggle,
+    .dashboard-pane-default .navbar-brand-container {
+        display: none;
+        margin-left: 0;
+    }
 
 }
 
@@ -624,10 +697,6 @@ input::-webkit-datetime-edit {
 // ------------
 // We have to define this class here otherwise the sidebar is visible
 // public pages.
-.dashboard-nav {
-    display: none;
-}
-
 
 .dashboard-nav-color-theme {
     background-color: $dashboard-sidebar-bg;
@@ -647,7 +716,6 @@ input::-webkit-datetime-edit {
 .dashboard-nav a:hover,
 .dashboard-nav a:focus,
 .dashboard-nav a:visited {
-    color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav .bg-primary a.navbar-brand,
@@ -677,7 +745,6 @@ input::-webkit-datetime-edit {
 
 .dashboard-nav-menu > .nav li > a {
     background-color:transparent;
-    color: $dashboard-sidebar-color;
 }
 
 .dashboard-nav-menu > .nav li.active > a {
@@ -693,7 +760,8 @@ input::-webkit-datetime-edit {
     color: $dashboard-sidebar-color;
 }
 
-.dashboard-inner-container .dashboard-nav-color-theme .sidebar-toggle:hover {
+.dashboard-pane-default .dashboard-nav-color-theme .sidebar-toggle:hover,
+.dashboard-pane-pinned .dashboard-nav-color-theme .sidebar-toggle:hover {
     border-color: $dashboard-sidebar-color;
 }
 
