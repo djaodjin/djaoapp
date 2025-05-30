@@ -55,16 +55,16 @@
           <p>
 {% trans %}You are about to create a new profile with the following information. Is it correct?{% endtrans %}
           </p>
-          <div class="form-group">
-            <label>{% trans %}Profile name{% endtrans %}</label>
+          <div class="form-group mb-3">
+            <label class="form-label">{% trans %}Profile name{% endtrans %}</label>
             <input class="form-control w-100"
                    name="full_name" type="text"
                    max-length="150"
                    placeholder="ex: My Profile"
                    v-model="newProfile.full_name" />
           </div>
-          <div class="form-group">
-            <label>{% trans %}Primary contact email{% endtrans %}</label>
+          <div class="mb-3">
+            <label class="form-label">{% trans %}Primary contact email{% endtrans %}</label>
             <input class="email form-control w-100"
                    name="email" type="text"
                    max-length="150"

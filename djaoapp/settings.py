@@ -903,7 +903,7 @@ SIGNUP = {
         'USER_SEARCH_DN': getattr(sys.modules[__name__], 'LDAP_USER_SEARCH_DN', ""),
     },
     'LOGIN_THROTTLE': getattr(
-        sys.modules[__name__], 'SIGNUP_LOGIN_THROTTLE', None),
+        sys.modules[__name__], 'LOGIN_THROTTLE', None),
     'NOTIFICATION_TYPE': (
         ('card_updated', "Card updated"),
         ('charge_updated', "Charge receipt"),

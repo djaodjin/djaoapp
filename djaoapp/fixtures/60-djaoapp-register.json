@@ -13,50 +13,6 @@
     },
     "model": "auth.User", "pk": 60
 },
-{ "fields": {
-      "slug": "djaoapp-roles-card1",
-      "full_name": "RolesCard1",
-      "email": "djaoapp-roles-card1@djaoapp-roles-card1.com",
-      "created_at": "2025-01-01T00:00:00-00:00",
-      "processor": 1,
-      "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 60
-},
-{ "fields": {
-      "date_joined": "2025-01-01T00:00:00-00:00",
-      "email": "xia+roles-card1@djaoapp-roles-card1.com",
-      "first_name": "Xia",
-      "last_name": "Roles Card1",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "xia-roles-card1"
-    },
-    "model": "auth.User", "pk": 61
-},
-{ "fields": {
-      "last_signed": "2025-01-01T00:00:00-00:00",
-      "agreement": 1,
-      "user": 61
-    },
-    "model": "saas.signature", "pk": 60
-},
-{
-    "fields": {
-      "slug": "cowork",
-      "is_active": true,
-      "account": 40,
-      "domain": null,
-      "is_path_prefix": true,
-      "db_name": "cowork",
-      "registration": 1,
-      "extra": "{\"tags\":\"streetside\"}"
-    },
-    "model": "multitier.Site", "pk": 60
-},
 {
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
@@ -71,6 +27,139 @@
       "extra": "Register and personal/organization profile already exists (Failures)"
     },
     "model": "saas.Organization", "pk": 60
+},
+
+{ "fields": {
+      "slug": "djaoapp-register-card7",
+      "full_name": "DjaoappRegister Card7",
+      "email": "djaoapp-register-card7@djaoapp-register-card7.com",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 62
+},
+{ "fields": {
+      "slug": "djaoapp-register-card8",
+      "full_name": "DjaoappRegister Card8",
+      "email": "djaoapp-register-card8@djaoapp-register-card8.com",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 63
+},
+{ "fields": {
+      "slug": "djaoapp-register-card8b",
+      "full_name": "DjaoappRegister Card8b",
+      "email": "djaoapp-register-card8b@djaoapp-register-card8.com",
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "processor": 1,
+      "is_provider": 1,
+      "is_active": 1
+    },
+    "model": "saas.Organization", "pk": 64
+},
+
+{ "fields": {
+      "date_joined": "2025-01-01T00:00:00-00:00",
+      "email": "xia+djaoapp-register-card6@djaoapp-register-card6.com",
+      "first_name": "Xia",
+      "last_name": "Card6",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia-djaoapp-register-card6"
+    },
+    "model": "auth.User", "pk": 61
+},
+{ "fields": {
+      "last_signed": "2025-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 61
+    },
+    "model": "saas.signature", "pk": 61
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "user": 61,
+      "email": "xia+djaoapp-register-card6@djaoapp-register-card6.com",
+      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "slug": "xia-djaoapp-register-card6"}, "model": "signup.Contact", "pk": 61
+},
+{ "fields": {
+      "date_joined": "2025-01-01T00:00:00-00:00",
+      "email": "xia+djaoapp-register-card7@djaoapp-register-card7.com",
+      "first_name": "Xia",
+      "last_name": "Card7",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia-djaoapp-register-card7"
+    },
+    "model": "auth.User", "pk": 62
+},
+{ "fields": {
+      "last_signed": "2025-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 62
+    },
+    "model": "saas.signature", "pk": 62
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "user": 62,
+      "email": "xia+djaoapp-register-card7@djaoapp-register-card7.com",
+      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "slug": "xia-djaoapp-register-card7"}, "model": "signup.Contact", "pk": 62
+},
+{ "fields": {
+      "date_joined": "2025-01-01T00:00:00-00:00",
+      "email": "xia+djaoapp-register-card8@djaoapp-register-card8.com",
+      "first_name": "Xia",
+      "last_name": "Card8",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia-djaoapp-register-card8"
+    },
+    "model": "auth.User", "pk": 63
+},
+{ "fields": {
+      "last_signed": "2025-01-01T00:00:00-00:00",
+      "agreement": 1,
+      "user": 63
+    },
+    "model": "saas.signature", "pk": 63
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "user": 63,
+      "email": "xia+djaoapp-register-card8@djaoapp-register-card8.com",
+      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "slug": "xia-djaoapp-register-card8"}, "model": "signup.Contact", "pk": 63
+},
+
+{
+    "fields": {
+      "slug": "cowork",
+      "is_active": true,
+      "account": 40,
+      "domain": null,
+      "is_path_prefix": true,
+      "db_name": "cowork",
+      "registration": 1,
+      "extra": "{\"tags\":\"streetside\"}"
+    },
+    "model": "multitier.Site", "pk": 60
 },
 {
     "fields": {
