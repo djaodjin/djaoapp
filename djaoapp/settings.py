@@ -863,6 +863,7 @@ RULES = {
 
 # Authentication
 # --------------
+PASSWORD_MIN_LENGTH = 10
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -870,7 +871,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {
-            "min_length": 10,
+            "min_length": PASSWORD_MIN_LENGTH,
         },
     },
     {
@@ -918,6 +919,7 @@ SIGNUP = {
         ('user_registered', "User registered"),
         ('user_welcome', "User welcome"),
     ),
+    'PASSWORD_MIN_LENGTH': PASSWORD_MIN_LENGTH,
     'PASSWORD_RESET_THROTTLE': getattr(
         sys.modules[__name__], 'SIGNUP_PASSWORD_RESET_THROTTLE', None),
     'PHONE_VERIFICATION_BACKEND': getattr(

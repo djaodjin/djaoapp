@@ -15,6 +15,7 @@ from django_countries.fields import Country
 from saas import settings as saas_settings
 from saas.forms import PostalFormMixin
 from saas.models import Organization
+#from signup.settings import PASSWORD_MIN_LENGTH
 from signup.forms import (
     ActivationForm as ActivationFormBase,
     PasswordResetConfirmForm as PasswordResetConfirmFormBase,
@@ -22,6 +23,8 @@ from signup.forms import (
 
 from ..compat import gettext_lazy as _, reverse, six
 from ..utils import get_registration_captcha_keys
+
+PASSWORD_MIN_LENGTH = 10
 
 
 class MissingFieldsMixin(object):
@@ -103,7 +106,10 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
 " digits and -/_ characters. Spaces are not allowed.")})
     new_password = forms.CharField(required=False, strip=False,
         label=_("Password"),
-        widget=forms.PasswordInput(attrs={'placeholder': _("Password")}))
+        min_length=PASSWORD_MIN_LENGTH,
+        widget=forms.PasswordInput(attrs={
+            'minlength': PASSWORD_MIN_LENGTH,
+            'placeholder': _("Password")}))
     new_password2 = forms.CharField(required=False, strip=False,
         label=_("Confirm password"),
         widget=forms.PasswordInput(

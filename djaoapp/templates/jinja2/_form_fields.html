@@ -180,7 +180,7 @@
 {%- endmacro %}
 
 
-{% macro text_input_field(input_type, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
+{% macro text_input_field(input_type, min_length, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
@@ -198,6 +198,7 @@
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
           type="{{input_type}}"
           {% if max_length %} maxlength="{{max_length}}"{% endif %}
+          {% if min_length %} minlength="{{min_length}}"{% endif %}
           {% if min_value %} min="{{min_value}}"{% endif %}
           {% if max_value %} max="{{max_value}}"{% endif %}
           {% if step %} step="{{step}}"{% endif %}
@@ -354,7 +355,7 @@
 
 {% else %}
 {## XXX Everything else text input ##}
-{{text_input_field(bound_field.field.widget.input_type, bound_field.field.max_length, bound_field.field.min_value, bound_field.field.max_value, bound_field.field.widget.attrs.step, bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{text_input_field(bound_field.field.widget.input_type, min_length=bound_field.field.min_length, max_length=bound_field.field.max_length, min_value=bound_field.field.min_value, max_value=bound_field.field.max_value, step=bound_field.field.widget.attrs.step, placeholder=bound_field.field.widget.attrs.get('placeholder',''), name=bound_field.name, required=bound_field.field.required, label=bound_field.label, autofocus=autofocus, help_text=bound_field.help_text, value=bound_field.value(), disabled=bound_field.field.disabled, errors=bound_field.errors, hide_labels=hide_labels, model_var=model_var, extra_label_classes=extra_label_classes, extra_control_classes=extra_control_classes)}}
 {% endif %}
 {%- endmacro %}
 
