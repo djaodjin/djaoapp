@@ -5,12 +5,9 @@
 {% endblock %}
 
 {% block saas_content %}
-<balancesdue-list inline-template>
+<balancesdue-list inline-template class="pt-3">
   <div>
-
-    <div class="mt-3">
-      {% include "saas/_filter.html" %}
-    </div>
+    {% include "saas/_filter.html" %}
 
     <table class="table table-striped">
       <thead>
@@ -21,10 +18,12 @@
               <i :class="sortIcon('created_at')"></i>
             </a>
           </th>
-          <th>{% trans %}Full Name{% endtrans %}</th>
-          <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('full_name')">
-            <i :class="sortIcon('full_name')"></i>
-          </a>
+          <th>
+            {% trans %}Full Name{% endtrans %}
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('full_name')">
+              <i :class="sortIcon('full_name')"></i>
+            </a>
+          </th>
           <th>{% trans %}Unit{% endtrans %}</th>
           <th>{% trans %}Contract Value{% endtrans %}</th>
           <th>{% trans %}Cash Payments{% endtrans %}</th>

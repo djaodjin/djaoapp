@@ -1,11 +1,11 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-    {% trans organization=organization.printable_name %}{{title}} for {{organization}}{% endtrans %}
+    {{title}}
 {% endblock %}
 
 {% block saas_content %}
-<metrics-charts inline-template id="metrics-container">
+<metrics-charts inline-template class="pt-3" id="metrics-container">
   <div data-trip data-trip data-trip-index="1"
        data-trip-content="<p>{% trans %}Track monthly revenue and monthly subscribers.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
        data-trip-position="screen-center">

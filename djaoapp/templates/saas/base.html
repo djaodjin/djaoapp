@@ -13,43 +13,53 @@
 
 {% block content %}
 <div id="app">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8">
-        <h1>{% block saas_title %}{% endblock %}
-          <div class="d-inline">
-            <sup class="d-none" role="button">
-              <small>
-                <i id="help-request" class="fa fa-question-circle"></i>
-              </small>
-            </sup>
-          </div>
-        </h1>
-      </div>
-      <div class="col-md-4">
-        <nav class="navbar">
-          <ul class="navbar-nav nav-pills ms-auto">
-            {% block help_menus %}
-            {% endblock %}
-          </ul>
-        </nav>
-      </div>
-    </div>
-
-    {% block saas_page_layout %}
-    <div>
+  <div class="container pt-4">
+    <div class="bg-body text-body p-4">
       <div class="row">
-        <div class="col-12">
-          {% block saas_help %}{% endblock %}
+        <div class="col-md-8">
+          <div>
+            {% if organization %}
+            {# XXX disabled until we figure out how to show personal picture <img class="img-fluid" style="max-height:100px;vertical-align:top;" src="{% if organization.picture %}{{organization.picture}}{% else %}{{'/assets/img/default-organization.png'|asset}}{% endif %}"> #}
+            {% endif %}
+            <div class="d-inline-block ps-2">
+              <h1 class="d-inline pb-0 my-0 text-body">{% block saas_title %}{% endblock %}
+                <div class="d-inline">
+                  <sup class="d-none" role="button">
+                    <small>
+                      <i id="help-request" class="fa fa-question-circle"></i>
+                    </small>
+                  </sup>
+                </div>
+              </h1>
+              <h2 class="my-0">{% if organization %}{{organization.printable_name}}{% elif user %}{% if user.full_name %}{{user.full_name}}{% else %}{{user}}{% endif %}{% endif %}</h2>
+            </div>
           </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          {% block saas_content %}{% endblock %}
+        </div>{# /title header #}
+        <div class="col-md-4">
+          <nav class="navbar">
+            <ul class="navbar-nav nav-pills ms-auto">
+              {% block help_menus %}
+              {% endblock %}
+            </ul>
+          </nav>
         </div>
       </div>
-    </div>
-    {% endblock %}
+
+      {% block saas_page_layout %}
+      <div>
+        <div class="row">
+          <div class="col-12">
+            {% block saas_help %}{% endblock %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            {% block saas_content %}{% endblock %}
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+    </div>{# /.bg-body #}
   </div>{# /.container #}
 </div>
 {% endblock %}

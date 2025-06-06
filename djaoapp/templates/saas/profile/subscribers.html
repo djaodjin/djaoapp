@@ -1,7 +1,7 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-  {% trans organization=organization.printable_name%}{{organization}} Subscriptions{% endtrans %}
+{% trans %}Subscribers{% endtrans %}
 {% endblock %}
 
 {% block help_menus %}
@@ -15,7 +15,7 @@
 
 
 {% block saas_content %}
-<lazy-load-tabs inline-template id="subscribers">
+<lazy-load-tabs inline-template  class="pt-3" id="subscribers">
   <div id="subscribers-list-container"
        data-trip data-trip-index="1"
        data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"

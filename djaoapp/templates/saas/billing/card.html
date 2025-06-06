@@ -4,12 +4,10 @@
   {% include "saas/_body_top_template.html" %}
 {% endblock %}
 
-{% block saas_title %}
-<i class="fa fa-credit-card"></i> {% trans %}Update Card for {{organization}}{% endtrans %}
-{% endblock %}
+{% block saas_title %}{% trans %}Credit Card{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<card-update inline-template id="update-card-container"
+<card-update class="pt-3" inline-template id="update-card-container"
     data-processor-pub-key="{{STRIPE_PUB_KEY}}"
     {% if STRIPE_INTENT_SECRET %}
     data-stripe-intent-secret="{{STRIPE_INTENT_SECRET}}"

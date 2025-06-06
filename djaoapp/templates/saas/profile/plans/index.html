@@ -11,74 +11,72 @@
 
 
 {% block saas_content %}
-<div>
-  <plan-list inline-template id="plan-list-container">
-    <div>
-      {% include "saas/_filter.html" %}
-      <div class="table-responsive">
-        <table id="plan-list" class="table table table-sm table-striped" infinite-wrapper>
-          <thead>
-            <tr>
-              <th>{% trans %}Title{% endtrans %}
-                <a href="#" class="btn-sort"
-                   @click.prevent="sortBy('title')">
-                  <i :class="sortIcon('title')"></i>
-                </a>
-              </th>
-              <th>{% trans %}Status{% endtrans %}
-                <a href="#" class="btn-sort"
-                   @click.prevent="sortBy('is_active')">
-                  <i :class="sortIcon('is_active')"></i>
-                </a>
-              </th>
-              <th>{% trans %}Created at{% endtrans %}
-                <a href="#" class="btn-sort"
-                   @click.prevent="sortBy('created_at')">
-                  <i :class="sortIcon('created_at')"></i>
-                </a>
-              </th>
-              <th>{% trans %}Period price{% endtrans %}
-                <a href="#" class="btn-sort"
-                   @click.prevent="sortBy('period_amount')">
-                  <i :class="sortIcon('period_amount')"></i>
-                </a>
-              </th>
-            </tr>
-          </thead>
-          <tbody v-show="!itemsLoaded">
-            <tr>
-              <td colspan="4">
-                <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
-              </td>
-            </tr>
-          </tbody>
-          <tbody id="no-data" v-show="itemsLoaded && items.results.length === 0" v-cloak>
-            <tr>
-              <td colspan="4">
-                <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
-              </td>
-            </tr>
-          </tbody>
-          <tbody id="data-in-rows" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-            <tr :id="item.slug" v-for="(item, index) in items.results">
-              <td>
-                <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
-              </td>
-              <td>
-                <span class="badge" :class="{ 'bg-success': item.is_active, 'bg-secondary': !item.is_active }">[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</span>
-              </td>
-              <td class="date">
-                [[$globals.humanizeDate(item.created_at)]]
-              </td>
-              <td class="text-end">
-                [[$globals.humanizeNumber(item.period_amount, item.unit, 0.01)]]
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        {% include "_pagination.html" %}
-      </div>
+<plan-list inline-template class="pt-3" id="plan-list-container">
+  <div>
+    {% include "saas/_filter.html" %}
+    <div class="table-responsive">
+      <table id="plan-list" class="table table table-sm table-striped" infinite-wrapper>
+        <thead>
+          <tr>
+            <th>{% trans %}Title{% endtrans %}
+              <a href="#" class="btn-sort"
+                 @click.prevent="sortBy('title')">
+                <i :class="sortIcon('title')"></i>
+              </a>
+            </th>
+            <th>{% trans %}Status{% endtrans %}
+              <a href="#" class="btn-sort"
+                 @click.prevent="sortBy('is_active')">
+                <i :class="sortIcon('is_active')"></i>
+              </a>
+            </th>
+            <th>{% trans %}Created at{% endtrans %}
+              <a href="#" class="btn-sort"
+                 @click.prevent="sortBy('created_at')">
+                <i :class="sortIcon('created_at')"></i>
+              </a>
+            </th>
+            <th>{% trans %}Period price{% endtrans %}
+              <a href="#" class="btn-sort"
+                 @click.prevent="sortBy('period_amount')">
+                <i :class="sortIcon('period_amount')"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody v-show="!itemsLoaded">
+          <tr>
+            <td colspan="4">
+              <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+            </td>
+          </tr>
+        </tbody>
+        <tbody id="no-data" v-show="itemsLoaded && items.results.length === 0" v-cloak>
+          <tr>
+            <td colspan="4">
+              <h4 class="text-center"><em>{% trans %}No Plans{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+            </td>
+          </tr>
+        </tbody>
+        <tbody id="data-in-rows" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <tr :id="item.slug" v-for="(item, index) in items.results">
+            <td>
+              <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
+            </td>
+            <td>
+              <span class="badge" :class="{ 'bg-success': item.is_active, 'bg-secondary': !item.is_active }">[[item.is_active ? '{% trans %}active{% endtrans %}' : '{% trans %}disabled{% endtrans %}']]</span>
+            </td>
+            <td class="date">
+              [[$globals.humanizeDate(item.created_at)]]
+            </td>
+            <td class="text-end">
+              [[$globals.humanizeNumber(item.period_amount, item.unit, 0.01)]]
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% include "_pagination.html" %}
     </div>
-  </plan-list>
-</div>
+  </div>
+</plan-list>
 {% endblock %}

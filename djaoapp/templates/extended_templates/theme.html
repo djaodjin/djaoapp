@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block saas_page_layout %}
-  <theme-update inline-template class="container">
+<section class="pt-3">
+  <theme-update inline-template>
     <div class="row">
-      <div class="col-md-6 mt-3">
+      <div class="col-md-6">
         <div>
           <div class="mb-3">
             <form method="post">
@@ -52,7 +53,7 @@
         </div>
       </div>
 
-      <div class="col-md-6 mt-3">
+      <div class="col-md-6">
         {% block saas_help %}
         <p>
           {% trans %}When you are modifying root templates (ex: base.html), you may inadvertently break the dashboard and become unable to access this page to upload a fix.{% endtrans %}
@@ -77,80 +78,77 @@
   </theme-update>
 
   <!-- Notifications -->
-  <section id="notifications" class="mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h3 class="mb-4">{% trans %}Notifications{% endtrans %}</h3>
+  <div id="notifications" class="mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="mb-4">{% trans %}Notifications{% endtrans %}</h3>
 
-          <!-- Sub-Container -->
-          <div class="container px-0">
-            <div class="row d-flex flex-wrap">
-              <!-- Primary Notifications -->
-              {% for key, vals in notifications.items() %}
-                <div class="col-md-6 mb-3">
-                  <div id="{{key}}" class="card h-100 mb-3">
-                    <div class="card-body h-100">
-                      <h5 class="card-title">{{vals.summary}}</h5>
-                      <p class="card-text">
-                        {{vals.description}}
-                      </p>
-                    </div>
-                    <div class="card-footer">
-                      <div class="row">
-                        <div class="col-6 text-center">
-                          <a href="{{urls.notifications}}{{key}}/">{% trans %}Edit{% endtrans %}</a>
-                        </div>
-                        <div class="col-6 text-center">
-                          <notification-test inline-template :notification-id="'{{key}}'">
-                            <div>
-                              <form method="post" @submit.prevent="submit">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                                <button class="btn btn-outline-primary send-test-email">
-                                  {% trans %}Send Test Email{% endtrans %}
-                                </button>
-                              </form>
-                            </div>
-                          </notification-test>
-                        </div>
+        <!-- Sub-Container -->
+        <div class="row d-flex flex-wrap">
+          <!-- Primary Notifications -->
+          {% for key, vals in notifications.items() %}
+          <div class="col-md-6 mb-3">
+            <div id="{{key}}" class="card h-100 mb-3">
+              <div class="card-body h-100">
+                <h5 class="card-title">{{vals.summary}}</h5>
+                <p class="card-text">
+                  {{vals.description}}
+                </p>
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-6 text-center">
+                    <a href="{{urls.notifications}}{{key}}/">{% trans %}Edit{% endtrans %}</a>
+                  </div>
+                  <div class="col-6 text-center">
+                    <notification-test inline-template :notification-id="'{{key}}'">
+                      <div>
+                        <form method="post" @submit.prevent="submit">
+                          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                          <button class="btn btn-outline-primary send-test-email">
+                            {% trans %}Send Test Email{% endtrans %}
+                          </button>
+                        </form>
                       </div>
-                    </div>
+                    </notification-test>
                   </div>
                 </div>
-              {% endfor %}
-
-              <!-- Subsequent Notifications -->
-              {% for role_descr in role_descriptions %}
-                <div class="col-md-6 mb-3">
-                  <div id="{{role_descr.slug}}_role_added" class="card h-100 mb-3">
-                    <div class="card-body h-100">
-                      <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_grant_created/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
-                      <p class="card-text">
-                      </p>
-                      <a class="btn btn-primary"
-                         href="{{urls.notifications}}{{key}}/" >
-                        {% trans %}Edit{% endtrans %}
-                      </a>
-                      <notification-test inline-template :notification-id="'{{key}}'">
-                        <div>
-                          <form method="post" @submit.prevent="submit">
-                            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                            <button class="btn btn-outline-secondary">
-                              {% trans %}Send Test Email{% endtrans %}
-                            </button>
-                          </form>
-                        </div>
-                      </notification-test>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
+              </div>
             </div>
           </div>
+          {% endfor %}
+
+          <!-- Subsequent Notifications -->
+          {% for role_descr in role_descriptions %}
+          <div class="col-md-6 mb-3">
+            <div id="{{role_descr.slug}}_role_added" class="card h-100 mb-3">
+              <div class="card-body h-100">
+                <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_grant_created/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
+                <p class="card-text">
+                </p>
+                <a class="btn btn-primary"
+                   href="{{urls.notifications}}{{key}}/" >
+                  {% trans %}Edit{% endtrans %}
+                </a>
+                <notification-test inline-template :notification-id="'{{key}}'">
+                  <div>
+                    <form method="post" @submit.prevent="submit">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                      <button class="btn btn-outline-secondary">
+                        {% trans %}Send Test Email{% endtrans %}
+                      </button>
+                    </form>
+                  </div>
+                </notification-test>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 {% endblock %}
 
 {% block dashboard_bodyscripts %}

@@ -3,13 +3,7 @@
 <!-- Dashboard User Profile Page -->
 
 {% block saas_title %}
-  {% if organization %}
-    {% trans organization=organization.printable_name %}{{organization}} Profile{% endtrans %}
-  {% elif user %}
-    {% trans user=user.full_name %}{{user}} Profile{% endtrans %}
-  {% else %}
-    {% trans %}Profile{% endtrans %}
-  {% endif %}
+{% trans %}Profile{% endtrans %}
 {% endblock %}
 
 {% block saas_page_layout %}

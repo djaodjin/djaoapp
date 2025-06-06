@@ -1,8 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}
-  {% trans %}Charges{% endtrans %}
-{% endblock %}
+{% block saas_title %}{% trans %}Charges{% endtrans %}{% endblock %}
 
 {% block saas_content %}
 <charge-list inline-template id="charge-list-container">

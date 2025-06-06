@@ -1,11 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}
-{% trans organization=organization.printable_name %}{{organization}} Subscriptions{% endtrans %}
-{% endblock %}
+{% block saas_title %}{% trans %}Subscriptions{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<subscription-list-container inline-template id="subscriptions">
+<subscription-list-container inline-template class="pt-3" id="subscriptions">
   <div>
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
       <li class="nav-item">

@@ -1,9 +1,11 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}<i class="fa fa-dollar"></i> {% trans %}Balances{% endtrans %}{% endblock %}
+{% block saas_title %}
+{% trans %}Balances{% endtrans %}
+{% endblock %}
 
 {% block saas_content %}
-<balance-list inline-template id="balance-list-container">
+<balance-list inline-template id="balance-list-container" class="pt-3">
 <div>
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-outline-primary" role="button"

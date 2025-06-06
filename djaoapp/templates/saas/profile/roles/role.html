@@ -1,11 +1,11 @@
 {% extends "saas/base_dashboard.html" %}
 
 {% block saas_title %}
-{% trans organization=organization.printable_name, role_descr=role_descr.title %}{{organization}} {{role_descr}}s{% endtrans %}
+{% trans role_descr=role_descr.title %}{{role_descr}} Role{% endtrans %}
 {% endblock %}
 
 {% block saas_content %}
-<role-user-list-modal inline-template >
+<role-user-list-modal inline-template class="pt-3">
   <role-user-list inline-template
     :request-user="'{{request.user.username}}'"
     @create="create" @create-completed="createCompleted"

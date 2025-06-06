@@ -1,8 +1,6 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}
-{% trans organization=organization.printable_name %}{{organization}} Funds{% endtrans %}
-{% endblock %}
+{% block saas_title %}{% trans %}Funds{% endtrans %}{% endblock %}
 
 {% block help_menus %}
 {% if urls.raw_cartitems %}

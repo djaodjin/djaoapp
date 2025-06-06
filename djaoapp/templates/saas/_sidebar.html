@@ -217,7 +217,7 @@
   </ul>
 {% endif %}
 
-{% if urls.trust_compliance %}
+{% if urls.theme_update and urls.trust_compliance %}
   <hr class="my-1" />
   <ul class="nav flex-column pb-2" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
     <li {% if urls.trust_compliance == request.path %} class="nav-item active"{% endif %}>

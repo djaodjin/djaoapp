@@ -1,11 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
-{% block saas_title %}
-  {{organization.printable_name}} {% trans %}Coupons{% endtrans %}
-{% endblock %}
+{% block saas_title %}{% trans %}Discount Coupons{% endtrans %}{% endblock %}
 
 {% block saas_content %}
-<coupon-list inline-template id="coupon-list-container">
+<coupon-list inline-template class="pt-3" id="coupon-list-container">
   <div class="container" data-trip data-trip-index="1" data-trip-content="<h2>{% trans %}Coupons{% endtrans %}</h2><p>{% trans %}Coupons are used to offer percentage discounts.<br />Create a coupon code with an associated discount percentage.<br />Distribute the coupon code to whoever is entitled<br />to a discount on their subscriptions. Users will be able to claim<br />the discount on the checkout page by entering the coupon code.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>" data-trip-position="screen-center">
 
     <form id="couponCreate" method="post" @submit.prevent="save">

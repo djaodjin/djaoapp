@@ -14,11 +14,10 @@
 
 
 {% block saas_page_layout %}
-<user-engagement inline-template id="user-engagement-container">
+<user-engagement inline-template class="pt-3" id="user-engagement-container">
   <div>
-    <div class="mt-3">
-      {% include "saas/_filter.html" %}
-    </div>
+    {% include "saas/_filter.html" %}
+
     <table class="table table-bordered table-condensed">
       <thead>
         <th>{% trans %}Username{% endtrans %}</th>
