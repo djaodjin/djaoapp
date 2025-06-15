@@ -45,7 +45,7 @@ RUN set -eux; \
       /app/bin/pip install billiard==4.0.0 cairocffi==1.3.0 coverage==7.2.7 cryptography==44.0.1 psycopg2-binary==2.9.3 pycairo==1.21.0 python-ldap==3.4.0 setproctitle==1.2.3; \
       /app/bin/pip install xmlsec==1.3.14; \
       /app/bin/pip install django-fernet-fields@git+https://github.com/djaodjin/django-fernet-fields.git@6f261ed465a7fbafa1c41b635f7acd9fd6f3ccca; \
-      /app/bin/pip install boto3==1.33.13 Django==4.2.21 django-phonenumber-field==7.1.0 django-recaptcha==4.0.0 djangorestframework==3.15.2 djaodjin-deployutils==0.12.2 djaodjin-extended-templates==0.4.9 djaodjin-multitier==0.3.1 djaodjin-rules==0.4.9 djaodjin-saas==1.1.1 djaodjin-signup==0.9.11 docutils==0.15.2 drf-spectacular==0.27.0 googlemaps==4.10.0 gunicorn==23.0.0 jinja2==3.1.6 phonenumbers==8.13.17 PyJWT==2.10.1 pyotp==2.8.0 pytz==2025.1 social-auth-app-django==5.4.2 whitenoise==6.4.0 WeasyPrint==53.4 django-storages==1.14.2; \
+      /app/bin/pip install boto3==1.33.13 Django==4.2.22 django-phonenumber-field==7.1.0 django-recaptcha==4.0.0 djangorestframework==3.15.2 djaodjin-deployutils==0.13.1 djaodjin-extended-templates==0.4.9 djaodjin-multitier==0.3.1 djaodjin-rules==0.4.9 djaodjin-saas==1.1.2 djaodjin-signup==0.9.11 docutils==0.15.2 drf-spectacular==0.27.0 googlemaps==4.10.0 gunicorn==23.0.0 jinja2==3.1.6 phonenumbers==8.13.17 PyJWT==2.10.1 pyotp==2.8.0 pytz==2025.1 social-auth-app-django==5.4.2 whitenoise==6.4.0 WeasyPrint==53.4 django-storages==1.14.2; \
       /app/bin/pip install django-debug-toolbar==3.5.0 django-extensions==3.2.3; \
       \
       apt-mark auto '.*'; \

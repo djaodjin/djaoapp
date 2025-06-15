@@ -227,7 +227,6 @@
   <!-- Start Main Footer -->
   {% block footer %}
     <footer class="d-print-none footer text-center w-100 d-flex align-items-center justify-content-center">
-
       {% block localfooter %}
       {% endblock %}
 
@@ -274,22 +273,68 @@
     </footer>
   {% endblock footer %}
   <!-- End Main Footer -->
+  {% if not request|privacy_settings %}
+  <div id="cookie-banner">
+  {# The footer is wrapped in '#cookie-banner' because the following `<div>` #}
+  {# tags `display` with '!important'.                                       #}
+    <div class="d-print-none text-body bg-light w-100 d-flex align-items-center justify-content-center" style="position: fixed;bottom:0;padding:15px 0;border-top: 1px solid #333; z-index:5000;">
+      <span class="me-2">Please review the <a href="{{'/legal/privacy/'|site_url}}">privacy policy</a>, and help us make this site more useful by setting optional cookies.</span>
+      <button type="button" class="btn btn-outline-secondary me-2">
+          <span style="font-size:0.75rem;">
+              No, thanks
+          </span>
+      </button>
+      <button type="button" class="btn btn-primary me-2">
+          I Agree
+      </button>
+    </div>
+  </div>{# /#cookie-banner #}
+  {% endif %}
 
 {% block _bodyscripts %}
 <script type="text/javascript">
 const DJAOAPP_API_BASE_URL = "{{'/api'|site_url}}";
+
+function injectAnalyticsScripts() {
+    // inject analytics scripts...
+}
+
+function injectSocialMediaScripts() {
+    // inject social media scripts...
+}
+
+function injectAdvertisingScripts() {
+    // inject advertising scripts...
+}
+
+const PRIVACY_COOKIES_ENABLED = {
+    analytics: injectAnalyticsScripts,
+    social_media: injectSocialMediaScripts,
+    advertising: injectAdvertisingScripts
+};
+
+{% if (request|privacy_settings).analytics %}
+  injectAnalyticsScripts();
+{% endif %}
+{% if (request|privacy_settings).social_media %}
+  injectSocialMediaScripts();
+{% endif %}
+{% if (request|privacy_settings).advertising %}
+  injectAdvertisingScripts();
+{% endif %}
 </script>
 <script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|asset}}" defer></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/djaodjin-menubar.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-privacy.js'|asset}}" defer></script>
 {% endif %}
 {% block bodyscripts %}
 {% endblock %}

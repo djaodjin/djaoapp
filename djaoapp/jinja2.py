@@ -83,6 +83,8 @@ def environment(**options):
     env.filters['url_profile'] = djaoapp_tags.url_profile
     env.filters['url_register'] = djaoapp_tags.url_register
     # Specific to SaaS
+    env.filters['privacy_settings'] = \
+        saas.templatetags.saas_tags.privacy_settings
     env.filters['price'] = saas.templatetags.saas_tags.price
     env.filters['dest_price'] = saas.templatetags.saas_tags.dest_price
     env.filters['orig_price'] = saas.templatetags.saas_tags.orig_price

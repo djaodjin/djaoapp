@@ -13,11 +13,9 @@ module.exports = {
           'js/djaodjin-password-strength.js'
       ],
       base: [
+          'js/djaodjin-menubar.js',
           'js/djaodjin-dashboard.js',
           'js/djaoapp-theme-color-mode.js',
-      ],
-      'djaodjin-menubar': [
-          'js/djaodjin-menubar.js',
       ],
       'djaodjin-vue': [
           'js/djaodjin-upload.js',
@@ -88,6 +86,7 @@ module.exports = {
           showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
           getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
           getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
+          http: ['js/djaodjin-resources.js', 'http'],
 
           updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
           updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],
