@@ -16,6 +16,7 @@ module.exports = {
           'js/djaodjin-menubar.js',
           'js/djaodjin-dashboard.js',
           'js/djaoapp-theme-color-mode.js',
+          'js/djaodjin-privacy.js',
       ],
       'djaodjin-vue': [
           'js/djaodjin-upload.js',
