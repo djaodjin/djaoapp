@@ -44,8 +44,8 @@
               <div class="dashboard-nav-main">
                 <header>
                   <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
-                    <div class="navbar-header">
-                      <div class="d-inline">
+                    <div class="d-flex align-items-center ps-3">
+                      <div class="d-flex">
                         <button class="me-2 sidebar-toggle btn btn-secondary"
                                 data-target="#dashboard-navbar">
                           <div class="bar1 opened"></div>
@@ -55,7 +55,7 @@
                         {% block app_left_sidebar_toggle %}
                         {% endblock %}
                       </div>
-                      <div class="d-inline">
+                      <div class="narbar-brand-container">
                         <a class="navbar-brand" href="{{request|site_url}}">
                           <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
                           <span class="d-none d-sm-inline-block"
@@ -67,7 +67,7 @@
                 </header>
                 <div class="sidebar-animate dashboard-nav-color-theme">
                   <div>
-                    <div class="dashboard-nav-menu">
+                    <div class="sidebar-content dashboard-nav-menu">
                       <div class="text-end">
                         <button class="sidebar-pin-toggle btn btn-link text-white"
                                 data-target="#dashboard-navbar">
@@ -76,8 +76,8 @@
                       </div>
 
                       {% block sidebar %}
-                      <hr />
                       <ul class="nav flex-column d-md-none">
+                        <hr />
                         {% include "_generic_navbar.html" %}
                       </ul>
                       {% endblock %}

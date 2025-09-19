@@ -8,47 +8,66 @@
 <div>
   {% if form %}
   {% block activate_form %}
-  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if next %}/?next={{next}}{% endif %}">
+  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action="./{% if next %}?next={{next}}{% endif %}">
+
+    {% if form['new_password'] %}
+    <p>
+{% trans %}Please share a little more information about yourself, and set a password to access your account in the future.{% endtrans %}
+    </p>
+    {% include "accounts/_register_form_fields.html" %}
+    {% else %}
     {% include "accounts/activate/_index_form.html" %}
-    <div class="row">
-      <div class="col-9">
-        <p class="text-start">
-          <small>
-            <em>
-{% trans %}TIP: You are advised to verify the domain and certificate in the URL bar before entering any information.{% endtrans %}
-            </em>
-          </small>
-        </p>
-      </div>
-      <div class="col-3">
-        <div class="form-action text-end">
-          <button type="submit" class="btn btn-primary btn-md">
-            {% trans %}Next{% endtrans %} &raquo;
-          </button>
+    {% endif %}
+
+    <div class="form-action text-center mt-2">
+      <div class="d-grid gap-2">
+        {% if not form['password'] and email_verification_link %}
+        <button id="email-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
+        {% elif not form['password'] and phone_verification_link %}
+        <button id="phone-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
+        {% elif form['new_password'] %}
+        <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Sign Up{% endtrans %}
+        </button>
+        {% elif form['email_code'] %}
+        <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Verify Email Address{% endtrans %}
+        </button>
+        <div class="form-text help-block">
+          <small class="text-muted">{% trans %}Not seeing the email in your inbox? try the {% endtrans %}<a href="{{'/docs/faq/'|site_url}}">FAQ</a></small>
         </div>
+        {% elif form['phone_code'] %}
+        <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Verify Phone Number{% endtrans %}
+        </button>
+        <div class="form-text help-block">
+          <small class="text-muted">{% trans %}Not seeing the text message? try the {% endtrans %}<a href="{{'/docs/faq/'|site_url}}">FAQ</a></small>
+        </div>
+        {% else %}
+        <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Continue{% endtrans %} &raquo;
+        </button>
+        {% endif %}
       </div>
     </div>
+
   </form>
-  {% if email_verification_link %}
+  {% if form['password'] and email_verification_link %}
   <hr />
   <div class="text-center">
     <p>
       Or
     </p>
-    <form method="post" action="{{urls.user.password_reset}}?noreset=1{% if next %}&next={{next}}{% endif %}">
+    <form method="post" action="./{% if next %}?next={{next}}{% endif %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-      <input type="hidden" name="username" value="{{form['username'].value()}}" autocomplete="username">
-      <button id="email-verification-link" class="btn btn-outline-primary">Email me a one-time link</button>
+      <input type="hidden" name="check_email" value="1">
+      <input type="hidden" name="username" value="{{form['username'].value()}}">
+      <div class="form-action text-center mt-2">
+        <div class="d-grid gap-2">
+          <button id="email-verification-link" class="btn btn-outline-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
+        </div>
+      </div>
     </form>
-  </div>
-  {% endif %}
-  {% if register_link %}
-  <hr />
-  <div class="bg-warning p-4">
-    <p>
-We couldn't find your account. If you believe you already have an account
-on this website, please verify the spelling. Otherwise <a id="register-link" href="{{register_link}}{% if next %}?next={{next}}{% endif %}">{% trans %}Sign Up &raquo;{% endtrans %}</a>
-    </p>
   </div>
   {% endif %}
   {% endblock %}

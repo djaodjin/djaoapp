@@ -2,54 +2,54 @@
 
 {% block form_fields_block %}
 {% if form['username'] %}
-{{ input_field(form['username'], form.hide_labels) }}
+{{ input_field(form['username'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['slug'] %}
-{{ input_field(form['slug'], form.hide_labels) }}
+{{ input_field(form['slug'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['full_name'] %}
-{{ input_field(form['full_name'], form.hide_labels) }}
+{{ input_field(form['full_name'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['nick_name'] %}
-{{ input_field(form['nick_name'], form.hide_labels) }}
+{{ input_field(form['nick_name'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['email'] %}
-{{ email_input_field(form['email'], email_verified_at, form.hide_labels) }}
+{{ email_input_field(form['email'], email_verified_at, hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['phone'] %}
-{{ phone_input_field(form['phone'], phone_verified_at, form.hide_labels) }}
+{{ phone_input_field(form['phone'], phone_verified_at, hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['street_address'] %}
-{{ street_address_input_field(form['street_address'], form.hide_labels) }}
+{{ street_address_input_field(form['street_address'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['country'] %}
-{{ input_field(form['country'], form.hide_labels) }}
+{{ input_field(form['country'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['region'] %}
-{{ input_field(form['region'], form.hide_labels) }}
+{{ input_field(form['region'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['locality'] %}
-{{ input_field(form['locality'], form.hide_labels) }}
+{{ input_field(form['locality'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['postal_code'] %}
-{{ input_field(form['postal_code'], form.hide_labels) }}
+{{ input_field(form['postal_code'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['lang'] %}
-{{ input_field(form['lang'], form.hide_labels) }}
+{{ input_field(form['lang'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['is_bulk_buyer'] %}
-{{ input_field(form['is_bulk_buyer'], form.hide_labels) }}
+{{ input_field(form['is_bulk_buyer'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['is_provider'] %}
-{{ input_field(form['is_provider'], form.hide_labels) }}
+{{ input_field(form['is_provider'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['extra'] %}
-{{ input_field(form['extra'], form.hide_labels) }}
+{{ input_field(form['extra'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% endblock %}

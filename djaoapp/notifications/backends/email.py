@@ -377,7 +377,7 @@ class EmailVerificationBackend(NotificationEmailBackend):
             'broker': get_broker(),
             'user': user,
             'back_url': back_url,
-            'code': email_code,
+            'code': "{:0>6}".format(email_code) if email_code else None,
             'nb_expiration_days': expiration_days
         }
         self.send_mail('notification/user_verification.eml',

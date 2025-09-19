@@ -13,7 +13,7 @@ from signup.forms import StartAuthenticationForm
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
 from signup.views.saml import saml_metadata_view
 
-from ..urlbuilders import (url_active, url_agreement, url_authenticated,
+from ..urlbuilders import (url_active, url_authenticated,
     url_dashboard, url_direct, url_frictionless_direct,
     url_frictionless_self_provider, url_provider, url_self_provider,
     url_prefixed, url_dashboard_iframe)

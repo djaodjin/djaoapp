@@ -476,9 +476,11 @@
     "last_name": "Verifier",
     "is_active": true,
     "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-    "username": "abby"
-  },
-  "model": "auth.User", "pk": 19
+    "username": "abby"}, "model": "auth.User", "pk": 19
+},
+{ "fields": {
+    "last_signed": "2025-01-01T00:00:00+00:00",
+    "agreement": 1, "user": 19}, "model": "saas.signature", "pk": 19
 },
 {
     "fields": {
@@ -524,33 +526,33 @@
 { "fields": {
     "app": 1,
     "rank": 3,
-    "path": "/api/profile/{profile}/roles/{role}",
-    "rule_op": 6
+    "path": "/api/activities/{profile}",
+    "rule_op": 16,
+    "kwargs": "{\"profile\":\"desktop-reviewers\",\"plan\":\"verification-partners\"}"
   },
   "model": "rules.Rule", "pk": 3
 },
 { "fields": {
     "app": 1,
     "rank": 4,
-    "path": "/api/profile/{profile}/roles",
-    "rule_op": 1
+    "path": "/api/profile/{profile}/roles/{role}",
+    "rule_op": 6
   },
   "model": "rules.Rule", "pk": 4
 },
 { "fields": {
     "app": 1,
     "rank": 5,
-    "path": "/api/profile/{profile}",
-    "rule_op": 6
+    "path": "/api/profile/{profile}/roles",
+    "rule_op": 1
   },
   "model": "rules.Rule", "pk": 5
 },
-
 { "fields": {
     "app": 1,
     "rank": 6,
-    "path": "/api/profile/",
-    "rule_op": 1
+    "path": "/api/profile/{profile}",
+    "rule_op": 6
   },
   "model": "rules.Rule", "pk": 6
 },
@@ -558,15 +560,16 @@
 { "fields": {
     "app": 1,
     "rank": 7,
-    "path": "/api/units",
+    "path": "/api/profile/",
     "rule_op": 1
   },
   "model": "rules.Rule", "pk": 7
 },
+
 { "fields": {
     "app": 1,
     "rank": 8,
-    "path": "/api/timer",
+    "path": "/api/units",
     "rule_op": 1
   },
   "model": "rules.Rule", "pk": 8
@@ -574,52 +577,52 @@
 { "fields": {
     "app": 1,
     "rank": 9,
-    "path": "/api/{profile}/campaigns",
-    "rule_op": 16,
-    "kwargs": "{\"plan\": \"premium\"}"
+    "path": "/api/timer",
+    "rule_op": 1
   },
   "model": "rules.Rule", "pk": 9
 },
 { "fields": {
     "app": 1,
     "rank": 10,
-    "path": "/api/{profile}/reporting/",
-    "rule_op": 18,
-    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+    "path": "/api/{profile}/campaigns",
+    "rule_op": 16,
+    "kwargs": "{\"plan\": \"premium\"}"
   },
-  "model": "rules.Rule", "pk": 10
+  "model": "rules.Rule", "pk": 11
 },
 { "fields": {
     "app": 1,
     "rank": 11,
-    "path": "/api/{profile}/",
-    "rule_op": 4,
+    "path": "/api/{profile}/reporting/",
+    "rule_op": 18,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 11
 },
-
 { "fields": {
     "app": 1,
     "rank": 12,
-    "path": "/app/assess/",
-    "rule_op": 1,
-    "engaged": "app,info"
+    "path": "/api/{profile}/",
+    "rule_op": 4,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 12
 },
+
 { "fields": {
     "app": 1,
     "rank": 13,
-    "path": "/app/reporting/",
-    "rule_op": 1
+    "path": "/app/assess/",
+    "rule_op": 1,
+    "engaged": "app,info"
   },
   "model": "rules.Rule", "pk": 13
 },
 { "fields": {
     "app": 1,
     "rank": 14,
-    "path": "/app/info/courses/",
+    "path": "/app/reporting/",
     "rule_op": 1
   },
   "model": "rules.Rule", "pk": 14
@@ -627,7 +630,7 @@
 { "fields": {
     "app": 1,
     "rank": 15,
-    "path": "/app/info/",
+    "path": "/app/info/courses/",
     "rule_op": 1
   },
   "model": "rules.Rule", "pk": 15
@@ -635,16 +638,15 @@
 { "fields": {
     "app": 1,
     "rank": 16,
-    "path": "/app/{profile}/improve/",
-    "rule_op": 4,
-    "kwargs": "{\"roledescription\": [\"contributor\"]}"
+    "path": "/app/info/",
+    "rule_op": 1
   },
   "model": "rules.Rule", "pk": 16
 },
 { "fields": {
     "app": 1,
     "rank": 17,
-    "path": "/app/{profile}/assess/",
+    "path": "/app/{profile}/improve/",
     "rule_op": 4,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
@@ -653,8 +655,8 @@
 { "fields": {
     "app": 1,
     "rank": 18,
-    "path": "/app/{profile}/reporting/",
-    "rule_op": 16,
+    "path": "/app/{profile}/assess/",
+    "rule_op": 4,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 18
@@ -662,9 +664,8 @@
 { "fields": {
     "app": 1,
     "rank": 19,
-    "path": "/app/{profile}/",
-    "is_forward": false,
-    "rule_op": 6,
+    "path": "/app/{profile}/reporting/",
+    "rule_op": 16,
     "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 19
@@ -672,25 +673,26 @@
 { "fields": {
     "app": 1,
     "rank": 20,
-    "path": "/app/",
+    "path": "/app/{profile}/",
     "is_forward": false,
-    "rule_op": 1
+    "rule_op": 6,
+    "kwargs": "{\"roledescription\": [\"contributor\"]}"
   },
   "model": "rules.Rule", "pk": 20
 },
 { "fields": {
     "app": 1,
     "rank": 21,
-    "path": "/getstarted/",
-    "rule_op": 0,
-    "is_forward": true
+    "path": "/app/",
+    "is_forward": false,
+    "rule_op": 1
   },
   "model": "rules.Rule", "pk": 21
 },
 { "fields": {
     "app": 1,
     "rank": 22,
-    "path": "/static/",
+    "path": "/getstarted/",
     "rule_op": 0,
     "is_forward": true
   },
@@ -699,9 +701,18 @@
 { "fields": {
     "app": 1,
     "rank": 23,
+    "path": "/static/",
+    "rule_op": 0,
+    "is_forward": true
+  },
+  "model": "rules.Rule", "pk": 23
+},
+{ "fields": {
+    "app": 1,
+    "rank": 24,
     "path": "/",
     "rule_op": 0,
     "is_forward": false
   },
-  "model": "rules.Rule", "pk": 23
+  "model": "rules.Rule", "pk": 24
 }]

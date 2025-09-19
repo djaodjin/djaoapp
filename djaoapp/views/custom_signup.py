@@ -5,10 +5,8 @@ from __future__ import unicode_literals
 import logging
 
 from django.conf import settings
-from deployutils.apps.django.compat import is_authenticated
 from rules.mixins import AppMixin
 from saas.models import Agreement, get_broker
-from signup.helpers import update_context_urls
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
@@ -17,32 +15,16 @@ from signup.views.auth import (
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView)
 
-from ..compat import reverse
-from ..forms.custom_signup import (ActivationForm, PasswordResetConfirmForm,
-    SigninForm, SignupForm)
-from ..mixins import (PasswordResetConfirmMixin, RegisterMixin,
-    VerifyCompleteMixin, social_login_urls)
+from ..forms.custom_signup import (ActivationForm, CodeActivationForm,
+    PasswordResetConfirmForm, SigninForm, SignupForm)
+from ..mixins import AuthMixin
 from ..utils import PERSONAL_REGISTRATION, TOGETHER_REGISTRATION
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-class AuthMixin(object):
-
-    def get_context_data(self, **kwargs):
-        context = super(AuthMixin, self).get_context_data(**kwargs)
-        # URLs for user
-        if not is_authenticated(self.request):
-            user_urls = social_login_urls()
-            update_context_urls(context, {'user': user_urls})
-        update_context_urls(context, {
-            'pricing': reverse('saas_cart_plan_list')})
-        return context
-
-
-class ActivationView(AuthMixin, AppMixin, VerifyCompleteMixin,
-                     ActivationBaseView):
+class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
 
     form_class = ActivationForm
 
@@ -55,7 +37,7 @@ class ActivationView(AuthMixin, AppMixin, VerifyCompleteMixin,
         return kwargs
 
 
-class PasswordResetConfirmView(PasswordResetConfirmMixin,
+class PasswordResetConfirmView(AuthMixin, AppMixin,
                                PasswordResetConfirmBaseView):
 
     form_class = ActivationForm
@@ -70,6 +52,20 @@ class RecoverView(AuthMixin, AppMixin, RecoverBaseView):
 class SigninView(AuthMixin, AppMixin, SigninBaseView):
 
     form_class = SigninForm
+    set_password_form_class = CodeActivationForm
+
+    def get_initial(self):
+        kwargs = super(SigninView, self).get_initial()
+        broker = get_broker()
+        kwargs.update({
+            'country': broker.country,
+            'region': broker.region
+        })
+        kwargs.update({
+            'extra_fields': [(agreement.slug, agreement.title, False)
+                for agreement in Agreement.objects.all()]
+        })
+        return kwargs
 
 
 class SignoutView(SignoutBaseView):
@@ -77,7 +73,7 @@ class SignoutView(SignoutBaseView):
     pass
 
 
-class SignupView(AuthMixin, AppMixin, RegisterMixin, SignupBaseView):
+class SignupView(AuthMixin, AppMixin, SignupBaseView):
 
     form_class = SignupForm
 

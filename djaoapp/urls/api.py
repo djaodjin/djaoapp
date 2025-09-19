@@ -92,6 +92,7 @@ urlpatterns = [
         '^api/', include('saas.urls.api.search')),
 
     # Auth & credentials
+    url_direct(r'api/', include('signup.urls.api.activities')),
     url_direct(r'api/', include('signup.urls.api.contacts')),
     url_self_provider(r'^api/', include('signup.urls.api.keys')),
     url_frictionless_self_provider(r'^api/',

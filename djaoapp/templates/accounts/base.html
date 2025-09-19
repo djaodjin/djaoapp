@@ -22,7 +22,22 @@
         {% else %}
         {% block accounts_content %}{% endblock %}
         {% endif %}
-      </div>
+        <p class="text-start text-left ms-2 mt-2">
+          <small>
+            <i class="fa fa-lock"></i>
+            <em>
+{% trans %}TIP: You are advised to verify the certificate in the URL bar before entering any information.{% endtrans %}
+            </em>
+          </small>
+        </p>
+        <p class="text-start text-left ms-2">
+          <small>
+            <i class="fa fa-question-circle"></i>
+            <em>
+{% trans link='/contact/'|site_url %}If you have any questions, please feel free to <a href="{{link}}">contact us</a>{% endtrans %}
+            </em>
+        </p>
+      </div>{# /.col #}
     </div>
   </div>
 </div>

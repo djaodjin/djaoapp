@@ -67,6 +67,12 @@ class ActivationForm(MissingFieldsMixin, ActivationFormBase):
                     required=extra_field[2])
 
 
+class CodeActivationForm(ActivationForm):
+
+    email_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    phone_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
+
+
 class PasswordResetConfirmForm(MissingFieldsMixin,
                                PasswordResetConfirmFormBase):
     pass

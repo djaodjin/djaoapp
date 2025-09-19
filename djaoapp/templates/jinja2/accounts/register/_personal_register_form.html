@@ -4,28 +4,28 @@
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
 <fieldset>
   <legend>{% trans %}Login Credentials{% endtrans %}</legend>
-  {{ input_field(form['username'], form.hide_labels) }}
-  {{ input_field(form['email'], form.hide_labels) }}
-  {{ input_field(form['email2'], form.hide_labels) }}
-  {{ input_field(form['new_password'], form.hide_labels) }}
-  {{ input_field(form['new_password2'], form.hide_labels) }}
+  {{ input_field(form['username'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['email'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['email2'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['new_password'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['new_password2'], hide_labels=form.hide_labels) }}
 </fieldset>
 <fieldset>
   <legend>{% trans %}Contact Information{% endtrans %}</legend>
-  {{ input_field(form['full_name'], form.hide_labels) }}
-  {{ input_field(form['street_address'], form.hide_labels) }}
-  {{ input_field(form['country'], form.hide_labels) }}
-  {{ input_field(form['region'], form.hide_labels) }}
-  {{ input_field(form['locality'], form.hide_labels) }}
-  {{ input_field(form['postal_code'], form.hide_labels) }}
-  {{ input_field(form['phone'], form.hide_labels) }}
+  {{ input_field(form['full_name'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['street_address'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['country'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['region'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['locality'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['postal_code'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
 </fieldset>
 <fieldset>
-  {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
+  {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=hide_labels=form.hide_labels) }}
 </fieldset>
 {% if 'captcha' in form.fields %}
 <fieldset>
-{{ input_field(form['captcha'], form.hide_labels) }}
+{{ input_field(form['captcha'], hide_labels=form.hide_labels) }}
 </fieldset>
 {% endif %}
 {% endblock %}

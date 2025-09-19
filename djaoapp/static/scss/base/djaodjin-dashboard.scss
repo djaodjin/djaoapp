@@ -4,7 +4,7 @@
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
 $dashboard-nav-footer-height:   134px;
-$dashboard-sidebar-logo-height: 72px;
+$dashboard-sidebar-logo-height: 59px;
 
 // CSS specific to color the djaoapp dashboard pages
 $dashboard-content-bg:          var(--bs-body-bg);
@@ -686,7 +686,8 @@ input::-webkit-datetime-edit {
     }
 
     .dashboard-pane-default .sidebar-toggle,
-    .dashboard-pane-default .navbar-brand-container {
+    .dashboard-pane-default .navbar-brand-container,
+    .dashboard-pane-pinned .navbar-brand-container {
         display: none;
         margin-left: 0;
     }

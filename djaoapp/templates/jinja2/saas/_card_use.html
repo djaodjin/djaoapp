@@ -116,12 +116,12 @@
                 v-show="!haveCardData || updateCard">
                 {# XXX technically could be `!haveBillingAddress` #}
         <legend>{% trans %}Billing Address{% endtrans %}</legend>
-        {{input_field(form['card_name'], form.hide_labels)}}
-        {{input_field(form['card_address_line1'], form.hide_labels)}}
-        {{input_field(form['country'], form.hide_labels)}}
-        {{input_field(form['region'], form.hide_labels)}}
-        {{input_field(form['card_city'], form.hide_labels)}}
-        {{input_field(form['card_address_zip'], form.hide_labels)}}
+       {{input_field(form['card_name'], hide_labels=form.hide_labels)}}
+       {{input_field(form['card_address_line1'], hide_labels=form.hide_labels)}}
+       {{input_field(form['country'], hide_labels=form.hide_labels)}}
+       {{input_field(form['region'], hide_labels=form.hide_labels)}}
+       {{input_field(form['card_city'], hide_labels=form.hide_labels)}}
+       {{input_field(form['card_address_zip'], hide_labels=form.hide_labels)}}
       </fieldset>
     </div>
   </div> <!-- #card-use -->

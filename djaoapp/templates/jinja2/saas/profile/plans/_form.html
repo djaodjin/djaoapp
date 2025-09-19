@@ -7,8 +7,8 @@
   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
   <div class="row">
     <div class="col-md-6">
-      {{input_field(form['title'], form.hide_labels)}}
-      {{input_field(form['description'], form.hide_labels)}}
+      {{input_field(form['title'], hide_labels=form.hide_labels)}}
+      {{input_field(form['description'], hide_labels=form.hide_labels)}}
     </div>
     <div class="col-md-6">
       <p>
@@ -19,10 +19,10 @@
     <legend>{% trans %}Pricing{% endtrans %}</legend>
     <div class="row">
       <div class="col-md-6">
-        {{input_field(form['unit'], form.hide_labels)}}
-        {{input_field(form['period_amount'], form.hide_labels)}}
-        {{input_field(form['period_type'], form.hide_labels)}}
-        {{input_field(form['period_length'], form.hide_labels)}}
+        {{input_field(form['unit'], hide_labels=form.hide_labels)}}
+        {{input_field(form['period_amount'], hide_labels=form.hide_labels)}}
+        {{input_field(form['period_type'], hide_labels=form.hide_labels)}}
+        {{input_field(form['period_length'], hide_labels=form.hide_labels)}}
       </div>
       <div class="col-md-6">
         <p>
@@ -34,9 +34,9 @@
     <legend>{% trans %}Options{% endtrans %}</legend>
     <div class="row">
       <div class="col-md-6">
-        {{input_field(form['renewal_type'], form.hide_labels)}}
-        {{input_field(form['skip_optin_on_grant'], form.hide_labels)}}
-        {{input_field(form['optin_on_request'], form.hide_labels)}}
+        {{input_field(form['renewal_type'], hide_labels=form.hide_labels)}}
+        {{input_field(form['skip_optin_on_grant'], hide_labels=form.hide_labels)}}
+        {{input_field(form['optin_on_request'], hide_labels=form.hide_labels)}}
       </div>
       <div class="col-md-6">
         <p>
@@ -57,9 +57,9 @@
               <i class="fa fa-trash-o text-danger"></i>
             </button>
           </div>
-          {{input_field(form['discount_type'], model_var='discount.discount_type')}}
-          {{input_field(form['discount_value'], model_var='discount.discount_value')}}
-          {{input_field(form['discount_length'], model_var='discount.length')}}
+          {{input_field(form['discount_type'], hide_labels=form.hide_labels, model_var='discount.discount_type')}}
+          {{input_field(form['discount_value'], hide_labels=form.hide_labels, model_var='discount.discount_value')}}
+          {{input_field(form['discount_length'], hide_labels=form.hide_labels, model_var='discount.length')}}
         </div>
         <button class="btn btn-link"
                 @click.prevent="addAdvanceDiscount()">
@@ -68,7 +68,7 @@
       </div>
       <div class="col-md-6 text-muted">
         <p>
-{% trans %}A 20% discount on a monthly plan for a year paid in advance would be entered as{% endtrans %}:
+{% trans %}A 20 percent discount on a monthly plan for a year paid in advance would be entered as{% endtrans %}:
         </p>
         <small>
           <div>
@@ -105,12 +105,12 @@
               <i class="fa fa-trash-o text-danger"></i>
             </button>
           </div>
-          {{input_field(form['use_charge_slug'], model_var='use.slug')}}
-          {{input_field(form['use_charge_title'], model_var='use.title')}}
-          {{input_field(form['use_charge_description'], model_var='use.description')}}
-          {{input_field(form['use_charge_use_amount'], model_var='use.use_amount')}}
-          {{input_field(form['use_charge_quota'], model_var='use.quota')}}
-          {{input_field(form['use_charge_maximum_limit'], model_var='use.maximum_limit')}}
+          {{input_field(form['use_charge_slug'], hide_labels=form.hide_labels, model_var='use.slug')}}
+          {{input_field(form['use_charge_title'], hide_labels=form.hide_labels, model_var='use.title')}}
+          {{input_field(form['use_charge_description'], hide_labels=form.hide_labels, model_var='use.description')}}
+          {{input_field(form['use_charge_use_amount'], hide_labels=form.hide_labels, model_var='use.use_amount')}}
+          {{input_field(form['use_charge_quota'],hide_labels=form.hide_labels,  model_var='use.quota')}}
+          {{input_field(form['use_charge_maximum_limit'], hide_labels=form.hide_labels, model_var='use.maximum_limit')}}
         </div>
         <button class="btn btn-link"
                 @click.prevent="addUseCharge()">

@@ -6,6 +6,8 @@ import logging
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from saas import settings as saas_settings
+from saas.models import get_broker
 from saas.backends.stripe_processor.views import (
     StripeProcessorRedirectView as BaseStripeProcessorRedirectView)
 from saas.views.billing import (
@@ -72,6 +74,17 @@ class OrganizationProfileView(OrganizationProfileViewBase):
             context.update({
                 'email_verified_at': self.contact.email_verified_at,
                 'phone_verified_at': self.contact.phone_verified_at
+            })
+        broker = get_broker()
+        user = self.request.user
+        if user and broker.with_role(saas_settings.MANAGER).filter(
+                pk=user.pk).exists():
+            # If we have a request user who is a profile manager for the broker,
+            # we will display the activity notes for the profile.
+            update_context_urls(context, {
+                'api_activities': reverse('api_profile_activities', args=(
+                    self.object,)),
+                'api_candidates': reverse('saas_api_search_users'),
             })
         return context
 

@@ -2,7 +2,7 @@
 # see LICENSE
 
 # Django settings for Djaoapp project.
-import os.path, sys
+import datetime, os.path, sys
 
 from django import VERSION as DJANGO_VERSION
 from django.contrib.messages import constants as messages
@@ -647,7 +647,7 @@ LOGGING = {
         },
         'signup': {
             'handlers': [],
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
 #        'django.db.backends': {
 #           'handlers': ['db_log'],
@@ -828,9 +828,14 @@ RULES = {
     'AUTHENTICATION_OVERRIDE': AUTHENTICATION_OVERRIDE,
     'DEFAULT_APP_CALLABLE': 'djaoapp.thread_locals.djaoapp_get_current_app',
     'DEFAULT_PREFIXES': [
-        '/api/accounts', '/api/agreements', '/api/billing',
-        '/api/metrics', '/api/profile', '/api/themes', '/api/users',
-        '/billing/', '/metrics/', '/profile/', '/users/'],
+        '/api/accounts', '/api/activities', '/api/agreements', '/api/billing',
+        # '/api/contacts', '/api/legal',
+        '/api/metrics', # '/api/notifications',
+        '/api/profile', # '/api/proxy',
+        '/api/themes', '/api/users',
+        '/billing/', # '/contacts/', '/legal',
+        '/metrics/', '/profile/', # '/proxy/', '/themes/',
+        '/users/'],
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],
     'ENC_KEY_OVERRIDE': RULES_ENC_KEY_OVERRIDE,
     'ENTRY_POINT_OVERRIDE': RULES_ENTRY_POINT_OVERRIDE,
@@ -932,7 +937,9 @@ SIGNUP = {
         'github': {'name': 'GitHub', 'icon': 'github'},
         'google-oauth2': {'name': 'Google', 'icon': 'google'},
     },
+    'USE_VERIFICATION_LINKS': False,
     'USER_OTP_REQUIRED': 'djaoapp.utils.get_user_otp_required',
+    'VERIFICATION_LIFETIME': datetime.timedelta(days=365)
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.

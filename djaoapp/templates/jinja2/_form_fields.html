@@ -74,7 +74,7 @@
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
-      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
@@ -104,7 +104,7 @@
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
-      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
@@ -134,7 +134,7 @@
   {% if not hide_labels %}
   <label class="form-label col-form-label row{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}">
     <div class="col-6">
-      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {{label|safe}}
       {% if verified_at %}
       <i class="fa fa-check text-green"></i>
       {% endif %}
@@ -184,7 +184,7 @@
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
-      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
@@ -247,7 +247,7 @@
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
   <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
-      {{label|safe}}{% if required %}<span class="asteriskField">*</span>{% endif %}
+      {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
@@ -330,7 +330,7 @@
 {%- endmacro %}
 
 
-{% macro input_field(bound_field, autofocus=False, hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
+{% macro input_field(bound_field, label=None, autofocus=None, hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 {% if bound_field.field.widget.recaptcha_response_name %}
 <div>
 <div class="form-group{% if bound_field.errors %} has-error{% endif %}" style="float: right;margin-right: 5px;">
@@ -342,20 +342,20 @@
 <input name="{{bound_field.name}}" type="{{bound_field.field.widget.input_type}}" {% if bound_field.value() is not none %}value="{{bound_field.value()}}"{% endif %}{% if model_var %} v-model="{{bound_field.name}}"{% endif %}{% if bound_field.name == 'username' %} autocomplete="username"{% endif %} />
 
 {% elif bound_field.field|is_checkbox %}
-{{checkbox_input_field(bound_field.id_for_label, bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{checkbox_input_field(bound_field.id_for_label, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field|is_textarea %}
-{{textarea_input_field(bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{textarea_input_field(bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field|is_radio %}
-{{radio_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{radio_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type == 'select' %}
-{{select_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, bound_field.label, autofocus, bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{select_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% else %}
 {## XXX Everything else text input ##}
-{{text_input_field(bound_field.field.widget.input_type, min_length=bound_field.field.min_length, max_length=bound_field.field.max_length, min_value=bound_field.field.min_value, max_value=bound_field.field.max_value, step=bound_field.field.widget.attrs.step, placeholder=bound_field.field.widget.attrs.get('placeholder',''), name=bound_field.name, required=bound_field.field.required, label=bound_field.label, autofocus=autofocus, help_text=bound_field.help_text, value=bound_field.value(), disabled=bound_field.field.disabled, errors=bound_field.errors, hide_labels=hide_labels, model_var=model_var, extra_label_classes=extra_label_classes, extra_control_classes=extra_control_classes)}}
+{{text_input_field(bound_field.field.widget.input_type, min_length=bound_field.field.min_length, max_length=bound_field.field.max_length, min_value=bound_field.field.min_value, max_value=bound_field.field.max_value, step=bound_field.field.widget.attrs.step, placeholder=bound_field.field.widget.attrs.get('placeholder',''), name=bound_field.name, required=bound_field.field.required, label=(label if label is not none else bound_field.label), autofocus=(autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), help_text=bound_field.help_text, value=bound_field.value(), disabled=bound_field.field.disabled, errors=bound_field.errors, hide_labels=hide_labels, model_var=model_var, extra_label_classes=extra_label_classes, extra_control_classes=extra_control_classes)}}
 {% endif %}
 {%- endmacro %}
 
@@ -365,12 +365,12 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {% block form_fields_block %}
     {% for name, field in form.fields.items() %}
-      {{input_field(form[name], form.hide_labels)}}
+      {{input_field(form[name], hide_labels=form.hide_labels)}}
     {% endfor %}
     {% endblock %}
-    {% if not form.hide_labels %}
+    {% if False and not form.hide_labels %}
     <div class="w-100 mb-4">
-      <span class="text-danger">{% trans %}* required fields{% endtrans %}</span>
+      <span class="requiredField">{% trans %}required fields{% endtrans %}</span>
     </div>
     {% endif %}
   {% endif %}

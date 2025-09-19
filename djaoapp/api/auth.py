@@ -19,7 +19,7 @@ from signup.api.auth import (JWTActivate as JWTActivateBase,
 from signup.api.tokens import JWTRefresh as JWTRefreshBase
 from signup.backends.sts_credentials import aws_bucket_context
 
-from ..mixins import RegisterMixin, VerifyCompleteMixin
+from ..mixins import AuthMixin
 from .serializers import RegisterSerializer, PublicSessionSerializer
 from ..edition_tools import get_user_menu_context
 from ..compat import is_authenticated, gettext_lazy as _
@@ -28,7 +28,7 @@ from ..compat import is_authenticated, gettext_lazy as _
 LOGGER = logging.getLogger(__name__)
 
 
-class DjaoAppJWTActivate(AppMixin, VerifyCompleteMixin, JWTActivateBase):
+class DjaoAppJWTActivate(AuthMixin, AppMixin, JWTActivateBase):
     """
     Retrieves contact from an activation key
 
@@ -153,7 +153,7 @@ class DjaoAppJWTRefresh(JWTRefreshBase):
         return Response(serializer.data)
 
 
-class DjaoAppJWTRegister(AppMixin, RegisterMixin, JWTRegisterBase):
+class DjaoAppJWTRegister(AuthMixin, AppMixin, JWTRegisterBase):
     """
     Registers a user
 

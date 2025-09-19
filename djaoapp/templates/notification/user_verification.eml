@@ -12,12 +12,21 @@
   <p>
 {% trans provider=broker.printable_name %}You have registered an account with {{provider}}.{% endtrans %}
   </p>
+  {% if back_url %}
   <p>
 {% trans %}Please verify your email address and activate your account by visiting the following URL in your favorite browser{% endtrans %}:<br />
-<a href="{{back_url}}{% if next %}?next={{next}}{% endif %}">{{back_url}}{% if next %}?next={{next}}{% endif %}</a>
+<a href="{{back_url}}">{{back_url}}</a>
   </p>
   <p>
 {% trans expiration_days=nb_expiration_days %}The link is valid for {{expiration_days}} days.{% endtrans %}
   </p>
+  {% else %}
+  <p>
+{% trans %}Please verify your email address and activate your account by entering the following code:{% endtrans %}: {{code}}
+  </p>
+  <p>
+{% trans expiration_days=nb_expiration_days %}The code is valid for {{expiration_days}} days.{% endtrans %}
+  </p>
+  {% endif %}
 </div>
 {% endblock %}

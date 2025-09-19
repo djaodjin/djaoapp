@@ -88,6 +88,11 @@ class DjaoAppProfileDetailAPIView(ProfileDecorateMixin,
 #    queryset = get_organization_model().objects.all()
     serializer_class = ProfileDetailSerializer
 
+    def delete_records(self, user):
+        user.contacts.all().update(user=None)
+        user.notifications.all().delete()
+        user.credentials.all().delete()
+
     def put(self, request, *args, **kwargs):
         """
         Updates a billing profile
