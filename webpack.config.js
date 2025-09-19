@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-var confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString())
+const confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString())
+const app_version = '1.0'
 
 module.exports = {
   mode: 'production',
@@ -66,7 +67,7 @@ module.exports = {
   },
   output: {
       path: path.resolve(__dirname, 'htdocs/assets/cache'),
-      filename: '[name].js',
+      filename: app_version ? '[name]' + app_version + '.js' : '[name].js',
   },
   externals: {
     jQuery: 'jQuery',

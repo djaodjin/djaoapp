@@ -15,12 +15,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Default values that can be overriden by `update_settings` later on.
 APP_NAME = os.path.basename(BASE_DIR)
+APP_VERSION = "1.0"
 
 # Feature flags
 # -------------
 DEBUG = True
 USE_FIXTURES = True
 
+FEATURES_REVERT_ASSETS_CDN = False  # 2025-09-19 temporary reverts cached js/css
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
@@ -255,7 +257,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_recaptcha',
-    'deployutils.apps.django',
+    'deployutils.apps.django_deployutils',
 #    'haystack', disabled until we actively use text searches on the site.
     'saas',  # Because we want `djaodjin-resources.js` picked up from here.
     'signup',
@@ -295,7 +297,7 @@ MIDDLEWARE += (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-    'deployutils.apps.django.middleware.RequestLoggingMiddleware',
+    'deployutils.apps.django_deployutils.middleware.RequestLoggingMiddleware',
 )
 
 ROOT_URLCONF = 'djaoapp.urls'
@@ -404,6 +406,27 @@ if DEBUG:
     # Additional locations of static files
     STATICFILES_DIRS = (PUBLIC_ROOT, APP_STATIC_ROOT, HTDOCS,)
 
+if FEATURES_REVERT_ASSETS_CDN:
+    ASSETS_CDN = {}
+else:
+    ASSETS_CDN = {
+        '/assets/cache/auth.js': '/assets/cache/auth-%s.js' % APP_VERSION,
+        '/assets/cache/base.js': '/assets/cache/base-%s.js' % APP_VERSION,
+        '/assets/cache/pages.js': '/assets/cache/pages-%s.js' % APP_VERSION,
+        '/assets/cache/saas.js': '/assets/cache/saas-%s.js' % APP_VERSION,
+        '/assets/cache/djaodjin-vue.js':
+            '/assets/cache/djaodjin-vue-%s.js' % APP_VERSION,
+        '/assets/cache/theme-editors.js':
+            '/assets/cache/theme-editors-%s.js' % APP_VERSION,
+        '/assets/cache/base.css': '/assets/cache/base-%s.css' % APP_VERSION,
+        '/assets/cache/email.css': '/assets/cache/email-%s.css' % APP_VERSION,
+        '/assets/cache/pages.css': '/assets/cache/pages-%s.css' % APP_VERSION,
+        '/assets/cache/dashboard.css':
+            '/assets/cache/dashboard-%s.css' % APP_VERSION,
+        '/assets/cache/djaodjin-menubar.css':
+            '/assets/cache/djaodjin-menubar-%s.css' % APP_VERSION,
+    }
+
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # List of finder classes that know how to find static files in
@@ -510,7 +533,7 @@ if FEATURES_REVERT_TO_DJANGO:
             'libraries': {},
             'builtins': [
                 'django.templatetags.i18n',# XXX Format incompatible with Jinja2
-                'deployutils.apps.django.templatetags.deployutils_extratags',
+    'deployutils.apps.django_deployutils.templatetags.deployutils_extratags',
                     # for |host
                 'saas.templatetags.saas_tags',
                 'djaoapp.templatetags.djaoapp_tags']
@@ -563,7 +586,7 @@ LOGGING = {
         },
         # Add an unbound RequestFilter.
         'request': {
-            '()': 'deployutils.apps.django.logging.RequestFilter',
+            '()': 'deployutils.apps.django_deployutils.logging.RequestFilter',
         },
     },
     'formatters': {
@@ -572,7 +595,7 @@ LOGGING = {
             'datefmt': '%d/%b/%Y:%H:%M:%S %z'
         },
         'json': {
-            '()': 'deployutils.apps.django.logging.JSONFormatter',
+            '()': 'deployutils.apps.django_deployutils.logging.JSONFormatter',
             'format':
                 '%(remote_addr)s %(http_host)s %(username)s [%(asctime)s]'\
                 ' %(levelname)s %(message)s',

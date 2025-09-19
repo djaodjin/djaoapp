@@ -46,6 +46,7 @@ WEBPACK       ?= NODE_PATH=$(libDir)/node_modules:$(NODE_PATH) webpack --stats-e
 # before running the manage.py command (else missing SECRECT_KEY).
 MANAGE        := DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && $(MANAGE) migrate --help 2>/dev/null)),--run-syncdb,)
+NOIMPORTS     = $(if $(findstring --no-imports,$(shell $(MANAGE) shell --help 2>/dev/null)),--no-imports,)
 
 
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
@@ -66,6 +67,7 @@ MULTITIER_DB_FIXTURES_TOP := $(abspath $(srcDir)/../../../workspace)
 
 MY_EMAIL          ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
+APP_VERSION       ?= $(shell $(MANAGE) shell $(NOIMPORTS) -c 'from django.conf import settings ; print(settings.APP_VERSION)' 2>/dev/null)
 
 
 .PHONY: build-assets doc generateschema initdb makemessages setup-livedemo vendor-assets-prerequisites
@@ -74,12 +76,12 @@ all:
 	@echo "Nothing to be done for 'make'."
 
 
-build-assets: $(ASSETS_DIR)/cache/base.css \
-              $(ASSETS_DIR)/cache/djaodjin-menubar.css \
-              $(ASSETS_DIR)/cache/email.css \
-              $(ASSETS_DIR)/cache/dashboard.css \
-              $(ASSETS_DIR)/cache/pages.css \
-              $(ASSETS_DIR)/cache/saas.js
+build-assets: $(ASSETS_DIR)/cache/base-$(APP_VERSION).css \
+              $(ASSETS_DIR)/cache/djaodjin-menubar-$(APP_VERSION).css \
+              $(ASSETS_DIR)/cache/email-$(APP_VERSION).css \
+              $(ASSETS_DIR)/cache/dashboard-$(APP_VERSION).css \
+              $(ASSETS_DIR)/cache/pages-$(APP_VERSION).css \
+              $(ASSETS_DIR)/cache/saas-$(APP_VERSION).js
 	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
 	cd $(srcDir) && $(ESCHECK) $(ASSETS_DIR)/cache/*.js $(ASSETS_DIR)/vendor/*.js
@@ -326,7 +328,7 @@ schema.yml:
 		$(MANAGE) spectacular --color --file $@ --validate
 
 
-$(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \
+$(ASSETS_DIR)/cache/saas-$(APP_VERSION).js: $(srcDir)/webpack.config.js \
                                $(wildcard $(srcDir)/djaoapp/static/js/*.js) \
                                webpack-conf-paths.json
 	cd $(srcDir) && $(WEBPACK) -c $<
@@ -336,7 +338,8 @@ webpack-conf-paths.json: $(srcDir)/djaoapp/settings.py
 	cd $(srcDir) && $(MANAGE) generate_webpack_paths -o $@
 
 
-$(ASSETS_DIR)/cache/base.css: $(srcDir)/djaoapp/static/scss/base/base.scss \
+$(ASSETS_DIR)/cache/base-$(APP_VERSION).css: \
+  $(srcDir)/djaoapp/static/scss/base/base.scss \
   $(wildcard $(srcDir)/djaoapp/static/scss/base/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/mixins/*.scss) \
@@ -346,13 +349,14 @@ $(ASSETS_DIR)/cache/base.css: $(srcDir)/djaoapp/static/scss/base/base.scss \
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/email.css: $(srcDir)/djaoapp/static/scss/email/email.scss \
+$(ASSETS_DIR)/cache/email-$(APP_VERSION).css: \
+              $(srcDir)/djaoapp/static/scss/email/email.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/email/*.scss) \
               $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss)
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/dashboard.css: \
+$(ASSETS_DIR)/cache/dashboard-$(APP_VERSION).css: \
               $(srcDir)/djaoapp/static/scss/dashboard/dashboard.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
               $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
@@ -360,12 +364,12 @@ $(ASSETS_DIR)/cache/dashboard.css: \
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/djaodjin-menubar.css: \
+$(ASSETS_DIR)/cache/djaodjin-menubar-$(APP_VERSION).css: \
               $(srcDir)/djaoapp/static/scss/base/djaodjin-menubar.scss
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/pages.css: \
+$(ASSETS_DIR)/cache/pages-$(APP_VERSION).css: \
        $(srcDir)/djaoapp/static/scss/pages/pages.scss \
        $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin-extended-templates/*.scss) \
        $(srcDir)/djaoapp/static/scss/vendor/jquery-ui.scss \

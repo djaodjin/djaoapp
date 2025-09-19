@@ -7,7 +7,7 @@ from smtplib import SMTPException
 
 from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Checkbox
-from deployutils.apps.django.compat import is_authenticated
+from deployutils.apps.django_deployutils.compat import is_authenticated
 from django import forms, http
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.contrib import messages

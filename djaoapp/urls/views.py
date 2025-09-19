@@ -1,7 +1,7 @@
 # Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
-from deployutils.apps.django.compat import is_authenticated
+from deployutils.apps.django_deployutils.compat import is_authenticated
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView

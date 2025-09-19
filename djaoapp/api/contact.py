@@ -6,7 +6,7 @@ import logging, socket
 from smtplib import SMTPException
 import googlemaps
 
-from deployutils.apps.django.compat import is_authenticated
+from deployutils.apps.django_deployutils.compat import is_authenticated
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.conf import settings

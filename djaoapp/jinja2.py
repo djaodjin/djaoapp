@@ -8,8 +8,9 @@ import logging
 from django.conf import settings
 import django.template.defaulttags
 from django.utils.translation import gettext, ngettext
-from deployutils.apps.django.themes import get_template_search_path
-from deployutils.apps.django.templatetags import deployutils_extratags
+from deployutils.apps.django_deployutils.themes import get_template_search_path
+from deployutils.apps.django_deployutils.templatetags import (
+    deployutils_extratags)
 from extended_templates import signals as extended_templates_signals
 from jinja2.ext import i18n
 from jinja2.sandbox import SandboxedEnvironment as Jinja2Environment

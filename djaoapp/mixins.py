@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import logging
 
-from deployutils.apps.django.compat import is_authenticated
+from deployutils.apps.django_deployutils.compat import is_authenticated
 from django.contrib.auth import get_backends, get_user_model
 from django.db import router, transaction
 from django.template.defaultfilters import slugify
