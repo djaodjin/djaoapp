@@ -6,7 +6,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.33.13                    # last version compatible with Py3.7
-Django==4.2.23
+Django==4.2.24
 django-phonenumber-field==7.1.0
 django-recaptcha==4.0.0           # 4.0.0 renamed namespace 'django_recaptcha'
                                   # 2.0.6 requires Django<4.0
