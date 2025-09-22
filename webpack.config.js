@@ -3,9 +3,8 @@ const path = require('path');
 const webpack = require('webpack');
 
 const confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString())
-const app_version = '1.0'
 
-module.exports = {
+module.exports = env => ({
   mode: 'production',
   target: ['web', 'es6'],
   entry: {
@@ -67,7 +66,7 @@ module.exports = {
   },
   output: {
       path: path.resolve(__dirname, 'htdocs/assets/cache'),
-      filename: app_version ? '[name]' + app_version + '.js' : '[name].js',
+      filename: env.app_version_suffix ? '[name]' + env.app_version_suffix + '.js' : '[name].js',
   },
   externals: {
     jQuery: 'jQuery',
@@ -103,4 +102,4 @@ module.exports = {
   resolveLoader: {
       modules: confPaths.node_modules,
   }
-};
+});

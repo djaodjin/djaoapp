@@ -16,8 +16,8 @@
     {# Use `{{request|asset}}*path*` instead of `{{path|asset}}` here  #}
     {# because Jinja2 optimization/caching that prevents recomputation #}
     {# of correct URL when dealing with multitier sites.               #}
-    <link rel="stylesheet" media="screen" href="{{request|asset}}/assets/cache/base.css" />
-    <link rel="stylesheet" media="screen" href="{{request|asset}}/assets/cache/djaodjin-menubar.css" />
+    <link rel="stylesheet" media="screen" href="{{request|asset}}{{'/assets/cache/base.css'|asset}}" />
+    <link rel="stylesheet" media="screen" href="{{request|asset}}{{'/assets/cache/djaodjin-menubar.css'|asset}}" />
     <style media="screen">
       [v\:cloak], [v-cloak], [data-v-cloak], [x-v-cloak], .v-cloak, .x-v-cloak {
         display: none !important;

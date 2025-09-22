@@ -12,7 +12,6 @@ from django.contrib.staticfiles.views import serve as django_static_serve
 from multitier.urlresolvers import url_sites
 from rules.urldecorators import include, url
 
-from .. import __version__
 from ..compat import reverse_lazy
 from ..views.custom_saas import StripeProcessorRedirectView
 from ..views.product import ProxyPageView
@@ -69,7 +68,7 @@ if settings.API_DEBUG:
     urlpatterns += [
         url(r'^docs/api/schema/$', get_schema_view(
             title="DjaoApp API",
-            version=__version__,
+            version=settings.APP_VERSION,
             description="API to run a SaaS website deployed"\
             " on the djaodjin platform",
 #            terms_of_service="https://djaodjin.com/legal/terms-of-use/",

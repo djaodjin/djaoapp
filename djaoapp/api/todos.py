@@ -13,7 +13,6 @@ from rest_framework.response import Response
 from saas.mixins import ProviderMixin
 from signup.serializers import ActivitySerializer
 
-from .. import __version__
 from ..compat import import_string
 from .serializers import VersionSerializer
 
@@ -50,7 +49,7 @@ class DjaoAppAPIVersion(RetrieveAPIView):
               "version": "2025-01-31"
             }
         """
-        serializer = VersionSerializer({'version': __version__})
+        serializer = VersionSerializer({'version': settings.APP_VERSION})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

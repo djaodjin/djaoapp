@@ -22,7 +22,6 @@ from signup.serializers import ActivitySerializer as UserActivitySerializer
 from signup.serializers import UserCreateSerializer
 from signup.serializers_overrides import UserDetailSerializer
 
-from .. import __version__
 from ..compat import gettext_lazy as _, six
 from ..utils import get_contact_captcha_keys
 from ..validators import validate_contact_form
@@ -394,7 +393,7 @@ class VersionSerializer(NoModelSerializer):
     @staticmethod
     def get_version(obj):
         #pylint:disable=unused-argument
-        return __version__
+        return settings.APP_VERSION
 
 class PlacesSuggestionSerializer(NoModelSerializer):
 

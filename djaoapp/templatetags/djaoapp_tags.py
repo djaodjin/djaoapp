@@ -8,6 +8,8 @@ from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
+from deployutils.apps.django_deployutils.templatetags import (
+    deployutils_prefixtags)
 from multitier.templatetags.multitier_tags import (
     asset as asset_base,
     site_printable_name as site_printable_name_base,
@@ -30,7 +32,7 @@ def asset(path):
     """
     if isinstance(path, str) and (path.startswith(settings.STATIC_URL) or
         path.startswith(settings.STATIC_URL.lstrip('/'))):
-        return path
+        return deployutils_prefixtags.asset(path)
     return asset_base(path)
 
 
@@ -72,11 +74,7 @@ def djasset(request):
         path_prefix = '/'
         path = request
         url_path = urljoin(path_prefix, path)
-        # If we run the following code, we can remove the prefix in templates
-        # but we loose the ability to pick an assets anywhere in 'htdocs'.
-        #if not url_path.startswith(settings.STATIC_URL):
-        #    url_path = urljoin(settings.STATIC_URL, url_path)
-        return url_path
+        return deployutils_prefixtags.asset(url_path)
     return build_absolute_uri(request=request).rstrip('/')
 
 
