@@ -1,4 +1,4 @@
-<link rel="stylesheet" media="screen" href="{{request|djasset}}/assets/cache/pages.css" />
+<link rel="stylesheet" media="screen" href="{{request|asset}}{{'/assets/cache/pages.css'|asset}}" />
 
 {# Scripts that need to be injected into the page actually being edited #}
 {# (i.e. iframe or current page).                                       #}
@@ -84,22 +84,22 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.selection.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.autosize.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.textarea_autosize.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.ui.touch-punch.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/rangy-core.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/Markdown.Converter.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/Markdown.Sanitizer.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/hallo.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.selection.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.textarea_autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.ui.touch-punch.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/rangy-core.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Converter.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Sanitizer.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/hallo.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/pages.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/cache/pages.js'|asset}}"></script>
 {% endif %}

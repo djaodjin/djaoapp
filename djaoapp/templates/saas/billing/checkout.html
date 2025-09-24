@@ -198,9 +198,9 @@
 {% else %}
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 {% endif %}
-<script type="text/javascript" src="{{'/assets/vendor/moment.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="/assets/vendor/vue.js"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/vendor/vue.js'|asset}}"></script>
 
 <script type="text/javascript">
 Vue.prototype.$itemsPerPage =
@@ -214,15 +214,15 @@ Vue.prototype.$dateRange = {
 Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
 Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %};
 </script>
-<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/trip.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="/assets/js/djaodjin-resources-vue.js"></script>
-<script type="text/javascript" charset="utf-8" src="/assets/js/djaodjin-saas-vue.js"></script>
+<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/trip.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|asset}}"></script>
 <script type="text/javascript">
 Vue.prototype.$itemsPerPage =
     {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
@@ -260,17 +260,17 @@ humanizeTimeDelta.$labels = {
 };
 </script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|djasset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|djasset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|asset}}"></script>
 {% endif %}
 <script type="text/javascript">
 Vue.use(Croppa);

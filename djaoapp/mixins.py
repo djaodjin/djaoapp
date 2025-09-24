@@ -121,10 +121,18 @@ class AuthMixin(object):
             registration = PERSONAL_REGISTRATION
             organization_selector = 'full_name'
 
+        self.renames = {'slug': organization_selector}
         with transaction.atomic(using=router.db_for_write(get_user_model())):
             # Create a ``User``
-            user = super(AuthMixin, self).create_models(
-                *args, **cleaned_data)
+            username = args[0]
+            organization = Organization.objects.filter(slug__iexact=username)
+            if organization.exists():
+                # If an `Organization` with slug == username exists,
+                # it is bound to create problems later on.
+                raise ValidationError({'username':
+                    _("A profile with that %(username)s already exists.") % {
+                        'username': 'username'}})
+            user = super(AuthMixin, self).create_models(*args, **cleaned_data)
             if user:
                 for agreement in self.agreements:
                     Signature.objects.create_signature(agreement.slug, user)

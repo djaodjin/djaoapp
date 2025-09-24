@@ -70,7 +70,7 @@
     "fields": {
       "email": "alice+authdisabled@localhost.localdomain",
       "first_name": "Alice",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false,
@@ -92,7 +92,7 @@
     "fields": {
       "email": "alice+noregistration-0@localhost.localdomain",
       "first_name": "Alice",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false,
@@ -123,7 +123,7 @@
     "fields": {
       "email": "alice+noregistration-2@localhost.localdomain",
       "first_name": "Alice",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false,
@@ -155,7 +155,7 @@
     "fields": {
       "email": "xia+noregistration@localhost.localdomain",
       "first_name": "Xia",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
@@ -168,7 +168,7 @@
     "fields": {
       "email": "xia+noregistration-1@localhost.localdomain",
       "first_name": "Xia",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
@@ -190,7 +190,7 @@
     "fields": {
       "email": "xia+noregistration-3@localhost.localdomain",
       "first_name": "Xia",
-      "last_name": "DjaoApp Signup Card 2",
+      "last_name": "DjaoApp Signup Card One",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,

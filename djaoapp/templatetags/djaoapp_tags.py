@@ -30,10 +30,13 @@ def asset(path):
     of Django templates, ``{{ path|asset }}`` works in both Django and Jinja2
     templates.
     """
+    cdn_path = path
     if isinstance(path, str) and (path.startswith(settings.STATIC_URL) or
         path.startswith(settings.STATIC_URL.lstrip('/'))):
-        return deployutils_prefixtags.asset(path)
-    return asset_base(path)
+        cdn_path = deployutils_prefixtags.asset(path)
+        return cdn_path
+    asset_path = asset_base(cdn_path)
+    return asset_path
 
 
 @register.filter()
@@ -66,16 +69,6 @@ def pluralize(text):
     if text.endswith('s'):
         return text
     return text + 's'
-
-
-@register.filter()
-def djasset(request):
-    if isinstance(request, six.string_types):
-        path_prefix = '/'
-        path = request
-        url_path = urljoin(path_prefix, path)
-        return deployutils_prefixtags.asset(url_path)
-    return build_absolute_uri(request=request).rstrip('/')
 
 
 @register.filter()

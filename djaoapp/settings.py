@@ -406,6 +406,16 @@ if DEBUG:
     # Additional locations of static files
     STATICFILES_DIRS = (PUBLIC_ROOT, APP_STATIC_ROOT, HTDOCS,)
 
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'multitier.finders.MultitierFileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder'
+)
+
 if FEATURES_REVERT_ASSETS_CDN:
     ASSETS_CDN = {}
 else:
@@ -426,16 +436,6 @@ else:
         '/assets/cache/djaodjin-menubar.css':
             '/assets/cache/djaodjin-menubar-%s.css' % APP_VERSION,
     }
-
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'multitier.finders.MultitierFileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django.contrib.staticfiles.finders.FileSystemFinder'
-)
 
 ASSETS_MAP = {
     'cache/base.css': (

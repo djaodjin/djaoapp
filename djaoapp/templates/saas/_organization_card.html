@@ -1,5 +1,5 @@
 <div :id="item.profile.slug" :class="(item.accept_grant_api_url || item.request_key) ? 'card card-organization card-inactive' : 'card card-organization'">
-  <img :src="item.profile.picture ? item.profile.picture : (item.profile.type == 'personal' ? '{{'/assets/img/default-user.png'|djasset}}' : '{{'/assets/img/default-organization.png'|djasset}}')" class="card-img-top" :alt="item.profile.printable_name">
+  <img :src="item.profile.picture ? item.profile.picture : (item.profile.type == 'personal' ? '{{'/assets/img/default-user.png'|asset}}' : '{{'/assets/img/default-organization.png'|asset}}')" class="card-img-top" :alt="item.profile.printable_name">
   <div class="card-body">
     <h5 class="card-title">[[item.profile.printable_name]]</h5>
     <p class="card-text">

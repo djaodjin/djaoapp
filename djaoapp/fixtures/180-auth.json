@@ -179,5 +179,29 @@
       "last_name": "SignupProfileCard2",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "username": "xia2"}, "model": "auth.User", "pk": 192
+},
+
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "email": "xia+20@localhost.localdomain",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia20"}, "model": "auth.User", "pk": 193
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "email": "xia+20@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verified_at": "2025-01-01T00:00:00+00:00",
+      "user": 193,
+      "slug": "xia20"}, "model": "signup.Contact", "pk": 193
 }
+
 ]

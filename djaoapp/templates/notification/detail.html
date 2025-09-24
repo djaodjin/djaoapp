@@ -40,25 +40,25 @@
     when edit tools are disabled the required scripts are not included
     however if we're serving assets via cdn I'm not sure if this is the best way
 #}
-<script type="text/javascript" src="{{'/assets/vendor/jquery.ba-throttle-debounce.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/bootstrap-colorpicker.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/ace.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/ext-language_tools.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/ext-modelist.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/ext-emmet.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/theme-monokai.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/mode-html.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/mode-css.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/mode-javascript.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/worker-html.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/worker-css.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/worker-javascript.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.ba-throttle-debounce.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/bootstrap-colorpicker.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ace.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-language_tools.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-modelist.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/ext-emmet.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/theme-monokai.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-html.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-css.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/mode-javascript.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-html.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-css.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/worker-javascript.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-editors.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-code-editor.js'|djasset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-style-editor.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-editors.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-code-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-style-editor.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/theme-editors.js'|djasset}}"></script>
+<script type="text/javascript" src="{{'/assets/cache/theme-editors.js'|asset}}"></script>
 {% endif %}
 {% endif %}
 <script type="text/javascript">

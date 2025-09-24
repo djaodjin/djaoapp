@@ -64,7 +64,6 @@ def environment(**options):
     env.filters['site_url'] = djaoapp_tags.site_url
     env.filters['site_printable_name'] = djaoapp_tags.site_printable_name
 
-    env.filters['djasset'] = djaoapp_tags.djasset
     env.filters['host'] = deployutils_extratags.host
     env.filters['is_authenticated'] = djaoapp_tags.is_authenticated
     env.filters['is_checkbox'] = djaoapp_tags.is_checkbox

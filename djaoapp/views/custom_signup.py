@@ -76,6 +76,7 @@ class SignoutView(SignoutBaseView):
 class SignupView(AuthMixin, AppMixin, SignupBaseView):
 
     form_class = SignupForm
+    set_password_form_class = CodeActivationForm
 
     def get_context_data(self, **kwargs):
         context = super(SignupView, self).get_context_data(**kwargs)

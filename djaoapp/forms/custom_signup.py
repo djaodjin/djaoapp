@@ -50,29 +50,6 @@ class MissingFieldsMixin(object):
                 "%(identifiers)s.") % {'identifiers': ', '.join(missing)})
 
 
-class ActivationForm(MissingFieldsMixin, ActivationFormBase):
-
-    def __init__(self, *args, **kwargs):
-        super(ActivationForm, self).__init__(*args, **kwargs)
-        # Define  extra fields dynamically. These are optional but might be
-        # enforced as required within `form_valid`
-        # (ex: legal agreement checkbox).
-        for extra_field in self.initial.get('extra_fields', []):
-            if extra_field[0] == saas_settings.TERMS_OF_USE:
-                legal_agreement_url = reverse(
-                    'legal_agreement', args=(extra_field[0],))
-                self.fields[extra_field[0]] = forms.BooleanField(
-                    label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
-                    " conditions</a>") % legal_agreement_url),
-                    required=extra_field[2])
-
-
-class CodeActivationForm(ActivationForm):
-
-    email_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
-    phone_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
-
-
 class PasswordResetConfirmForm(MissingFieldsMixin,
                                PasswordResetConfirmFormBase):
     pass
@@ -89,6 +66,147 @@ class PasswordForm(MissingFieldsMixin, PasswordResetForm):
 class SigninForm(MissingFieldsMixin, AuthenticationForm):
 
     submit_title = _("Sign in")
+
+
+class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
+    """
+    Special version of SignupForm
+    """
+    email2 = forms.EmailField(required=False,
+        widget=forms.TextInput(attrs={'placeholder': _("Type e-mail again")}),
+        label=_("E-mail confirmation"))
+    username = forms.SlugField(required=False,
+        widget=forms.TextInput(attrs={'placeholder': _("ex: john")}),
+        max_length=30, label=_("Username"),
+        error_messages={'invalid': _("Username may only contain letters,"\
+" digits and -/_ characters. Spaces are not allowed.")})
+    new_password = forms.CharField(required=False, strip=False,
+        label=_("Password"),
+        min_length=PASSWORD_MIN_LENGTH,
+        widget=forms.PasswordInput(attrs={
+            'minlength': PASSWORD_MIN_LENGTH,
+            'placeholder': _("Password")}))
+    new_password2 = forms.CharField(required=False, strip=False,
+        label=_("Confirm password"),
+        widget=forms.PasswordInput(
+            attrs={'placeholder': _("Type password again")}))
+
+    organization_name = forms.CharField(required=False,
+        label=_('Organization name'))
+
+    street_address = forms.CharField(required=False, label=_("Street address"))
+    locality = forms.CharField(required=False, label=_("City/Town"))
+    region = forms.CharField(required=False, label=_("State/Province/County"))
+    postal_code = forms.RegexField(required=False, regex=r'^[\w\s-]+$',
+        label=_("Zip/Postal code"), max_length=30,
+        error_messages={'invalid': _("The postal code may contain only"\
+            " letters, digits, spaces and '-' characters.")})
+    country = forms.RegexField(required=False, regex=r'^[a-zA-Z ]+$',
+        widget=forms.widgets.Select(choices=countries), label=_("Country"))
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('instance', None)
+        force_required = kwargs.pop('force_required', False)
+        super(ActivationForm, self).__init__(*args, **kwargs)
+        self.fields['type'] = forms.ChoiceField(choices=[
+            (slugify(choice[1]), choice[1])
+            for choice in Organization.ACCOUNT_TYPE], required=False)
+        captcha_keys = get_registration_captcha_keys()
+        if captcha_keys:
+            # Default captcha field is already appended at the end of the list
+            # of fields. We overwrite it here to set the theme.
+            self.fields['captcha'] = ReCaptchaField(
+                    public_key=captcha_keys['public_key'],
+                    private_key=captcha_keys['private_key'],
+                    widget=ReCaptchaV2Checkbox(
+                        attrs={
+                            'data-theme': 'clean',
+                            'data-size': 'compact',
+                        }))
+        if 'country' in self.fields:
+            # Country field is optional. We won't add a State/Province
+            # in case it is omitted.
+            if not ('country' in self.initial
+                and self.initial['country']):
+                self.initial['country'] = Country("US", None)
+            country = self.initial.get('country', None)
+            if not self.fields['country'].initial:
+                self.fields['country'].initial = country.code
+            self.add_postal_region(country=country)
+        if force_required:
+            for field_name, field in six.iteritems(self.fields):
+                if field_name in ('email', 'email2', 'new_password',
+                    'new_password2', 'street_address', 'locality',
+                    'region', 'postal_code', 'country', 'phone'):
+                    field.required = True
+        # Define  extra fields dynamically. These are optional but might be
+        # enforced as required within `form_valid`
+        # (ex: legal agreement checkbox).
+        for extra_field in self.initial.get('extra_fields', []):
+            if extra_field[0] == saas_settings.TERMS_OF_USE:
+                legal_agreement_url = reverse(
+                    'legal_agreement', args=(extra_field[0],))
+                self.fields[extra_field[0]] = forms.BooleanField(
+                    label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
+                    " conditions</a>") % legal_agreement_url),
+                    required=extra_field[2])
+            else:
+                self.fields[extra_field[0]] = forms.CharField(
+                    label=_(extra_field[1]), required=extra_field[2])
+
+    def clean(self):
+        """
+        Validates that both emails as well as both passwords respectively match.
+        """
+        self.cleaned_data = super(ActivationForm, self).clean()
+        if not ('email' in self._errors or 'email2' in self._errors):
+            # If there are already errors reported for email or email2,
+            # let's not override them with a confusing message here.
+            if 'email' in self.data and 'email2' in self.data:
+                # If `email2` wasn't passed in the POST request, we ignore it.
+                email = self.cleaned_data['email']
+                email2 = self.cleaned_data['email2']
+                if email != email2:
+                    self._errors['email'] = self.error_class([
+                        _("This field does not match e-mail confirmation.")])
+                    self._errors['email2'] = self.error_class([
+                        _("This field does not match e-mail.")])
+                    if 'email' in self.cleaned_data:
+                        del self.cleaned_data['email']
+                    if 'email2' in self.cleaned_data:
+                        del self.cleaned_data['email2']
+                    raise forms.ValidationError(
+                        _("E-mail and e-mail confirmation do not match."))
+        return self.cleaned_data
+
+    def clean_email(self):
+        """
+        Normalizes emails in all lowercase.
+        """
+        if 'email' in self.cleaned_data:
+            self.cleaned_data['email'] = self.cleaned_data['email'].lower()
+        return self.cleaned_data['email']
+
+    def clean_email2(self):
+        """
+        Normalizes emails in all lowercase.
+        """
+        if 'email2' in self.cleaned_data:
+            self.cleaned_data['email2'] = self.cleaned_data['email2'].lower()
+        return self.cleaned_data['email2']
+
+    def clean_type(self):
+        account_type = self.cleaned_data['type']
+        if account_type:
+            for type_choice in  Organization.ACCOUNT_TYPE:
+                if account_type == slugify(type_choice[1]):
+                    self.cleaned_data['type'] = type_choice[0]
+                    return self.cleaned_data['type']
+            raise forms.ValidationError(
+                _("account type must be one of %(type)s") % {
+                    'type': [type_choice[1]
+                for type_choice in Organization.ACCOUNT_TYPE]})
+        return Organization.ACCOUNT_UNKNOWN
 
 
 class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
@@ -173,8 +291,16 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
         # enforced as required within `form_valid`
         # (ex: legal agreement checkbox).
         for extra_field in self.initial.get('extra_fields', []):
-            self.fields[extra_field[0]] = forms.CharField(
-                label=_(extra_field[1]), required=extra_field[2])
+            if extra_field[0] == saas_settings.TERMS_OF_USE:
+                legal_agreement_url = reverse(
+                    'legal_agreement', args=(extra_field[0],))
+                self.fields[extra_field[0]] = forms.BooleanField(
+                    label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
+                    " conditions</a>") % legal_agreement_url),
+                    required=extra_field[2])
+            else:
+                self.fields[extra_field[0]] = forms.CharField(
+                    label=_(extra_field[1]), required=extra_field[2])
 
     def clean(self):
         """
@@ -270,3 +396,9 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
                 raise forms.ValidationError(
                     _("Your organization might already be registered."))
         return self.cleaned_data['organization_name']
+
+
+class CodeActivationForm(ActivationForm):
+
+    email_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    phone_code = forms.IntegerField(required=False, widget=forms.HiddenInput())

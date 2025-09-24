@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row align-items-center">
       <div class="col-2">
-        <img class="img-fluid" style="max-height:64px;" :src="item.profile.picture || (item.profile.type == 'personal' ? '{{'/assets/img/default-user.png'|djasset}}' : '{{'/assets/img/default-organization.png'|djasset}}')" >
+        <img class="img-fluid" style="max-height:64px;" :src="item.profile.picture || (item.profile.type == 'personal' ? '{{'/assets/img/default-user.png'|asset}}' : '{{'/assets/img/default-organization.png'|asset}}')" >
       </div>
       <div class="col-5">
 <span>[[item.profile.printable_name ? item.profile.printable_name : '@' + item]]</span>

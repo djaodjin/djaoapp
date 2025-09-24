@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="{{'/assets/debug_toolbar/css/print.css'|djasset}}" type="text/css" media="print" />
-<link rel="stylesheet" href="{{'/assets/debug_toolbar/css/toolbar.css'|djasset}}" type="text/css" />
-<script src="{{ '/assets/debug_toolbar/js/toolbar.js'|djasset}}"></script>
+<link rel="stylesheet" href="{{'/assets/debug_toolbar/css/print.css'|asset}}" type="text/css" media="print" />
+<link rel="stylesheet" href="{{'/assets/debug_toolbar/css/toolbar.css'|asset}}" type="text/css" />
+<script src="{{ '/assets/debug_toolbar/js/toolbar.js'|asset}}"></script>
 <div id="djDebug" hidden="hidden" dir="ltr"
      data-store-id="{{ toolbar.store_id }}" data-render-panel-url="{{ url('djdt:render_panel') }}"
      {{ toolbar.config.ROOT_TAG_EXTRA_ATTRS|safe }}>
@@ -44,7 +44,7 @@
 				</div>
 				<div class="djDebugPanelContent">
 					{% if toolbar.store_id %}
-					<img src="{{ '/assets/debug_toolbar/img/ajax-loader.gif'|djasset }}" alt="loading" class="djdt-loader" />
+					<img src="{{'/assets/debug_toolbar/img/ajax-loader.gif'|asset }}" alt="loading" class="djdt-loader" />
 					<div class="djdt-scroll"></div>
 					{% else %}
 					<div class="djdt-scroll">{{ panel.content }}</div>
