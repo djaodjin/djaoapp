@@ -67,7 +67,7 @@ MULTITIER_DB_FIXTURES_TOP := $(abspath $(srcDir)/../../../workspace)
 
 MY_EMAIL           ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT  := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
-APP_VERSION_SUFFIX ?= $(shell $(MANAGE) shell $(NOIMPORTS) -c 'from django.conf import settings ; print("" if settings.FEATURES_REVERT_ASSETS_CDN else "-%s" % settings.APP_VERSION)' 2>/dev/null)
+APP_VERSION_SUFFIX ?= $(shell cd $(srcDir) && $(MANAGE) shell $(NOIMPORTS) -c 'from django.conf import settings ; print("" if settings.FEATURES_REVERT_ASSETS_CDN else "-%s" % settings.APP_VERSION)' 2>/dev/null)
 
 
 .PHONY: build-assets doc generateschema initdb makemessages setup-livedemo vendor-assets-prerequisites
