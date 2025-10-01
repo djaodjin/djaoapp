@@ -36,6 +36,7 @@ pyotp==2.8.0
 pytz==2025.1
 social-auth-app-django==5.4.2     # 5.2.0 drops support for Django<3.2
                                   # v1.2.0 does not support Django>=2.1
+stripe==12.5.1                    # Stripe>=13 removed error.py
 whitenoise==6.4.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
