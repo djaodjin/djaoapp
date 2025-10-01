@@ -856,7 +856,7 @@ RULES = {
         '/api/metrics', # '/api/notifications',
         '/api/profile', # '/api/proxy',
         '/api/themes', '/api/users',
-        '/billing/', # '/contacts/', '/legal',
+        '/activities/', '/billing/', # '/legal',
         '/metrics/', '/profile/', # '/proxy/', '/themes/',
         '/users/'],
     'DEFAULT_RULES': [('/app/', 1, False), ('/', 0, False)],

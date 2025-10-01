@@ -62,10 +62,7 @@
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
-      "organization": 161,
-      "user": 161
-    },
-    "model": "saas.Role", "pk": 19
+      "organization": 161, "user": 161}, "model": "saas.Role", "pk": 161
 },
 {
     "fields": {
@@ -121,10 +118,7 @@
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
-      "organization": 163,
-      "user": 163
-    },
-    "model": "saas.Role", "pk": 163
+      "organization": 163, "user": 163}, "model": "saas.Role", "pk": 163
 },
 {
     "fields": {
@@ -170,10 +164,7 @@
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
-      "organization": 164,
-      "user": 164
-    },
-    "model": "saas.Role", "pk": 164
+      "organization": 164, "user": 164}, "model": "saas.Role", "pk": 164
 },
 {
     "fields": {

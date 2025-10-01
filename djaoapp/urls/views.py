@@ -15,8 +15,8 @@ from signup.views.saml import saml_metadata_view
 
 from ..urlbuilders import (url_active, url_authenticated,
     url_dashboard, url_direct, url_frictionless_direct,
-    url_frictionless_self_provider, url_provider, url_self_provider,
-    url_prefixed, url_dashboard_iframe)
+    url_frictionless_self_provider, url_provider, url_provider_only,
+    url_self_provider, url_prefixed, url_dashboard_iframe)
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView,
     ProcessorAuthorizeView, OrganizationProfileView, PrintableChargeReceiptView)
@@ -90,7 +90,7 @@ urlpatterns = [
         UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
-    url_direct(r'contacts/', include('signup.urls.views.contacts')),
+    url_provider_only(r'activities/', include('signup.urls.views.contacts')),
 
     url_prefixed(r'^pricing/$',
         PricingView.as_view(), name='saas_cart_plan_list'),
