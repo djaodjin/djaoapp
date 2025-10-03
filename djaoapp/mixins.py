@@ -90,6 +90,10 @@ class AuthMixin(object):
         if errors:
             raise ValidationError(errors)
 
+    def register_finalize(self, user, **cleaned_data):
+        for agreement in self.agreements:
+            Signature.objects.create_signature(agreement, user)
+
 
     def create_models(self, *args, **cleaned_data):
         #pylint:disable=too-many-locals
@@ -133,9 +137,6 @@ class AuthMixin(object):
                     _("A profile with that %(username)s already exists.") % {
                         'username': 'username'}})
             user = super(AuthMixin, self).create_models(*args, **cleaned_data)
-            if user:
-                for agreement in self.agreements:
-                    Signature.objects.create_signature(agreement.slug, user)
 
             if registration in (PERSONAL_REGISTRATION,
                                 TOGETHER_REGISTRATION):
