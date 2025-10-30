@@ -643,8 +643,7 @@ def user_welcome_notice(sender, user, **kwargs): # request in **kwargs
 # this module is loaded by using a dispatch_uid as advised here:
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(user_activated, dispatch_uid="user_activated_notice")
-def user_activated_notice(sender, user, verification_key,
-                          **kwargs): # request in **kwargs
+def user_activated_notice(sender, user, **kwargs): # request in **kwargs
     """
     User activated
 
@@ -699,8 +698,7 @@ def user_activated_notice(sender, user, verification_key,
           }
         }
     """
-    LOGGER.debug("[signal] user_activated_notice(user=%s, verification_key=%s)",
-        user, verification_key)
+    LOGGER.debug("[signal] user_activated_notice(user=%s)", user)
     back_url = build_absolute_uri(     # signup/mixins.py
         request=kwargs.get('request'))
     context = {
