@@ -1,7 +1,6 @@
 [
   {
     "fields": {
-      "slug": "xia-balance-due",
       "created_at": "2025-01-01T00:00:00Z",
       "is_active": true,
       "full_name": "Xia",
@@ -24,9 +23,8 @@
       "processor_priv_key": null,
       "processor_pub_key": null,
       "processor_refresh_token": null,
-      "extra": null
-    },
-    "model": "saas.organization", "pk": 100
+      "extra": null,
+      "slug": "xia-balance-due"}, "model": "saas.organization", "pk": 100
   },
   {
     "fields": {
@@ -41,26 +39,19 @@
       "last_name": "BalanceDue",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "user_permissions": [],
-      "username": "xia-balance-due"
-    },
-    "model": "auth.User", "pk": 100
+      "username": "xia-balance-due"}, "model": "auth.User", "pk": 100
   },
   {
     "fields":{
       "created_at": "2025-01-01T00:00:00-09:00",
       "role_description": 1,
-      "organization": 100,
-      "user": 100
-    },
-    "model": "saas.Role", "pk": 100
+      "organization": 100, "user": 100}, "model": "saas.Role", "pk": 100
   },
   {
     "fields": {
       "last_signed": "2025-01-01T00:00:00-00:00",
       "agreement": 1,
-      "user": 100
-    },
-    "model": "saas.signature", "pk": 100
+      "user": 100}, "model": "saas.signature", "pk": 100
   },
   {
     "fields": {
@@ -98,13 +89,10 @@
       "created_at": "2025-01-01T00:00:00-00:00",
       "ends_at": "2025-12-31T23:59:59-00:00",
       "description": null,
-      "organization": 100,
-      "plan": 3,
       "request_key": null,
       "grant_key": null,
-      "extra": null
-    },
-    "model": "saas.subscription", "pk": 100
+      "extra": null,
+      "organization": 100, "plan": 3}, "model": "saas.subscription", "pk": 100
   },
   {
     "fields": {
@@ -112,13 +100,10 @@
       "created_at": "2025-01-01T00:00:00-00:00",
       "ends_at": "2025-12-31T23:59:59-00:00",
       "description": null,
-      "organization": 100,
-      "plan": 1,
       "request_key": null,
       "grant_key": null,
-      "extra": null
-    },
-    "model": "saas.subscription", "pk": 102
+      "extra": null,
+      "organization": 100, "plan": 1}, "model": "saas.subscription", "pk": 102
   },
   {
     "fields": {
@@ -135,22 +120,6 @@
       "event_id": "sub_102/"
     },
     "model": "saas.transaction", "pk": 100
-  },
-  {
-    "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
-      "orig_account": "Receivable",
-      "orig_organization": 2,
-      "orig_amount": 18900,
-      "orig_unit": "usd",
-      "dest_account": "Payable",
-      "dest_organization": 100,
-      "dest_amount": 18900,
-      "dest_unit": "usd",
-      "descr": "Subscription to premium until 2021/02/01 (1 month)",
-      "event_id": "sub_100/"
-    },
-    "model": "saas.transaction", "pk": 101
   },
   {
     "fields": {
@@ -251,7 +220,6 @@
 
   {
     "fields": {
-      "slug": "xia-payments",
       "created_at": "2025-01-01T00:00:00Z",
       "is_active": true,
       "full_name": "Xia",
@@ -274,9 +242,8 @@
       "processor_priv_key": null,
       "processor_pub_key": null,
       "processor_refresh_token": null,
-      "extra": null
-    },
-    "model": "saas.organization", "pk": 101
+      "extra": null,
+      "slug": "xia-payments"}, "model": "saas.organization", "pk": 101
   },
   {
     "fields": {

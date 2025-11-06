@@ -46,7 +46,7 @@ WEBPACK       ?= NODE_PATH=$(libDir)/node_modules:$(NODE_PATH) webpack --stats-e
 # before running the manage.py command (else missing SECRECT_KEY).
 MANAGE        := DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) $(PYTHON) manage.py
 RUNSYNCDB     = $(if $(findstring --run-syncdb,$(shell cd $(srcDir) && $(MANAGE) migrate --help 2>/dev/null)),--run-syncdb,)
-NOIMPORTS     = $(if $(findstring --no-imports,$(shell $(MANAGE) shell --help 2>/dev/null)),--no-imports,)
+NOIMPORTS     = $(if $(findstring --no-imports,$(shell cd $(srcDir) && $(MANAGE) shell --help 2>/dev/null)),--no-imports,)
 
 
 ifneq ($(wildcard $(CONFIG_DIR)/site.conf),)
@@ -67,8 +67,7 @@ MULTITIER_DB_FIXTURES_TOP := $(abspath $(srcDir)/../../../workspace)
 
 MY_EMAIL           ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT  := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
-APP_VERSION_SUFFIX ?= $(shell cd $(srcDir) && $(MANAGE) shell $(NOIMPORTS) -c 'from django.conf import settings ; print("" if settings.FEATURES_REVERT_ASSETS_CDN else "-%s" % settings.APP_VERSION)' 2>/dev/null)
-
+APP_VERSION_SUFFIX ?= $(shell grep 'APP_VERSION =' $(srcDir)/djaoapp/settings.py | sed -e 's/APP_VERSION = "\(.*\)"/-\1/')
 
 .PHONY: build-assets doc generateschema initdb makemessages setup-livedemo vendor-assets-prerequisites
 
@@ -76,12 +75,28 @@ all:
 	@echo "Nothing to be done for 'make'."
 
 
-build-assets: $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).css \
-              $(ASSETS_DIR)/cache/djaodjin-menubar$(APP_VERSION_SUFFIX).css \
-              $(ASSETS_DIR)/cache/email$(APP_VERSION_SUFFIX).css \
-              $(ASSETS_DIR)/cache/dashboard$(APP_VERSION_SUFFIX).css \
-              $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css \
-              $(ASSETS_DIR)/cache/saas$(APP_VERSION_SUFFIX).js
+build-assets: $(ASSETS_DIR)/cache/base.css \
+              $(ASSETS_DIR)/cache/dashboard.css \
+              $(ASSETS_DIR)/cache/djaodjin-menubar.css \
+              $(ASSETS_DIR)/cache/email.css \
+              $(ASSETS_DIR)/cache/pages.css \
+              $(ASSETS_DIR)/cache/saas.js
+	$(installFiles) $(ASSETS_DIR)/cache/base.css $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).css
+	$(installFiles) $(ASSETS_DIR)/cache/base.css.map $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/base.js $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).js
+	$(installFiles) $(ASSETS_DIR)/cache/dashboard.css $(ASSETS_DIR)/cache/dashboard$(APP_VERSION_SUFFIX).css
+	$(installFiles) $(ASSETS_DIR)/cache/dashboard.css.map $(ASSETS_DIR)/cache/dashboard$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/djaodjin-menubar.css $(ASSETS_DIR)/cache/djaodjin-menubar$(APP_VERSION_SUFFIX).css
+	$(installFiles) $(ASSETS_DIR)/cache/djaodjin-menubar.css.map $(ASSETS_DIR)/cache/djaodjin-menubar$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/email.css $(ASSETS_DIR)/cache/email$(APP_VERSION_SUFFIX).css
+	$(installFiles) $(ASSETS_DIR)/cache/email.css.map $(ASSETS_DIR)/cache/email$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/pages.css $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css
+	$(installFiles) $(ASSETS_DIR)/cache/pages.css.map $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/auth.js $(ASSETS_DIR)/cache/auth$(APP_VERSION_SUFFIX).js
+	$(installFiles) $(ASSETS_DIR)/cache/base.js $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).js
+	$(installFiles) $(ASSETS_DIR)/cache/djaodjin-vue.js $(ASSETS_DIR)/cache/djaodjin-vue$(APP_VERSION_SUFFIX).js
+	$(installFiles) $(ASSETS_DIR)/cache/saas.js $(ASSETS_DIR)/cache/saas$(APP_VERSION_SUFFIX).js
+	$(installFiles) $(ASSETS_DIR)/cache/theme-editors.js $(ASSETS_DIR)/cache/theme-editors$(APP_VERSION_SUFFIX).js
 	cd $(srcDir) && $(MANAGE) compilemessages
 	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
 	cd $(srcDir) && $(ESCHECK) $(ASSETS_DIR)/cache/*.js $(ASSETS_DIR)/vendor/*.js
@@ -216,6 +231,7 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/@popperjs/core/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/qrcode/build/qrcode.js* $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/@yaireo/tagify/dist/tagify.css $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js.map $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
@@ -328,17 +344,17 @@ schema.yml:
 		$(MANAGE) spectacular --color --file $@ --validate
 
 
-$(ASSETS_DIR)/cache/saas$(APP_VERSION_SUFFIX).js: $(srcDir)/webpack.config.js \
+$(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \
                                $(wildcard $(srcDir)/djaoapp/static/js/*.js) \
                                webpack-conf-paths.json
-	cd $(srcDir) && $(WEBPACK) --env app_version_suffix="$(APP_VERSION_SUFFIX)" -c $<
+	cd $(srcDir) && $(WEBPACK) -c $<
 
 
 webpack-conf-paths.json: $(srcDir)/djaoapp/settings.py
 	cd $(srcDir) && $(MANAGE) generate_webpack_paths -o $@
 
 
-$(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).css: \
+$(ASSETS_DIR)/cache/base.css: \
   $(srcDir)/djaoapp/static/scss/base/base.scss \
   $(wildcard $(srcDir)/djaoapp/static/scss/base/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
@@ -349,14 +365,14 @@ $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).css: \
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/email$(APP_VERSION_SUFFIX).css: \
+$(ASSETS_DIR)/cache/email.css: \
               $(srcDir)/djaoapp/static/scss/email/email.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/email/*.scss) \
               $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss)
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/dashboard$(APP_VERSION_SUFFIX).css: \
+$(ASSETS_DIR)/cache/dashboard.css: \
               $(srcDir)/djaoapp/static/scss/dashboard/dashboard.scss \
               $(wildcard $(srcDir)/djaoapp/static/scss/dashboard/*.scss) \
               $(srcDir)/djaoapp/static/scss/vendor/nv.d3.scss \
@@ -364,12 +380,12 @@ $(ASSETS_DIR)/cache/dashboard$(APP_VERSION_SUFFIX).css: \
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/djaodjin-menubar$(APP_VERSION_SUFFIX).css: \
+$(ASSETS_DIR)/cache/djaodjin-menubar.css: \
               $(srcDir)/djaoapp/static/scss/base/djaodjin-menubar.scss
 	cd $(srcDir) && $(SASSC) $< $@
 
 
-$(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css: \
+$(ASSETS_DIR)/cache/pages.css: \
        $(srcDir)/djaoapp/static/scss/pages/pages.scss \
        $(wildcard $(srcDir)/djaoapp/static/scss/vendor/djaodjin-extended-templates/*.scss) \
        $(srcDir)/djaoapp/static/scss/vendor/jquery-ui.scss \
