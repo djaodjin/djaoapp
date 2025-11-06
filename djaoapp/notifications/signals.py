@@ -1802,12 +1802,14 @@ def role_grant_created_notice(sender, role, reason=None,
     """
     user = role.user
     organization = role.organization
+    request = kwargs.get('request')
     back_url = build_absolute_uri(                          # saas/api/roles.py
         location=reverse('organization_app', args=(organization,)),
-        request=kwargs.get('request'))
+        request=request)
     if role.grant_key:
-        back_url = reverse('saas_role_grant_accept',
-            args=(role.grant_key,))
+        back_url = build_absolute_uri(
+            location=reverse('saas_role_grant_accept', args=(role.grant_key,)),
+            request=request)
     if has_invalid_password(user):
         reason = _("You have been invited to create an account"\
             " to join %(organization)s.") % {
