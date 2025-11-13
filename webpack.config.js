@@ -28,8 +28,8 @@ module.exports = env => ({
           'js/djaodjin-djaoapp-vue.js',
       ],
       pages: [
-          'js/djaodjin-editor.js',
           'js/djaodjin-upload.js',
+          'js/djaodjin-editor.js',
           'js/djaodjin-sidebar-gallery.js',
           'js/djaodjin-plan-edition.js',
       ],
@@ -39,7 +39,7 @@ module.exports = env => ({
           'js/djaodjin-stripe.js'
       ],
       'theme-editors': [
-          'js/djaoapp-theme-editors.js',
+          'js/djaodjin-panel-buttons.js',
           'js/djaodjin-code-editor.js',
           'js/djaodjin-style-editor.js',
       ],
@@ -85,9 +85,8 @@ module.exports = env => ({
           clearMessages: ['js/djaodjin-resources.js', 'clearMessages'],
           showMessages: ['js/djaodjin-resources.js', 'showMessages'],
           showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
-          getMetaCSRFToken: ['js/djaodjin-resources.js', 'getMetaCSRFToken'],
           getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
-          http: ['js/djaodjin-resources.js', 'http'],
+          djApi: ['js/djaodjin-resources.js', 'djApi'],
 
           updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
           updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],

@@ -293,7 +293,8 @@
 
 {% block _bodyscripts %}
 <script type="text/javascript">
-const DJAOAPP_API_BASE_URL = "{{'/api'|site_url}}";
+//const DJAOAPP_API_BASE_URL = "{{'/api'|site_url}}";
+const DJAOAPP_API_BASE_URL = "{{''|site_url}}";
 
 function injectAnalyticsScripts() {
     // inject analytics scripts...
@@ -326,7 +327,6 @@ const PRIVACY_COOKIES_ENABLED = {
 <script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}" defer></script>
@@ -336,6 +336,11 @@ const PRIVACY_COOKIES_ENABLED = {
 {% else %}
 <script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}" defer></script>
 {% endif %}
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  djApi.defaultCSRFToken = "{{csrf_token}}";
+});
+</script>
 {% block bodyscripts %}
 {% endblock %}
 {% endblock %}

@@ -2,83 +2,97 @@
 
 {# media editors #}
 {# ------------- #}
-<div id="media-gallery" class="dj-gallery custom-gallery">
-  <div class="row">
-    <div class="col-12">
-      <div style="margin-left:5px;margin-right:5px;">
-        <hr />
-        <div class="form-group">
-          <input placeholder="{% trans %}Search...{% endtrans %}" class="dj-gallery-filter dj-input" type="text" >
-          <div class="progress gallery-upload-progress" style="display:none;">
-            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-              <span class="progress-bar-info"></span>
-            </div>
-          </div>
+<div id="media-gallery" class="dj-gallery custom-gallery" style="display:none;">
+  <div class="px-2">
+    <div class="modal-header">
+      <h4>{% trans %}Media gallery{% endtrans %}</h4>
+      <button type="button" class="dj-close btn-close" aria-label="{% trans %}Close{% endtrans %}"></button>
+    </div>
+    <div class="dj-gallery-items-container">
+      <input placeholder="{% trans %}Search by tags...{% endtrans %}" class="dj-gallery-filter dj-input" type="text" />
+      <div class="dj-gallery-items">
+      </div>
+      <div class="clickable-area">
+        <em>{% trans %}Drag'n'drop or click here{% endtrans %}</em>
+      </div>
+      <div class="dj-gallery-upload-progress progress" style="display:none;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+          <span class="progress-bar-info"></span>
         </div>
-        <div>
-          <div class="dj-gallery-items">
-          </div>
-          <div class="clickable-area">
-            <em>{% trans %}Drag'n'drop or click here.{% endtrans %}</em>
-          </div>
-          <div class="dj-gallery-info-item">
-            <div class="dj-gallery-info-item-empty">
-                <em>{% trans %}Click on an item to view more options{% endtrans %}</em>
-            </div>
-            <div class="dj-gallery-info-item-selected" style="display: none;">
-              <div class="dj-input-group">
-                <input type="text" class="dj-input" readonly data-dj-gallery-media-url>
-                <span class="dj-input-group-btn">
-                  <button data-dj-gallery-media-location class="dj-gallery-preview-item btn btn-primary" type="button">
-                    <i class="fa fa-eye fa-lg"></i>
-                  </button>
-                </span>
-              </div>
-              <br />
-              <div class="dj-input-group">
-                <input type="text" data-dj-gallery-media-tag class="dj-gallery-tag-input dj-input" placeholder="{% trans %}tags{% endtrans %} ..." aria-describedby="basic-addon1">
-                <span class="dj-input-group-btn">
-                  <button class="dj-gallery-tag-item btn btn-primary" type="button">{% trans %}Tag{% endtrans %}</button>
-                </span>
-              </div>
-              <span class="dj-help-block">
-                {% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}
-              </span>
-              <div class="d-grid gap-2">
-                <button data-dj-gallery-media-location class="dj-gallery-delete-item btn btn-primary">
-                  <i class="fa fa-trash-o fa-lg"></i> {% trans %}Delete{% endtrans %}
-                </button>
-              </div>
-            </div>
-          </div>
+      </div>
+      <div class="form-text help-block">
+        <small class="dj-gallery-message text-muted"></small>
+      </div>
+    </div>
+    <hr />
+    <div class="dj-gallery-info-item">
+      <div class="dj-gallery-info-item-empty">
+        <em>{% trans %}Click on an item to view its metadata{% endtrans %}</em>
+      </div>
+      <div class="dj-gallery-info-item-selected" style="display: none;">
+        <div class="input-group">
+          <input class="dj-gallery-location-input form-control" type="text" readonly />
+          <button class="dj-gallery-copy-location btn btn-secondary" type="button">
+            <i class="fa fa-copy"></i>
+          </button>
+        </div>
+        <div class="input-group mt-2">
+          <input class="dj-gallery-tag-input form-control" type="text" placeholder="{% trans %}tags{% endtrans %} ..." />
+        </div>
+        <div class="dj-help-block form-text help-block">
+          <small class="text-muted">{% trans %}Tags must be separated by a comma. ex: video, title{% endtrans %}</small>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="dj-gallery-preview-item btn btn-primary" type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-preview-media">
+            <i class="fa fa-eye fa-lg"></i> {% trans %}Preview{% endtrans %}
+          </button>
+          <hr />
+          <button class="dj-gallery-delete-item btn btn-danger">
+            <i class="fa fa-trash-o fa-lg"></i> {% trans %}Delete{% endtrans %}
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modal-preview-media" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+  <div class="modal fade" id="modal-preview-media" tabindex="-1" role="dialog"
+       aria-labelledby="modal-preview-media">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}"></button>
           <h4>{% trans %}Preview{% endtrans %}</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}"></button>
         </div>
-        <div class="modal-body" style="padding:0;">
+        <div class="dj-gallery-info-preview modal-body">
+        </div>
+        <div class="modal-footer">
+          <div class="input-group">
+            <input class="dj-gallery-location-input form-control" type="text" readonly />
+            <button class="dj-gallery-copy-location btn btn-secondary" type="button">
+              <i class="fa fa-copy"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div>{# /#media-gallery #}
 
 {% if ENABLE_CODE_EDITOR %}
 {# template editors #}
 {# ---------------- #}
-<div id="code-editor" class="custom-gallery" style="width:800px;right:-800px;">
+<div id="code-editor" class="custom-gallery" style="display:none;">
+  <div class="modal-header px-2">
+    <h4>{% trans %}Template editor{% endtrans %}</h4>
+    <button type="button" class="dj-close btn-close" aria-label="{% trans %}Close{% endtrans %}"></button>
+  </div>
   <ul class="nav nav-tabs dashboard-tab" role="tablist">
     {# tabs are inserted here #}
   </ul>
   <div class="tab-content" style="width:100%;min-height:100%;display:inline;">
     {# panels are inserted here #}
-    <div>{% trans %}No editable templates{% endtrans %}</div>
   </div>
   <div id="new-source" class="modal fade"
        tabindex="-1" role="dialog"
@@ -194,6 +208,7 @@
 </div>
 
 {# aggregated, minified scripts #}
+<script type="text/javascript" src="{{'/assets/vendor/tagify.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/jquery.ba-throttle-debounce.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap-colorpicker.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/ace.js'|asset}}"></script>
@@ -208,7 +223,7 @@
 <script type="text/javascript" src="{{'/assets/vendor/worker-css.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/worker-javascript.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-editors.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-panel-buttons.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-code-editor.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-style-editor.js'|asset}}"></script>
 {% else %}
@@ -218,35 +233,29 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    // uploads
-    $(".dj-upload").djupload({
-        uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
-        csrfToken: "{{csrf_token}}",
-        uploadSuccessMessage: function(filename, location) {
-            return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);
-        },
-    });
-
     // media gallery
-    $(".dj-gallery").djaoAppMediaGallery({
-        mediaUrl: "{{urls.edit.api_medias}}",
+    $("#media-gallery").djgallery({
+        url: "{{urls.edit.api_medias}}",
         S3DirectUploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}?public=1{% endif %}",
-        saveDroppedMediaUrl: "{{urls.edit.api_page_element_base}}",
         csrfToken: "{{csrf_token}}",
-
-        {% if templates %}hints: {{templates|safe}},{% endif %}
 
         // internationalization messages
         uploadCompleteLabel: "{% trans %}Upload completed{% endtrans %}",
         uploadSuccessMessage: function(filename, location) {
-            return '{% trans %}"${filename}" uploaded sucessfully to "${location}"{% endtrans %}'.replace('${filename}', filename).replace('${location}', location);
+            return '{% trans %}"${filename}" uploaded sucessfully to "${location}"{% endtrans %}'.replace(
+                '${filename}', filename).replace('${location}', location);
         },
         uploadPreviousSuccessMessage: function(filename, location) {
-            return '"{% trans %}${filename}" has previously been uploaded to "${location}"{% endtrans %}'.replace('${filename}', filename).replace('${location}', location);
+            return '"{% trans %}${filename}" has previously been uploaded to "${location}"{% endtrans %}'.replace(
+                '${filename}', filename).replace('${location}', location);
         },
         placeholderAcceptsErrorMessage: function(filetypes) {
-            return '{% trans %}This placeholder accepts only: ${filetypes} files.{% endtrans %}'.replace('${filetypes}', filetypes);
-        }
+            return '{% trans %}This placeholder accepts only: ${filetypes} files.{% endtrans %}'.replace(
+                '${filetypes}', filetypes);
+        },
+
+        // overriden `Djgallery` defaults not expected to change in HTML
+        selectedMediaClass: "thumbnail-active",
     });
 
     // templates editors

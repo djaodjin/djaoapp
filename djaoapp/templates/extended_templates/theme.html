@@ -153,6 +153,7 @@
 
 {% block dashboard_bodyscripts %}
 {% if ASSETS_DEBUG %}
+
 {% else %}
 <script type="text/javascript" src="{{'/assets/cache/theme-editors.js'|asset}}"></script>
 {% endif %}
@@ -163,9 +164,15 @@ jQuery(document).ready(function($) {
     $("#theme-upload").djupload({
         uploadUrl: "{{urls.api_themes}}",
         csrfToken: "{{csrf_token}}",
-        uploadSuccessMessage: function(filename, location) {
-            return '{% trans %}"${filename}" uploaded sucessfully{% endtrans %}'.replace('${filename}', filename);
-        }
+        uploadSuccess: function(file, resp, elem) {
+            if( resp.detail ) {
+                showMessages(resp.detail, "success");
+            } else {
+                const msg = '{% trans %}"${filename}" uploaded sucessfully.{% endtrans %}'.replace(
+                    '${filename}', file.name);
+                showMessages([msg], "success");
+            }
+        },
     });
     {% endif %}
 });

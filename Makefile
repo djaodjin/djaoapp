@@ -231,7 +231,7 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/@popperjs/core/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/qrcode/build/qrcode.js* $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/@yaireo/tagify/dist/tagify.css $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js.map $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js.map $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/trip.js/dist/trip.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
@@ -357,6 +357,7 @@ webpack-conf-paths.json: $(srcDir)/djaoapp/settings.py
 $(ASSETS_DIR)/cache/base.css: \
   $(srcDir)/djaoapp/static/scss/base/base.scss \
   $(wildcard $(srcDir)/djaoapp/static/scss/base/*.scss) \
+  $(wildcard $(srcDir)/djaoapp/static/scss/vendor/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/mixins/*.scss) \
   $(wildcard $(srcDir)/djaoapp/static/scss/vendor/bootstrap/utilities/*.scss) \

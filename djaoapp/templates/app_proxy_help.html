@@ -85,3 +85,34 @@
 		</div>
 	</div>
 {% endblock %}
+
+{% block bodyscripts %}
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/assets/cache/pages.js'|asset}}"></script>
+{% endif %}
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+
+    // uploads
+    $(".dj-upload").djupload({
+        uploadUrl: "{% if urls and urls.edit and urls.edit.media_upload %}{{urls.edit.media_upload}}{% endif %}",
+        csrfToken: "{{csrf_token}}",
+        uploadSuccess: function(file, resp, elem) {
+            if( resp.detail ) {
+                showMessages(resp.detail, "success");
+            } else {
+                const msg = '{% trans %}"${filename}" uploaded sucessfully to "${location}"{% endtrans %}'.replace(
+                    '${filename}', filename).replace(
+                    '${location}', location);
+                showMessages([msg], "success");
+            }
+        },
+    });
+});
+</script>
+{% endblock %}

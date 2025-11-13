@@ -91,6 +91,7 @@ class AuthMixin(object):
             raise ValidationError(errors)
 
     def register_finalize(self, user, **cleaned_data):
+        #pylint:disable=unused-argument
         for agreement in self.agreements:
             Signature.objects.create_signature(agreement, user)
 

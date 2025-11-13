@@ -38,45 +38,24 @@ jQuery(document).ready(function($) {
   });
   addPlan.show();
 
-  $(".plan").editPlan({
-      baseUrl: "{{urls.edit.api_plans}}",
-      baseEditPlanUrl: "{{urls.edit.plan_update_base}}",
-      csrfToken: "{{csrf_token}}",
-  });
-
   $(".editable-plan").editor({
     baseUrl: "{{urls.edit.api_plans}}",
-    csrfToken: "{{csrf_token}}",
     uniqueIdentifier: "data-plan",
-    rangeUpdate: function(editable, newVal){
-            var text = "{% trans %}per month{% endtrans %}";
-            newVal = parseInt(newVal);
-            if (newVal === 1){
-                text = "{% trans %}per hour{% endtrans %}";
-            }else if (newVal === 2){
-                text = "{% trans %}per day{% endtrans %}";
-            }else if (newVal === 3){
-                text = "{% trans %}per week{% endtrans %}";
-            }else if (newVal === 4){
-                text = "{% trans %}per month{% endtrans %}";
-            }else if (newVal === 5){
-                text = "{% trans %}per year{% endtrans %}";
-            }
-            editable.text(text);
+    onSuccess: function(self, resp) {
+         // Update slug of plan for new request.
+         var initialSlug = self.getId();
+         if( resp.slug !== initialSlug ) {
+             $('[' + self.uniqueIdentifier + '="' + initialSlug + '"]').attr(
+                self.uniqueIdentifier, resp.slug);
+         }
      },
-     onSuccess: function(self, response){
-            // Update slug of plan for new request.
-            var initialSlug = self.$el.attr("data-plan");
-            if (response.slug !== initialSlug){
-                $("[data-plan=\"" + initialSlug + "\"]").attr("data-plan", response.slug);
-            }
-        },
-        rangePosition: "bottom",
-        delayMarkdownInit: 200
+     rangePosition: "bottom",
+     delayMarkdownInit: 200
   });
 
   $('.editable').editor({
     baseUrl: '{{urls.edit.api_page_element_base}}', // XXX need special URL for .edit-date on legal index page?
+    uploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}{% else %}{{urls.edit.api_medias}}{% endif %}",
     csrfToken: "{{csrf_token}}",
     emptyInputText: "{% trans %}placeholder, type to overwrite...{% endtrans %}",
     hints: {{templates|safe}}
@@ -96,8 +75,8 @@ jQuery(document).ready(function($) {
 <script type="text/javascript" src="{{'/assets/vendor/hallo.js'|asset}}"></script>
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|asset}}"></script>
 {% else %}

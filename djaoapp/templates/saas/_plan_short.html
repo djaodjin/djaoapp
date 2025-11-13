@@ -3,7 +3,7 @@
   amount will be positive and/or the setup fee will.
 -->
 
-<div id="{{plan.slug}}" class="plan col-sm-6 col-md-4 col-lg-4 align-items-stretch" data-plan="{{plan.slug}}">
+<div id="{{plan.slug}}" class="plan col-sm-6 col-md-4 col-lg-4 align-items-stretch" data-url="{{''|site_url}}/api/profile/{{plan.organization}}/plans/{{plan.slug}}" data-plan="{{plan.slug}}"> {# data-plan because of saas/base.html #}
   <div class="plan-short d-flex flex-column justify-content-between">
     <div>
       <!-- Plan title, pricing and description -->
@@ -33,7 +33,7 @@
           {% if plan.is_not_priced %}
           &nbsp;
           {% else %}
-          <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-value="{{plan.period_type}}" data-key="period_type" value="{{plan.period_type}}">
+          <span class="editable-plan edit-range" data-range-min="1" data-range-max="5" data-range-values='[["hourly","{% trans %}Per Hour{% endtrans %}"],["daily","{% trans %}Per Day{% endtrans %}"],["weekly","{% trans %}Per Week{% endtrans %}"],["monthly","{% trans %}Per Month{% endtrans %}"],["yearly","{% trans %}Per Year{% endtrans %}"]]' data-range-value="{{plan.period_type}}" data-key="period_type">
             {{plan.period_type|humanize_period|title}}
           </span>
           {% endif %}

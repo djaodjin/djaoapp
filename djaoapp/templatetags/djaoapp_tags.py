@@ -3,21 +3,20 @@
 
 from deployutils.apps.django_deployutils.compat import (
     is_authenticated as base_is_authenticated)
+from deployutils.apps.django_deployutils.templatetags import (
+    deployutils_prefixtags)
 from django import template
 from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.forms import widgets, BaseForm
 from django.template.defaultfilters import capfirst
-from deployutils.apps.django_deployutils.templatetags import (
-    deployutils_prefixtags)
 from multitier.templatetags.multitier_tags import (
     asset as asset_base,
     site_printable_name as site_printable_name_base,
     site_url as site_url_base)
 from saas.templatetags.saas_tags import attached_organization
 
-from ..compat import force_str, reverse, six, urljoin
-from ..thread_locals import build_absolute_uri
+from ..compat import force_str, reverse, six
 
 register = template.Library()
 
