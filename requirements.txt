@@ -6,7 +6,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.33.13                    # last version compatible with Py3.7
-Django==4.2.25
+Django==4.2.26
 django-phonenumber-field==7.1.0
 django-recaptcha==4.0.0           # 4.0.0 renamed namespace 'django_recaptcha'
                                   # 2.0.6 requires Django<4.0
@@ -15,7 +15,7 @@ djangorestframework==3.15.2       # 3.15 requires Django>=4.2, Python>=3.8
 # We need a version of django-fernet-fields that supports Django4.2
 django-fernet-fields @ git+https://github.com/djaodjin/django-fernet-fields.git@6f261ed465a7fbafa1c41b635f7acd9fd6f3ccca
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.14.1
+djaodjin-deployutils==0.14.2
 djaodjin-extended-templates==0.4.11
 djaodjin-multitier==0.3.1
 djaodjin-rules==0.4.10
@@ -34,7 +34,8 @@ PyJWT==2.10.1                     # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
 pyotp==2.8.0
 pytz==2025.1
-social-auth-app-django==5.4.2     # 5.2.0 drops support for Django<3.2
+social-auth-app-django==5.4.3     # 5.5.0 drops support for Django<5.1
+                                  # 5.2.0 drops support for Django<3.2
                                   # v1.2.0 does not support Django>=2.1
 stripe==12.5.1                    # Stripe>=13 removed error.py
 whitenoise==6.4.0
