@@ -136,7 +136,8 @@ initdb: install-default-themes initdb-djaoapp initdb-cowork \
         djaoapp/fixtures/160-subscriptions.json \
         djaoapp/fixtures/170-billing.json \
         djaoapp/fixtures/180-auth.json \
-        djaoapp/fixtures/200-saas-roles.json
+        djaoapp/fixtures/200-saas-roles.json \
+        djaoapp/fixtures/300-djaoapp-profiles.json
 	@echo "-- Set streetside processor deposit key."
 	$(SQLITE) $(DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' WHERE is_provider AND slug != 'djaoapp';"
 	$(SQLITE) $(MULTITIER_DB_FILENAME) "UPDATE saas_organization set processor_deposit_key='$(STRIPE_TEST_CONNECTED_KEY)' where is_provider=1;"

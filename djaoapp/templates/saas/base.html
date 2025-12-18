@@ -1,13 +1,6 @@
 {% extends "base.html" %}
 
 {% block localheader %}
-{% if STRIPE_PUB_KEY %}
-{% if STRIPE_INTENT_SECRET %}
-<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
-{% else %}
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-{% endif %}
-{% endif %}
 {% block saas_localheader %}{% endblock %}
 {% endblock %}
 
@@ -65,66 +58,83 @@
 {% endblock %}
 
 {% block bodyscripts %}
-<script type="text/javascript" src="{{'/assets/vendor/jquery.payment.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/lodash.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/trip.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|asset}}"></script>
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$labels = {
+    notAvailableLabel: "{% trans %}N/A{% endtrans %}",
+    cardNumberLabel: "{% trans %}Card Number{% endtrans %}",
+    securityCodeLabel: "{% trans %}Security Code{% endtrans %}",
+    expirationLabel: "{% trans %}Expiration{% endtrans %}",
+    cardHolderLabel: "{% trans %}Card Holder{% endtrans %}",
+    streetAddressLabel: "{% trans %}Street address{% endtrans %}",
+    localityLabel: "{% trans %}City/Town{% endtrans %}",
+    regionLabel: "{% trans %}State/Province/County{% endtrans %}",
+    postalCodeLabel: "{% trans %}Zip/Postal code{% endtrans %}",
+    countryLabel: "{% trans %}Country{% endtrans %}",
+    fieldShoundNotBeEmptyError: "{% trans %}This field shouldn't be empty{% endtrans %}",
+    fieldsCannotBeEmptyError: " {% trans %}field(s) cannot be empty.{% endtrans %}",
+}
+Vue.prototype.$globals = {
+    'humanizeDate': humanizeDate,
+    'humanizeNumber': humanizeNumber,
+    'humanizePeriodHeading': humanizePeriodHeading,
+    'humanizeTimeDelta': humanizeTimeDelta
+};
+
+humanizeTimeDelta.$labels = {
+    timeAgoTemplate: "{% trans %}%(timedelta)s ago{% endtrans %}",
+    timeLeftTemplate: "{% trans %}%(timedelta)s left{% endtrans %}",
+};
+</script>
+{% block saas_bodyscripts %}{% endblock %}
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-postal.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-saas.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-stripe.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-themes-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-djaoapp-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-metrics.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/saas.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|asset}}"></script>
 {% endif %}
+
+<script type="text/javascript">
+Vue.use(Croppa);
+{% if FEATURES_REVERT_TO_VUE2 %}
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+{% else %}
+var app = createApp({
+  delimiters: ["[[","]]"],
+}).mount('#app');
+{% endif %}
+</script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-{% if urls and urls.provider %}
-    $("[data-plan]").plan({
-        saas_api_plan: "{{ urls.provider.api_plans }}",
-        saas_metrics_plans: "{{ urls.provider.metrics_plans }}",
-        message_created: "{% trans %}Plan was created successfully.{% endtrans %}",
-        message_deleted: "{% trans %}Plan was successfully deleted.{% endtrans %}"
-    });
-{% endif %}
-
-{% if charge %}
-    $(".charge-refund").click(function () {
-        var self = $(this);
-        $("#charge-refund").refund({
-            availableAmount: self.attr("data-available-amount"),
-            linenum: self.attr("data-linenum"),
-            saas_api_charge_refund: "{{ urls.charge.api_refund }}",
-            refundedLabel: "<em>{% trans %}Refunded{% endtrans %}</em>",
-            refundButton: self
-        });
-    });
-    $("#email-charge-receipt").chargeEmailReceipt({
-        initialState: "{{charge.state_string}}",
-        saas_api_email_charge_receipt:
-            "{{ urls.charge.api_email_receipt }}"
-    });
-
-    $("#{{charge}}").chargeMonitor({
-        initialState: "{{charge.state_string}}",
-        saas_api_charge: "{{ urls.charge.api_base }}"
-    });
-{% endif %}
-
-{% if urls and urls.api_redeem %}
-    $("#redeem-code").redeem(
-        {'saas_api_redeem_coupon': "{{ urls.api_redeem }}" });
-{% endif %}
-
-
-{% if urls and urls.api_cart %}
-    $(".remove-cart-item").cartItem({
-        api_cart: "{{ urls.api_cart }}",
-        csrfToken: "{{csrf_token}}", // invoiceables.html
-        addLabel: "{% trans %}Add to Cart{% endtrans %}",
-        removeLabel: "{% trans %}Remove from Cart{% endtrans %}",
-        reload: true
-    });
-{% endif %}
-
-    if ($('[data-trip]').length > 0){
+   if ($('[data-trip]').length > 0){
         $("#help-request").parent().show();
         $("#help-request").click(function(){
             var trip = new Trip({
@@ -139,5 +149,4 @@ jQuery(document).ready(function($) {
     }
 });
 </script>
-{% block saas_bodyscripts %}{% endblock %}
 {% endblock %}

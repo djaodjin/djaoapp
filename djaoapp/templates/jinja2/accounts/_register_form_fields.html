@@ -2,11 +2,11 @@
 
 {% block form_block %}
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-{% if form['email_code'] %}
-{{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
+{% if form['check_email'] %}
+{{ input_field(form['check_email'], hide_labels=form.hide_labels) }}
 {% endif %}
-{% if form['phone_code'] %}
-{{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
+{% if form['check_phone'] %}
+{{ input_field(form['check_phone'], hide_labels=form.hide_labels) }}
 {% endif %}
 
 {% if form['full_name'] %}
@@ -15,8 +15,14 @@
 {% if form['email'] %}
 {{ input_field(form['email'], hide_labels=form.hide_labels) }}
 {% endif %}
+{% if form['email_code'] and not email_verification_link %}
+{{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
+{% endif %}
 {% if form['phone'] %}
 {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
+{% endif %}
+{% if form['phone_code'] and not phone_verification_link %}
+{{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['username'] %}
 {{ input_field(form['username'], hide_labels=form.hide_labels) }}
@@ -29,7 +35,7 @@
 {{ input_field(form['password'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['terms-of-use'] %}
-{{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
+{{ input_field(form['terms-of-use'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if 'captcha' in form.fields %}
 {{ input_field(form['captcha'], hide_labels=form.hide_labels) }}

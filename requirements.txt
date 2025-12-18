@@ -16,11 +16,11 @@ djangorestframework==3.15.2       # 3.15 requires Django>=4.2, Python>=3.8
 django-fernet-fields @ git+https://github.com/djaodjin/django-fernet-fields.git@6f261ed465a7fbafa1c41b635f7acd9fd6f3ccca
 # next 8 usually installed through source repo directly.
 djaodjin-deployutils==0.14.2
-djaodjin-extended-templates==0.4.11
+djaodjin-extended-templates==0.4.12
 djaodjin-multitier==0.3.1
-djaodjin-rules==0.4.10
-djaodjin-saas==1.1.5
-djaodjin-signup==0.10.4
+djaodjin-rules==0.4.11
+djaodjin-saas==1.1.6
+djaodjin-signup==0.10.5
 docutils==0.15.2                  # botocore has a constraint: docutils<0.16
 drf-spectacular==0.27.0           # to display 'themes' notifications pages
 googlemaps==4.10.0

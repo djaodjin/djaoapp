@@ -15,9 +15,9 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from rest_framework import serializers
+from saas.helpers import full_name_natural_split, update_context_urls
 from saas.mixins import ProviderMixin
 from saas.models import Organization
-from saas.utils import full_name_natural_split, update_context_urls
 from signup.auth import validate_redirect
 
 from ..compat import gettext_lazy as _, reverse, six
@@ -128,7 +128,7 @@ class ContactView(ProviderMixin, FormView):
                 user = user_model.objects.get(email=email)
             except user_model.DoesNotExist:
                 #pylint:disable=unused-variable
-                first_name, mid, last_name = full_name_natural_split(
+                first_name, last_name = full_name_natural_split(
                     form.cleaned_data.get('full_name', None))
                 user = user_model(
                     email=email, first_name=first_name, last_name=last_name)

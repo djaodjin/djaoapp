@@ -14,9 +14,9 @@ from multitier.thread_locals import set_current_site
 from multitier.utils import get_site_model
 from saas.models import (CartItem, Charge, ChargeItem, Coupon, Organization,
     Plan, Subscription, Transaction)
-from saas import humanize, settings as saas_settings
-from saas.utils import datetime_or_now, generate_random_slug
-from saas import signals as saas_signals
+from saas import humanize, settings as saas_settings, signals as saas_signals
+from saas.helpers import datetime_or_now
+from saas.utils import generate_random_slug
 from signup import signals as signup_signals
 
 from ...compat import timezone_or_utc

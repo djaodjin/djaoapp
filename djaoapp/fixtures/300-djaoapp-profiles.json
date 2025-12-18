@@ -1,0 +1,35 @@
+[
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00-09:00",
+      "last_login": "2025-01-01T00:00:00-09:00",
+      "email": "xia+300@localhost.localdomain",
+      "first_name": "Xia300",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_name": "djaoappProfileAPI1",
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia300"}, "model": "auth.User", "pk": 300
+},
+{
+    "fields": {
+      "last_signed": "2025-01-01T00:00:00-00:00",
+      "agreement": 1, "user": 300}, "model": "saas.signature", "pk": 300
+},
+{
+    "fields": {
+      "full_name": "Xia300",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "email": "xia+300@localhost.localdomain",
+      "processor": 1,
+      "is_active": 1,
+      "slug": "xia300"}, "model": "saas.Organization", "pk": 300
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 300, "user": 300}, "model": "saas.Role", "pk": 300
+}
+]

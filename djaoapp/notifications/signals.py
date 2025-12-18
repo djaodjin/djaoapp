@@ -1554,27 +1554,35 @@ def profile_updated_notice(sender, organization, changes, user,
         extra={'event': 'update-fields', 'organization': str(organization),
                'changes': changes})
     broker = get_broker()
+    request = kwargs.get('request')
     back_url = build_absolute_uri( # saas/views/profile.py
         location=reverse(          # saas/api/organizations.py
             'saas_organization_profile', args=(organization,)),
-        request=kwargs.get('request'))
+        request=request)
     # Some changes are still typed by the model field (ex: Country).
     # We want to make sure we have a JSON-serializable `changes` dict here.
+    non_empty_fields_updated = False
     for change in six.itervalues(changes):
+        pre = change.get('pre')
+        if pre:
+            non_empty_fields_updated = True
         change.update({
-            'pre': str(change.get('pre')),
+            'pre': str(pre),
             'post': str(change.get('post'))
         })
     context={
         'broker': broker,
         'back_url': back_url,
-        'originated_by': user,
+        'originated_by': request.user if request else None,
         'profile': organization,
         'changes': changes
     }
-    send_notification('profile_updated',
-      context=ChangeProfileNotificationSerializer().to_representation(context),
-      **kwargs)
+    if non_empty_fields_updated:
+        # We are not going to send notifications if all fields updated
+        # were previously empty.
+        send_notification('profile_updated',
+            context=ChangeProfileNotificationSerializer().to_representation(
+            context), **kwargs)
 
 
 # We insure the method is only bounded once no matter how many times

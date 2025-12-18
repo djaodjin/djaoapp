@@ -20,9 +20,11 @@
   {{ input_field(form['postal_code'], hide_labels=form.hide_labels) }}
   {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
 </fieldset>
+{% if form['terms-of-use'] %}
 <fieldset>
-  {{ checkbox_input_field("terms-of-use", "terms-of-use", True, "I have read and accept the <a target=\"_blank\" href=\"/legal/terms-of-use/\">terms of use</a>",  errors=form['terms-of-use'].errors, hide_labels=form.hide_labels) }}
+{{ input_field(form['terms-of-use'], hide_labels=form.hide_labels) }}
 </fieldset>
+{% endif %}
 {% if 'captcha' in form.fields %}
 <fieldset>
 {{ input_field(form['captcha'], hide_labels=form.hide_labels) }}

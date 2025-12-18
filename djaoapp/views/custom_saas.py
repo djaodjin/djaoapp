@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 import logging
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from saas import settings as saas_settings
 from saas.models import get_broker
 from saas.backends.stripe_processor.views import (
@@ -16,8 +15,7 @@ from saas.views.extra import (
     PrintableChargeReceiptView as PrintableChargeReceiptBaseView)
 from saas.views.profile import (DashboardView as BaseDashboardView,
     OrganizationProfileView as OrganizationProfileViewBase)
-from saas.utils import update_context_urls, update_db_row
-from signup.helpers import full_name_natural_split
+from saas.helpers import update_context_urls
 from signup.models import get_user_contact
 
 from ..compat import reverse
@@ -87,32 +85,6 @@ class OrganizationProfileView(OrganizationProfileViewBase):
                 'api_candidates': reverse('saas_api_search_users'),
             })
         return context
-
-    def update_attached_user(self, form):
-        validated_data = form.cleaned_data
-        user = self.object.attached_user()
-        if user:
-            user.username = validated_data.get('slug', user.username)
-            user.email = validated_data.get('email', user.email)
-            full_name = validated_data.get('full_name')
-            if full_name:
-                #pylint:disable=unused-variable
-                first_name, mid, last_name = full_name_natural_split(full_name)
-                user.first_name = first_name
-                user.last_name = last_name
-            if update_db_row(user, form):
-                raise ValidationError("update_attached_user (user)")
-            contact = get_user_contact(self.object.attached_user())
-            if contact:
-                contact.slug = validated_data.get('slug', contact.slug)
-                if full_name:
-                    contact.full_name = full_name
-                contact.email = validated_data.get('email', contact.email)
-                contact.phone = validated_data.get('phone', contact.phone)
-                contact.lang = validated_data.get('lang', contact.lang)
-                if update_db_row(contact, form):
-                    raise ValidationError("update_attached_user (contact)")
-        return user
 
     def get_form_class(self):
         if self.object.attached_user():

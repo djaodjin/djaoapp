@@ -48,16 +48,19 @@
               </td>
               <td>
                   <button class="btn btn-danger btn-sm"
-                    @click="remove(row.key)">
+                    @click="remove(row.slug)">
                       <i class="fa fa-trash-o"></i></button>
               </td>
-              <td>[[row.key]]</td>
+              <td>[[row.title]]</td>
               <td class="text-end"
-                  v-for="col in row.values">
-                  <a target="_blank"
-                     :href="'{{urls.broker_transactions}}' + row.selector + '/?start_at=' + startPeriod + '&ends_at=' + col[0] ">
+                  v-for="(col, colIdx) in row.values">
+                  <a :href="selectorURL(row.selector, row.values[colIdx - 1][0], col[0])"
+                     v-if="colIdx > 0">
                     [[$globals.humanizeNumber(col[1])]]
                   </a>
+                  <span v-if="colIdx == 0">
+                    [[$globals.humanizeNumber(col[1])]]
+                  </span>
               </td>
           </tr>
       </tbody>

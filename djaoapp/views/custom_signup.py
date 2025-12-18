@@ -7,6 +7,7 @@ import logging
 from django.conf import settings
 from rules.mixins import AppMixin
 from saas.models import Agreement, get_broker
+from saas import settings as saas_settings
 from signup.views.auth import (
     ActivationView as ActivationBaseView,
     PasswordResetConfirmView as PasswordResetConfirmBaseView,
@@ -31,7 +32,8 @@ class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
     def get_initial(self):
         kwargs = super(ActivationView, self).get_initial()
         kwargs.update({
-            'extra_fields': [(agreement.slug, agreement.title, False)
+            'extra_fields': [(agreement.slug, agreement.title,
+                              agreement.slug == saas_settings.TERMS_OF_USE)
                 for agreement in Agreement.objects.all()]
         })
         return kwargs
@@ -62,7 +64,8 @@ class SigninView(AuthMixin, AppMixin, SigninBaseView):
             'region': broker.region
         })
         kwargs.update({
-            'extra_fields': [(agreement.slug, agreement.title, False)
+            'extra_fields': [(agreement.slug, agreement.title,
+                              agreement.slug == saas_settings.TERMS_OF_USE)
                 for agreement in Agreement.objects.all()]
         })
         return kwargs
@@ -93,7 +96,8 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
             'region': broker.region
         })
         kwargs.update({
-            'extra_fields': [(agreement.slug, agreement.title, False)
+            'extra_fields': [(agreement.slug, agreement.title,
+                              agreement.slug == saas_settings.TERMS_OF_USE)
                 for agreement in Agreement.objects.all()]
         })
         return kwargs

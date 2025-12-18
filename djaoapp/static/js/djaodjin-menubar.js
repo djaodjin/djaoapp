@@ -19,7 +19,7 @@
 
 
 const API_URL = typeof DJAOAPP_API_BASE_URL !== 'undefined' ?
-  DJAOAPP_API_BASE_URL : "/api";
+  DJAOAPP_API_BASE_URL : '';
 
 
 async function injectUserMenubarItem() {
@@ -39,7 +39,7 @@ async function injectUserMenubarItem() {
         params['credentials'] = 'include';
     }
 
-    const resp = await fetch(API_URL + '/auth/tokens', params)
+    const resp = await fetch(API_URL + '/api/auth/tokens', params)
     if( !resp.ok ) return;
 
     // The assignment will replace the inner content

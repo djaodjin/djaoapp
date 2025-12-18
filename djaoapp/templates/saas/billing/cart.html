@@ -1,4 +1,4 @@
-{% extends "saas/base.html" %}
+{% extends "base.html" %}
 
 {% block body_top_template %}
   {% include "saas/_body_top_template.html" %}
@@ -99,14 +99,36 @@
 </section>
 {% endblock %}
 
-{% block saas_bodyscripts %}
+{% block bodyscripts %}
+{% if STRIPE_PUB_KEY %}
+{% if STRIPE_INTENT_SECRET %}
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+{% else %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+{% endif %}
+{% endif %}
+<script type="text/javascript" src="{{'/assets/vendor/jquery.payment.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/assets/js/djaodjin-postal.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-saas.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-stripe.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/assets/cache/saas.js'|asset}}"></script>
+{% endif %}
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         $(".collapsible").click(function(event) {
             var self = this;
             event.preventDefault();
             $(self).next().toggle();
+            $(self).next().find('input').focus();
         });
+
+        $("#redeem-code").redeem({
+            'saas_api_redeem_coupon': "{{ urls.api_redeem }}"
+        });
+
         var cardForm = $("#payment-form");
         {% if urls and urls.api_cart %}
         if( cardForm.length > 0 ) {

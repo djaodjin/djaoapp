@@ -25,24 +25,24 @@
         <button id="email-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
         {% elif not form['password'] and phone_verification_link %}
         <button id="phone-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
-        {% elif form['new_password'] %}
-        <button type="submit" class="btn btn-primary btn-md">
-            {% trans %}Sign Up{% endtrans %}
-        </button>
-        {% elif form['email_code'] %}
+        {% elif form['email_code'] and not form['email_code'].value %}
         <button type="submit" class="btn btn-primary btn-md">
             {% trans %}Verify Email Address{% endtrans %}
         </button>
         <div class="form-text help-block">
           <small class="text-muted">{% trans %}Not seeing the email in your inbox? try the {% endtrans %}<a href="{{'/docs/faq/'|site_url}}">FAQ</a></small>
         </div>
-        {% elif form['phone_code'] %}
+        {% elif form['phone_code'] and not form['phone_code'].value %}
         <button type="submit" class="btn btn-primary btn-md">
             {% trans %}Verify Phone Number{% endtrans %}
         </button>
         <div class="form-text help-block">
           <small class="text-muted">{% trans %}Not seeing the text message? try the {% endtrans %}<a href="{{'/docs/faq/'|site_url}}">FAQ</a></small>
         </div>
+        {% elif form['new_password'] %}
+        <button type="submit" class="btn btn-primary btn-md">
+            {% trans %}Sign Up{% endtrans %}
+        </button>
         {% else %}
         <button type="submit" class="btn btn-primary btn-md">
             {% trans %}Continue{% endtrans %} &raquo;
@@ -65,6 +65,23 @@
       <div class="form-action text-center mt-2">
         <div class="d-grid gap-2">
           <button id="email-verification-link" class="btn btn-outline-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% elif form['password'] and phone_verification_link %}
+  <hr />
+  <div class="text-center">
+    <p>
+      Or
+    </p>
+    <form method="post" action="./{% if next %}?next={{next}}{% endif %}">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <input type="hidden" name="check_phone" value="1">
+      <input type="hidden" name="username" value="{{form['username'].value()}}">
+      <div class="form-action text-center mt-2">
+        <div class="d-grid gap-2">
+          <button id="phone-verification-link" class="btn btn-outline-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
         </div>
       </div>
     </form>

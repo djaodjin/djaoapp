@@ -202,6 +202,52 @@
       "email_verified_at": "2025-01-01T00:00:00+00:00",
       "user": 193,
       "slug": "xia20"}, "model": "signup.Contact", "pk": 193
+},
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "email": "xia+21@localhost.localdomain",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia21"}, "model": "auth.User", "pk": 194
+},
+{
+    "fields": {
+      "last_signed": "2025-01-01T00:00:00+00:00",
+      "agreement": 1, "user": 194}, "model": "saas.signature", "pk": 194
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "email": "xia+21@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verified_at": "2025-01-01T00:00:00+00:00",
+      "phone": "+14155554444",
+      "user": 194,
+      "slug": "xia21"}, "model": "signup.Contact", "pk": 194
+},
+{
+    "fields": {
+      "full_name": "Xia21",
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "email": "xia+21@localhost.localdomain",
+      "phone": "555-555-5555",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1,
+      "slug": "xia21"}, "model": "saas.Organization", "pk": 194
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 194, "user": 194}, "model": "saas.Role", "pk": 194
 }
-
 ]

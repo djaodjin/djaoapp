@@ -12,9 +12,9 @@ from rest_framework.exceptions import ValidationError
 from rules import signals as rules_signals
 from rules.utils import get_current_app
 from saas import settings as saas_settings
+from saas.helpers import update_context_urls
 from saas.models import Agreement, Organization, Plan, Signature, get_broker
-from saas.utils import get_organization_model, update_context_urls
-from signup.helpers import full_name_natural_split
+from saas.utils import get_organization_model
 from signup.models import Notification
 
 from .compat import gettext_lazy as _, reverse, six
@@ -65,6 +65,8 @@ class AuthMixin(object):
         'street_address',
         'username',
     )
+
+    organization_model = get_organization_model()
 
     def register_check_data(self, contact, **cleaned_data):
         errors = {}
@@ -130,7 +132,8 @@ class AuthMixin(object):
         with transaction.atomic(using=router.db_for_write(get_user_model())):
             # Create a ``User``
             username = args[0]
-            organization = Organization.objects.filter(slug__iexact=username)
+            organization = self.organization_model.objects.filter(
+                slug__iexact=username)
             if organization.exists():
                 # If an `Organization` with slug == username exists,
                 # it is bound to create problems later on.
@@ -149,14 +152,10 @@ class AuthMixin(object):
                 last_name = cleaned_data.get('last_name', "")
                 full_name = cleaned_data.get(user_selector,
                     cleaned_data.get('full_name', None))
-                if not first_name:
-                    # If the form does not contain a first_name/last_name
-                    # pair, we assume a full_name was passed instead.
-                    #pylint:disable=unused-variable
-                    first_name, mid, last_name = full_name_natural_split(
-                        full_name)
                 if not full_name:
-                    full_name = ("%s %s" % (first_name, last_name)).strip()
+                    full_name = ' '.join([
+                        first_name if first_name else "",
+                        last_name if last_name else ""]).strip()
                 organization_name = cleaned_data.get(
                     organization_selector, full_name)
                 organization_extra = {}
@@ -188,7 +187,7 @@ class AuthMixin(object):
                 if ('type' in cleaned_data and
                     cleaned_data['type'] == Organization.ACCOUNT_PROVIDER):
                     organization_kwargs = {'is_provider': True}
-                account = get_organization_model().objects.create(
+                account = self.organization_model.objects.create(
                     slug=organization_slug,
                     full_name=organization_name,
                     email=_clean_field(cleaned_data, 'email'),

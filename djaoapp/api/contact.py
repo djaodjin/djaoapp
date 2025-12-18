@@ -17,10 +17,10 @@ from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from saas.api.serializers import ValidationDetailSerializer
 from saas.docs import extend_schema, OpenApiResponse
+from saas.helpers import full_name_natural_split
 from saas.mixins import ProviderMixin
 from saas.models import Organization
 from saas.pagination import TypeaheadPagination
-from saas.utils import full_name_natural_split
 
 from ..compat import gettext_lazy as _, six
 from ..signals import user_contact
@@ -83,7 +83,7 @@ class ContactUsAPIView(ProviderMixin, GenericAPIView):
                 user = user_model.objects.get(email=email)
             except user_model.DoesNotExist:
                 #pylint:disable=unused-variable
-                first_name, mid, last_name = full_name_natural_split(
+                first_name, last_name = full_name_natural_split(
                     serializer.validated_data.get('full_name', None))
                 user = user_model(
                     email=email, first_name=first_name, last_name=last_name)

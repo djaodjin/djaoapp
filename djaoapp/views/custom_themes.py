@@ -1,9 +1,10 @@
-# Copyright (c) 2023, DjaoDjin inc.
+# Copyright (c) 2025, DjaoDjin inc.
 # see LICENSE
 
 from extended_templates.views.themes import (
     ThemePackagesView as  ThemePackageBaseView,
     ThemePackageDownloadView as ThemePackageDownloadBaseView)
+from signup.helpers import update_context_urls
 
 from ..compat import reverse
 from ..mixins import NotificationsMixin
@@ -20,7 +21,7 @@ class ThemePackageView(NotificationsMixin, ThemePackageBaseView):
     def get_context_data(self, **kwargs):
         context = super(ThemePackageView, self).get_context_data(**kwargs)
         context.update({'notifications': self.get_notifications()})
-        self.update_context_urls(context, {
+        update_context_urls(context, {
             'send_test_email': reverse('api_notification_base')
         })
         return context

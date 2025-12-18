@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from extended_templates.models import get_show_edit_tools
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 from rules.mixins import AppMixin
+from signup.helpers import update_context_urls
 
 from ..api.notifications import get_test_notification_context
 from ..compat import reverse
@@ -86,7 +87,7 @@ class NotificationDetailView(AppMixin, TemplateView):
             'api_sources': reverse('extended_templates_api_sources'),
             'iframe_url': reverse('notification_inner_frame',
                 args=(template_name,))})
-        self.update_context_urls(context, {
+        update_context_urls(context, {
             'send_test_email': reverse('api_notification_base')
         })
         return context

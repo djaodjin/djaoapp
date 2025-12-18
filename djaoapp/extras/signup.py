@@ -46,7 +46,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
             if picture_candidate:
                 setattr(self.user, 'picture', picture_candidate.picture)
 
-        self.update_context_urls(context, {
+        update_context_urls(context, {
             # The following are copy/pasted
             # from `signup.UserProfileView`
             # to be used in the personal profile page.

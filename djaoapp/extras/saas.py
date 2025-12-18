@@ -49,14 +49,14 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
             processor_hint = 'configure_broker'
         elif requires_provider_keys and not provider_pub_key:
             processor_hint = 'connect_provider'
-            self.update_context_urls(context, {'provider': {
+            update_context_urls(context, {'provider': {
                 'bank': reverse('saas_update_bank', args=(app.account,))}})
         elif not broker_pub_key.startswith('pk_live_'):
             processor_hint = 'configure_broker_livemode'
         elif (requires_provider_keys and
               not provider_pub_key.startswith('pk_live_')):
             processor_hint = 'connect_provider_livemode'
-            self.update_context_urls(context, {'provider': {
+            update_context_urls(context, {'provider': {
                 'bank': reverse('saas_update_bank', args=(app.account,))}})
         context.update({'processor_hint': processor_hint})
 
@@ -66,7 +66,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                     del context['urls']['theme_update']
                 if 'rules' in context['urls']:
                     del context['urls']['rules']
-        self.update_context_urls(context, {
+        update_context_urls(context, {
             'api_places_suggestions': reverse('api_places_suggestions'),
             'profile_redirect': reverse('accounts_profile'),
             'trust_compliance': reverse('trust_compliance', args=(
@@ -98,7 +98,7 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                 if picture_candidate:
                     setattr(user, 'picture', picture_candidate.picture)
 
-            self.update_context_urls(context, {
+            update_context_urls(context, {
                 # The following are copy/pasted
                 # from `signup.UserProfileView`
                 # to be used in the personal profile page.
@@ -146,3 +146,18 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                     user=user).exists()})
 
         return context
+
+
+    def update_attached_user(self, user, validated_data):
+        from signup.models import get_user_contact
+        contact = get_user_contact(user)
+        if contact:
+            contact.slug = validated_data.get('slug', contact.slug)
+            full_name = validated_data.get('full_name')
+            if full_name:
+                contact.full_name = full_name
+            contact.email = validated_data.get('email', contact.email)
+            contact.phone = validated_data.get('phone', contact.phone)
+            contact.lang = validated_data.get('lang', contact.lang)
+            contact.save()
+        return user

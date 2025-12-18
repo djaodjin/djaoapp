@@ -672,6 +672,10 @@ LOGGING = {
             'handlers': [],
             'level': 'INFO',
         },
+        'weasyprint': {
+            'handlers': [],
+            'level': 'INFO',
+        },
 #        'django.db.backends': {
 #           'handlers': ['db_log'],
 #           'level': 'DEBUG',

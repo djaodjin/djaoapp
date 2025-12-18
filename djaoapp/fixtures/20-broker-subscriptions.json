@@ -587,10 +587,10 @@
 
 {
     "fields": {
-      "slug": "xia21",
-      "full_name": "Xia21",
+      "slug": "subscriptions-api-1",
+      "full_name": "Xia SubscriptionsAPI1",
       "created_at": "2025-01-01T00:00:00+00:00",
-      "email": "xia+21@localhost.localdomain",
+      "email": "xia+subscriptions-api-1@localhost.localdomain",
       "phone": "555-555-5555",
       "locality":  "San Francisco",
       "region": "CA",
@@ -603,15 +603,15 @@
 {
     "fields": {
       "date_joined": "2025-01-01T00:00:00-09:00",
-      "email": "xia+21@localhost.localdomain",
-      "first_name": "Xia21",
+      "email": "xia+subscriptions-api-1@localhost.localdomain",
+      "first_name": "Xia",
       "last_name": "BillingAPI13SubscriptionsAPI1",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2025-01-01T00:00:00-09:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia21"
+      "username": "subscriptions-api-1"
     },
     "model": "auth.User", "pk": 31
 },

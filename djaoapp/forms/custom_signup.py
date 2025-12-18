@@ -142,17 +142,24 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
         # Define  extra fields dynamically. These are optional but might be
         # enforced as required within `form_valid`
         # (ex: legal agreement checkbox).
+        data = kwargs.get('data')
         for extra_field in self.initial.get('extra_fields', []):
-            if extra_field[0] == saas_settings.TERMS_OF_USE:
+            field_name = extra_field[0]
+            if field_name == saas_settings.TERMS_OF_USE:
                 legal_agreement_url = reverse(
-                    'legal_agreement', args=(extra_field[0],))
-                self.fields[extra_field[0]] = forms.BooleanField(
-                    label=mark_safe(_("I agree with <a href=\"%s\">terms and"\
-                    " conditions</a>") % legal_agreement_url),
+                    'legal_agreement', args=(field_name,))
+                self.fields[field_name] = forms.BooleanField(
+                    label=mark_safe(_("I have read and accept the"\
+                    " <a href=\"%s\">%s</a>.") % (
+                    legal_agreement_url, "terms of use")),
                     required=extra_field[2])
+                if data and field_name in data:
+                    self.fields[field_name].initial = bool(data.get(field_name))
             else:
-                self.fields[extra_field[0]] = forms.CharField(
+                self.fields[field_name] = forms.CharField(
                     label=_(extra_field[1]), required=extra_field[2])
+                if data and field_name in data:
+                    self.fields[field_name].initial = data.get(field_name)
 
     def clean(self):
         """
@@ -400,5 +407,27 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
 
 class CodeActivationForm(ActivationForm):
 
-    email_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
-    phone_code = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    email_code = forms.IntegerField(required=False)
+    phone_code = forms.IntegerField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(CodeActivationForm, self).__init__(*args, **kwargs)
+        initial = kwargs.get('initial')
+        data = kwargs.get('data')
+        if initial and data:
+            email = initial.get('email')
+            email_code = data.get('email_code')
+            if email:
+                self.fields['email'].widget.attrs['readonly'] = True
+                if email_code:
+                    self.fields['email_code'].widget = forms.HiddenInput()
+            else:
+                self.fields['email_code'].widget = forms.HiddenInput()
+            phone = initial.get('phone')
+            phone_code = data.get('phone_code')
+            if phone:
+                self.fields['phone'].widget.attrs['readonly'] = True
+                if phone_code:
+                    self.fields['phone_code'].widget = forms.HiddenInput()
+            else:
+                self.fields['phone_code'].widget = forms.HiddenInput()

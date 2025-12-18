@@ -62,6 +62,11 @@ body{
   min-width:100%;
 }
 
+input[readonly] {
+  pointer-events: none;
+  background-color: #bbb;
+}
+
 #wrap{
   width: 100%;
   min-height: 100%;
