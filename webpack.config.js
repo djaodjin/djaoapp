@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString())
 
@@ -70,6 +71,19 @@ module.exports = env => ({
   },
   externals: {
     jQuery: 'jQuery',
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          mangle: {
+            reserved: ['djApi'],
+            properties: false,
+          },
+        }
+      }),
+    ],
   },
   plugins: [
       new webpack.LoaderOptionsPlugin({

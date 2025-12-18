@@ -3,8 +3,6 @@
 
 from deployutils.apps.django_deployutils.compat import (
     is_authenticated as base_is_authenticated)
-from deployutils.apps.django_deployutils.templatetags import (
-    deployutils_prefixtags)
 from django import template
 from django.conf import settings
 from django.contrib.messages.api import get_messages
@@ -16,9 +14,11 @@ from multitier.templatetags.multitier_tags import (
     site_url as site_url_base)
 from saas.templatetags.saas_tags import attached_organization
 
-from ..compat import force_str, reverse, six
+from ..compat import force_str, reverse, six, urljoin
 
 register = template.Library()
+
+URL_SEP = '/'
 
 @register.filter()
 def asset(path):
@@ -32,8 +32,18 @@ def asset(path):
     cdn_path = path
     if isinstance(path, str) and (path.startswith(settings.STATIC_URL) or
         path.startswith(settings.STATIC_URL.lstrip('/'))):
-        cdn_path = deployutils_prefixtags.asset(path)
-        return cdn_path
+        path_parts = path.split(URL_SEP)
+        for idx in range(len(path_parts), 0, -1):
+            path_prefix = URL_SEP.join(path_parts[:idx])
+            if path_prefix in settings.ASSETS_CDN:
+                cdn_path = urljoin(settings.ASSETS_CDN[path_prefix],
+                    URL_SEP.join(path_parts[idx:]))
+                return cdn_path
+            path_prefix += URL_SEP
+            if path_prefix in settings.ASSETS_CDN:
+                cdn_path = urljoin(settings.ASSETS_CDN[path_prefix],
+                    URL_SEP.join(path_parts[idx:]))
+                return cdn_path
     asset_path = asset_base(cdn_path)
     return asset_path
 

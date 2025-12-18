@@ -258,9 +258,8 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'rest_framework',
     'django_recaptcha',
     'deployutils.apps.django_deployutils',
-#    'haystack', disabled until we actively use text searches on the site.
-    'saas',  # Because we want `djaodjin-resources.js` picked up from here.
-    'signup',
+    'signup',  # Because we want `djaodjin-resources.js` picked up from here.
+    'saas',
     'social_django',
     'multitier',            # need to be included if we don't change fixtures
     'extended_templates',
