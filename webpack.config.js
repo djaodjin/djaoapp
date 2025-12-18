@@ -14,6 +14,7 @@ module.exports = env => ({
           'js/djaodjin-password-strength.js'
       ],
       base: [
+          'js/djaodjin-resources.js',
           'js/djaodjin-menubar.js',
           'js/djaodjin-dashboard.js',
           'js/djaoapp-theme-color-mode.js',
@@ -62,6 +63,28 @@ module.exports = env => ({
           }]]
         }
       }
+    }, {
+      test: /djaodjin-resources\.js$/,
+      loader: 'expose-loader',
+      type: "javascript/auto",
+      options: {
+          exposes: [{
+              globalName: 'clearMessages',
+              moduleLocalName: 'clearMessages',
+          }, {
+              globalName: 'showMessages',
+              moduleLocalName: 'showMessages',
+          }, {
+              globalName: 'showErrorMessages',
+              moduleLocalName: 'showErrorMessages',
+          }, {
+              globalName: 'getUrlParameter',
+              moduleLocalName: 'getUrlParameter',
+          }, {
+              globalName: 'djApi',
+              moduleLocalName: 'djApi',
+          }]
+      }
     }
     ]
   },
@@ -78,7 +101,7 @@ module.exports = env => ({
       new TerserPlugin({
         terserOptions: {
           mangle: {
-            reserved: ['djApi'],
+            reserved: ['clearMessages', 'showMessages', 'showErrorMessages', 'getUrlParameter', 'djApi'],
             properties: false,
           },
         }
@@ -95,13 +118,6 @@ module.exports = env => ({
           itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
           itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
           typeAheadMixin: ['js/djaodjin-resources-vue.js', 'typeAheadMixin'],
-
-          clearMessages: ['js/djaodjin-resources.js', 'clearMessages'],
-          showMessages: ['js/djaodjin-resources.js', 'showMessages'],
-          showErrorMessages: ['js/djaodjin-resources.js', 'showErrorMessages'],
-          getUrlParameter: ['js/djaodjin-resources.js', 'getUrlParameter'],
-          djApi: ['js/djaodjin-resources.js', 'djApi'],
-
           updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
           updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],
       })
