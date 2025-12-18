@@ -92,6 +92,7 @@ build-assets: $(ASSETS_DIR)/cache/base.css \
 	$(installFiles) $(ASSETS_DIR)/cache/email.css.map $(ASSETS_DIR)/cache/email$(APP_VERSION_SUFFIX).css.map
 	$(installFiles) $(ASSETS_DIR)/cache/pages.css $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css
 	$(installFiles) $(ASSETS_DIR)/cache/pages.css.map $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).css.map
+	$(installFiles) $(ASSETS_DIR)/cache/pages.js $(ASSETS_DIR)/cache/pages$(APP_VERSION_SUFFIX).js
 	$(installFiles) $(ASSETS_DIR)/cache/auth.js $(ASSETS_DIR)/cache/auth$(APP_VERSION_SUFFIX).js
 	$(installFiles) $(ASSETS_DIR)/cache/base.js $(ASSETS_DIR)/cache/base$(APP_VERSION_SUFFIX).js
 	$(installFiles) $(ASSETS_DIR)/cache/djaodjin-vue.js $(ASSETS_DIR)/cache/djaodjin-vue$(APP_VERSION_SUFFIX).js
