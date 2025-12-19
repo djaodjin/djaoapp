@@ -327,13 +327,13 @@ const PRIVACY_COOKIES_ENABLED = {
 <script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-privacy.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-privacy.js'|asset}}"></script>
 {% else %}
-<script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}"></script>
 {% endif %}
 <script type="text/javascript">
 jQuery(document).ready(function($) {
