@@ -30,6 +30,7 @@ googlemaps==4.10.0
 gunicorn==23.0.0                  # requires Py3.7
 jinja2==3.1.6
 phonenumbers==8.13.17
+pydyf==0.1.2                      # 0.12.1 incompatible with WeasyPrint==53.4
 PyJWT==2.10.1                     # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
 pyotp==2.8.0
@@ -41,7 +42,7 @@ stripe==12.5.1                    # Stripe>=13 removed error.py
 whitenoise==6.4.0
 # >=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian (Dockerfile), if we
 # use version 52.5, it leads to `OSError: cannot load library 'pangocairo-1.0'`
-WeasyPrint==52.5
+WeasyPrint==53.4
 
 # Optional packages
 django-storages==1.14.2           # to upload assets to S3

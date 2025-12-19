@@ -97,10 +97,12 @@ and mountains in Africa. DjaoDjin is <em>The Welcome Spirit</em>.
              src="{{'assets/img/profiles/steve.jpg'|asset}}" role="presentation" loading="lazy">
       </div>
       <div class="col-md-8">
-        <p>
+        <div id="site-feedback">
+          <p>
 Any supply chain management program require suppliers to answer surveys,
 and take training.
-        </p>
+          </p>
+        </div>
         <form action="{{'/login/'|site_url}}" method="post">
           <input name="csrfmiddlewaretoken" type="hidden" value="{{csrf_token}}"/>
           <input name="username" type="hidden" value="steve"/>
