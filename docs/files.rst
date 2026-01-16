@@ -185,7 +185,7 @@ Workflow pages extends one of the following base.html templates.
 
 * base.html
 
-  * accounts/base.html
+  * login/base.html
 
   * saas/base.html
 
@@ -201,23 +201,12 @@ pages:
 +------------------------------------+----------------------------------------+
 | Contact us                         | contact.html                           |
 +------------------------------------+----------------------------------------+
-| Reset password                     | accounts/reset.html                    |
+| Disabled login & register          | login/disabled.html                    |
 +------------------------------------+----------------------------------------+
-| Disabled login & register          | accounts/disabled.html                 |
-+------------------------------------+----------------------------------------+
-| Recover password                   | accounts/recover.html                  |
-+------------------------------------+----------------------------------------+
-| Sign in                            | | accounts/login.html                  |
-|                                    | | accounts/activate/index.html         |
-+------------------------------------+----------------------------------------+
-| Sign up                            | | accounts/register.html               |
-|                                    | | accounts/register/frictionless.html  |
-|                                    | | accounts/register/personal.html      |
-|                                    | | accounts/register/organization.html  |
-+------------------------------------+----------------------------------------+
-| Verifiy & activate                 | accounts/activate/verification_key.html|
-+------------------------------------+----------------------------------------+
-| Sign out                           | accounts/logout.html                   |
+| Sign in & Sign up                  | | login/index.html                     |
+|                                    | | login/verification_key.html          |
+|                                    | | login/frictionless.html              |
+|                                    | | login/personal.html                  |
 +------------------------------------+----------------------------------------+
 | Legal agreements                   | | saas/legal/index.html                |
 |                                    | | saas/legal/agreement.html            |

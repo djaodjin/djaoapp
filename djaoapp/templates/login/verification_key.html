@@ -1,0 +1,81 @@
+{% extends "login/index.html" %}
+
+{% block localheader_title %}{% if object and form %}{% trans %}Activate{% endtrans %}{% else %}{% trans %}Page not found{% endtrans %}{% endif %}{% endblock %}
+
+{% block accounts_title %}{% trans %}Activate{% endtrans %}{% endblock %}
+
+{% block accounts_help %}
+{% if object %}
+<p class="text-center">
+{% if reason %}
+{{reason}}
+{% elif view.kwargs.verification_key == object.email_verification_key %}
+{% trans %}Thank you for verifying your e-mail address.{% endtrans %}
+{% elif view.kwargs.verification_key == object.phone_verification_key %}
+{% trans %}Thank you for verifying your phone number.{% endtrans %}
+{% elif form.email or form.phone %}
+{# We don't have a password yet. Could be a frictionless registration or an invite. #}
+{% trans %}You are about to activate your account. Please set a password to secure it.{% endtrans %}
+{% endif %}
+</p>
+{% if not form.new_password %}
+<p class="text-center">
+{% trans name=object.printable_name %}Welcome back {{name}}!{% endtrans %}
+</p>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+
+{% block accounts_content %}
+<div>
+  {% if object and form %}
+  <form id="{% if form.form_id %}{{form.form_id}}{% else %}register-form{% endif %}" method="post" action=".{% if query %}/?{{query}}{% endif %}">
+    {% block register_form %}
+    {% include "login/_register_form_fields.html" %}
+    {% endblock %}
+    <div class="form-action text-center">
+      <div class="d-grid gap-2">
+        {% if form.new_password and (form.email or form.phone) %}
+        <button type="submit" class="btn btn-primary btn-md">
+          {% trans %}Sign Up{% endtrans %}
+        </button>
+        {% elif form['new_password'] %}
+        <button type="submit" class="btn btn-primary btn-md">
+          {% trans %}Set New Password{% endtrans %}
+        </button>
+        {% else %}
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary btn-md w-100">
+              {% trans %}Yep, it is me.{% endtrans %}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <a href="{{urls.user.login}}{% if query %}/?{{query}}{% endif %}" class="btn btn-outline-primary btn-md w-100">
+              {% trans %}Huh, someone else?{% endtrans %}
+            </a>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-outline-primary btn-md w-100"
+                    name="reset" value="1">
+              {% trans %}Please reset my password{% endtrans %}
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+  {% else %}
+  <p class="text-center">
+{% trans %}This activation token is invalid or has expired. Maybe you have already used it before?{% endtrans %}
+  </p>
+  <p class="text-center mt-3">
+    <a id="login-instead" href="{{urls.user.login}}{% if query %}/?{{query}}{% endif %}">{% trans %}Get started{% endtrans %}</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

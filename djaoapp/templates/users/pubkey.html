@@ -10,18 +10,16 @@
     <div>
       <form @submit.prevent="modalShow">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-        <div class="row g-3 mt-2 mb-4 align-items-center">
-          <div class="col-auto">
-            <label for="key_title" class="col-form-label">Key Title</label>
+        <div class="form-group mb-2">
+          <label for="key_title" class="col-form-label">Key Title</label>
+          <input class="form-control" type="text" id="id_title" name="title"
+                 v-model="title">
+          <div class="form-text help-block invalid-feedback errorlist">
           </div>
-          <div class="col-auto">
-            <input class="form-control" type="text" id="id_title" name="title"
-              v-model="title">
-          </div>
-          <div class="col-auto">
-            <button id="generate-key-open" class="btn btn-primary">{% trans %}Generate API Key{% endtrans %}</button>
+          <div class="form-text help-block">
           </div>
         </div>
+        <button id="generate-key-open" class="btn btn-primary">{% trans %}Generate API Key{% endtrans %}</button>
       </form>
       {% include "users/_require_password.html" %}
     </div>
@@ -65,7 +63,7 @@
           <td>[[ key.title ]]</td>
           <td>[[ key.ends_at ]]</td>
           <td>
-            <button class="btn btn-delete"
+            <button class="btn btn-danger"
                 @click="confirmDelete(key)">Delete</button>
           </td>
         </tr>
@@ -85,6 +83,10 @@
           <label class="control-label requiredField">{% trans %}Public Key (in PEM format){% endtrans %}<span class="asteriskField">*</span></label>
           <div class="controls">
             <textarea class="textarea form-control" cols="40" name="pubkey" rows="10" v-model="pubkey"></textarea>
+            <div class="form-text help-block invalid-feedback errorlist">
+            </div>
+            <div class="form-text help-block">
+            </div>
           </div>
         </div>
         <div class="form-action">

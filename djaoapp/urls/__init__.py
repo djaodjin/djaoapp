@@ -16,8 +16,7 @@ from ..compat import reverse_lazy
 from ..views.custom_saas import StripeProcessorRedirectView
 from ..views.product import ProxyPageView
 from ..urlbuilders import (url_authenticated, url_active, url_direct,
-    url_provider, url_provider_only, url_self_provider,
-    url_frictionless_self_provider)
+    url_provider, url_provider_only, url_self_provider)
 
 # These handlers will only be used in production (DEBUG=0)
 #pylint:disable=invalid-name

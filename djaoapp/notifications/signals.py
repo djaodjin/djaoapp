@@ -481,8 +481,7 @@ def user_login_failed_notice(sender, credentials, request, **kwargs):
         user = model.objects.find_user(credentials.get('username'))
 
         broker = get_broker()
-        back_url = build_absolute_uri( # XXX not sent?
-            location=reverse('password_reset'))
+        back_url = build_absolute_uri() # XXX not sent?
         context = {
             'broker': broker,
             'back_url': back_url,

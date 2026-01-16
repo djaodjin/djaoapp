@@ -6,6 +6,9 @@
   <legend>{% trans %}Login Credentials{% endtrans %}</legend>
   {{ input_field(form['username'], hide_labels=form.hide_labels) }}
   {{ input_field(form['email'], hide_labels=form.hide_labels) }}
+  {% if form['email_code'] %}
+  {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
+  {% endif %}
   {{ input_field(form['email2'], hide_labels=form.hide_labels) }}
   {{ input_field(form['new_password'], hide_labels=form.hide_labels) }}
   {{ input_field(form['new_password2'], hide_labels=form.hide_labels) }}
@@ -19,6 +22,9 @@
   {{ input_field(form['locality'], hide_labels=form.hide_labels) }}
   {{ input_field(form['postal_code'], hide_labels=form.hide_labels) }}
   {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
+  {% if form['phone_code'] %}
+  {{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
+  {% endif %}
 </fieldset>
 {% if form['terms-of-use'] %}
 <fieldset>

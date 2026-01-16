@@ -1,4 +1,4 @@
-# Copyright (c) 2025, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 
 # Django settings for Djaoapp project.
@@ -71,7 +71,8 @@ AUTHENTICATION_OVERRIDE = settings_lazy(
 REGISTRATION_STYLE = settings_lazy(
     'multitier.thread_locals.get_registration_type', int)
 
-SKIP_EXPIRATION_CHECK = False
+SKIP_VERIFICATION_CHECK = False
+VERIFICATION_LIFETIME = datetime.timedelta(hours=1)
 
 # Bots prevention
 CONTACT_DYNAMIC_VALIDATOR = None
@@ -189,9 +190,14 @@ if sys.version_info[0] < 3:
 
 # OPENAPI_SPEC_COMPLIANT
 # Remove extra information used for documentation like examples, etc.
-for env_var in ['OPENAPI_SPEC_COMPLIANT', 'SKIP_EXPIRATION_CHECK']:
+for env_var in ['OPENAPI_SPEC_COMPLIANT']:
     if os.getenv(env_var):
         setattr(sys.modules[__name__], env_var, (int(os.getenv(env_var)) > 0))
+
+for env_var in ['SKIP_VERIFICATION_CHECK']:
+    if os.getenv(env_var):
+        setattr(sys.modules[__name__], env_var, int(os.getenv(env_var)))
+
 
 # Implementation Note: To simplify quick tests. The `SECRET_KEY` should
 # be defined in the `credentials` otherwise all HTTP session will become
@@ -920,8 +926,7 @@ import djaoapp.extras.signup
 SIGNUP = {
     'ACCOUNT_MODEL': 'saas.Organization',
     'ACCOUNT_SERIALIZER': 'saas.api.serializers.OrganizationSerializer',
-    'ACCOUNT_ACTIVATION_DAYS': 30,
-    'SKIP_EXPIRATION_CHECK': SKIP_EXPIRATION_CHECK,
+    'SKIP_VERIFICATION_CHECK': SKIP_VERIFICATION_CHECK,
     'DISABLED_AUTHENTICATION': 'djaoapp.utils.get_disabled_authentication',
     'DISABLED_REGISTRATION': 'djaoapp.utils.get_disabled_registration',
     'DISABLED_USER_UPDATE': DISABLED_USER_UPDATE,
@@ -964,16 +969,16 @@ SIGNUP = {
         'google-oauth2': {'name': 'Google', 'icon': 'google'},
     },
     'USE_VERIFICATION_LINKS': False,
+    'USER_API_KEY_LIFETIME': 'djaoapp.utils.get_user_api_key_lifetime',
     'USER_OTP_REQUIRED': 'djaoapp.utils.get_user_otp_required',
-    'VERIFICATION_LIFETIME': datetime.timedelta(days=365)
+    'VERIFICATION_LIFETIME': VERIFICATION_LIFETIME,
+    'VERIFIED_LIFETIME': datetime.timedelta(days=365)
 }
 for config_param in ('AWS_REGION', 'AWS_UPLOAD_ROLE', 'AWS_ACCOUNT_ID'):
     # This parameters are optional in site.conf.
     if hasattr(sys.modules[__name__], config_param):
         SIGNUP.update({config_param:
             getattr(sys.modules[__name__], config_param)})
-
-ACCOUNT_ACTIVATION_DAYS = 2
 
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('rules_page')
@@ -1000,7 +1005,7 @@ NOCAPTCHA = True
 
 # User settings
 # -------------
-LOGIN_URL = reverse_lazy('registration_activate_start')
+LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('product_default_start')
 
 AUTHENTICATION_BACKENDS = (

@@ -1,4 +1,4 @@
-# Copyright (c) 2025, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -320,8 +320,8 @@ class NotificationEmailBackend(object):
 
 class EmailVerificationBackend(NotificationEmailBackend):
 
-    def send(self, email, email_code,
-             back_url=None, expiration_days=signup_settings.KEY_EXPIRATION):
+    def send(self, email, email_code, back_url=None,
+             lifetime=signup_settings.VERIFICATION_LIFETIME):
         """
         Send an e-mail message to the user to verify her e-mail address.
 
@@ -369,7 +369,7 @@ class EmailVerificationBackend(NotificationEmailBackend):
             "lang": "en",
             "extra": null
           },
-          "nb_expiration_days": 2
+          "lifetime": "0 24:00:00"
         }
         """
         user = Contact.objects.filter(email__iexact=email).first()
@@ -378,8 +378,9 @@ class EmailVerificationBackend(NotificationEmailBackend):
             'user': user,
             'back_url': back_url,
             'code': "{:0>6}".format(email_code) if email_code else None,
-            'nb_expiration_days': expiration_days
         }
+        if lifetime:
+            context.update({'lifetime': lifetime})
         self.send_mail('notification/user_verification.eml',
             ExpireUserNotificationSerializer().to_representation(context),
             [email])

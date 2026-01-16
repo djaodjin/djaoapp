@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 
 from rules.urldecorators import include
@@ -92,11 +92,11 @@ urlpatterns = [
         '^api/', include('saas.urls.api.search')),
 
     # Auth & credentials
-    url_provider_only(r'api/', include('signup.urls.api.activities')),
-    url_direct(r'api/', include('signup.urls.api.contacts')),
-    url_self_provider(r'^api/', include('signup.urls.api.keys')),
+    url_provider_only(r'api/', include('signup.urls.api.dashboard.activities')),
+    url_direct(r'api/', include('signup.urls.api.dashboard.contacts')),
+    url_self_provider(r'^api/', include('signup.urls.api.dashboard.keys')),
     url_frictionless_self_provider(r'^api/',
-        include('signup.urls.api.activate')),
+        include('signup.urls.api.dashboard.activate')),
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)$' % USERNAME_PAT,
         DjaoAppUserDetailAPIView.as_view(), name='api_user_profile'),
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)/notifications$' %
@@ -105,18 +105,18 @@ urlpatterns = [
     url_frictionless_self_provider(r'^api/users/(?P<user>%s)/otp$' %
         USERNAME_PAT,
         DjaoAppUserOTPAPIView.as_view(), name='api_user_otp_change'),
-    url_self_provider(r'^api/', include('signup.urls.api.users')),
+    url_self_provider(r'^api/', include('signup.urls.api.dashboard.users')),
     # `{user}` is not a url parameter, hence we cannot use `url_self_provider`.
     # Furthermore we restrict verification and refresh of JWT
     # to the request.user itself.
     url_authenticated(r'^api/auth/tokens',
         DjaoAppJWTRefresh.as_view(), name='api_refresh_token'),
     url_authenticated(r'^api/', include('signup.urls.api.tokens')),
-    url_prefixed(r'^api/auth/activate/(?P<verification_key>%s)$'
-        % EMAIL_VERIFICATION_PAT,
-        DjaoAppJWTActivate.as_view(), name='api_activate'),
     url_prefixed(r'^api/auth/register',
         DjaoAppJWTRegister.as_view(), name='api_register'),
+    url_prefixed(r'^api/auth/(?P<verification_key>%s)$'
+        % EMAIL_VERIFICATION_PAT,
+        DjaoAppJWTActivate.as_view(), name='api_activate'),
     url_prefixed(r'^api/', include('signup.urls.api.auth')),
 
     # DjaoApp-specific

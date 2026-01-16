@@ -1,8 +1,8 @@
-# Copyright (c) 2025, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
-import logging
+import datetime, logging
 
 from django.conf import settings
 from django.core.mail import get_connection as get_connection_base
@@ -148,6 +148,10 @@ def get_force_personal_profile(request):
     return settings.REGISTRATION_STYLE in (
         PERSONAL_REGISTRATION, IMPLICIT_REGISTRATION)
 
+
+def get_user_api_key_lifetime(request, user):
+    # XXX return based on profile.
+    return datetime.timedelta(days=365)
 
 def get_user_otp_required(request, user):
     return user.role.filter(

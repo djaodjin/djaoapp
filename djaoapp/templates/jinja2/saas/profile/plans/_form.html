@@ -2,7 +2,7 @@
 
 {% block form_block %}
 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-    method="post" action=".{% if next %}/?next={{next}}{% endif %}"
+    method="post" action=".{% if query %}/?{{query}}{% endif %}"
     @submit.prevent="updatePlan">
   <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
   <div class="row">

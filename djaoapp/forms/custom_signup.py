@@ -19,7 +19,7 @@ from saas.models import Organization
 from signup.forms import (
     ActivationForm as ActivationFormBase,
     PasswordResetConfirmForm as PasswordResetConfirmFormBase,
-    FrictionlessSignupForm, PasswordConfirmMixin, AuthenticationForm)
+    PasswordConfirmMixin, AuthenticationForm)
 
 from ..compat import gettext_lazy as _, reverse, six
 from ..utils import get_registration_captcha_keys
@@ -57,15 +57,13 @@ class PasswordResetConfirmForm(MissingFieldsMixin,
 
 class PasswordForm(MissingFieldsMixin, PasswordResetForm):
 
-    submit_title = _("Reset")
-
     email = forms.EmailField(widget=forms.TextInput(
             {'class':'input-block-level'}))
 
 
 class SigninForm(MissingFieldsMixin, AuthenticationForm):
 
-    submit_title = _("Sign in")
+    pass
 
 
 class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
@@ -107,7 +105,14 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('instance', None)
         force_required = kwargs.pop('force_required', False)
+        initial = kwargs.get('initial')
+        data = kwargs.get('data')
         super(ActivationForm, self).__init__(*args, **kwargs)
+        country = Country(self['country'].value(), None)
+        if 'country' in self.fields:
+            self.add_postal_region(country=country)
+
+        value = self['country'].value()
         self.fields['type'] = forms.ChoiceField(choices=[
             (slugify(choice[1]), choice[1])
             for choice in Organization.ACCOUNT_TYPE], required=False)
@@ -123,26 +128,16 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
                             'data-theme': 'clean',
                             'data-size': 'compact',
                         }))
-        if 'country' in self.fields:
-            # Country field is optional. We won't add a State/Province
-            # in case it is omitted.
-            if not ('country' in self.initial
-                and self.initial['country']):
-                self.initial['country'] = Country("US", None)
-            country = self.initial.get('country', None)
-            if not self.fields['country'].initial:
-                self.fields['country'].initial = country.code
-            self.add_postal_region(country=country)
         if force_required:
             for field_name, field in six.iteritems(self.fields):
                 if field_name in ('email', 'email2', 'new_password',
                     'new_password2', 'street_address', 'locality',
                     'region', 'postal_code', 'country', 'phone'):
                     field.required = True
+
         # Define  extra fields dynamically. These are optional but might be
         # enforced as required within `form_valid`
         # (ex: legal agreement checkbox).
-        data = kwargs.get('data')
         for extra_field in self.initial.get('extra_fields', []):
             field_name = extra_field[0]
             if field_name == saas_settings.TERMS_OF_USE:
@@ -160,6 +155,13 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
                     label=_(extra_field[1]), required=extra_field[2])
                 if data and field_name in data:
                     self.fields[field_name].initial = data.get(field_name)
+
+        # extra form fields
+        if data:
+            for field_name in data:
+                if field_name not in self.fields:
+                    self.fields[field_name] = forms.CharField()
+
 
     def clean(self):
         """
@@ -216,15 +218,13 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
         return Organization.ACCOUNT_UNKNOWN
 
 
-class SignupForm(MissingFieldsMixin, PostalFormMixin, PasswordConfirmMixin,
-                 FrictionlessSignupForm):
+class SignupForm(MissingFieldsMixin, PostalFormMixin, forms.Form):
     """
     Form to Register a user and (optionally) a personal or organization
     profiles.
 
     All fields except for the full_name and e-mail are optional.
     """
-    submit_title = _("Sign up")
     user_model = get_user_model()
 
     email2 = forms.EmailField(required=False,
@@ -409,25 +409,3 @@ class CodeActivationForm(ActivationForm):
 
     email_code = forms.IntegerField(required=False)
     phone_code = forms.IntegerField(required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(CodeActivationForm, self).__init__(*args, **kwargs)
-        initial = kwargs.get('initial')
-        data = kwargs.get('data')
-        if initial and data:
-            email = initial.get('email')
-            email_code = data.get('email_code')
-            if email:
-                self.fields['email'].widget.attrs['readonly'] = True
-                if email_code:
-                    self.fields['email_code'].widget = forms.HiddenInput()
-            else:
-                self.fields['email_code'].widget = forms.HiddenInput()
-            phone = initial.get('phone')
-            phone_code = data.get('phone_code')
-            if phone:
-                self.fields['phone'].widget.attrs['readonly'] = True
-                if phone_code:
-                    self.fields['phone_code'].widget = forms.HiddenInput()
-            else:
-                self.fields['phone_code'].widget = forms.HiddenInput()

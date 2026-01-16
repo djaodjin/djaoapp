@@ -15,13 +15,13 @@
 {% if form['email'] %}
 {{ input_field(form['email'], hide_labels=form.hide_labels) }}
 {% endif %}
-{% if form['email_code'] and not email_verification_link %}
+{% if form['email_code'] %}
 {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['phone'] %}
 {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
 {% endif %}
-{% if form['phone_code'] and not phone_verification_link %}
+{% if form['phone_code'] %}
 {{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['username'] %}

@@ -68,10 +68,10 @@ class AuthMixin(object):
 
     organization_model = get_organization_model()
 
-    def register_check_data(self, contact, **cleaned_data):
+    def register_check_data(self, **cleaned_data):
         errors = {}
         try:
-            super(AuthMixin, self).register_check_data(contact, **cleaned_data)
+            super(AuthMixin, self).register_check_data(**cleaned_data)
         except ValidationError as err:
             errors = err.detail
 
@@ -272,8 +272,6 @@ class DjaoAppMixin(object):
             login_urls = social_login_urls()
             login_urls.update({
                 'login': reverse('login'),
-                'password_reset': reverse('password_reset'),
-                'register': reverse('registration_register'),
             })
             update_context_urls(context, {'user': login_urls})
         return context

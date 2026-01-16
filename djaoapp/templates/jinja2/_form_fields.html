@@ -255,6 +255,7 @@
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
     <select class="form-control{% if errors %} is-invalid{% endif %}"
       name="{{name}}"
+      {% if value %} value="{{value}}"{% endif %}
       {% if model_var %} v-model="{{model_var}}"{% endif %}
       {% if disabled %} disabled{% endif %}
       {% if autofocus %} autofocus{% endif %}>

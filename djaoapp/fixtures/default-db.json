@@ -198,18 +198,21 @@
 {
     "fields": {
       "last_signed": "2025-01-01T00:00:00+00:00",
-      "agreement": 1,
-      "user": 2
-    },
-    "model": "saas.signature", "pk": 2
+      "agreement": 1, "user": 2}, "model": "saas.signature", "pk": 2
 },
 {
     "fields": {
-      "slug": "alice",
       "created_at": "2025-01-01T00:00:00+00:00",
-      "user": 1
-    },
-    "model": "signup.Contact", "pk": 1
+      "email": "donny@localhost.localdomain",
+      "email_code": 654321,
+      "phone": "+14155551111",
+      "phone_code": 654322,
+      "slug": "donny", "user": 2}, "model": "signup.Contact", "pk": 2
+},
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "alice", "user": 1}, "model": "signup.Contact", "pk": 1
 },
 {
     "fields": {
@@ -354,9 +357,7 @@
       "created_at": "2025-01-01T00:00:00+00:00",
       "full_name": "Marie",
       "email": "marie@localhost.localdomain",
-      "slug": "marie"
-    },
-    "model": "signup.Contact", "pk": 3
+      "slug": "marie"}, "model": "signup.Contact", "pk": 3
 },
 {
     "fields": {
@@ -388,9 +389,7 @@
       "slug": "xia",
       "nick_name": "Xia",
       "phone": "+14155555556",
-      "user": 5
-    },
-    "model": "signup.Contact", "pk": 5
+      "user": 5}, "model": "signup.Contact", "pk": 5
 },
 {
     "fields": {
@@ -513,9 +512,7 @@
     "fields": {
       "slug": "asmith",
       "created_at": "2025-01-01T00:00:00+00:00",
-      "user": 7
-    },
-    "model": "signup.Contact", "pk": 7
+      "user": 7}, "model": "signup.Contact", "pk": 7
 },
 {
     "fields": {
@@ -608,19 +605,13 @@
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
-      "organization": 8,
-      "user": 2
-    },
-    "model": "saas.Role", "pk": 11
+      "organization": 8, "user": 2}, "model": "saas.Role", "pk": 11
 },
 {
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
-      "organization": 14,
-      "user": 2
-    },
-    "model": "saas.Role", "pk": 12
+      "organization": 14, "user": 2}, "model": "saas.Role", "pk": 12
 },
 {
     "fields": {
@@ -682,10 +673,8 @@
 {
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
-      "user": 9,
-      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
-    },
-    "model": "signup.Contact", "pk": 9
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6",
+      "user": 9}, "model": "signup.Contact", "pk": 9
 },
 {
     "fields": {
@@ -711,9 +700,7 @@
       "created_at": "2025-01-10T00:00:00-00:00",
       "email": "xia+12@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe279",
-      "user": 12
-    },
-    "model": "signup.Contact", "pk": 12
+      "user": 12}, "model": "signup.Contact", "pk": 12
 },
 {
     "fields": {
@@ -1444,11 +1431,9 @@
     "fields": {
       "slug": "xia7",
       "created_at": "2025-01-10T00:00:00-00:00",
-      "user": 19,
       "email": "xia+7@example.com",
-      "phone": "+14155555557"
-    },
-    "model": "signup.Contact", "pk": 19
+      "phone": "+14155555557",
+      "user": 19},"model": "signup.Contact", "pk": 19
 },
 {
     "fields": {
@@ -1469,10 +1454,8 @@
     "fields": {
       "slug": "xia8",
       "created_at": "2025-01-10T00:00:00-00:00",
-      "user": 20,
-      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8"
-    },
-    "model": "signup.Contact", "pk": 20
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8",
+      "user": 20}, "model": "signup.Contact", "pk": 20
 },
 {
     "fields": {
@@ -1693,11 +1676,9 @@
 {
     "fields": {
       "created_at": "2024-01-01T00:00:00-09:00",
-      "user": 3,
       "slug": "steve",
-      "email": "steve@localhost.localdomain"
-    },
-    "model": "signup.Contact", "pk": 26
+      "email": "steve@localhost.localdomain",
+      "user": 3}, "model": "signup.Contact", "pk": 26
 },
 {
     "fields": {

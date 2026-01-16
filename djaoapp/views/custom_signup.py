@@ -1,4 +1,4 @@
-# Copyright (c) 2025, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 from __future__ import unicode_literals
 
@@ -9,87 +9,24 @@ from rules.mixins import AppMixin
 from saas.models import Agreement, get_broker
 from saas import settings as saas_settings
 from signup.views.auth import (
-    ActivationView as ActivationBaseView,
-    PasswordResetConfirmView as PasswordResetConfirmBaseView,
-    RecoverView as RecoverBaseView,
+    VerifyCompleteView as VerifyCompleteBaseView,
     SigninView as SigninBaseView,
     SignoutView as SignoutBaseView,
     SignupView as SignupBaseView)
 
 from ..forms.custom_signup import (ActivationForm, CodeActivationForm,
     PasswordResetConfirmForm, SigninForm, SignupForm)
-from ..mixins import AuthMixin
+from ..mixins import AuthMixin as AuthBaseMixin
 from ..utils import PERSONAL_REGISTRATION, TOGETHER_REGISTRATION
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-class ActivationView(AuthMixin, AppMixin, ActivationBaseView):
-
-    form_class = ActivationForm
+class AuthMixin(AuthBaseMixin):
 
     def get_initial(self):
-        kwargs = super(ActivationView, self).get_initial()
-        kwargs.update({
-            'extra_fields': [(agreement.slug, agreement.title,
-                              agreement.slug == saas_settings.TERMS_OF_USE)
-                for agreement in Agreement.objects.all()]
-        })
-        return kwargs
-
-
-class PasswordResetConfirmView(AuthMixin, AppMixin,
-                               PasswordResetConfirmBaseView):
-
-    form_class = ActivationForm
-    password_form_class = PasswordResetConfirmForm
-
-
-class RecoverView(AuthMixin, AppMixin, RecoverBaseView):
-
-    pass
-
-
-class SigninView(AuthMixin, AppMixin, SigninBaseView):
-
-    form_class = SigninForm
-    set_password_form_class = CodeActivationForm
-
-    def get_initial(self):
-        kwargs = super(SigninView, self).get_initial()
-        broker = get_broker()
-        kwargs.update({
-            'country': broker.country,
-            'region': broker.region
-        })
-        kwargs.update({
-            'extra_fields': [(agreement.slug, agreement.title,
-                              agreement.slug == saas_settings.TERMS_OF_USE)
-                for agreement in Agreement.objects.all()]
-        })
-        return kwargs
-
-
-class SignoutView(SignoutBaseView):
-
-    pass
-
-
-class SignupView(AuthMixin, AppMixin, SignupBaseView):
-
-    form_class = SignupForm
-    set_password_form_class = CodeActivationForm
-
-    def get_context_data(self, **kwargs):
-        context = super(SignupView, self).get_context_data(**kwargs)
-        if hasattr(self, 'already_present_candidate'):
-            context.update({
-                'already_present_candidate': self.already_present_candidate})
-        return context
-
-    def get_initial(self):
-        kwargs = super(SignupView, self).get_initial()
+        kwargs = super(AuthMixin, self).get_initial()
         broker = get_broker()
         kwargs.update({
             'country': broker.country,
@@ -103,19 +40,56 @@ class SignupView(AuthMixin, AppMixin, SignupBaseView):
         return kwargs
 
     def get_form_kwargs(self):
-        kwargs = super(SignupView, self).get_form_kwargs()
-        if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
-            kwargs.update({'force_required': True})
+        # XXX Only for registration forms
+        #if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
+        #    kwargs.update({'force_required': True})
+        initial = self.get_initial()
+        kwargs = {
+            "initial": initial,
+            "prefix": self.get_prefix(),
+        }
+
+        if self.request.method in ("POST", "PUT"):
+            # If we don't do that, 'country' and 'region' won't be set
+            # to the default value.
+            data = self.request.POST.copy()
+            if 'country' not in data:
+                data.update({'country': initial['country']})
+            if 'region' not in data:
+                data.update({'region': initial['region']})
+            kwargs.update({
+                    "data": data,
+                    "files": self.request.FILES,
+                })
         return kwargs
 
-    def get_template_names(self):
-        candidates = []
-        register_path = self.kwargs.get('path', None)
+
+    def get_landing(self):
+        register_path = super(AuthMixin, self).get_landing()
         if not register_path and self.app:
             if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
                 register_path = 'personal'
             elif settings.REGISTRATION_STYLE == TOGETHER_REGISTRATION:
                 register_path = 'organization'
-        if register_path:
-            candidates = ['accounts/register/%s.html' % register_path]
-        return candidates + list(super(SignupView, self).get_template_names())
+        return register_path
+
+
+class VerifyCompleteView(AuthMixin, AppMixin, VerifyCompleteBaseView):
+
+    form_class = ActivationForm
+
+
+class SigninView(AuthMixin, AppMixin, SigninBaseView):
+
+    set_password_form_class = CodeActivationForm
+
+
+class SignoutView(SignoutBaseView):
+
+    pass
+
+
+class SignupView(AuthMixin, AppMixin, SignupBaseView):
+
+    form_class = SignupForm
+    set_password_form_class = CodeActivationForm

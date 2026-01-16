@@ -67,14 +67,14 @@ class ExpireUserNotificationSerializer(UserNotificationSerializer):
     """
     code = serializers.IntegerField(
         help_text=_("code to verify communication channel"))
-    nb_expiration_days = serializers.IntegerField(
-        help_text=_("number of days the link is valid"))
+    lifetime = serializers.DurationField(required=False,
+        help_text=_("length of time the link or code is valid"))
 
     class Meta(NotificationSerializer.Meta):
         fields = UserNotificationSerializer.Meta.fields + (
-            'code', 'nb_expiration_days',)
+            'code', 'lifetime',)
         read_only_fields = UserNotificationSerializer.Meta.fields + (
-            'code', 'nb_expiration_days',)
+            'code', 'lifetime',)
 
 
 class OneTimeCodeNotificationSerializer(ExpireUserNotificationSerializer):

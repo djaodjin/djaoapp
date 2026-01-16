@@ -1,7 +1,6 @@
 [
 {
     "fields": {
-      "slug": "stripe",
       "full_name": "Stripe",
       "created_at": "2025-01-01T00:00:00-00:00",
       "email": "stripe@localhost.localdomain",
@@ -13,21 +12,18 @@
       "country": "US",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 1
+      "is_active": 1,
+      "slug": "stripe"}, "model": "saas.Organization", "pk": 1
 },
 {
     "fields": {
-      "slug": "djaoapp-signup-card2",
       "full_name": "SignupCard2",
       "email": "djaoapp-signup-card2@localhost.localdomain",
       "created_at": "2025-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 43
+      "is_active": 1,
+      "slug": "djaoapp-signup-card2"}, "model": "saas.Organization", "pk": 43
 },
 {
     "fields": {
@@ -74,9 +70,7 @@
       "is_staff": true,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "alice"
-    },
-    "model": "auth.User", "pk": 43
+      "username": "alice"}, "model": "auth.User", "pk": 43
 },
 {
     "fields": {
@@ -96,18 +90,15 @@
       "is_staff": true,
       "is_superuser": false,
       "password": "!",
-      "username": "alice1"
-    },
-    "model": "auth.User", "pk": 44
+      "username": "alice1"}, "model": "auth.User", "pk": 44
 },
 {
     "fields": {
-      "slug": "alice1",
       "user": 44,
+      "email": "alice+authdisabled-1@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2d0",
-      "created_at": "2025-01-01T00:00:00+00:00"
-    },
-    "model": "signup.Contact", "pk": 44
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "alice1"}, "model": "signup.Contact", "pk": 44
 },
 {
     "fields": {
@@ -127,18 +118,15 @@
       "is_staff": true,
       "is_superuser": false,
       "password": "!",
-      "username": "alice2"
-    },
-    "model": "auth.User", "pk": 45
+      "username": "alice2"}, "model": "auth.User", "pk": 45
 },
 {
     "fields": {
-      "slug": "alice2",
       "user": 45,
+      "email": "alice+disabledauth-2@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2d2",
-      "created_at": "2025-01-01T00:00:00+00:00"
-    },
-    "model": "signup.Contact", "pk": 45
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "alice2"}, "model": "signup.Contact", "pk": 45
 },
 {
     "fields": {
@@ -159,9 +147,7 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia"
-    },
-    "model": "auth.User", "pk": 46
+      "username": "xia"}, "model": "auth.User", "pk": 46
 },
 {
     "fields": {
@@ -172,18 +158,15 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "!",
-      "username": "xia1"
-    },
-    "model": "auth.User", "pk": 47
+      "username": "xia1"}, "model": "auth.User", "pk": 47
 },
 {
     "fields": {
-      "slug": "xia1",
       "user": 47,
+      "email": "xia+authdisabled-1@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2d1",
-      "created_at": "2025-01-01T00:00:00+00:00"
-    },
-    "model": "signup.Contact", "pk": 47
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "xia1"}, "model": "signup.Contact", "pk": 47
 },
 {
     "fields": {
@@ -194,17 +177,14 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "!",
-      "username": "xia2"
-    },
-    "model": "auth.User", "pk": 48
+      "username": "xia2"}, "model": "auth.User", "pk": 48
 },
 {
     "fields": {
-      "slug": "xia2",
       "user": 48,
+      "email": "xia+authdisabled-2@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2d3",
-      "created_at": "2025-01-01T00:00:00+00:00"
-    },
-    "model": "signup.Contact", "pk": 48
+      "created_at": "2025-01-01T00:00:00+00:00",
+      "slug": "xia2"}, "model": "signup.Contact", "pk": 48
 }
 ]

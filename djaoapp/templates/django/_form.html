@@ -1,6 +1,6 @@
 {% block form_block %}
 <form{% if form.form_id %} id="{{form.form_id}}"{% endif %}
-    method="post" action=".{% if next %}/?next={{ next }}{% endif %}">
+    method="post" action=".{% if query %}/?{{ query }}{% endif %}">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
     {% for name, field in form.fields.items %}
       {% include "_field.html" with bound_field=form|get_bounded_field:name hide_labels=form.hide_labels %}

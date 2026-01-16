@@ -1,4 +1,4 @@
-{% extends "accounts/base.html" %}
+{% extends "login/base.html" %}
 
 {% block localheader_title %}{% trans %}Get started!{% endtrans %}{% endblock %}
 
@@ -8,23 +8,25 @@
 <div>
   {% if form %}
   {% block activate_form %}
-  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action="./{% if next %}?next={{next}}{% endif %}">
+  <form{% if form.form_id %} id="{{form.form_id}}"{% endif %} method="post" action=".{% if query %}/?{{query}}{% endif %}">
 
-    {% if form['new_password'] %}
+    {% if requires_registration or form['new_password'] %}
     <p>
 {% trans %}Please share a little more information about yourself, and set a password to access your account in the future.{% endtrans %}
     </p>
-    {% include "accounts/_register_form_fields.html" %}
+    {% block register_form %}
+    {% include "login/_register_form_fields.html" %}
+    {% endblock %}
     {% else %}
-    {% include "accounts/activate/_index_form.html" %}
+    {% include "login/_index_form.html" %}
     {% endif %}
 
     <div class="form-action text-center mt-2">
       <div class="d-grid gap-2">
-        {% if not form['password'] and email_verification_link %}
-        <button id="email-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
-        {% elif not form['password'] and phone_verification_link %}
-        <button id="phone-verification-link" type="submit" class="btn btn-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
+        {% if not form['password'] and check_email %}
+        <button id="email-verification-link" type="submit" name="check_email" value="1" class="btn btn-primary btn-md">{% trans %}E-mail me a verification code{% endtrans %}</button>
+        {% elif not form['password'] and check_phone %}
+        <button id="phone-verification-link" type="submit" name="check_phone" value="1" class="btn btn-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
         {% elif form['email_code'] and not form['email_code'].value %}
         <button type="submit" class="btn btn-primary btn-md">
             {% trans %}Verify Email Address{% endtrans %}
@@ -52,36 +54,36 @@
     </div>
 
   </form>
-  {% if form['password'] and email_verification_link %}
+  {% if form['password'] and check_email %}
   <hr />
   <div class="text-center">
     <p>
       Or
     </p>
-    <form method="post" action="./{% if next %}?next={{next}}{% endif %}">
+    <form method="post" action=".{% if query %}/?{{query}}{% endif %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <input type="hidden" name="check_email" value="1">
       <input type="hidden" name="username" value="{{form['username'].value()}}">
       <div class="form-action text-center mt-2">
         <div class="d-grid gap-2">
-          <button id="email-verification-link" class="btn btn-outline-primary btn-md">{% trans %}E-mail me a code or a link{% endtrans %}</button>
+          <button id="email-verification-link" class="btn btn-outline-primary btn-md" type="submit" name="check_email" value="1">{% trans %}E-mail me a verification code{% endtrans %}</button>
         </div>
       </div>
     </form>
   </div>
-  {% elif form['password'] and phone_verification_link %}
+  {% elif form['password'] and check_phone %}
   <hr />
   <div class="text-center">
     <p>
       Or
     </p>
-    <form method="post" action="./{% if next %}?next={{next}}{% endif %}">
+    <form method="post" action=".{% if query %}/?{{query}}{% endif %}">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
       <input type="hidden" name="check_phone" value="1">
       <input type="hidden" name="username" value="{{form['username'].value()}}">
       <div class="form-action text-center mt-2">
         <div class="d-grid gap-2">
-          <button id="phone-verification-link" class="btn btn-outline-primary btn-md">{% trans %}Text me a code or a link{% endtrans %}</button>
+          <button id="phone-verification-link" class="btn btn-outline-primary btn-md" type="submit" name="check_phone" value="1">{% trans %}Text me a code or a link{% endtrans %}</button>
         </div>
       </div>
     </form>

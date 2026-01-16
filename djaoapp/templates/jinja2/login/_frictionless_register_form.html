@@ -10,4 +10,10 @@
 {% if 'captcha' in form.fields %}
 {{ input_field(form['captcha'], hide_labels=form.hide_labels) }}
 {% endif %}
+
+{# so we don't get stuck on the page. #}
+{% if form['email_code'] %}
+{{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
+{% endif %}
+<input type="hidden" name="new_password" value="">
 {% endblock %}

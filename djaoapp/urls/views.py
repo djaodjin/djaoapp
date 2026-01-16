@@ -20,8 +20,8 @@ from ..urlbuilders import (url_active, url_authenticated,
 from ..views.contact import ContactView
 from ..views.custom_saas import (DashboardView,
     ProcessorAuthorizeView, OrganizationProfileView, PrintableChargeReceiptView)
-from ..views.custom_signup import (ActivationView, PasswordResetConfirmView,
-    RecoverView, SigninView, SignoutView, SignupView)
+from ..views.custom_signup import (VerifyCompleteView,
+    SigninView, SignoutView, SignupView)
 from ..views.custom_themes import ThemePackageView, ThemePackageDownloadView
 from ..views.notifications import (NotificationDetailView,
     NotificationInnerFrameView)
@@ -41,34 +41,21 @@ def is_anonymous(func, next_url):
 
 urlpatterns = [
     # Authentication (login, registration, etc.)
-    url_prefixed(r'^reset/(?P<verification_key>%s)/'
-        % EMAIL_VERIFICATION_PAT,
-        PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    url_prefixed(r'^activate/(?P<verification_key>%s)/'
-        % EMAIL_VERIFICATION_PAT,
-        ActivationView.as_view(), name='registration_activate'),
-    url_prefixed(r'^activate/',
-        SigninView.as_view(
-            form_class=StartAuthenticationForm,
-            template_name='accounts/activate/index.html'),
-        name='registration_activate_start'),
+    url_prefixed(r'^login/(?P<verification_key>%s)/' % EMAIL_VERIFICATION_PAT,
+        VerifyCompleteView.as_view(), name='registration_activate'),
     url_prefixed('', include('social_django.urls', namespace='social')),
     url_prefixed(r'^login/', SigninView.as_view(), name='login'),
     url_prefixed(r'^logout/', SignoutView.as_view(), name='logout'),
-    url_prefixed(r'^recover/', RecoverView.as_view(), name='password_reset'),
-    # We want to give the opportunity to have multiple registration page
-    # (ex: frictionless).`
-    url_prefixed(r'^register/((?P<path>\w+)/)?',
-        SignupView.as_view(),
-        name='registration_register'),
     url_prefixed(r'^saml/', saml_metadata_view),
+    url_prefixed(r'^activate/', RedirectView.as_view(pattern_name='login')),
+    url_prefixed(r'^recover/', RedirectView.as_view(pattern_name='login')),
+    url_prefixed(r'^register/', RedirectView.as_view(pattern_name='login')),
 
     # Redirects
     url_prefixed(r'^billing/cart/',
         # XXX override because we want a login_required in front.
         login_required(OrganizationRedirectView.as_view(
-                pattern_name='saas_organization_cart'),
-                       login_url='registration_register'),
+            pattern_name='saas_organization_cart'), login_url='login'),
         name='saas_cart'),
 
     url_authenticated(r'^', include('saas.urls.views.headredirects')),
@@ -90,7 +77,8 @@ urlpatterns = [
         UserNotificationsView.as_view(), name='users_notifications'),
     url_frictionless_self_provider(r'^users/(?P<user>%s)/$' % USERNAME_PAT,
         UserProfileView.as_view(), name='users_profile'),
-    url_provider_only(r'activities/', include('signup.urls.views.contacts')),
+    url_provider_only(r'activities/',
+        include('signup.urls.views.dashboard.contacts')),
 
     url_prefixed(r'^pricing/$',
         PricingView.as_view(), name='saas_cart_plan_list'),

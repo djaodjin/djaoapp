@@ -13,8 +13,8 @@ if settings.DEBUG:
         url(r'^403/$', permission_denied),
         url(r'^404/$', page_not_found),
         url(r'^500/$', server_error),
-        url(r'^register/disabled/$', TemplateView.as_view(
-            template_name='accounts/disabled.html')))
+        url(r'^login/disabled/$', TemplateView.as_view(
+            template_name='login/disabled.html')))
 else:
     urlpatterns = []
 

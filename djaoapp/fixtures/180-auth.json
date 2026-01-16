@@ -14,6 +14,7 @@
     "fields": {
       "created_at": "2025-01-01T00:00:00+00:00",
       "user": 180,
+      "email": "needactive@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6"
     },
     "model": "signup.Contact", "pk": 180
@@ -35,7 +36,7 @@
 {
     "fields": {
       "created_at": "2025-01-10T00:00:00-00:00",
-      "email": "xia+12@localhost.localdomain",
+      "email": "kathryn+12@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe279",
       "user": 12,
       "slug": "reset-passwd-email-scanner"},"model":"signup.Contact", "pk": 183
@@ -77,6 +78,13 @@
 },
 {
     "fields": {
+      "created_at": "2025-01-10T00:00:00-00:00",
+      "email": "xia+19@localhost.localdomain",
+      "email_code": "1234",
+      "slug": "xia19"}, "model": "signup.Contact", "pk": 186
+},
+{
+    "fields": {
       "date_joined": "2025-01-01T00:00:00-09:00",
       "email": "xia+7@example.com",
       "first_name": "Xia",
@@ -90,13 +98,11 @@
 },
 {
     "fields": {
-      "slug": "xia7",
       "created_at": "2025-01-10T00:00:00-00:00",
       "user": 187,
       "email": "xia+7@example.com",
-      "phone": "+14155555557"
-    },
-    "model": "signup.Contact", "pk": 187
+      "phone": "+14155555557",
+      "slug": "xia7"}, "model": "signup.Contact", "pk": 187
 },
 {
     "fields": {
@@ -145,6 +151,13 @@
       "priv_key": "abc123"
     },
     "model": "signup.OTPGenerator", "pk": 189
+},
+{
+    "fields": {
+      "created_at": "2025-01-10T00:00:00-00:00",
+      "email": "xia+21b@localhost.localdomain",
+      "email_code": "1234",
+      "slug": "xia21b"}, "model": "signup.Contact", "pk": 189
 },
 {
     "fields": {
@@ -249,5 +262,113 @@
       "created_at": "2025-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 194, "user": 194}, "model": "saas.Role", "pk": 194
-}
-]
+},
+
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "full_name": "Xia CardTwentyTwo",
+      "email": "xia+195@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f81",
+      "slug": "xia195"}, "model": "signup.Contact", "pk": 195
+},
+
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "full_name": "Xia CardTwentyThree",
+      "email": "xia+196@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f82",
+      "user": 196,
+      "slug": "xia196"}, "model": "signup.Contact", "pk": 196
+},
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "email": "xia+196@localhost.localdomain",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "!",
+      "username": "xia196"}, "model": "auth.User", "pk": 196
+},
+
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "email": "xia+197@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f83",
+      "user": 197,
+      "slug": "xia197"}, "model": "signup.Contact", "pk": 197
+},
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "email": "xia+197@localhost.localdomain",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia197"}, "model": "auth.User", "pk": 197
+},
+
+{
+    "fields": {
+      "created_at": "2025-01-01T00:00:00-00:00",
+      "email": "xia+198@localhost.localdomain",
+      "email_verification_at": "2025-01-01T00:00:00+00:00",
+      "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f84",
+      "user": 198,
+      "slug": "xia198"}, "model": "signup.Contact", "pk": 198
+},
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "email": "xia+198@localhost.localdomain",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "xia198"}, "model": "auth.User", "pk": 198
+},
+
+{
+    "fields": {
+      "date_joined": "2025-01-01T00:00:00+00:00",
+      "email": "donny+199@localhost.localdomain",
+      "first_name": "Donny",
+      "last_name": "OTPCodeVerification",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "last_login": "2025-01-01T00:00:00+00:00",
+      "password": "pbkdf2_sha256$600000$RbRWfhoqwcQxMMlPXtC999$sqc/L+VuCXbya5v9VCNbalsGMJEVjv39X+0aVcBZ3sI=",
+      "username": "donny199"}, "model": "auth.User", "pk": 199
+},
+{
+    "fields": {
+      "last_signed": "2025-01-01T00:00:00+00:00",
+      "agreement": 1, "user": 199}, "model": "saas.signature", "pk": 199
+},
+{ "fields": {
+    "created_at": "2025-01-01T00:00:00+00:00",
+    "role_description": 1,
+    "organization": 2, "user": 199}, "model": "saas.Role", "pk": 199
+},
+{
+    "fields": {
+      "priv_key": "3AKSBTYDCIVLHM7SHR2RGW46SRLSV5XC",
+      "user": 199}, "model": "signup.OTPGenerator", "pk": 199
+}]

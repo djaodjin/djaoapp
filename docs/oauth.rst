@@ -10,12 +10,12 @@ from Google and add them to the credentials file.
         SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "[REDACTED]"
 
 
-Then in the djaoapp/templates/accounts/login.html template file,
+Then in the djaoapp/templates/login/index.html template file,
 add the following HTML snipset:
 
     .. code-block:: html
 
-        <a href="{{urls.user.login_google}}{% if next %}?next={{next}}{% endif %}">
+        <a href="{{urls.user.login_google}}{% if query %}?{{query}}{% endif %}">
           Login with Google
         </a>
 

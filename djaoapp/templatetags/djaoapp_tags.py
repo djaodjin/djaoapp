@@ -265,7 +265,3 @@ def url_profile(request): #pylint:disable=unused-argument
             return reverse('saas_organization_profile', args=(organization,))
         return reverse('users_profile', args=(request.user,))
     return None
-
-@register.filter()
-def url_register(request): #pylint:disable=unused-argument
-    return reverse('registration_register')
