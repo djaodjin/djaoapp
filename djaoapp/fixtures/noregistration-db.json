@@ -2,7 +2,7 @@
 {
     "fields": {
       "full_name": "Stripe",
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "email": "stripe@localhost.localdomain",
       "phone": "555-555-5555",
       "street_address": "185 Berry St #550",
@@ -17,7 +17,7 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "manager",
       "title": "Profile Manager"
     },
@@ -27,7 +27,7 @@
     "fields": {
       "full_name": "SignupCard1",
       "email": "djaoapp-signup-card1@localhost.localdomain",
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
@@ -75,7 +75,7 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 42, "user": 43}, "model": "saas.Role", "pk": 43
 },
@@ -95,12 +95,12 @@
       "user": 44,
       "email": "alice+noregistration-0@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c0",
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "alice1"}, "model": "signup.Contact", "pk": 44
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 42, "user": 44}, "model": "saas.Role", "pk": 44
 },
@@ -120,12 +120,12 @@
       "user": 45,
       "email": "alice+noregistration-2@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c2",
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "alice2"}, "model": "signup.Contact", "pk": 45
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "role_description": 1,
       "organization": 42, "user": 45}, "model": "saas.Role", "pk": 45
 },
@@ -157,7 +157,7 @@
       "user": 47,
       "email": "xia+noregistration-1@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c1",
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "xia1"}, "model": "signup.Contact", "pk": 47
 },
 {
@@ -176,7 +176,7 @@
       "user": 48,
       "email": "xia+noregistration-3@localhost.localdomain",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c3",
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "xia2"}, "model": "signup.Contact", "pk": 48
 }
 ]

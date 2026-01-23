@@ -1,7 +1,7 @@
 [
 {
     "fields": {
-      "date_joined": "2025-01-01T00:00:00+00:00",
+      "date_joined": "2026-01-01T00:00:00+00:00",
       "email": "xia+18@localhost.localdomain",
       "first_name": "Xia18",
       "last_name": "User",
@@ -15,7 +15,7 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00+00:00",
+      "created_at": "2026-01-01T00:00:00+00:00",
       "slug": "registration-card3",
       "email": "registration+card3@localhost.localdomain",
       "full_name": "Registration Card 3",
@@ -33,7 +33,7 @@
       "slug": "djaoapp-register-card7",
       "full_name": "DjaoappRegister Card7",
       "email": "djaoapp-register-card7@djaoapp-register-card7.com",
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -44,7 +44,7 @@
       "slug": "djaoapp-register-card8",
       "full_name": "DjaoappRegister Card8",
       "email": "djaoapp-register-card8@djaoapp-register-card8.com",
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -55,7 +55,7 @@
       "slug": "djaoapp-register-card8b",
       "full_name": "DjaoappRegister Card8b",
       "email": "djaoapp-register-card8b@djaoapp-register-card8.com",
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1
@@ -64,7 +64,7 @@
 },
 
 { "fields": {
-      "date_joined": "2025-01-01T00:00:00-00:00",
+      "date_joined": "2026-01-01T00:00:00-00:00",
       "email": "xia+djaoapp-register-card6@djaoapp-register-card6.com",
       "first_name": "Xia",
       "last_name": "Card6",
@@ -77,7 +77,7 @@
     "model": "auth.User", "pk": 61
 },
 { "fields": {
-      "last_signed": "2025-01-01T00:00:00-00:00",
+      "last_signed": "2026-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 61
     },
@@ -85,14 +85,14 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "user": 61,
       "email": "xia+djaoapp-register-card6@djaoapp-register-card6.com",
-      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "email_verified_at": "2026-05-25T00:00:00-00:00",
       "slug": "xia-djaoapp-register-card6"}, "model": "signup.Contact", "pk": 61
 },
 { "fields": {
-      "date_joined": "2025-01-01T00:00:00-00:00",
+      "date_joined": "2026-01-01T00:00:00-00:00",
       "email": "xia+djaoapp-register-card7@djaoapp-register-card7.com",
       "first_name": "Xia",
       "last_name": "Card7",
@@ -105,7 +105,7 @@
     "model": "auth.User", "pk": 62
 },
 { "fields": {
-      "last_signed": "2025-01-01T00:00:00-00:00",
+      "last_signed": "2026-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 62
     },
@@ -113,14 +113,14 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "user": 62,
       "email": "xia+djaoapp-register-card7@djaoapp-register-card7.com",
-      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "email_verified_at": "2026-05-25T00:00:00-00:00",
       "slug": "xia-djaoapp-register-card7"}, "model": "signup.Contact", "pk": 62
 },
 { "fields": {
-      "date_joined": "2025-01-01T00:00:00-00:00",
+      "date_joined": "2026-01-01T00:00:00-00:00",
       "email": "xia+djaoapp-register-card8@djaoapp-register-card8.com",
       "first_name": "Xia",
       "last_name": "Card8",
@@ -133,7 +133,7 @@
     "model": "auth.User", "pk": 63
 },
 { "fields": {
-      "last_signed": "2025-01-01T00:00:00-00:00",
+      "last_signed": "2026-01-01T00:00:00-00:00",
       "agreement": 1,
       "user": 63
     },
@@ -141,10 +141,10 @@
 },
 {
     "fields": {
-      "created_at": "2025-01-01T00:00:00-00:00",
+      "created_at": "2026-01-01T00:00:00-00:00",
       "user": 63,
       "email": "xia+djaoapp-register-card8@djaoapp-register-card8.com",
-      "email_verified_at": "2025-05-25T00:00:00-00:00",
+      "email_verified_at": "2026-05-25T00:00:00-00:00",
       "slug": "xia-djaoapp-register-card8"}, "model": "signup.Contact", "pk": 63
 },
 
