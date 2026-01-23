@@ -88,6 +88,18 @@
       </div>
     </form>
   </div>
+  {% elif 'new_password' not in form %}
+    {% if urls and urls.user.login_github %}
+    <hr />
+    <div class="text-center">
+      <p>
+        Or
+      </p>
+      <div class="d-grid">
+        <a class="btn border" href="{{urls.user.login_github}}{% if next %}?next={{next}}{% endif %}"><i class="fa-brands fa-github"></i> Login with Github</a>
+      </div>
+    </div>
+    {% endif %}
   {% endif %}
   {% endblock %}
   {% endif %}

@@ -36,6 +36,7 @@
             <em>
 {% trans link='/contact/'|site_url %}If you have any questions, please feel free to <a href="{{link}}">contact us</a>{% endtrans %}
             </em>
+          </small>
         </p>
       </div>{# /.col #}
     </div>
@@ -44,5 +45,6 @@
 {% endblock %}
 
 {% block bodyscripts %}
+{% include "_password_strength_scripts.html" %}
 {% block accounts_scripts %}{% endblock %}
 {% endblock %}

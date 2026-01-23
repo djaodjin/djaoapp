@@ -2,31 +2,28 @@
 
 {% block form_block %}
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-{% if form['check_email'] %}
-{{ input_field(form['check_email'], hide_labels=form.hide_labels) }}
-{% endif %}
-{% if form['check_phone'] %}
-{{ input_field(form['check_phone'], hide_labels=form.hide_labels) }}
-{% endif %}
-
 {% if form['full_name'] %}
 {{ input_field(form['full_name'], hide_labels=form.hide_labels) }}
 {% endif %}
+
 {% if form['email'] %}
 {{ input_field(form['email'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['email_code'] %}
 {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
 {% endif %}
+
 {% if form['phone'] %}
 {{ input_field(form['phone'], hide_labels=form.hide_labels) }}
 {% endif %}
 {% if form['phone_code'] %}
 {{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
 {% endif %}
+
 {% if form['username'] %}
 {{ input_field(form['username'], hide_labels=form.hide_labels) }}
 {% endif %}
+
 {% if form['new_password'] %}
 {{ input_field(form['new_password'], hide_labels=form.hide_labels) }}
 {{ input_field(form['new_password2'], hide_labels=form.hide_labels) }}
@@ -34,9 +31,13 @@
 {% if form['password'] %}
 {{ input_field(form['password'], hide_labels=form.hide_labels) }}
 {% endif %}
+
 {% if form['terms-of-use'] %}
+<div class="my-2">
 {{ input_field(form['terms-of-use'], hide_labels=form.hide_labels) }}
+</div>
 {% endif %}
+
 {% if 'captcha' in form.fields %}
 {{ input_field(form['captcha'], hide_labels=form.hide_labels) }}
 {% endif %}

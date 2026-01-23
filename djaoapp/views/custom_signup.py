@@ -17,7 +17,7 @@ from signup.views.auth import (
 from ..forms.custom_signup import (ActivationForm, CodeActivationForm,
     PasswordResetConfirmForm, SigninForm, SignupForm)
 from ..mixins import AuthMixin as AuthBaseMixin
-from ..utils import PERSONAL_REGISTRATION, TOGETHER_REGISTRATION
+from ..utils import PERSONAL_REGISTRATION
 
 
 LOGGER = logging.getLogger(__name__)
@@ -69,8 +69,6 @@ class AuthMixin(AuthBaseMixin):
         if not register_path and self.app:
             if settings.REGISTRATION_STYLE == PERSONAL_REGISTRATION:
                 register_path = 'personal'
-            elif settings.REGISTRATION_STYLE == TOGETHER_REGISTRATION:
-                register_path = 'organization'
         return register_path
 
 

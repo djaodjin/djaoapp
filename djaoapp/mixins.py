@@ -19,8 +19,7 @@ from signup.models import Notification
 
 from .compat import gettext_lazy as _, reverse, six
 from .edition_tools import fail_edit_perm
-from .utils import (PERSONAL_REGISTRATION, TOGETHER_REGISTRATION,
-    USER_REGISTRATION)
+from .utils import PERSONAL_REGISTRATION, USER_REGISTRATION
 
 
 LOGGER = logging.getLogger(__name__)
@@ -58,7 +57,6 @@ class AuthMixin(object):
         'postal_code',
         'new_password',
         'new_password2',
-        'organization_name',
         'password',
         'phone',
         'region',
@@ -107,26 +105,18 @@ class AuthMixin(object):
             else val) for field_name, val in six.iteritems(cleaned_data)}))
         registration = USER_REGISTRATION
         user_selector = 'full_name'
-        organization_selector = 'organization_name'
+        organization_selector = 'full_name'
         full_name = cleaned_data.get('full_name', None)
-        if 'organization_name' in cleaned_data:
-            # We have a registration of a user and organization together.
-            registration = TOGETHER_REGISTRATION
-            organization_name = cleaned_data.get('organization_name', None)
-            if full_name and full_name == organization_name:
-                # No we have a personal registration after all
-                registration = PERSONAL_REGISTRATION
-                organization_selector = 'full_name'
-        elif (cleaned_data.get('street_address', None) or
+        if (cleaned_data.get('street_address', None) or
             cleaned_data.get('locality', None) or
-            cleaned_data.get('region', None) or
-            cleaned_data.get('postal_code', None) or
-            cleaned_data.get('country', None)):
+            cleaned_data.get('postal_code', None)):
+            # 'region' and 'country' are always set through
+            # `AuthMixin.get_initial` regardless of the form presented
+            # to the user.
             # XXX We have enough information for a billing profile but it might
             # not be a good idea to force it here. Maybe using a registration
             # 'type' field is more appropriate.
             registration = PERSONAL_REGISTRATION
-            organization_selector = 'full_name'
 
         self.renames = {'slug': organization_selector}
         with transaction.atomic(using=router.db_for_write(get_user_model())):
@@ -142,8 +132,7 @@ class AuthMixin(object):
                         'username': 'username'}})
             user = super(AuthMixin, self).create_models(*args, **cleaned_data)
 
-            if registration in (PERSONAL_REGISTRATION,
-                                TOGETHER_REGISTRATION):
+            if registration in (PERSONAL_REGISTRATION,):
                 # Registers both a User and an Organization at the same time
                 # with the added constraint that username and organization
                 # slug are identical such that it creates a transparent
