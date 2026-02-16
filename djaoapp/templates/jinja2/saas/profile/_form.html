@@ -42,14 +42,10 @@
 {{ input_field(form['lang'], hide_labels=form.hide_labels) }}
 {% endif %}
 
-{% if form['is_bulk_buyer'] %}
-{{ input_field(form['is_bulk_buyer'], hide_labels=form.hide_labels) }}
-{% endif %}
-{% if form['is_provider'] %}
-{{ input_field(form['is_provider'], hide_labels=form.hide_labels) }}
-{% endif %}
-{% if form['extra'] %}
-{{ input_field(form['extra'], hide_labels=form.hide_labels) }}
+{% if form['no_implicit_role'] %}
+<div class="my-4">
+{{ input_field(form['no_implicit_role'], hide_labels=form.hide_labels) }}
+</div>
 {% endif %}
 
 {% endblock %}
