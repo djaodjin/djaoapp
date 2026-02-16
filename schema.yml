@@ -172,8 +172,8 @@ paths:
         Creates a profile that is not associated to any user.
 
       tags:
-      - user
       - profile
+      - user
       requestBody:
         content:
           application/json:
@@ -213,8 +213,8 @@ paths:
           type: string
         required: true
       tags:
-      - profilemodel
       - profile
+      - profilemodel
       - subscriber
       security:
       - {}
@@ -296,6 +296,248 @@ paths:
                 $ref: '#/components/schemas/TypeaheadUserList'
           description: ''
       summary: Searches users
+  /api/activities:
+    get:
+      operationId: activities_list
+      description: |2+
+
+        Returns a list of `page_size` activity records for {account}.
+
+      parameters:
+      - name: o
+        required: false
+        in: query
+        description: sort by created_at. If a field is preceded by a minus sign ('-'),
+          the order will be reversed. Multiple 'o' parameters can be specified to
+          produce a stable result.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page between 1 and 100 (defaults
+          to 25).
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: value to search for in the fields specified by q_f
+        schema:
+          type: string
+      - name: q_f
+        required: false
+        in: query
+        description: 'restrict searches to one or more fields in: text. searches all
+          fields when unspecified.'
+        schema:
+          type: string
+      tags:
+      - broker
+      - profile
+      - usermodel
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityList'
+          description: ''
+      summary: Lists activities for an account
+    post:
+      operationId: activities_create
+      description: |2+
+
+      tags:
+      - profile
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityByAccountCreate'
+          description: ''
+      summary: Records new activity with a profile
+  /api/activities/{profile}:
+    get:
+      operationId: activities_list_2
+      description: |2+
+
+        Returns a list of `page_size` activity records for {account}.
+
+      parameters:
+      - name: o
+        required: false
+        in: query
+        description: sort by created_at. If a field is preceded by a minus sign ('-'),
+          the order will be reversed. Multiple 'o' parameters can be specified to
+          produce a stable result.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page between 1 and 100 (defaults
+          to 25).
+        schema:
+          type: integer
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      - name: q
+        required: false
+        in: query
+        description: value to search for in the fields specified by q_f
+        schema:
+          type: string
+      - name: q_f
+        required: false
+        in: query
+        description: 'restrict searches to one or more fields in: text. searches all
+          fields when unspecified.'
+        schema:
+          type: string
+      tags:
+      - broker
+      - profile
+      - usermodel
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityList'
+          description: ''
+      summary: Lists activities for an account
+    post:
+      operationId: activities_create_2
+      description: |2+
+
+      parameters:
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      tags:
+      - profile
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActivityByAccountCreate'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityByAccountCreate'
+          description: ''
+      summary: Records new activity with a profile
+  /api/activities/{profile}/contacts:
+    get:
+      operationId: activities_contacts_list
+      description: |2+
+
+        Returns a list of `page_size` contacts for activities on {account}.
+
+      parameters:
+      - name: o
+        required: false
+        in: query
+        description: sort by full_name, created_at, date_joined. If a field is preceded
+          by a minus sign ('-'), the order will be reversed. Multiple 'o' parameters
+          can be specified to produce a stable result.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page between 1 and 100 (defaults
+          to 25).
+        schema:
+          type: integer
+      - in: path
+        name: profile
+        schema:
+          type: string
+        required: true
+      - name: q
+        required: false
+        in: query
+        description: value to search for in the fields specified by q_f
+        schema:
+          type: string
+      - name: q_f
+        required: false
+        in: query
+        description: 'restrict searches to one or more fields in: email, username.
+          searches all fields when unspecified.'
+        schema:
+          type: string
+      tags:
+      - broker
+      - profile
+      - usermodel
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      summary: Lists contacts for activities on an account
   /api/agreements:
     get:
       operationId: agreements_list
@@ -414,6 +656,43 @@ paths:
                 $ref: '#/components/schemas/AgreementDetail'
           description: ''
       summary: Retrieves a legal agreement (broker)
+    post:
+      operationId: agreements_create_2
+      description: |2+
+
+        Enable and disable a specific set of optional cookies
+
+      parameters:
+      - in: path
+        name: document
+        schema:
+          type: string
+        required: true
+      tags:
+      - legal
+      - visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgreementDetail'
+          description: ''
+      summary: Update privacy settings
     put:
       operationId: agreements_update
       description: |2+
@@ -524,6 +803,14 @@ paths:
         Returns a JSON Web Token that can be used in HTTP requests that require
         authentication.
 
+        Authentication can be done either through a ``password``, or by verifying
+        access to an e-mail inbox (``email_code``) or access to a phone
+        (``phone_code``). See `sending a verification code <#auth_recover_create>`_
+
+        When Multi-Factor Authentication (MFA) is enabled, an additional
+        ``otp_code`` must be specified to authenticate a user.
+        See `enabling MFA <#users_otp_update>`_
+
         The API is typically used within an HTML
         `login page </docs/guides/themes/#workflow_login>`_
         as present in the default theme.
@@ -536,9 +823,9 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - visitor
-      - usermodel
       - auth
+      - usermodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -567,9 +854,9 @@ paths:
                 $ref: '#/components/schemas/ValidationError'
           description: ''
       summary: Authenticates a user
-  /api/auth/activate/{verification_key}:
+  /api/auth/{verification_key}:
     get:
-      operationId: auth_activate_retrieve
+      operationId: auth_retrieve
       description: |2+
 
         This API is typically used to pre-populate a registration form
@@ -587,9 +874,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - visitor
-      - usermodel
       - auth
+      - usermodel
+      - visitor
       security:
       - {}
       responses:
@@ -601,10 +888,10 @@ paths:
           description: ''
       summary: Retrieves contact from an activation key
     post:
-      operationId: auth_activate_create
+      operationId: auth_create_2
       description: |2+
 
-        Activates a new user and returns a JSON Web Token that can subsequently
+        Activates a user and returns a JSON Web Token that can subsequently
         be used to authenticate the new user in HTTP requests.
 
       parameters:
@@ -621,9 +908,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - visitor
-      - usermodel
       - auth
+      - usermodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -652,26 +939,6 @@ paths:
                 $ref: '#/components/schemas/ValidationError'
           description: ''
       summary: Activates a user
-  /api/auth/logout:
-    post:
-      operationId: auth_logout_create
-      description: |2+
-
-        Removes all cookies associated with the session.
-
-        This API endpoint is only useful when the user is using Cookie-based
-        authentication. Tokens expire; they cannot be revoked.
-
-      tags:
-      - usermodel
-      - auth
-      - user
-      security:
-      - {}
-      responses:
-        '200':
-          description: No response body
-      summary: Logs a user out
   /api/auth/recover:
     post:
       operationId: auth_recover_create
@@ -681,14 +948,13 @@ paths:
 
         The user is uniquely identified by her email address or phone number.
 
-        The API is typically used within an HTML
-        `recover credentials page </docs/guides/themes/#workflow_recover>`_
-        as present in the default theme.
+        The API is typically used within a workflow to authenticate a user
+        by verifying access to an e-mail inbox or a phone.
 
       tags:
-      - visitor
-      - usermodel
       - auth
+      - usermodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -710,7 +976,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Recover'
           description: ''
-      summary: Sends a verification link
+      summary: Sends verification code
   /api/auth/register:
     post:
       operationId: auth_register_create
@@ -731,9 +997,9 @@ paths:
           nullable: true
         description: True when a cookie session should additionally be created
       tags:
-      - visitor
-      - usermodel
       - auth
+      - usermodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -760,37 +1026,6 @@ paths:
                 $ref: '#/components/schemas/ValidationError'
           description: ''
       summary: Registers a user
-  /api/auth/reset/{verification_key}:
-    post:
-      operationId: auth_reset_create
-      description: |2+
-
-        Resets a user password, hence triggering an activation
-        workflow the next time a user attempts to login.
-
-      parameters:
-      - in: path
-        name: verification_key
-        schema:
-          type: string
-          pattern: ^[a-f0-9]{40}$
-        required: true
-      tags:
-      - visitor
-      - usermodel
-      - auth
-      security:
-      - {}
-      responses:
-        '201':
-          description: No response body
-        '400':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationError'
-          description: ''
-      summary: Resets a user password
   /api/auth/tokens:
     get:
       operationId: auth_tokens_retrieve
@@ -801,8 +1036,8 @@ paths:
         The API is typically used to build the user menubar item.
 
       tags:
-      - usermodel
       - user
+      - usermodel
       security:
       - {}
       responses:
@@ -824,9 +1059,9 @@ paths:
         identical.
 
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -849,6 +1084,25 @@ paths:
                 $ref: '#/components/schemas/Token'
           description: ''
       summary: Refreshes a JSON Web Token
+    delete:
+      operationId: auth_tokens_destroy
+      description: |2+
+
+        Removes all cookies associated with the session.
+
+        This API endpoint is only useful when the user is using Cookie-based
+        authentication. Tokens expire; they cannot be revoked.
+
+      tags:
+      - auth
+      - user
+      - usermodel
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+      summary: Deletes authentication cookies
   /api/auth/tokens/realms/{profile}:
     get:
       operationId: auth_tokens_realms_retrieve
@@ -882,9 +1136,9 @@ paths:
         identical.
 
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -1055,8 +1309,8 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
+      - provider
       - transactionmodel
       security:
       - {}
@@ -1085,9 +1339,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - profilemodel
+      - provider
       security:
       - {}
       responses:
@@ -1345,9 +1599,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
-      - chargemodel
       - billing
+      - chargemodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -1398,8 +1652,8 @@ paths:
           type: string
         required: true
       tags:
-      - cartmodel
       - billing
+      - cartmodel
       - subscriber
       security:
       - {}
@@ -1436,8 +1690,8 @@ paths:
           type: string
         required: true
       tags:
-      - cartmodel
       - billing
+      - cartmodel
       - subscriber
       requestBody:
         content:
@@ -1483,8 +1737,8 @@ paths:
           type: string
         required: true
       tags:
-      - cartmodel
       - billing
+      - cartmodel
       - subscriber
       requestBody:
         content:
@@ -1576,10 +1830,10 @@ paths:
         schema:
           type: string
       tags:
-      - provider
-      - list
       - billing
       - couponmodel
+      - list
+      - provider
       security:
       - {}
       responses:
@@ -1608,9 +1862,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - couponmodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -1654,9 +1908,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - couponmodel
+      - provider
       security:
       - {}
       responses:
@@ -1687,9 +1941,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - couponmodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -1732,9 +1986,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - couponmodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -1781,9 +2035,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - billing
       - couponmodel
+      - provider
       security:
       - {}
       responses:
@@ -1894,9 +2148,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
-      - chargemodel
       - billing
+      - chargemodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -1994,9 +2248,9 @@ paths:
         schema:
           type: string
       tags:
-      - provider
-      - list
       - billing
+      - list
+      - provider
       - transactionmodel
       security:
       - {}
@@ -2072,9 +2326,9 @@ paths:
         schema:
           type: string
       tags:
-      - provider
-      - list
       - billing
+      - list
+      - provider
       - transactionmodel
       security:
       - {}
@@ -2147,9 +2401,9 @@ paths:
         schema:
           type: string
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       security:
       - {}
       responses:
@@ -2167,9 +2421,9 @@ paths:
         This endpoint lets broker to add items into a user cart.
 
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       requestBody:
         content:
           application/json:
@@ -2209,9 +2463,9 @@ paths:
           type: integer
         required: true
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       security:
       - {}
       responses:
@@ -2238,9 +2492,9 @@ paths:
           type: integer
         required: true
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       requestBody:
         content:
           application/json:
@@ -2278,9 +2532,9 @@ paths:
           type: integer
         required: true
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       requestBody:
         content:
           application/json:
@@ -2318,9 +2572,9 @@ paths:
           type: integer
         required: true
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       security:
       - {}
       responses:
@@ -2393,9 +2647,9 @@ paths:
           type: string
         required: true
       tags:
-      - broker
-      - cart
       - billing
+      - cart
+      - broker
       security:
       - {}
       responses:
@@ -2466,10 +2720,10 @@ paths:
         schema:
           type: string
       tags:
-      - broker
       - chargemodel
       - list
       - billing
+      - broker
       security:
       - {}
       responses:
@@ -2520,9 +2774,9 @@ paths:
           type: string
         required: true
       tags:
-      - provider
-      - chargemodel
       - billing
+      - chargemodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -2605,10 +2859,10 @@ paths:
         schema:
           type: string
       tags:
-      - broker
+      - transactionmodel
       - list
       - billing
-      - transactionmodel
+      - broker
       security:
       - {}
       responses:
@@ -2647,8 +2901,8 @@ paths:
 
       tags:
       - visitor
-      - cartmodel
       - billing
+      - cartmodel
       requestBody:
         content:
           application/json:
@@ -2700,8 +2954,8 @@ paths:
         description: Plan
       tags:
       - visitor
-      - cartmodel
       - billing
+      - cartmodel
       security:
       - {}
       responses:
@@ -2728,8 +2982,8 @@ paths:
           type: string
         required: true
       tags:
-      - cartmodel
       - billing
+      - cartmodel
       requestBody:
         content:
           application/json:
@@ -2762,8 +3016,8 @@ paths:
 
       tags:
       - visitor
-      - cartmodel
       - billing
+      - cartmodel
       requestBody:
         content:
           application/json:
@@ -2869,9 +3123,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - broker
       - profile
+      - usermodel
       security:
       - {}
       responses:
@@ -2893,9 +3147,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - broker
       - profile
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -3034,6 +3288,43 @@ paths:
                 $ref: '#/components/schemas/AgreementDetail'
           description: ''
       summary: Retrieves a legal agreement
+    post:
+      operationId: legal_create
+      description: |2+
+
+        Enable and disable a specific set of optional cookies
+
+      parameters:
+      - in: path
+        name: agreement
+        schema:
+          type: string
+        required: true
+      tags:
+      - legal
+      - visitor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AgreementDetail'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgreementDetail'
+          description: ''
+      summary: Update privacy settings
   /api/legal/{agreement}/sign:
     post:
       operationId: legal_sign_create
@@ -3052,9 +3343,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -3133,8 +3424,8 @@ paths:
         required: true
       tags:
       - chart
-      - provider
       - metrics
+      - provider
       - transactionmodel
       security:
       - {}
@@ -3207,10 +3498,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscribers
+      - balance
       - organization
       - provider
-      - balance
+      - subscribers
       security:
       - {}
       responses:
@@ -3293,10 +3584,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
-      - provider
-      - metrics
       - couponmodel
+      - list
+      - metrics
+      - provider
       security:
       - {}
       responses:
@@ -3370,9 +3661,9 @@ paths:
         required: true
       tags:
       - chart
-      - provider
       - metrics
       - profilemodel
+      - provider
       security:
       - {}
       responses:
@@ -3398,8 +3689,8 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - metrics
+      - provider
       security:
       - {}
       responses:
@@ -3424,8 +3715,8 @@ paths:
           type: string
         required: true
       tags:
-      - provider
       - metrics
+      - provider
       security:
       - {}
       responses:
@@ -3481,8 +3772,8 @@ paths:
         required: true
       tags:
       - chart
-      - provider
       - metrics
+      - provider
       - transactionmodel
       security:
       - {}
@@ -3558,9 +3849,9 @@ paths:
           type: string
       tags:
       - list
-      - provider
       - metrics
       - profilemodel
+      - provider
       security:
       - {}
       responses:
@@ -3626,10 +3917,10 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
       - chart
-      - provider
       - metrics
+      - planmodel
+      - provider
       security:
       - {}
       responses:
@@ -3682,8 +3973,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       security:
       - {}
@@ -3722,8 +4013,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       security:
       - {}
@@ -3748,8 +4039,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       requestBody:
         content:
@@ -3788,8 +4079,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       requestBody:
         content:
@@ -3831,8 +4122,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       security:
       - {}
@@ -3862,8 +4153,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       requestBody:
         content:
@@ -3905,8 +4196,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       requestBody:
         content:
@@ -3947,8 +4238,8 @@ paths:
           type: string
         required: true
       tags:
-      - broker
       - metrics
+      - broker
       - transactionmodel
       security:
       - {}
@@ -4020,9 +4311,9 @@ paths:
         schema:
           type: string
       tags:
-      - usermodel
       - broker
       - metrics
+      - usermodel
       security:
       - {}
       responses:
@@ -4046,9 +4337,9 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
+      - notificationmodel
       - broker
       - themes
-      - notificationmodel
       security:
       - {}
       responses:
@@ -4124,8 +4415,8 @@ paths:
           type: string
       tags:
       - subscriptions
-      - planmodel
       - visitor
+      - planmodel
       security:
       - {}
       responses:
@@ -4224,8 +4515,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - profilemodel
       - profile
+      - profilemodel
       - subscriber
       security:
       - {}
@@ -4249,8 +4540,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - profilemodel
       - profile
+      - profilemodel
       - subscriber
       requestBody:
         content:
@@ -4290,8 +4581,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - profilemodel
       - profile
+      - profilemodel
       - subscriber
       requestBody:
         content:
@@ -4330,8 +4621,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - profilemodel
       - profile
+      - profilemodel
       - subscriber
       security:
       - {}
@@ -4440,10 +4731,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - planmodel
-      - provider
       - list
+      - provider
+      - planmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -4468,9 +4759,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - planmodel
       - provider
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -4520,9 +4811,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - planmodel
       - provider
+      - subscriptions
       security:
       - {}
       responses:
@@ -4561,9 +4852,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - planmodel
       - provider
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -4611,9 +4902,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - planmodel
       - provider
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -4660,9 +4951,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - planmodel
       - provider
+      - subscriptions
       security:
       - {}
       responses:
@@ -4752,10 +5043,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -4789,9 +5080,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - provider
       - subscriptionmodel
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -4839,9 +5130,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -4877,8 +5168,8 @@ paths:
         required: true
       tags:
       - subscriptions
-      - provider
       - subscriptionmodel
+      - provider
       requestBody:
         content:
           application/json:
@@ -4925,9 +5216,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - provider
       - subscriptionmodel
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -4974,9 +5265,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
       - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -5060,10 +5351,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -5160,10 +5451,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -5221,9 +5512,9 @@ paths:
         schema:
           type: string
       tags:
-      - rbac
       - rolemodel
       - list
+      - rbac
       - subscriber
       security:
       - {}
@@ -5330,8 +5621,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       requestBody:
         content:
@@ -5381,8 +5672,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -5421,8 +5712,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -5460,8 +5751,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       requestBody:
         content:
@@ -5512,8 +5803,8 @@ paths:
           pattern: ^[a-zA-Z0-9_\-\+\.\@]+$
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -5571,9 +5862,9 @@ paths:
         schema:
           type: string
       tags:
-      - rbac
       - rolemodel
       - list
+      - rbac
       - subscriber
       security:
       - {}
@@ -5600,8 +5891,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       requestBody:
         content:
@@ -5644,8 +5935,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -5675,8 +5966,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       requestBody:
         content:
@@ -5718,8 +6009,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       requestBody:
         content:
@@ -5760,8 +6051,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -5841,9 +6132,9 @@ paths:
           type: string
       tags:
       - subscriptions
-      - provider
       - list
       - profilemodel
+      - provider
       security:
       - {}
       responses:
@@ -5877,8 +6168,8 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - rbac
       - provider
+      - rbac
       - subscriptionmodel
       security:
       - {}
@@ -5961,10 +6252,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
       - profilemodel
+      - provider
+      - subscriptions
       security:
       - {}
       responses:
@@ -6028,10 +6319,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - rolemodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6121,10 +6412,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6207,10 +6498,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6302,10 +6593,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6370,10 +6661,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - provider
       - list
+      - provider
       - profilemodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6733,8 +7024,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -6755,8 +7046,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -6792,8 +7083,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -6822,8 +7113,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -6855,8 +7146,8 @@ paths:
           type: integer
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -6877,8 +7168,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -6914,8 +7205,8 @@ paths:
           type: integer
       tags:
       - appmodel
-      - broker
       - metrics
+      - broker
       security:
       - {}
       responses:
@@ -6950,8 +7241,8 @@ paths:
           type: integer
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -6968,8 +7259,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7002,8 +7293,8 @@ paths:
 
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7039,8 +7330,8 @@ paths:
         required: true
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -7064,8 +7355,8 @@ paths:
         required: true
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7101,8 +7392,8 @@ paths:
         required: true
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       requestBody:
         content:
           application/json:
@@ -7137,8 +7428,8 @@ paths:
         required: true
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -7161,8 +7452,8 @@ paths:
         required: true
       tags:
       - appmodel
-      - rbac
       - broker
+      - rbac
       security:
       - {}
       responses:
@@ -7757,9 +8048,9 @@ paths:
         schema:
           type: string
       tags:
-      - usermodel
       - broker
       - profile
+      - usermodel
       security:
       - {}
       responses:
@@ -7775,9 +8066,9 @@ paths:
       description: |2+
 
       tags:
-      - usermodel
       - broker
       - profile
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -7822,12 +8113,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       security:
       - {}
       responses:
@@ -7851,12 +8142,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -7892,12 +8183,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -7932,12 +8223,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       security:
       - {}
       responses:
@@ -8004,9 +8295,9 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       security:
       - {}
       responses:
@@ -8041,9 +8332,9 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       requestBody:
         content:
           application/json:
@@ -8130,9 +8421,9 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       security:
       - {}
       responses:
@@ -8173,9 +8464,9 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       requestBody:
         content:
           application/json:
@@ -8221,8 +8512,8 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
       - rolemodel
+      - rbac
       - subscriber
       security:
       - {}
@@ -8258,9 +8549,9 @@ paths:
           type: string
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       security:
       - {}
       responses:
@@ -8332,9 +8623,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
-      - rbac
-      - user
       - rolemodel
+      - user
+      - rbac
       security:
       - {}
       responses:
@@ -8362,9 +8653,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       security:
       - {}
       responses:
@@ -8430,9 +8721,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       security:
       - {}
       responses:
@@ -8457,9 +8748,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8501,9 +8792,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8535,12 +8826,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       security:
       - {}
       responses:
@@ -8560,12 +8851,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8597,12 +8888,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
-      - user
       - profile
+      - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8645,12 +8936,12 @@ paths:
         name: user
         schema:
           type: string
-          pattern: ^[\w.@+-]+$
+          pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8698,9 +8989,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8737,9 +9028,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       security:
       - {}
       responses:
@@ -8845,10 +9136,10 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
+      - profile
       - rbac
       - user
-      - profile
+      - usermodel
       security:
       - {}
       responses:
@@ -8877,10 +9168,10 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
+      - profile
       - rbac
       - user
-      - profile
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -8918,9 +9209,9 @@ paths:
           type: string
         required: true
       tags:
-      - usermodel
       - auth
       - user
+      - usermodel
       requestBody:
         content:
           application/json:
@@ -9065,10 +9356,28 @@ components:
           - $ref: '#/components/schemas/Organization'
           nullable: true
           description: Account the activity is associated to
+        contact:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          nullable: true
+          description: Contact the activity is associated to
       required:
       - account
+      - contact
       - created_at
       - created_by
+    ActivityByAccountCreate:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Free form text description of the activity
+        contact:
+          type: string
+          description: Contact the activity is associated to
+          nullable: true
+      required:
+      - contact
     ActivityCreate:
       type: object
       properties:
@@ -9217,10 +9526,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/SessionBackendEnum'
           description: Format to encode session in the forwarded HTTP request
-        authentication:
-          allOf:
-          - $ref: '#/components/schemas/AuthenticationEnum'
-          description: Restricted authentication and registration
         welcome_email:
           type: boolean
           description: Send a welcome e-mail to newly registered users
@@ -10296,7 +10601,8 @@ components:
         authentication:
           allOf:
           - $ref: '#/components/schemas/AuthenticationEnum'
-          description: Restricted authentication and registration
+          description: Configuration of the authentication workflow (enabled, login-only,
+            disabled)
       required:
       - active_users
       - engagements
@@ -10407,6 +10713,7 @@ components:
       - br
       - bs
       - ca
+      - ckb
       - cs
       - cy
       - da
@@ -10459,6 +10766,7 @@ components:
       - ml
       - mn
       - mr
+      - ms
       - my
       - nb
       - ne
@@ -11093,6 +11401,9 @@ components:
           description: Records in the queryset
     PaginatedAssetList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -11730,10 +12041,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/SessionBackendEnum'
           description: Format to encode session in the forwarded HTTP request
-        authentication:
-          allOf:
-          - $ref: '#/components/schemas/AuthenticationEnum'
-          description: Restricted authentication and registration
         welcome_email:
           type: boolean
           description: Send a welcome e-mail to newly registered users
@@ -13177,14 +13484,15 @@ components:
       - slug
     Recover:
       type: object
-      description: Serializer to send an e-mail to a user in order to recover her
-        account.
+      description: |-
+        Serializer to send an e-mail to a user in order to veriy access to
+        and e-mail inbox, or send a text message to veriy access to a phone.
       properties:
-        email:
+        username:
           type: string
-          description: Email or phone number to recover the account
+          description: Username, e-mail address or phone number to identify the account
       required:
-      - email
+      - username
     RedeemCoupon:
       type: object
       description: Serializer to redeem a ``Coupon``.
@@ -13282,6 +13590,7 @@ components:
         new_password:
           type: string
           writeOnly: true
+          nullable: true
           description: Password with which a user can authenticate with the service
         organization_name:
           type: string
@@ -13312,6 +13621,9 @@ components:
         security:
           type: string
           description: Security Policy
+        privacy:
+          type: string
+          description: Privacy Policy
       required:
       - created_at
       - credentials
@@ -14049,6 +14361,7 @@ components:
         new_password:
           type: string
           writeOnly: true
+          nullable: true
           description: Password with which a user can authenticate with the service
       required:
       - created_at

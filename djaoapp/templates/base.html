@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="DjaoDjin inc.">
-    <meta name="copyright" content="Copyright (c) 2025 DjaoDjin inc.">
+    <meta name="copyright" content="Copyright (c) 2026 DjaoDjin inc.">
     <link rel="icon" href="{{'/favicon.ico'|site_url}}" type="image/x-icon">
     <meta property="og:site_name" content="{% if request and request.site %}{{request.site.printable_name}}{% else %}DjaoApp{% endif %}" />
     <meta property="og:type" content="website" />
@@ -91,7 +91,7 @@
                         <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm"></i></a>
                       </div>
                       <div>
-{% trans %}Powered by &copy; 2025 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
+{% trans %}Powered by &copy; 2026 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
                       </div>
                       {# Theme color mode selection #}
                       <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
@@ -136,9 +136,10 @@
               {% block body_top_template %}{% endblock %}
               <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
                 <div class="container-fluid">
+
                   <div class="d-flex">
                     <button class="me-2 sidebar-toggle sidebar-toggle-default btn btn-secondary"
-                          data-target="#dashboard-navbar">
+                            data-target="#dashboard-navbar">
                       <div class="bar1 default"></div>
                       <div class="bar2 default"></div>
                       <div class="bar3 default"></div>
@@ -146,6 +147,7 @@
                     {% block navbar_app_left_sidebar_toggle %}
                     {% endblock %}
                   </div>
+
                   {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
                     <a class="navbar-brand" href="{{request|site_url}}">
@@ -240,7 +242,7 @@
           <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa fa-linkedin fa-sm ps-1"></i></a>
         </div>
         <div class="my-2">
-          {% trans %}Powered by DjaoDjin. &copy; 2025 All rights reserved.{% endtrans %}
+          {% trans %}Powered by DjaoDjin. &copy; 2026 All rights reserved.{% endtrans %}
         </div>
       {# Theme color mode selection #}
       <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">

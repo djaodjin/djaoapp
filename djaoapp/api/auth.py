@@ -45,8 +45,7 @@ class DjaoAppJWTActivate(AuthMixin, AppMixin, JWTActivateBase):
 
     .. code-block:: http
 
-        GET /api/auth/activate/16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6\
- HTTP/1.1
+        GET /api/auth/16793aa72a4c7ae94b50b20c2eca52df5b0fe2c6 HTTP/1.1
 
     responds
 

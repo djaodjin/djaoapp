@@ -7,14 +7,17 @@
 {% block html_content %}
 <div>
   <h3>{% trans %}Verify your email address{% endtrans %}</h3>
-
+  {% if user %}
   <p>{% trans user=user.nick_name %}Hello {{user}}{% endtrans %},</p>
+  {% else %}
+  <p>{% trans %}Hello{% endtrans %},</p>
+  {% endif %}
   <p>
-{% trans provider=broker.printable_name %}You have registered an account with {{provider}}.{% endtrans %}
+{% trans provider=broker.printable_name %}Your e-mail address must be verified before going further with {{provider}}.{% endtrans %}
   </p>
   {% if back_url %}
   <p>
-{% trans %}Please verify your email address and activate your account by visiting the following URL in your favorite browser{% endtrans %}:<br />
+{% trans %}Please verify your email address by visiting the following URL in your favorite browser{% endtrans %}:<br />
 <a href="{{back_url}}">{{back_url}}</a>
   </p>
   <p>
@@ -22,7 +25,7 @@
   </p>
   {% else %}
   <p>
-{% trans %}Please verify your email address and activate your account by entering the following code:{% endtrans %}: {{code}}
+{% trans %}Please verify your email address by entering the following code:{% endtrans %}: {{code}}
   </p>
   {% if lifetime %}
   <p>

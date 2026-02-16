@@ -112,15 +112,6 @@ By default you can configure
 on the registration and contact page using the ``RECAPTCHA_PUBLIC_KEY`` and
 ``RECAPTCHA_PRIVATE_KEY`` configuration variables.
 
-If you need specific configurations (examples: different captcha keys on the
-registration and contact pages, or show the captcha based on complex fraud
-evaluation logic), you can replace the default functions that return captcha
-key pairs.
-
-.. autodata:: djaoapp.settings.REGISTRATION_CAPTCHA_KEYS
-
-.. autodata:: djaoapp.settings.CONTACT_CAPTCHA_KEYS
-
 
 Overriding the backend to send notifications
 --------------------------------------------

@@ -114,9 +114,11 @@ module.exports = env => ({
       }),
       new webpack.ProvidePlugin({
           Chart: ['vendor/chart.js', 'Chart'],
-         httpRequestMixin: ['js/djaodjin-resources-vue.js', 'httpRequestMixin'],
+          httpRequestMixin: [
+              'js/djaodjin-resources-vue.js', 'httpRequestMixin'],
           itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
           itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
+          paramsMixin: ['js/djaodjin-resources-vue.js', 'paramsMixin'], // used in djaodjin-saas-vue.js
           typeAheadMixin: ['js/djaodjin-resources-vue.js', 'typeAheadMixin'],
           updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
           updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],

@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Default values that can be overriden by `update_settings` later on.
 APP_NAME = os.path.basename(BASE_DIR)
-APP_VERSION = "2025-02-17.2-dev"
+APP_VERSION = "2026-02-23-dev"
 
 # Feature flags
 # -------------
