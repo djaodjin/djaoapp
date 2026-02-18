@@ -33,7 +33,7 @@
 {% endif %}
 
 
-{% for finder, payload in staticfiles_finders.items %}
+{% for finder, payload in staticfiles_finders.items() %}
 <h4>{{ finder }} ({{payload|length}} file(s))</h4>
 <table>
     <thead>

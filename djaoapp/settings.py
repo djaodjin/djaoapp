@@ -22,12 +22,12 @@ APP_VERSION = "2026-02-23-dev"
 DEBUG = True
 USE_FIXTURES = True
 
+ENABLE_DEBUG_TOOLBAR = True         # 2026-02-17 layout issue
 FEATURES_REVERT_ASSETS_CDN = False  # 2025-09-19 temporary reverts cached js/css
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
 FEATURES_REVERT_TO_VUE2 = True      # 2023-03-25 testing support for Vue3
 OPENAPI_SPEC_COMPLIANT = False
-
 
 # Defaults for database settings
 # ------------------------------
@@ -228,12 +228,12 @@ if DEBUG:
         if DJANGO_VERSION[0] >= 2:
             # django-debug-toolbar==1.11 does not support Django2.2
             DEBUG_APPS = MULTITIER_APPS + (
+                'debug_toolbar',
                 'django_extensions',
             )
         else:
             DEBUG_APPS = MULTITIER_APPS + (
                 'debug_toolbar',
-                'debug_panel',
                 'django_extensions',
             )
     else:
@@ -241,7 +241,6 @@ if DEBUG:
             'django.contrib.admin',
             'django.contrib.admindocs',
             'debug_toolbar',
-            'debug_panel',
             'django_extensions',
         )
 else:
@@ -275,13 +274,9 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
 
 MIDDLEWARE = tuple([])
 if DEBUG:
-    if 'debug_toolbar' in INSTALLED_APPS:
+    if ENABLE_DEBUG_TOOLBAR and 'debug_toolbar' in INSTALLED_APPS:
         MIDDLEWARE += (
             'debug_toolbar.middleware.DebugToolbarMiddleware',
-        )
-    if 'debug_panel' in INSTALLED_APPS:
-        MIDDLEWARE += (
-            'debug_panel.middleware.DebugPanelMiddleware',
         )
 elif not DEBUG:
     MIDDLEWARE += (
@@ -750,7 +745,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 DEBUG_TOOLBAR_CONFIG = {
-    'JQUERY_URL': '%svendor/jquery.js' % STATIC_URL,
+    'JQUERY_URL': '',
     'SHOW_COLLAPSED': True,
     'SHOW_TEMPLATE_CONTEXT': True,
 }

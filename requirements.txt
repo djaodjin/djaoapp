@@ -15,7 +15,7 @@ djangorestframework==3.15.2       # 3.15 requires Django>=4.2, Python>=3.8
 # We need a version of django-fernet-fields that supports Django4.2
 django-fernet-fields @ git+https://github.com/djaodjin/django-fernet-fields.git@6f261ed465a7fbafa1c41b635f7acd9fd6f3ccca
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.14.2
+djaodjin-deployutils==0.14.3
 djaodjin-extended-templates==0.4.12
 djaodjin-multitier==0.3.1
 djaodjin-rules==0.4.11
@@ -34,7 +34,7 @@ pydyf==0.1.2                      # 0.12.1 incompatible with WeasyPrint==53.4
 PyJWT==2.10.1                     # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
 pyotp==2.8.0
-pytz==2025.1
+pytz==2025.2
 social-auth-app-django==5.4.3     # 5.5.0 drops support for Django<5.1
                                   # 5.2.0 drops support for Django<3.2
                                   # v1.2.0 does not support Django>=2.1
@@ -48,12 +48,13 @@ WeasyPrint==53.4
 django-storages==1.14.2           # to upload assets to S3
 
 # To run with DEBUG=1
-django-debug-toolbar==3.5.0       # 3.4.0 requires Django>=3.2
+django-debug-toolbar==6.2.0       # 4.4.6 requires Django>=4.2.9
+                                  # 3.4.0 requires Django>=3.2
                                   # 3.2.4 fails with SQLPanel is not scriptable
                                   # 2.2.1 is the last version for Django2.2
                                   # 1.11 does not support Django 2.2
-django-extensions==3.2.3          # 3.2.0 required by Django==4.0
-
+django-extensions==4.1            # 4.1 supports py312-django5.2
+                                  # 3.2.0 requires Django>=4.0
 # development
 Faker==3.0.1
 flex==6.14.0

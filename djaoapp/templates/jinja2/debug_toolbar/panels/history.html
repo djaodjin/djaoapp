@@ -1,0 +1,21 @@
+<form method="get" action="/__debug__/history_refresh/">
+    {{ refresh_form.as_div }}
+    <button class="refreshHistory">Refresh</button>
+</form>
+<table class="djdt-max-height-100">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Request Variables</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="djdtHistoryRequests">
+        {% for request_id, history_context in toolbar_history.items() %}
+            {% include "debug_toolbar/panels/history_tr.html" %}
+        {% endfor %}
+    </tbody>
+</table>

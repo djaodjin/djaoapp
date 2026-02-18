@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="{{'/assets/debug_toolbar/css/print.css'|asset}}" type="text/css" media="print" />
 <link rel="stylesheet" href="{{'/assets/debug_toolbar/css/toolbar.css'|asset}}" type="text/css" />
-<script src="{{ '/assets/debug_toolbar/js/toolbar.js'|asset}}"></script>
-<div id="djDebug" hidden="hidden" dir="ltr"
+<script type="module" src="{{'/assets/debug_toolbar/js/toolbar.js'|asset}}"></script>
+<div id="djDebug" dir="ltr"
      data-store-id="{{ toolbar.store_id }}" data-render-panel-url="{{ url('djdt:render_panel') }}"
      {{ toolbar.config.ROOT_TAG_EXTRA_ATTRS|safe }}>
-	<div hidden="hidden" id="djDebugToolbar">
+	<div id="djDebugToolbar">
 		<ul id="djDebugPanelList">
 			{% if toolbar.panels %}
 			<li><a id="djHideToolBarButton" href="#" title="Hide toolbar">Hide &#187;</a></li>
@@ -21,7 +21,7 @@
 					{% endif %}
 					{{ panel.nav_title }}
 					{% if panel.enabled %}
-						{% if panel.nav_subtitle %}<br /><small>{{ panel.nav_subtitle }}</small>{% endif %}
+						{% if panel.nav_subtitle %}<br /><small>{% if panel.nav_subtitle|is_callable %}{{ panel.nav_subtitle() }}{% else %}{{ panel.nav_subtitle }}{% endif %}</small>{% endif %}
 					{% endif %}
 					{% if panel.has_content and panel.enabled %}
 						</a>
@@ -32,7 +32,7 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div hidden="hidden" id="djDebugToolbarHandle">
+	<div id="djDebugToolbarHandle">
 		<span title="Show toolbar" id="djShowToolBarButton">&#171;</span>
 	</div>
 	{% for panel in toolbar.panels %}

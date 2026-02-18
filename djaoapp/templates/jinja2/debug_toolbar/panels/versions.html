@@ -1,16 +1,18 @@
 <table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Version</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for package, version in versions.items() %}
-			<tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
-				<td>{{ package }}</td>
-				<td>{{ version }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Name</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package, name, version in versions %}
+    <tr class="{{ cycle('djDebugOdd', 'djDebugEven') }}">
+      <td>{{ package }}</td>
+      <td>{{ name }}</td>
+      <td>{{ version }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>

@@ -114,6 +114,9 @@ def is_radio(field):
 def is_textarea(field):
     return isinstance(field.widget, widgets.Textarea)
 
+@register.filter()
+def is_callable(field):
+    return callable(field)
 
 @register.filter()
 def iterfields(form):
