@@ -7,7 +7,8 @@
     <div class="container">
     <role-profile-list inline-template id="accessible-list-container"
         :request-user="'{{request.user.email}}'"
-        data-items='{{redirects|to_json}}'>
+        data-items='{{redirects|to_json}}'
+        data-candidatequery='{% if candidate_query %}{{candidate_query}}{% endif %}'>
       <div>
         <div class="row" v-show="!itemsLoaded">
           <div class="col-md-12 py-5 my-5">

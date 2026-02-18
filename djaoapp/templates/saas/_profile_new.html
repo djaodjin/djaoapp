@@ -25,6 +25,7 @@
                    name="profile"
                    placeholder="{% trans %}Start typing a profile name ...{% endtrans %}"
                    autocomplete="off"
+                   autofocus
                    ref="input"
                    v-model="query"
                    @input="update" />
@@ -43,7 +44,7 @@
                v-show="hasItems">
             {% include "saas/_request_profile_card.html" %}
           </div>{# /v-show="hasItems" #}
-          <div v-show="query">
+          <div v-show="!isExactMatch('printable_name')">
             {% include "saas/_create_profile_card.html" %}
           </div>
         </div>
