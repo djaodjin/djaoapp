@@ -24,7 +24,7 @@ RUN set -eux; \
 # WeasyPrint>=53 requires Pango1.44, AMZLinux2 has 1.42, but on Debian
 # (Dockerfile), if we use version 52.5, it leads to
 # `OSError: cannot load library 'pangocairo-1.0'`
-RUN /usr/local/bin/python3 -m venv --upgrade-deps /app
+RUN /usr/local/bin/python3 -m venv /app
 
 # Install source-wheel build-time dependencies, build and/or install all
 # wheels, then uninstall source-wheel build-time dependencies.
