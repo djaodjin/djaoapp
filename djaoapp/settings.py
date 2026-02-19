@@ -22,7 +22,7 @@ APP_VERSION = "2026-02-23-dev"
 DEBUG = True
 USE_FIXTURES = True
 
-ENABLE_DEBUG_TOOLBAR = True         # 2026-02-17 layout issue
+ENABLE_DEBUG_TOOLBAR = False        # 2026-02-17 layout issue
 FEATURES_REVERT_ASSETS_CDN = False  # 2025-09-19 temporary reverts cached js/css
 FEATURES_REVERT_STRIPE_V2 = False   # 2021-03-03 temporary reverts SCA
 FEATURES_REVERT_TO_DJANGO = False   # 2016-03-31 temporary product switch
