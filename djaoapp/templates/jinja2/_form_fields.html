@@ -230,6 +230,7 @@
           {% if required %} required{% endif %}
         />
     {% endif %}
+    {% if input_type != 'hidden' %}
     <div class="form-text help-block invalid-feedback errorlist">
       {% for error in errors %}
       {{error}}
@@ -240,6 +241,7 @@
       <small class="form-text text-muted">{{help_text|safe}}</small>
       {% endif %}
     </div>
+    {% endif %}
   </div>
 </div>
 {%- endmacro %}
@@ -342,16 +344,7 @@
 <div style="clear: both;"></div>
 </div>
 {% elif bound_field.field.widget.input_type == 'hidden' %}
-<div class="form-group{% if extra_label_classes %} row{% endif %}{% if bound_field.errors %} has-error{% endif %}">
-  <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
-    <input name="{{bound_field.name}}" type="{{bound_field.field.widget.input_type}}" {% if bound_field.value() is not none %}value="{{bound_field.value()}}"{% endif %}{% if model_var %} v-model="{{bound_field.name}}"{% endif %} />
-    <div class="form-text help-block invalid-feedback errorlist">
-      {% for error in bound_field.errors %}
-      {{error}}
-      {% endfor %}
-    </div>
-  </div>
-</div>
+<input name="{{bound_field.name}}" type="{{bound_field.field.widget.input_type}}" {% if bound_field.value() is not none %}value="{{bound_field.value()}}"{% endif %}{% if model_var %} v-model="{{bound_field.name}}"{% endif %} />
 
 {% elif bound_field.field|is_checkbox %}
 {{checkbox_input_field(bound_field.id_for_label, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}

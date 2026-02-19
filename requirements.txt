@@ -20,7 +20,7 @@ djaodjin-extended-templates==0.4.12
 djaodjin-multitier==0.3.1
 djaodjin-rules==0.4.11
 djaodjin-saas==1.2.1
-djaodjin-signup==0.11.1
+djaodjin-signup==0.11.2
 docutils==0.15.2                  # botocore has a constraint: docutils<0.16
 drf-spectacular==0.27.0           # to display 'themes' notifications pages
 googlemaps==4.10.0
@@ -31,7 +31,8 @@ gunicorn==23.0.0                  # requires Py3.7
 jinja2==3.1.6
 phonenumbers==8.13.17
 pydyf==0.1.2                      # 0.12.1 incompatible with WeasyPrint==53.4
-PyJWT==2.10.1                     # 2.10.0 requires Python>=3.9
+PyJWT==2.11.0                     # 2.11.0 supports Python 3.14
+                                  # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
 pyotp==2.8.0
 pytz==2025.2
