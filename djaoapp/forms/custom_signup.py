@@ -145,8 +145,8 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
                     'legal_agreement', args=(field_name,))
                 self.fields[field_name] = forms.BooleanField(
                     label=mark_safe(_("I have read and accept the"\
-                    " <a href=\"%s\">%s</a>.") % (
-                    legal_agreement_url, "terms of use")),
+                    " <a href=\"%(url)s\">%(title)s</a>.") % {
+                        'url': legal_agreement_url, 'title': "terms of use"}),
                     required=extra_field[2])
                 if data and field_name in data:
                     self.fields[field_name].initial = bool(data.get(field_name))

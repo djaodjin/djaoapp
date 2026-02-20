@@ -35,6 +35,7 @@
                        placeholder="{% trans %}Search...{% endtrans %}"
                        autocomplete="off"
                        v-model="query"
+                       ref="input"
                        @keydown.enter.prevent="hit"
                        @input="update" />
               </div>

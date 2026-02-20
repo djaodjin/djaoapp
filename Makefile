@@ -148,8 +148,10 @@ install:: install-conf
 
 
 makemessages:
-	cd $(srcDir) && $(MANAGE) makemessages -l fr -l es -l pt --symlinks --no-wrap
-	cd $(srcDir) && $(MANAGE) makemessages -d djangojs -l fr -l es -l pt --symlinks --no-wrap
+	cd $(srcDir) && $(MANAGE) makemessages --symlinks -e html,eml,txt,py --all --no-wrap
+
+#	cd $(srcDir) && $(MANAGE) makemessages -l fr -l es -l pt --symlinks --no-wrap
+#	cd $(srcDir) && $(MANAGE) makemessages -d djangojs -l fr -l es -l pt --symlinks --no-wrap
 
 ifeq ($(MY_EMAIL),)
 
@@ -345,10 +347,12 @@ schema.yml:
 	cd $(srcDir) && DEBUG=0 API_DEBUG=1 OPENAPI_SPEC_COMPLIANT=1 \
 		$(MANAGE) spectacular --color --file $@ --validate
 
-
+# We delete assets in assets/js so they do not get inadvertantly picked up
+# instead of the newer versions.
 $(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \
                                $(wildcard $(srcDir)/djaoapp/static/js/*.js) \
                                webpack-conf-paths.json
+	rm -f $(ASSETS_DIR)/js/*
 	cd $(srcDir) && $(WEBPACK) -c $<
 
 
