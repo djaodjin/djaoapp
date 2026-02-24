@@ -81,9 +81,9 @@ paths:
         schema:
           type: string
       tags:
-      - user
       - list
       - profile
+      - user
       security:
       - {}
       responses:
@@ -152,9 +152,9 @@ paths:
         schema:
           type: string
       tags:
-      - user
       - list
       - profile
+      - user
       security:
       - {}
       responses:
@@ -283,9 +283,9 @@ paths:
         schema:
           type: string
       tags:
-      - user
       - list
       - profile
+      - user
       security:
       - {}
       responses:
@@ -351,39 +351,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedActivityList'
           description: ''
-      summary: Lists activities for an account
-    post:
-      operationId: activities_create
-      description: |2+
-
-      tags:
-      - profile
-      - broker
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ActivityByAccountCreate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ActivityByAccountCreate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ActivityByAccountCreate'
-        required: true
-      security:
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ActivityByAccountCreate'
-          description: ''
-      summary: Records new activity with a profile
+      summary: Lists activities
   /api/activities/{profile}:
     get:
-      operationId: activities_list_2
+      operationId: activities_by_account_list
       description: |2+
 
         Returns a list of `page_size` activity records for {account}.
@@ -441,9 +412,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedActivityList'
           description: ''
-      summary: Lists activities for an account
+      summary: Lists activities with a profile
     post:
-      operationId: activities_create_2
+      operationId: activities_create
       description: |2+
 
       parameters:
@@ -453,8 +424,8 @@ paths:
           type: string
         required: true
       tags:
-      - profile
       - broker
+      - profile
       requestBody:
         content:
           application/json:
@@ -470,7 +441,7 @@ paths:
       security:
       - {}
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
@@ -656,43 +627,6 @@ paths:
                 $ref: '#/components/schemas/AgreementDetail'
           description: ''
       summary: Retrieves a legal agreement (broker)
-    post:
-      operationId: agreements_create_2
-      description: |2+
-
-        Enable and disable a specific set of optional cookies
-
-      parameters:
-      - in: path
-        name: document
-        schema:
-          type: string
-        required: true
-      tags:
-      - legal
-      - visitor
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AgreementDetail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AgreementDetail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/AgreementDetail'
-        required: true
-      security:
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgreementDetail'
-          description: ''
-      summary: Update privacy settings
     put:
       operationId: agreements_update
       description: |2+
@@ -888,7 +822,7 @@ paths:
           description: ''
       summary: Retrieves contact from an activation key
     post:
-      operationId: auth_create_2
+      operationId: auth_activate_verification_key
       description: |2+
 
         Activates a user and returns a JSON Web Token that can subsequently
@@ -1229,9 +1163,9 @@ paths:
         schema:
           type: string
       tags:
-      - transactionmodel
       - billing
       - subscriber
+      - transactionmodel
       security:
       - {}
       responses:
@@ -1382,8 +1316,8 @@ paths:
           type: boolean
         description: Adds context to update a payment method on file.
       tags:
-      - profilemodel
       - billing
+      - profilemodel
       - subscriber
       security:
       - {}
@@ -1413,8 +1347,8 @@ paths:
           type: string
         required: true
       tags:
-      - profilemodel
       - billing
+      - profilemodel
       - subscriber
       requestBody:
         content:
@@ -1462,8 +1396,8 @@ paths:
           type: string
         required: true
       tags:
-      - profilemodel
       - billing
+      - profilemodel
       - subscriber
       requestBody:
         content:
@@ -1504,8 +1438,8 @@ paths:
           type: string
         required: true
       tags:
-      - profilemodel
       - billing
+      - profilemodel
       - subscriber
       security:
       - {}
@@ -1532,8 +1466,8 @@ paths:
           type: string
         required: true
       tags:
-      - chargemodel
       - billing
+      - chargemodel
       - subscriber
       security:
       - {}
@@ -1567,8 +1501,8 @@ paths:
           type: string
         required: true
       tags:
-      - chargemodel
       - billing
+      - chargemodel
       - subscriber
       security:
       - {}
@@ -2115,10 +2049,10 @@ paths:
         schema:
           type: string
       tags:
-      - transactionmodel
-      - list
       - billing
+      - list
       - subscriber
+      - transactionmodel
       security:
       - {}
       responses:
@@ -2720,10 +2654,10 @@ paths:
         schema:
           type: string
       tags:
-      - chargemodel
-      - list
       - billing
       - broker
+      - chargemodel
+      - list
       security:
       - {}
       responses:
@@ -2748,8 +2682,8 @@ paths:
           type: string
         required: true
       tags:
-      - chargemodel
       - billing
+      - chargemodel
       - subscriber
       security:
       - {}
@@ -2859,10 +2793,10 @@ paths:
         schema:
           type: string
       tags:
-      - transactionmodel
-      - list
       - billing
       - broker
+      - list
+      - transactionmodel
       security:
       - {}
       responses:
@@ -2900,9 +2834,9 @@ paths:
         to be subscribed (see `GroupBuy orders  <group_buy>`_).
 
       tags:
-      - visitor
       - billing
       - cartmodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -2953,9 +2887,9 @@ paths:
           nullable: true
         description: Plan
       tags:
-      - visitor
       - billing
       - cartmodel
+      - visitor
       security:
       - {}
       responses:
@@ -3015,9 +2949,9 @@ paths:
         in the cart.
 
       tags:
-      - visitor
       - billing
       - cartmodel
+      - visitor
       requestBody:
         content:
           application/json:
@@ -3307,14 +3241,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AgreementDetail'
+              $ref: '#/components/schemas/PrivacyCookies'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AgreementDetail'
+              $ref: '#/components/schemas/PrivacyCookies'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AgreementDetail'
-        required: true
+              $ref: '#/components/schemas/PrivacyCookies'
       security:
       - {}
       responses:
@@ -3973,8 +3906,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -4013,8 +3946,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -4039,8 +3972,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -4079,8 +4012,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -4122,8 +4055,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -4153,8 +4086,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -4196,8 +4129,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       requestBody:
         content:
@@ -4238,8 +4171,8 @@ paths:
           type: string
         required: true
       tags:
-      - metrics
       - broker
+      - metrics
       - transactionmodel
       security:
       - {}
@@ -4311,9 +4244,9 @@ paths:
         schema:
           type: string
       tags:
+      - usermodel
       - broker
       - metrics
-      - usermodel
       security:
       - {}
       responses:
@@ -4337,8 +4270,8 @@ paths:
           pattern: ^[-a-zA-Z0-9_]+$
         required: true
       tags:
-      - notificationmodel
       - broker
+      - notificationmodel
       - themes
       security:
       - {}
@@ -4732,8 +4665,8 @@ paths:
           type: string
       tags:
       - list
-      - provider
       - planmodel
+      - provider
       - subscriptions
       security:
       - {}
@@ -4902,9 +4835,9 @@ paths:
           type: string
         required: true
       tags:
-      - planmodel
-      - provider
       - subscriptions
+      - provider
+      - planmodel
       requestBody:
         content:
           application/json:
@@ -5043,10 +4976,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
-      - provider
-      - subscriptionmodel
       - subscriptions
+      - provider
+      - list
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -5167,9 +5100,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
-      - subscriptionmodel
       - provider
+      - subscriptionmodel
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -5351,10 +5284,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
-      - provider
-      - subscriptionmodel
       - subscriptions
+      - provider
+      - list
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -5451,8 +5384,8 @@ paths:
         schema:
           type: string
       tags:
-      - list
       - provider
+      - list
       - subscriptionmodel
       - subscriptions
       security:
@@ -5512,8 +5445,8 @@ paths:
         schema:
           type: string
       tags:
-      - rolemodel
       - list
+      - rolemodel
       - rbac
       - subscriber
       security:
@@ -5862,8 +5795,8 @@ paths:
         schema:
           type: string
       tags:
-      - rolemodel
       - list
+      - rolemodel
       - rbac
       - subscriber
       security:
@@ -5966,9 +5899,9 @@ paths:
           type: string
         required: true
       tags:
+      - subscriber
       - rolemodel
       - rbac
-      - subscriber
       requestBody:
         content:
           application/json:
@@ -6131,10 +6064,10 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
       - list
       - profilemodel
       - provider
+      - subscriptions
       security:
       - {}
       responses:
@@ -6498,10 +6431,10 @@ paths:
         schema:
           type: string
       tags:
-      - list
-      - provider
-      - subscriptionmodel
       - subscriptions
+      - provider
+      - list
+      - subscriptionmodel
       security:
       - {}
       responses:
@@ -6662,8 +6595,8 @@ paths:
           type: string
       tags:
       - list
-      - provider
       - profilemodel
+      - provider
       - subscriptions
       security:
       - {}
@@ -6748,9 +6681,9 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6781,9 +6714,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6817,9 +6750,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -6861,9 +6794,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       requestBody:
         content:
           application/json:
@@ -6907,9 +6840,9 @@ paths:
           type: string
         required: true
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -6996,9 +6929,9 @@ paths:
         schema:
           type: string
       tags:
-      - subscriptions
-      - subscriptionmodel
       - subscriber
+      - subscriptionmodel
+      - subscriptions
       security:
       - {}
       responses:
@@ -7205,8 +7138,8 @@ paths:
           type: integer
       tags:
       - appmodel
-      - metrics
       - broker
+      - metrics
       security:
       - {}
       responses:
@@ -8295,9 +8228,9 @@ paths:
           type: string
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       security:
       - {}
       responses:
@@ -8332,9 +8265,9 @@ paths:
           type: string
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       requestBody:
         content:
           application/json:
@@ -8421,9 +8354,9 @@ paths:
           type: string
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       security:
       - {}
       responses:
@@ -8464,9 +8397,9 @@ paths:
           type: string
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       requestBody:
         content:
           application/json:
@@ -8512,8 +8445,8 @@ paths:
           type: string
         required: true
       tags:
-      - rolemodel
       - rbac
+      - rolemodel
       - subscriber
       security:
       - {}
@@ -8549,9 +8482,9 @@ paths:
           type: string
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       security:
       - {}
       responses:
@@ -8623,9 +8556,9 @@ paths:
           pattern: ^[a-f0-9]{40}$
         required: true
       tags:
+      - rbac
       - rolemodel
       - user
-      - rbac
       security:
       - {}
       responses:
@@ -8654,8 +8587,8 @@ paths:
         required: true
       tags:
       - auth
-      - user
       - usermodel
+      - user
       security:
       - {}
       responses:
@@ -8722,8 +8655,8 @@ paths:
         required: true
       tags:
       - auth
-      - user
       - usermodel
+      - user
       security:
       - {}
       responses:
@@ -8749,8 +8682,8 @@ paths:
         required: true
       tags:
       - auth
-      - user
       - usermodel
+      - user
       requestBody:
         content:
           application/json:
@@ -11117,6 +11050,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.
@@ -11199,6 +11136,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.
@@ -11281,6 +11222,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.
@@ -12363,6 +12308,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.
@@ -12974,6 +12923,18 @@ components:
       - discounted_period_amount
       - is_cart_item
       - profile
+    PrivacyCookies:
+      type: object
+      properties:
+        analytics:
+          type: boolean
+          description: True when analytics cookies are enabled
+        social_media:
+          type: boolean
+          description: True when social_media cookies are enabled
+        advertising:
+          type: boolean
+          description: True when advertising cookies are enabled
     ProcessorAuth:
       type: object
       properties:
@@ -13047,6 +13008,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.
@@ -13145,6 +13110,10 @@ components:
         default_timezone:
           type: string
           description: Timezone to use when reporting metrics
+        no_implicit_role:
+          type: boolean
+          default: false
+          description: When `True`, the profile does not allow implicit roles
         is_provider:
           type: boolean
           description: The profile can fulfill the provider side of a subscription.

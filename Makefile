@@ -69,7 +69,7 @@ MY_EMAIL           ?= $(shell cd $(srcDir) && git config user.email)
 EMAIL_FIXTURE_OPT  := $(if $(MY_EMAIL),--email="$(MY_EMAIL)",)
 APP_VERSION_SUFFIX ?= $(shell grep 'APP_VERSION =' $(srcDir)/djaoapp/settings.py | sed -e 's/APP_VERSION = "\(.*\)"/-\1/')
 
-.PHONY: build-assets doc generateschema initdb makemessages setup-livedemo vendor-assets-prerequisites
+.PHONY: build-assets doc initdb makemessages setup-livedemo vendor-assets-prerequisites schema.yml
 
 all:
 	@echo "Nothing to be done for 'make'."
@@ -150,8 +150,6 @@ install:: install-conf
 makemessages:
 	cd $(srcDir) && $(MANAGE) makemessages --symlinks -e html,eml,txt,py --all --no-wrap
 
-#	cd $(srcDir) && $(MANAGE) makemessages -l fr -l es -l pt --symlinks --no-wrap
-#	cd $(srcDir) && $(MANAGE) makemessages -d djangojs -l fr -l es -l pt --symlinks --no-wrap
 
 ifeq ($(MY_EMAIL),)
 
