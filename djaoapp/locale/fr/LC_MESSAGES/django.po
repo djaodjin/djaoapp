@@ -5046,8 +5046,7 @@ msgstr "Dictionnaire des soldes dus, classés par unité"
 
 #: saas/api/serializers.py:1555
 msgid "Amount to mark as paid or write-off. Min value is 1."
-msgstr "Montant à considérer comme payé ou à passer en pertes et profits. Valeur minimale : 1.
-"
+msgstr "Montant à considérer comme payé ou à passer en pertes et profits. Valeur minimale : 1."
 
 #: saas/api/serializers.py:1557
 msgid "When true, the cancelation was recovered offline, else it is a write-off"
