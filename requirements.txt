@@ -50,7 +50,9 @@ WeasyPrint==53.4
 django-storages==1.14.2           # to upload assets to S3
 
 # To run with DEBUG=1
-django-debug-toolbar==6.2.0       # 4.4.6 requires Django>=4.2.9
+django-debug-toolbar==5.0.1 ; python_version >= "3.9"
+                                  # 6.2.0 requires python>=3.10
+                                  # 4.4.6 requires Django>=4.2.9
                                   # 3.4.0 requires Django>=3.2
                                   # 3.2.4 fails with SQLPanel is not scriptable
                                   # 2.2.1 is the last version for Django2.2
