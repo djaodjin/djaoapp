@@ -21,23 +21,16 @@
        data-trip-content="<h2>{% trans %}Active subscribers{% endtrans %}</h2><p>{% trans %}List of all active subscribers.<br />You will find here the list of all active subscribers,<br />with the plans they are subscribed to, the date they first<br />subscribed as well as when their renewal is due.{% endtrans %}</p><em>{% trans %}Use keyboard navigation or click 'Next' to move forward.{% endtrans %}</em>"
        data-trip-position="screen-center">
     <ul class="nav nav-tabs dashboard-tab" role="tablist">
-      {% if registered %}
-      <li class="nav-item">
-        <a class="nav-link" href="#registered" data-bs-toggle="tab"
-           @click="tabClicked('registered')">{% trans %}Registered{% endtrans %}</a>
-      </li>
-      {% endif %}
-
       {% for tab in tabs %}
       <li class="nav-item">
-        <a class="nav-link{% if tab.is_active %} active{% endif %}" href="#{{tab.slug}}" data-bs-toggle="tab">{{tab.title}}</a>
+        <a class="nav-link{% if tab.is_active %} active{% endif %}" href="#{{tab.slug}}" data-bs-toggle="tab" @click="tabClicked('{{tab.slug}}')">{{tab.title}}</a>
       </li>
       {% endfor %}
     </ul>
 
     <div class="tab-content">
-
-      {% if registered %}
+      {% for tab in tabs %}
+      {% if tab.slug == 'registered' %}
       <registered inline-template id="registered" class="tab-pane"
                   role="tabpanel" ref="registered">
         <div id="registered-tab-container">
@@ -48,31 +41,65 @@
             <table class="table table-sm table-striped w-100" infinite-wrapper>
               <thead>
                 <tr>
-                  <th>{% trans %}Full name{% endtrans %}</th>
-                  <th class="text-end">
+                  <th>
+                    {% trans %}Full name{% endtrans %}
+                    <a href="#" @click.prevent="sortBy('full_name')">
+                      <i :class="sortIcon('full_name')" class="ps-2"></i>
+                    </a>
+                  </th>
+                  <th class="text-center">
+                    {% trans %}Created at{% endtrans %}
+                    <a href="#" @click.prevent="sortBy('created_at')">
+                      <i :class="sortIcon('created_at')" class="ps-2"></i>
+                    </a>
+                  </th>
+                  <th class="text-center">
+                    {% trans %}Last login{% endtrans %}
+                    <a href="#" @click.prevent="sortBy('last_login')">
+                      <i :class="sortIcon('last_login')" class="ps-2"></i>
+                    </a>
                   </th>
                 </tr>
               </thead>
               <tbody v-show="!itemsLoaded">
                 <tr>
-                  <td colspan="2">
+                  <td colspan="3">
                     <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
                   </td>
                 </tr>
               </tbody>
               <tbody class="has-no-results" v-show="itemsLoaded && items.results.length == 0" v-cloak>
                 <tr>
-                  <td colspan="2">
+                  <td colspan="3">
                     <p class="text-center my-2"><em>{% trans %}No registered users{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></p>
                   </td>
                 </tr>
               </tbody>
               <tbody class="has-results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
-                <tr v-for="entry in items.results">
+                <tr :id="user.slug" v-for="user in items.results">
                   <td>
-                    <a :href="'{{urls.profile_redirect}}' + entry.slug + '/'">[[entry.printable_name]]</a>
+                    {# initially copy/paste of _user_card.html #}
+                    {# to use `user` instead of `item.user`    #}
+                        <div class="row">
+                          <div class="col-2">
+                            <div>
+                              <a :href="'{{urls.profile_redirect}}' + user.slug + '/'"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="user.picture ? user.picture : '{{'/assets/img/default-user.png'|asset}}'" alt=""></a>
+                            </div>
+                          </div>
+                          <div class="col-10 align-self-center">
+                                <h5 class="card-title"><a :href="'{{urls.profile_redirect}}' + user.slug + '/'">[[user.printable_name]]</a></h5>
+                                <small class="card-subtitle">[[user.email]]</small>
+                          </div>
+                        </div>
                   </td>
-                  <td>[[$globals.humanizeTimeDelta(entry.created_at, params.ends_at)]]</td>
+                  <td class="text-center">
+                    [[$globals.humanizeDate(user.created_at)]]<br />
+                    <small>([[$globals.humanizeTimeDelta(user.created_at, params.ends_at)]])</small>
+                  </td>
+                  <td class="text-center">
+                    [[$globals.humanizeDate(user.last_login)]]<br />
+                    <small>([[$globals.humanizeTimeDelta(user.last_login, params.ends_at)]])</small>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -80,12 +107,11 @@
           {% include "_pagination.html" %}
         </div>
       </registered>
-      {% endif %}
 
-      {% for tab in tabs %}
+      {% else %}
       <{{tab.slug}} inline-template id="{{tab.slug}}"
           class="tab-pane{% if tab.is_active %} active{% endif %}"
-          role="tabpanel" ref="tab.slug">
+          role="tabpanel" ref="{{tab.slug}}">
         <div id="{{tab.slug}}-tab-container">
           <div class="mt-2">
             {% include "saas/_filter.html" %}
@@ -203,7 +229,9 @@
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
-                  <th>{% trans %}Description{% endtrans %}</th>
+                  <th>
+                    {% trans %}Description{% endtrans %}
+                  </th>
                 </tr>
               </thead>
 
@@ -352,9 +380,17 @@
           {% include "_pagination.html" %}
         </div>
       </{{tab.slug}}>
+      {% endif %}
       {% endfor %}
 
     </div>{# /.tab-content #}
   </div>
 </lazy-load-tabs>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+<script type="text/javascript">
+Vue.prototype.$sortDirection = "asc";
+Vue.prototype.$sortByField = "profile";
+</script>
 {% endblock %}

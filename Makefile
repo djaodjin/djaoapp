@@ -334,7 +334,7 @@ migratedb-%:
 # npm --loglevel verbose
 $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
 	$(installFiles) $^ $(libDir)
-	$(NPM) install --cache $(installTop)/.npm --prefix $(libDir)
+	$(NPM) install --cache $(dir $@) --prefix $(libDir)
 	[ -e $(binDir)/eslint ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/eslint eslint)
 	[ -e $(binDir)/sassc ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/sass sassc)
 	[ -e $(binDir)/webpack ] || (cd $(binDir) && ln -s ../lib/node_modules/.bin/webpack webpack)
