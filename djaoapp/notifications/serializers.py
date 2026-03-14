@@ -144,21 +144,27 @@ class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):
 
     # These fields match the definition
     # in `saas.api.serializers.MetricsSerializer`.
-    scale = serializers.FloatField(required=False,
-        help_text=_("The scale of the number reported in the tables (ex: 1000"\
-        " when numbers are reported in thousands of dollars)"))
-    unit = serializers.CharField(required=False,
-        help_text=_("Three-letter ISO 4217 code for currency unit (ex: usd)"))
     title = serializers.CharField(
         help_text=_("Title for the table"))
     results = TableSerializer(many=True,
         help_text=_("Data series"))
+    new_profiles_count = serializers.IntegerField(
+        help_text=_("number of new profiles created in the period"))
+    new_profiles_sampled = ProfileSerializer(many=True,
+        help_text=_("sample of new profiles created in the period"))
+    new_users_count = serializers.IntegerField(
+        help_text=_("number of new users that registered in the period"))
+    new_users_sampled = get_user_serializer()(many=True,
+        help_text=_("sample of new users that registered in the period"))
 
     class Meta(ProfileNotificationSerializer.Meta):
-        fields = ProfileNotificationSerializer.Meta.fields + ('scale', 'unit',
-            'title', 'results')
+        fields = ProfileNotificationSerializer.Meta.fields + (
+            'title', 'results',
+            'new_profiles_count', 'new_profiles_sampled',
+            'new_users_count', 'new_users_sampled')
         read_only_fields = ProfileNotificationSerializer.Meta.read_only_fields\
-            + ('scale', 'unit', 'title', 'results')
+            + ('title', 'results', 'new_profiles_count', 'new_profiles_sampled',
+            'new_users_count', 'new_users_sampled')
 
 
 class OrderNotificationSerializer(UpdateProfileNotificationSerializer):

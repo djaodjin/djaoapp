@@ -2746,8 +2746,13 @@ def expires_soon_notice(sender, subscription, nb_days,
 #   https://docs.djangoproject.com/en/dev/topics/signals/
 @receiver(period_sales_report_created,
           dispatch_uid="period_sales_report_created_notice")
-def period_sales_report_created_notice(sender, provider, dates, data, unit,
-                                       scale=1, **kwargs): #no request in kwargs
+def period_sales_report_created_notice(sender, provider, dates, data,
+                                       unit, scale=1, # XXX deprecated saas>
+                                       nb_additional_new_users=0,
+                                       new_users_sampled=None,
+                                       nb_additional_new_profiles=0,
+                                       new_profiles_sampled=None,
+                                       **kwargs): #no request in kwargs
     """
     Weekly sales report
 
@@ -2806,10 +2811,14 @@ def period_sales_report_created_notice(sender, provider, dates, data, unit,
             "lang": "en",
             "extra": null
           },
-          "scale": 1,
-          "unit": "usd",
           "title": "2024-01-07T00:00:00Z",
-          "results": []
+          "results": [{
+            "title": "Total Sales"
+          }],
+          "new_profiles_sampled": [],
+          "nb_additional_new_profiles": 0,
+          "new_users_sampled": [],
+          "nb_additional_new_userss": 0
         }
     """
     #pylint:disable=too-many-arguments
@@ -2818,15 +2827,19 @@ def period_sales_report_created_notice(sender, provider, dates, data, unit,
     date = last_sunday.strftime("%A %b %d, %Y")
     # XXX using the provider in templates is incorrect. "Any questions
     # or comments..." should show DjaoDjin support email address.
-    back_url = build_absolute_uri() # saas/.../report_weekly_revenue.py
+    back_url = build_absolute_uri() # saas/.../saas_reports.py
     context = {
         'back_url': back_url,
         'broker': get_broker(),
         'profile': provider,
-        'scale': scale,
-        'unit': unit,
         'title': date,
-        'results': data
+        'results': data,
+        'nb_additional_new_profiles': nb_additional_new_profiles,
+        'new_profiles_sampled': (new_profiles_sampled
+            if new_profiles_sampled else []),
+        'nb_additional_new_users': nb_additional_new_users,
+        'new_users_sampled': (new_users_sampled
+            if new_users_sampled else []),
     }
     send_notification('period_sales_report_created',
         context=AggregatedSalesNotificationSerializer().to_representation(

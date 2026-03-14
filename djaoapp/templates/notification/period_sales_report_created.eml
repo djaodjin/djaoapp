@@ -30,5 +30,31 @@
   <p>
 <a href="https://www.djaodjin.com/docs/guides/saas-business-metrics/">{% trans %}Definitions for Total Sales, Payments, etc.{% endtrans %}</a>
   </p>
+
+  {% if new_users_sampled %}
+  <h5>New users</h5>
+  <table>
+    <tr><th>Created at</th><th>User</th></tr>
+    {% for user in new_users_sampled %}
+      <tr><td>{{user.created_at}}</td><td>{{user.full_name}} ({{user.email}})</td></tr>
+    {% endfor %}
+    {% if nb_additional_new_users %}
+    <tr><td colspan="2">... ({{nb_additional_new_users}} more)</td></tr>
+    {% endif %}
+  </table>
+  {% endif %}
+
+  {% if new_profiles_sampled %}
+  <h5>New profiles</h5>
+  <table>
+    <tr><th>Created at</th><th>Profile</th></tr>
+    {% for profile in new_profiles_sampled %}
+      <tr><td>{{profile.created_at}}</td><td>{{profile.full_name}} ({{profile.email}})</td></tr>
+    {% endfor %}
+    {% if nb_additional_new_profiles %}
+    <tr><td colspan="2">... ({{nb_additional_new_profiles}} more)</td></tr>
+    {% endif %}
+  </table>
+  {% endif %}
 </div>
 {% endblock %}

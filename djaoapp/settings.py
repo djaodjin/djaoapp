@@ -942,7 +942,7 @@ SIGNUP = {
         ('claim_code_generated', "Claim code"),
         ('expires_soon', "Expires soon"),
         ('order_executed', "Order confirmation"),
-        ('period_sales_report_created', "Weekly sales report"),
+        ('period_sales_report_created', "Revenue and usage report"),
         ('profile_updated', "Profile updated"),
         ('role_request_created', "Role requested"),
         ('user_activated', "User activated"),
