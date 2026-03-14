@@ -169,6 +169,8 @@ package-docker: build-assets setup-livedemo
 
 endif
 
+package-theme: dist/themes/$(APP_NAME).zip
+
 # download and install prerequisites then create the db.
 require: require-pip require-resources initdb
 
@@ -243,6 +245,27 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 
 
 # --------- intermediate targets
+
+# Use the same dependencies as 'build-assets' target, but not 'build-assets'
+# directly because it is a PHONY target.
+#
+# we remove the build directory to make sure we don't have extra files remaining
+# when we excluded them in the package_theme command line. We also insures
+# we are not removing important directories in the src tree by running
+# the condition: `[ "$(abspath $(objDir))" != "$(abspath $(srcDir))" ]`.
+dist/themes/$(APP_NAME).zip: $(ASSETS_DIR)/cache/base.css \
+              $(ASSETS_DIR)/cache/dashboard.css \
+              $(ASSETS_DIR)/cache/djaodjin-menubar.css \
+              $(ASSETS_DIR)/cache/email.css \
+              $(ASSETS_DIR)/cache/pages.css \
+              $(ASSETS_DIR)/cache/saas.js
+	[ "$(abspath $(objDir))" != "$(abspath $(srcDir))" ] && rm -rf $(objDir)/$(APP_NAME)
+	cd $(srcDir) && DEBUG=0 $(MANAGE) collectstatic --noinput
+	rm -rf $(ASSETS_DIR)/rest_framework $(ASSETS_DIR)/debug_toolbar $(ASSETS_DIR)/drf-yasg $(ASSETS_DIR)/scss
+	cd $(srcDir) && $(installDirs) $(dir $@)
+	cd $(srcDir) && DEBUG=0 $(MANAGE) package_theme \
+		--install_dir=$(dir $@) --build_dir=$(objDir) --exclude='debug_toolbar/'
+
 
 # We use rsync here so that make initdb can be run with user "nginx"
 # after files were installed with user "fedora".
