@@ -231,6 +231,7 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Converter.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/pagedown/Markdown.Sanitizer.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(libDir)/node_modules/marked/marked.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/@popperjs/core/dist/umd/popper.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/qrcode/build/qrcode.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js $(libDir)/node_modules/@yaireo/tagify/dist/tagify.js.map $(ASSETS_DIR)/vendor

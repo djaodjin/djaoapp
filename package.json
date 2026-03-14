@@ -18,6 +18,7 @@
         "jwt-decode": "~2.2.0",
         "lodash": "~4.17.21",
         "markdown": "v0.5.0",
+        "marked": "~15.0.8",
         "moment": "~2.29.1",
         "moment-timezone": "~0.5.33",
         "nvd3": "v1.8.1",

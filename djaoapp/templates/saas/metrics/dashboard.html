@@ -100,7 +100,17 @@
             <h5 class="card-title mb-0">Todo items</h5>
           </div>
           <div class="card-body">
+            <div v-show="!itemsLoaded">
+              <h4  class="text-center"><i class="fa fa-refresh fa-spin"></i></h4>
+            </div>
+            <div v-show="itemsLoaded && items.results.length === 0" v-cloak>
+              <h4><em>{% trans %}No news is good news!{% endtrans %}</em></h4>
+            </div>
             <div class="list-group list-group-flush" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+              <div v-for="entry in items.results">
+                <span>[[$globals.humanizeDate(entry.created_at)]]</span>
+                <span>[[entry.text]]</span>
+              </div>
             </div>
           </div>
         </div>

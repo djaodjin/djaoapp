@@ -113,7 +113,7 @@
                 <p v-if="entry.contact">
                   {% trans %}Contact{% endtrans %}: <a :href="'{{request|site_url}}/users/' + entry.contact.username + '/'">[[entry.contact.printable_name]]</a>
                 </p>
-                <div>[[entry.text]]</div>
+                <div v-html="$globals.md(entry.text)"></div>
               </div>
             </div>
           </div>

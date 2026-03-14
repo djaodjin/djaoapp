@@ -65,6 +65,7 @@
 <script type="text/javascript" src="{{'/assets/vendor/vue-croppa.min.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/d3.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/static/vendor/marked.min.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/trip.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|asset}}"></script>
@@ -96,7 +97,8 @@ Vue.prototype.$globals = {
     'humanizeDate': humanizeDate,
     'humanizeNumber': humanizeNumber,
     'humanizePeriodHeading': humanizePeriodHeading,
-    'humanizeTimeDelta': humanizeTimeDelta
+    'humanizeTimeDelta': humanizeTimeDelta,
+    'md': marked.parse
 };
 
 humanizeTimeDelta.$labels = {
