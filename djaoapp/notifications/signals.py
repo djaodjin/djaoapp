@@ -2747,7 +2747,6 @@ def expires_soon_notice(sender, subscription, nb_days,
 @receiver(period_sales_report_created,
           dispatch_uid="period_sales_report_created_notice")
 def period_sales_report_created_notice(sender, provider, dates, data,
-                                       unit, scale=1, # XXX deprecated saas>
                                        nb_additional_new_users=0,
                                        new_users_sampled=None,
                                        nb_additional_new_profiles=0,
@@ -2841,8 +2840,11 @@ def period_sales_report_created_notice(sender, provider, dates, data,
         'new_users_sampled': (new_users_sampled
             if new_users_sampled else []),
     }
-    send_notification('period_sales_report_created',
-        context=AggregatedSalesNotificationSerializer().to_representation(
+    if provider.is_broker:
+        # XXX Only e-mail brokers until report numbers are double-checked
+        # for validity.
+        send_notification('period_sales_report_created',
+            context=AggregatedSalesNotificationSerializer().to_representation(
             context), **kwargs)
 
 
