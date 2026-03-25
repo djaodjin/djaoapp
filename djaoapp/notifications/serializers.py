@@ -148,23 +148,26 @@ class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):
         help_text=_("Title for the table"))
     results = TableSerializer(many=True,
         help_text=_("Data series"))
-    new_profiles_count = serializers.IntegerField(
-        help_text=_("number of new profiles created in the period"))
     new_profiles_sampled = ProfileSerializer(many=True,
         help_text=_("sample of new profiles created in the period"))
-    new_users_count = serializers.IntegerField(
-        help_text=_("number of new users that registered in the period"))
+    nb_additional_new_profiles = serializers.IntegerField(
+        help_text=_("number of additional new profiles created"\
+            " in the period that were not sampled"))
     new_users_sampled = get_user_serializer()(many=True,
         help_text=_("sample of new users that registered in the period"))
+    nb_additional_new_users = serializers.IntegerField(
+        help_text=_("number of addition new users that registered"\
+            " in the period that were not sampled"))
 
     class Meta(ProfileNotificationSerializer.Meta):
         fields = ProfileNotificationSerializer.Meta.fields + (
             'title', 'results',
-            'new_profiles_count', 'new_profiles_sampled',
-            'new_users_count', 'new_users_sampled')
+            'new_profiles_sampled', 'nb_additional_new_profiles',
+            'new_users_sampled', 'nb_additional_new_users')
         read_only_fields = ProfileNotificationSerializer.Meta.read_only_fields\
-            + ('title', 'results', 'new_profiles_count', 'new_profiles_sampled',
-            'new_users_count', 'new_users_sampled')
+            + ('title', 'results',
+               'new_profiles_sampled', 'nb_additional_new_profiles',
+               'new_users_sampled', 'nb_additional_new_users')
 
 
 class OrderNotificationSerializer(UpdateProfileNotificationSerializer):
