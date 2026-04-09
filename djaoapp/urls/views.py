@@ -11,6 +11,7 @@ from saas.views import UserRedirectView
 from saas.views.redirects import OrganizationRedirectView
 from signup.forms import StartAuthenticationForm
 from signup.settings import EMAIL_VERIFICATION_PAT, USERNAME_PAT
+from signup.views.users import OTPUpdateView
 from signup.views.saml import saml_metadata_view
 
 from ..urlbuilders import (url_active, url_authenticated,
@@ -66,6 +67,11 @@ urlpatterns = [
         UserRedirectView.as_view(), name='accounts_profile'),
     url_self_provider(r'^users/(?P<user>%s)/roles/$' % USERNAME_PAT,
         UserAccessiblesView.as_view(), name='saas_user_product_list'),
+    url_frictionless_self_provider( # Because we want the user to be able
+                                    # to setup OTP without getting into
+                                    # a loop. See `fail_activate`
+        r'^users/(?P<user>%s)/otp/' % USERNAME_PAT,
+        OTPUpdateView.as_view(), name='otp_update'),
     url_frictionless_self_provider( # Because we want the user to be able
                                     # to setup OTP without getting into
                                     # a loop. See `fail_activate`

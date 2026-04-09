@@ -4,7 +4,6 @@
 
 {% block saas_content %}
 <div>
-  {% if urls.user.api_generate_keys %}
   <user-rotate-api-keys inline-template id="rotate-api-keys">
     <div>
     <div>
@@ -19,7 +18,10 @@
           <div class="form-text help-block">
           </div>
         </div>
-        <button id="generate-key-open" class="btn btn-primary">{% trans %}Generate API Key{% endtrans %}</button>
+        <button id="generate-key-open" class="btn btn-primary"
+                data-bs-toggle="modal" data-bs-target="#requirePassword">
+          {% trans %}Generate API Key{% endtrans %}
+        </button>
       </form>
       {% include "users/_require_password.html" %}
     </div>
@@ -71,31 +73,5 @@
     </table>
   </div>
   </user-rotate-api-keys>
-  {% endif %}
-
-  <hr />
-
-  <user-update-pubkey inline-template id="update-pubkey-container">
-    <div>
-      <form @submit.prevent="modalShow">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-        <div class="form-group mb-2">
-          <label class="control-label requiredField">{% trans %}Public Key (in PEM format){% endtrans %}<span class="asteriskField">*</span></label>
-          <div class="controls">
-            <textarea class="textarea form-control" cols="40" name="pubkey" rows="10" v-model="pubkey"></textarea>
-            <div class="form-text help-block invalid-feedback errorlist">
-            </div>
-            <div class="form-text help-block">
-            </div>
-          </div>
-        </div>
-        <div class="form-action">
-          <button class="btn btn-primary btn-lg" type="submit">{% trans %}Upload{% endtrans %}</button>
-        </div>
-      </form>
-      {% include "users/_require_password.html" %}
-    </div>
-  </user-update-pubkey>
-
 </div>
 {% endblock %}

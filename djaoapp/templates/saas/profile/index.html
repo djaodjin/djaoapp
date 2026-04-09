@@ -98,6 +98,7 @@
                         type="submit"value="submit">{% trans %}Create activity{% endtrans %}</button>
               </div>
             </form>
+            <hr />
             <div v-show="!itemsLoaded">
               <h4  class="text-center"><i class="fa fa-refresh fa-spin"></i></h4>
             </div>
@@ -106,15 +107,10 @@
             </div>
             <div id="has-activities" v-show="itemsLoaded && items.results.length > 0" v-cloak>
               <div v-for="entry in items.results">
-                <p>[[$globals.humanizeDate(entry.created_at)]]
-                  <span v-if="entry.created_by">
-                    {% trans %}by{% endtrans %} <a :href="'{{request|site_url}}/users/' + entry.created_by.username + '/'">[[entry.created_by.printable_name]]</a></span>:
-                </p>
-                <p v-if="entry.contact">
-                  {% trans %}Contact{% endtrans %}: <a :href="'{{request|site_url}}/users/' + entry.contact.username + '/'">[[entry.contact.printable_name]]</a>
-                </p>
-                <div v-html="$globals.md(entry.text)"></div>
+                {% include "activities/_activity_card.html" %}
+                <hr />
               </div>
+              {% include "_pagination.html" %}
             </div>
           </div>
         </contact-update>
@@ -144,6 +140,18 @@
           </div>
           <div class="col-md-12">
             {% trans %}Use a new password to login.{% endtrans %}
+          </div>
+        </div>
+        {% endif %}
+
+        {# Enable/Disable One-time code #}
+        {% if urls.user.otp_update %}
+        <div class="row align-items-center mb-3">
+          <div class="col-md-12">
+            <a id="otp-update" class="mb-2" href="{{urls.user.otp_update}}">{% trans %}Manage one-time password (OTP){% endtrans %}</a>
+          </div>
+          <div class="col-md-12">
+            {% trans %}Enable/Disable one-time code to login.{% endtrans %}
           </div>
         </div>
         {% endif %}

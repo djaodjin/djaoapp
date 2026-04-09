@@ -263,7 +263,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'rest_framework',
     'django_recaptcha',
     'deployutils.apps.django_deployutils',
-    'signup',  # Because we want `djaodjin-resources.js` picked up from here.
+    'signup',  # Because we want `djresources.js` picked up from here.
     'saas',
     'social_django',
     'multitier',            # need to be included if we don't change fixtures

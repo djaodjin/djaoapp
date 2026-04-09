@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-sm-2">
+    <div class="text-center" v-if="entry.contact">
+      <div>
+      <img class="rounded-circle m-1" :src="entry.contact.picture ? entry.contact.picture : '{{'/static/img/default-user.png'|asset}}'" width="32" height="32">
+      </div>
+      <small><a :href="'{{request|site_url}}/activities/contacts/' + entry.contact.username + '/'">[[entry.contact.printable_name]]</a></small>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="text-center" v-if="entry.account">
+      <div>
+      <img class="rounded border m-1" :src="entry.account.picture ? entry.account.picture : '{{'/static/img/default-organization.png'|asset}}'" width="32" height="32">
+</div>
+      <small><a :href="'{{request|site_url}}/profile/' + entry.account.slug + '/'">[[entry.account.printable_name]]</a></small>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div v-html="$globals.md(entry.text)"></div>
+    <div v-if="entry.extra && entry.extra.tags">
+      <span class="badge rounded-pill bg-primary me-1" v-for="tag in entry.extra.tags">[[tag]]</span>
+    </div>
+    <em>
+      <small>
+        [[$globals.humanizeDate(entry.created_at)]]
+        ([[$globals.humanizeTimeDelta(entry.created_at)]])
+      </small>
+      <small v-if="entry.created_by">{% trans %}by{% endtrans %} <a :href="'{{request|site_url}}/users/' + entry.created_by.username + '/'">[[entry.created_by.printable_name]]</a></small>
+    </em>
+  </div>
+</div>

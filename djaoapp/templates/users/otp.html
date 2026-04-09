@@ -1,0 +1,44 @@
+{% extends "users/base.html" %}
+
+{% block saas_title %}
+  {% trans %}Enable/Disable One-time Code{% endtrans %}
+{% endblock %}
+
+{% block saas_content %}
+<div>
+<user-update-otp inline-template id="update-otp-container"
+    data-otp-enabled="{% if otp_enabled %}true{% endif %}">
+  <div class="row">
+    <div class="col-md-6 text-center">
+      <form @submit.prevent="modalShowAndValidate('enableOTP')"
+            v-if="!otpEnabled">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <button class="btn btn-primary btn-md w-100" type="submit"
+                data-bs-toggle="modal" data-bs-target="#requirePassword">
+          {% trans %}Enable OTP{% endtrans %}
+        </button>
+      </form>
+      <form @submit.prevent="modalShowAndValidate('disableOTP')"
+            v-if="otpEnabled">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <button class="btn btn-danger btn-md w-100" type="submit"
+                data-bs-toggle="modal" data-bs-target="#requirePassword">
+          {% trans %}Disable OTP{% endtrans %}
+        </button>
+        <div id="otp-code" class="text-center" v-show="otpPrivKey">
+          <canvas id="otp-qr-canvas"></canvas>
+          <p>[[otpPrivKey]]</p>
+        </div>
+      </form>
+    </div>
+    <!-- Enter Password Modal -->
+    {% include "users/_require_password.html" %}
+  </div>
+</user-update-otp>
+</div>
+{% endblock %}
+
+
+{% block users_bodyscripts %}
+<script src="{{'/assets/vendor/qrcode.js'|asset}}"></script>
+{% endblock %}

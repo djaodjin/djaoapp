@@ -14,7 +14,7 @@ module.exports = env => ({
           'js/djaodjin-password-strength.js'
       ],
       base: [
-          'js/djaodjin-resources.js',
+          'js/djresources.js',
           'js/djaodjin-menubar.js',
           'js/djaodjin-dashboard.js',
           'js/djaoapp-theme-color-mode.js',
@@ -64,7 +64,7 @@ module.exports = env => ({
         }
       }
     }, {
-      test: /djaodjin-resources\.js$/,
+      test: /djresources\.js$/,
       loader: 'expose-loader',
       type: "javascript/auto",
       options: {
@@ -94,6 +94,7 @@ module.exports = env => ({
   },
   externals: {
     jQuery: 'jQuery',
+    Vue: 'Vue'
   },
   optimization: {
     minimize: true,
@@ -101,7 +102,7 @@ module.exports = env => ({
       new TerserPlugin({
         terserOptions: {
           mangle: {
-            reserved: ['clearMessages', 'showMessages', 'showErrorMessages', 'getUrlParameter', 'djApi'],
+            reserved: ['clearMessages', 'showMessages', 'showErrorMessages', 'getUrlParameter', 'djApi', 'Vue'],
             properties: false,
           },
         }
@@ -115,11 +116,11 @@ module.exports = env => ({
       new webpack.ProvidePlugin({
           Chart: ['vendor/chart.js', 'Chart'],
           httpRequestMixin: [
-              'js/djaodjin-resources-vue.js', 'httpRequestMixin'],
-          itemMixin: ['js/djaodjin-resources-vue.js', 'itemMixin'],
-          itemListMixin: ['js/djaodjin-resources-vue.js', 'itemListMixin'],
-          paramsMixin: ['js/djaodjin-resources-vue.js', 'paramsMixin'], // used in djaodjin-saas-vue.js
-          typeAheadMixin: ['js/djaodjin-resources-vue.js', 'typeAheadMixin'],
+              'js/djresourcesvue.js', 'httpRequestMixin'],
+          itemMixin: ['js/djresourcesvue.js', 'itemMixin'],
+          itemListMixin: ['js/djresourcesvue.js', 'itemListMixin'],
+          paramsMixin: ['js/djresourcesvue.js', 'paramsMixin'], // used in djaodjin-saas-vue.js
+          typeAheadMixin: ['js/djresourcesvue.js', 'typeAheadMixin'],
           updateChart: ['js/djaodjin-metrics.js', 'updateChart'],
           updateBarChart: ['js/djaodjin-metrics.js', 'updateBarChart'],
       })

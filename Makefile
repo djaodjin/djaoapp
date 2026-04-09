@@ -453,10 +453,10 @@ install-conf:: $(DESTDIR)$(CONFIG_DIR)/credentials \
 # already present configuration files with template ones.
 $(DESTDIR)$(CONFIG_DIR)/site.conf: $(srcDir)/etc/site.conf
 	$(installDirs) $(dir $@)
-	[ -f $@ ] || \
-		sed -e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
-			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
+	[ -f $@ ] || sed \
 			-e 's,%(APP_NAME)s,$(APP_NAME),' \
+			-e 's,%(LOCALSTATEDIR)s,$(LOCALSTATEDIR),' \
+			-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 			-e "s,%(ADMIN_EMAIL)s,$(MY_EMAIL)," \
 			-e 's,%(installTop)s,$(installTop),' \
 			-e "s,%(DB_NAME)s,$(APP_NAME)," \
@@ -483,8 +483,8 @@ $(DESTDIR)$(SYSCONFDIR)/systemd/system/%.service: \
 			   $(srcDir)/etc/service.conf
 	$(installDirs) $(dir $@)
 	[ -e $@ ] || sed \
-		-e 's,%(srcDir)s,$(srcDir),' \
 		-e 's,%(APP_NAME)s,$(APP_NAME),g' \
+		-e 's,%(srcDir)s,$(srcDir),' \
 		-e 's,%(binDir)s,$(binDir),' \
 		-e 's,%(SYSCONFDIR)s,$(SYSCONFDIR),' \
 		-e 's,%(CONFIG_DIR)s,$(CONFIG_DIR),' \

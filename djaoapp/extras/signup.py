@@ -23,6 +23,11 @@ class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
 
     def get_context_data(self, **kwargs):
         context = super(ExtraMixin, self).get_context_data(**kwargs)
+        update_context_urls(context, {
+            'api_candidate_users': reverse('saas_api_search_users'),
+            'api_candidate_profiles': reverse('saas_api_search_profiles'),
+        })
+
         if not hasattr(self, 'user'):
             # ContactListView
             return context
@@ -66,6 +71,8 @@ class ExtraMixin(AppMixinBase, AccountMixinBase, OrganizationMixinBase):
                     'api_contact', args=(self.user.username,)), #XXX
                 'api_pubkey': reverse(
                     'api_pubkey', args=(self.user,)),
+                'otp_update': reverse(
+                    'otp_update', args=(self.user,)),
                 'password_change': reverse(
                     'password_change', args=(self.user,)),
                 'keys_update': reverse(

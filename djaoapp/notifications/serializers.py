@@ -153,7 +153,7 @@ class AggregatedSalesNotificationSerializer(ProfileNotificationSerializer):
     nb_additional_new_profiles = serializers.IntegerField(
         help_text=_("number of additional new profiles created"\
             " in the period that were not sampled"))
-    new_users_sampled = get_user_serializer()(many=True,
+    new_users_sampled = UserDetailSerializer(many=True,
         help_text=_("sample of new users that registered in the period"))
     nb_additional_new_users = serializers.IntegerField(
         help_text=_("number of addition new users that registered"\

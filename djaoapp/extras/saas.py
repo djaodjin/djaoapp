@@ -119,6 +119,8 @@ class ExtraMixin(AppMixinBase, AccountMixinBase):
                         'api_contact', args=(user.username,)), #XXX
                     'api_pubkey': reverse(
                         'api_pubkey', args=(user,)),
+                    'otp_update': reverse(
+                        'otp_update', args=(user,)),
                     'password_change': reverse(
                         'password_change', args=(user,)),
                     'keys_update': reverse(

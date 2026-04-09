@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from saas.views.users import ProductListView as UserAccessiblesBaseView
 from signup.views.users import (
+    OTPUpdateView as UserOTPUpdateBaseView,
     PasswordChangeView as UserPasswordUpdateBaseView,
     UserNotificationsView as UserNotificationsBaseView,
     UserProfileView as UserProfileBaseView,

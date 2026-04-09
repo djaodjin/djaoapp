@@ -284,12 +284,13 @@ class NotificationEmailBackend(object):
             LOGGER.warning("[signal] problem sending email from %s"\
                 " on connection for %s: %s", settings.DEFAULT_FROM_EMAIL,
                 build_absolute_uri(), err)
-            if notified_on_errors:
+            if notified_on_errors and settings.ADMINS:
+                from_email = settings.ADMINS[0][1]
                 get_email_backend(
                     connection=get_connection_base(fail_silently=True)).send(
                     recipients=notified_on_errors,
                     template=template,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    from_email=from_email,
                     context=context)
         except EmlTemplateError as err:
             LOGGER.warning(str(err))
