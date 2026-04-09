@@ -58,6 +58,7 @@
 {% endblock %}
 
 {% block bodyscripts %}
+<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/moment.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/moment-timezone-with-data.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/vue.js'|asset}}"></script>
@@ -108,9 +109,8 @@ humanizeTimeDelta.$labels = {
 </script>
 {% block saas_bodyscripts %}{% endblock %}
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
-<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-resources-vue.js'|asset}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{'/assets/js/djresourcesvue.js'|asset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-signup-vue.js'|asset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-saas-vue.js'|asset}}"></script>
 <script type="text/javascript" charset="utf-8" src="{{'/assets/js/djaodjin-rules-vue.js'|asset}}"></script>
@@ -120,23 +120,19 @@ humanizeTimeDelta.$labels = {
 {% else %}
 <script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|asset}}"></script>
 {% endif %}
+<script type="text/javascript">
+function onSaaSLoadBase() {
+  Vue.use(Croppa);
+  {% if FEATURES_REVERT_TO_VUE2 %}
+  var app = new Vue({
+    el: '#app',
+    delimiters: ["[[","]]"],
+  });
+  {% else %}
+  var app = createApp({delimiters: ["[[","]]"]}).mount('#app');
+  {% endif %}
 
-<script type="text/javascript">
-Vue.use(Croppa);
-{% if FEATURES_REVERT_TO_VUE2 %}
-var app = new Vue({
-  el: '#app',
-  delimiters: ["[[","]]"],
-});
-{% else %}
-var app = createApp({
-  delimiters: ["[[","]]"],
-}).mount('#app');
-{% endif %}
-</script>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-   if ($('[data-trip]').length > 0){
+  if ($('[data-trip]').length > 0){
         $("#help-request").parent().show();
         $("#help-request").click(function(){
             var trip = new Trip({
@@ -149,6 +145,14 @@ jQuery(document).ready(function($) {
             trip.start();
         });
     }
-});
+}
+
+if (document.readyState === "loading") {
+    // The document is still loading, wait for the event
+    document.addEventListener("DOMContentLoaded", onSaaSLoadBase);
+} else {
+    // The DOM is already ready (interactive or complete state)
+    onSaaSLoadBase();
+}
 </script>
 {% endblock %}

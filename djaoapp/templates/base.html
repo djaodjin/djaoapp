@@ -50,7 +50,7 @@
                       </div>
                       <div class="narbar-brand-container">
                         <a class="navbar-brand" href="{{request|site_url}}">
-                          <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                          <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" alt="Brand logo" />
                           <span class="d-none d-sm-inline-block"
                                 data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
                         </a>
@@ -131,7 +131,7 @@
                 <div class="container-fluid">
 
                   <div class="d-flex">
-                    <button class="me-2 sidebar-toggle sidebar-toggle-default btn btn-secondary"
+                    <button class="me-2 sidebar-toggle btn btn-secondary sidebar-toggle-default"
                             data-target="#dashboard-navbar">
                       <div class="bar1 default"></div>
                       <div class="bar2 default"></div>
@@ -179,7 +179,7 @@
               {% block fullviewport %}
               {% endblock %}
             </div><!-- /.fullviewport -->
-            <div{% block content_area_classes %} class="content-area-container"{% endblock %}>
+            <main{% block content_area_classes %} class="content-area-container"{% endblock %}>
               <div id="messages">
                 <div id="messages-content">
                   {% if request %}
@@ -212,7 +212,7 @@
               </div>
               {% block content %}
               {% endblock %}
-            </div>
+            </main>
           </div><!-- /.dashboard-content -->
         </div><!-- /block dashboard_inner_container_classes -->
       </div><!-- /.dashboard-container -->
@@ -318,11 +318,10 @@ const PRIVACY_COOKIES_ENABLED = {
   injectAdvertisingScripts();
 {% endif %}
 </script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
 <script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
 {% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djresources.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-dashboard.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaoapp-theme-color-mode.js'|asset}}"></script>
@@ -331,12 +330,20 @@ const PRIVACY_COOKIES_ENABLED = {
 <script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}"></script>
 {% endif %}
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+function onLoadBase() {
   if( typeof djApi !== 'undefined' ) {
     djApi.apiBase = "{{''|site_url}}"; // djaodjin-saas et al.
     djApi.defaultCSRFToken = "{{csrf_token}}";
   }
-});
+}
+
+if (document.readyState === "loading") {
+    // The document is still loading, wait for the event
+    document.addEventListener("DOMContentLoaded", onLoadBase);
+} else {
+    // The DOM is already ready (interactive or complete state)
+    onLoadBase();
+}
 </script>
 {% block bodyscripts %}
 {% endblock %}

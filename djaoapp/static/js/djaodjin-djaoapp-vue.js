@@ -249,11 +249,21 @@ Vue.component('role-user-list-modal', {
     },
     mounted: function() {
         var vm = this;
-        jQuery(document).ready(function($) {
-            jQuery('#add-or-create').on('shown.bs.collapse', function () {
-                vm.$refs.profiles.$refs.typeahead.$refs.input.focus();
-            });
-        });
+        function onLoad() {
+            let elm = document.getElementById('add-or-create');
+            if( elm ) {
+                elm.addEventListener('shown.bs.collapse', function() {
+                    vm.$refs.profiles.$refs.typeahead.$refs.input.focus();
+                });
+            }
+        }
+        if (document.readyState === "loading") {
+            // The document is still loading, wait for the event
+            document.addEventListener("DOMContentLoaded", onLoad);
+        } else {
+            // The DOM is already ready (interactive or complete state)
+            onLoad();
+        }
     }
 });
 

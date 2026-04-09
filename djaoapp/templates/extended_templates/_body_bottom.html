@@ -2,6 +2,26 @@
 
 {# Scripts that need to be injected into the page actually being edited #}
 {# (i.e. iframe or current page).                                       #}
+<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.selection.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.textarea_autosize.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/jquery.ui.touch-punch.min.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/rangy-core.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Converter.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/Markdown.Sanitizer.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/vendor/hallo.js'|asset}}"></script>
+{% if ASSETS_DEBUG %}
+<script type="text/javascript" src="{{'/assets/js/djresources.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|asset}}"></script>
+<script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|asset}}"></script>
+{% else %}
+<script type="text/javascript" src="{{'/assets/cache/pages.js'|asset}}"></script>
+{% endif %}
 
 {# templates and PageElement editors #}
 <script type="text/javascript">
@@ -62,23 +82,3 @@ jQuery(document).ready(function($) {
   });
 });
 </script>
-
-<script type="text/javascript" src="{{'/assets/vendor/dropzone.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery-ui.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.selection.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.autosize.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.textarea_autosize.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/jquery.ui.touch-punch.min.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/rangy-core.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/Markdown.Converter.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/Markdown.Sanitizer.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/vendor/hallo.js'|asset}}"></script>
-{% if ASSETS_DEBUG %}
-<script type="text/javascript" src="{{'/assets/js/djaodjin-resources.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-upload.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-editor.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-sidebar-gallery.js'|asset}}"></script>
-<script type="text/javascript" src="{{'/assets/js/djaodjin-plan-edition.js'|asset}}"></script>
-{% else %}
-<script type="text/javascript" src="{{'/assets/cache/pages.js'|asset}}"></script>
-{% endif %}

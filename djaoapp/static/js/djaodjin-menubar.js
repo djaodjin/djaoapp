@@ -1,21 +1,21 @@
-/* Copyright (c) 2024, Djaodjin Inc.
+/* Copyright (c) 2026, Djaodjin Inc.
    see LICENSE
 */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['exports', 'jQuery'], factory);
+        define(['exports'], factory);
     } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
         // CommonJS
-        factory(exports, require('jQuery'));
+        factory(exports);
     } else {
         // Browser true globals added to `window`.
-        factory(root, root.jQuery);
+        factory(root);
         // If we want to put the exports in a namespace, use the following line
         // instead.
-        // factory((root.djResources = {}), root.jQuery);
+        // factory((root.djResources = {}));
     }
-}(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
+}(typeof self !== 'undefined' ? self : this, function (exports) {
 
 
 const API_URL = typeof DJAOAPP_API_BASE_URL !== 'undefined' ?

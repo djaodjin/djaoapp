@@ -1,24 +1,94 @@
-/* Copyright (c) 2018, Djaodjin Inc.
+/* Copyright (c) 2026, Djaodjin Inc.
    see LICENSE
 */
 
-/* global document jQuery */
+/* global document window */
 
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['exports', 'jQuery'], factory);
+        define(['exports'], factory);
     } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
         // CommonJS
-        factory(exports, require('jQuery'));
+        factory(exports);
     } else {
         // Browser true globals added to `window`.
-        factory(root, root.jQuery);
+        factory(root);
         // If we want to put the exports in a namespace, use the following line
         // instead.
-        // factory((root.djResources = {}), root.jQuery);
+        // factory((root.djResources = {}));
     }
-}(typeof self !== 'undefined' ? self : this, function (exports, jQuery) {
+}(typeof self !== 'undefined' ? self : this, function (exports) {
+
+
+function _showElement(elm) {
+    if( elm && elm.style.display === 'none' ) {
+        elm.style.display = '';
+    }
+}
+
+function _hideElement(elm) {
+    if( elm ) {
+        elm.style.display = 'none';
+    }
+}
+
+/** Changes classes of HTML Elements for the sidebar and its visible/hidden
+    toggle buttons such that the sidebar is visible and the toggles reflect
+    that.
+
+    There are typically two toggles per sidebar, one in the sidebar itself,
+    and one in the top menubar.
+ */
+function _showSidebar(fullSidebar, fullSidebarToggles) {
+    // `style="display: block, left: 0"` is compatible
+    // with a resize of the window.
+    fullSidebar.classList.remove('sidebar-hidden');
+    fullSidebar.classList.add('sidebar-opened');
+    for( let toggle of fullSidebarToggles ) {
+        for( const child of toggle.children ) {
+            child.classList.remove('default');
+            child.classList.add('opened');
+        }
+    }
+    // If the sidebar is visible, all parent sidebars are also visible
+    // and their own toggles should show parents are visible.
+    for( let toggle of fullSidebarToggles ) {
+        let prev = toggle.previousElementSibling;
+        if( prev ) {
+            const targetPane = prev.dataset.target;
+            const menuBlocks = document.querySelector(
+                targetPane).querySelectorAll(".sidebar-content>ul");
+            for( var idx = 0; idx < menuBlocks.length; ++idx ) {
+                const menuBlockStyle = window.getComputedStyle(
+                    menuBlocks[idx]);
+                if( menuBlockStyle.display != 'none' ) {
+                    _showElement(prev);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+
+/** Changes classes of HTML Elements for the sidebar and its visible/hidden
+    toggle buttons such that the sidebar is hidden and the toggles reflect
+    that.
+
+    There are typically two toggles per sidebar, one in the sidebar itself,
+    and one in the top menubar.
+ */
+function _hideSidebar(fullSidebar, fullSidebarToggles) {
+    fullSidebar.classList.remove('sidebar-opened');
+    fullSidebar.classList.add('sidebar-hidden');
+    for( let toggle of fullSidebarToggles ) {
+        for( const child of toggle.children ) {
+            child.classList.remove('default');
+            child.classList.remove('opened');
+        }
+    }
+}
 
 
 /** This function will update the sidebar with id `fullSidebarId`
@@ -27,88 +97,51 @@
     When `opened` is not specified, the function will toggle to the opposite
     of the current state of the sidebar.
  */
-function toggleSidebar(fullSidebarId, opened) {
-    var fullSidebar = $(fullSidebarId);
-    if( fullSidebar.length > 0 ) {
+function toggleSidebar(fullSidebarId, toOpened) {
+    var opened = toOpened;
+    var fullSidebar = document.getElementById(
+        ( fullSidebarId.length > 0 && fullSidebarId[0] === '#' ) ?
+        fullSidebarId.slice(1) : fullSidebarId);
+    if( fullSidebar ) {
         // If the sidebar is pinned, we prevent triggering the toggle.
-        var pinButton = fullSidebar.find(".sidebar-pin-toggle > .fa");
-        if( pinButton.length > 0 ) {
+        var pinButton = fullSidebar.querySelector(".sidebar-pin-toggle > .fa");
+        if( pinButton ) {
             const beforeContent = window.getComputedStyle(
-                pinButton[0], '::before').content;
+                pinButton, '::before').content;
             if( beforeContent === '"\uf127"' ) {
                 // matches `.sidebar-pin-toggle > .fa:before` content
                 return;
             }
         }
-
-        var animatedSidebar = fullSidebar.find('.sidebar-animate');
-        var openToggles = $(`[data-target="${fullSidebarId}"].sidebar-toggle`);
+        var fullSidebarToggles = document.querySelectorAll(
+            `[data-target="${fullSidebarId}"].sidebar-toggle`);
+        const fullSidebarHidden = (
+            window.getComputedStyle(fullSidebar).display === 'none');
         if( typeof opened == 'undefined' ) {
-            opened = (fullSidebar.css('display') == 'none');
+            opened = fullSidebarHidden;
         }
         if( opened ) {
-            if( fullSidebar.css('display') == 'none' ) {
+            if( fullSidebarHidden ) {
                 // otherwise sidebar is alreday opened.
-                if( animatedSidebar.length > 0 ) {
-                    animatedSidebar.css('left', '-220px');
-                    fullSidebar.show();
-                    animatedSidebar.animate({left: 0}, function(){
-                        // `style="display: block, left: 0"` is compatible
-                        // with a resize of the window.
-                        openToggles.children().removeClass(
-                            'default').addClass('opened');
-                        openToggles.prev().each(function() {
-                            const targetPane = $(this).data('target');
-                            const menuBlocks = $(targetPane).find(
-                                ".sidebar-content>ul");
-                            for( var idx = 0; idx < menuBlocks.length; ++idx ) {
-                                if( $(menuBlocks[idx]).css('display') != 'none' ) {
-                                    $(this).show();
-                                    break;
-                                }
-                            }
-                        });
-                    });
-                } else {
-                    fullSidebar.show();
-                    openToggles.children().removeClass(
-                        'default').addClass('opened');
-                    openToggles.prev().each(function() {
-                            const targetPane = $(this).data('target');
-                            const menuBlocks = $(targetPane).find(
-                                ".sidebar-content>ul");
-                            for( var idx = 0; idx < menuBlocks.length; ++idx ) {
-                                if( $(menuBlocks[idx]).css('display') != 'none' ) {
-                                    $(this).show();
-                                    break;
-                                }
-                            }
-                    });
-                }
+                _showSidebar(fullSidebar, fullSidebarToggles);
             }
         } else {
-            var prevButton = openToggles.prev();
-            const prevSidebarId = prevButton.data('target');
-            toggleSidebar(prevSidebarId, false);
-            togglePinSidebar(fullSidebarId, false);
-            if( fullSidebar.css('display') !== 'none' ) {
-                // otherwise sidebar is already closed.
-                if( animatedSidebar.length > 0 ) {
-                    animatedSidebar.animate({left: '-220px'}, function(){
-                        // We rely on `display:none` being set in the class
-                        // attribute, and `left` being the only variable set
-                        // in the style attribute.
-                        $(this).attr('style', '');
-                        fullSidebar.hide();
-                        openToggles.children().removeClass(
-                            'default').removeClass('opened');
-                        prevButton.hide();
-                    });
-                } else {
-                    fullSidebar.hide();
-                    openToggles.children().removeClass(
-                        'default').removeClass('opened');
-                    prevButton.hide();
+            for( let toggle of fullSidebarToggles ) {
+                // If we hide a sidebar, we will also hide all sidebar
+                // above in the hierarchy.
+                let prev = toggle.previousElementSibling;
+                if( prev ) {
+                    const prevSidebarId = prev.dataset.target;
+                    toggleSidebar(prevSidebarId, false);
+                }
+
+                togglePinSidebar(fullSidebarId, false);
+                if( !fullSidebarHidden ) {
+                    // otherwise sidebar is already closed.
+                    _hideSidebar(fullSidebar, fullSidebarToggles);
+                    if( prev ) {
+                        _hideElement(prev);
+                    }
                 }
             }
         }
@@ -123,58 +156,81 @@ function toggleSidebar(fullSidebarId, opened) {
     of the current state of the sidebar.
  */
 function togglePinSidebar(fullSidebarId, pinned) {
-    var fullSidebar = $(fullSidebarId);
-    if( fullSidebar.length > 0 ) {
-        var sidebarParent = fullSidebar.parent();
+    var fullSidebar = document.getElementById(
+        ( fullSidebarId.length > 0 && fullSidebarId[0] === '#' ) ?
+        fullSidebarId.slice(1) : fullSidebarId);
+    if( fullSidebar ) {
+        var sidebarParent = fullSidebar.parentElement;
         if( typeof pinned == "undefined" ) {
             // `left` can be 'auto' when we are not pinned.
-            pinned = !(parseInt(sidebarParent.css('left')) >= 0);
+            const sidebarParentStyle = window.getComputedStyle(sidebarParent);
+            pinned = !(parseInt(sidebarParentStyle.left) >= 0);
         }
-        var openToggles = $(document).find(
+        var fullSidebarToggles = document.querySelectorAll(
             `[data-target="${fullSidebarId}"].sidebar-toggle`);
-        openToggles.removeClass('sidebar-toggle-default');
+        for( toggle of fullSidebarToggles ) {
+            toggle.classList.remove('sidebar-toggle-default');
+        }
+        const fullSidebarStyle = window.getComputedStyle(fullSidebar);
         if( pinned ) {
-            if( fullSidebar.css('display') == 'none' ) {
-                openToggles.children().removeClass('opened')
+            if( fullSidebarStyle.display === 'none' ) {
+                for( toggle of fullSidebarToggles ) {
+                    for( const child of toggle.children ) {
+                        child.classList.remove('opened')
+                    }
+                }
             } else {
-                openToggles.children().addClass('opened')
+                for( toggle of fullSidebarToggles ) {
+                    for( const child of toggle.children ) {
+                        child.classList.add('opened')
+                    }
+                }
             }
-            openToggles.hide();
+            for( toggle of fullSidebarToggles ) {
+                _hideElement(toggle)
+            }
         } else {
-            if( fullSidebar.css('display') == 'none' ) {
-                openToggles.children().removeClass('opened')
+            if( fullSidebarStyle.display === 'none' ) {
+                for( toggle of fullSidebarToggles ) {
+                    for( const child of toggle.children ) {
+                        child.classList.remove('opened')
+                    }
+                }
             } else {
-                openToggles.children().addClass('opened')
+                for( toggle of fullSidebarToggles ) {
+                    for( const child of toggle.children ) {
+                        child.classList.add('opened')
+                    }
+                }
             }
-            openToggles.each(function() {
-                var menuBlocks = fullSidebar.find(".sidebar-content>ul");
+            for( toggle of fullSidebarToggles ) {
+                var menuBlocks = fullSidebar.querySelectorAll(
+                    ".sidebar-content>ul");
                 for( var idx = 0; idx < menuBlocks.length; ++idx ) {
-                    if( $(menuBlocks[idx]).css('display') != 'none' ) {
-                        $(this).show();
+                    const menuBlockStyle = window.getComputedStyle(
+                        menuBlocks[idx]);
+                    if( menuBlockStyle.display != 'none' ) {
+                        _showElement(toggle);
                         break;
                     }
                 }
-            });
+            }
         }
         if( pinned ) {
-            sidebarParent.removeClass(
-                'dashboard-pane-default').addClass('dashboard-pane-pinned');
-            for( let nextPinButton of fullSidebar.next().find(
-                '.sidebar-pin-toggle') ) {
-                const nextSidebarId = $(nextPinButton).data('target');
+            sidebarParent.classList.remove('dashboard-pane-unpinned');
+            sidebarParent.classList.add('dashboard-pane-pinned');
+            for( let nextPinButton of
+                 fullSidebar.nextElementSibling.querySelectorAll(
+                     '.sidebar-pin-toggle') ) {
+                const nextSidebarId = nextPinButton.dataset.target;
                 togglePinSidebar(nextSidebarId, true);
             }
         } else {
-            if( fullSidebar.css('display') != 'none' ) {
-                fullSidebar.css('display', fullSidebar.css('display'))
-            }
-            sidebarParent.removeClass(
-                'dashboard-pane-default dashboard-pane-pinned');
-            pinButtons = $(document).find('.sidebar-pin-toggle');
-            // If we are not using jQuery 3.6+, we might not be able
-            // to iterate here.
+            sidebarParent.classList.remove('dashboard-pane-pinned');
+            sidebarParent.classList.add('dashboard-pane-unpinned');
+            pinButtons = document.querySelectorAll('.sidebar-pin-toggle');
             for( let prevPinButton of pinButtons ) {
-                const prevSidebarId = $(prevPinButton).data('target');
+                const prevSidebarId = prevPinButton.dataset.target;
                 if( prevSidebarId == fullSidebarId ) break;
                 togglePinSidebar(prevSidebarId, false);
             }
@@ -182,32 +238,45 @@ function togglePinSidebar(fullSidebarId, pinned) {
     }
 }
 
+function _onLoadDashboard() {
+    for( let sidebarToggle of document.querySelectorAll('.sidebar-toggle') ) {
+        sidebarToggle.addEventListener('click', function(evt) {
+            evt.preventDefault();
+            const elm = this;
+            elm.classList.remove('sidebar-toggle-default');
+            const fullSidebarId = elm.dataset.target;
+            if( !fullSidebarId ) fullSidebarId = 'dashboard-navbar';
+            toggleSidebar(fullSidebarId);
+        });
+    }
 
-$(document).ready(function(){
+    for( let sidebarToggle of document.querySelectorAll('.sidebar-pin-toggle') ) {
+        sidebarToggle.addEventListener('click', function(evt) {
+            evt.preventDefault();
+            const elm = this;
+            const fullSidebarId = elm.dataset.target;
+            if( !fullSidebarId ) fullSidebarId = 'dashboard-navbar';
+            togglePinSidebar(fullSidebarId);
+        });
+    }
 
-    $('.sidebar-toggle').click(function(evt){
-        evt.preventDefault();
-        var $elem = $(this);
-        var fullSidebarId = $elem.data('target');
-        if( !fullSidebarId ) fullSidebarId = '.dashboard-nav';
-        $elem.removeClass('sidebar-toggle-default');
-        toggleSidebar(fullSidebarId);
+    window.addEventListener('resize', function() {
+        for( let sidebarToggle of document.querySelectorAll('.sidebar-toggle') ) {
+            for( child of sidebarToggle.children ) {
+                child.classList.remove('opened');
+                child.classList.add('closed');
+            }
+        }
     });
+}
 
-    $('.sidebar-pin-toggle').click(function(evt){
-        evt.preventDefault();
-        var $elem = $(this);
-        var fullSidebarId = $elem.data('target');
-        if( !fullSidebarId ) fullSidebarId = '.dashboard-nav';
-        togglePinSidebar(fullSidebarId);
-    });
-
-    $(window).resize(function(){
-        $('.sidebar-toggle').children().removeClass(
-            'opened').addClass('closed');
-    });
-
-});
+    if (document.readyState === "loading") {
+        // The document is still loading, wait for the event
+        document.addEventListener("DOMContentLoaded", _onLoadDashboard);
+    } else {
+        // The DOM is already ready (interactive or complete state)
+        _onLoadDashboard();
+    }
 
     // attach properties to the exports object to define
     // the exported module properties.
