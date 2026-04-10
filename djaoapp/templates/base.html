@@ -345,6 +345,11 @@ if (document.readyState === "loading") {
     onLoadBase();
 }
 </script>
+{# If we donnot load jquery.js here, we have to load it in saas/base.html    #}
+{# and extended_templates/_body_bottom.html. By loading it twice, the loaded #}
+{# UI components (`templateCodeEditors`) are not attached to the correct     #}
+{# jQuery instance, leading to an error. #}
+<script type="text/javascript" src="{{'/assets/vendor/jquery.js'|asset}}"></script>
 {% block bodyscripts %}
 {% endblock %}
 {% endblock %}
