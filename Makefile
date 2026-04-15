@@ -201,7 +201,8 @@ setup-livedemo: initdb
 
 # Download prerequisites specified in package.json and install relevant files
 # in the directory assets are served from.
-vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
+vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages \
+                             $(installTop)/.npm/fontawesome-free-7.0.0-web
 	$(installDirs) $(ASSETS_DIR)/fonts $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/ace-builds/src/ace.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/ace-builds/src/ext-language_tools.js $(ASSETS_DIR)/vendor
@@ -217,17 +218,12 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/bootstrap/dist/js/bootstrap.min.js* $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/chart.js/dist/chart.js $(srcDir)/djaoapp/static/vendor
 	$(installFiles) $(libDir)/node_modules/d3/d3.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/dropzone/dist/dropzone.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/font-awesome/css/font-awesome.css $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/font-awesome/fonts/* $(ASSETS_DIR)/fonts
 	$(installFiles) $(libDir)/node_modules/jquery/dist/jquery.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/jquery.selection/dist/jquery.selection.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery-autosize/jquery.autosize.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/jquery.payment/lib/jquery.payment.js $(ASSETS_DIR)/vendor
-	$(installFiles) $(libDir)/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/lodash/lodash.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/moment/moment.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/moment-timezone/builds/moment-timezone-with-data.js $(ASSETS_DIR)/vendor
@@ -242,6 +238,11 @@ vendor-assets-prerequisites: $(installTop)/.npm/$(APP_NAME)-packages
 	$(installFiles) $(libDir)/node_modules/vue/dist/vue.js $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.css $(ASSETS_DIR)/vendor
 	$(installFiles) $(libDir)/node_modules/vue-croppa/dist/vue-croppa.min.js $(ASSETS_DIR)/vendor
+	$(installFiles) $(installTop)/.npm/fontawesome-free-7.0.0-web/webfonts/* $(ASSETS_DIR)/fonts
+	$(installFiles) $(installTop)/.npm/fontawesome-free-7.0.0-web/css/fontawesome.min.css $(ASSETS_DIR)/vendor
+	sed -e 's,../webfonts,../fonts,g' $(installTop)/.npm/fontawesome-free-7.0.0-web/css/solid.min.css > $(ASSETS_DIR)/vendor/solid.min.css
+	sed -e 's,../webfonts,../fonts,g' $(installTop)/.npm/fontawesome-free-7.0.0-web/css/brands.min.css > $(ASSETS_DIR)/vendor/brands.min.css
+	sed -e 's,../webfonts,../fonts,g' $(installTop)/.npm/fontawesome-free-7.0.0-web/css/regular.min.css > $(ASSETS_DIR)/vendor/regular.min.css
 
 
 # --------- intermediate targets
@@ -380,6 +381,12 @@ $(ASSETS_DIR)/cache/saas.js: $(srcDir)/webpack.config.js \
 
 webpack-conf-paths.json: $(srcDir)/djaoapp/settings.py
 	cd $(srcDir) && $(MANAGE) generate_webpack_paths -o $@
+
+
+$(installTop)/.npm/fontawesome-free-7.0.0-web:
+	$(installDirs) $(dir $@)
+	wget -q -O $(dir $@)/fontawesome-free-7.0.0-web.zip https://use.fontawesome.com/releases/v7.0.0/fontawesome-free-7.0.0-web.zip
+	cd $(dir $@) && unzip -qu fontawesome-free-7.0.0-web.zip
 
 
 $(ASSETS_DIR)/cache/base.css: \

@@ -3,7 +3,7 @@
 {% block content %}
 <div id="app">{# so tests have something to hang on. #}
   <section id="redirects">
-    <h1 class="text-center my-4">{% trans %}To continue, please select a profile ...{% endtrans %}</h1>
+    <h1 class="text-center my-4">{% trans %}To continue, you need a personal or company profile ...{% endtrans %}</h1>
     <div class="container">
     <role-profile-list inline-template id="accessible-list-container"
         :request-user="'{{request.user.email}}'"

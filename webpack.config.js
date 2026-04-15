@@ -114,7 +114,6 @@ module.exports = env => ({
        debug: true
       }),
       new webpack.ProvidePlugin({
-          Chart: ['vendor/chart.js', 'Chart'],
           httpRequestMixin: [
               'js/djresourcesvue.js', 'httpRequestMixin'],
           itemMixin: ['js/djresourcesvue.js', 'itemMixin'],

@@ -3,84 +3,73 @@
 {% block content %}
 <div class="light-background">
   <!-- Terms and Policies Section -->
-  <section id="legal">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="page-header pt-4">
-            <h4>{% trans %}Terms and Policies{% endtrans %}</h4>
-          </div>
-          <p>
-            {% trans %}In providing the best possible service, you will find here the legal documents that keeps everyone from trouble.{% endtrans %}
-          </p>
+  <div class="container">
+    <h1>{% trans %}Terms and Policies{% endtrans %}</h1>
 
-          {% if agreement_list %}
-          <ul>
-            {% for agreement in agreements %}
-            <li>
-              <a id="{{agreement.slug}}" target="_blank" href="{{agreement.location}}">{{agreement.title}}</a> &dash; updated <span class="editable edit-date">{{agreement.updated_at|humanize_short_date}}</span>
-            </li>
-            {% endfor %}
-          </ul>
-          {% else %}
-          <em>{% trans %}No Terms nor policies yet{% endtrans %}</em>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </section>
+    <div class="px-4 py-4 bg-body text-body">
+      <section id="legal">
+        <p>
+{% trans %}In providing the best possible service, you will find here the legal documents that keeps everyone from trouble.{% endtrans %}
+        </p>
 
-  <!-- Contact Us Section -->
-  <section id="contacts" class="pb-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="page-header pt-3">
-            <h4 class="underlined-title">Contact Us</h4>
+        {% if agreement_list %}
+        <ul>
+          {% for agreement in agreements %}
+          <li>
+            <a id="{{agreement.slug}}" target="_blank" href="{{agreement.location}}">{{agreement.title}}</a> &dash; updated <span class="editable edit-date">{{agreement.updated_at|humanize_short_date}}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <em>{% trans %}No Terms nor policies yet{% endtrans %}</em>
+        {% endif %}
+      </section>
+
+      <!-- Contact Us Section -->
+      <section id="contacts" class="pb-4">
+        <h2 class="pt-3">Contact Us</h2>
+        <p>
+{% trans %}You can also feel free to contact us by alternative means.{% endtrans %}
+        </p>
+        <div class="row vcard pb-4">
+          <!-- Show Email -->
+          {% if organization.email %}
+          <div class="col-md-4">
+            <h6>{% trans %}Email{% endtrans %}</h6>
             <p>
-              {% trans %}You can also feel free to contact us by alternative means.{% endtrans %}
+              <span class="email">{{organization.email}}</span>
             </p>
           </div>
-        </div>
-      </div>
-      <div class="row vcard pb-4">
-        <!-- Show Email -->
-        {% if organization.email %}
-        <div class="col-md-4">
-          <h6>{% trans %}Email{% endtrans %}</h6>
-          <p>
-            <span class="email">{{organization.email}}</span>
-          </p>
-        </div>
-        {% endif %}
+          {% endif %}
 
-        <!-- Show Phone Number -->
-        {% if organization.phone %}
-        <div class="col-md-4">
-          <h6>{% trans %}Phone{% endtrans %}</h6>
-          <p>
-            <span class="tel">{{organization.phone}}</span>
-          </p>
-        </div>
-        {% endif %}
+          <!-- Show Phone Number -->
+          {% if organization.phone %}
+          <div class="col-md-4">
+            <h6>{% trans %}Phone{% endtrans %}</h6>
+            <p>
+              <span class="tel">{{organization.phone}}</span>
+            </p>
+          </div>
+          {% endif %}
 
-        <!-- Show Address -->
-        {% if organization.street_address %}
-        <div class="col-md-4">
-          <h6>{% trans %}Address{% endtrans %}</h6>
-          <p>
-            <span class="adr">
-              <span class="street-address">{{organization.street_address}}</span><br />
-              <span class="locality">{{organization.locality}}</span>,
-              <abbr class="region" title="California">{{organization.region}}</abbr>
-              <span class="postal-code">{{organization.postal_code}}</span><br />
-              <span class="country-name">{{organization.country.name}}</span>
-            </span>
-          </p>
+          <!-- Show Address -->
+          {% if organization.street_address %}
+          <div class="col-md-4">
+            <h6>{% trans %}Address{% endtrans %}</h6>
+            <p>
+              <span class="adr">
+                <span class="street-address">{{organization.street_address}}</span><br />
+                <span class="locality">{{organization.locality}}</span>,
+                <abbr class="region" title="California">{{organization.region}}</abbr>
+                <span class="postal-code">{{organization.postal_code}}</span><br />
+                <span class="country-name">{{organization.country.name}}</span>
+              </span>
+            </p>
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
-      </div>
+      </section>
     </div>
-  </section>
+  </div>
 </div>
 {% endblock %}
