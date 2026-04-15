@@ -9,7 +9,7 @@
 <div>
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-outline-primary" role="button"
-         :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
+         :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa-solid fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
       <div class="d-inline-block">
           {% include "_params_ends_at_field.html" %}
       </div>
@@ -29,7 +29,7 @@
       <tbody v-show="!itemsLoaded">
           <tr>
               <td colspan="16">
-                  <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                  <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
               </td>
           </tr>
       </tbody>
@@ -44,12 +44,12 @@
           <tr v-for="(row, index) in items.results">
               <td>
                   <div class="btn btn-outline-primary btn-sm">
-                      <i class="fa fa-bars"></i></div>
+                      <i class="fa-solid fa-bars"></i></div>
               </td>
               <td>
                   <button class="btn btn-danger btn-sm"
                     @click="remove(row.slug)">
-                      <i class="fa fa-trash-o"></i></button>
+                      <i class="fa-solid fa-trash-o"></i></button>
               </td>
               <td>[[row.title]]</td>
               <td class="text-end"
@@ -78,7 +78,7 @@
       </div>
       <div class="col-sm-2">
           <button class="btn btn-primary btn-sm"
-            @click="create"><i class="fa fa-plus"></i> {% trans %}Add Line{% endtrans %}</button>
+            @click="create"><i class="fa-solid fa-plus"></i> {% trans %}Add Line{% endtrans %}</button>
       </div>
   </div>
 </div>

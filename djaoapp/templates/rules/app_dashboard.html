@@ -39,7 +39,7 @@
               <tr>
                 <td colspan="6">
                   <a id="add-rule" href="#"
-                     data-bs-toggle="modal" data-bs-target="#new-rule"><i class="fa fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
+                     data-bs-toggle="modal" data-bs-target="#new-rule"><i class="fa-solid fa-plus"></i> {% trans %}Add Access Rule{% endtrans %}...</a>
                 </td>
               </tr>
               <tr class="item" :id="'rule-' + rule.rank" :key="rule.rank"
@@ -47,11 +47,11 @@
                 <td>
                   <button class="btn btn-outline-primary btn-sm rule-up"
                           @click.prevent="moveUp(rule, index)">
-                    <i class="fa fa-arrow-up"></i>
+                    <i class="fa-solid fa-arrow-up"></i>
                   </button>
                   <button class="btn btn-outline-primary btn-sm rule-down"
                           @click.prevent="moveDown(rule, index)">
-                    <i class="fa fa-arrow-down"></i>
+                    <i class="fa-solid fa-arrow-down"></i>
                   </button>
                 </td>
                 <td>[[rule.path]]</td>
@@ -73,7 +73,7 @@
                 <td class="engaged">
                   <span @click="editDescription(index)"
                         v-show="!edit_description[index]"
-                        >[[rule.engaged]] <i class="fa fa-pencil"></i></span>
+                        >[[rule.engaged]] <i class="fa-solid fa-pencil"></i></span>
                   <input type="text" class="form-control"
                          v-show="edit_description[index]"
                          v-model="rule.engaged"
@@ -85,7 +85,7 @@
                 <td width="100">
                   <button class="btn btn-danger btn-sm rule-delete"
                           @click="remove(index)">
-                    <i class="fa fa-trash-o"></i></button>
+                    <i class="fa-solid fa-trash-o"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -207,7 +207,7 @@
                 <option value="2"{% if form.instance.session_backend == 2 %} selected{% endif %}>{% trans %}JWT-based Session Backend{% endtrans %}</option>
               </select>
               <div class="form-group mt-3">
-                <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-bs-toggle="modal" data-bs-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
+                <button @click="generateKey" class="form-control btn btn-primary" id="generate-key-btn" data-bs-toggle="modal" data-bs-target="#generate-key" data-trip data-trip-index="5" data-trip-content="<p>{% trans %}Download the API key used to encrypt{% endtrans %}<br />{% trans %}sessions forwarded to your web application.{% endtrans %} <a href='http://djaodjin.com/docs/' target='_blank'>{% trans %}more...{% endtrans %}</a></p>"  data-trip-position="s" ><i class="fa-solid fa-key"></i> {% trans %}Generate Key{% endtrans %}</button>
               </div>
             </div>
           </div>

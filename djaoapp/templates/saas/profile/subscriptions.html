@@ -39,7 +39,7 @@
                   </div>
                   <div class="col-md-4 text-end">
                     <div class="d-grid gap-2">
-                      <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
+                      <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> {% trans %}Subscribe{% endtrans %}</button>
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
               <tbody>
                 <tr v-show="!itemsLoaded">
                   <td colspan="4">
-                    <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                    <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
                   </td>
                 </tr>
                 <tr v-show="itemsLoaded && items.count === 0" v-cloak>
@@ -110,7 +110,7 @@
                     <button class="btn btn-danger unsubscribe"
                       @click="unsubscribe(entry.profile.slug, entry.plan.slug)"
                       v-if="entry.grant_key">
-                      <i class="fa fa-times"></i>
+                      <i class="fa-solid fa-times"></i>
                     </button>
                   </td>
                   <td class="text-end" v-if="entry.request_key && entry.editable">
@@ -200,7 +200,7 @@
               <tbody>
                 <tr v-show="!itemsLoaded">
                   <td colspan="4">
-                    <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                    <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
                   </td>
                 </tr>
                 <tr v-show="itemsLoaded && items.count === 0" v-cloak>

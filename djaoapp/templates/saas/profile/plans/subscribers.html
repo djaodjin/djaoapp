@@ -19,10 +19,10 @@
               <div class="input-group mb-3">
                 <!-- optional indicators -->
                 <span class="input-group-text">
-                  <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                  <i class="fa-solid fa-spinner fa-spin" v-if="loading"></i>
                   <template v-else>
-                    <i class="fa fa-search" v-show="isEmpty"></i>
-                    <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                    <i class="fa-solid fa-search" v-show="isEmpty"></i>
+                    <i class="fa-solid fa-times" v-show="isDirty" @click="reset"></i>
                   </template>
                 </span>
                 <!-- the input field -->
@@ -122,7 +122,7 @@ Thank you,
         <tbody v-show="!itemsLoaded">
           <tr>
             <td colspan="6">
-              <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+              <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
             </td>
           </tr>
         </tbody>
@@ -143,7 +143,7 @@ Thank you,
             <td>[[$globals.humanizeDate(entry.ends_at)]]</td>
             <td>
               <span v-show="!entry.edit_description" @click="editDescription(entry, index)">
-                [[entry.description]] <i class="fa fa-pencil"></i>
+                [[entry.description]] <i class="fa-solid fa-pencil"></i>
               </span>
               <input v-show="entry.edit_description" type="text"
                      class="form-control"

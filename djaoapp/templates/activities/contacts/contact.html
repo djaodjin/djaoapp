@@ -21,10 +21,10 @@
                 <div class="input-group mb-3">
                   <!-- optional indicators -->
                   <span class="input-group-text">
-                    <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                    <i class="fa-solid fa-spinner fa-spin" v-if="loading"></i>
                     <template v-else>
-                      <i class="fa fa-search" v-show="isEmpty"></i>
-                      <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                      <i class="fa-solid fa-search" v-show="isEmpty"></i>
+                      <i class="fa-solid fa-times" v-show="isDirty" @click="reset"></i>
                     </template>
                   </span>
                   <!-- the input field -->
@@ -74,7 +74,7 @@
         <h3 class="mt-3">{% trans %}Activities{% endtrans %}</h3>
         <div>
           <div v-show="!itemsLoaded">
-            <h3  class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+            <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
           </div>
           <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <h4><em>{% trans %}No activity{% endtrans %}</em></h4>

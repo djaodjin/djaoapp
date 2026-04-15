@@ -60,7 +60,7 @@
 
     <!-- Loading Spinner -->
     <div class="text-center py-5 my-5" v-show="!itemsLoaded">
-      <h3 class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+      <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
     </div>
 
     <!-- No Coupons Found Msg -->
@@ -76,7 +76,7 @@
           <div class="card-body">
             <div class="coupon-title">
               <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h5>
-              <button class="btn btn-danger btn-sm remove ms-1" @click="remove(index)"><i class="fa fa-remove"></i></button>
+              <button class="btn btn-danger btn-sm remove ms-1" @click="remove(index)"><i class="fa-solid fa-remove"></i></button>
             </div>
           </div>
           <div class="list-group list-group-flush">
@@ -122,7 +122,7 @@
                data-trip-position="s">
               <span @click="editDescription(index)"
                     v-show="!edit_description[index]">
-                <i class="fa fa-pencil me-3"></i>
+                <i class="fa-solid fa-pencil me-3"></i>
                 <span class="text-muted" v-if="!entry.description">{% trans %}Edit Description{% endtrans %}</span>
                 [[entry.description]]
               </span>

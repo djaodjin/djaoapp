@@ -8,12 +8,12 @@
   <tr :id="row.slug" v-for="(row, index) in currentTableData.data" :key="row.slug" class="position-relative">
     <td class="text-nowrap row-header" v-cloak>
       <div v-if="row.location">
-        <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
+        <i class="fa-solid fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
         <a :href="row.location" v-cloak>[[row.title ? row.title : row.slug]]</a>
         <span class="badge" :class="{ 'bg-success': row.is_active, 'bg-secondary': !row.is_active }">[[row.is_active ? 'active' : 'inactive']]</span>
       </div>
       <div v-if="!row.location">
-        <i class="fa fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
+        <i class="fa-solid fa-circle align-middle" :style="'color: ' + colorFn(index)"></i>
         <span class="align-middle">[[row.title ? row.title : row.slug]]</span>
       </div>
     </td>

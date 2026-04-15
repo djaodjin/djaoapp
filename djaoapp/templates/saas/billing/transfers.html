@@ -65,14 +65,14 @@
           <dl class="dl-horizontal">
             <dt>{% trans %}Institution{% endtrans %}</dt>
             <dd class="bank-name">
-              <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+              <i class="fa-solid fa-refresh fa-spin" v-if="!balanceLoaded"></i>
               <span v-if="balanceLoaded" v-cloak>[[bank_name]]</span>
             </dd>
           </dl>
           <dl class="dl-horizontal">
             <dt>{% trans %}Account Number{% endtrans %}</dt>
             <dd class="last4">
-              <i class="fa fa-refresh fa-spin" v-if="!balanceLoaded"></i>
+              <i class="fa-solid fa-refresh fa-spin" v-if="!balanceLoaded"></i>
               <span v-if="balanceLoaded" v-cloak>[[last4]]</span>
             </dd>
           </dl>

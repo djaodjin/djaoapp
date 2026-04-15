@@ -45,7 +45,7 @@
             <dt data-trip data-trip-index="2"
                 data-trip-content="<p>{% trans %}The amount you owe.{% endtrans %}</p>"
                 data-trip-position="s">
-                <i class="fa fa-refresh fa-spin"
+                <i class="fa-solid fa-refresh fa-spin"
                    v-if="!itemsLoaded"></i>
                 <span v-if="itemsLoaded" v-cloak>[[$globals.humanizeNumber(items.balance_amount, items.balance_unit, 0.01)]]</span>
             </dt>
@@ -66,14 +66,14 @@
           <dl class="dl-horizontal">
             <dt>{% trans %}card{% endtrans %}</dt>
             <dd class="last4">
-              <i class="fa fa-refresh fa-spin" v-if="!cardLoaded"></i>
+              <i class="fa-solid fa-refresh fa-spin" v-if="!cardLoaded"></i>
               <span v-if="cardLoaded" v-cloak>[[last4]]</span>
             </dd>
           </dl>
           <dl class="dl-horizontal">
             <dt>{% trans %}expires{% endtrans %}</dt>
             <dd class="exp_date">
-              <i class="fa fa-refresh fa-spin"
+              <i class="fa-solid fa-refresh fa-spin"
                  v-if="!cardLoaded"></i>
               <span v-if="cardLoaded" v-cloak>[[exp_date]]</span>
             </dd>

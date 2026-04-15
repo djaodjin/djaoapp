@@ -64,7 +64,7 @@
               <tbody v-show="!itemsLoaded">
                 <tr>
                   <td colspan="3">
-                    <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                    <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
                   </td>
                 </tr>
               </tbody>
@@ -239,7 +239,7 @@
               <tbody class="fetching-results" v-show="!itemsLoaded" v-cloak>
                 <tr>
                   <td colspan="5">
-                    <h3  class="text-center"><i class="fa fa-refresh fa-spin fa-2x"></i></h3>
+                    <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
                   </td>
                 </tr>
               </tbody>
@@ -269,7 +269,7 @@
                   <td>[[$globals.humanizeDate(entry.created_at)]]</td>
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.ends_at)]]</td>
                   <td class="description editable" :id="entry.id">
-                    <span>[[entry.description]] <i class="fa fa-pencil"></i></span>
+                    <span>[[entry.description]] <i class="fa-solid fa-pencil"></i></span>
                     <input type="text"
                            class="form-control"
                            @blur="saveDescription(entry)"
@@ -300,7 +300,7 @@
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.ends_at)]]</td>
                   <td class="description editable">
                     <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
-                      [[entry.description]] <i class="fa fa-pencil"></i>
+                      [[entry.description]] <i class="fa-solid fa-pencil"></i>
                     </span>
                     <input type="text"
                            class="form-control"
@@ -331,7 +331,7 @@
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.ends_at)]]</td>
                   <td class="description editable">
                     <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
-                      [[entry.description]] <i class="fa fa-pencil"></i>
+                      [[entry.description]] <i class="fa-solid fa-pencil"></i>
                     </span>
                     <input type="text"
                            class="form-control"
@@ -362,7 +362,7 @@
                   <td class="text-nowrap">[[$globals.humanizeDate(entry.created_at)]]</td>
                   <td class="description editable">
                     <span v-show="!entry.edit_description" @click="editDescription(entry, entry.plan.slug)">
-                      [[entry.description]] <i class="fa fa-pencil"></i>
+                      [[entry.description]] <i class="fa-solid fa-pencil"></i>
                     </span>
                     <input type="text" class="form-control"
                            @blur="saveDescription(entry)"

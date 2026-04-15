@@ -53,7 +53,7 @@
               {% else %}
               @click.prevent="{{toggleNameOpened}}"
               {% endif %}
-              ><span class="fa fa-calendar"></span></button>
+              ><span class="fa-solid fa-calendar"></span></button>
     {% endif %}
   </div>
   <div class="form-text help-block invalid-feedback errorlist">
@@ -136,7 +136,7 @@
     <div class="col-6">
       {{label|safe}}
       {% if verified_at %}
-      <i class="fa fa-check text-green"></i>
+      <i class="fa-solid fa-check text-green"></i>
       {% endif %}
     </div>
     {% if verification_enabled %}
@@ -209,7 +209,7 @@
           {% if required %} required{% endif %}
         />
         <span class="input-group-text">
-          <i class="fa fa-eye-slash"></i>
+          <i class="fa-solid fa-eye-slash"></i>
         </span>
     </div>
     {% else %}
@@ -295,10 +295,10 @@
       <div class="input-group mb-3">
           <!-- optional indicators -->
           <span class="input-group-text">
-          <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+          <i class="fa-solid fa-spinner fa-spin" v-if="loading"></i>
           <template v-else>
-              <i class="fa fa-search" v-show="isEmpty"></i>
-              <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+              <i class="fa-solid fa-search" v-show="isEmpty"></i>
+              <i class="fa-solid fa-times" v-show="isDirty" @click="reset"></i>
           </template>
           </span>
           <!-- the input field -->

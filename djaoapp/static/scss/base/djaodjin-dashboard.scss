@@ -1,5 +1,4 @@
-// CSS specific to layout the djaoapp dashboard pages
-// Colors are setup in djaoapp-dashboard-theme.scss
+// CSS specific to layout the djaoapp@2026-02-23.2 templates
 
 $dashboard-sidebar-width:      220px;
 $dashboard-sidebar-toggle:      20px;
@@ -164,8 +163,8 @@ body{
   left: -1;
 }
 
-.sidebar-pin-toggle > .fa:before {
-  content: "\f08d"; // fa-pin
+.sidebar-pin-toggle > .fa-solid:before {
+  content: "\f08d"; // fa-thumbtack
   font-family: "Font Awesome 7 Free";
 }
 
@@ -178,7 +177,7 @@ body{
   left: 0;
 }
 
-.dashboard-pane-pinned .sidebar-pin-toggle > .fa:before {
+.dashboard-pane-pinned .sidebar-pin-toggle > .fa-solid:before {
   content: "\e68f"; // fa-thumtack-slash
   font-family: "Font Awesome 7 Free";
 }
@@ -598,18 +597,18 @@ body{
     }
 
     // must be before definition of
-    //`.dashboard-pane.dashboard-pane-sidebar .sidebar-pin-toggle > .fa:before`
+    //`.dashboard-pane.dashboard-pane-sidebar .sidebar-pin-toggle > .fa-solid:before`
     // otherwise the second sidebar pin toggle is not showing correctly.
-    .dashboard-pane-sidebar.dashboard-pane-unpinned .sidebar-pin-toggle > .fa:before,
-    .dashboard-pane.dashboard-pane-sidebar.dashboard-pane-unpinned .sidebar-pin-toggle > .fa:before {
-        content: "\f08d"; // fa-pin
-        font-family: FontAwesome;
+    .dashboard-pane-sidebar.dashboard-pane-unpinned .sidebar-pin-toggle > .fa-solid:before,
+    .dashboard-pane.dashboard-pane-sidebar.dashboard-pane-unpinned .sidebar-pin-toggle > .fa-solid:before {
+        content: "\f08d"; // fa-thumbtack
+        font-family: "Font Awesome 7 Free";
     }
 
-    .dashboard-pane-sidebar .sidebar-pin-toggle > .fa:before,
-    .dashboard-pane.dashboard-pane-sidebar .sidebar-pin-toggle > .fa:before {
-        content: "\f127"; // fa-unlink
-        font-family: FontAwesome;
+    .dashboard-pane-sidebar .sidebar-pin-toggle > .fa-solid:before,
+    .dashboard-pane.dashboard-pane-sidebar .sidebar-pin-toggle > .fa-solid:before {
+        content: "\e68f"; // fa-thumbtack-slash
+        font-family: "Font Awesome 7 Free";
     }
 
     .dashboard-pane-sidebar .dashboard-content {
@@ -1084,7 +1083,7 @@ input::-webkit-datetime-edit {
 }
 
 .plan-desc li:before {
-  font-family: 'FontAwesome';
+  font-family: "Font Awesome 7 Free";
   content: "\f058";
   margin: 0 18px 0 -15px;
   color: steelblue;

@@ -23,10 +23,10 @@
               <div class="input-group mb-3">
                 <!-- optional indicators -->
                 <span class="input-group-text">
-                  <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+                  <i class="fa-solid fa-spinner fa-spin" v-if="loading"></i>
                   <template v-else>
-                    <i class="fa fa-search" v-show="isEmpty"></i>
-                    <i class="fa fa-times" v-show="isDirty" @click="reset"></i>
+                    <i class="fa-solid fa-search" v-show="isEmpty"></i>
+                    <i class="fa-solid fa-times" v-show="isDirty" @click="reset"></i>
                   </template>
                 </span>
                 <!-- the input field -->
@@ -65,7 +65,7 @@
           </div>
           <div class="card-body" v-show="!itemsLoaded">
             <p>
-              <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i></h3>
+              <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
             </p>
           </div>
           <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
@@ -101,7 +101,7 @@
           </div>
           <div class="card-body">
             <div v-show="!itemsLoaded">
-              <h4  class="text-center"><i class="fa fa-refresh fa-spin"></i></h4>
+              <h4  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h4>
             </div>
             <div v-show="itemsLoaded && items.results.length === 0" v-cloak>
               <h4><em>{% trans %}No news is good news!{% endtrans %}</em></h4>
@@ -128,7 +128,7 @@
                 <h5 class="card-title text-center">{% trans %}MRR{% endtrans %}</h5>
               </div>
               <div class="align-items-center justify-content-center h-75">
-                <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>
                 <h2 class="text-center" v-show="itemLoaded && !item.processor_hint" v-cloak>[[$globals.humanizeNumber(amount, item.unit, item.scale)]]</h2>
               </div>
             </div>
@@ -136,7 +136,7 @@
           <div class="card w-100 mb-4"
                v-if="itemLoaded && item.processor_hint" v-cloak>
             <div class="card-header text-white bg-warning">
-              <span class="fa fa-warning"></span> Billing disabled
+              <span class="fa-solid fa-warning"></span> Billing disabled
             </div>
             <div class="card-body">
               <p class="card-text">
@@ -157,10 +157,10 @@
                 <h5 class="card-title text-center">{% trans %}Daily Active Users{% endtrans %}</h5>
               </div>
               <div class="align-items-center justify-content-center h-75">
-                <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>
                 <h2 class="text-center" v-show="itemLoaded" v-cloak>[[item.active_users]]</h2>
                 <div class="text-warning" v-show="itemLoaded && item.authentication && item.authentication !=='enabled'" v-cloak>
-                  <span class="fa fa-warning"></span> authentication is <span class="text-danger">[[item.authentication]]</span>. Go to the rules page to <a href="{{urls.rules.app}}">enable registration &raquo;</a>
+                  <span class="fa-solid fa-warning"></span> authentication is <span class="text-danger">[[item.authentication]]</span>. Go to the rules page to <a href="{{urls.rules.app}}">enable registration &raquo;</a>
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 <h5 class="card-title text-center">{% trans %}Engagement{% endtrans %}</h5>
               </div>
               <div class="align-items-center justify-content-center py-5 h-75">
-                <h2 class="text-center" v-show="!itemLoaded"><i class="fa fa-refresh fa-spin"></i></h2>
+                <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>
                 <div class="p-0" v-if="itemLoaded && item.engagements.length === 0" v-cloak>
                   <p class="card-text text-center text-muted">
                     {% trans %}No engagement data{% endtrans %}
