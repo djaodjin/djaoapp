@@ -6,7 +6,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.33.13                    # last version compatible with Py3.7
-Django==4.2.29
+Django==4.2.30
 django-phonenumber-field==7.1.0
 django-recaptcha==4.0.0           # 4.0.0 renamed namespace 'django_recaptcha'
                                   # 2.0.6 requires Django<4.0
@@ -36,7 +36,7 @@ PyJWT==2.12.0                     # 2.11.0 supports Python 3.14
                                   # 2.10.0 requires Python>=3.9
                                   # 2.8.0 requires Python>=3.7
 pyotp==2.8.0
-pytz==2025.2
+pytz==2026.1.post1
 social-auth-app-django==5.4.3     # 5.5.0 drops support for Django<5.1
                                   # 5.2.0 drops support for Django<3.2
                                   # v1.2.0 does not support Django>=2.1
@@ -62,7 +62,7 @@ django-extensions==4.1            # 4.1 supports py312-django5.2
 # development
 Faker==3.0.1
 flex==6.14.0
-pygments== 2.15.0
+pygments== 2.20.0
 pyYAML==6.0.1
 Sphinx==5.3.0                     # last version that supports Py3.7
 sphinx_rtd_theme==2.0.0
