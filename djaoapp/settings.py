@@ -21,6 +21,7 @@ APP_VERSION = "2026-02-23.2"
 # -------------
 DEBUG = True
 USE_FIXTURES = True
+VERBOSE = True
 
 ENABLE_DEBUG_TOOLBAR = False        # 2026-02-17 layout issue
 FEATURES_REVERT_ASSETS_CDN = False  # 2025-09-19 temporary reverts cached js/css
@@ -171,9 +172,12 @@ LOG_FILE = None
 
 # Overrides from config files
 # ---------------------------
+if os.getenv('VERBOSE'):
+    setattr(sys.modules[__name__], 'VERBOSE', (int(os.getenv('VERBOSE')) > 0))
+
 update_settings(sys.modules[__name__],
     load_config(APP_NAME, 'credentials', 'site.conf',
-        verbose=True, debug=DEBUG))
+        verbose=VERBOSE, debug=DEBUG))
 
 if os.getenv('APP_NAME'):
     setattr(sys.modules[__name__], 'APP_NAME', os.getenv('APP_NAME'))
@@ -514,7 +518,8 @@ TEMPLATES = [
     }]
 
 if FEATURES_REVERT_TO_DJANGO:
-    sys.stderr.write("Use Django templates engine.\n")
+    if VERBOSE:
+        sys.stderr.write("Use Django templates engine.\n")
     TEMPLATES += [
     {
         'NAME': 'html',
@@ -541,7 +546,8 @@ if FEATURES_REVERT_TO_DJANGO:
     }
     ]
 else:
-    sys.stderr.write("Use Jinja2 templates engine.\n")
+    if VERBOSE:
+        sys.stderr.write("Use Jinja2 templates engine.\n")
     TEMPLATES += [
     {
         'NAME': 'html',

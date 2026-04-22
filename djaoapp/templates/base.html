@@ -93,7 +93,7 @@
                       <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
                         <li class="nav-item dropup">
                           <a id="color-mode" class="nav-link dropdown-toggle" href="#" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (dark)">
-                            <span class="fa-solid fa-paint-brush align-middle"></span>
+                            <span class="fa-solid fa-paintbrush align-middle"></span>
                             {% trans %}Color mode{% endtrans %}
                             <span class="caret"></span>
                           </a>
@@ -134,7 +134,7 @@
                 <div class="container-fluid">
 
                   <div class="d-flex">
-                    <button class="me-2 sidebar-toggle btn btn-secondary sidebar-toggle-default"
+                    <button class="btn btn-secondary me-2 sidebar-toggle sidebar-toggle-default"
                             data-target="#dashboard-navbar">
                       <div class="bar1 default"></div>
                       <div class="bar2 default"></div>
@@ -148,7 +148,8 @@
                   <div class="navbar-brand-container">
                     <a class="navbar-brand" href="{{request|site_url}}">
                       <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
-                      <span class="d-none d-sm-inline-block" data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
+                      <span class="d-none d-sm-inline-block"
+                            data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
                     </a>
                   </div>
                   {% endblock %}
@@ -224,22 +225,23 @@
 
   <!-- Start Main Footer -->
   {% block footer %}
-    <footer class="d-print-none footer text-center w-100 d-flex align-items-center justify-content-center">
-      {% block localfooter %}
-      {% endblock %}
+  <footer class="d-print-none footer text-center w-100 d-flex align-items-center justify-content-center">
 
-      <div class="copyr">
-        <div class="my-2">
-          <a href="{{'/legal/'|site_url}}" target="_blank">{% trans %}Legal{% endtrans %}</a>
-          | <a href="{{'/contact/'|site_url}}" target="_blank">{% trans %}Contact{% endtrans %}</a>
-        </div>
-        <div class="my-2">
-          <a href="https://github.com/djaodjin/" target="_blank"><i class="fa-brands fa-github fa-sm pe-1"></i></a>
-          <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa-brands fa-linkedin fa-sm ps-1"></i></a>
-        </div>
-        <div class="my-2">
-          {% trans %}Powered by DjaoDjin. &copy; 2026 All rights reserved.{% endtrans %}
-        </div>
+    {% block localfooter %}
+    {% endblock %}
+
+    <div class="copyr">
+      <div class="my-2">
+        <a href="{{'/legal/'|site_url}}" target="_blank">{% trans %}Legal{% endtrans %}</a>
+        | <a href="{{'/contact/'|site_url}}" target="_blank">{% trans %}Contact{% endtrans %}</a>
+      </div>
+      <div class="my-2">
+        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa-brands fa-github fa-sm pe-1"></i></a>
+        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa-brands fa-linkedin fa-sm ps-1"></i></a>
+      </div>
+      <div class="my-2">
+        {% trans %}Powered by DjaoDjin. &copy; 2026 All rights reserved.{% endtrans %}
+      </div>
       {# Theme color mode selection #}
       <ul class="nav flex-column py-1" data-intro="Color mode" data-position="right">
         <li class="nav-item dropup">
@@ -267,8 +269,8 @@
           </ul>
         </li>
       </ul>
-      </div>
-    </footer>
+    </div>
+  </footer>
   {% endblock footer %}
   <!-- End Main Footer -->
   {% if not request|privacy_settings %}
@@ -321,8 +323,6 @@ const PRIVACY_COOKIES_ENABLED = {
   injectAdvertisingScripts();
 {% endif %}
 </script>
-<script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
-<script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
 {% if ASSETS_DEBUG %}
 <script type="text/javascript" src="{{'/assets/js/djresources.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaodjin-menubar.js'|asset}}"></script>
@@ -348,6 +348,8 @@ if (document.readyState === "loading") {
     onLoadBase();
 }
 </script>
+<script type="text/javascript" src="{{'/assets/vendor/popper.min.js'|asset}}" defer></script>
+<script type="text/javascript" src="{{'/assets/vendor/bootstrap.min.js'|asset}}" defer></script>
 {# If we donnot load jquery.js here, we have to load it in saas/base.html    #}
 {# and extended_templates/_body_bottom.html. By loading it twice, the loaded #}
 {# UI components (`templateCodeEditors`) are not attached to the correct     #}

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "dependencies": {
         "@popperjs/core": "^2.11.8",
-        "ace-builds": "~1.2.2",
+        "ace-builds": "~1.2.9",
         "bootstrap": "^5.3.0",
         "bootstrap-colorpicker": "~2.5.2",
         "d3": "~3.5.5",
