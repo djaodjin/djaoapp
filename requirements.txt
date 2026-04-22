@@ -16,7 +16,7 @@ djangorestframework==3.16.1       # 3.16 requires Python>=3.9
 # We need a version of django-fernet-fields that supports Django4.2
 django-fernet-fields @ git+https://github.com/djaodjin/django-fernet-fields.git@6f261ed465a7fbafa1c41b635f7acd9fd6f3ccca
 # next 8 usually installed through source repo directly.
-djaodjin-deployutils==0.14.6
+djaodjin-deployutils==0.14.5
 djaodjin-extended-templates==0.4.12
 djaodjin-multitier==0.3.1
 djaodjin-rules==0.4.11
