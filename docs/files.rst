@@ -45,6 +45,10 @@ by multiple backend technologies.
 
 All templates are located in `djaoapp/templates <https://github.com/djaodjin/djaoapp/djaoapp/templates>`_.
 
+When serving multiple sites (i.e. multitier), templates will be first searched
+for in themes/*site*/templates before the default search path.
+
+
 Naming convention
 ^^^^^^^^^^^^^^^^^
 

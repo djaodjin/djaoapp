@@ -32,12 +32,28 @@ If you are looking to add features, this project integrates
 
 Tested with
 
-- **Python:** 3.10, **Django:** 3.2 ([LTS](https://www.djangoproject.com/download/))
+- **Python:** 3.10, **Django:** 4.2 ([LTS](https://www.djangoproject.com/download/))
 
 Install
 -------
 
-First you will need to create a workspace environment, download the 3rd party
+Get a clone of the repository on your local development environment, and change
+the active directory to that source directory.
+
+    $ git clone https://github.com/djaodjin/djaoapp.git
+    $ cd djaoapp
+
+The following commands are executed at the top of source directory.
+
+Please first verify that you have at least Python3.10 and make installed on your
+development environment
+
+    $ python --version
+    Python 3.10.19
+    $ make --version
+    GNU Make 3.81
+
+You will need to create a workspace environment, download the 3rd party
 vendor prerequisite packages and build the static assets.
 
 DjaoApp transitively depends on multiple native libraries that could or could
@@ -46,9 +62,10 @@ with the `pip install -r requirements-native.txt` command, take a look at
 [installation quirks](https://djaoapp.readthedocs.io/en/latest/quirks.html)
 in the documentation.
 
+
 <pre><code>
-    $ python -m venv <em>installTop</em>
-    $ source <em>installTop</em>/bin/activate
+    $ python -m venv .venv
+    $ source .venv/bin/activate
     $ pip install -r requirements-native.txt
     $ pip install -r requirements.txt
     $ make vendor-assets-prerequisites
@@ -57,12 +74,13 @@ in the documentation.
 </code></pre>
 
 At this point, all the 3rd party vendor prerequisite packages (Python and
-Javascript) have been downloaded and installed in the environment. You now
-need to add your STRIPE keys to the configuration file (i.e.
-*installTop*/etc/djaoapp/credentials).
+Javascript) have been downloaded and installed in the environment.
+
+If you are going to test payment workflows, you will need to add
+your STRIPE keys to the credentials configuration file.
 
 <pre><code>
-    $ diff -u <em>installTop</em>/etc/djaoapp/credentials
+    $ diff -u .venv/etc/djaoapp/credentials
     # Authentication with payment provider
     -STRIPE_CLIENT_ID = ""
     -STRIPE_PUB_KEY = ""
@@ -80,6 +98,7 @@ need to add your STRIPE keys to the configuration file (i.e.
     +STRIPE_TEST_PRIV_KEY = "<em>your-stripe-test-private-key</em>"
 </code></pre>
 
+See the reference documentation for [all configuration variables](https://djaoapp.readthedocs.io/en/latest/runtime-config.html#reference-for-configuration-variables).
 
 Then create the database, and start the built-in webserver
 
@@ -91,38 +110,29 @@ Then create the database, and start the built-in webserver
 Development
 -----------
 
-You will want to toggle `DEBUG` on in the site.conf file.
+As you are finding your way [working with the code base](https://djaoapp.readthedocs.io/en/latest/development.html),
+you will want to toggle `DEBUG` on to enable debugging tools,
+and load dummy data to populate the dashboard pages.
 
 <pre><code>
-    $ diff -u <em>installTop</em>/etc/djaoapp/site.conf
+    $ diff -u .venv/etc/djaoapp/site.conf
     -DEBUG = False
     +DEBUG = True
 
-    # Create the tests databases and load test datasets.
-    $ make initdb
-
-    # To generate some sample data, disable emailing of receipts and run:
     $ python manage.py load_test_transactions
-
-    # Spins up a dev server that re-compiles the `.css` files
-    # on page reload whenever necessary.
-    $ python manage.py runserver --nostatic
 </code></pre>
 
+Start the built-in webserver in a version that re-compiles the `.css` files
+as necessary when a page is reloaded.
 
-Templates Search Path
----------------------
-
-When a ``rules.App`` exists, templates will be first searched for in
-templates/*project_name*, then in templates/*project_repo*, then
-the default will be used.
-
-All CSS present in the default templates must be declared which ever
-base.html is included.
+    $ python manage.py runserver --nostatic
 
 
 Release Notes
 =============
+
+- Feb 23rd 2026
+  An official Docker image was released: [2026-02-23](https://github.com/djaodjin/djaoapp/pkgs/container/djaoapp%2Flivedemo/704250651?tag=2026-02-23)
 
 - Sep 6th 2023
   Support on Python2 was officially ended on Jan 1st 2020. As of Sep 6th 2023,
