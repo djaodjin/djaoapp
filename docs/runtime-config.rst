@@ -8,7 +8,7 @@ The basic command to run the Docker container on port 8000 looks like this:
 
     .. code-block:: shell
 
-        $ docker run -d -p 8000:80 -t ghcr.io/djaodjin/djaoapp/djaoapp:master
+        $ docker run -d -p 8000:80 -t ghcr.io/djaodjin/djaoapp/livedemo:2026-02-23
 
 We can browse the public pages to check basic connectivity. Since there are no
 user accounts in the embed database, we cannot login or do anything useful.
