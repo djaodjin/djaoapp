@@ -1,4 +1,4 @@
-# Copyright (c) 2024, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 
 -include $(buildTop)/share/dws/prefix.mk
@@ -62,7 +62,6 @@ endif
 LIVEDEMO_DB_FILENAME := $(srcDir)/db.sqlite
 MULTITIER_DB_FILENAME := $(dir $(DB_FILENAME))cowork.sqlite
 
-MULTITIER_DB_NAME ?= $(if $(wildcard $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf),$(shell grep ^DB_NAME $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/site.conf | cut -f 2 -d '"'),$(dir $(DB_FILENAME))$(subst migratedb-,,$@).sqlite)
 MULTITIER_DB_FIXTURES_TOP := $(abspath $(srcDir)/../../../workspace)
 
 MY_EMAIL           ?= $(shell cd $(srcDir) && git config user.email)
@@ -159,7 +158,7 @@ ifeq ($(MY_EMAIL),)
 # such that the container can be started without prior configuration.
 package-docker: build-assets setup-livedemo
 	[[ -f $(srcDir)/db.sqlite ]] || cp $(DB_FILENAME) $(srcDir)/db.sqlite
-	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(MULTITIER_DB_FILENAME) $(srcDir)/cowork.sqlite
+	[[ -f $(srcDir)/cowork.sqlite ]] || cp $(dir $(DB_FILENAME))cowork.sqlite $(srcDir)
 	[[ -f $(srcDir)/noregistration.sqlite ]] || cp $(dir $(DB_FILENAME))noregistration.sqlite $(srcDir)
 	[[ -f $(srcDir)/authdisabled.sqlite ]] || cp $(dir $(DB_FILENAME))authdisabled.sqlite $(srcDir)
 	[ ! -f $(srcDir)/package-lock.json ] || rm $(srcDir)/package-lock.json
@@ -281,80 +280,43 @@ initdb-djaoapp: clean-djaoapp
 	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DB_FILENAME)
 
 
-initdb-cowork: clean-cowork
-	$(if $(dir $(MULTITIER_DB_FILENAME)),[ -d $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(MULTITIER_DB_FILENAME)))
-	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		$(MANAGE) migrate $(RUNSYNCDB) --database cowork --noinput
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(MULTITIER_DB_FILENAME)
-	cd $(srcDir) && MULTITIER_DB_NAME=$(MULTITIER_DB_FILENAME) \
-		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database cowork djaoapp/fixtures/cowork-db.json
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(MULTITIER_DB_FILENAME)
-
-initdb-noregistration: clean-noregistration
-	@echo "-- initializing $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite"
-	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
-	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
-		$(MANAGE) migrate $(RUNSYNCDB) --database $(subst initdb-,,$@) --noinput
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
-	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
-		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database $(subst initdb-,,$@) djaoapp/fixtures/$(subst initdb-,,$@)-db.json
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
-
-initdb-authdisabled: clean-authdisabled
-	@echo "-- initializing $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite"
-	$(if $(dir $(DB_FILENAME)),[ -d $(DESTDIR)$(dir $(DB_FILENAME)) ] || $(installDirs) $(DESTDIR)$(dir $(DB_FILENAME)))
-	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
-		$(MANAGE) migrate $(RUNSYNCDB) --database $(subst initdb-,,$@) --noinput
-	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
-	cd $(srcDir) && MULTITIER_DB_NAME=$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
-		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) --database $(subst initdb-,,$@) djaoapp/fixtures/$(subst initdb-,,$@)-db.json
-	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
-
-
 clean-assets:
 	rm -f $(srcDir)/webpack-conf-paths.json
 	rm -f $(ASSETS_DIR)/js/*
 	rm -f $(ASSETS_DIR)/cache/*
-
-clean-dbs: clean-djaoapp clean-cowork clean-noregistration clean-authdisabled
-	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
-	[ ! -f $(srcDir)/db.sqlite ] || rm $(srcDir)/db.sqlite
-	[ ! -f $(srcDir)/cowork.sqlite ] || rm $(srcDir)/cowork.sqlite
 
 clean-themes:
 	rm -rf $(srcDir)/themes/*
 	rm -rf $(srcDir)/htdocs/themes/*
 	rm -rf $(srcDir)/htdocs/djaoapp $(srcDir)/htdocs/djaopsp
 
+clean-dbs: clean-djaoapp clean-cowork clean-noregistration clean-authdisabled
+	@echo "cleaned all sqlite databases."
+
 clean-djaoapp:
 	[ ! -f $(DB_FILENAME) ] || rm $(DB_FILENAME)
 	[ ! -f $(srcDir)/db.sqlite ] || rm $(srcDir)/db.sqlite
 
-clean-cowork:
-	[ ! -f $(MULTITIER_DB_FILENAME) ] || rm $(MULTITIER_DB_FILENAME)
-	[ ! -f $(srcDir)/cowork.sqlite ] || rm $(srcDir)/cowork.sqlite
-
-clean-noregistration:
+# Deletes a djaoapp customer database
+clean-%:
 	[ ! -f $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite ] || rm $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite
 	[ ! -f $(srcDir)/$(subst clean-,,$@).sqlite ] || rm $(srcDir)/$(subst clean-,,$@).sqlite
 
-clean-authdisabled:
-	[ ! -f $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite ] || rm $(dir $(DB_FILENAME))$(subst clean-,,$@).sqlite
-	[ ! -f $(srcDir)/$(subst clean-,,$@).sqlite ] || rm $(srcDir)/$(subst clean-,,$@).sqlite
+# Creates a djaoapp customer database
+initdb-%: clean-%
+	$(installDirs) $(DESTDIR)$(dir $(DB_FILENAME))
+	cd $(srcDir) && \
+		MULTITIER_DB_NAME=$(DESTDIR)$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) migrate $(RUNSYNCDB) --database $(subst initdb-,,$@) --noinput
+	cat $(srcDir)/djaoapp/migrations/adjustments1-sqlite3.sql | $(SQLITE_UNSAFE) $(DESTDIR)$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+	cd $(srcDir) && \
+		MULTITIER_DB_NAME=$(DESTDIR)$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite \
+		$(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
+		--database $(subst initdb-,,$@) \
+		$(if $(MULTITIER_DB_FIXTURES),$(MULTITIER_DB_FIXTURES),djaoapp/fixtures/$(subst initdb-,,$@)-db.json)
+	cat $(srcDir)/djaoapp/migrations/adjustments2-sqlite3.sql | $(SQLITE) $(DESTDIR)$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite
+	$(if $(MULTITIER_CREDENTIALS),$(SQLITE) $(DESTDIR)$(dir $(DB_FILENAME))$(subst initdb-,,$@).sqlite "UPDATE rules_app set enc_key='$(shell grep ^DJAODJIN_SECRET_KEY $(MULTITIER_CREDENTIALS) | cut -f 2 -d \")';")
 
-
-# Add necessary tables in an already existing database, then load information
-migratedb-%:
-	cd $(srcDir) && MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
-		$(MANAGE) migrate $(RUNSYNCDB) --database $(basename $(notdir $(MULTITIER_DB_NAME)))
-	cd $(srcDir) \
-	&& DJAOAPP_SETTINGS_LOCATION=$(CONFIG_DIR) \
-	MULTITIER_DB_NAME=$(call MULTITIER_DB_NAME) \
-	$(MANAGE) loadfixtures --database $(basename $(notdir $(MULTITIER_DB_NAME))) $(EMAIL_FIXTURE_OPT) $(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/$(basename $(notdir $(MULTITIER_DB_NAME)))-streetside.json
-	cd $(srcDir) && $(MANAGE) loadfixtures $(EMAIL_FIXTURE_OPT) \
-			$(MULTITIER_DB_FIXTURES_TOP)/$(subst migratedb-,,$@)/reps/$(subst migratedb-,,$@)/$(subst migratedb-,,$@)/fixtures/djaodjin.json
-	@echo "-- Set passphrase to forward session."
-	$(SQLITE) $(call MULTITIER_DB_NAME) "UPDATE rules_app set enc_key='$(shell grep ^DJAODJIN_SECRET_KEY $(dir $(installTop))$(subst migratedb-,,$@)/etc/$(subst migratedb-,,$@)/credentials | cut -f 2 -d \")';"
 
 # npm --loglevel verbose
 $(installTop)/.npm/$(APP_NAME)-packages: $(srcDir)/package.json
