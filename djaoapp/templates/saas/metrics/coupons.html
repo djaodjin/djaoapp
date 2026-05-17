@@ -30,6 +30,7 @@
                       data-trip data-trip-index="5"
                       data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
                       data-trip-position="s"
+                      aria-label="{% trans %}Sort by user{% endtrans %}"
                       @click.prevent="sortBy('slug')">
                       <i :class="sortIcon('slug')"></i>
                     </a>
@@ -39,6 +40,7 @@
                       data-trip data-trip-index="5"
                       data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
                       data-trip-position="s"
+                      aria-label="{% trans %}Sort by plan{% endtrans %}"
                       @click.prevent="sortBy('plan')">
                       <i :class="sortIcon('plan')"></i>
                     </a>
@@ -48,6 +50,7 @@
                       data-trip data-trip-index="5"
                       data-trip-content="<p>{% trans %}Sort coupon use by ascending and descending order.{% endtrans %}</p>"
                       data-trip-position="s"
+                      aria-label="{% trans %}Sort by used at{% endtrans %}"
                       @click.prevent="sortBy('created_at')">
                         <i :class="sortIcon('created_at')"></i>
                     </a>
@@ -57,7 +60,7 @@
         <tbody>
             <tr v-show="!itemsLoaded">
                 <td colspan="3">
-                    <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                    <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
                 </td>
             </tr>
             <tr v-show="itemsLoaded && items.results.length == 0" v-cloak>

@@ -19,7 +19,7 @@
           <div class="form-group">
             <div>
               {{form.read_terms}}
-              <label class="col-form-label">{% trans %}I have read and accept these terms and conditions.{% endtrans %}</label>
+              <label class="col-form-label" for="{{form.read_terms.id_for_label}}">{% trans %}I have read and accept these terms and conditions.{% endtrans %}</label>
             </div>
           </div>
           <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">

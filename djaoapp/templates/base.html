@@ -34,15 +34,15 @@
       <div class="dashboard-container">
         <div class="{% block dashboard_inner_container_classes %}{% endblock %}">
           {% block dashboard_nav %}
-          <div id="dashboard-navbar"
-               class="d-print-none dashboard-nav nav-main-frnt">
+          <aside id="dashboard-navbar"
+               class="d-print-none dashboard-nav nav-main-frnt" aria-label="{% trans %}Sidebar{% endtrans %}">
             <div class="dashboard-nav-inner-container">
               <div class="dashboard-nav-main">
-                <header>
-                  <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}>
+                <div>
+                  <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %} aria-label="{% trans %}Sidebar navigation{% endtrans %}">
                     <div class="d-flex align-items-center ps-3">
                       <div class="d-flex">
-                        <button class="me-2 sidebar-toggle btn btn-secondary"
+                        <button class="me-2 sidebar-toggle btn btn-secondary" aria-label="{% trans %}Toggle sidebar{% endtrans %}"
                                 data-target="#dashboard-navbar">
                           <div class="bar1 opened"></div>
                           <div class="bar2 opened"></div>
@@ -60,12 +60,12 @@
                       </div>
                     </div>
                   </nav>
-                </header>
+                </div>
                 <div class="sidebar-animate dashboard-nav-color-theme">
                   <div>
                     <div class="sidebar-content dashboard-nav-menu">
                       <div class="text-end">
-                        <button class="sidebar-pin-toggle btn btn-link text-white"
+                        <button class="sidebar-pin-toggle btn btn-link text-white" aria-label="{% trans %}Toggle sidebar{% endtrans %}"
                                 data-target="#dashboard-navbar">
                           <i class="fa-solid"></i>
                         </button>
@@ -83,8 +83,8 @@
                     {% block dashboard_footer %}
                     <div class="text-center dashboard-nav-footer dashboard-nav-color-theme">
                       <div class="footer-links">
-                        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa-brands fa-github fa-sm pe-2"></i></a>
-                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa-brands fa-linkedin fa-sm"></i></a>
+                        <a href="https://github.com/djaodjin/" target="_blank" aria-label="{% trans %}GitHub{% endtrans %}"><i class="fa-brands fa-github fa-sm pe-2"></i></a>
+                        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher" aria-label="{% trans %}LinkedIn{% endtrans %}"><i class="fa-brands fa-linkedin fa-sm"></i></a>
                       </div>
                       <div>
 {% trans %}Powered by &copy; 2026 DjaoDjin. All rights reserved.{% endtrans %} <a href="/legal/" target="_blank">{% trans %}Legal{% endtrans %}</a>.
@@ -124,13 +124,13 @@
               </div>{# /.dashboard-nav-main #}
 
             </div>{# /.dashboard-nav-inner-container #}
-          </div>{# /.dashboard-nav #}
+          </aside>{# /.dashboard-nav #}
           {% endblock %}
 
           <div class="dashboard-content">
             <header class="d-print-none">
               {% block body_top_template %}{% endblock %}
-              <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom"{% endblock %}>
+              <nav{% block navbar_expand_extra %} class="navbar navbar-expand-md bg-primary border-bottom" aria-label="{% trans %}Top navigation{% endtrans %}"{% endblock %}>
                 <div class="container-fluid">
 
                   <div class="d-flex">
@@ -147,7 +147,7 @@
                   {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
                     <a class="navbar-brand" href="{{request|site_url}}">
-                      <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" />
+                      <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" alt="logo" />
                       <span class="d-none d-sm-inline-block"
                             data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
                     </a>
@@ -236,8 +236,8 @@
         | <a href="{{'/contact/'|site_url}}" target="_blank">{% trans %}Contact{% endtrans %}</a>
       </div>
       <div class="my-2">
-        <a href="https://github.com/djaodjin/" target="_blank"><i class="fa-brands fa-github fa-sm pe-1"></i></a>
-        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher"><i class="fa-brands fa-linkedin fa-sm ps-1"></i></a>
+        <a href="https://github.com/djaodjin/" target="_blank" aria-label="{% trans %}GitHub{% endtrans %}"><i class="fa-brands fa-github fa-sm pe-1"></i></a>
+        <a href="https://www.linkedin.com/company/djaodjin/" target="_blank" rel="publisher" aria-label="{% trans %}LinkedIn{% endtrans %}"><i class="fa-brands fa-linkedin fa-sm ps-1"></i></a>
       </div>
       <div class="my-2">
         {% trans %}Powered by DjaoDjin. &copy; 2026 All rights reserved.{% endtrans %}
@@ -277,7 +277,7 @@
   <div id="cookie-banner">
   {# The footer is wrapped in '#cookie-banner' because the following `<div>` #}
   {# tags `display` with '!important'.                                       #}
-    <div class="d-print-none text-body bg-light w-100 d-flex align-items-center justify-content-center" style="position: fixed;bottom:0;padding:15px 0;border-top: 1px solid #333; z-index:5000;">
+    <div class="d-print-none text-body bg-light w-100 d-flex align-items-center justify-content-center" style="position: fixed;bottom:0;padding:15px 0;border-top: 1px solid #333; z-index:5000;" role="complementary">
       <span class="me-2">Please review the <a href="{{'/legal/privacy/'|site_url}}">privacy policy</a>, and help us make this site more useful by setting optional cookies.</span>
       <button type="button" class="btn btn-outline-secondary me-2">
           <span style="font-size:0.75rem;">

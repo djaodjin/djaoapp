@@ -1,5 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block saas_title_container %}
+{# hide h1 to avoid breaking a11y compliance #}
+{% endblock %}
+
 {% block saas_content %}
 <active-carts inline-template>
   <div>

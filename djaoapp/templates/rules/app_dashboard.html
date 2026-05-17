@@ -32,7 +32,7 @@
                 <th>{% trans %}Access Rule{% endtrans %}</th>
                 <th class="text-center">{% trans %}Forward{% endtrans %}</th>
                 <th>{% trans %}Engage tags{% endtrans %}</th>
-                <th></th>
+                <th><span class="visually-hidden">{% trans %}Actions{% endtrans %}</span></th>
               </tr>
             </thead>
             <tbody id="rules">
@@ -46,10 +46,12 @@
                   v-for="(rule, index) in items.results" v-cloak>
                 <td>
                   <button class="btn btn-outline-primary btn-sm rule-up"
+                          aria-label="{% trans %}Move rule up{% endtrans %}"
                           @click.prevent="moveUp(rule, index)">
                     <i class="fa-solid fa-arrow-up"></i>
                   </button>
                   <button class="btn btn-outline-primary btn-sm rule-down"
+                          aria-label="{% trans %}Move rule down{% endtrans %}"
                           @click.prevent="moveDown(rule, index)">
                     <i class="fa-solid fa-arrow-down"></i>
                   </button>
@@ -57,6 +59,7 @@
                 <td>[[rule.path]]</td>
                 <td width="200">
                   <select name="rule" class="form-control form-control-sm"
+                          aria-label="{% trans %}Access rule{% endtrans %}"
                           v-model="rule.allow"
                           @change="update(rule)">
                     {% for rule in rules %}
@@ -68,7 +71,8 @@
                   <input type="checkbox" name="is_forward"
                          v-model="rule.is_forward"
                          @change="update(rule)"
-                         :checked="rule.is_forward" />
+                         :checked="rule.is_forward"
+                         :aria-label="'{% trans %}Forward{% endtrans %} ' + rule.path" />
                 </td>
                 <td class="engaged">
                   <span @click="editDescription(index)"
@@ -84,6 +88,7 @@
                 </td>
                 <td width="100">
                   <button class="btn btn-danger btn-sm rule-delete"
+                          aria-label="{% trans %}Delete rule{% endtrans %}"
                           @click="remove(index)">
                     <i class="fa-solid fa-trash-o"></i></button>
                 </td>
@@ -142,8 +147,8 @@
           <h3>{% trans %}Web Application{% endtrans %}</h3>
           <div class="row">
             <div class="form-group col-md-6">
-              <label>{% trans %}Authentication{% endtrans %}</label>
-              <select class="form-control" name="authentication" value="{{form.instance.authentication}}" ref="authentication" @change="update()">
+              <label for="id_authentication">{% trans %}Authentication{% endtrans %}</label>
+              <select class="form-control" id="id_authentication" name="authentication" value="{{form.instance.authentication}}" ref="authentication" @change="update()">
                 <option value="enabled"{% if form.instance.authentication == 0 %} selected{% endif %}>{% trans %}Registration enabled{% endtrans %}</option>
                 <option value="login-only"{% if form.instance.authentication == 1 %} selected{% endif %}>{% trans %}Login-only{% endtrans %}</option>
                 <option value="disabled"{% if form.instance.authentication == 2 %} selected{% endif %}>{% trans %}Only site managers can login{% endtrans %}</option>
@@ -180,7 +185,7 @@
             <div class="form-group col-md-6">
               <form id="application-form" method="post" @submit.prevent="update(true)">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                <label for="">{% trans %}Forward HTTP requests to entry point *{% endtrans %}</label>
+                <label for="id_entry_point">{% trans %}Forward HTTP requests to entry point *{% endtrans %}</label>
                 <div class="input-group">
                   <input id="id_entry_point"
                          class="form-control"
@@ -196,8 +201,9 @@
               </form>
             </div>
             <div class="form-group col-md-6">
-              <label for="">{% trans %}Forwarded session encoding *{% endtrans %}</label>
+              <label for="id_session_backend">{% trans %}Forwarded session encoding *{% endtrans %}</label>
               <select class="form-control"
+                      id="id_session_backend"
                       name="session_backend"
                       value="{{form.instance.session_backend}}"
                       ref="sessionBackend"
@@ -266,6 +272,7 @@
               <div class="form-group col-md-6">
                 <div class="input-group">
                   <input id="id_username" class="form-control"
+                         aria-label="{% trans %}Username{% endtrans %}"
                          maxlength="100" name="username" type="text"
                          v-model="testUsername">
                   <button type="submit" class="btn btn-primary">{% trans %}Check{% endtrans %}</button>

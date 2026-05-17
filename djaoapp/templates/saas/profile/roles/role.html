@@ -38,6 +38,7 @@
                   <!-- the input field -->
                   <input class="form-control"
                          type="text"
+                         aria-label="{% trans %}Enter username or email{% endtrans %}"
                          name="user"
                          placeholder="{% trans %}Username or e-mail{% endtrans %}"
                          autocomplete="off"
@@ -73,7 +74,7 @@
                   {% trans invitee='[[requestedProfilePrintableName]]', role_descr=role_descr.title, organization=organization.printable_name %}{{invitee}} is not yet registered. This is an opportunity to invite and add her/him as a {{role_descr}} for {{organization}}.{% endtrans %}
               </p>
               <div class="form-group mb-3">
-                <label class="form-label">
+                <label class="form-label" for="new-request-full-name">
                   {% trans %}Full name{% endtrans %}
                 </label>
                 <input id="new-request-full-name"
@@ -84,7 +85,7 @@
                        v-model="unregistered.full_name" />
               </div>
               <div class="form-group mb-3">
-                  <label class="form-label">
+                  <label class="form-label" for="new-request-email">
                     {% trans %}To{% endtrans %}
                   </label>
                   <input id="new-request-email"
@@ -95,13 +96,14 @@
                          v-model="unregistered.email" />
               </div>
               <div class="form-group">
-                <label class="form-label">
+                <label class="form-label" id="new-request-message">
                   {% trans %}The following invite message will be sent:{% endtrans %}
                 </label>
                   <!-- textareas are very special in the way they handle whitespaces. Please do
                        not indent default text. -->
                 <textarea class="form-control"
                           name="message"
+                          id="new-request-message"
                           maxlength="255" type="text" rows="10">{% trans invitee='[[unregistered.full_name]]', role_descr=role_descr.title, organization=organization.printable_name, user=request.user.first_name %}Hi {{invitee}},
 
 I am adding you as a {{role_descr}} to {{organization}}.
@@ -140,7 +142,7 @@ Thank you,
       </div>
       <div class="row" v-show="!itemsLoaded">
         <div class="col-12">
-          <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+          <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
         </div>
       </div>
       <div class="row has-no-results"
@@ -157,13 +159,13 @@ Thank you,
               <div class="row">
                 <div class="col-2">
                   <div>
-                    <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|asset}}'" alt=""></a>
+                    <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'" aria-label="{% trans %}View profile{% endtrans %}"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|asset}}'" alt=""></a>
                   </div>
                 </div>
                 <div class="col-9 align-self-center">
                   <div class="row">
                     <div class="col col-md-4">
-                      <h5 class="card-title"><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.printable_name]]</a></h5>
+                      <h2 class="card-title h5"><a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'">[[item.user.printable_name]]</a></h2>
                       <small class="card-subtitle">[[item.user.email]]</small>
                     </div>
                     <div class="col col-md-4">
@@ -192,6 +194,7 @@ Thank you,
                           data-trip data-trip-index="3"
                           data-trip-content="<p>{% trans %}Click here to revoke access to the user.{% endtrans %}</p>"
                           data-trip-position="s"
+                          aria-label="{% trans %}Remove access to the user{% endtrans %}"
                           @click="removeConfirm(index)"><i class="fa-solid fa-remove"></i></button>
                 </div>
               </div> {# /#item.user.slug #}

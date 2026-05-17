@@ -90,7 +90,7 @@
           <div class="col-md-6 mb-3">
             <div id="{{key}}" class="card h-100 mb-3">
               <div class="card-body h-100">
-                <h5 class="card-title">{{vals.summary}}</h5>
+                <h4 class="card-title h5">{{vals.summary}}</h4>
                 <p class="card-text">
                   {{vals.description}}
                 </p>
@@ -123,7 +123,7 @@
           <div class="col-md-6 mb-3">
             <div id="{{role_descr.slug}}_role_added" class="card h-100 mb-3">
               <div class="card-body h-100">
-                <h5 class="card-title"><a href="{{urls.notifications}}{{role_descr.slug}}_role_grant_created/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h5>
+                <h4 class="card-title h5"><a href="{{urls.notifications}}{{role_descr.slug}}_role_grant_created/">{% trans role_descr=role_descr.title %}{{role_descr}} added{% endtrans %}</a></h4>
                 <p class="card-text">
                 </p>
                 <a class="btn btn-primary"

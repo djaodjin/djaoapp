@@ -43,7 +43,7 @@
 
     <!-- spinner while loading -->
     <div v-show="!itemsLoaded">
-      <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+      <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
     </div>
 
     <!-- display list -->
@@ -91,6 +91,7 @@
             </div>
             <div class="col-1 text-end">
               <button class="btn btn-danger btn-sm" type="button"
+                      aria-label="{% trans %}Delete role{% endtrans %}"
                       @click.prevent="remove(roleDescription)"
                       v-show="roleDescription.editable" v-cloak>
                 <i class="fa-solid fa-trash-o"></i>

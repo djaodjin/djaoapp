@@ -35,7 +35,7 @@
           <!-- Show Email -->
           {% if organization.email %}
           <div class="col-md-4">
-            <h6>{% trans %}Email{% endtrans %}</h6>
+            <h3 class="h6">{% trans %}Email{% endtrans %}</h3>
             <p>
               <span class="email">{{organization.email}}</span>
             </p>
@@ -45,7 +45,7 @@
           <!-- Show Phone Number -->
           {% if organization.phone %}
           <div class="col-md-4">
-            <h6>{% trans %}Phone{% endtrans %}</h6>
+            <h3 class="h6">{% trans %}Phone{% endtrans %}</h3>
             <p>
               <span class="tel">{{organization.phone}}</span>
             </p>
@@ -55,7 +55,7 @@
           <!-- Show Address -->
           {% if organization.street_address %}
           <div class="col-md-4">
-            <h6>{% trans %}Address{% endtrans %}</h6>
+            <h3 class="h6">{% trans %}Address{% endtrans %}</h3>
             <p>
               <span class="adr">
                 <span class="street-address">{{organization.street_address}}</span><br />

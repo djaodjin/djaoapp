@@ -19,7 +19,9 @@
           <div class="input-group me-2 mb-3 w-100">
             <input type="text" class="form-control form-control-md" placeholder="{% trans %}Discount amount{% endtrans %}" name="discount_value" v-model="newCoupon.discount_value">
             <select class="form-control form-select input-group-suffix"
-                    name="discount_type" v-model="newCoupon.discount_type">
+                    name="discount_type" v-model="newCoupon.discount_type"
+                    aria-label="{% trans %}Discount type{% endtrans %}"
+            >
               <option value="percentage">%</option>
               <option value="currency">Currency (ex: usd)</option>
               <option value="period">Period (ex: month)</option>
@@ -45,7 +47,7 @@
         <div class="pb-3">
           <div class="input-group input-group-md">
             <span class="input-group-text">{% trans %}Sort{% endtrans %}</span>
-            <select id="order-by" class="form-control">
+            <select id="order-by" class="form-control" aria-label="{% trans %}Sort{% endtrans %}">
               <option value="code">{% trans %}Code (ascending){% endtrans %}</option>
               <option value="-code">{% trans %}Code (descending){% endtrans %}</option>
               <option value="discount_value">{% trans %}Discount (highest){% endtrans %}</option>
@@ -60,7 +62,7 @@
 
     <!-- Loading Spinner -->
     <div class="text-center py-5 my-5" v-show="!itemsLoaded">
-      <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+      <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
     </div>
 
     <!-- No Coupons Found Msg -->
@@ -75,8 +77,8 @@
         <div class="card mb-3">
           <div class="card-body">
             <div class="coupon-title">
-              <h5 class="card-title" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h5>
-              <button class="btn btn-danger btn-sm remove ms-1" @click="remove(index)"><i class="fa-solid fa-remove"></i></button>
+              <h2 class="card-title h5" data-trip data-trip-index="8" data-trip-content="<p>{% trans %}Click on a coupon code to see who has redeem it.{% endtrans %}</p>" data-trip-position="s"><a :href="'{{urls.provider.metrics_coupons}}' + entry.code + '/'">[[entry.code]]</a></h2>
+              <button class="btn btn-danger btn-sm remove ms-1" @click="remove(index)" aria-label="{% trans %}Remove coupon{% endtrans %}"><i class="fa-solid fa-remove"></i></button>
             </div>
           </div>
           <div class="list-group list-group-flush">

@@ -43,19 +43,19 @@
                 <tr>
                   <th>
                     {% trans %}Full name{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('full_name')">
+                    <a href="#" @click.prevent="sortBy('full_name')" aria-label="{% trans %}Sort by full name{% endtrans %}">
                       <i :class="sortIcon('full_name')" class="ps-2"></i>
                     </a>
                   </th>
                   <th class="text-center">
                     {% trans %}Created at{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('created_at')">
+                    <a href="#" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th class="text-center">
                     {% trans %}Last login{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('last_login')">
+                    <a href="#" @click.prevent="sortBy('last_login')" aria-label="{% trans %}Sort by last login{% endtrans %}">
                       <i :class="sortIcon('last_login')" class="ps-2"></i>
                     </a>
                   </th>
@@ -64,7 +64,7 @@
               <tbody v-show="!itemsLoaded">
                 <tr>
                   <td colspan="3">
-                    <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                    <div  class="text-center h3"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
                   </td>
                 </tr>
               </tbody>
@@ -124,25 +124,25 @@
                 <tr v-show="sortDir('profile')" class="text-nowrap" v-cloak>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('profile')">
+                    <a href="#" @click.prevent="sortBy('profile')" aria-label="{% trans %}Sort by subscriber{% endtrans %}">
                       <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('plan')">
+                    <a href="#" @click.prevent="sortBy('plan')" aria-label="{% trans %}Sort by plan{% endtrans %}">
                       <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('created_at')">
+                    <a href="#" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends at{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('ends_at')">
+                    <a href="#" @click.prevent="sortBy('ends_at')" aria-label="{% trans %}Sort by ends at{% endtrans %}">
                       <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
@@ -151,25 +151,25 @@
                 <tr v-show="sortDir('plan')" class="text-nowrap" v-cloak>
                   <th>
                     {% trans %}Plan{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('plan')">
+                    <a href="#" @click.prevent="sortBy('plan')" aria-label="{% trans %}Sort by plan{% endtrans %}">
                       <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('profile')">
+                    <a href="#" @click.prevent="sortBy('profile')" aria-label="{% trans %}Sort by subscriber{% endtrans %}">
                       <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('created_at')">
+                    <a href="#" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends At{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('ends_at')">
+                    <a href="#" @click.prevent="sortBy('ends_at')" aria-label="{% trans %}Sort by ends at{% endtrans %}">
                       <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
@@ -180,25 +180,25 @@
                 <tr v-show="sortDir('created_at')" class="text-nowrap" v-cloak>
                   <th>
                     {% trans %}Since{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('created_at')">
+                    <a href="#" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('profile')">
+                    <a href="#" @click.prevent="sortBy('profile')" aria-label="{% trans %}Sort by subscriber{% endtrans %}">
                       <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('plan')">
+                    <a href="#" @click.prevent="sortBy('plan')" aria-label="{% trans %}Sort by plan{% endtrans %}">
                       <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Ends At{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('ends_at')">
+                    <a href="#" @click.prevent="sortBy('ends_at')" aria-label="{% trans %}Sort by ends at{% endtrans %}">
                       <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
@@ -207,25 +207,25 @@
                 <tr v-show="sortDir('ends_at')" class="text-nowrap" v-cloak>
                   <th>
                     {% trans %}Ends At{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('ends_at')">
+                    <a href="#" @click.prevent="sortBy('ends_at')" aria-label="{% trans %}Sort by ends at{% endtrans %}">
                       <i :class="sortIcon('ends_at')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Subscriber{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('profile')">
+                    <a href="#" @click.prevent="sortBy('profile')" aria-label="{% trans %}Sort by subscriber{% endtrans %}">
                       <i :class="sortIcon('profile')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Plan{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('plan')">
+                    <a href="#" @click.prevent="sortBy('plan')" aria-label="{% trans %}Sort by plan{% endtrans %}">
                       <i :class="sortIcon('plan')" class="ps-2"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Since{% endtrans %}
-                    <a href="#" @click.prevent="sortBy('created_at')">
+                    <a href="#" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
                       <i :class="sortIcon('created_at')" class="ps-2"></i>
                     </a>
                   </th>
@@ -239,7 +239,7 @@
               <tbody class="fetching-results" v-show="!itemsLoaded" v-cloak>
                 <tr>
                   <td colspan="5">
-                    <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                    <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
                   </td>
                 </tr>
               </tbody>

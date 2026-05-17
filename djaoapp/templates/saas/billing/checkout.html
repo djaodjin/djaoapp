@@ -4,14 +4,18 @@
   {% include "saas/_body_top_template.html" %}
 {% endblock %}
 
+{% block saas_title_container %}
+{# hide h1 to avoid breaking a11y compliance #}
+{% endblock %}
+
 {% block saas_content %}
 <checkout inline-template id="checkout-container">
   <div>
     <div class="page-header text-lg-center pt-4">
       {% block order_title %}
-      <h4 v-if="!optionsConfirmed">{% trans %}Select Payment Options{% endtrans %}</h4>
-      <h4 v-if="optionsConfirmed && !seatsConfirmed">{% trans %}Place order on behalf of ...{% endtrans %}</h4>
-      <h4 v-if="allConfirmed">{% trans %}Complete Order{% endtrans %}</h4>
+      <h2 class="h4" v-if="!optionsConfirmed">{% trans %}Select Payment Options{% endtrans %}</h2>
+      <h2 class="h4" v-if="optionsConfirmed && !seatsConfirmed">{% trans %}Place order on behalf of ...{% endtrans %}</h2>
+      <h2 class="h4" v-if="allConfirmed">{% trans %}Complete Order{% endtrans %}</h2>
       {% endblock %}
     </div>
     <div class="row">
@@ -107,7 +111,7 @@
               <div class="row justify-content-end">
                 <div class="col-12 col-md-4">
                   <div class="input-group input-group mb-1">
-                    <input class="form-control" name="code" type="text" placeholder="{% trans %}Enter Code{% endtrans %}" v-model="coupon">
+                    <input class="form-control" name="code" type="text" placeholder="{% trans %}Enter Code{% endtrans %}" v-model="coupon" aria-label="{% trans %}Enter registration code{% endtrans %}">
                     <div class="input-group-append">
                       <button class="btn btn-primary submit-code" type="submit" @click.prevent="redeem">{% trans %}Apply{% endtrans %}</button>
                     </div>

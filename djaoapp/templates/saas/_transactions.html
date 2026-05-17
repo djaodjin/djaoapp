@@ -13,19 +13,19 @@
         <tr>
           <th class="text-nowrap">
             {% trans %}Date{% endtrans %}
-            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by date{% endtrans %}">
               <i :class="sortIcon('created_at')"></i>
             </a>
           </th>
           <th class="text-nowrap">
             {% trans %}Amount{% endtrans %}
-            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('amount')">
+            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('amount')" aria-label="{% trans %}Sort by amount{% endtrans %}">
               <i :class="sortIcon('amount')"></i>
             </a>
           </th>
           <th class="text-nowrap">
             {% trans %}Description{% endtrans %}
-            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('description')">
+            <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('description')" aria-label="{% trans %}Sort by description{% endtrans %}">
               <i :class="sortIcon('description')"></i>
             </a>
           </th>
@@ -36,7 +36,7 @@
       <tbody v-if="!itemsLoaded">
         <tr>
           <td colspan="4">
-            <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+            <div class="text-center h3"><i class="fa-solid fa-refresh fa-spin"></i></div>
           </td>
         </tr>
       </tbody>

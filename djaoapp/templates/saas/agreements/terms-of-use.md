@@ -73,19 +73,13 @@ your Account. You agree to use the Service at your own risk.
     or proceeding; provided, that {{organization.printable_name}}
 
 <ul>
-	(1) promptly gives You written notice of the claim, demand, suit
-    or proceeding.
-</ul>
-
-<ul>
-	(2) gives You sole control of the defense and settlement of the claim,
+	<li>(1) promptly gives You written notice of the claim, demand, suit
+    or proceeding.</li>
+	<li>(2) gives You sole control of the defense and settlement of the claim,
     demand, suit or proceeding (provided that You may not settle any claim,
     demand, suit or proceeding unless the settlement unconditionally
-    releases {{organization.printable_name}} of all liability).
-</ul>
-
-<ul>
-	(3) provides to You all reasonable assistance, at Your expense.
+    releases {{organization.printable_name}} of all liability).</li>
+	<li>(3) provides to You all reasonable assistance, at Your expense.</li>
 </ul>
 
 5. Privacy

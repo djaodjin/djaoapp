@@ -1,5 +1,6 @@
 {# App menu items #}
 {% if urls.organization and urls.organization.profile %}
+<nav aria-label="{% trans %}Home menu{% endtrans %}">
 <ul class="nav flex-column py-1" data-intro="Home" data-position="right">
   <li class="nav-item">
     <a id="profile-app" class="nav-link" href="{{'/app/'|site_url}}{{organization}}/">{# XXX should use `product_url`? #}
@@ -8,10 +9,12 @@
     </a>
   </li>
 </ul>
+</nav>
 <hr class="my-1" />
 {% endif %}
 
 {# Profile menu items #}
+<nav aria-label="{% trans %}Profile menu{% endtrans %}">
 <ul class="nav flex-column py-1" data-intro="Profile" data-position="right">
 
   {% if urls.user and urls.user.profile %}
@@ -110,11 +113,13 @@
     </li>
   {% endif %}
 </ul>
+</nav>
 
 {# Provider menu items #}
 
 {% if urls.provider %}
   <hr class="my-1" />
+  <nav aria-label="{% trans %}Pricing, billing, metrics menu{% endtrans %}">
   <ul class="nav flex-column"
       data-intro="{% trans %}Pricing, billing and metrics{% endtrans %}" data-position="right">
     {% if urls.provider and urls.provider.dashboard %}
@@ -184,12 +189,14 @@
     </li>
     {% endif %}
   </ul>
+  </nav>
 {% endif %}
 
 {# Broker menu items #}
 
 {% if urls.theme_update or urls.rules %}
   <hr class="my-1" />
+  <nav aria-label="{% trans %}Role and permissions menu{% endtrans %}">
   <ul class="nav flex-column pb-2" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
     {% if urls.theme_update %}
       <li {% if urls.theme_update == request.path %} class="nav-item active"{% endif %}>
@@ -215,10 +222,12 @@
       </li>
     {% endif %}
   </ul>
+  </nav>
 {% endif %}
 
 {% if urls.theme_update and urls.trust_compliance %}
   <hr class="my-1" />
+  <nav aria-label="{% trans %}Trust and compliance menu{% endtrans %}">
   <ul class="nav flex-column pb-2" data-intro="{% trans %}Roles and permissions{% endtrans %}" data-position="right">
     <li {% if urls.trust_compliance == request.path %} class="nav-item active"{% endif %}>
       <a id="trust-compliance" class="nav-link" href="{{urls.trust_compliance}}">
@@ -228,4 +237,5 @@
       </a>
     </li>
   </ul>
+  </nav>
 {% endif %}

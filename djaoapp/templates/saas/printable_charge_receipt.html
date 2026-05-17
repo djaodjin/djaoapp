@@ -46,6 +46,15 @@
         vertical-align: top;
         border-top: 1px solid #dddddd;
       }
+
+      #invoiced_items th {
+        text-align: left;
+      }
+
+      #invoiced_items th:first-child,
+      #invoiced_items td:first-child {
+        width: 22%;
+      }
     </style>
   </head>
   <body>
@@ -85,9 +94,8 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th style="text-align:left;">{% trans %}Amount{% endtrans %}</th>
-            <th style="text-align:left;">{% trans %}Description{% endtrans %}</th>
-            <th></th>
+            <th>{% trans %}Amount{% endtrans %}</th>
+            <th>{% trans %}Description{% endtrans %}</th>
           </tr>
         </thead>
         <tbody>
@@ -96,14 +104,12 @@
             <tr>
               <td>{{line.invoiced|dest_price|humanize_money}}</td>
               <td>{{line.invoiced|describe}}</td>
-              <td></td>
             </tr>
 
             {% for refund in line.refunded %}
               <tr>
                 <td>-{{refund|orig_price|humanize_money}}</td>
                 <td>{{refund|describe}}</td>
-                <td></td>
               </tr>
             {% endfor %}
           {% endfor %}

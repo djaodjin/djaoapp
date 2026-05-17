@@ -27,11 +27,13 @@
 <div class="form-group{% if errors %} has-error{% endif %}">
   <div class="input-group input-group-md">
     {% if not hide_labels %}
-      <label class="font-monospace input-group-text{% if required %} requiredField{% endif %}">{{label|safe}}</label>
+      <label class="font-monospace input-group-text{% if required %} requiredField{% endif %}" for="form-input-{{name}}">{{label|safe}}</label>
     {% endif %}
     <input class="form-control{% if errors %} is-invalid{% endif %}"
            type="date"
+           id="form-input-{{name}}"
            name="{{name}}"
+           {% if hide_labels %}aria-label="{{label}}"{% endif %}
            {% if nameOpened %}
            v-show="{{nameOpened}} || {{name}}"
            :value="asDateInputField({{name}})"
@@ -53,6 +55,7 @@
               {% else %}
               @click.prevent="{{toggleNameOpened}}"
               {% endif %}
+              aria-label="{{label}}"
               ><span class="fa-solid fa-calendar"></span></button>
     {% endif %}
   </div>
@@ -103,14 +106,15 @@
 {% macro textarea_input_field(placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
-  <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+  <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}" for="form-input-{{name}}">
       {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
-        <textarea class="textarea form-control{% if errors %} is-invalid{% endif %}" name="{{name}}"
+        <textarea class="textarea form-control{% if errors %} is-invalid{% endif %}" id="form-input-{{name}}" name="{{name}}"
           cols="40" rows="10"
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
+          {% if hide_labels %}aria-label="{{label}}"{% endif %}
           {% if model_var %} v-model="{{model_var}}"{% endif %}
           {% if disabled %} disabled{% endif %}
           {% if autofocus %} autofocus{% endif %}>{% if value %}{{value}}{% endif %}</textarea>
@@ -132,7 +136,7 @@
 {% macro verified_input_field(input_type, verified_at, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, verification_enabled=True, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
-  <label class="form-label col-form-label row{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}">
+  <label class="form-label col-form-label row{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}" for="form-input-{{name}}">
     <div class="col-6">
       {{label|safe}}
       {% if verified_at %}
@@ -153,10 +157,11 @@
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
-    <input class="form-control{% if errors %} is-invalid{% endif %}" ref="{{name}}" name="{{name}}"
+    <input class="form-control{% if errors %} is-invalid{% endif %}" ref="{{name}}" name="{{name}}" id="form-input-{{name}}"
           {% if value is not none %} value="{{value}}"{% endif %}
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
           type="{{input_type}}"
+          {% if hide_labels %}aria-label="{{label}}"{% endif %}
           {% if max_length %} maxlength="{{max_length}}"{% endif %}
           {% if min_value %} min="{{min_value}}"{% endif %}
           {% if max_value %} max="{{max_value}}"{% endif %}
@@ -183,7 +188,7 @@
 {% macro text_input_field(input_type, min_length, max_length, min_value, max_value, step, placeholder, name, required, label, autofocus=False, help_text="", value="", disabled=False, readonly=False, errors="", hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
-  <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+  <label class="form-label {% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}" for="form-input-{{name}}">
       {{label|safe}}
   </label>
   {% endif %}
@@ -191,12 +196,14 @@
     {% if input_type == 'password' %}
     <div class="input-group">
         <input class="form-control{% if errors %} is-invalid{% endif %}"
+          id="form-input-{{name}}"
           name="{{name}}"
           {% if name == 'password' %} autocomplete="current-password"{% endif %}
           {% if name == 'new_password' or name == 'new_password2' %} autocomplete="new-password"{% endif %}
           {% if value is not none %} value="{{value}}"{% endif %}
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
           type="{{input_type}}"
+          {% if hide_labels %}aria-label="{{label}}"{% endif %}
           {% if max_length %} maxlength="{{max_length}}"{% endif %}
           {% if min_length %} minlength="{{min_length}}"{% endif %}
           {% if min_value %} min="{{min_value}}"{% endif %}
@@ -214,11 +221,13 @@
     </div>
     {% else %}
         <input class="form-control{% if errors %} is-invalid{% endif %}"
+          id="form-input-{{name}}"
           name="{{name}}"
           {% if name == 'username' %} autocomplete="username"{% endif %}
           {% if value is not none %} value="{{value}}"{% endif %}
           {% if placeholder %} placeholder="{{placeholder}}"{% endif %}
           type="{{input_type}}"
+          {% if hide_labels %}aria-label="{{label}}"{% endif %}
           {% if max_length %} maxlength="{{max_length}}"{% endif %}
           {% if min_value %} min="{{min_value}}"{% endif %}
           {% if max_value %} max="{{max_value}}"{% endif %}
@@ -250,13 +259,15 @@
 {% macro select_input_field(choices, name, required, label, autofocus=False, help_text="", value="", disabled=False, errors="", hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 <div class="form-group{% if extra_label_classes %} row{% endif %}{% if errors %} has-error{% endif %}">
   {% if not hide_labels %}
-  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}">
+  <label class="{% if extra_label_classes %}{{extra_label_classes}} {% endif %}col-form-label{% if required %} requiredField{% endif %}" for="form-input-{{name}}">
       {{label|safe}}
   </label>
   {% endif %}
   <div class="{% if extra_control_classes %}{{extra_control_classes}} {% endif %}controls">
     <select class="form-control{% if errors %} is-invalid{% endif %}"
       name="{{name}}"
+      id="form-input-{{name}}"
+      {% if hide_labels %}aria-label="{{label}}"{% endif %}
       {% if value %} value="{{value}}"{% endif %}
       {% if model_var %} v-model="{{model_var}}"{% endif %}
       {% if disabled %} disabled{% endif %}
@@ -289,7 +300,7 @@
 {%- endmacro %}
 
 {% macro street_address_input_field(bound_field, autofocus=False, hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
-  <label class="col-form-label requiredField">{{bound_field.label}}</label>
+  <label class="col-form-label requiredField" for="form-input-{{bound_field.name}}">{{bound_field.label}}</label>
   <address-typeahead inline-template ref="{{bound_field.name}}">
       <div>
       <div class="input-group mb-3">
@@ -304,6 +315,7 @@
           <!-- the input field -->
           <input class="form-control"
                   type="text"
+                  id="form-input-{{bound_field.name}}"
                   name="{{bound_field.name}}"
                   placeholder="{{bound_field.label}}"
                   autocomplete="off"
