@@ -161,8 +161,9 @@ def get_default_storage(request, account=None, **kwargs):
     if not account:
         # We use `account` to generate a `key_prefix`.
         account = get_current_app(request)
+    kwargs.update({
+      'base_url': build_absolute_uri_base(settings.MEDIA_URL, request=request)})
     return get_default_storage_base(request, account=account,
-        base_url=build_absolute_uri_base(settings.MEDIA_URL, request=request),
         **kwargs)
 
 
