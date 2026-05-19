@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, RedirectView
-from django.contrib.staticfiles.views import serve as django_static_serve
+from django.views.static import serve as django_static_serve
 from multitier.urlresolvers import url_sites
 from rules.urldecorators import include, url
 
@@ -25,6 +25,7 @@ handler404 = 'djaoapp.views.errors.page_not_found'
 
 if settings.DEBUG:
     from django.contrib import admin
+    from django.views.decorators.clickjacking import xframe_options_sameorigin
     import debug_toolbar
     from ..views.static import AssetView
 
@@ -49,11 +50,14 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
 
-        url(r'(?P<path>favicon.ico)', django_static_serve),
+        url(r'(?P<path>favicon.ico)', django_static_serve, {
+            'document_root': settings.HTDOCS}),
+        url(r'^media/(?P<path>.*)$',
+            xframe_options_sameorigin(django_static_serve), {
+            'document_root': settings.MEDIA_ROOT}),
         # You need to run `python manage.py --nostatic` to enable hotreload.
         url(r'^%s/(?P<path>.*)' % settings.STATIC_URL.strip('/'),
             AssetView.as_view()),
-        url(r'^(?P<path>media/.*)$', django_static_serve),
         url(r'^csrf-error/',
             TemplateView.as_view(template_name='csrf-error.html'),
             name='csrf_error'),

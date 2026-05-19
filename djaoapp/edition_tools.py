@@ -1,4 +1,4 @@
-# Copyright (c) 2025, DjaoDjin inc.
+# Copyright (c) 2026, DjaoDjin inc.
 # see LICENSE
 
 """
@@ -9,9 +9,8 @@ from collections import namedtuple
 
 from bs4 import BeautifulSoup
 from django.conf import settings
-from django.core.files.storage import get_storage_class
 from django.template import loader
-from extended_templates.compat import render_template
+from extended_templates.compat import render_template, get_storage_class
 from extended_templates.models import get_show_edit_tools
 from extended_templates.views.pages import (
     inject_edition_tools as inject_edition_tools_base)
@@ -139,9 +138,7 @@ def inject_edition_tools(response, request, context=None,
     show_edit_tools = get_show_edit_tools(request)
     if show_edit_tools and not fail_edit_perm(request, account=app.account):
         edit_urls = {
-            'api_medias': reverse(
-                'extended_templates_api_uploaded_media_elements',
-                kwargs={'path':''}),
+            'api_medias': reverse('extended_templates_api_assets'),
             'api_sitecss': reverse(
                 'extended_templates_api_edit_sitecss'),
             'api_less_overrides': reverse(
