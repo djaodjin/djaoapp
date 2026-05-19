@@ -13,7 +13,7 @@ RUN set -eux; \
       apt-get update -y; \
       DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends\
         libcairo2 \
-        libldap-2.5-0 libldap-common \
+        libldap2 libldap-common \
         libpangoft2-1.0-0 \
         libxmlsec1 \
         libxslt1.1 \
