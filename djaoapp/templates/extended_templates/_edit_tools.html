@@ -235,7 +235,7 @@ jQuery(document).ready(function($) {
 
     // media gallery
     $("#media-gallery").djgallery({
-        url: "{{urls.edit.api_medias}}",
+        url: "{{urls.edit.api_medias}}?public=1",
         S3DirectUploadUrl: "{% if urls.edit.media_upload %}{{urls.edit.media_upload}}?public=1{% endif %}",
         csrfToken: "{{csrf_token}}",
 

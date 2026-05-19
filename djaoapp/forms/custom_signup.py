@@ -398,7 +398,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, forms.Form):
 #XXX uses None in ``find_candidates`` for now.
             organization_name = self.cleaned_data['organization_name']
             candidates = Organization.objects.find_candidates(
-                    organization_name, user=None)
+                    organization_name)
             if candidates.exists():
                 raise forms.ValidationError(
                     _("Your organization might already be registered."))
