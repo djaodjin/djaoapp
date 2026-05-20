@@ -159,7 +159,7 @@ Thank you,
               <div class="row">
                 <div class="col-2">
                   <div>
-                    <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'" aria-label="{% trans %}View profile{% endtrans %}"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|asset}}'" alt=""></a>
+                    <a :href="'{{urls.profile_redirect}}' + item.user.slug + '/'" aria-label="{% trans %}View profile{% endtrans %}"><img class="card-img-top rounded-circle" style="width:64px;height:64px;" v-bind:src="item.user.picture ? item.user.picture : '{{'/assets/img/default-user.png'|asset}}'" alt="{% trans %}Profile name{% endtrans %}"></a>
                   </div>
                 </div>
                 <div class="col-9 align-self-center">

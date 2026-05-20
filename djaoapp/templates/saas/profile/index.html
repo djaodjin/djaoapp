@@ -15,7 +15,7 @@
       <input name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% else %}{% if organization and not (urls.user and urls.user.password_change) %}{{'/assets/img/default-organization.png'}}{% else %}{{'/assets/img/default-user.png'}}{% endif %}{% endif %}" type="hidden">
       <img class="img-thumbnail{% if urls.user %} rounded-circle{% endif %}"
            :src="formFields.picture" width="100" height="100"
-           data-bs-toggle="modal" data-bs-target="#upload-picture-modal" alt="Upload profile picture">
+           data-bs-toggle="modal" data-bs-target="#upload-picture-modal" alt="{% trans %}Upload profile picture{% endtrans %}">
     </div>
     <div class="col-md-6">
       {% block saas_help %}

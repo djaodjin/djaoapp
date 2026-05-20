@@ -61,7 +61,7 @@
       <recent-activity inline-template id="recent-activity-container">
         <div class="card my-4">
           <div class="card-header">
-            <h2 class="card-title h5">Recently Active Users</h2>
+            <h2 class="card-title h5">{% trans %}Recently Active Users{% endtrans %}</h2>
           </div>
           <div class="card-body" v-show="!itemsLoaded">
             <p>
@@ -97,7 +97,7 @@
       <todo-list inline-template id="todos-container" class="mt-4">
         <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <div class="card-body border-bottom">
-            <h2 class="card-title mb-0 h5">Todo items</h2>
+            <h2 class="card-title mb-0 h5">{% trans %}Todo items{% endtrans %}</h2>
           </div>
           <div class="card-body">
             <div v-show="!itemsLoaded">

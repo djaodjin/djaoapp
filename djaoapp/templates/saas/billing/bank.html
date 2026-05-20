@@ -49,7 +49,7 @@
             Stripe Live Account
           </div>
           <div class="card-body">
-            <h2 class="card-title h5">Connect your Stripe account for production</h2>
+            <h2 class="card-title h5">{% trans %}Connect your Stripe account for production{% endtrans %}</h2>
             <p class="card-text">
 You will be able to create real charges on valid credit cards.
             </p>
@@ -61,7 +61,7 @@ your Stripe account before clicking the button below.
               <a href="https://stripe.com/login/" target="_blank">Login to Stripe &raquo;</a>
             </p>
             <a class="text-center" href="{{urls.authorize_processor}}">
-              <img class="img-fluid" src="{{'/assets/img/stripe-connect-blue-on-light2x.png'|asset}}" alt="Stripe" />
+              <img class="img-fluid" src="{{'/assets/img/stripe-connect-blue-on-light2x.png'|asset}}" alt="{% trans %}Stripe{% endtrans %}" />
             </a>
           </div>
         </div>
@@ -74,7 +74,7 @@ your Stripe account before clicking the button below.
             Stripe Test Account
           </div>
           <div class="card-body">
-            <h2 class="card-title h5">Connect your Stripe account for staging</h2>
+            <h2 class="card-title h5">{% trans %}Connect your Stripe account for staging{% endtrans %}</h2>
             <p class="card-text">
 You will be able to create test charges using
 <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test credit cards</a>.
@@ -87,7 +87,7 @@ your Stripe account before clicking the button below.
               <a href="https://stripe.com/login/" target="_blank">Login to Stripe &raquo;</a>
             </p>
             <a class="text-center" href="{{urls.authorize_processor_test}}" aria-label="{% trans %}Connect to Stripe{% endtrans %}">
-              <img class="img-fluid" src="{{'/assets/img/stripe-connect-light-on-light2x.png'|asset}}" />
+              <img class="img-fluid" src="{{'/assets/img/stripe-connect-light-on-light2x.png'|asset}}" alt="{% trans %}Stripe{% endtrans %}" />
             </a>
           </div>
         </div>

@@ -147,7 +147,7 @@
                   {% block content_navbarbrand %}
                   <div class="navbar-brand-container">
                     <a class="navbar-brand" href="{{request|site_url}}">
-                      <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" alt="logo" />
+                      <img class="d-inline-block" src="{{'/assets/img/logo-djaodjin-darkmode-320.png'|asset}}" alt="{% trans %}Logo{% endtrans %}" />
                       <span class="d-none d-sm-inline-block"
                             data-trnc data-trnc-len="7">{% if request %}{{request|site_printable_name}}{% endif %}</span>
                     </a>
