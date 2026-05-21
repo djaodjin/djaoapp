@@ -14,7 +14,7 @@
           <div>
             <div v-if="!itemsLoaded">
               <p>
-                <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+                <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
               </p>
             </div>
             <div v-if="itemsLoaded">
@@ -29,19 +29,19 @@
               <tr>
                 <th class="text-nowrap">
                   {% trans %}Last login{% endtrans %}
-                  <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
+                  <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created date{% endtrans %}">
                     <i :class="sortIcon('created_at')"></i>
                   </a>
                 </th>
                 <th class="text-nowrap">
                   {% trans %}Full name{% endtrans %}
-                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('first_name')">
+                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('first_name')" aria-label="{% trans %}Sort by full name{% endtrans %}">
                     <i :class="sortIcon('first_name')"></i>
                   </a>
                 </th>
                 <th class="text-nowrap">
                   {% trans %}Profile{% endtrans %}
-                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')">
+                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')" aria-label="{% trans %}Sort by profile{% endtrans %}">
                     <i :class="sortIcon('profile_full_name')"></i>
                   </a>
                 </th>
@@ -52,7 +52,7 @@
             <tbody v-if="!itemsLoaded">
               <tr>
                 <td colspan="4">
-                  <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+                  <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
                 </td>
               </tr>
             </tbody>
@@ -87,7 +87,7 @@
           <div>
             <div v-if="!itemsLoaded">
               <p>
-                <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+                <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
               </p>
             </div>
             <div v-if="itemsLoaded">
@@ -102,7 +102,7 @@
               <tr>
                 <th class="text-nowrap">
                   {% trans %}Profile{% endtrans %}
-                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')">
+                  <a href="#" class="btn-link btn-sort ms-2" @click.prevent="sortBy('profile_full_name')" aria-label="{% trans %}Sort by profile{% endtrans %}">
                     <i :class="sortIcon('profile_full_name')"></i>
                   </a>
                 </th>
@@ -116,7 +116,7 @@
             <tbody v-if="!itemsLoaded">
               <tr>
                 <td>
-                  <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+                  <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
                 </td>
               </tr>
             </tbody>

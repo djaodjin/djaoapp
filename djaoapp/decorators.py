@@ -44,9 +44,9 @@ def inject_edition_tools(function=None):
                     response.render()
                 except jinja2.exceptions.TemplateError as err:
                     response = SimpleTemplateResponse(
-                        template="400.html",
+                        template="500.html",
                         context={'messages': [str(err)]},
-                        status=400)
+                        status=500)
                     response.render()
             soup = _inject_edition_tools(response, request,
                 context=get_edition_tools_context_data())

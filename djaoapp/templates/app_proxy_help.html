@@ -5,9 +5,9 @@
 		<div class="about-us rounded-top pt-4 px-5">
 			<div class="row">
 				<div class="col-md-12">
-					<h4>
+					<h2 class="h4">
 						{% trans %}What is this page?{% endtrans %}
-					</h4>
+					</h2>
 					<p>
 						{% trans %}By default, a newly subscribed user (or a user signing back in) will land on this page.{% endtrans %}
 					</p>
@@ -22,9 +22,9 @@
 			<div class="about-us pt-2 px-5">
 				<div class="row">
 					<div class="col-md-12">
-						<h4>
+						<h2 class="h4">
 							{% trans %}Upload Paid Content{% endtrans %}
-						</h4>
+						</h2>
 						<div class="dj-upload">
 							<div class="documentation dropzone-previews previewsContainer">
 								<span class="dz-default dz-message">
@@ -43,24 +43,24 @@
 		<div class="about-us rounded-bottom pt-2 px-5">
 			<div class="row">
 				<div class="col-md-12">
-					<h4>
+					<h2 class="h4">
 						{% trans %}Go further, and run a full-fledge session proxy.{% endtrans %}
-					</h4>
+					</h2>
 					<div class="row">
 						<div class="col-md-12 pt-2">
 							<div>
-								<h6>{% trans %}Session Data{% endtrans %}</h6>
+								<h3 class="h6">{% trans %}Session Data{% endtrans %}</h3>
 								<pre class="code py-3 px-4"><code>{{forward_session}}</code></pre>
 							</div>
 							<div class="pt-2">
-								<h6>{% trans %}As an HTTP Cookie Header{% endtrans %}</h6>
+								<h3 class="h6">{% trans %}As an HTTP Cookie Header{% endtrans %}</h3>
 								<pre class="code py-3 px-4"><code>{{forward_session_cookie}}</code></pre>
 							</div>
 						</div>
 
 						<!-- Forwarding Requests Section -->
 						<div class="col-md-12 pt-4 pb-4">
-							<h4>{% trans %}Forwarding Requests{% endtrans %}</h4>
+							<h2 class="h4">{% trans %}Forwarding Requests{% endtrans %}</h2>
 							<p>
 								{% trans %}To forward HTTP requests to your application instead of showing the landing page:{% endtrans %}
 								<ol>

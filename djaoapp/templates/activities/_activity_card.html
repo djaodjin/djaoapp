@@ -2,7 +2,7 @@
   <div class="col-sm-2">
     <div class="text-center" v-if="entry.contact">
       <div>
-      <img class="rounded-circle m-1" :src="entry.contact.picture ? entry.contact.picture : '{{'/static/img/default-user.png'|asset}}'" width="32" height="32">
+      <img class="rounded-circle m-1" :src="entry.contact.picture ? entry.contact.picture : '{{'/static/img/default-user.png'|asset}}'" width="32" height="32" alt="{% trans %}Contact picture{% endtrans %}">
       </div>
       <small><a :href="'{{request|site_url}}/activities/contacts/' + entry.contact.username + '/'">[[entry.contact.printable_name]]</a></small>
     </div>
@@ -10,7 +10,7 @@
   <div class="col-sm-2">
     <div class="text-center" v-if="entry.account">
       <div>
-      <img class="rounded border m-1" :src="entry.account.picture ? entry.account.picture : '{{'/static/img/default-organization.png'|asset}}'" width="32" height="32">
+      <img class="rounded border m-1" :src="entry.account.picture ? entry.account.picture : '{{'/static/img/default-organization.png'|asset}}'" width="32" height="32" alt="{% trans %}Account picture{% endtrans %}">
 </div>
       <small><a :href="'{{request|site_url}}/profile/' + entry.account.slug + '/'">[[entry.account.printable_name]]</a></small>
     </div>

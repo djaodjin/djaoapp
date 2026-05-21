@@ -16,36 +16,42 @@
         <tr>
             <th>{% trans %}Name{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by name{% endtrans %}"
                   @click.prevent="sortBy('printable_name')">
                   <i :class="sortIcon('printable_name')"></i>
                 </a>
             </th>
             <th class="text-end">{% trans %}Contract Value{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by contract value{% endtrans %}"
                   @click.prevent="sortBy('contract_value')">
                   <i :class="sortIcon('contract_value')"></i>
                 </a>
             </th>
             <th class="text-end">{% trans %}Cash Payments{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by cash payments{% endtrans %}"
                   @click.prevent="sortBy('cash_payments')">
                   <i :class="sortIcon('cash_payments')"></i>
                 </a>
             </th>
             <th class="text-end">{% trans %}Deferred Revenue{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by deferred revenue{% endtrans %}"
                   @click.prevent="sortBy('deferred_revenue')">
                   <i :class="sortIcon('deferred_revenue')"></i>
                 </a>
             </th>
             <th>{% trans %}Created at{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by created at{% endtrans %}"
                   @click.prevent="sortBy('created_at')">
                   <i :class="sortIcon('created_at')"></i>
                 </a>
             </th>
             <th>{% trans %}Ends at{% endtrans %}
                 <a href="#" class="btn-sort"
+                  aria-label="{% trans %}Sort by ends at{% endtrans %}"
                   @click.prevent="sortBy('ends_at')">
                   <i :class="sortIcon('ends_at')"></i>
                 </a>
@@ -54,12 +60,12 @@
         </thead>
         <tr v-show="!itemsLoaded">
             <td colspan="3">
-                <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                <div class="text-center h3"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
             </td>
         </tr>
         <tr v-show="itemsLoaded && items.results.length === 0" v-cloak>
             <td colspan="3">
-                <h4 class="text-center"><em>{% trans %}No Profile{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h4>
+                <h2 class="text-center h4"><em>{% trans %}No Profile{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h2>
             </td>
         </tr>
         <tr :id="item.slug" v-for="(item, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>

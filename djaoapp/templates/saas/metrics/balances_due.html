@@ -14,13 +14,13 @@
         <tr>
           <th>
             {% trans %}Created at{% endtrans %}
-            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')">
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('created_at')" aria-label="{% trans %}Sort by created at{% endtrans %}">
               <i :class="sortIcon('created_at')"></i>
             </a>
           </th>
           <th>
             {% trans %}Full Name{% endtrans %}
-            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('full_name')">
+            <a href="#" class="text-nowrap btn-link btn-sort ms-2" @click.prevent="sortBy('full_name')" aria-label="{% trans %}Sort by full name{% endtrans %}">
               <i :class="sortIcon('full_name')"></i>
             </a>
           </th>
@@ -33,7 +33,7 @@
       <tbody v-if="!itemsLoaded">
         <tr>
           <td colspan="6">
-            <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+            <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
           </td>
         </tr>
       </tbody>

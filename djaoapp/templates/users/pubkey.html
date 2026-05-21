@@ -10,7 +10,7 @@
       <form @submit.prevent="modalShow">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
         <div class="form-group mb-2">
-          <label for="key_title" class="col-form-label">Key Title</label>
+          <label for="id_title" class="col-form-label">Key Title</label>
           <input class="form-control" type="text" id="id_title" name="title"
                  v-model="title">
           <div class="form-text help-block invalid-feedback errorlist">
@@ -49,14 +49,14 @@
       <tbody v-show="!itemsLoaded">
         <tr>
           <td colspan="3">
-            <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+            <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
           </td>
         </tr>
       </tbody>
       <tbody v-show="itemsLoaded && items.results.length == 0" v-cloak>
         <tr>
           <td colspan="3">
-            <h4 class="text-center"><em>{% trans %}There are no API keys yet{% endtrans %}</em></h4>
+            <h2 class="h4 text-center"><em>{% trans %}There are no API keys yet{% endtrans %}</em></h2>
           </td>
         </tr>
       </tbody>

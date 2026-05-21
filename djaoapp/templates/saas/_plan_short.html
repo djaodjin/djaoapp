@@ -12,11 +12,11 @@
         <p>{% trans %}Available soon!{% endtrans %}</p>
         {% endif %}
         <div class="page-header pt-3">
-          <h5 class="editable-plan fw-light" data-key="title">{{plan.title}}</h5>
+          <h3 class="editable-plan fw-light h5" data-key="title">{{plan.title}}</h3>
         </div>
       </div>{# /.plan-title #}
       <div class="plan-pricing">
-        <h2 class="text-center editable-plan edit-currency mb-0" data-key="period_amount">
+        <h4 class="h2 text-center editable-plan edit-currency mb-0" data-key="period_amount">
           {% if not plan or plan.is_not_priced %}
           {# ``not plan or ...`` in ncessary here otherwise template rendering will generate a 500 error going through the alternate path. #}
           {% trans %}Contact Us{% endtrans %}
@@ -28,7 +28,7 @@
           {{plan.period_price|humanize_money}}
           {% endif %}
           {% endif %}
-        </h2>
+        </h4>
         <p class="text-center mb-0">
           {% if plan.is_not_priced %}
           &nbsp;

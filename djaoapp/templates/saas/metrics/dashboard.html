@@ -15,7 +15,7 @@
       <!-- Profile/user search input -->
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">{% trans %}Find a profile{% endtrans %}</h5>
+          <h2 class="card-title h5">{% trans %}Find a profile{% endtrans %}</h2>
         </div>
         <div class="card-body pb-0">
           <search-profile inline-template data-url="{{urls.provider.api_accounts}}" id="search-list-container">
@@ -61,11 +61,11 @@
       <recent-activity inline-template id="recent-activity-container">
         <div class="card my-4">
           <div class="card-header">
-            <h5 class="card-title">Recently Active Users</h5>
+            <h2 class="card-title h5">{% trans %}Recently Active Users{% endtrans %}</h2>
           </div>
           <div class="card-body" v-show="!itemsLoaded">
             <p>
-              <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h3>
+              <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin"></i></div>
             </p>
           </div>
           <div class="card-body" v-if="itemsLoaded && items.results.length === 0" v-cloak>
@@ -97,7 +97,7 @@
       <todo-list inline-template id="todos-container" class="mt-4">
         <div class="card" v-show="itemsLoaded && items.results.length > 0" v-cloak>
           <div class="card-body border-bottom">
-            <h5 class="card-title mb-0">Todo items</h5>
+            <h2 class="card-title mb-0 h5">{% trans %}Todo items{% endtrans %}</h2>
           </div>
           <div class="card-body">
             <div v-show="!itemsLoaded">
@@ -125,7 +125,7 @@
           <div class="card w-100 mb-4" v-if="!item.processor_hint">
             <div class="card-body">
               <div class="justify-content-center">
-                <h5 class="card-title text-center">{% trans %}MRR{% endtrans %}</h5>
+                <h2 class="card-title text-center h5">{% trans %}MRR{% endtrans %}</h2>
               </div>
               <div class="align-items-center justify-content-center h-75">
                 <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>
@@ -154,7 +154,7 @@
           <div class="card w-100 mb-4">
             <div class="card-body">
               <div class="justify-content-center">
-                <h5 class="card-title text-center">{% trans %}Daily Active Users{% endtrans %}</h5>
+                <h2 class="card-title text-center h5">{% trans %}Daily Active Users{% endtrans %}</h2>
               </div>
               <div class="align-items-center justify-content-center h-75">
                 <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>
@@ -170,7 +170,7 @@
           <div class="card w-100 mb-4">
             <div class="card-body">
               <div class="justify-content-center">
-                <h5 class="card-title text-center">{% trans %}Engagement{% endtrans %}</h5>
+                <h2 class="card-title text-center h5">{% trans %}Engagement{% endtrans %}</h2>
               </div>
               <div class="align-items-center justify-content-center py-5 h-75">
                 <h2 class="text-center" v-show="!itemLoaded"><i class="fa-solid fa-refresh fa-spin"></i></h2>

@@ -27,7 +27,7 @@
               <form id="subscribe" @submit.prevent="subscribe({slug: '{{organization.slug}}', full_name: '{{organization.full_name}}'})">
                 <div class="row">
                   <div class="col-md-8">
-                    <select class="form-control me-2" name="plan" v-model="plan">
+                    <select class="form-control me-2" name="plan" v-model="plan" aria-label="{% trans %}Select a plan{% endtrans %}">
                       <option selected
                               value="{}"
                               :value="{}">{% trans %}Select a plan...{% endtrans %}</option>
@@ -54,30 +54,36 @@
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a class="btn-sort"
-                       @click.prevent="sortBy('plan')">
+                       href="#"
+                       @click.prevent="sortBy('plan')"
+                       aria-label="{% trans %}Sort by plan{% endtrans %}"
+                    >
                       <i :class="sortIcon('plan')"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Until{% endtrans %}
                     <a class="btn-sort"
-                       @click.prevent="sortBy('ends_at')">
+                       href="#"
+                       @click.prevent="sortBy('ends_at')"
+                       aria-label="{% trans %}Sort by until{% endtrans %}"
+                    >
                       <i :class="sortIcon('ends_at')"></i>
                     </a>
                   </th>
-                  <th><!-- humanizeDate --></th>
-                  <th><!-- unsubscribe / accept request --></th>
+                  <th><span class="visually-hidden">{% trans %}Time remaining{% endtrans %}</span></th>
+                  <th><span class="visually-hidden">{% trans %}Actions{% endtrans %}</span></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-show="!itemsLoaded">
                   <td colspan="4">
-                    <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                    <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
                   </td>
                 </tr>
                 <tr v-show="itemsLoaded && items.count === 0" v-cloak>
                   <td colspan="4">
-                    <h5 class="text-center"><em>{% trans %}No subcriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h5>
+                    <h3 class="text-center h5"><em>{% trans %}No subcriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h3>
                   </td>
                 </tr>
               </tbody>
@@ -182,25 +188,31 @@
                   <th>
                     {% trans %}Plan{% endtrans %}
                     <a class="btn-sort"
-                       @click.prevent="sortBy('plan')">
+                       href="#"
+                       @click.prevent="sortBy('plan')"
+                       aria-label="{% trans %}Sort by plan{% endtrans %}"
+                    >
                       <i :class="sortIcon('plan')"></i>
                     </a>
                   </th>
                   <th>
                     {% trans %}Until{% endtrans %}
                     <a class="btn-sort"
-                       @click.prevent="sortBy('ends_at')">
+                       href="#"
+                       @click.prevent="sortBy('ends_at')"
+                       aria-label="{% trans %}Sort by until{% endtrans %}"
+                    >
                       <i :class="sortIcon('ends_at')"></i>
                     </a>
                   </th>
-                  <th></th>
-                  <th></th>
+                  <th><span class="visually-hidden">{% trans %}Time remaining{% endtrans %}</span></th>
+                  <th><span class="visually-hidden">{% trans %}Actions{% endtrans %}</span></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-show="!itemsLoaded">
                   <td colspan="4">
-                    <h3 class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+                    <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
                   </td>
                 </tr>
                 <tr v-show="itemsLoaded && items.count === 0" v-cloak>

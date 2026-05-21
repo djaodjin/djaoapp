@@ -65,7 +65,7 @@
         <tr>
           <th>{% trans %}Amount{% endtrans %}</th>
           <th>{% trans %}Description{% endtrans %}</th>
-          <th></th>
+          <th><span class="visually-hidden">{% trans %}Refund{% endtrans %}</span></th>
         </tr>
       </thead>
       <tbody>
@@ -101,41 +101,42 @@
 </div>
 {% endif %}
 <!-- modal dialog for Refunds -->
-<form id="charge-refund" class="modal fade"
-    tabindex="-1" role="dialog" aria-labelledby="{% trans %}Refund{% endtrans %}" aria-hidden="true"
-    method="post" action=".">
-  <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+<div id="charge-refund" class="modal fade"
+    tabindex="-1" aria-labelledby="charge-refund-title" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn-close"
-            data-bs-dismiss="modal" aria-hidden="true"></button>
-        <h4 class="modal-title">{% trans %}Refund{% endtrans %}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <div class="controls">
-            <input class="form-control"
-                type="number" name="amount" maxlength="32"
-                min="0" value="0" />
+      <form id="charge-refund-form" method="post" action=".">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <div class="modal-header">
+          <h2 class="modal-title" id="charge-refund-title">{% trans %}Refund{% endtrans %}</h2>
+          <button type="button" class="btn-close"
+              data-bs-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="controls">
+              <input class="form-control"
+                  type="number" name="amount" maxlength="32"
+                  min="0" value="0" aria-label="{% trans %}Refund amount{% endtrans %}" />
+            </div>
+          </div>
+          <div>
+            <p>
+{% trans unit=charge.unit %}Please specify the amount you would like refunded (in {{unit}}).{% endtrans %}
+            </p>
           </div>
         </div>
-        <div>
-          <p>
-{% trans unit=charge.unit %}Please specify the amount you would like refunded (in {{unit}}).{% endtrans %}
-          </p>
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary"
+              type="button"
+              data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+          <button class="submit-refund btn btn-primary"
+              type="submit">{% trans %}OK{% endtrans %}</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-primary"
-            type="button"
-            data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-        <button class="submit-refund btn btn-primary"
-            type="submit">{% trans %}OK{% endtrans %}</button>
-      </div>
+      </form>
     </div>
   </div>
-</form>
+</div>
 <!-- end of modal dialog for Refunds -->
 {% endblock %}
 
@@ -161,9 +162,15 @@ jQuery(document).ready(function($) {
         saas_api_charge: "{{ urls.charge.api_base }}"
     });
 
+    $("#charge-refund-form").on("submit", function() {
+        // otherwise aria-* warning in the console
+        document.activeElement.blur();
+        $("#charge-refund").modal("hide");
+    });
+
     $(".charge-refund").click(function () {
         var self = $(this);
-        $("#charge-refund").refund({
+        $("#charge-refund-form").refund({
             availableAmount: self.attr("data-available-amount"),
             linenum: self.attr("data-linenum"),
             saas_api_charge_refund: "{{ urls.charge.api_refund }}",

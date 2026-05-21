@@ -20,24 +20,28 @@
           <tr>
             <th>{% trans %}Title{% endtrans %}
               <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by title{% endtrans %}"
                  @click.prevent="sortBy('title')">
                 <i :class="sortIcon('title')"></i>
               </a>
             </th>
             <th>{% trans %}Status{% endtrans %}
               <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by status{% endtrans %}"
                  @click.prevent="sortBy('is_active')">
                 <i :class="sortIcon('is_active')"></i>
               </a>
             </th>
             <th>{% trans %}Created at{% endtrans %}
               <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by created at{% endtrans %}"
                  @click.prevent="sortBy('created_at')">
                 <i :class="sortIcon('created_at')"></i>
               </a>
             </th>
             <th>{% trans %}Period price{% endtrans %}
               <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by period price{% endtrans %}"
                  @click.prevent="sortBy('period_amount')">
                 <i :class="sortIcon('period_amount')"></i>
               </a>
@@ -47,7 +51,7 @@
         <tbody v-show="!itemsLoaded">
           <tr>
             <td colspan="4">
-              <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+              <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
             </td>
           </tr>
         </tbody>

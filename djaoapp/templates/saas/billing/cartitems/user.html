@@ -1,5 +1,9 @@
 {% extends "saas/base_dashboard.html" %}
 
+{% block saas_title_container %}
+{# hide h1 to avoid breaking a11y compliance #}
+{% endblock %}
+
 {% block saas_content %}
 <user-active-cart inline-template>
   <div>
@@ -24,12 +28,12 @@
     <form method="post">
       <p>Add Cart Item</p>
       <div>
-        <select v-model="newItemPlan">
+        <select v-model="newItemPlan" aria-label="{% trans %}Select plan{% endtrans %}">
           <option v-for="plan in plans" :value="plan.slug" :key="plan.slug">
             [[ plan.title ]]
           </option>
         </select>
-        <input type="number" v-model.number="newItemQuantity" min="1" />
+        <input type="number" v-model.number="newItemQuantity" min="1" aria-label="{% trans %}Quantity{% endtrans %}" />
         <button @click="addItem">Add Item</button>
       </div>
     </form>
@@ -57,7 +61,7 @@
             <td>[[ cartItem.created_at ]]</td>
             <td>[[ cartItem.plan.title ]]</td>
             <td>
-              <input type="number" v-model.number="cartItem.quantity" min="1" />
+              <input type="number" v-model.number="cartItem.quantity" min="1" aria-label="{% trans %}Quantity{% endtrans %}" />
             </td>
             <td>
               <button @click="updateItem(cartItem)">Update</button>

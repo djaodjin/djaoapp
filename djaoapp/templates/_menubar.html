@@ -5,7 +5,7 @@
          role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top" alt="{% trans %}Profile picture{% endtrans %}">
         </div>
         <div class="menubar-label-expanded">
           <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
@@ -17,7 +17,7 @@
          role="button" href="#"
          aria-haspopup="true" aria-expanded="false">
         <div>
-          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+          <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top" alt="{% trans %}Profile picture{% endtrans %}">
         </div>
         <div class="menubar-label-expanded">
           <span class="menubar-label-title" data-trnc data-trnc-len="8">{{username}}</span>
@@ -29,7 +29,7 @@
       {% if top_accessibles|length > 0 %}
         <li class="menubar-dropdown-label" role="presentation">
           <div>
-            <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top">
+            <img src="{% if picture %}{{picture}}{% else %}{{request|asset}}/assets/img/default-user.png{% endif %}" class="avatar-top" alt="{% trans %}Profile picture{% endtrans %}">
           </div>
           <div>
             {{username}}
@@ -37,12 +37,16 @@
         </li>
       {% endif %}
       <li role="presentation">
-        <a id="authenticated-user" class="menubar-dropdown-item" href="{% if urls %}{{urls.user_profile}}{% endif %}" role="menuitem" tabindex="-1">
-            {% trans %}Profile{% endtrans %}
+        <a id="authenticated-user"
+           class="menubar-dropdown-item"
+           href="{% if urls %}{{urls.user_profile}}{% endif %}"
+           role="menuitem" tabindex="-1">
+          {% trans %}Profile{% endtrans %}
         </a>
       </li>
       <li role="presentation">
-        <a class="menubar-dropdown-item" href="{{'/logout/'|site_url}}"
+        <a class="menubar-dropdown-item"
+           href="{% if urls %}{{urls.logout}}{% endif %}"
            role="menuitem" tabindex="-1">
           {% trans %}Sign out{% endtrans %}
         </a>
@@ -52,7 +56,7 @@
           <li class="menubar-dropdown-divider" role="separator"></li>
           <li class="menubar-dropdown-label" role="presentation">
             <div>
-              <img class="avatar-top" src="{% if accessible.picture %}{{accessible.picture}}{% else %}{{request|asset}}{% if accessible.type == 'personal' %}/assets/img/default-user.png{% else %}/assets/img/default-organization.png{% endif %}{% endif %}">
+              <img class="avatar-top" src="{% if accessible.picture %}{{accessible.picture}}{% else %}{{request|asset}}{% if accessible.type == 'personal' %}/assets/img/default-user.png{% else %}/assets/img/default-organization.png{% endif %}{% endif %}" alt="{% trans %}Profile picture{% endtrans %}">
             </div>
             <div>
               <div>{{accessible.printable_name}}</div>
@@ -82,7 +86,7 @@
     </ul>
   </li>
   <li class="menubar">
-      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_url}}">
+      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{% if urls %}{{urls.logout}}{% endif %}">
         <div>
         <span class="menubar-label-expanded">
           {% trans %}Sign out{% endtrans %}

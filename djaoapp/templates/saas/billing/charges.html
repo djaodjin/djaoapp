@@ -13,25 +13,29 @@
         <thead>
           <tr>
             <th>{% trans %}Date{% endtrans %}
-              <a class="btn-sort"
+              <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by date{% endtrans %}"
                  @click.prevent="sortBy('created_at')">
                 <i :class="sortIcon('created_at')"></i>
               </a>
             </th>
             <th>{% trans %}Amount{% endtrans %}
-              <a class="btn-sort"
+              <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by amount{% endtrans %}"
                  @click.prevent="sortBy('amount')">
                 <i :class="sortIcon('amount')"></i>
               </a>
             </th>
             <th>{% trans %}State{% endtrans %}
-              <a class="btn-sort"
+              <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by state{% endtrans %}"
                  @click.prevent="sortBy('state')">
                 <i :class="sortIcon('state')"></i>
               </a>
             </th>
             <th>{% trans %}Description{% endtrans %}
-              <a class="btn-sort"
+              <a href="#" class="btn-sort"
+                 aria-label="{% trans %}Sort by description{% endtrans %}"
                  @click.prevent="sortBy('description')">
                 <i :class="sortIcon('description')"></i>
               </a>
@@ -41,7 +45,7 @@
         <tbody v-show="!itemsLoaded">
           <tr>
             <td colspan="4">
-              <h3  class="text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></h3>
+              <div class="h3 text-center"><i class="fa-solid fa-refresh fa-spin fa-2x"></i></div>
             </td>
           </tr>
         </tbody>

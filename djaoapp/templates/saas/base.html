@@ -15,6 +15,7 @@
             {# XXX disabled until we figure out how to show personal picture <img class="img-fluid" style="max-height:100px;vertical-align:top;" src="{% if organization.picture %}{{organization.picture}}{% else %}{{'/assets/img/default-organization.png'|asset}}{% endif %}"> #}
             {% endif %}
             <div class="d-inline-block ps-2">
+	      {% block saas_title_container %}
               <h1 class="d-inline pb-0 my-0 text-body">{% block saas_title %}{% endblock %}
                 <div class="d-inline">
                   <sup class="d-none" role="button">
@@ -24,12 +25,15 @@
                   </sup>
                 </div>
               </h1>
-              <h2 class="my-0">{% if organization %}{{organization.printable_name}}{% elif user %}{% if user.full_name %}{{user.full_name}}{% else %}{{user}}{% endif %}{% endif %}</h2>
+	      {% endblock %}
+	      {% if organization or user %}
+		      <h2 class="my-0">{% if organization %}{{organization.printable_name}}{% elif user %}{% if user.full_name %}{{user.full_name}}{% else %}{{user}}{% endif %}{% endif %}</h2>
+	      {% endif %}
             </div>
           </div>
         </div>{# /title header #}
         <div class="col-md-4">
-          <nav class="navbar">
+          <nav class="navbar" aria-label="{% trans %}Page navigation{% endtrans %}">
             <ul class="navbar-nav nav-pills ms-auto">
               {% block help_menus %}
               {% endblock %}
