@@ -100,17 +100,18 @@
 
         <!-- Modal Dialog for Adding a New Rule -->
         <div id="new-rule" class="modal fade" tabindex="-1" role="dialog"
-             aria-labelledby="{% trans %}Add Access Rule{% endtrans %}" aria-hidden="true">
+             aria-labelledby="new-rule-title" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">{% trans %}Path accessed ...{% endtrans %}</h5>
+                <h2 class="h5 modal-title" id="new-rule-title">{% trans %}Path accessed ...{% endtrans %}</h2>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-hidden="true"></button>
               </div>
               <div class="modal-body">
                 <div id="div_id_new_rule_path" class="form-group">
                   <div class="controls ">
+                    <label for="id_new_rule_path" class="visually-hidden">{% trans %}Rule path{% endtrans %}</label>
                     <input id="id_new_rule_path"
                            class="form-control"
                            maxlength="255"

@@ -66,8 +66,7 @@
             </account-typeahead>
             <!-- inviting a user to register. -->
             <div class="add-role-modal"
-                 aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}" aria-hidden="true"
-                 tabindex="-1"
+                 aria-labelledby="{% trans role_descr=role_descr.title %}Add {{role_descr}}{% endtrans %}"
                  title="{% trans role_descr=role_descr.title %}Invite {{role_descr}}{% endtrans %}"
                  v-show="profileRequestDone" v-cloak>
               <p class="text-danger">
@@ -96,7 +95,7 @@
                          v-model="unregistered.email" />
               </div>
               <div class="form-group">
-                <label class="form-label" id="new-request-message">
+                <label class="form-label" for="new-request-message">
                   {% trans %}The following invite message will be sent:{% endtrans %}
                 </label>
                   <!-- textareas are very special in the way they handle whitespaces. Please do

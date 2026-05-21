@@ -111,10 +111,10 @@ Thank you,
       <table class="table" infinite-wrapper>
         <thead>
           <tr>
-            <th>{% trans %}Subscriber{% endtrans %} <a href="#" @click.prevent="sortBy('profile')"><i :class="sortIcon('profile')"></i></a></th>
+            <th>{% trans %}Subscriber{% endtrans %} <a href="#" aria-label="{% trans %}Sort by subscriber{% endtrans %}" @click.prevent="sortBy('profile')"><i :class="sortIcon('profile')"></i></a></th>
             <th>{% trans %}Plan{% endtrans %}</th>
-            <th>{% trans %}Since{% endtrans %} <a href="#" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a></th>
-            <th>{% trans %}Ends at{% endtrans %} <a href="#" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></a></th>
+            <th>{% trans %}Since{% endtrans %} <a href="#" aria-label="{% trans %}Sort by since{% endtrans %}" @click.prevent="sortBy('created_at')"><i :class="sortIcon('created_at')"></i></a></th>
+            <th>{% trans %}Ends at{% endtrans %} <a href="#" aria-label="{% trans %}Sort by ends at{% endtrans %}" @click.prevent="sortBy('ends_at')"><i :class="sortIcon('ends_at')"></i></a></th>
             <th>{% trans %}Description{% endtrans %}</th>
             <th>{% trans %}Grant/Request{% endtrans %}</th>
           </tr>
