@@ -37,12 +37,16 @@
         </li>
       {% endif %}
       <li role="presentation">
-        <a id="authenticated-user" class="menubar-dropdown-item" href="{% if urls %}{{urls.user_profile}}{% endif %}" role="menuitem" tabindex="-1">
-            {% trans %}Profile{% endtrans %}
+        <a id="authenticated-user"
+           class="menubar-dropdown-item"
+           href="{% if urls %}{{urls.user_profile}}{% endif %}"
+           role="menuitem" tabindex="-1">
+          {% trans %}Profile{% endtrans %}
         </a>
       </li>
       <li role="presentation">
-        <a class="menubar-dropdown-item" href="{{'/logout/'|site_url}}"
+        <a class="menubar-dropdown-item"
+           href="{% if urls %}{{urls.logout}}{% endif %}"
            role="menuitem" tabindex="-1">
           {% trans %}Sign out{% endtrans %}
         </a>
@@ -82,7 +86,7 @@
     </ul>
   </li>
   <li class="menubar">
-      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{{'/logout/'|site_url}}">
+      <a class="menubar-label" title="{% trans %}Click Here to sign out{% endtrans %}" href="{% if urls %}{{urls.logout}}{% endif %}">
         <div>
         <span class="menubar-label-expanded">
           {% trans %}Sign out{% endtrans %}

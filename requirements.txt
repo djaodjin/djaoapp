@@ -65,8 +65,8 @@ Faker==3.0.1
 flex==6.14.0
 pygments== 2.20.0
 pyYAML==6.0.1
-Sphinx==5.3.0                     # last version that supports Py3.7
-sphinx_rtd_theme==2.0.0
-sphinxcontrib-httpdomain==1.8.1
-sphinxcontrib-websupport==1.2.4   # last version that supports Py3.7
+Sphinx==9.1.0                     # 5.3.0 last version that supports Py3.7
+sphinx_rtd_theme==3.1.0
+sphinxcontrib-httpdomain==2.0.0
+sphinxcontrib-websupport==2.0.0   # 1.2.4 last version that supports Py3.7
 swagger-spec-validator==3.0.3

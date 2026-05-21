@@ -60,6 +60,7 @@ def get_user_menu_context(user, context, request):
     has_broker_role = False
     active_organization = None
 
+    logout_url = request.build_absolute_uri(reverse('logout'))
     user_profile_url = request.build_absolute_uri(
         reverse('users_profile', args=(user,)))
     organization = attached_organization(user)
@@ -101,6 +102,7 @@ def get_user_menu_context(user, context, request):
         'active_organization': active_organization,
         'top_accessibles': top_accessibles,
         'urls': {
+            'logout': logout_url,
             'user_profile': user_profile_url,
             'user_accessibles': more_accessibles_url
         }})
