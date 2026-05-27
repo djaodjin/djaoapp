@@ -23,8 +23,9 @@ djaodjin-multitier==0.3.2
 djaodjin-rules==0.4.11
 djaodjin-saas==1.2.2
 djaodjin-signup==0.11.4
-docutils==0.22.4                  # pip does not complain about botocore
-drf-spectacular==0.27.0           # to display 'themes' notifications pages
+docutils==0.21.2                  # 0.22 is incompatible with Sphinx==8.1.3
+                                  # pip does not complain about botocore
+drf-spectacular==0.29.0           # to display 'themes' notifications pages
 googlemaps==4.10.0
 # gunicorn 19.0 is broken (see issue 787)
 # gunicorn 19.3.0 has a syntax error in gunicorn/workers/_gaiohttp.py:64
@@ -52,6 +53,7 @@ WeasyPrint==68.1                  ; python_version >= "3.12"
 django-storages==1.14.2           # to upload assets to S3
 
 # To run with DEBUG=1
+coreapi==2.3.3                    # XXX until we upgrade djaodjin-saas/signup
 django-debug-toolbar==5.0.1       ; python_version >= "3.9" and python_version < "3.10"
 django-debug-toolbar==6.2.0       ; python_version >= "3.10"
                                   # 6.2.0 requires python>=3.10
@@ -67,7 +69,8 @@ Faker==3.0.1
 flex==6.14.0
 pygments== 2.20.0
 pyYAML==6.0.1
-Sphinx==9.1.0                     # 5.3.0 last version that supports Py3.7
+Sphinx==8.1.3                     # (2026-05-27) Read-the-docs runs Py3.11
+                                  # 5.3.0 last version that supports Py3.7
 sphinx_rtd_theme==3.1.0
 sphinxcontrib-httpdomain==2.0.0
 sphinxcontrib-websupport==2.0.0   # 1.2.4 last version that supports Py3.7
