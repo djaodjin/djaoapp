@@ -18,8 +18,8 @@ django-fernet-fields @ git+https://github.com/djaodjin/django-fernet-fields.git@
 # next 8 usually installed through source repo directly.
 django-csp==4.0
 djaodjin-deployutils==0.14.5
-djaodjin-extended-templates==0.5.2
-djaodjin-multitier==0.3.1
+djaodjin-extended-templates==0.5.3
+djaodjin-multitier==0.3.2
 djaodjin-rules==0.4.11
 djaodjin-saas==1.2.2
 djaodjin-signup==0.11.4
