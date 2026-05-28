@@ -17,7 +17,7 @@ from django.template.loader import get_template
 from django.template.response import TemplateResponse
 from django.utils._os import safe_join
 from django.views.generic import TemplateView
-from django.views.static import serve
+from django.views.static import serve as static_serve
 from extended_templates import settings as themes_settings
 from extended_templates.models import get_show_edit_tools, get_active_theme
 from extended_templates.views.pages import PageMixin
@@ -111,7 +111,7 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
         # XXX cannot use 404 exception because it will catch errors
         # in get_context_data.
         except (TemplateDoesNotExist, Http404) as err:
-            LOGGER.info("we will be looking for assets because of '%s'", err)
+            LOGGER.debug("we will be looking for assets because of '%s'", err)
             # static and media assets will have been served through
             # different rules in debug mode. In production, they
             # will have been served by the front-end webserver (nginx)
@@ -132,15 +132,23 @@ class ProxyPageMixin(DjaoAppMixin, PageMixin, SessionProxyMixin, AppMixin):
                     pass
             if response is None:
                 app = get_current_app(request)
-                if is_broker(app.account) and settings.STATIC_ROOT:
-                    asset_dir = os.path.dirname(settings.STATIC_ROOT)
-                else:
-                    theme_name = get_active_theme()
-                    asset_dir = safe_join(
-                        themes_settings.PUBLIC_ROOT, theme_name)
-                LOGGER.info("looking for '%s' in '%s'", rel_path, asset_dir)
-                response = serve(
-                    request, rel_path, document_root=asset_dir)
+                theme_name = get_active_theme()
+                asset_dir = safe_join(themes_settings.PUBLIC_ROOT, theme_name)
+                LOGGER.debug(
+                    "looking for '%s' in '%s'...", rel_path, asset_dir)
+                try:
+                    response = static_serve(
+                        request, rel_path, document_root=asset_dir)
+                except Http404 as err:
+                    pass
+                if rel_path.startswith(settings.STATIC_URL.lstrip('/')):
+                    asset_dir = os.path.dirname(settings.APP_STATIC_ROOT)
+                    LOGGER.debug(
+                        "looking for '%s' in '%s'...", rel_path, asset_dir)
+                    response = static_serve(
+                        request, rel_path, document_root=asset_dir)
+            if response is None:
+                raise Http404()
         return response
 
 
