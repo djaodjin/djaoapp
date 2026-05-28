@@ -389,7 +389,7 @@
 {% endblock %}
 
 {% block saas_bodyscripts %}
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 Vue.prototype.$sortDirection = "asc";
 Vue.prototype.$sortByField = "profile";
 </script>

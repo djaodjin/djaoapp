@@ -21,7 +21,7 @@
 {% endif %}
 
 {# templates and PageElement editors #}
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 {% if templates %}
 templateNames = {{templates|safe}};
 {% endif %}

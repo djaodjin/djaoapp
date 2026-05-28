@@ -61,6 +61,7 @@ class AuthMixin(AuthBaseMixin):
                     "data": data,
                     "files": self.request.FILES,
                 })
+        kwargs['csp_nonce'] = self.request.csp_nonce
         return kwargs
 
 

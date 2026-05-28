@@ -7,6 +7,8 @@ import datetime, os.path, sys
 from django import VERSION as DJANGO_VERSION
 from django.contrib.messages import constants as messages
 
+from csp.constants import NONE, SELF, UNSAFE_EVAL, UNSAFE_INLINE, NONCE
+
 from deployutils.configs import load_config, update_settings
 
 from .compat import reverse_lazy, settings_lazy
@@ -48,6 +50,7 @@ MULTITIER_SITE_MODEL = None
 # ----------------------------------------
 ALLOWED_HOSTS = ('*',)
 
+UPGRADE_INSECURE_REQUESTS_IN_ASSETS = False
 RULES_ENC_KEY_OVERRIDE = None
 RULES_ENTRY_POINT_OVERRIDE = None
 REQUESTS_TIMEOUT = 120
@@ -266,6 +269,7 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_recaptcha',
+    'csp',
     'deployutils.apps.django_deployutils',
     'signup',  # Because we want `djresources.js` picked up from here.
     'saas',
@@ -289,6 +293,7 @@ elif not DEBUG:
 
 MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
+    'csp.middleware.CSPMiddleware',
     'multitier.middleware.SiteMiddleware',
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',
@@ -1036,3 +1041,54 @@ NOTIFICATION_BACKENDS = (
 
 # Demo mode ...
 REUSABLE_PRODUCTS = ('livedemo',)
+
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "script-src": [
+            SELF, UNSAFE_EVAL, NONCE,
+            # Stripe
+            # https://docs.stripe.com/security/guide?csp=csp-js
+            "https://js.stripe.com",
+            "https://*.js.stripe.com",
+            "https://connect-js.stripe.com",
+            "https://maps.googleapis.com",
+        ],
+        "style-src": [SELF, UNSAFE_INLINE],
+        "img-src": [
+            SELF, "https:", "data:",
+            # Stripe
+            "https://*.stripe.com",
+        ],
+        "connect-src": [
+            SELF,
+            # Stripe
+            "https://api.stripe.com",
+            "https://maps.googleapis.com",
+            # reCAPTCHA
+            # https://developers.google.com/recaptcha/docs/faq#im-using-content-security-policy-csp-on-my-website.-how-can-i-configure-it-to-work-with-recaptcha
+            "https://www.google.com/recaptcha/",
+        ],
+        "frame-src": [
+            SELF,
+            # Stripe
+            "https://js.stripe.com",
+            "https://*.js.stripe.com",
+            "https://connect-js.stripe.com",
+            "https://hooks.stripe.com",
+            # reCAPTCHA
+            "https://www.google.com/recaptcha/",
+            "https://recaptcha.google.com/recaptcha/",
+        ],
+        "frame-ancestors": [SELF],
+        "form-action": [SELF],
+        "object-src": [NONE],
+        "base-uri": [SELF],
+        # ace.js editor
+        "worker-src": [SELF, "blob:"],
+    },
+}
+
+if UPGRADE_INSECURE_REQUESTS_IN_ASSETS:
+    CONTENT_SECURITY_POLICY["DIRECTIVES"]["upgrade-insecure-requests"] = True

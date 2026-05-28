@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
@@ -21,6 +20,7 @@ from signup.forms import (
     PasswordResetConfirmForm as PasswordResetConfirmFormBase,
     PasswordConfirmMixin, AuthenticationForm)
 
+from .widgets import CSPReCaptchaV2Checkbox
 from ..compat import gettext_lazy as _, reverse, six
 from ..utils import get_registration_captcha_keys
 
@@ -103,6 +103,7 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
         widget=forms.widgets.Select(choices=countries), label=_("Country"))
 
     def __init__(self, *args, **kwargs):
+        csp_nonce = kwargs.pop('csp_nonce', None)
         self.user = kwargs.pop('instance', None)
         force_required = kwargs.pop('force_required', False)
         initial = kwargs.get('initial')
@@ -123,7 +124,8 @@ class ActivationForm(MissingFieldsMixin, PostalFormMixin, ActivationFormBase):
             self.fields['captcha'] = ReCaptchaField(
                     public_key=captcha_keys['public_key'],
                     private_key=captcha_keys['private_key'],
-                    widget=ReCaptchaV2Checkbox(
+                    widget=CSPReCaptchaV2Checkbox(
+                        csp_nonce=csp_nonce,
                         attrs={
                             'data-theme': 'clean',
                             'data-size': 'compact',
@@ -260,6 +262,7 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, forms.Form):
         widget=forms.widgets.Select(choices=countries), label=_("Country"))
 
     def __init__(self, *args, **kwargs):
+        csp_nonce = kwargs.pop('csp_nonce', None)
         self.user = kwargs.pop('instance', None)
         force_required = kwargs.pop('force_required', False)
         super(SignupForm, self).__init__(*args, **kwargs)
@@ -273,7 +276,8 @@ class SignupForm(MissingFieldsMixin, PostalFormMixin, forms.Form):
             self.fields['captcha'] = ReCaptchaField(
                     public_key=captcha_keys['public_key'],
                     private_key=captcha_keys['private_key'],
-                    widget=ReCaptchaV2Checkbox(
+                    widget=CSPReCaptchaV2Checkbox(
+                        csp_nonce=csp_nonce,
                         attrs={
                             'data-theme': 'clean',
                             'data-size': 'compact',

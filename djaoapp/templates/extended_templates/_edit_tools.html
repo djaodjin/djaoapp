@@ -230,7 +230,7 @@
 <script type="text/javascript" src="{{'/assets/cache/theme-editors.js'|asset}}"></script>
 {% endif %}
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 jQuery(document).ready(function($) {
 
     // media gallery
