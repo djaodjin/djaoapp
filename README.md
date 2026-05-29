@@ -32,7 +32,7 @@ If you are looking to add features, this project integrates
 
 Tested with
 
-- **Python:** 3.14, **Django:** 5.2 ([LTS](https://www.djangoproject.com/download/))
+- **Python:** 3.12, **Django:** 5.2 ([LTS](https://www.djangoproject.com/download/))
 
 Install
 -------
@@ -45,11 +45,11 @@ the active directory to that source directory.
 
 The following commands are executed at the top of source directory.
 
-Please first verify that you have at least Python3.14 and make installed on your
+Please first verify that you have at least Python3.12 and make installed on your
 development environment
 
     $ python --version
-    Python 3.14.5
+    Python 3.12.13
     $ make --version
     GNU Make 3.81
 
