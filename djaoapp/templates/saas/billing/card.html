@@ -60,11 +60,11 @@
   <!-- modal dialog to delete card. -->
   <div class="modal fade"
        id="delete-action" tabindex="-1" role="dialog"
-       aria-labelledby="{% trans %}Delete Card{% endtrans %}" aria-hidden="true">
+       aria-labelledby="deleteCardConfirm" aria-hidden="true">
     <form class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{% trans %}Delete Card{% endtrans %} ...</h5>
+          <h4 id="deleteCardConfirm" class="modal-title">{% trans %}Delete Card{% endtrans %} ...</h4>
           <button type="button" class="btn-close"
                   data-bs-dismiss="modal" aria-hidden="true"></button>
         </div>
