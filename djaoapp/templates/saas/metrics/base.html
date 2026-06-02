@@ -42,7 +42,7 @@
 {% endblock %}
 
 {% block dashboard_bodyscripts %}
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 Vue.prototype.$tables = [{
     "key": "cash",
     "title": "Amounts",

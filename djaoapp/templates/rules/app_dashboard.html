@@ -328,7 +328,7 @@
 
 
 {% block dashboard_bodyscripts %}
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 function getCSRFToken() {
             var vm = this;
             // Look first for an input node in the HTML page, i.e.

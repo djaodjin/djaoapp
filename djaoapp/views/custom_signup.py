@@ -61,8 +61,16 @@ class AuthMixin(AuthBaseMixin):
                     "data": data,
                     "files": self.request.FILES,
                 })
+        kwargs['csp_nonce'] = self.request.csp_nonce
         return kwargs
 
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        kwargs = self.get_form_kwargs()
+        if not issubclass(form_class, (ActivationForm, SignupForm)):
+            kwargs.pop('csp_nonce', None)
+        return form_class(**kwargs)
 
     def get_landing(self):
         register_path = super(AuthMixin, self).get_landing()

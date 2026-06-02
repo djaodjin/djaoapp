@@ -6,7 +6,6 @@ import logging, re, socket
 from smtplib import SMTPException
 
 from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from deployutils.apps.django_deployutils.compat import is_authenticated
 from django import forms, http
 from django.core.exceptions import ValidationError, PermissionDenied
@@ -21,6 +20,7 @@ from saas.models import Organization
 from signup.auth import validate_redirect
 
 from ..compat import gettext_lazy as _, reverse, six
+from ..forms.widgets import CSPReCaptchaV2Checkbox
 from ..signals import user_contact
 from ..utils import get_contact_captcha_keys
 from ..validators import validate_contact_form
@@ -67,6 +67,7 @@ class ContactForm(forms.Form):
             'class':'form-control', 'placeholder': ""}))
 
     def __init__(self, *args, **kwargs):
+        csp_nonce = kwargs.pop('csp_nonce', None)
         super(ContactForm, self).__init__(*args, **kwargs)
         if not kwargs.get('initial', {}).get('email', None):
             captcha_keys = get_contact_captcha_keys()
@@ -74,7 +75,8 @@ class ContactForm(forms.Form):
                 self.fields['captcha'] = ReCaptchaField(
                     public_key=captcha_keys['public_key'],
                     private_key=captcha_keys['private_key'],
-                    widget=ReCaptchaV2Checkbox(
+                    widget=CSPReCaptchaV2Checkbox(
+                        csp_nonce=csp_nonce,
                         attrs={
                             'data-theme': 'clean',
                             'data-size': 'compact',
@@ -102,6 +104,11 @@ class ContactView(ProviderMixin, FormView):
         except serializers.ValidationError:
             raise PermissionDenied()
         return super(ContactView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(ContactView, self).get_form_kwargs()
+        kwargs['csp_nonce'] = self.request.csp_nonce
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)

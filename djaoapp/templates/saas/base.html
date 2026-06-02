@@ -73,7 +73,7 @@
 <script type="text/javascript" src="{{'/assets/vendor/nv.d3.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/vendor/trip.js'|asset}}"></script>
 <script type="text/javascript" src="{{'/assets/js/djaoapp-i18n.js'|asset}}"></script>
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 Vue.prototype.$itemsPerPage =
     {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
 //Vue.prototype.$sortDirection = ;
@@ -123,7 +123,7 @@ humanizeTimeDelta.$labels = {
 {% else %}
 <script type="text/javascript" charset="utf-8" src="{{'/assets/cache/djaodjin-vue.js'|asset}}"></script>
 {% endif %}
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 function onSaaSLoadBase() {
   Vue.use(Croppa);
   {% if FEATURES_REVERT_TO_VUE2 %}
