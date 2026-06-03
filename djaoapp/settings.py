@@ -291,9 +291,13 @@ elif not DEBUG:
         'whitenoise.middleware.WhiteNoiseMiddleware',
     )
 
+if FEATURES_DEBUG:
+    MIDDLEWARE += (
+        'csp.middleware.CSPMiddleware',
+    )
+
 MIDDLEWARE += (
     'django.middleware.common.CommonMiddleware',
-    'csp.middleware.CSPMiddleware',
     'multitier.middleware.SiteMiddleware',
     'multitier.middleware.SetRemoteAddrFromForwardedFor',
     'rules.middleware.RulesMiddleware',

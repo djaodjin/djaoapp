@@ -61,7 +61,10 @@ class AuthMixin(AuthBaseMixin):
                     "data": data,
                     "files": self.request.FILES,
                 })
-        kwargs['csp_nonce'] = self.request.csp_nonce
+        try:
+            kwargs['csp_nonce'] = self.request.csp_nonce
+        except AttributeError:
+            pass
         return kwargs
 
     def get_form(self, form_class=None):

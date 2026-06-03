@@ -74,6 +74,15 @@ def messages(obj):
 
 
 @register.filter()
+def csp_nonce(request):
+    try:
+        return " nonce=\"%s\"" % request.csp_nonce
+    except AttributeError:
+        pass
+    return ""
+
+
+@register.filter()
 def pluralize(text):
     if text.endswith('s'):
         return text

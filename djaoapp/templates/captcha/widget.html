@@ -1,4 +1,4 @@
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
     var DjangoRecaptchaOptions = {{options}};
     if (typeof RecaptchaOptions !== 'object') {
         RecaptchaOptions = DjangoRecaptchaOptions;

@@ -209,7 +209,7 @@
                   <div class="alert alert-dismissible fade" style="display:none;">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                  <script type="text/javascript" nonce="{{request.csp_nonce}}">
+                  <script type="text/javascript" {{request|csp_nonce}}>
                     var _showErrorMessagesProviderNotified = "{% trans %}We have been notified and have started on fixing the error. We apologize for the inconvenience.{% endtrans %}";
                   </script>
                 </div>
@@ -292,7 +292,7 @@
   {% endif %}
 
 {% block _bodyscripts %}
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
 const DJAOAPP_API_BASE_URL = "{{''|site_url}}"; // djaodjin-menubar.js
 
 function injectAnalyticsScripts() {
@@ -332,7 +332,7 @@ const PRIVACY_COOKIES_ENABLED = {
 {% else %}
 <script type="text/javascript" src="{{'/assets/cache/base.js'|asset}}"></script>
 {% endif %}
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
 function onLoadBase() {
   if( typeof djApi !== 'undefined' ) {
     djApi.apiBase = "{{''|site_url}}"; // djaodjin-saas et al.

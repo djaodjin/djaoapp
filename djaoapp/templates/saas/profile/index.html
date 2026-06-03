@@ -375,7 +375,7 @@
 
 {% block dashboard_bodyscripts %}
 {% if urls.user %}
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
 Vue.directive('init-croppa', {
 inserted: function(el) {
     var croppaInstance = el.__vue__;

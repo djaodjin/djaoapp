@@ -148,7 +148,7 @@
 {% else %}
 <script type="text/javascript" src="{{'/assets/cache/saas.js'|asset}}"></script>
 {% endif %}
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
 jQuery(document).ready(function($) {
 
     $("#email-charge-receipt").chargeEmailReceipt({

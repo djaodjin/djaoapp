@@ -1,5 +1,5 @@
 <div id="Recap"></div>
-<script type="text/javascript" nonce="{{request.csp_nonce}}">
+<script type="text/javascript" {{request|csp_nonce}}>
   var RecaptchaOptions = {{options}};
   Recaptcha.create("{{public_key}}",
     "Recap",

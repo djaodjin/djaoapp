@@ -107,7 +107,10 @@ class ContactView(ProviderMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super(ContactView, self).get_form_kwargs()
-        kwargs['csp_nonce'] = self.request.csp_nonce
+        try:
+            kwargs['csp_nonce'] = self.request.csp_nonce
+        except AttributeError:
+            pass
         return kwargs
 
     def get_context_data(self, **kwargs):

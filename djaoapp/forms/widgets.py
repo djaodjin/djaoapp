@@ -11,5 +11,8 @@ class CSPReCaptchaV2Checkbox(ReCaptchaV2Checkbox):
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        context['csp_nonce'] = str(self.csp_nonce) if self.csp_nonce else ''
+        try:
+            context['csp_nonce'] = str(self.csp_nonce) if self.csp_nonce else ''
+        except AttributeError:
+            pass
         return context
