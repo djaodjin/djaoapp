@@ -3,17 +3,6 @@
 {% block form_block %}
 <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
 <fieldset>
-  <legend>{% trans %}Login Credentials{% endtrans %}</legend>
-  {{ input_field(form['username'], hide_labels=form.hide_labels) }}
-  {{ input_field(form['email'], hide_labels=form.hide_labels) }}
-  {% if form['email_code'] %}
-  {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
-  {% endif %}
-  {{ input_field(form['email2'], hide_labels=form.hide_labels) }}
-  {{ input_field(form['new_password'], hide_labels=form.hide_labels) }}
-  {{ input_field(form['new_password2'], hide_labels=form.hide_labels) }}
-</fieldset>
-<fieldset>
   <legend>{% trans %}Contact Information{% endtrans %}</legend>
   {{ input_field(form['full_name'], hide_labels=form.hide_labels) }}
   {{ input_field(form['street_address'], hide_labels=form.hide_labels) }}
@@ -26,9 +15,19 @@
   {{ input_field(form['phone_code'], hide_labels=form.hide_labels) }}
   {% endif %}
 </fieldset>
+<fieldset>
+  <legend>{% trans %}Login Credentials{% endtrans %}</legend>
+  {{ input_field(form['username'], hide_labels=form.hide_labels) }}
+  {{ input_field(form['new_password'], required=True, hide_labels=form.hide_labels) }}
+  {{ input_field(form['new_password2'], required=True, hide_labels=form.hide_labels) }}
+  {{ input_field(form['email'], required=True, hide_labels=form.hide_labels) }}
+  {% if form['email_code'] %}
+  {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
+  {% endif %}
+</fieldset>
 {% if form['terms-of-use'] %}
 <fieldset>
-{{ input_field(form['terms-of-use'], hide_labels=form.hide_labels) }}
+{{ input_field(form['terms-of-use'], required=True, hide_labels=form.hide_labels) }}
 </fieldset>
 {% endif %}
 {% if 'captcha' in form.fields %}

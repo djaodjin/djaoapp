@@ -4,7 +4,7 @@
     {% if required %}
     <input type="hidden" name="{{name}}" value="False">
     {% endif %}
-    <input id="{{id_for_label}}" class="form-check-input{% if extra_control_classes %} {{extra_control_classes}}{% endif %}{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox"{% if model_var %} v-model="{{model_var}}"{% endif %}{% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}{% if autofocus %} autofocus{% endif %}>
+    <input id="{{id_for_label}}" class="form-check-input{% if extra_control_classes %} {{extra_control_classes}}{% endif %}{% if errors %} is-invalid{% endif %}" name="{{name}}" type="checkbox"{% if model_var %} v-model="{{model_var}}"{% endif %}{% if value %}checked="checked"{% endif %}{% if disabled %} disabled{% endif %}{% if required %} required{% endif %}{% if autofocus %} autofocus{% endif %}>
     <label class="form-check-label{% if extra_label_classes %} {{extra_label_classes}}{% endif %}{% if required %} requiredField{% endif %}" for="{{id_for_label}}">
       {{label|safe}}
     </label>
@@ -347,7 +347,7 @@
 {%- endmacro %}
 
 
-{% macro input_field(bound_field, label=None, autofocus=None, hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
+{% macro input_field(bound_field, label=None, autofocus=None, required=None, hide_labels=False, model_var=False, extra_label_classes="", extra_control_classes="") -%}
 {% if bound_field.field.widget.recaptcha_response_name %}
 <div>
 <div class="form-group{% if bound_field.errors %} has-error{% endif %}" style="float: right;margin-right: 5px;">
@@ -372,20 +372,20 @@
 </div>
 
 {% elif bound_field.field|is_checkbox %}
-{{checkbox_input_field(bound_field.id_for_label, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{checkbox_input_field(bound_field.id_for_label, bound_field.name, (required if required else bound_field.field.required), (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field|is_textarea %}
-{{textarea_input_field(bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{textarea_input_field(bound_field.field.widget.attrs.get('placeholder',''), bound_field.name, (required if required else bound_field.field.required), (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field|is_radio %}
-{{radio_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{radio_input_field(bound_field.field.widget.choices, bound_field.name, (required if required else bound_field.field.required), (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% elif bound_field.field.widget.input_type and bound_field.field.widget.input_type == 'select' %}
-{{select_input_field(bound_field.field.widget.choices, bound_field.name, bound_field.field.required, (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
+{{select_input_field(bound_field.field.widget.choices, bound_field.name, (required if required else bound_field.field.required), (label if label is not none else bound_field.label), (autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), bound_field.help_text, bound_field.value(), bound_field.field.disabled, bound_field.errors, hide_labels, model_var, extra_label_classes, extra_control_classes)}}
 
 {% else %}
 {## XXX Everything else text input ##}
-{{text_input_field(bound_field.field.widget.input_type, min_length=bound_field.field.min_length, max_length=bound_field.field.max_length, min_value=bound_field.field.min_value, max_value=bound_field.field.max_value, step=bound_field.field.widget.attrs.step, placeholder=bound_field.field.widget.attrs.get('placeholder',''), name=bound_field.name, required=bound_field.field.required, label=(label if label is not none else bound_field.label), autofocus=(autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), help_text=bound_field.help_text, value=bound_field.value(), disabled=bound_field.field.disabled, readonly=bound_field.field.widget.attrs.get('readonly', False), errors=bound_field.errors, hide_labels=hide_labels, model_var=model_var, extra_label_classes=extra_label_classes, extra_control_classes=extra_control_classes)}}
+{{text_input_field(bound_field.field.widget.input_type, min_length=bound_field.field.min_length, max_length=bound_field.field.max_length, min_value=bound_field.field.min_value, max_value=bound_field.field.max_value, step=bound_field.field.widget.attrs.step, placeholder=bound_field.field.widget.attrs.get('placeholder',''), name=bound_field.name, required=(required if required else bound_field.field.required), label=(label if label is not none else bound_field.label), autofocus=(autofocus if autofocus is not none else bound_field.field.widget.attrs.get('autofocus', False)), help_text=bound_field.help_text, value=bound_field.value(), disabled=bound_field.field.disabled, readonly=bound_field.field.widget.attrs.get('readonly', False), errors=bound_field.errors, hide_labels=hide_labels, model_var=model_var, extra_label_classes=extra_label_classes, extra_control_classes=extra_control_classes)}}
 {% endif %}
 {%- endmacro %}
 
