@@ -498,6 +498,16 @@
     "fields": {
       "slug": "djaopsp",
       "account": 2,
+      "is_active": true,
+      "domain": null,
+      "registration": 0
+    },
+    "model": "multitier.Site", "pk": 2
+},
+{
+    "fields": {
+      "slug": "djaopsp",
+      "account": 2,
       "session_backend": 2,
       "entry_point": "http://localhost:8040",
       "enc_key": "m55*tp*jxti7uylwa-"
