@@ -14,7 +14,9 @@
                   <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
                 </th>
                 <th class="text-end">
+                  {% if not invoicables.0.is_balance %}
                   <a id="{{invoicables.0.subscription.plan.slug}}" class="remove-from-cart" href="">{% trans %}Remove from Cart{% endtrans %}</a>
+                  {% endif %}
                 </th>
               </tr>
               {% if invoicables.0.options %}
@@ -57,7 +59,9 @@
                         <em>{% trans plan=entry.subscription.plan.title, organization=entry.subscription.plan.organization.printable_name %} {{plan}} from {{organization}}{% endtrans %}</em>
                       </th>
                       <th class="text-end">
+                        {% if not entry.is_balance %}
                         <a id="{{entry.subscription.plan.slug}}" class="remove-from-cart" href="">{% trans %}Remove from Cart{% endtrans %}</a>
+                        {% endif %}
                       </th>
                     </tr>
                     {% if entry.options %}

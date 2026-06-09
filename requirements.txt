@@ -21,7 +21,7 @@ djaodjin-deployutils==0.14.5
 djaodjin-extended-templates==0.5.4
 djaodjin-multitier==0.3.2
 djaodjin-rules==0.4.11
-djaodjin-saas==1.2.2
+djaodjin-saas==1.2.3
 djaodjin-signup==0.11.4
 docutils==0.21.2                  # 0.22 is incompatible with Sphinx==8.1.3
                                   # pip does not complain about botocore
