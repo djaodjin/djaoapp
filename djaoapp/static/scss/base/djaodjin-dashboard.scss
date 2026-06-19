@@ -194,7 +194,7 @@ body{
   position: fixed;
   top: 0;
   bottom: 0;
-  z-index: 3000; // #app-toolbar-left is 2000
+  z-index: 1050; // `#app-toolbar-left` is 1025, `.modal` is 1055.
   height: 100%;
 
   transition: display 0.25s allow-discrete;

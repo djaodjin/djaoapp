@@ -39,11 +39,13 @@
             <div class="dashboard-nav-inner-container">
               <div class="dashboard-nav-main">
                 <div>
-                  <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %} aria-label="{% trans %}Sidebar navigation{% endtrans %}">
+                  <nav{% block navbar_sidebar_extra %} class="navbar navbar-expand-md bg-primary"{% endblock %}
+                         aria-label="{% trans %}Sidebar navigation{% endtrans %}">
                     <div class="d-flex align-items-center ps-3">
                       <div class="d-flex">
-                        <button class="me-2 sidebar-toggle btn btn-secondary" aria-label="{% trans %}Toggle sidebar{% endtrans %}"
-                                data-target="#dashboard-navbar">
+                        <button class="btn btn-secondary me-2 sidebar-toggle"
+                                data-target="#dashboard-navbar"
+                                aria-label="{% trans %}Toggle sidebar{% endtrans %}">
                           <div class="bar1 opened"></div>
                           <div class="bar2 opened"></div>
                           <div class="bar3 opened"></div>
