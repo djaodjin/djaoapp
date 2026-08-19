@@ -85,6 +85,16 @@ module.exports = env => ({
               moduleLocalName: 'djApi',
           }]
       }
+    }, {
+      test: /djaodjin-dashboard\.js$/,
+      loader: 'expose-loader',
+      type: "javascript/auto",
+      options: {
+          exposes: [{
+              globalName: 'toggleSidebar',
+              moduleLocalName: 'toggleSidebar',
+          }]
+      }
     }
     ]
   },
@@ -102,7 +112,7 @@ module.exports = env => ({
       new TerserPlugin({
         terserOptions: {
           mangle: {
-            reserved: ['clearMessages', 'showMessages', 'showErrorMessages', 'getUrlParameter', 'djApi', 'Vue'],
+            reserved: ['clearMessages', 'showMessages', 'showErrorMessages', 'getUrlParameter', 'djApi', 'toggleSidebar', 'Vue'],
             properties: false,
           },
         }
