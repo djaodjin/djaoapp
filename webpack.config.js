@@ -21,6 +21,7 @@ module.exports = env => ({
           'js/djaodjin-privacy.js',
       ],
       'djaodjin-vue': [
+          'js/djaodjin-postal.js',
           'js/djaodjin-upload.js',
           'js/djaodjin-signup-vue.js',
           'js/djaodjin-saas-vue.js',
