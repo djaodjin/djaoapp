@@ -36,8 +36,11 @@
                        autocomplete="off"
                        v-model="query"
                        ref="input"
-                       @keydown.enter.prevent="hit"
+                       @keydown.enter.prevent="search"
                        @input="update" />
+                <button class="btn btn-primary" type="button"
+                        :disabled="isEmpty"
+                        @click="search">{% trans %}Search{% endtrans %}</button>
               </div>
               <table class="table table-striped">
                 <tbody id="search-results" v-show="hasItems" v-cloak>
