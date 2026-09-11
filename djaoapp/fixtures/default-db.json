@@ -1,7 +1,6 @@
 [
 {
     "fields": {
-      "slug": "djaodjin",
       "full_name": "DjaoDjin",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "djaodjin@localhost.localdomain",
@@ -13,50 +12,39 @@
       "country": "US",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 3
+      "is_active": 1,
+      "slug": "djaodjin"}, "model": "saas.Organization", "pk": 3
 },
 {
     "fields": {
-      "slug": "security",
       "title": "Security Policy",
-      "updated_at": "2026-01-01T00:00:00+00:00"
-    },
-    "model": "saas.agreement", "pk": 2
+      "updated_at": "2026-01-01T00:00:00+00:00",
+      "slug": "security"}, "model": "saas.agreement", "pk": 2
 },
 {
     "fields": {
-      "slug": "privacy",
       "title": "Privacy Policy",
-      "updated_at": "2026-01-01T00:00:00+00:00"
-    },
-    "model": "saas.agreement", "pk": 3
+      "updated_at": "2026-01-01T00:00:00+00:00",
+      "slug": "privacy"}, "model": "saas.agreement", "pk": 3
 },
 {
     "fields": {
       "created_at": "2026-01-01T00:00:00+00:00",
-      "slug": "manager",
-      "title": "Profile Manager"
-    },
-    "model": "saas.RoleDescription", "pk": 1
+      "title": "Profile Manager",
+      "slug": "manager"}, "model": "saas.RoleDescription", "pk": 1
 },
 {
     "fields": {
       "created_at": "2026-01-01T00:00:00+00:00",
-      "slug": "contributor",
-      "title": "Contributor"
-    },
-    "model": "saas.RoleDescription", "pk": 2
+      "title": "Contributor",
+      "slug": "contributor"}, "model": "saas.RoleDescription", "pk": 2
 },
 {
     "fields": {
       "created_at": "2026-01-01T00:00:00+00:00",
       "organization": 2,
-      "slug": "viewer",
-      "title": "Viewer"
-    },
-    "model": "saas.RoleDescription", "pk": 3
+      "title": "Viewer",
+      "slug": "viewer"}, "model": "saas.RoleDescription", "pk": 3
 },
 {
     "fields":{
@@ -113,42 +101,34 @@
 {
   "fields": {
     "plan": 3,
-    "slug": "requests",
     "created_at": "2026-01-01T00:00:00+00:00",
-    "use_amount": 1
-  },
-  "model": "saas.UseCharge", "pk": 1
+    "use_amount": 1,
+    "slug": "requests"}, "model": "saas.UseCharge", "pk": 1
 },
 {
     "fields":{
-        "code": "DIS100",
         "created_at":"2026-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 10000,
-        "organization": 2
-    },
-    "model" : "saas.Coupon", "pk": 1
+        "organization": 2,
+        "code": "DIS100"}, "model" : "saas.Coupon", "pk": 1
 },
 {
     "fields":{
-        "code": "HALLOWEEN",
         "created_at":"2026-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 5000,
-        "organization": 2
-    },
-    "model" : "saas.Coupon", "pk": 2
+        "organization": 2,
+        "code": "HALLOWEEN"}, "model" : "saas.Coupon", "pk": 2
 },
 {
     "fields":{
-        "code": "BASIC50",
         "created_at":"2026-01-01T00:00:00+00:00",
         "plan": 2,
         "discount_type": 1,
         "discount_value": 5000,
-        "organization": 2
-    },
-    "model" : "saas.Coupon", "pk": 3
+        "organization": 2,
+        "code": "BASIC50"}, "model" : "saas.Coupon", "pk": 3
 },
 {
     "fields": {
@@ -168,9 +148,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "alice"
-    },
-    "model": "auth.User", "pk": 1
+      "username": "alice"}, "model": "auth.User", "pk": 1
 },
 {
     "fields": {
@@ -191,9 +169,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "donny"
-    },
-    "model": "auth.User", "pk": 2
+      "username": "donny"}, "model": "auth.User", "pk": 2
 },
 {
     "fields": {
@@ -226,9 +202,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "yan"
-    },
-    "model": "auth.User", "pk": 3
+      "username": "yan"}, "model": "auth.User", "pk": 3
 },
 {
     "fields": {
@@ -258,9 +232,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "kenneth"
-    },
-    "model": "auth.User", "pk": 4
+      "username": "kenneth"}, "model": "auth.User", "pk": 4
 },
 {
     "fields": {
@@ -281,15 +253,13 @@
 },
 {
     "fields": {
-      "slug": "cowork",
       "email": "cowork@localhost.localdomain",
       "full_name": "Cowork",
       "created_at": "2026-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 4
+      "is_active": 1,
+      "slug": "cowork"}, "model": "saas.Organization", "pk": 4
 },
 {
     "fields":{
@@ -330,7 +300,6 @@
 
 {
     "fields": {
-      "slug": "xia-card7",
       "full_name": "Xia Card7",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+card7@localhost.localdomain",
@@ -339,9 +308,8 @@
       "region": "CA",
       "postal_code": "94133",
       "country": "US",
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 5
+      "is_active": 1,
+      "slug": "xia-card7"}, "model": "saas.Organization", "pk": 5
 },
 {
     "fields": {
@@ -370,9 +338,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia"
-    },
-    "model": "auth.User", "pk": 5
+      "username": "xia"}, "model": "auth.User", "pk": 5
 },
 {
     "fields": {
@@ -393,7 +359,6 @@
 },
 {
     "fields": {
-      "slug": "xia",
       "full_name": "Xia Lee",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia@localhost.localdomain",
@@ -404,9 +369,8 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 6
+      "is_active": 1,
+      "slug": "xia"}, "model": "saas.Organization", "pk": 6
 },
 {
     "fields": {
@@ -428,9 +392,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "joe"
-    },
-    "model": "auth.User", "pk": 6
+      "username": "joe"}, "model": "auth.User", "pk": 6
 },
 {
     "fields": {
@@ -442,7 +404,6 @@
 },
 {
     "fields": {
-      "slug": "joe-bulk",
       "full_name": "Joe Bulk Buying",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "joe+bulk@localhost.localdomain",
@@ -454,9 +415,8 @@
       "country": "US",
       "processor": 1,
       "is_active": 1,
-      "is_bulk_buyer": 1
-    },
-    "model": "saas.Organization", "pk": 7
+      "is_bulk_buyer": 1,
+      "slug": "joe-bulk"}, "model": "saas.Organization", "pk": 7
 },
 {
     "fields": {
@@ -479,9 +439,7 @@
       "last_login": "2026-01-01T00:00:00+00:00",
       "last_name": "Smith",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "asmith"
-    },
-    "model": "auth.User", "pk": 7
+      "username": "asmith"}, "model": "auth.User", "pk": 7
 },
 {
     "fields": {
@@ -493,7 +451,6 @@
 },
 {
     "fields": {
-      "slug": "billing-card2",
       "full_name": "Amelie Smith",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "asmith@localhost.localdomain",
@@ -504,9 +461,8 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 8
+      "is_active": 1,
+      "slug": "billing-card2"}, "model": "saas.Organization", "pk": 8
 },
 {
     "fields": {
@@ -553,7 +509,6 @@
 },
 {
     "fields": {
-      "slug": "stephanie",
       "full_name": "Stephanie DuJardin",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "stephanie@localhost.localdomain",
@@ -564,9 +519,8 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 9
+      "is_active": 1,
+      "slug": "stephanie"}, "model": "saas.Organization", "pk": 9
 },
 {
     "fields": {
@@ -580,9 +534,7 @@
       "last_login": "2026-01-01T00:00:00+00:00",
       "last_name": "DuJardin",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "stephanie"
-    },
-    "model": "auth.User", "pk": 8
+      "username": "stephanie"}, "model": "auth.User", "pk": 8
 },
 {
     "fields": {
@@ -624,7 +576,6 @@
 },
 {
     "fields": {
-      "slug": "to-be-deleted-1",
       "full_name": "Subscriber ToBeDeleted",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "to-be-deleted-1@localhost.localdomain",
@@ -635,13 +586,11 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 10
+      "is_active": 1,
+      "slug": "to-be-deleted-1"}, "model": "saas.Organization", "pk": 10
 },
 {
     "fields": {
-      "slug": "to-be-deleted-2",
       "full_name": "2nd Subscriber ToBeDeleted",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
@@ -652,9 +601,8 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 11
+      "is_active": 1,
+      "slug": "to-be-deleted-2"}, "model": "saas.Organization", "pk": 11
 },
 {
     "fields": {
@@ -666,9 +614,7 @@
       "is_superuser": false,
       "last_name": "NeedActive",
       "password": "!",
-      "username": "needactive"
-    },
-    "model": "auth.User", "pk": 9
+      "username": "needactive"}, "model": "auth.User", "pk": 9
 },
 {
     "fields": {
@@ -678,21 +624,17 @@
 },
 {
     "fields": {
-      "slug": "contact-no-user",
       "created_at": "2026-01-10T00:00:00-00:00",
       "email": "contact-no-user@locahost.localdomain",
-      "phone": "+14156555555"
-    },
-    "model": "signup.Contact", "pk": 10
+      "phone": "+14156555555",
+      "slug": "contact-no-user"}, "model": "signup.Contact", "pk": 10
 },
 {
     "fields": {
-      "slug": "contact-bot-email",
       "created_at": "2026-01-10T00:00:00-00:00",
       "email": "contact.bot.activate.card15@locahost.localdomain",
-      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe277"
-    },
-    "model": "signup.Contact", "pk": 11
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe277",
+      "slug": "contact-bot-email"}, "model": "signup.Contact", "pk": 11
 },
 {
     "fields": {
@@ -704,25 +646,20 @@
 },
 {
     "fields": {
-      "slug": "contact-bot-activate15",
       "created_at": "2026-01-10T00:00:00-00:00",
       "email": "contact.bot.activate.api15@locahost.localdomain",
-      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe278"
-    },
-    "model": "signup.Contact", "pk": 13
+      "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe278",
+      "slug": "contact-bot-activate15"}, "model": "signup.Contact", "pk": 13
 },
 {
     "fields": {
-      "slug": "reset-passwd-email-no-user",
       "created_at": "2026-01-01T00:00:00-00:00",
       "email": "xia+17@localhost.localdomain",
-      "email_verification_key": "6eb8ecd4ee3e93271e84f6439b1c07e9a7883259"
-    },
-    "model": "signup.Contact", "pk": 14
+      "email_verification_key": "6eb8ecd4ee3e93271e84f6439b1c07e9a7883259",
+      "slug": "reset-passwd-email-no-user"}, "model": "signup.Contact", "pk": 14
 },
 {
     "fields": {
-      "username": "to-be-deleted-2",
       "date_joined": "2026-01-01T00:00:00+00:00",
       "email": "to-be-deleted-2@localhost.localdomain",
       "first_name": "Xia",
@@ -731,9 +668,8 @@
       "is_staff": false,
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00+00:00",
-      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc="
-    },
-    "model": "auth.User", "pk": 10
+      "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
+      "username": "to-be-deleted-2"}, "model": "auth.User", "pk": 10
 },
 {
     "fields": {
@@ -755,7 +691,6 @@
 },
 {
     "fields": {
-      "slug": "subscriber-5",
       "full_name": "Subscriber Five",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "subscriber-5@localhost.localdomain",
@@ -766,9 +701,8 @@
       "postal_code": "94133",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 12
+      "is_active": 1,
+      "slug": "subscriber-5"}, "model": "saas.Organization", "pk": 12
 },
 {
     "fields": {
@@ -781,15 +715,13 @@
 },
 {
     "fields": {
-      "slug": "dibaggio-parents",
       "email": "dibaggio-parents@localhost.localdomain",
       "full_name": "Di Baggio Middle School Parents Association",
       "created_at": "2026-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 13
+      "is_active": 1,
+      "slug": "dibaggio-parents"}, "model": "saas.Organization", "pk": 13
 },
 {
     "fields":{
@@ -805,16 +737,14 @@
 },
 {
     "fields": {
-      "slug": "tennis-club",
       "email": "tennis-club@localhost.localdomain",
       "full_name": "Tennis Club of North Beach",
       "created_at": "2026-01-01T00:00:00+00:00",
       "processor": 1,
       "is_provider": 1,
       "is_active": 1,
-      "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due."
-    },
-    "model": "saas.Organization", "pk": 14
+      "extra": "This profile is used for testing optins and taking screenshots of checkout / balance due.",
+      "slug": "tennis-club"}, "model": "saas.Organization", "pk": 14
 },
 {
     "fields":{
@@ -831,17 +761,14 @@
 },
 {
     "fields":{
-        "code": "HALLOWEEN",
         "created_at":"2026-01-01T00:00:00+00:00",
         "discount_type": 1,
         "discount_value": 5000,
-        "organization": 14
-    },
-    "model" : "saas.Coupon", "pk": 4
+        "organization": 14,
+        "code": "HALLOWEEN"}, "model" : "saas.Coupon", "pk": 4
 },
 {
     "fields": {
-      "slug": "yoga-club",
       "email": "yoga-club@localhost.localdomain",
       "full_name": "Yoga Club",
       "created_at": "2026-01-01T00:00:00+00:00",
@@ -849,14 +776,12 @@
       "is_provider": 1,
       "is_active": 1,
       "processor_deposit_key": "sk_deposit_abcdef123456789abcdef123",
-      "extra": "This profile is used for taking screenshots when organization has an associated processor account."
-    },
-    "model": "saas.Organization", "pk": 15
+      "extra": "This profile is used for taking screenshots when organization has an associated processor account.",
+      "slug": "yoga-club"}, "model": "saas.Organization", "pk": 15
 },
 {
     "fields": {
       "created_at": "2026-01-01T00:00:00+00:00",
-      "slug": "registration-card3",
       "email": "registration+card3@localhost.localdomain",
       "full_name": "Registration Card 3",
       "street_address": "1 ABC Loop Dr.",
@@ -864,9 +789,8 @@
       "postal_code": "94333",
       "processor": 1,
       "is_active": 1,
-      "extra": "Register and personal/organization profile already exists (Failures)"
-    },
-    "model": "saas.Organization", "pk": 16
+      "extra": "Register and personal/organization profile already exists (Failures)",
+      "slug": "registration-card3"}, "model": "saas.Organization", "pk": 16
 },
 {
     "fields": {
@@ -954,9 +878,7 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "melissa"
-    },
-    "model": "auth.User", "pk": 11
+      "username": "melissa"}, "model": "auth.User", "pk": 11
 },
 {
     "fields": {
@@ -977,9 +899,7 @@
       "last_login": "2026-01-01T00:00:00-09:00",
       "last_name": "BillingCard10",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia10"
-    },
-    "model": "auth.User", "pk": 12
+      "username": "xia10"}, "model": "auth.User", "pk": 12
 },
 {
     "fields": {
@@ -991,6 +911,31 @@
 },
 {
     "fields": {
+      "full_name": "Xia10",
+      "created_at": "2026-01-01T00:00:00+00:00",
+      "email": "xia+10@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1,
+      "extra": "{\"birth_date\":\"2000-09-09\"}",
+      "slug": "xia10"}, "model": "saas.Organization", "pk": 12
+},
+{
+    "fields": {
+      "created_at": "2026-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 12,
+      "user": 12
+    },
+    "model": "saas.Role", "pk": 12
+},
+{
+    "fields": {
       "date_joined": "2026-01-01T00:00:00+00:00",
       "email": "brett@localhost.localdomain",
       "first_name": "Brett",
@@ -999,9 +944,7 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "brett"
-    },
-    "model": "auth.User", "pk": 13
+      "username": "brett"}, "model": "auth.User", "pk": 13
 },
 {
     "fields": {
@@ -1059,9 +1002,7 @@
       "is_staff": false,
       "is_superuser": false,
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "joey"
-    },
-    "model": "auth.User", "pk": 14
+      "username": "joey"}, "model": "auth.User", "pk": 14
 },
 {
     "fields": {
@@ -1082,9 +1023,7 @@
       "last_login": "2026-01-01T00:00:00+00:00",
       "last_name": "SignupVisitCard2",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=", 
-      "username": "xia15"
-    },
-    "model": "auth.User", "pk": 15
+      "username": "xia15"}, "model": "auth.User", "pk": 15
 },
 {
     "fields": {
@@ -1105,9 +1044,7 @@
       "last_login": "2026-01-01T00:00:00+00:00",
       "last_name": "SignupProfileAPI2",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia16"
-    },
-    "model": "auth.User", "pk": 16
+      "username": "xia16"}, "model": "auth.User", "pk": 16
 },
 {
     "fields": {
@@ -1176,7 +1113,6 @@
 
 {
     "fields": {
-      "slug": "stephanie2",
       "full_name": "Stephanie Two",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "stephanie2@localhost.localdomain",
@@ -1188,9 +1124,8 @@
       "country": "US",
       "processor": 1,
       "is_active": 1,
-      "extra": "saas-subscribe: Card 2"
-    },
-    "model": "saas.Organization", "pk": 17
+      "extra": "saas-subscribe: Card 2",
+      "slug": "stephanie2"}, "model": "saas.Organization", "pk": 17
 },
 {
     "fields": {
@@ -1199,9 +1134,7 @@
       "first_name": "Stephanie",
       "last_name": "Two",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "stephanie2"
-    },
-    "model": "auth.User", "pk": 17
+      "username": "stephanie2"}, "model": "auth.User", "pk": 17
 },
 {
     "fields": {
@@ -1232,7 +1165,6 @@
 
 {
     "fields": {
-      "slug": "stephanie3",
       "full_name": "Stephanie Three",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "stephanie3@localhost.localdomain",
@@ -1244,9 +1176,8 @@
       "country": "US",
       "processor": 1,
       "is_active": 1,
-      "extra": "saas-subscribe: Card 3"
-    },
-    "model": "saas.Organization", "pk": 18
+      "extra": "saas-subscribe: Card 3",
+      "slug": "stephanie3"}, "model": "saas.Organization", "pk": 18
 },
 {
     "fields": {
@@ -1255,9 +1186,7 @@
       "first_name": "Stephanie",
       "last_name": "Three",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "stephanie3"
-    },
-    "model": "auth.User", "pk": 18
+      "username": "stephanie3"}, "model": "auth.User", "pk": 18
 },
 {
     "fields": {
@@ -1429,11 +1358,10 @@
 },
 {
     "fields": {
-      "slug": "xia7",
       "created_at": "2026-01-10T00:00:00-00:00",
       "email": "xia+7@example.com",
       "phone": "+14155555557",
-      "user": 19},"model": "signup.Contact", "pk": 19
+      "slug": "xia7", "user": 19},"model": "signup.Contact", "pk": 19
 },
 {
     "fields": {
@@ -1446,16 +1374,13 @@
       "last_login": "2026-01-01T00:00:00-09:00",
       "last_name": "Activate with SSO provider",
       "password": "!iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia8"
-    },
-    "model": "auth.User", "pk": 20
+      "username": "xia8"}, "model": "auth.User", "pk": 20
 },
 {
     "fields": {
-      "slug": "xia8",
       "created_at": "2026-01-10T00:00:00-00:00",
       "email_verification_key": "16793aa72a4c7ae94b50b20c2eca52df5b0fe2c8",
-      "user": 20}, "model": "signup.Contact", "pk": 20
+      "slug": "xia8", "user": 20}, "model": "signup.Contact", "pk": 20
 },
 {
     "fields": {
@@ -1477,13 +1402,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia22"
-    },
-    "model": "auth.User", "pk": 22
+      "username": "xia22"}, "model": "auth.User", "pk": 22
 },
 {
     "fields": {
-      "slug": "xia22",
       "full_name": "Xia22",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+22@localhost.localdomain",
@@ -1492,9 +1414,9 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 22
+      "is_active": 1,
+      "extra": "{\"birth_date\":\"2001-02-12\"}",
+      "slug": "xia22"}, "model": "saas.Organization", "pk": 22
 },
 {
     "fields": {
@@ -1525,13 +1447,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia23"
-    },
-    "model": "auth.User", "pk": 23
+      "username": "xia23"}, "model": "auth.User", "pk": 23
 },
 {
     "fields": {
-      "slug": "xia23",
       "full_name": "Xia23",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+23@localhost.localdomain",
@@ -1540,9 +1459,8 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 23
+      "is_active": 1,
+      "slug": "xia23"}, "model": "saas.Organization", "pk": 23
 },
 {
     "fields": {
@@ -1574,13 +1492,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia24"
-    },
-    "model": "auth.User", "pk": 24
+      "username": "xia24"}, "model": "auth.User", "pk": 24
 },
 {
     "fields": {
-      "slug": "xia24",
       "full_name": "Xia24",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+24@localhost.localdomain",
@@ -1589,9 +1504,8 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 24
+      "is_active": 1,
+      "slug": "xia24"}, "model": "saas.Organization", "pk": 24
 },
 {
     "fields": {
@@ -1621,13 +1535,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia25"
-    },
-    "model": "auth.User", "pk": 25
+      "username": "xia25"}, "model": "auth.User", "pk": 25
 },
 {
     "fields": {
-      "slug": "xia25",
       "full_name": "Xia25",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+25@localhost.localdomain",
@@ -1636,9 +1547,8 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 25
+      "is_active": 1,
+      "slug": "xia25"}, "model": "saas.Organization", "pk": 25
 },
 {
     "fields": {
@@ -1662,16 +1572,14 @@
     "fields": {
       "date_joined": "2026-01-01T00:00:00-09:00",
       "email": "steve@localhost.localdomain",
-      "username": "steve",
       "first_name": "Steve",
       "last_name": "MFA",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2026-01-01T00:00:00-09:00"
-    },
-    "model": "auth.User", "pk": 26
+      "last_login": "2026-01-01T00:00:00-09:00",
+      "username": "steve"}, "model": "auth.User", "pk": 26
 },
 {
     "fields": {
@@ -1692,16 +1600,14 @@
     "fields": {
       "date_joined": "2026-01-01T00:00:00-09:00",
       "email": "steve+roles-api-1@localhost.localdomain",
-      "username": "roles-api-1",
       "first_name": "Steve",
       "last_name": "",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false,
-      "last_login": "2026-01-01T00:00:00-09:00"
-    },
-    "model": "auth.User", "pk": 27
+      "last_login": "2026-01-01T00:00:00-09:00",
+      "username": "roles-api-1"}, "model": "auth.User", "pk": 27
 },
 {
     "fields": {
@@ -1724,13 +1630,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia28"
-    },
-    "model": "auth.User", "pk": 28
+      "username": "xia28"}, "model": "auth.User", "pk": 28
 },
 {
     "fields": {
-      "slug": "xia28",
       "full_name": "Xia28",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+28@localhost.localdomain",
@@ -1739,9 +1642,8 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 28
+      "is_active": 1,
+      "slug": "xia28"}, "model": "saas.Organization", "pk": 28
 },
 {
     "fields": {
@@ -1773,13 +1675,10 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia29"
-    },
-    "model": "auth.User", "pk": 29
+      "username": "xia29"}, "model": "auth.User", "pk": 29
 },
 {
     "fields": {
-      "slug": "xia29",
       "full_name": "Xia29",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+29@localhost.localdomain",
@@ -1788,9 +1687,8 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 29
+      "is_active": 1,
+      "slug": "xia29"}, "model": "saas.Organization", "pk": 29
 },
 {
     "fields": {
@@ -1812,13 +1710,11 @@
 },
 {
     "fields": {
-      "slug": "activate-no-data",
       "created_at": "2026-01-01T00:00:00-00:00",
       "email": "xia+14@localhost.localdomain",
       "email_verification_key": "2bfd21255cc906781afca502ec2e4f8074244f80",
-      "email_code": 21945
-    },
-    "model": "signup.Contact", "pk": 27
+      "email_code": 21945,
+      "slug": "activate-no-data"}, "model": "signup.Contact", "pk": 27
 },
 
 
@@ -1835,28 +1731,24 @@
 },
 {
     "fields": {
-      "slug": "cowork",
       "is_active": true,
       "account": 4,
       "domain": null,
       "is_path_prefix": true,
       "db_name": "cowork",
       "registration": 1,
-      "extra": "{\"tags\":\"streetside\"}"
-    },
-    "model": "multitier.Site", "pk": 3
+      "extra": "{\"tags\":\"streetside\"}",
+      "slug": "cowork"}, "model": "multitier.Site", "pk": 3
 },
 {
     "fields": {
-      "slug": "djaoapp",
       "account": 2,
       "cors_restricted": false,
       "session_backend": 2,
       "entry_point": "http://localhost:8040",
       "enc_key": "",
-      "welcome_email": 0
-    },
-    "model": "rules.App", "pk": 1
+      "welcome_email": 0,
+      "slug": "djaoapp"}, "model": "rules.App", "pk": 1
 },
 { "fields": {
     "app": 1,

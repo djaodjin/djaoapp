@@ -492,7 +492,6 @@
 
 {
     "fields": {
-      "slug": "xia22",
       "full_name": "Xia22",
       "created_at": "2026-01-01T00:00:00+00:00",
       "email": "xia+22@localhost.localdomain",
@@ -501,9 +500,9 @@
       "region": "CA",
       "country": "US",
       "processor": 1,
-      "is_active": 1
-    },
-    "model": "saas.Organization", "pk": 28
+      "is_active": 1,
+      "extra": "{\"birth_date\":\"2001-02-12\"}",
+      "slug": "xia22"}, "model": "saas.Organization", "pk": 28
 },
 {
     "fields": {
@@ -516,9 +515,7 @@
       "is_superuser": false,
       "last_name": "SubscriptionsAPI1",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia22"
-    },
-    "model": "auth.User", "pk": 28
+      "username": "xia22"}, "model": "auth.User", "pk": 28
 },
 {
     "fields": {
@@ -572,9 +569,7 @@
       "is_superuser": false,
       "last_login": "2026-01-01T00:00:00-09:00",
       "password": "pbkdf2_sha256$10000$z0MBiWn0Rlem$iZdC6uHomlE07qGK/TqfcfxNzKJtFp03c0JILF1frRc=",
-      "username": "xia10"
-    },
-    "model": "auth.User", "pk": 30
+      "username": "xia10"}, "model": "auth.User", "pk": 30
 },
 {
     "fields": {
@@ -583,6 +578,31 @@
       "user": 30
     },
     "model": "saas.signature", "pk": 30
+},
+{
+    "fields": {
+      "full_name": "Xia10",
+      "created_at": "2026-01-01T00:00:00+00:00",
+      "email": "xia+10@localhost.localdomain",
+      "phone": "555-555-5555",
+      "street_address": "350 Bay St.",
+      "locality":  "San Francisco",
+      "region": "CA",
+      "postal_code": "94133",
+      "country": "US",
+      "processor": 1,
+      "is_active": 1,
+      "extra": "{\"birth_date\":\"2000-09-09\"}",
+      "slug": "xia10"}, "model": "saas.Organization", "pk": 30
+},
+{
+    "fields": {
+      "created_at": "2026-01-01T00:00:00+00:00",
+      "role_description": 1,
+      "organization": 30,
+      "user": 30
+    },
+    "model": "saas.Role", "pk": 30
 },
 
 {

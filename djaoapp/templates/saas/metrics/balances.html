@@ -9,7 +9,7 @@
 <div>
   <div class="date-chooser pull-right">
       <a id="download" class="btn btn-outline-primary" role="button"
-         :href="'{{urls.download_balances}}'+ getQueryString(['page'])"><i class="fa-solid fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
+         :href="appendQueryString('{{urls.download_balances}}', ['page'])"><i class="fa-solid fa-cloud-download"></i> {% trans %}Download{% endtrans %}</a>
       <div class="d-inline-block">
           {% include "_params_ends_at_field.html" %}
       </div>

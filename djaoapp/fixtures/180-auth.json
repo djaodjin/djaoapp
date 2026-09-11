@@ -255,6 +255,7 @@
       "country": "US",
       "processor": 1,
       "is_active": 1,
+      "extra": "{\"birth_date\":\"2000-08-31\"}",
       "slug": "xia21"}, "model": "saas.Organization", "pk": 194
 },
 {
