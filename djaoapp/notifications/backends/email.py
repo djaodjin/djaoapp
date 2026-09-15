@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import json, logging, smtplib
+from pathlib import Path
 
 from deployutils.crypt import JSONEncoder
 from django.conf import settings
@@ -198,6 +199,29 @@ def notified_recipients(notification_slug, context, broker=None):
     return recipients, bcc, reply_to
 
 
+def _localized_template_names(template, lang_code):
+    if not isinstance(lang_code, str):
+        return template
+    if isinstance(template, str):
+        templates = [template]
+    elif isinstance(template, (list, tuple)):
+        templates = list(template)
+    else:
+        return template
+    locale_name = translation.to_locale(lang_code)
+    locales = [locale_name]
+    base_language = locale_name.split('_', 1)[0]
+    if base_language != locale_name:
+        locales.append(base_language)
+    localized_templates = []
+    for locale in locales:
+        for template_name in templates:
+            template_path = Path(template_name)
+            localized_templates += [str(
+                template_path.parent / locale / template_path.name)]
+    return localized_templates + templates
+
+
 class NotificationEmailBackend(object):
 
     def send_notification(self, event_name, context=None, request=None,
@@ -255,6 +279,7 @@ class NotificationEmailBackend(object):
             # in a browser client, the lang_code will be set by the browser
             # language. We don't want to override it here.
             if lang_code:
+                template = _localized_template_names(template, lang_code)
                 with translation.override(lang_code):
                     get_email_backend(
                         connection=get_email_connection()).send(
