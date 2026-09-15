@@ -36,8 +36,6 @@
       <hr />
       {% if urls.api_activities %}
       <div class="mt-4 p-2 bg-warning-subtle">
-        {% include "saas/profile/_provider_form.html" %}
-        <hr />
         <contact-update inline-template>
           <div>
             <h3>{% trans %}Activities{% endtrans %}</h3>
@@ -89,9 +87,10 @@
               </div>
               <div class="form-group mb-3">
                 <label class="form-label" for="text-description">{% trans %}Description{% endtrans %}</label>
-                <textarea class="form-control" rows="10"
+                <textarea class="form-control"
+                          id="text-description"
                           name="text"
-			  id="text-description"
+                          rows="10"
                           v-model="activityText"></textarea>
               </div>
               <div class="text-end">
