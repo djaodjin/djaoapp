@@ -21,7 +21,7 @@ RUN_DIR       ?= $(abspath $(srcDir))
 installDirs   ?= /usr/bin/install -d
 installFiles  ?= /usr/bin/install -p -m 644
 DOCKER        ?= docker
-ESCHECK       ?= eslint
+ESCHECK       ?= NODE_PATH=$(libDir)/node_modules eslint
 NPM           ?= npm
 PIP           ?= pip
 PYTHON        ?= python

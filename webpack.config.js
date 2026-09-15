@@ -7,7 +7,7 @@ const confPaths = JSON.parse(fs.readFileSync('webpack-conf-paths.json').toString
 
 module.exports = env => ({
   mode: 'production',
-  target: ['web', 'es6'],
+  target: ['web', 'es2018'],
   entry: {
       auth: [
           'js/djaodjin-postal.js',
@@ -56,6 +56,7 @@ module.exports = env => ({
           presets: [['@babel/preset-env', {
               configPath: __dirname + "/package.json",
               debug: true,
+              forceAllTransforms: true,
               //useBuiltIns: 'usage',
               // XXX If we starts to use the polyfill, there is a problem
               // with Vue/extend in 'js/assess-vue.js'.

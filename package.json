@@ -1,6 +1,14 @@
 {
   "name": "djaoapp-ui",
   "version": "0.1.0",
+  "engines": {
+    "node": "^22.23.2 || >=24"
+  },
+  "browserslist": [
+    "defaults",
+    "not op_mini all",
+    "not kaios > 0"
+  ],
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "ace-builds": "~1.2.9",
@@ -32,15 +40,12 @@
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.4",
     "css-loader": "^3.0.0",
-    "es-check": "^6.2.1",
-    "eslint": "^8.44.0",
+    "eslint": "^10.9.1",
+    "eslint-config-google": "^0.5.0",
+    "eslint-plugin-compat": "^7.0.2",
     "expose-loader": "^5.0.1",
     "terser-webpack-plugin": "5.6.1",
     "webpack": "^5.76.0",
     "webpack-cli": "^4.9.2"
-  },
-  "engines": {
-    "node": ">=v10.16.1",
-    "npm": ">=6.9.0"
   }
 }
