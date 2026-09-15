@@ -208,11 +208,17 @@ def _localized_template_names(template, lang_code):
         templates = list(template)
     else:
         return template
+    locale_name = translation.to_locale(lang_code)
+    locales = [locale_name]
+    base_language = locale_name.split('_', 1)[0]
+    if base_language != locale_name:
+        locales.append(base_language)
     localized_templates = []
-    for template_name in templates:
-        template_path = Path(template_name)
-        localized_templates += [str(
-            template_path.parent / lang_code / template_path.name)]
+    for locale in locales:
+        for template_name in templates:
+            template_path = Path(template_name)
+            localized_templates += [str(
+                template_path.parent / locale / template_path.name)]
     return localized_templates + templates
 
 
