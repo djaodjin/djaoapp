@@ -13,11 +13,11 @@
                   {% trans %}Selected Plan{% endtrans %}:
                   <em>{% trans plan=invoicables.0.subscription.plan.title, organization=invoicables.0.subscription.plan.organization.printable_name %}{{plan}} from {{organization}}{% endtrans %}</em>
                 </th>
-                <th class="text-end">
+                <td class="text-end">
                   {% if not invoicables.0.is_balance %}
                   <a id="{{invoicables.0.subscription.plan.slug}}" class="remove-from-cart" href="">{% trans %}Remove from Cart{% endtrans %}</a>
                   {% endif %}
-                </th>
+                </td>
               </tr>
               {% if invoicables.0.options %}
               <tr class="py-0">
@@ -25,11 +25,6 @@
                   <th class="fw-normal text-end">{% trans %}Totals{% endtrans %}</th>
               </tr>
               {% endif %}
-              <tr>
-                  <td colspan="3" class="p-0">
-                      <hr class="mx-3 my-0">
-                  </td>
-              </tr>
 
               {% for entry in invoicables %}
                 {% if entry.is_changed %}
