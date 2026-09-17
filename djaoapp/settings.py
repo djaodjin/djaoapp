@@ -271,8 +271,8 @@ INSTALLED_APPS = ENV_INSTALLED_APPS + (
     'django_recaptcha',
     'csp',
     'deployutils.apps.django_deployutils',
-    'signup',  # Because we want `djresources.js` picked up from here.
-    'saas',
+    'saas',           # Because we want `djresources.js` picked up from here.
+    'signup',
     'social_django',
     'multitier',            # need to be included if we don't change fixtures
     'extended_templates',
