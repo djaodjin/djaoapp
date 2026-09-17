@@ -54,7 +54,7 @@
           <div class="text-end">
             <button class="btn btn-lnk" type="button"
                   @click.prevent="removeAdvanceDiscount(discountIdx)">
-              <i class="fa-solid fa-trash-o text-danger"></i>
+              <i class="fa-solid fa-trash text-danger"></i>
             </button>
           </div>
           {{input_field(form['discount_type'], hide_labels=form.hide_labels, model_var='discount.discount_type')}}
@@ -102,7 +102,7 @@
           <div class="text-end">
             <button class="btn btn-lnk" type="button"
                   @click.prevent="removeUseCharge(useIdx)">
-              <i class="fa-solid fa-trash-o text-danger"></i>
+              <i class="fa-solid fa-trash text-danger"></i>
             </button>
           </div>
           {{input_field(form['use_charge_slug'], hide_labels=form.hide_labels, model_var='use.slug')}}

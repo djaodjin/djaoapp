@@ -21,6 +21,9 @@
   {{ input_field(form['new_password'], required=True, hide_labels=form.hide_labels) }}
   {{ input_field(form['new_password2'], required=True, hide_labels=form.hide_labels) }}
   {{ input_field(form['email'], required=True, hide_labels=form.hide_labels) }}
+  {% if form['email2'] %}
+  {{ input_field(form['email2'], required=True, hide_labels=form.hide_labels) }}
+  {% endif %}
   {% if form['email_code'] %}
   {{ input_field(form['email_code'], hide_labels=form.hide_labels) }}
   {% endif %}
