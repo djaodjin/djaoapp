@@ -40,6 +40,7 @@ DB_HOST = ''
 DB_PORT = 5432
 DB_USER = None
 DB_PASSWORD = None
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # XXX djaodjin-saas==0.12.0 requires this
 SAAS_ORGANIZATION_MODEL = 'saas.Organization'
@@ -354,6 +355,17 @@ if os.getenv('MULTITIER_DB_NAME'):
                 'HOST': DB_HOST,                 # Not used with sqlite3.
                 'PORT': DB_PORT,                 # Not used with sqlite3.
                 }})
+
+
+STORAGES = {
+    'default': {
+        'BACKEND': DEFAULT_FILE_STORAGE,
+    },
+    'staticfiles': {
+        'BACKEND': "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
