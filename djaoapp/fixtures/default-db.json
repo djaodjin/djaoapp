@@ -1591,7 +1591,7 @@
 {
     "fields": {
       "user": 26,
-      "priv_key": "abc123"
+      "priv_key": "ABCD2345"
     },
     "model": "signup.OTPGenerator", "pk": 26
 },
