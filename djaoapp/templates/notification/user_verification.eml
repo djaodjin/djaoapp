@@ -25,7 +25,7 @@
   </p>
   {% else %}
   <p>
-{% trans %}Please verify your email address by entering the following code:{% endtrans %}: {{code}}
+{% trans %}Please verify your email address by entering the following code:{% endtrans %} {{code}}
   </p>
   {% if lifetime %}
   <p>
