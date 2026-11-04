@@ -990,7 +990,8 @@ SIGNUP = {
         'github': {'name': 'GitHub', 'icon': 'github'},
         'google-oauth2': {'name': 'Google', 'icon': 'google'},
     },
-    'USE_VERIFICATION_LINKS': False,
+    'USE_VERIFICATION_LINKS': getattr(
+        sys.modules[__name__], 'SIGNUP_USE_VERIFICATION_LINKS', False),
     'USER_API_KEY_LIFETIME': 'djaoapp.utils.get_user_api_key_lifetime',
     'USER_OTP_REQUIRED': 'djaoapp.utils.get_user_otp_required',
     'VERIFICATION_LIFETIME': VERIFICATION_LIFETIME,
