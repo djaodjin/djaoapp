@@ -24,7 +24,7 @@
           {% if plans %}
           <div class="row my-3">
             <div class="col-md-8">
-              <form id="subscribe" @submit.prevent="subscribe({slug: '{{organization.slug}}', full_name: '{{organization.full_name}}'})">
+              <form id="subscribe" @submit.prevent="subscribe({slug: '{{organization.slug}}'})">
                 <div class="row">
                   <div class="col-md-8">
                     <select class="form-control me-2" name="plan" v-model="plan" aria-label="{% trans %}Select a plan{% endtrans %}">
@@ -83,7 +83,7 @@
                 </tr>
                 <tr v-show="itemsLoaded && items.count === 0" v-cloak>
                   <td colspan="4">
-                    <h3 class="text-center h5"><em>{% trans %}No subcriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h3>
+                    <h3 class="text-center h5"><em>{% trans %}No subscriptions{% endtrans %}<span v-show="params.q"> [[params.q]]</span></em></h3>
                   </td>
                 </tr>
               </tbody>

@@ -6,7 +6,7 @@
 # (Javascript prerequisites are specified in package.json)
 
 boto3==1.42.89                    # 1.33.13 last version compatible with Py3.7
-Django==5.2.17
+Django==5.2.19
 django-phonenumber-field==7.1.0
 django-recaptcha==4.0.0           # 4.0.0 renamed namespace 'django_recaptcha'
                                   # 2.0.6 requires Django<4.0
@@ -22,7 +22,7 @@ djaodjin-deployutils==0.14.5
 djaodjin-extended-templates==0.5.4
 djaodjin-multitier==0.3.2
 djaodjin-rules==0.4.12
-djaodjin-saas==1.3.1
+djaodjin-saas==1.3.2
 djaodjin-signup==0.11.5
 docutils==0.21.2                  # 0.22 is incompatible with Sphinx==8.1.3
                                   # pip does not complain about botocore
