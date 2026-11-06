@@ -78,11 +78,6 @@
       <dep name="phonenumbers" target="python">
         <lib>.*/(phonenumbers)/__init__.py</lib>
       </dep>
-      <dep name="pyOpenSSL" target="python">
-        <!-- couldn't find a native extension.
-             depends on python36-cryptography -->
-        <lib>.*/(OpenSSL)/__init__.py</lib>
-      </dep>
       <dep name="python-social-auth" target="python">
         <lib>.*/(social_core)/__init__.py</lib>
       </dep>
