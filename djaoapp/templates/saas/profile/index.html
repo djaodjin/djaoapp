@@ -100,7 +100,7 @@
             </form>
             <hr />
             <div v-show="!itemsLoaded">
-              <h4  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i></h4>
+              <h4  class="text-center"><i class="fa-solid fa-refresh fa-spin"></i> {% trans %}Loading ...{% endtrans %}</h4>
             </div>
             <div id="has-no-activity" v-show="itemsLoaded && items.results.length === 0" v-cloak>
               <h4><em>{% trans %}No activity{% endtrans %}<span> [[params.q]]</span></em></h4>
