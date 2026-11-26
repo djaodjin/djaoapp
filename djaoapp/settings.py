@@ -699,6 +699,12 @@ LOGGING = {
             'handlers': [],
             'level': 'INFO',
         },
+        # Remove "Fetching and parsing CSS - CSS string" messages introduced
+        # in WeasyPrint>=70.0.
+        'weasyprint.progress': {
+            'handlers': [],
+            'level': 'ERROR',
+        },
         'weasyprint': {
             'handlers': [],
             'level': 'INFO',
